@@ -1,0 +1,36 @@
+# 暂停执行与睡眠
+
+> 原文：[`docs.oracle.com/javase/tutorial/essential/concurrency/sleep.html`](https://docs.oracle.com/javase/tutorial/essential/concurrency/sleep.html)
+
+`Thread.sleep`会导致当前线程暂停执行一段指定的时间。这是一种有效的方式，可以让处理器时间可用于应用程序的其他线程或者可能在计算机系统上运行的其他应用程序。`sleep`方法也可以用于节奏控制，就像下面的示例中展示的那样，以及等待另一个线程，该线程的任务被理解为具有时间要求，就像稍后章节中的`SimpleThreads`示例一样。
+
+提供了两个重载版本的`sleep`：一个指定以毫秒为单位的睡眠时间，另一个指定以纳秒为单位的睡眠时间。然而，这些睡眠时间不能保证是精确的，因为它们受到底层操作系统提供的设施的限制。此外，睡眠时间可以被中断，我们将在稍后的章节中看到。无论如何，你不能假设调用`sleep`会精确地暂停线程指定的时间段。
+
+``SleepMessages``示例使用`sleep`以四秒的间隔打印消息：
+
+```java
+
+public class SleepMessages {
+    public static void main(String args[])
+        throws InterruptedException {
+        String importantInfo[] = {
+            "Mares eat oats",
+            "Does eat oats",
+            "Little lambs eat ivy",
+            "A kid will eat ivy too"
+        };
+
+        for (int i = 0;
+             i < importantInfo.length;
+             i++) {
+            //Pause for 4 seconds
+            Thread.sleep(4000);
+            //Print a message
+            System.out.println(importantInfo[i]);
+        }
+    }
+}
+
+```
+
+注意，`main`声明了它会`throws InterruptedException`。这是一个异常，当另一个线程在`sleep`处于活动状态时中断当前线程时会抛出。由于这个应用程序没有定义另一个线程来引起中断，所以它不会去捕获`InterruptedException`。

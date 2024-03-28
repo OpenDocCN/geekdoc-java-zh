@@ -1,0 +1,13 @@
+# CookieHandler 回调机制
+
+> 原文：[`docs.oracle.com/javase/tutorial/networking/cookies/cookiehandler.html`](https://docs.oracle.com/javase/tutorial/networking/cookies/cookiehandler.html)
+
+Java SE 中通过 [`java.net.CookieHandler`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieHandler.html) 类实现了 HTTP 状态管理。`CookieHandler` 对象提供了一个回调机制，在 HTTP 协议处理程序中提供 HTTP 状态管理策略的实现。也就是说，使用 HTTP 协议的 URL，例如 `new URL("http://example.com")`，将使用 HTTP 协议处理程序。如果设置了 `CookieHandler` 对象，此协议处理程序将回调到 `CookieHandler` 对象以处理状态管理。
+
+`CookieHandler` 类是一个抽象类，具有两对相关方法。第一对方法，`getDefault()` 和 `setDefault(cookieHandler)`，是静态方法，允许您发现当前安装的处理程序并安装自己的处理程序。
+
+没有安装默认处理程序，安装处理程序是在系统范围内进行的。对于在安全环境中运行的应用程序，即已安装了安全管理器的应用程序，您必须具有特殊权限才能获取和设置处理程序。有关更多信息，请参阅 [`java.net.CookieHandler.getDefault`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieHandler.html#getDefault--)。
+
+第二对相关方法，`put(uri, responseHeaders)` 和 `get(uri, requestHeaders)`，允许您为指定的 URI 在响应/请求头中设置和获取所有适用的 cookie 到 cookie 缓存中。这些方法是抽象的，`CookieHandler` 的具体实现必须提供实现。
+
+Java Web Start 和 Java Plug-in 都安装了默认的 `CookieHandler`。但是，如果您正在运行一个独立的应用程序并希望启用 HTTP 状态管理，您必须设置一个系统范围的处理程序。本课程的下两页将向您展示如何操作。
