@@ -1,0 +1,55 @@
+- en: Set Up a Policy File to Grant the Required Permission
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 设置策略文件以授予所需的权限。
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/rstep3.html](https://docs.oracle.com/javase/tutorial/security/toolsign/rstep3.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/rstep3.html](https://docs.oracle.com/javase/tutorial/security/toolsign/rstep3.html)
+- en: Next, you will use the Policy Tool to create a policy file named **`exampleraypolicy`**
+    and in it grant a permission to code from a signed JAR file.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，您将使用策略工具创建一个名为**`exampleraypolicy`**的策略文件，并在其中授予来自已签名JAR文件的代码权限。
+- en: The JAR file must have been signed using the private key corresponding to the
+    public key imported into Ray's keystore (`exampleraystore`) in the previous step.
+    The certificate containing the public key is aliased by `susan` in the keystore.
+    We will grant such code permission to read any file in the `C:\TestData\` directory.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAR文件必须使用与上一步中导入到Ray的密钥库（`exampleraystore`）中的公钥对应的私钥进行签名。包含公钥的证书在密钥库中被别名为`susan`。我们将授予此类代码权限以读取`C:\TestData\`目录中的任何文件。
+- en: 'The steps are:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 步骤如下：
+- en: '[Start Policy Tool](wstep1.html)'
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[启动策略工具](wstep1.html)'
+- en: '[Specify the Keystore](wstep2.html)'
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[指定密钥库](wstep2.html)'
+- en: '[Add a Policy Entry with a SignedBy Alias](wstep3.html)'
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[使用SignedBy别名添加策略条目](wstep3.html)'
+- en: '[Save the Policy File](wstep4.html)'
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[保存策略文件](wstep4.html)'

@@ -1,0 +1,473 @@
+- en: Listeners Supported by Swing Components
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Swing 组件支持的监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/eventsandcomponents.html](https://docs.oracle.com/javase/tutorial/uiswing/events/eventsandcomponents.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/eventsandcomponents.html](https://docs.oracle.com/javase/tutorial/uiswing/events/eventsandcomponents.html)
+- en: 'You can tell what kinds of events a component can fire by looking at the kinds
+    of event listeners you can register on it. For example, the `JComboBox` class
+    defines these listener registration methods:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过查看可以在组件上注册的事件监听器的类型来了解组件可以触发哪些事件。例如，`JComboBox` 类定义了以下监听器注册方法：
+- en: '`addActionListener`'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`addActionListener`'
+- en: '`addItemListener`'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`addItemListener`'
+- en: '`addPopupMenuListener`'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`addPopupMenuListener`'
+- en: Thus, a combo box supports action, item, and context menu listeners in addition
+    to the listener methods it inherits from `JComponent`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，组合框除了继承自`JComponent`的监听器方法外，还支持动作、项目和上下文菜单监听器。
+- en: 'Listeners supported by Swing components fall into two categories:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing 组件支持的监听器分为两类：
+- en: '[Listeners that All Swing Components Support](#all)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[所有 Swing 组件都支持的监听器](#all)'
+- en: '[Other Listeners that Swing Components Support](#many)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[其他 Swing 组件支持的监听器](#many)'
+- en: Listeners that All Swing Components Support
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 所有 Swing 组件都支持的监听器
+- en: 'Because all Swing components descend from the AWT `Component` class, you can
+    register the following listeners on any Swing component:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为所有 Swing 组件都是从 AWT `Component` 类继承的，您可以在任何 Swing 组件上注册以下监听器：
+- en: '**[component listener](componentlistener.html)**'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**[组件监听器](componentlistener.html)**'
+- en: Listens for changes in the component's size, position, or visibility.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 监听组件的大小、位置或可见性的变化。
+- en: '**[focus listener](focuslistener.html)**'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**[焦点监听器](focuslistener.html)**'
+- en: Listens for whether the component gained or lost the keyboard focus.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 监听组件是否获得或失去键盘焦点。
+- en: '**[key listener](keylistener.html)**'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**[键盘监听器](keylistener.html)**'
+- en: Listens for key presses; key events are fired only by the component that has
+    the current keyboard focus.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 监听键盘按键；键盘事件仅由当前具有键盘焦点的组件触发。
+- en: '**[mouse listener](mouselistener.html)**'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**[鼠标监听器](mouselistener.html)**'
+- en: Listens for mouse clicks, mouse presses, mouse releases and mouse movement into
+    or out of the component's drawing area.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 监听鼠标点击、鼠标按下、鼠标释放以及鼠标移动进入或离开组件的绘图区域。
+- en: '**[mouse-motion listener](mousemotionlistener.html)**'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**[鼠标移动监听器](mousemotionlistener.html)**'
+- en: Listens for changes in the mouse cursor's position over the component.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 监听鼠标光标在组件上的位置变化。
+- en: '**[mouse-wheel listener](mousewheellistener.html)**'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**[鼠标滚轮监听器](mousewheellistener.html)**'
+- en: Listens for mouse wheel movement over the component.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 监听鼠标滚轮在组件上的移动。
+- en: '[**Hierarchy Listener**](https://docs.oracle.com/javase/8/docs/api/java/awt/event/HierarchyListener.html)'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[**层次监听器**](https://docs.oracle.com/javase/8/docs/api/java/awt/event/HierarchyListener.html)'
+- en: Listens for changes to a component's containment hierarchy of changed events.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 监听组件的包含层次结构的更改事件。
+- en: '[**Hierarchy Bounds Listener**](https://docs.oracle.com/javase/8/docs/api/java/awt/event/HierarchyBoundsListener.html)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[**层次边界监听器**](https://docs.oracle.com/javase/8/docs/api/java/awt/event/HierarchyBoundsListener.html)'
+- en: Listens for changes to a component's containment hierarchy of moved and resized
+    events.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 监听组件的包含层次结构的移动和调整事件的变化。
+- en: All Swing components descend from the AWT `Container` class, but many of them
+    are not used as containers. So, technically speaking, any Swing component can
+    fire [container events](containerlistener.html), which notify listeners that a
+    component has been added to or removed from the container. Realistically speaking,
+    however, only containers (such as panels and frames) and compound components (such
+    as combo boxes) typically fire container events.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有 Swing 组件都是从 AWT `Container` 类继承的，但其中许多并不用作容器。因此，从技术上讲，任何 Swing 组件都可以触发[容器事件](containerlistener.html)，通知监听器组件已被添加到容器或从容器中移除。然而，实际上，只有容器（如面板和框架）和复合组件（如组合框）通常会触发容器事件。
+- en: '`JComponent` provides support for three more listener types. You can register
+    an [ancestor listener](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/AncestorListener.html)
+    to be notified when a component''s containment ancestors are added to or removed
+    from a container, hidden, made visible, or moved. This listener type is an implementation
+    detail which predated hierarchy listeners.'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JComponent` 提供对另外三种监听器类型的支持。您可以注册一个[祖先监听器](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/AncestorListener.html)，以便在组件的包含祖先被添加到容器、移除、隐藏、显示或移动时收到通知。这种监听器类型是一个实现细节，早于层次监听器。'
+- en: The other two listener types are part of the Swing components' conformance to
+    the JavaBeans specification. Among other things, this means that Swing components
+    support bound and constrained properties and notify listeners of changes to the
+    properties. [Property change listeners](propertychangelistener.html) listen for
+    changes to bound properties and are used by several Swing components, such as
+    [formatted text fields](../components/formattedtextfield.html), to track changes
+    on a component's bound properties. Also, property change listeners, as well as
+    [vetoable change listeners](https://docs.oracle.com/javase/8/docs/api/java/beans/VetoableChangeListener.html)
+    are used by builder tools to listen for changes on constrained properties. For
+    more information refer to the [Properties](../../javabeans/writing/properties.html)
+    lesson in the [JavaBeans](../../javabeans/) trail.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另外两种监听器类型是 Swing 组件符合 JavaBeans 规范的一部分。这意味着 Swing 组件支持绑定和约束属性，并通知监听器属性的更改。[属性更改监听器](propertychangelistener.html)
+    监听绑定属性的更改，并被几个 Swing 组件使用，例如 [格式化文本字段](../components/formattedtextfield.html)，以跟踪组件的绑定属性的更改。此外，属性更改监听器以及
+    [可否决更改监听器](https://docs.oracle.com/javase/8/docs/api/java/beans/VetoableChangeListener.html)
+    被构建工具用于监听约束属性的更改。有关更多信息，请参考 [JavaBeans](../../javabeans/) 路径中的 [属性](../../javabeans/writing/properties.html)
+    课程。
+- en: Other Listeners that Swing Components Support
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Swing 组件支持的其他监听器
+- en: The following table lists Swing components and the specialized listeners they
+    support, not including listeners supported by all `Component`s, `Container`s,
+    or `JComponent`s. In many cases, the events are fired directly from the component.
+    In other cases, the events are fired from the component's data or selection model.
+    To find out the details for the particular component and listener you are interested
+    in, go first to the component how-to section, and then if necessary to the listener
+    how-to section.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了 Swing 组件及其支持的专用监听器，不包括所有 `Component`、`Container` 或 `JComponent` 支持的监听器。在许多情况下，事件直接从组件中触发。在其他情况下，事件是从组件的数据或选择模型中触发的。要了解您感兴趣的特定组件和监听器的详细信息，请首先转到组件的操作指南部分，然后如有必要再转到监听器的操作指南部分。
+- en: This table lists Swing components with their specialized listeners
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此表列出了带有其专用监听器的 Swing 组件
+- en: '| Component | [Action Listener](actionlistener.html) | [Caret Listener](caretlistener.html)
+    | [Change Listener](changelistener.html) | [Document Listener](documentlistener.html),
+    [Undoable Edit Listener](undoableeditlistener.html) | [Item Listener](itemlistener.html)
+    | [List Selection Listener](listselectionlistener.html) | [Window Listener](windowlistener.html)
+    | Other Types of Listeners |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| 组件 | [动作监听器](actionlistener.html) | [插入符监听器](caretlistener.html) | [更改监听器](changelistener.html)
+    | [文档监听器](documentlistener.html), [可撤销编辑监听器](undoableeditlistener.html) | [项目监听器](itemlistener.html)
+    | [列表选择监听器](listselectionlistener.html) | [窗口监听器](windowlistener.html) | 其他类型的监听器
+    |'
+- en: '| [button](../components/button.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| [按钮](../components/button.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |'
+- en: '| [check box](../components/button.html#checkbox) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| [复选框](../components/button.html#checkbox) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |'
+- en: '| [color chooser](../components/colorchooser.html) |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| [颜色选择器](../components/colorchooser.html) |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |'
+- en: '| [combo box](../components/combobox.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |
+      |   |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| [组合框](../components/combobox.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |
+      |   |'
+- en: '| [dialog](../components/dialog.html) |   |   |   |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| [对话框](../components/dialog.html) |   |   |   |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |'
+- en: '| [editor pane](../components/editorpane.html) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   |
+    [hyperlink](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/HyperlinkListener.html)
+    |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| [编辑窗格](../components/editorpane.html) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   |
+    [超链接](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/HyperlinkListener.html)
+    |'
+- en: '| [file chooser](../components/filechooser.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |   |   |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| [文件选择器](../components/filechooser.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |   |   |'
+- en: '| [formatted text field](../components/formattedtextfield.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| [格式化文本字段](../components/formattedtextfield.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |'
+- en: '| [frame](../components/frame.html) |   |   |   |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| [框架](../components/frame.html) |   |   |   |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |'
+- en: '| [internal frame](../components/internalframe.html) |   |   |   |   |   |
+      |   | [internal frame](internalframelistener.html) |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| [内部框架](../components/internalframe.html) |   |   |   |   |   |   |   | [内部框架](internalframelistener.html)
+    |'
+- en: '| [list](../components/list.html) |   |   |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | [list data](listdatalistener.html) |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| [列表](../components/list.html) |   |   |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | [列表数据](listdatalistener.html) |'
+- en: '| [menu](../components/menu.html) |   |   |   |   |   |   |   | [menu](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuListener.html)
+    |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| [菜单](../components/menu.html) |   |   |   |   |   |   |   | [菜单](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuListener.html)
+    |'
+- en: '| [menu item](../components/menu.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   | [menu key](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuKeyListener.html)
+    [menu drag mouse](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuDragMouseListener.html)
+    |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| [菜单项](../components/menu.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   | [菜单键](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuKeyListener.html)
+    [菜单拖动鼠标](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuDragMouseListener.html)
+    |'
+- en: '| [option pane](../components/dialog.html) |   |   |   |   |   |   |   |  
+    |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| [选项窗格](../components/dialog.html) |   |   |   |   |   |   |   |   |'
+- en: '| [password field](../components/passwordfield.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| [密码字段](../components/passwordfield.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |'
+- en: '| [popup menu](../components/menu.html) |   |   |   |   |   |   |   | [popup
+    menu](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/PopupMenuListener.html)
+    |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| [弹出菜单](../components/menu.html) |   |   |   |   |   |   |   | [弹出菜单](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/PopupMenuListener.html)
+    |'
+- en: '| [progress bar](../components/progress.html) |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| [进度条](../components/progress.html) |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |'
+- en: '| [radio button](../components/button.html#radiobutton) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| [单选按钮](../components/button.html#radiobutton) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |'
+- en: '| [slider](../components/slider.html) |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| [滑块](../components/slider.html) |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |'
+- en: '| [spinner](../components/spinner.html) |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| [微调器](../components/spinner.html) |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |'
+- en: '| [tabbed pane](../components/tabbedpane.html) |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| [选项卡面板](../components/tabbedpane.html) |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |'
+- en: '| [table](../components/table.html) |   |   |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   [table model](tablemodellistener.html) [table column model](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableColumnModelListener.html)'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [表格](../components/table.html) |   |   |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   [表格模型](tablemodellistener.html) [表格列模型](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableColumnModelListener.html)'
+- en: '[cell editor](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/CellEditorListener.html)
+    |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[单元格编辑器](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/CellEditorListener.html)
+    |'
+- en: '| [text area](../components/textarea.html) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   |
+      |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| [文本区域](../components/textarea.html) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   |
+      |'
+- en: '| [text field](../components/textfield.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |'
+  id: totrans-59
+  prefs: []
+  type: TYPE_TB
+  zh: '| [文本字段](../components/textfield.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |'
+- en: '| [text pane](../components/editorpane.html) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   |
+      [hyperlink](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/HyperlinkListener.html)
+    |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '| [文本面板](../components/editorpane.html) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   |
+      [超链接](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/HyperlinkListener.html)
+    |'
+- en: '| [toggle button](../components/button.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '| [切换按钮](../components/button.html) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |'
+- en: '| [tree](../components/tree.html) |   |   |   |   |   |   |   |   [tree expansion](treeexpansionlistener.html)
+    [tree will expand](treewillexpandlistener.html)'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [树](../components/tree.html) |   |   |   |   |   |   |   |   [树展开](treeexpansionlistener.html)
+    [树将展开](treewillexpandlistener.html)'
+- en: '[tree model](treemodellistener.html)'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[树模型](treemodellistener.html)'
+- en: '[tree selection](treeselectionlistener.html) |'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[树选择](treeselectionlistener.html) |'
+- en: '| viewport (used by [scrollpane](../components/scrollpane.html)) |   |   |
+    ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   |   |  
+    |'
+  id: totrans-65
+  prefs: []
+  type: TYPE_TB
+  zh: '| 视口（被[滚动窗格](../components/scrollpane.html)使用） |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |'

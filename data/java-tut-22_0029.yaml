@@ -1,0 +1,152 @@
+- en: Equality, Relational, and Conditional Operators
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 相等、关系和条件运算符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op2.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op2.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op2.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op2.html)
+- en: The Equality and Relational Operators
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 相等和关系运算符
+- en: The equality and relational operators determine if one operand is greater than,
+    less than, equal to, or not equal to another operand. The majority of these operators
+    will probably look familiar to you as well. Keep in mind that you must use "`==`",
+    not "`=`", when testing if two primitive values are equal.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相等和关系运算符确定一个操作数是否大于、小于、等于或不等于另一个操作数。这些运算符中的大多数可能对您来说看起来很熟悉。请记住，在测试两个原始值是否相等时，必须使用"`==`"，而不是"`=`"。
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following program, [`ComparisonDemo`](examples/ComparisonDemo.java), tests
+    the comparison operators:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序，[`ComparisonDemo`](examples/ComparisonDemo.java)，测试比较运算符：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Output:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The Conditional Operators
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 条件运算符
+- en: The `&&` and `||` operators perform *Conditional-AND* and *Conditional-OR* operations
+    on two boolean expressions. These operators exhibit "short-circuiting" behavior,
+    which means that the second operand is evaluated only if needed.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`&&`和`||`运算符对两个布尔表达式执行*条件-AND*和*条件-OR*操作。这些运算符表现出“短路”行为，这意味着只有在需要时才会评估第二个操作数。'
+- en: '[PRE3]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The following program, [`ConditionalDemo1`](examples/ConditionalDemo1.java),
+    tests these operators:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序，[`ConditionalDemo1`](examples/ConditionalDemo1.java)，测试了这些运算符：
+- en: '[PRE4]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Another conditional operator is `?:`, which can be thought of as shorthand
+    for an `if-then-else` statement (discussed in the [Control Flow Statements](flow.html)
+    section of this lesson). This operator is also known as the *ternary operator*
+    because it uses three operands. In the following example, this operator should
+    be read as: "If `someCondition` is `true`, assign the value of `value1` to `result`.
+    Otherwise, assign the value of `value2` to `result`."'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个条件运算符是`?:`，可以被视为`if-then-else`语句的简写（在本课程的[控制流语句](flow.html)部分讨论）。这个运算符也被称为*三元运算符*，因为它使用三个操作数。在下面的例子中，这个运算符应该被理解为：“如果`someCondition`为`true`，则将`value1`的值赋给`result`。否则，将`value2`的值赋给`result`。”
+- en: 'The following program, [`ConditionalDemo2`](examples/ConditionalDemo2.java),
+    tests the `?:` operator:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序，[`ConditionalDemo2`](examples/ConditionalDemo2.java)，测试了`?:`运算符：
+- en: '[PRE5]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Because `someCondition` is true, this program prints "1" to the screen. Use
+    the `?:` operator instead of an `if-then-else` statement if it makes your code
+    more readable; for example, when the expressions are compact and without side-effects
+    (such as assignments).
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`someCondition`为真，这个程序将"1"打印到屏幕上。如果使用`?:`运算符而不是`if-then-else`语句可以使您的代码更易读；例如，当表达式紧凑且没有副作用（如赋值）时。
+- en: The Type Comparison Operator instanceof
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 类型比较运算符 instanceof
+- en: The `instanceof` operator compares an object to a specified type. You can use
+    it to test if an object is an instance of a class, an instance of a subclass,
+    or an instance of a class that implements a particular interface.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`instanceof`运算符将对象与指定类型进行比较。您可以使用它来测试对象是否是类的实例，子类的实例，或者实现特定接口的类的实例。'
+- en: The following program, [`InstanceofDemo`](examples/InstanceofDemo.java), defines
+    a parent class (named `Parent`), a simple interface (named `MyInterface`), and
+    a child class (named `Child`) that inherits from the parent and implements the
+    interface.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序，[`InstanceofDemo`](examples/InstanceofDemo.java)，定义了一个父类（名为`Parent`），一个简单接口（名为`MyInterface`），以及一个继承自父类并实现接口的子类（名为`Child`）。
+- en: '[PRE6]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'Output:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出：
+- en: '[PRE7]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: When using the `instanceof` operator, keep in mind that `null` is not an instance
+    of anything.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用`instanceof`运算符时，请记住`null`不是任何东西的实例。

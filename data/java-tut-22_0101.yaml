@@ -1,0 +1,241 @@
+- en: The Numbers Classes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 数字类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/data/numberclasses.html](https://docs.oracle.com/javase/tutorial/java/data/numberclasses.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/data/numberclasses.html](https://docs.oracle.com/javase/tutorial/java/data/numberclasses.html)
+- en: 'When working with numbers, most of the time you use the primitive types in
+    your code. For example:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在处理数字时，大多数情况下您会在代码中使用原始类型。例如：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: "There are, however, reasons to use objects in place of primitives, and the\
+    \ Java platform provides *wrapper* classes for each of the primitive data types.\
+    \ These classes \"wrap\" the primitive in an object. Often, the wrapping is done\
+    \ by the compiler\x97if you use a primitive where an object is expected, the compiler\
+    \ *boxes* the primitive in its wrapper class for you. Similarly, if you use a\
+    \ number object when a primitive is expected, the compiler *unboxes* the object\
+    \ for you. For more information, see [Autoboxing and Unboxing](autoboxing.html)"
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "然而，有理由使用对象代替原始类型，并且Java平台为每种原始数据类型提供了*包装*类。这些类将原始类型“包装”在对象中。通常，编译器会执行包装操作\x97\
+    如果您在期望对象的地方使用原始类型，编译器会为您将原始类型装箱到其包装类中。同样，如果您在期望原始类型的地方使用数字对象，编译器会为您拆箱对象。有关更多信息，请参阅[自动装箱和拆箱](autoboxing.html)"
+- en: 'All of the numeric wrapper classes are subclasses of the abstract class `Number`:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有数字包装类都是抽象类`Number`的子类：
+- en: '![The class hierarchy of Number.](../Images/a4e2b4a6c5d11518cd6e06d798958afa.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Number的类层次结构。](../Images/a4e2b4a6c5d11518cd6e06d798958afa.png)'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** There are four other subclasses of `Number` that are not discussed
+    here. `BigDecimal` and `BigInteger` are used for high-precision calculations.
+    `AtomicInteger` and `AtomicLong` are used for multi-threaded applications.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 还有四个`Number`的子类没有在此处讨论。`BigDecimal`和`BigInteger`用于高精度计算。`AtomicInteger`和`AtomicLong`用于多线程应用程序。'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'There are three reasons that you might use a `Number` object rather than a
+    primitive:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有三个原因可能会使用`Number`对象而不是原始类型：
+- en: As an argument of a method that expects an object (often used when manipulating
+    collections of numbers).
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 作为期望对象的方法的参数（在操作数字集合时经常使用）。
+- en: To use constants defined by the class, such as `MIN_VALUE` and `MAX_VALUE`,
+    that provide the upper and lower bounds of the data type.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 要使用类定义的常量，如`MIN_VALUE`和`MAX_VALUE`，提供数据类型的上限和下限。
+- en: To use class methods for converting values to and from other primitive types,
+    for converting to and from strings, and for converting between number systems
+    (decimal, octal, hexadecimal, binary).
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 要使用类方法将值转换为其他原始类型，将值转换为字符串，以及在不同数字系统之间进行转换（十进制、八进制、十六进制、二进制）。
+- en: The following table lists the instance methods that all the subclasses of the
+    `Number` class implement.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了所有`Number`类的子类实现的实例方法。
+- en: Methods Implemented by all Subclasses of Number
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有`Number`子类实现的方法
+- en: '| Method | Description |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `byte byteValue() short shortValue()'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `byte byteValue() short shortValue()'
+- en: int intValue()
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: int intValue()
+- en: long longValue()
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: long longValue()
+- en: float floatValue()
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: float floatValue()
+- en: double doubleValue()` | Converts the value of this `Number` object to the primitive
+    data type returned. |
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: double doubleValue()` | 将此`Number`对象的值转换为返回的原始数据类型。 |
+- en: '| `int compareTo(Byte anotherByte) int compareTo(Double anotherDouble)'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `int compareTo(Byte anotherByte) int compareTo(Double anotherDouble)'
+- en: int compareTo(Float anotherFloat)
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: int compareTo(Float anotherFloat)
+- en: int compareTo(Integer anotherInteger)
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: int compareTo(Integer anotherInteger)
+- en: int compareTo(Long anotherLong)
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: int compareTo(Long anotherLong)
+- en: int compareTo(Short anotherShort)` | Compares this `Number` object to the argument.
+    |
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: int compareTo(Short anotherShort)` | 将此`Number`对象与参数进行比较。 |
+- en: '| `boolean equals(Object obj)` | Determines whether this number object is equal
+    to the argument. The methods return `true` if the argument is not `null` and is
+    an object of the same type and with the same numeric value.'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `boolean equals(Object obj)` | 确定此数字对象是否等于参数。如果参数不为`null`且为相同类型且具有相同数值的对象，则方法返回`true`。'
+- en: There are some extra requirements for `Double` and `Float` objects that are
+    described in the Java API documentation. |
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于`Double`和`Float`对象，还有一些额外的要求，这些要求在Java API文档中有描述。 |
+- en: 'Each `Number` class contains other methods that are useful for converting numbers
+    to and from strings and for converting between number systems. The following table
+    lists these methods in the `Integer` class. Methods for the other `Number` subclasses
+    are similar:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个`Number`类包含其他方法，用于将数字转换为字符串，以及在不同数字系统之间进行转换。以下表格列出了`Integer`类中的这些方法。其他`Number`子类的方法类似：
+- en: Conversion Methods, `Integer` Class
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 转换方法，`Integer`类
+- en: '| Method | Description |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `static Integer decode(String s)` | Decodes a string into an integer. Can
+    accept string representations of decimal, octal, or hexadecimal numbers as input.
+    |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| `static Integer decode(String s)` | 将字符串解码为整数。可以接受十进制、八进制或十六进制数字的字符串表示作为输入。'
+- en: '| `static int parseInt(String s)` | Returns an integer (decimal only). |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| `static int parseInt(String s)` | 返回一个整数（仅限十进制）。'
+- en: '| `static int parseInt(String s, int radix)` | Returns an integer, given a
+    string representation of decimal, binary, octal, or hexadecimal (`radix` equals
+    10, 2, 8, or 16 respectively) numbers as input. |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| `static int parseInt(String s, int radix)` | 返回一个整数，给定十进制、二进制、八进制或十六进制（`radix`分别等于10、2、8或16）数字的字符串表示作为输入。'
+- en: '| `String toString()` | Returns a `String` object representing the value of
+    this `Integer`. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| `String toString()` | 返回表示此`Integer`值的`String`对象。'
+- en: '| `static String toString(int i)` | Returns a `String` object representing
+    the specified integer. |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| `static String toString(int i)` | 返回表示指定整数的`String`对象。'
+- en: '| `static Integer valueOf(int i)` | Returns an `Integer` object holding the
+    value of the specified primitive. |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| `static Integer valueOf(int i)` | 返回一个包含指定原始值的`Integer`对象。'
+- en: '| `static Integer valueOf(String s)` | Returns an `Integer` object holding
+    the value of the specified string representation. |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| `static Integer valueOf(String s)` | 返回一个`Integer`对象，其中包含指定字符串表示形式的值。'
+- en: '| `static Integer valueOf(String s, int radix)` | Returns an `Integer` object
+    holding the integer value of the specified string representation, parsed with
+    the value of radix. For example, if s = "333" and radix = 8, the method returns
+    the base-ten integer equivalent of the octal number 333. |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| `static Integer valueOf(String s, int radix)` | 返回一个`Integer`对象，其中包含指定字符串表示形式的整数值，使用基数进行解析。例如，如果`s
+    = "333"`且`radix = 8`，则该方法返回八进制数333的十进制整数等价值。'

@@ -1,0 +1,45 @@
+- en: Deleting a File or Directory
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 删除文件或目录
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/delete.html](https://docs.oracle.com/javase/tutorial/essential/io/delete.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/delete.html](https://docs.oracle.com/javase/tutorial/essential/io/delete.html)
+- en: You can delete files, directories or links. With symbolic links, the link is
+    deleted and not the target of the link. With directories, the directory must be
+    empty, or the deletion fails.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以删除文件、目录或链接。对于符号链接，删除的是链接本身而不是链接的目标。对于目录，目录必须为空，否则删除操作将失败。
+- en: The `Files` class provides two deletion methods.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Files`类提供了两种删除方法。'
+- en: 'The [`delete(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#delete-java.nio.file.Path-)
+    method deletes the file or throws an exception if the deletion fails. For example,
+    if the file does not exist a `NoSuchFileException` is thrown. You can catch the
+    exception to determine why the delete failed as follows:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`delete(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#delete-java.nio.file.Path-)方法会删除文件，如果删除失败则会抛出异常。例如，如果文件不存在，则会抛出`NoSuchFileException`异常。您可以捕获异常以确定删除失败的原因，如下所示：'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The [`deleteIfExists(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#deleteIfExists-java.nio.file.Path-)
+    method also deletes the file, but if the file does not exist, no exception is
+    thrown. Failing silently is useful when you have multiple threads deleting files
+    and you don't want to throw an exception just because one thread did so first.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`deleteIfExists(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#deleteIfExists-java.nio.file.Path-)方法也会删除文件，但如果文件不存在，则不会抛出异常。静默失败在您有多个线程删除文件时很有用，您不希望仅因为一个线程先执行删除操作就抛出异常。'

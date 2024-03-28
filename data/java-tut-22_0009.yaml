@@ -1,0 +1,429 @@
+- en: '"Hello World!" for Solaris OS, Linux, and Mac OS X'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: “Hello World!”适用于Solaris OS、Linux和Mac OS X
+- en: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/cupojava/unix.html](https://docs.oracle.com/javase/tutorial/getStarted/cupojava/unix.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/cupojava/unix.html](https://docs.oracle.com/javase/tutorial/getStarted/cupojava/unix.html)
+- en: It's time to write your first application! These detailed instructions are for
+    users of Solaris OS, Linux, and Mac OS X. Instructions for other platforms are
+    in ["Hello World!" for Microsoft Windows](win32.html) and ["Hello World!" for
+    the NetBeans IDE](netbeans.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是时候写你的第一个应用程序了！这些详细说明适用于Solaris OS、Linux和Mac OS X的用户。其他平台的说明在["Hello World!"
+    for Microsoft Windows](win32.html)和["Hello World!" for the NetBeans IDE](netbeans.html)中。
+- en: If you encounter problems with the instructions on this page, consult the [Common
+    Problems (and Their Solutions)](../problems/index.html).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你在本页的说明中遇到问题，请查阅[常见问题（及其解决方案）](../problems/index.html)。
+- en: '[A Checklist](#unix-1)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[一个清单](#unix-1)'
+- en: '[Creating Your First Application](#unix-2)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[���建你的第一个应用程序](#unix-2)'
+- en: '[Create a Source File](#unix-2a)'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建一个源文件](#unix-2a)'
+- en: '[Compile the Source File into a `.class` File](#unix-2b)'
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将源文件编译为`.class`文件](#unix-2b)'
+- en: '[Run the Program](#unix-2c)'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[运行程序](#unix-2c)'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: A Checklist  ![a checkmark](../Images/ae285209df9792caff36016a53cd305f.png)
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个清单  ![一个勾选标记](../Images/ae285209df9792caff36016a53cd305f.png)
+- en: 'To write your first program, you''ll need:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编写你的第一个程序，你需要：
+- en: The Java SE Development Kit 8 (JDK 8)
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: Java SE开发工具包8（JDK 8）
+- en: You can [download the version for Solaris OS, Linux, or Mac OS X](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
+    (Make sure you download the **JDK**, *not* the JRE.) Consult the [installation
+    instructions](https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html).
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 你可以[下载适用于Solaris OS、Linux或Mac OS X的版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)。（确保你下载的是**JDK**，*而不是*JRE。）请查阅[安装说明](https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html)。
+- en: A text editor
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 一个文本编辑器
+- en: In this example, we'll use Pico, an editor available for many UNIX-based platforms.
+    You can easily adapt these instructions if you use a different text editor, such
+    as `vi` or `emacs`.
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在这个例子中，我们将使用Pico，一个适用于许多基于UNIX的平台的编辑器。如果你使用不同的文本编辑器，如`vi`或`emacs`，你可以轻松地调整这些说明。
+- en: These two items are all you'll need to write your first application.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这两个项目是你写第一个应用程序所需的全部。
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Creating Your First Application
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建你的第一个应用程序
+- en: 'Your first application, `HelloWorldApp`, will simply display the greeting "Hello
+    world!". To create this program, you will:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你的第一个应用程序，`HelloWorldApp`，将简单地显示问候语“Hello world!”。要创建这个程序，你需要：
+- en: Create a source file
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建一个源文件
+- en: A source file contains code, written in the Java programming language, that
+    you and other programmers can understand. You can use any text editor to create
+    and edit source files.
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 一个源文件包含用Java编程语言编写的代码，你和其他程序员都可以理解。你可以使用任何文本编辑器来创建和编辑源文件。
+- en: Compile the source file into a .class file
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将源文件编译为.class文件
+- en: The Java programming language *compiler* (`javac`) takes your source file and
+    translates its text into instructions that the Java virtual machine can understand.
+    The instructions contained within this `.class` file are known as *bytecodes*.
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: Java编程语言的*编译器*(`javac`)会获取你的源文件并将其文本转换为Java虚拟机可以理解的指令。这个`.class`文件中包含的指令被称为*字节码*。
+- en: Run the program
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 运行程序
+- en: The Java application *launcher tool* (`java`) uses the Java virtual machine
+    to run your application.
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: Java应用程序*启动器工具*(`java`)使用Java虚拟机来运行你的应用程序。
+- en: Create a Source File
+  id: totrans-26
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个源文件
+- en: 'To create a source file, you have two options:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建一个源文件，你有两个选项：
+- en: You can save the file `[`HelloWorldApp.java`](../application/examples/HelloWorldApp.java)`
+    on your computer and avoid a lot of typing. Then, you can go straight to [Compile
+    the Source File](#unix-2b).
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以将文件[`HelloWorldApp.java`](../application/examples/HelloWorldApp.java)保存在你的计算机上，避免大量输入。然后，你可以直接转到[编译源文件](#unix-2b)。
+- en: Or, you can use the following (longer) instructions.
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 或者，你可以使用以下（更长的）说明。
+- en: First, open a shell, or "terminal," window.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，打开一个shell或“终端”窗口。
+- en: '![A new terminal window.](../Images/a242c6ca1fa00c9cb62f5e5305d39bb2.png)'
+  id: totrans-31
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个新的终端窗口。](../Images/a242c6ca1fa00c9cb62f5e5305d39bb2.png)'
+- en: A new terminal window.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个新的终端窗口。
+- en: When you first bring up the prompt, your *current directory* will usually be
+    your *home directory*. You can change your current directory to your home directory
+    at any time by typing `cd` at the prompt and then pressing **Return**.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你首次打开提示符时，你的*当前目录*通常是你的*主目录*。你可以随时通过在提示符中输入`cd`然后按**Return**来将当前目录更改为主目录。
+- en: 'The source files you create should be kept in a separate directory. You can
+    create a directory by using the command `mkdir`. For example, to create the directory
+    `examples/java` in the `/tmp` directory, use the following commands:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您创建的源文件应保存在单独的目录中。您可以使用命令`mkdir`创建目录。例如，要在`/tmp`目录中创建`examples/java`目录，请使用以下命令：
+- en: '[PRE0]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To change your current directory to this new directory, you then enter:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将当前目录更改为此新目录，请输入：
+- en: '[PRE1]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Now you can start creating your source file.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您可以开始创建源文件了。
+- en: 'Start the Pico editor by typing `pico` at the prompt and pressing **Return**.
+    If the system responds with the message `pico: command not found`, then Pico is
+    most likely unavailable. Consult your system administrator for more information,
+    or use another editor.'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '输入`pico`并按**Return**键启动Pico编辑器。如果系统显示`pico: command not found`消息，则Pico很可能不可用。请咨询系统管理员获取更多信息，或使用其他编辑器。'
+- en: When you start Pico, it'll display a new, blank *buffer*. This is the area in
+    which you will type your code.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 启动Pico时，它将显示一个新的空*缓冲区*。这是您将输入代码的区域。
+- en: 'Type the following code into the new buffer:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将以下代码输入到新缓冲区中：
+- en: '[PRE2]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '**Be Careful When You Type** ![uppercase letter A](../Images/fe2a9efa9303e3a11008a371960c6958.png)  
+    ![lowercase letter A](../Images/35dfe1acb05615f4c50f882eefb02a10.png)'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**输入时请小心** ![大写字母A](../Images/fe2a9efa9303e3a11008a371960c6958.png)   ![小写字母a](../Images/35dfe1acb05615f4c50f882eefb02a10.png)'
+- en: '* * *'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Type all code, commands, and file names exactly as shown. Both the
+    compiler (`javac`) and launcher (`java`) are *case-sensitive*, so you must capitalize
+    consistently.'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**请按照所示的方式输入所有代码、命令和文件名。编译器（`javac`）和启动器（`java`）都*区分大小写*，因此您必须保持一致。'
+- en: '`HelloWorldApp` is *not* the same as `helloworldapp`.'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`HelloWorldApp`与`helloworldapp`*不*相同。'
+- en: '* * *'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Save the code in a file with the name `HelloWorldApp.java`. In the Pico editor,
+    you do this by typing **Ctrl-O** and then, at the bottom where you see the prompt
+    `File Name to write:`, entering the directory in which you wish to create the
+    file, followed by `HelloWorldApp.java`. For example, if you wish to save `HelloWorldApp.java`
+    in the directory `/tmp/examples/java`, then you type `/tmp/examples/java/HelloWorldApp.java`
+    and press **Return**.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将代码保存到名为`HelloWorldApp.java`的文件中。在Pico编辑器中，通过输入**Ctrl-O**，然后在底部看到提示`File Name
+    to write:`处，输入您希望创建文件的目录，然后输入`HelloWorldApp.java`。例如，如果您希望在目录`/tmp/examples/java`中保存`HelloWorldApp.java`，则输入`/tmp/examples/java/HelloWorldApp.java`并按**Return**键。
+- en: You can type **Ctrl-X** to exit Pico.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以输入**Ctrl-X**退出Pico。
+- en: Compile the Source File into a `.class` File
+  id: totrans-50
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 编译源文件为`.class`文件
+- en: 'Bring up another shell window. To compile your source file, change your current
+    directory to the directory where your file is located. For example, if your source
+    directory is `/tmp/examples/java`, type the following command at the prompt and
+    press **Return**:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 打开另一个shell窗口。要编译源文件，请将当前目录更改为文件所在的目录。例如，如果您的源目录是`/tmp/examples/java`，请在提示符处输入以下命令并按**Return**键：
+- en: '[PRE3]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: If you enter `pwd` at the prompt, you should see the current directory, which
+    in this example has been changed to `/tmp/examples/java`.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在提示符处输入`pwd`，您应该看到当前目录，本示例中已更改为`/tmp/examples/java`。
+- en: If you enter `ls` at the prompt, you should see your file.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在提示符处输入`ls`，您应该看到您的文件。
+- en: '![Results of the ls command, showing the .java source file.](../Images/9ad24a8cadc2445bf97fcc69ff20eb68.png)'
+  id: totrans-55
+  prefs: []
+  type: TYPE_IMG
+  zh: '![`ls`命令的结果，显示`.java`源文件。](../Images/9ad24a8cadc2445bf97fcc69ff20eb68.png)'
+- en: Results of the `ls` command, showing the `.java` source file.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ls`命令的结果，显示`.java`源文件。'
+- en: Now are ready to compile the source file. At the prompt, type the following
+    command and press **Return**.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在可以编译源文件了。在提示符处，输入以下命令并按**Return**键。
+- en: '[PRE4]'
+  id: totrans-58
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The compiler has generated a bytecode file, `HelloWorldApp.class`. At the prompt,
+    type `ls` to see the new file that was generated: the following figure.'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编译器已生成一个字节码文件`HelloWorldApp.class`。在提示符处，输入`ls`查看生成的新文件：如下图所示。
+- en: '![Results of the ls command, showing the generated .class file.](../Images/f6f5b3afe2ef1c6d351726a1fddaf0d3.png)'
+  id: totrans-60
+  prefs: []
+  type: TYPE_IMG
+  zh: '![`ls`命令的结果，显示生成的`.class`文件。](../Images/f6f5b3afe2ef1c6d351726a1fddaf0d3.png)'
+- en: Results of the `ls` command, showing the generated `.class` file.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ls`命令的结果，显示生成的`.class`文件。'
+- en: Now that you have a `.class` file, you can run your program.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您有了一个`.class`文件，可以运行您的程序了。
+- en: If you encounter problems with the instructions in this step, consult the [Common
+    Problems (and Their Solutions)](../problems/index.html).
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您在此步骤中遇到问题，请参考[常见问题（及其解决方案）](../problems/index.html)。
+- en: Run the Program
+  id: totrans-64
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行程序
+- en: 'In the same directory, enter at the prompt:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在相同的目录中，在提示符下输入：
+- en: '[PRE5]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The next figure shows what you should now see.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的图示展示了你现在应该看到的内容。
+- en: '![The output prints Hello World! to the screen.](../Images/3ee6cccca260b595ac232f1ed4528d8f.png)'
+  id: totrans-68
+  prefs: []
+  type: TYPE_IMG
+  zh: '![输出将Hello World!打印到屏幕上。](../Images/3ee6cccca260b595ac232f1ed4528d8f.png)'
+- en: The output prints "Hello World!" to the screen.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出将"Hello World!"打印到屏幕上。
+- en: Congratulations! Your program works!
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 恭喜！你的程序正常运行！
+- en: If you encounter problems with the instructions in this step, consult the [Common
+    Problems (and Their Solutions)](../problems/index.html).
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在这一步的说明中遇到问题，请参考[常见问题（及其解决方案）](../problems/index.html)。

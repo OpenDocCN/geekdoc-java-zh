@@ -1,0 +1,58 @@
+- en: Retrieving Network Interfaces
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 检索网络接口
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/nifs/retrieving.html](https://docs.oracle.com/javase/tutorial/networking/nifs/retrieving.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/nifs/retrieving.html](https://docs.oracle.com/javase/tutorial/networking/nifs/retrieving.html)
+- en: 'The `NetworkInterface` class has no public constructor. Therefore, you cannot
+    just create a new instance of this class with the `new` operator. Instead, the
+    following static methods are available so that you can retrieve the interface
+    details from the system: `getByInetAddress()`, `getByName()`, and `getNetworkInterfaces()`.
+    The first two methods are used when you already know the IP address or the name
+    of the particular interface. The third method, `getNetworkInterfaces()` returns
+    the complete list of interfaces on the machine.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`NetworkInterface` 类没有公共构造函数。因此，您不能只使用`new`运算符创建此类的新实例。相反，提供了以下静态方法，以便您可以从系统中检索接口详细信息：`getByInetAddress()`、`getByName()`
+    和 `getNetworkInterfaces()`。前两种方法用于当您已经知道特定接口的IP地址或名称时。第三种方法，`getNetworkInterfaces()`
+    返回计算机上所有接口的完整列表。'
+- en: Network interfaces can be hierarchically organized. The `NetworkInterface` class
+    includes two methods, `getParent()` and `getSubInterfaces()`, that are pertinent
+    to a network interface hierarchy. The `getParent()` method returns the parent
+    `NetworkInterface` of an interface. If a network interface is a subinterface,
+    `getParent()` returns a non-null value. The `getSubInterfaces()` method returns
+    all the subinterfaces of a network interface.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 网络接口可以按层次结构组织。`NetworkInterface` 类包括两个方法，`getParent()` 和 `getSubInterfaces()`，这些方法与网络接口层次结构相关。`getParent()`
+    方法返回接口的父`NetworkInterface`。如果网络接口是子接口，则`getParent()` 返回一个非空值。`getSubInterfaces()`
+    方法返回网络接口的所有子接口。
+- en: The following example program lists the name of all the network interfaces and
+    subinterfaces (if any exist) on a machine.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例程序列出了计算机上所有网络接口和子接口（如果存在）的名称。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following is sample output from the example program:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是示例程序的样本输出：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

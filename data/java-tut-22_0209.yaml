@@ -1,0 +1,70 @@
+- en: Atomic Access
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 原子访问
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/atomic.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/atomic.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/atomic.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/atomic.html)
+- en: 'In programming, an *atomic* action is one that effectively happens all at once.
+    An atomic action cannot stop in the middle: it either happens completely, or it
+    doesn''t happen at all. No side effects of an atomic action are visible until
+    the action is complete.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在编程中，*原子*操作是一种有效地一次性完成的操作。原子操作不能在中途停止：它要么完全发生，要么根本不发生。在原子操作完成之前，不会看到任何副作用。
+- en: 'We have already seen that an increment expression, such as `c++`, does not
+    describe an atomic action. Even very simple expressions can define complex actions
+    that can decompose into other actions. However, there are actions you can specify
+    that are atomic:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们已经看到增量表达式，比如`c++`，并不描述原子操作。即使是非常简单的表达式也可以定义可以分解为其他操作的复杂操作。然而，有一些操作是可以指定为原子操作的：
+- en: Reads and writes are atomic for reference variables and for most primitive variables
+    (all types except `long` and `double`).
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于引用变量和大多数基本变量（除了`long`和`double`之外的所有类型），读取和写入是原子的。
+- en: Reads and writes are atomic for *all* variables declared `volatile` (*including*
+    `long` and `double` variables).
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于所有声明为`volatile`的变量，读取和写入都是原子的（包括`long`和`double`变量）。
+- en: Atomic actions cannot be interleaved, so they can be used without fear of thread
+    interference. However, this does not eliminate all need to synchronize atomic
+    actions, because memory consistency errors are still possible. Using `volatile`
+    variables reduces the risk of memory consistency errors, because any write to
+    a `volatile` variable establishes a happens-before relationship with subsequent
+    reads of that same variable. This means that changes to a `volatile` variable
+    are always visible to other threads. What's more, it also means that when a thread
+    reads a `volatile` variable, it sees not just the latest change to the `volatile`,
+    but also the side effects of the code that led up the change.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 原子操作不能交错，因此可以在不担心线程干扰的情况下使用它们。然而，这并不消除同步原子操作的所有需求，因为内存一致性错误仍然可能发生。使用`volatile`变量可以减少内存一致性错误的风险，因为对`volatile`变量的任何写入都会与随后对该变量的读取建立happens-before关系。这意味着对`volatile`变量的更改始终对其他线程可见。更重要的是，这也意味着当线程读取`volatile`变量时，它不仅看到`volatile`的最新更改，还看到导致更改的代码的副作用。
+- en: Using simple atomic variable access is more efficient than accessing these variables
+    through synchronized code, but requires more care by the programmer to avoid memory
+    consistency errors. Whether the extra effort is worthwhile depends on the size
+    and complexity of the application.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用简单的原子变量访问比通过同步代码访问这些变量更有效，但需要程序员更加小心，以避免内存一致性错误。额外的努力是否值得取决于应用程序的大小和复杂性。
+- en: Some of the classes in the [`java.util.concurrent`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html)
+    package provide atomic methods that do not rely on synchronization. We'll discuss
+    them in the section on [High Level Concurrency Objects](highlevel.html).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`java.util.concurrent`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html)包中的一些类提供了不依赖于同步的原子方法。我们将在[高级并发对象](highlevel.html)部分讨论它们。'

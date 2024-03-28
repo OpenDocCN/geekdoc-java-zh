@@ -1,0 +1,243 @@
+- en: Using File Associations
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用文件关联
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/fileassociation.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/fileassociation.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/fileassociation.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/fileassociation.html)
+- en: One of the advantages of providing a self-contained application to your users
+    is the ability to set up file associations. Specific types of files can be associated
+    with your application based on MIME type or file extension so that your application
+    is used to open an associated file. For example, if your application edits text
+    files, you can set up a file association that runs your application when a user
+    double-clicks on a file with the extension `.txt`.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为用户提供自包含应用程序的一个优势是能够设置文件关联。 可以基于MIME类型或文件扩展名将特定类型的文件与您的应用程序关联起来，以便您的应用程序用于打开关联的文件。
+    例如，如果您的应用程序编辑文本文件，则可以设置一个文件关联，当用户双击扩展名为`.txt`的文件时运行您的应用程序。
+- en: The File Association Demo reads JavaScript and Groovy code. Using both MIME
+    types and file extensions, the application is associated with JavaScript and Groovy
+    files.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: File Association Demo读取JavaScript和Groovy代码。 使用MIME类型和文件扩展名，应用程序与JavaScript和Groovy文件关联。
+- en: You can download the source files for the File Association Demo from [Self-Contained
+    Application Examples](../selfContainedApps/examplesIndex.html).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以从[Self-Contained Application Examples](../selfContainedApps/examplesIndex.html)下载File
+    Association Demo的源文件。
+- en: Setting Up File Associations
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置文件关联
+- en: The Ant tasks for generating the self-contained application bundles are in the
+    `build.xml` file for the File Association Demo. The `<fx:association>` Ant element
+    is used to associate file extensions or MIME types with your application. Linux
+    bundlers require the MIME type, Windows bundlers require the file extension, and
+    OS X bundlers require at least one of the properties. It is a good practice to
+    use both properties with a one-to-one mapping between the MIME type and file extension,
+    which enables you to use the same build file on multiple platforms. See [<fx:association>](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_task_reference.html#JSDPG997)
+    for more information about this element.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于生成自包含应用程序捆绑包的Ant任务位于File Association Demo的`build.xml`文件中。 `<fx:association>`
+    Ant元素用于将文件扩展名或MIME类型与您的应用程序关联起来。 Linux捆绑程序需要MIME类型，Windows捆绑程序需要文件扩展名，OS X捆绑程序至少需要其中一个属性。
+    最佳实践是同时使用MIME类型和文件扩展名，使MIME类型和文件扩展名之间实现一对一映射，这样您可以在多个平台上使用相同的构建文件。 有关此元素的更多信息，请参见[<fx:association>](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_task_reference.html#JSDPG997)。
+- en: The following code shows what needs to be included in the `fx:deploy` element
+    to associate the application with the extensions `.js` and `.groovy` and the MIME
+    types `text/javascript` and `text/x-groovy`.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码显示了在`fx:deploy`元素中需要包含的内容，以将应用程序与扩展名`.js`和`.groovy`以及MIME类型`text/javascript`和`text/x-groovy`关联起来。
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If a bundler does not support file associations, the associations are ignored.
+    As of the 8u40 release of the JDK, the Windows EXE and MSI bundlers, Linux DEB
+    and RPM bundlers, and the Mac .app bundler support file associations. The OS X
+    PKG and DMG bundlers support file associations through their use of the Mac .app
+    bundler.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果捆绑程序不支持文件关联，则将忽略关联。 截至JDK的8u40版本，Windows EXE和MSI捆绑程序，Linux DEB和RPM捆绑程序以及Mac
+    .app捆绑程序支持文件关联。 OS X PKG和DMG捆绑程序通过使用Mac .app捆绑程序支持文件关联。
+- en: See [`build.xml`](examples/packager_FileAssociations/build.xml) for the complete
+    build code.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请查看[`build.xml`](examples/packager_FileAssociations/build.xml)以获取完整的构建代码。
+- en: To generate the installable bundles for the File Association Demo, see the "Generating
+    the Bundles" section in [Converting an Existing Application](../selfContainedApps/converting.html).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要生成File Association Demo的可安装捆绑包，请参见[Converting an Existing Application](../selfContainedApps/converting.html)中的“生成捆绑包”部分。
+- en: Launching from Associated Files
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 从关联文件启动
+- en: File associations are set up by the installer when the self-contained application
+    bundle is installed on a user's system. After the application is installed, opening
+    a file that is associated with your application causes your application to be
+    started. The actions taken to launch your application depend on the platform on
+    which it is running.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 安装程序在将自包含应用程序捆绑包安装到用户系统时设置文件关联。 安装应用程序后，打开与您的应用程序关联的文件会导致启动您的应用程序。 启动应用程序所采取的操作取决于其运行的平台。
+- en: Launching on Linux and Windows
+  id: totrans-14
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 在Linux和Windows上启动
+- en: On Linux and Windows, when an application is launched based on a file association,
+    the files being opened are passed as arguments to the main class, which overrides
+    the default argument for the class. For the File Associations Demo, the arguments
+    are passed to the `loadscript` method after an instance of the application is
+    started. A different instance of the application is started for each file opened.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 Linux 和 Windows 上，当基于文件关联启动应用程序时，被打开的文件作为参数传递给主类，该主类覆盖了类的默认参数。对于文件关联演示，参数在启动应用程序的实例后传递给`loadscript`方法。每打开一个文件，都会启动一个不同的应用程序实例。
+- en: See [`ScriptRunnerApplication.java`](examples/packager_FileAssociations/src/sample/fa/ScriptRunnerApplication.java)
+    for the Linux and Windows version of the code.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请查看[`ScriptRunnerApplication.java`](examples/packager_FileAssociations/src/sample/fa/ScriptRunnerApplication.java)以获取
+    Linux 和 Windows 版本的代码。
+- en: Launching on OS X
+  id: totrans-17
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 在 OS X 上启动
+- en: On OS X, only a single instance of an application is run. When an associated
+    file is opened, an event is sent to the application. The application must have
+    an event listener registered to handle the event.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 OS X 上，只运行一个应用程序实例。当打开关联文件时，会向应用程序发送一个事件。应用程序必须注册一个事件监听器来处理该事件。
+- en: The File Association Demo for OS X has a subclass with a different main method
+    than the version for Linux and Windows. This main method handles the default argument
+    in the same way as the main method for the Linux and Windows version, and then
+    registers a listener with OS X for `FileOpenHandler`. The event method for this
+    listener is called when an associated file is opened, and the file name is extracted
+    from the `getFiles` method of the `OpenFilesEvent` object.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: OS X 的文件关联演示有一个子类，其主方法与 Linux 和 Windows 版本不同。该主方法处理默认参数的方式与 Linux 和 Windows
+    版本的主方法相同，然后向 OS X 注册一个监听器以处理`FileOpenHandler`。当打开关联文件时，此监听器的事件方法被调用，并且文件名从`OpenFilesEvent`对象的`getFiles`方法中提取。
+- en: See [`ScriptRunnerApplicationMac.java`](examples/packager_FileAssociations/src/sample/fa/ScriptRunnerApplicationMac.java)
+    for the OS X version of the code.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请查看[`ScriptRunnerApplicationMac.java`](examples/packager_FileAssociations/src/sample/fa/ScriptRunnerApplicationMac.java)以获取
+    OS X 版本的代码。
+- en: Building the OS X version of the File Association Demo requires access to the
+    OS X-specific classes that come with the Oracle JDK. Most `com.apple.eawt` classes
+    are not included in the symbols file that the `javac` compiler uses. To tell the
+    compiler to ignore the symbols file, the `-XDignore.symbol.file=true` argument
+    is passed to the `javac` compiler in the `-pre-init` Ant task in the build file.
+    See [`build.xml`](examples/packager_FileAssociations/build.xml).
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 构建 OS X 版本的文件关联演示需要访问随 Oracle JDK 提供的 OS X 特定类。大多数`com.apple.eawt`类不包含在`javac`编译器使用的符号文件中。为了告诉编译器忽略符号文件，在构建文件中的`-pre-init`
+    Ant 任务中向`javac`编译器传递`-XDignore.symbol.file=true`参数。请参见[`build.xml`](examples/packager_FileAssociations/build.xml)。
+- en: More About the File Association Demo
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 关于文件关联演示的更多信息
+- en: The project for the File Association Demo contains the Java source files for
+    the application in the `/src/sample/fa` directory. Custom icons are provided in
+    the `/src/package/`platform`` directory. Sample files to be packaged with the
+    application are in the `/src` directory.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件关联演示项目包含了应用程序的 Java 源文件，位于`/src/sample/fa`目录中。自定义图标位于`/src/package/`platform``目录中。要与应用程序打包的示例文件位于`/src`目录中。
+- en: To handle Groovy code, the File Association Demo requires the Groovy library.
+    The build process downloads the Groovy library to the `/lib` directory. See [Adding
+    an External Library](../selfContainedApps/addlibrary.html) for information.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了处理 Groovy 代码，文件关联演示需要 Groovy 库。构建过程会将 Groovy 库下载到`/lib`目录。有关信息，请参见[添加外部库](../selfContainedApps/addlibrary.html)。
+- en: After the JAR file is generated, the build process copies the `/src` and `/lib`
+    directories to the `/dist` directory. The `/dist` directory then contains all
+    of the files for your application.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAR 文件生成后，构建过程将`/src`和`/lib`目录复制到`/dist`目录。然后，`/dist`目录中包含了应用程序的所有文件。
+- en: The File Association Demo takes a file name as an argument. If the application
+    is started by opening an associated file, the name of the associated file is passed
+    in. If the application is started directly, the sample file `sample.js`, which
+    is bundled with the application, is passed in. See [Providing a Default Argument](../selfContainedApps/defaultarg.html)
+    for information.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件关联演示接受文件名作为参数。如果应用程序是通过打开关联文件启动的，那么关联文件的名称将被传递进来。如果应用程序是直接启动的，则会传递应用程序捆绑的示例文件
+    `sample.js`。请参阅[提供默认参数](../selfContainedApps/defaultarg.html)以获取更多信息。
+- en: Admin privileges are required to set up file associations. By default the EXE
+    installer for Windows does not request admin privileges. To force a request for
+    admin privileges for the File Association Demo, the bundle argument `win.exe.systemWide`
+    is set to `true`. This setting indicates that a system-wide installation is performed,
+    which requires admin privileges.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 需要管理员权限才能设置文件关联。默认情况下，Windows 的 EXE 安装程序不会请求管理员权限。为了强制请求文件关联演示的管理员权限，捆绑参数 `win.exe.systemWide`
+    被设置为 `true`。这个设置表示执行系统范围的安装，需要管理员权限。
+- en: The File Association Demo runs on Linux, OS X, and Windows. The demo is set
+    up to use a single build file that contains the information for all platforms.
+    See [Using a Common Build File for All Platforms](../selfContainedApps/commonbuild.html)
+    for information.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件关联演示在 Linux、OS X 和 Windows 上运行。演示设置为使用一个包含所有平台信息的单个构建文件。请参阅[为所有平台使用通用构建文件](../selfContainedApps/commonbuild.html)以获取更多信息。
+- en: Additional Resources
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 附加资源
+- en: For more information about file associations, see [Associating Files with a
+    Self-Contained Application](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#JSDPG996).
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 欲了解更多关于文件关联的信息，请参阅[将文件与独立应用程序关联](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#JSDPG996)。
+- en: For more information about JavaFX Ant arguments, see [JavaFX Ant Task Reference](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_task_reference.html).
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 欲了解关于 JavaFX Ant 参数的更多信息，请参阅[JavaFX Ant 任务参考](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_task_reference.html)。

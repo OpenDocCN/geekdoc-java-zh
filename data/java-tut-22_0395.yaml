@@ -1,0 +1,530 @@
+- en: How to Use Text Fields
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用文本字段
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html](https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html](https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html)
+- en: A text field is a basic text control that enables the user to type a small amount
+    of text. When the user indicates that text entry is complete (usually by pressing
+    Enter), the text field fires an [action event](../events/actionlistener.html).
+    If you need to obtain more than one line of input from the user, use a [text area](textarea.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文本字段是一种基本的文本控件，允许用户输入少量文本。当用户指示输入文本完成（通常通过按Enter键），文本字段会触发一个[action event](../events/actionlistener.html)。如果您需要从用户获取多行输入，请使用[文本区域](textarea.html)。
+- en: The Swing API provides several classes for components that are either varieties
+    of text fields or that include text fields.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing API提供了几个类，用于包含文本字段的各种文本字段或包含文本字段的组件。
+- en: '| [`JTextField`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html)
+    | What this section covers: basic text fields. |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`JTextField`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html)
+    | 本节内容涵盖：基本文本字段。'
+- en: '| `JFormattedTextField` | A `JTextField` subclass that allows you to specify
+    the legal set of characters that the user can enter. See [How to Use Formatted
+    Text Fields](formattedtextfield.html). |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| `JFormattedTextField` | 允许您指定用户可以输入的合法字符集的`JTextField`子类。参见[如何使用格式化文本字段](formattedtextfield.html)。'
+- en: '| `JPasswordField` | A `JTextField` subclass that does not show the characters
+    that the user types. See [How to Use Password Fields](passwordfield.html). |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| `JPasswordField` | 不显示用户输入的字符的`JTextField`子类。参见[如何使用密码字段](passwordfield.html)。'
+- en: '| `JComboBox` | Can be edited, and provides a menu of strings to choose from.
+    See [How to Use Combo Boxes](combobox.html). |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| `JComboBox` | 可编辑，并提供一个字符串菜单供选择。参见[如何使用组合框](combobox.html)。'
+- en: '| `JSpinner` | Combines a formatted text field with a couple of small buttons
+    that enables the user to choose the previous or next available value. See [How
+    to Use Spinners](spinner.html). |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| `JSpinner` | 将格式化文本字段与一对小按钮结合起来，使用户可以选择上一个或下一个可用值。参见[如何使用微调器](spinner.html)。'
+- en: The following example displays a basic text field and a text area. The text
+    field is editable. The text area is not editable. When the user presses Enter
+    in the text field, the program copies the text field's contents to the text area,
+    and then selects all the text in the text field.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例显示了一个基本文本字段和一个文本区域。文本字段可编辑，而文本区域不可编辑。当用户在文本字段中按Enter键时，程序将文本字段的内容复制到文本区域，并选择文本字段中的所有文本。
+- en: '![A snapshot of TextDemo](../Images/84de758975d07856819b79be8b3cec55.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TextDemo的快照](../Images/84de758975d07856819b79be8b3cec55.png)'
+- en: Click the Launch button to run TextDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TextDemo).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TextDemo（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TextDemo)。
+- en: '[![Launches the TextDemo application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextDemoProject/TextDemo.jnlp)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TextDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextDemoProject/TextDemo.jnlp)'
+- en: 'You can find the entire code for this program in [`TextDemo.java`](../examples/components/TextDemoProject/src/components/TextDemo.java).
+    The following code creates and sets up the text field:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在[`TextDemo.java`](../examples/components/TextDemoProject/src/components/TextDemo.java)中找到此程序的完整代码。以下代码创建并设置文本字段：
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The integer argument passed to the `JTextField` constructor, `20` in the example,
+    indicates the number of columns in the field. This number is used along with metrics
+    provided by the field's current font to calculate the field's preferred width.
+    It does not limit the number of characters the user can enter. To do that, you
+    can either use a [formatted text field](formattedtextfield.html) or a document
+    listener, as described in [Text Component Features](generaltext.html).
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传递给 `JTextField` 构造函数的整数参数，在示例中为 `20`，表示字段中的列数。此数字与字段当前字体提供的度量一起用于计算字段的首选宽度。它不限制用户可以输入的字符数。要实现这一点，你可以使用[格式化文本字段](formattedtextfield.html)或文档监听器，如[文本组件功能](generaltext.html)中所述。
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: We encourage you to specify the number of columns for each text field. If you
+    do not specify the number of columns or a preferred size, then the field's preferred
+    size changes whenever the text changes, which can result in unwanted layout updates.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们鼓励您为每个文本字段指定列数。如果不指定列数或首选大小，则字段的首选大小会随文本更改而更改，这可能导致不必要的布局更新。
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The next line of code registers a `TextDemo` object as an action listener for
+    the text field.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一行代码将一个 `TextDemo` 对象注册为文本字段的动作监听器。
+- en: '[PRE1]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The `actionPerformed` method handles action events from the text field:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`actionPerformed` 方法处理文本字段的动作事件：'
+- en: '[PRE2]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Notice the use of `JTextField`'s `getText` method to retrieve the text currently
+    contained by the text field. The text returned by this method does *not* include
+    a newline character for the Enter key that fired the action event.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意使用 `JTextField` 的 `getText` 方法来检索当前文本字段中包含的文本。此方法返回的文本不包括触发动作事件的 Enter 键的换行符。
+- en: You have seen how a basic text field can be used. Because the `JTextField` class
+    inherits from the `JTextComponent` class, text fields are very flexible and can
+    be customized almost any way you like. For example, you can add a document listener
+    or a document filter to be notified when the text changes, and in the filter case
+    you can modify the text field accordingly. Information on text components can
+    be found in [Text Component Features](generaltext.html). Before customizing a
+    `JTextField`, however, make sure that one of the other [components based on text
+    fields](#varieties) will not do the job for you.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你已经看到了如何使用基本文本字段。因为 `JTextField` 类继承自 `JTextComponent` 类，文本字段非常灵活，几乎可以按照你喜欢的任何方式进行自定义。例如，你可以添加文档监听器或文档过滤器以在文本更改时收到通知，并在过滤器情况下相应地修改文本字段。有关文本组件的信息可以在[文本组件功能](generaltext.html)中找到。但在自定义
+    `JTextField` 之前，请确保其他基于文本字段的[组件](#varieties)中的一个不适合你的需求。
+- en: Often text fields are paired with labels that describe the text fields. See
+    [Examples That Use Text Fields](#eg) for pointers on creating these pairs.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常文本字段与描述文本字段的标签配对使用。请参阅[使用文本字段的示例](#eg)以获取有关创建这些配对的指导。
+- en: 'Another Example: TextFieldDemo'
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 另一个示例：TextFieldDemo
+- en: The `TextFieldDemo` example introduces a text field and a text area. You can
+    find the entire code for this program in [`TextFieldDemo.java`](../examples/components/TextFieldDemoProject/src/components/TextFieldDemo.java).
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextFieldDemo` 示例介绍了一个文本字段和一个文本区域。你可以在[`TextFieldDemo.java`](../examples/components/TextFieldDemoProject/src/components/TextFieldDemo.java)中找到此程序的完整代码。'
+- en: As you type characters in the text field the program searches for the typed
+    text in the text area. If the entry is found it gets highlighted. If the program
+    fails to find the entry then the text field's background becomes pink. A status
+    bar below the text area displays a message whether text is found or not. The Escape
+    key is used to start a new search or to finish the current one. Here is a picture
+    of the `TextFieldDemo` application.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你在文本字段中输入字符时，程序会在文本区域中搜索输入的文本。如果找到该条目，则会进行高亮显示。如果程序未能找到该条目，则文本字段的背景变为粉色。文本区域下方的状态栏显示文本是否被找到。按下
+    Escape 键可开始新的搜索或完成当前搜索。这是 `TextFieldDemo` 应用程序的图片。
+- en: '![A snapshot of TextFieldDemo](../Images/5b2f00d4c132c76f83791b621fd4949d.png)'
+  id: totrans-30
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TextFieldDemo的快照](../Images/5b2f00d4c132c76f83791b621fd4949d.png)'
+- en: Click the Launch button ro run TextFieldDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TextFieldDemo).
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行
+    TextFieldDemo（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TextFieldDemo)。
+- en: '[![Launches the TextFieldDemo Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextFieldDemoProject/TextFieldDemo.jnlp)'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 TextFieldDemo 应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextFieldDemoProject/TextFieldDemo.jnlp)'
+- en: To highlight text, this example uses a highlighter and a painter. The code below
+    creates and sets up the highlighter and the painter for the text area.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了突出显示文本，此示例使用了一个高亮器和一个绘制器。下面的代码创建并设置了文本区域的高亮器和绘制器。
+- en: '[PRE3]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: This code adds a document listener to the text field's document.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该代码向文本字段的文档添加了一个文档监听器。
+- en: '[PRE4]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Document listener's `insertUpdate` and `removeUpdate` methods call the `search`
+    method, which not only performs a search in the text area but also handles highlighting.
+    The following code highlights the found text, sets the caret to the end of the
+    found match, sets the default background for the text field, and displays a message
+    in the status bar.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文档监听器的 `insertUpdate` 和 `removeUpdate` 方法调用 `search` 方法，该方法不仅在文本区域中执行搜索，还处理高亮显示。以下代码突出显示找到的文本，将插入符设置为找到的匹配项的末尾，为文本字段设置默认背景，并在状态栏中显示消息。
+- en: '[PRE5]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The status bar is a `JLabel` object. The code below shows how the `message`
+    method is implemented.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 状态栏是一个 `JLabel` 对象。下面的代码展示了 `message` 方法的实现方式。
+- en: '[PRE6]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: If there is no match in the text area, the following code changes the text field's
+    background to pink and displays a proper information message.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果文本区域中没有匹配项，以下代码将更改文本字段的背景颜色为粉红色，并显示适当的信息消息。
+- en: '[PRE7]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The `CancelAction` class is responsible for handling the Escape key as follows.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CancelAction` 类负责处理 Escape 键，如下所示。'
+- en: '[PRE8]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: The Text Field API
+  id: totrans-45
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文本字段 API
+- en: The following tables list the commonly used `JTextField` constructors and methods.
+    Other methods you are likely to call are defined in the `JTextComponent` class.
+    Refer to [The Text Component API](textapi.html).
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的 `JTextField` 构造函数和方法。您可能会调用的其他方法在 `JTextComponent` 类中定义。请参阅[The Text
+    Component API](textapi.html)。
+- en: You might also invoke methods on a text field inherited from the text field's
+    other ancestors, such as `setPreferredSize`, `setForeground`, `setBackground`,
+    `setFont`, and so on. See [The JComponent Class](jcomponent.html) for tables of
+    commonly used inherited methods.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以调用从文本字段的其他祖先继承的方法，例如 `setPreferredSize`、`setForeground`、`setBackground`、`setFont`
+    等。请参阅[The JComponent Class](jcomponent.html)以查看常用继承方法的表格。
+- en: 'The API for using text fields falls into these categories:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用文本字段的 API 分为以下几类：
+- en: '[Setting or Obtaining the Field''s Contents](#contents)'
+  id: totrans-49
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置或获取字段的内容](#contents)'
+- en: '[Fine Tuning the Field''s Appearance](#looks)'
+  id: totrans-50
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[微调字段的外观](#looks)'
+- en: '[Implementing the Field''s Functionality](#function)'
+  id: totrans-51
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[实现字段的功能](#function)'
+- en: Setting or Obtaining the Field's Contents
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置或获取字段的内容
+- en: '| Method or Constructor | Purpose |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法或构造函数 | 目的 |'
+- en: '| [JTextField()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#JTextField--)
+    [JTextField(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#JTextField-java.lang.String-)'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [JTextField()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#JTextField--)
+    [JTextField(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#JTextField-java.lang.String-)'
+- en: '[JTextField(String, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#JTextField-java.lang.String-int-)'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JTextField(String, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#JTextField-java.lang.String-int-)'
+- en: '[JTextField(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#JTextField-int-)
+    | Creates a text field. When present, the `int` argument specifies the desired
+    width in columns. The `String` argument contains the field''s initial text. |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JTextField(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#JTextField-int-)
+    | 创建一个文本字段。当存在时，`int` 参数指定了所需的列宽。`String` 参数包含字段的初始文本。 |'
+- en: '| [void setText(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setText-java.lang.String-)
+    [String getText()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getText--)'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setText(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setText-java.lang.String-)
+    [String getText()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getText--)
+    | 设置或获取文本字段显示的文本。 |'
+- en: '*(defined in `JTextComponent`)* | Sets or obtains the text displayed by the
+    text field. |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(定义在`JTextComponent`中)* | 设置或获取文本字段显示的文本。 |'
+- en: Fine Tuning the Field's Appearance
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调整字段外观
+- en: '| Method | Purpose |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setEditable(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setEditable-boolean-)
+    [boolean isEditable()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#isEditable--)'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setEditable(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setEditable-boolean-)
+    [boolean isEditable()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#isEditable-boolean-)
+    | 设置或指示用户是否可以编辑文本字段中的文本。 |'
+- en: '*(defined in `JTextComponent`)* | Sets or indicates whether the user can edit
+    the text in the text field. |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(定义在`JTextComponent`中)* | 设置或指示用户是否可以编辑文本字段中的文本。 |'
+- en: '| [void setColumns(int);](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#setColumns-int-)
+    [int getColumns()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#getColumns--)
+    | Sets or obtains the number of columns displayed by the text field. This is really
+    just a hint for computing the field''s preferred width. |'
+  id: totrans-63
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setColumns(int);](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#setColumns-int-)
+    [int getColumns()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#getColumns--)
+    | 设置或获取文本字段显示的列数。这实际上只是计算字段首选宽度的提示。 |'
+- en: '| [void setHorizontalAlignment(int);](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#setHorizontalAlignment-int-)
+    [int getHorizontalAlignment()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#getHorizontalAlignment--)
+    | Sets or obtains how the text is aligned horizontally within its area. You can
+    use `JTextField.LEADING`, `JTextField.CENTER`, and `JTextField.TRAILING` for arguments.
+    |'
+  id: totrans-64
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setHorizontalAlignment(int);](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#setHorizontalAlignment-int-)
+    [int getHorizontalAlignment()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#getHorizontalAlignment--)
+    | 设置或获取文本在其区域内水平对齐的方式。您可以使用`JTextField.LEADING`、`JTextField.CENTER`和`JTextField.TRAILING`作为参数。
+    |'
+- en: Implementing the Field's Functionality
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现字段功能
+- en: '| Method | Purpose |'
+  id: totrans-66
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void addActionListener(ActionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#addActionListener-java.awt.event.ActionListener-)
+    [void removeActionListener(ActionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#removeActionListener-java.awt.event.ActionListener-)
+    | Adds or removes an action listener. |'
+  id: totrans-67
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void addActionListener(ActionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#addActionListener-java.awt.event.ActionListener-)
+    [void removeActionListener(ActionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#removeActionListener-java.awt.event.ActionListener-)
+    | 添加或移除一个动作监听器。 |'
+- en: '| [void selectAll()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#selectAll--)
+    *(defined in `JTextComponent`)* | Selects all characters in the text field. |'
+  id: totrans-68
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void selectAll()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#selectAll--)
+    *(定义在`JTextComponent`中)* | 选择文本字段中的所有字符。 |'
+- en: Examples That Use Text Fields
+  id: totrans-69
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用文本字段的示例
+- en: This table shows a few of the examples that use text fields and points to where
+    those examples are described. For examples of code that are similar among all
+    varieties of text fields such as dealing with layout, look at the example lists
+    for related components such as [formatted text fields](formattedtextfield.html#eg)
+    and [spinners](spinner.html#eg).
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本表显示了一些使用文本字段的示例，并指向这些示例的描述位置。有关所有文本字段类型中类似的代码示例，例如处理布局，请查看相关组件的示例列表，如[格式化文本字段](formattedtextfield.html#eg)和[微调器](spinner.html#eg)。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [TextDemo](../examples/components/index.html#TextDemo) | This section | An
+    application that uses a basic text field with an action listener. |'
+  id: totrans-72
+  prefs: []
+  type: TYPE_TB
+  zh: '| [文本演示](../examples/components/index.html#TextDemo) | 本节 | 使用基本文本字段和动作监听器的应用程序。
+    |'
+- en: '| [TextFieldDemo](../examples/components/index.html#TextFieldDemo) | This section
+    | An application that uses a text field and a text area. A search is made in the
+    text area to find an entry from the text field. |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '| [文本字段演示](../examples/components/index.html#TextFieldDemo) | 本节 | 使用文本字段和文本区域的应用程序。在文本区域中搜索以从文本字段中找到条目。
+    |'
+- en: '| [DialogDemo](../examples/components/index.html#DialogDemo) | [How to Make
+    Dialogs](dialog.html) | `CustomDialog.java` includes a text field whose value
+    is checked. You can bring up the dialog by clicking the More Dialogs tab, selecting
+    the Input-validating dialog option, and then clicking the Show it! button. |'
+  id: totrans-74
+  prefs: []
+  type: TYPE_TB
+  zh: '| [对话框演示](../examples/components/index.html#DialogDemo) | [如何制作对话框](dialog.html)
+    | `CustomDialog.java` 包含一个检查数值的文本字段。您可以通过点击“更多对话框”选项卡，选择“输入验证对话框”选项，然后点击“显示！”按钮来弹出对话框。'
+- en: '| [TextSamplerDemo](../examples/components/index.html#TextSamplerDemo) | [Using
+    Text Components](text.html) | Lays out label-text field pairs using a `GridBagLayout`
+    and a convenience method:'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [文本示例演示](../examples/components/index.html#TextSamplerDemo) | [使用文本组件](text.html)
+    | 使用`GridBagLayout`和一个便利方法来布局标签-文本字段对：'
+- en: '[PRE9]'
+  id: totrans-76
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '|'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| [TextInputDemo](../examples/components/index.html#TextInputDemo) | [How to
+    Use Formatted Text Fields](formattedtextfield.html) | Lays out label-text field
+    pairs using a `SpringLayout` and a `SpringUtilities` convenience method:'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [文本输入演示](../examples/components/index.html#TextInputDemo) | [如何使用格式化文本字段](formattedtextfield.html)
+    | 使用`SpringLayout`和`SpringUtilities`便利方法来布局标签-文本字段对：'
+- en: '[PRE10]'
+  id: totrans-79
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: '|'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: If you are programming in JavaFX, see [Text Field](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/text-field.htm).
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您在JavaFX中编程，请参阅[文本字段](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/text-field.htm)。

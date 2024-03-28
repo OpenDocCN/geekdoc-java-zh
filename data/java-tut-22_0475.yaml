@@ -1,0 +1,140 @@
+- en: CCP in a non-Text Component
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 非文本组件中的CCP
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/listpaste.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/listpaste.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/listpaste.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/listpaste.html)
+- en: 'If you are implementing cut, copy and paste using one of the Swing components
+    that is *not* one of the text components you have to do some additional setup.
+    First, you need to install the cut, copy, and paste actions in the action map.
+    The following method shows how to do this:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在使用Swing组件之一来实现剪切、复制和粘贴，而不是文本组件，您需要进行一些额外的设置。首先，您需要在动作映射中安装剪切、复制和粘贴操作。以下方法显示了如何执行此操作：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'When you set up the Edit menu, you can also choose to add menu accelerators,
+    so that the user can type Control-C to initiate a copy, for example. In the following
+    code snippet, the bolded text shows how to set the menu accelerator for the cut
+    action:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当设置编辑菜单时，您还可以选择添加菜单加速器，以便用户可以输入Control-C来启动复制操作，例如。在下面的代码片段中，粗体文本显示了如何为剪切操作设置菜单加速器：
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'If you have set the menu accelerators for the CCP actions, this next step is
+    redundant. If you have not set the menu accelerators, you need to add the CCP
+    bindings to the input map. The following code snippet shows how this is done:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您已为CCP操作设置了菜单加速器，则下一步是多余的。如果您尚未设置菜单加速器，则需要将CCP绑定添加到输入映射中。以下代码片段显示了如何执行此操作：
+- en: '[PRE2]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Once the bindings have been installed and the Edit menu has been set up, there
+    is another issue to be addressed: When the user initiates a cut, copy or a paste,
+    which component should receive the action? In the case of a text component, the
+    `DefaultEditorKit` remembers which component last had the focus and forwards the
+    action to that component. The following class, `TransferActionListener`, performs
+    the same function for non-text Swing components. This class can be dropped into
+    most any application:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦绑定已安装并且编辑菜单已设置，还有另一个问题需要解决：当用户启动剪切、复制或粘贴时，哪个组件应该接收该操作？在文本组件的情况下，`DefaultEditorKit`会记住上次焦点所在的组件，并将操作转发给该组件。以下类，`TransferActionListener`，为非文本Swing组件执行相同的功能。这个类可以被放入大多数应用程序中：
+- en: '[PRE3]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Finally, you have to decide how to handle the paste. In the case of a drag and
+    drop, you insert the data at the drop location. In the case of a paste, you do
+    not have the benefit of the user pointing to the desired paste location. You need
+    to decide what makes sense for your application — inserting the data before or
+    after the current selection might be the best solution.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，您必须决定如何处理粘贴操作。在拖放的情况下，您将数据插入到放置位置。在粘贴的情况下，您没有用户指向所需粘贴位置的好处。您需要决定对您的应用程序来说什么是最合理的解决方案——在当前选择之前还是之后插入数据可能是最好的解��方案。
+- en: The following demo, ListCutPaste, shows how to implement CCP in an instance
+    of `JList`. As you can see in the screen shot there are three lists and you can
+    cut, copy, and paste to or from any of these lists. They also support drag and
+    drop. For this demo, the pasted data is inserted after the current selection.
+    If there is no current selection, the data is appended to the end of the list.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下演示，ListCutPaste，展示了如何在一个`JList`实例中实现CCP。如您在屏幕截图中所见，有三个列表，您可以在这些列表之间剪切、复制和粘贴。它们还支持拖放。对于这个演示，粘贴的数据将插入到当前选择之后。如果没有当前选择，则数据将附加到列表末尾。
+- en: '![A snapshot of the ListCutPaste demo.](../Images/a254792d4f2dee5057b3d945a1264bcf.png)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ListCutPaste演示的快照。](../Images/a254792d4f2dee5057b3d945a1264bcf.png)'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: Click the Launch button to run ListCutPaste using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/dnd/index.html#ListCutPaste).[![Launches
+    the ListCutPaste example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ListCutPasteProject/ListCutPaste.jnlp)
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行ListCutPaste（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/dnd/index.html#ListCutPaste)。[![启动ListCutPaste示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ListCutPasteProject/ListCutPaste.jnlp)
+- en: Select an item in one of the lists. Use the Edit menu or the keyboard equivalent
+    to cut or copy the list item from the source.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在其中一个列表中选择一个项目。使用编辑菜单或键盘快捷键从源中剪切或复制列表项。
+- en: Select the list item where you want the item to be pasted.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 选择要粘贴项目的列表项。
+- en: Paste the text using the menu or the keyboard equivalent. The item is pasted
+    after the current selection.
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用菜单或键盘等效方式粘贴文本。项目将在当前选择后粘贴。
+- en: Perform the same operation using drag and drop.
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用拖放执行相同操作。
+- en: '* * *'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

@@ -1,0 +1,261 @@
+- en: Manipulating Relative Distinguished Name (RDN)
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 操作相对独立名称（RDN）
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/rdn.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/rdn.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/rdn.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/rdn.html)
+- en: 'The class [`javax.naming.ldap.Rdn`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html)
+    represents a Relative Distinguished name (RDN) as specified in [RFC 2253](http://www.ietf.org/rfc/rfc2253.txt).
+    An RDN represents a component of a DN as explained in the [Manipulating LdapName](ldapname.html)
+    lesson. An RDN is made up of type and value pair(s). Examples of RDNs are:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类[`javax.naming.ldap.Rdn`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html)表示根据[RFC
+    2253](http://www.ietf.org/rfc/rfc2253.txt)指定的相对独立名称（RDN）。RDN表示DN的组件，如[操作LdapName](ldapname.html)课程中所解释的那样。RDN由类型和值对组成。RDN的示例包括：
+- en: '`OU=Sun`'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`OU=Sun`'
+- en: '`OU=Sales+CN=J.Smith`.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`OU=Sales+CN=J.Smith`。'
+- en: The above example shows a representation of a multi-valued RDN.
+  id: totrans-5
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 上面的示例显示了多值RDN的表示。
+- en: The [`Rdn`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html)
+    class provides methods to access name/value pair(s) of an RDN, obtain its string
+    representation, retrieve an [`Attributes`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/Attributes.html)
+    view, compare and determine equality of RDNs and methods to escape and unescape
+    the value part of the RDN.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Rdn`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html)类提供了访问RDN的名称/值对、获取其字符串表示、检索[`Attributes`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/Attributes.html)视图、比较和确定RDN的相等性以及转义和取消转义RDN值部分的方法。'
+- en: The `Rdn` class is immutable.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Rdn`类是不可变的。'
+- en: Constructing an Rdn
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 构造Rdn
+- en: An Rdn can be constructed with the specified name and value pair, if it's a
+    single name/value paired RDN. For a multi-valued RDN, you should create an attribute
+    set consisting of all the name/value pairs and use a constructor that takes `Attributes`
+    as an argument. You can also create an Rdn from its string representation specified
+    in [RFC 2253](http://www.ietf.org/rfc/rfc2253.txt). Finally, you can clone an
+    Rdn using its copy constructor. Here is an [`example`](examples/RdnConstructors.java)
+    that creates RDNs using different types of constructors.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果是单个名称/值对的RDN，可以使用指定的名称和值对构造Rdn。对于多值RDN，应创建包含所有名称/值对的属性集，并使用以`Attributes`为参数的构造函数。还可以根据[RFC
+    2253](http://www.ietf.org/rfc/rfc2253.txt)中指定的字符串表示创建Rdn。最后，可以使用其复制构造函数克隆Rdn。这里是一个使用不同类型构造函数创建RDN的[`示例`](examples/RdnConstructors.java)。
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Accessing type/value pairs of an RDN
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 访问RDN的类型/值对
+- en: 'The type/values of and RDN can be obtained using the methods below:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以使用以下方法获取RDN的类型/值：
+- en: '[`getType()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#getType--)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`getType()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#getType--)'
+- en: '[`getValue()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#getValue--)'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`getValue()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#getValue--)'
+- en: '[`toAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#toAttributes--)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`toAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#toAttributes--)'
+- en: For a an RDN made up of single type/value pair, the [`getType()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#getType--)method
+    returns the type and the [`getValue()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#getValue--)
+    method returns the value of the RDN. The method [`toAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#toAttributes--)
+    returns the attribute view of the type/value pairs. The [`example`](examples/RdnGetters.java)
+    below prints the type/value pairs of RDNs.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于由单个类型/值对组成的RDN，[`getType()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#getType--)方法返回类型，[`getValue()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#getValue--)方法返回RDN的值。方法[`toAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#toAttributes--)返回类型/值对的属性视图。下面的[`示例`](examples/RdnGetters.java)打印了RDN的类型/值对。
+- en: '[PRE1]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Getting the String Representation
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 获取字符串表示
+- en: 'In order to get the string representation of an RDN formatted according to
+    the syntax specified in [RFC 2253](http://www.ietf.org/rfc/rfc2253.txt), you can
+    use:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了按照[RFC 2253](http://www.ietf.org/rfc/rfc2253.txt)中指定的语法格式化RDN的字符串表示，可以使用：
+- en: '[`toString()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#toString--)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`toString()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#toString--)'
+- en: When you use the Rdn constructor that takes a `String` argument, you supply
+    the string representation of an RDN, and get back an Rdn instance. To do the reverse,
+    that is, to get the string representation of a Rdn instance, you use toString().
+    The result of toString() can be fed back to the Rdn constructor to produce an
+    Rdn instance that is equal to the original Rdn instance.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您使用接受`String`参数的Rdn构造函数时，您提供了RDN的字符串表示，并获得了一个Rdn实例。要做相反的操作，即获取Rdn实例的字符串表示，您可以使用toString()。toString()的结果可以馈送回Rdn构造函数，以产生与原始Rdn实例相等的Rdn实例。
+- en: 'Here''s an [`example`](examples/RdntoString.java):'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个[`示例`](examples/RdntoString.java)：
+- en: '[PRE2]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Comparing RDNs
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 比较RDNs
+- en: 'The methods below enable comparison of RDNs:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的方法使RDN的比较成为可能：
+- en: '[`equals(Object Rdn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#equals-Object-)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`equals(Object Rdn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#equals-Object-)'
+- en: '[`compareTo(Object Rdn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#compareTo-Object-)'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`compareTo(Object Rdn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#compareTo-Object-)'
+- en: You can use compareTo() to sort a list of Rdn instances. equals() lets you determine
+    whether two Rdns are syntactically equal. Two Rdns are equal if they both have
+    the same (case-exact matched) type/value pairs. The order of components in a multi-valued
+    RDNs is not significant.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用compareTo()对Rdn实例列表进行排序。equals()让您确定两个Rdns在语法上是否相等。如果两个Rdns都具有相同（大小写匹配）的类型/值对，则它们是相等的。多值RDN中组件的顺序不重要。
+- en: 'Here''s an [`example`](examples/CompareRdns.java):'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个[`示例`](examples/CompareRdns.java)：
+- en: '[PRE3]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Escaping and Unescaping of Special Characters
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 转义和反转义特殊字符
+- en: One of the best use of Rdn class is when one has to deal with DNs consisting
+    of special characters. It automatically takes care of escaping and unescaping
+    the special characters. The characters such has '\' (backslash), ','(comma), +
+    (plus) etc have a specific semantic according to [RFC 2253](http://www.ietf.org/rfc/rfc2253.txt).
+    You can find the list of all the special characters in RFC2253\. When these characters
+    are used as literals in a DN, they must be escaped with a '\' (blackslash).
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Rdn类的最佳用途之一是处理包含特殊字符的DN。它会自动处理特殊字符的转义和反转义。像 '\'（反斜杠）、','（逗号）、+（加号）等字符在[RFC 2253](http://www.ietf.org/rfc/rfc2253.txt)中有特定的语义。您可以在RFC2253中找到所有特殊字符的列表。当这些字符作为DN中的文字时，必须用
+    '\'（反斜杠）进行转义。
+- en: 'For example, consider an RDN: `cn=Juicy, Fruit` The character , (comma) appearing
+    between Juicy and Fruit is a special character that needs to be escaped by a ''\''
+    (blackslash). The resulting syntactically formatted RDN looks as below: `cn=Juicy\,
+    Fruit` However, the ''\'' (backslash) character itself is a special character
+    according to the Java Language String syntax, and it needs to escaped with a ''\''
+    (backslash) again. The Java Language String format and [RFC 2253](http://www.ietf.org/rfc/rfc2253.txt)
+    both use ''\'' (backslash) to escape the special characters. And therefore the
+    Java formatted RDN String looks as below: `cn=Juicy\\, Fruit` Note that, the above
+    mentioned formatting rules apply only to the value component of an Rdn. The `Rdn`
+    class provides two `static` methods to handle automatic escaping and unescaping
+    of the RDN values:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，考虑一个RDN：`cn=Juicy, Fruit`，出现在Juicy和Fruit之间的逗号，是一个需要用 '\'（反斜杠）转义的特殊字符。经过语法格式化后的RDN如下所示：`cn=Juicy\,
+    Fruit` 然而， '\'（反斜杠）字符本身是Java语言字符串语法中的一个特殊字符，需要再次用 '\'（反斜杠）转义。Java语言字符串格式和[RFC
+    2253](http://www.ietf.org/rfc/rfc2253.txt)都使用 '\'（反斜杠）来转义特殊字符。因此，Java格式化的RDN字符串如下所示：`cn=Juicy\\,
+    Fruit` 请注意，上述提到的格式化规则仅适用于Rdn的值组件。`Rdn`类提供了两个`static`方法来处理RDN值的自动转义和反转义：
+- en: '[`escapeValue()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#escapeValue--)'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`escapeValue()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#escapeValue--)'
+- en: '[`unescapeValue()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#unescapeValue--)'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`unescapeValue()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html#unescapeValue--)'
+- en: The [`example`](examples/EscapingDNs.java) below shows how to get the string
+    representation of a DN without having to deal with the syntax for handling special
+    characters defined in [RFC 2253](http://www.ietf.org/rfc/rfc2253.txt).
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的[`示例`](examples/EscapingDNs.java)显示了如何获取DN的字符串表示，而无需处理[RFC 2253](http://www.ietf.org/rfc/rfc2253.txt)中定义的处理特殊字符的语法。
+- en: '[PRE4]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Similarly the using the static `unescapeValue()` method one can obtain the original
+    string from the formatted value. [`Here`](examples/UnescapingValues.java) is an
+    example for retrieving the original value.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样地，使用静态的`unescapeValue()`方法，可以从格式化值中获取原始字符串。[`这里`](examples/UnescapingValues.java)是一个检索原始值的示例。
+- en: '[PRE5]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'

@@ -1,0 +1,71 @@
+- en: Identifying Array Types
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 识别数组类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/special/arrayComponents.html](https://docs.oracle.com/javase/tutorial/reflect/special/arrayComponents.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/special/arrayComponents.html](https://docs.oracle.com/javase/tutorial/reflect/special/arrayComponents.html)
+- en: Array types may be identified by invoking [`Class.isArray()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isArray--).
+    To obtain a [`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)
+    use one of the methods described in [Retrieving Class Objects](../class/classNew.html)
+    section of this trail.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以通过调用[`Class.isArray()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isArray--)来识别数组类型。要获取一个[`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)，请使用本教程中[检索类对象](../class/classNew.html)部分描述的方法之一。
+- en: The [``ArrayFind``](example/ArrayFind.java) example identifies the fields in
+    the named class that are of array type and reports the component type for each
+    of them.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``ArrayFind``](example/ArrayFind.java)示例标识了命名类中的数组类型字段，并报告了每个字段的组件类型。'
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The syntax for the returned value of `Class.get*Type()` is described in [`Class.getName()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getName--).
+    The number of '`[`' characters at the beginning of the type name indicates the
+    number of dimensions (that is, depth of nesting) of the array.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Class.get*Type()`返回值的语法在[`Class.getName()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getName--)中有描述。类型名称开头的''`[`''字符的数量表示数组的维度（即嵌套的深度）。'
+- en: 'Samples of the output follows. User input is in italics. An array of primitive
+    type `byte`:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出示例如下。用户输入用斜体表示。一个原始类型为`byte`的数组：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'An array of reference type [`StackTraceElement`](https://docs.oracle.com/javase/8/docs/api/java/lang/StackTraceElement.html):'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个引用类型为[`StackTraceElement`](https://docs.oracle.com/javase/8/docs/api/java/lang/StackTraceElement.html)的数组：
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '`predefined` is a one-dimensional array of reference type [`java.awt.Cursor`](https://docs.oracle.com/javase/8/docs/api/java/awt/Cursor.html)
+    and `cursorProperties` is a two-dimensional array of reference type [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html):'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`predefined`是一个引用类型的一维数组[`java.awt.Cursor`](https://docs.oracle.com/javase/8/docs/api/java/awt/Cursor.html)，而`cursorProperties`是一个引用类型的二维数组[`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)：'
+- en: '[PRE3]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

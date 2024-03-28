@@ -1,0 +1,620 @@
+- en: How to Write Window Listeners
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写窗口监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/windowlistener.html)
+- en: 'This section explains how to implement three kinds of window-related event
+    handlers: `WindowListener`, `WindowFocusListener`, and `WindowStateListener`.
+    All three listeners handle `WindowEvent` objects. The methods in all three event
+    handlers are implemented by the abstract `WindowAdapter` class.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节解释了如何实现三种与窗口相关的事件处理程序：`WindowListener`、`WindowFocusListener` 和 `WindowStateListener`。所有三个监听器处理
+    `WindowEvent` 对象。所有三个事件处理程序中的方法都由抽象的 `WindowAdapter` 类实现。
+- en: When the appropriate listener has been registered on a window (such as a [frame](../components/frame.html)
+    or [dialog](../components/dialog.html)), window events are fired just after the
+    window activity or state has occurred. A window is considered as a "focus owner",
+    if this window receives keyboard input.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当适当的监听器已在窗口（如[框架](../components/frame.html)或[对话框](../components/dialog.html)）上注册时，窗口事件将在窗口活动或状态发生后立即触发。如果此窗口接收键盘输入，则将其视为“焦点所有者”。
+- en: 'The following window activities or states can precede a window event:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下窗口活动或状态可能在窗口事件之前发生：
+- en: Opening a window — Showing a window for the first time.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 打开窗口 — 第一次显示窗口。
+- en: Closing a window — Removing the window from the screen.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 关闭窗口 — 从屏幕上移除窗口。
+- en: Iconifying a window — Reducing the window to an icon on the desktop.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 图标化窗口 — 将窗口缩小为桌面上的图标。
+- en: Deiconifying a window — Restoring the window to its original size.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 取消图标化窗口 — 将窗口恢复到原始大小。
+- en: Focused window — The window which contains the "focus owner".
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 焦点窗口 — 包含“焦点所有者”的窗口。
+- en: Activated window (frame or dialog) — This window is either the focused window,
+    or owns the focused window.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 激活窗口（框架或对话框） — 这个窗口要么是焦点窗口，要么拥有焦点窗口。
+- en: Deactivated window — This window has lost the focus. For more information about
+    focus, see the [AWT Focus Subsystem](https://docs.oracle.com/javase/6/docs/api/java/awt/doc-files/FocusSpec.html)
+    specification.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 非激活窗口 — 这个窗口失去了焦点。有关焦点的更多信息，请参阅[AWT焦点子系统](https://docs.oracle.com/javase/6/docs/api/java/awt/doc-files/FocusSpec.html)规范。
+- en: Maximizing the window — Increasing a window's size to the maximum allowable
+    size, either in the vertical direction, the horizontal direction, or both directions.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 最大化窗口 — 将窗口的大小增加到允许的最大尺寸，可以是垂直方向、水平方向或两个方向都增加。
+- en: The `WindowListener` interface defines methods that handle most window events,
+    such as the events for opening and closing the window, activation and deactivation
+    of the window, and iconification and deiconification of the window.
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`WindowListener` 接口定义了处理大多数窗口事件的方法，例如打开和关闭窗口的事件，窗口的激活和非激活，以及窗口的图标化和取消图标化。'
+- en: The other two window listener interfaces are `WindowFocusListener` and `WindowStateListener`.
+    `WindowFocusListener` contains methods to detect when the window becomes the focus
+    owner or it loses the focus owner status. `WindowStateListener` has a single method
+    to detect a change to the state of the window, such as when the window is iconified,
+    deiconified, maximized, or restored to normal.
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 另外两个窗口监听器接口是 `WindowFocusListener` 和 `WindowStateListener`。`WindowFocusListener`
+    包含用于检测窗口何时成为焦点所有者或失去焦点所有者状态的方法。`WindowStateListener` 有一个方法用于检测窗口状态的更改，例如窗口被图标化、取消图标化、最大化或恢复为正常状态。
+- en: 'While you can use the `WindowListener` methods to detect some window states,
+    such as iconification, there are two reasons why a `WindowStateListener` might
+    be preferable: it has only one method for you to implement, and it provides support
+    for maximization.'
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 虽然您可以使用 `WindowListener` 方法来检测一些窗口状态，例如图标化，但有两个原因使 `WindowStateListener` 更可取：它只有一个需要您实现的方法，并且它支持最大化。
+- en: '* * *'
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Not all window managers/native platforms support all window states.
+    The `java.awt.Toolkit` method [`isFrameStateSupported(int)`](https://docs.oracle.com/javase/8/docs/api/java/awt/Toolkit.html#isFrameStateSupported-int-)
+    can be used to determine whether a particular window state is supported by a particular
+    window manager. The WindowEventDemo example, described later in this section,
+    shows how this method can be used.'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '**注意：** 并非所有窗口管理器/本地平台都支持所有窗口状态。`java.awt.Toolkit` 方法 [`isFrameStateSupported(int)`](https://docs.oracle.com/javase/8/docs/api/java/awt/Toolkit.html#isFrameStateSupported-int-)
+    可用于确定特定窗口状态是否受特定窗口管理器支持。稍后在本节中描述的 WindowEventDemo 示例展示了如何使用此方法。'
+- en: '* * *'
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Window listeners are commonly used to implement custom window-closing behavior.
+    For example, a window listener is used to save data before closing the window,
+    or to exit the program when the last window closes.
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 窗口监听器通常用于实现自定义窗口关闭行为。例如，窗口监听器用于在关闭窗口之前保存数据，或者在最后一个窗口关闭时退出程序。
+- en: A user does not necessarily need to implement a window listener to specify what
+    a window should do when the user closes it. By default, when the user closes a
+    window the window becomes invisible. To specify different behavior, use the `setDefaultCloseOperation`
+    method of the `JFrame` or `JDialog` classes. To implement a window-closing handler,
+    use the `setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE)` method
+    to enable the window listener to provide all window-closing duties. See [Responding
+    to Window-Closing Events](../components/frame.html#windowevents) for details on
+    how to use `setDefaultCloseOperation`.
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 用户不一定需要实现窗口监听器来指定用户关闭窗口时窗口应该执行的操作。默认情况下，当用户关闭窗口时，窗口变为不可见。要指定不同的行为，请使用`JFrame`或`JDialog`类的`setDefaultCloseOperation`方法。要实现窗口关闭处理程序，请使用`setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE)`方法，以便使窗口监听器提供所有窗口关闭职责。有关如何使用`setDefaultCloseOperation`的详细信息，请参见[响应窗口关闭事件](../components/frame.html#windowevents)。
+- en: When the last displayable window within the Java virtual machine (VM) is disposed
+    of, the VM may terminate. Note, however, that there can be a delay before the
+    program exits automatically, and that under some circumstances the program might
+    keep running. It is quicker and safer to explicitly exit the program using `System.exit(int)`.
+    See [AWT Threading Issues](https://docs.oracle.com/javase/8/docs/api/java/awt/doc-files/AWTThreadIssues.html#Autoshutdown)
+    for more information.
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 当Java虚拟机（VM）中的最后一个可显示窗口被销毁时，VM 可能会终止。但请注意，在程序自动退出之前可能会有延迟，并且在某些情况下程序可能会继续运行。使用`System.exit(int)`显式退出程序更快更安全。有关更多信息，请参见[AWT线程问题](https://docs.oracle.com/javase/8/docs/api/java/awt/doc-files/AWTThreadIssues.html#Autoshutdown)。
+- en: Window listeners are also commonly used to stop threads and release resources
+    when a window is iconified, and to start up again when the window is deiconified.
+    This avoids unnecessarily using the processor or other resources. For example,
+    when a window that contains animation is iconified, it should stop its animation
+    thread and free any large buffers. When the window is deiconified, it can start
+    the thread again and recreate the buffers.
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 窗口监听器通常也用于在窗口最小化时停止线程并释放资源，并在窗口恢复正常时重新启动。这样可以避免不必要地使用处理器或其他资源。例如，当包含动画的窗口被最小化时，应该停止其动画线程并释放任何大型缓冲区。当窗口恢复正常时，可以重新启动线程并重新创建缓冲区。
+- en: The following example demonstrates window events. A non-editable text area reports
+    all window events that are fired by its window. This demo implements all methods
+    in the `WindowListener`, `WindowFocusListener`, and `WindowStateListener` interfaces.
+    You can find the demo's code in [`WindowEventDemo.java`](../examples/events/WindowEventDemoProject/src/events/WindowEventDemo.java).
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 以下示例演示了窗口事件。一个不可编辑的文本区域报告了由其窗口触发的所有窗口事件。此演示实现了`WindowListener`、`WindowFocusListener`和`WindowStateListener`接口中的所有方法。您可以在[`WindowEventDemo.java`](../examples/events/WindowEventDemoProject/src/events/WindowEventDemo.java)中找到演示的代码。
+- en: '![WindowEventDemo.html](../Images/404ed7773f19c6173989f76b5969d73a.png)'
+  id: totrans-24
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![WindowEventDemo.html](../Images/404ed7773f19c6173989f76b5969d73a.png)'
+- en: '* * *'
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run WindowEventDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/events/index.html#WindowEventDemo).[![Launches
+    the WindowEventDemo application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/WindowEventDemoProject/WindowEventDemo.jnlp)
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行WindowEventDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/events/index.html#WindowEventDemo)。[![启动WindowEventDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/WindowEventDemoProject/WindowEventDemo.jnlp)
+- en: When the window appears, several messages are already displayed. One line reports
+    whether your window manager supports MAXIMIZED_BOTH. If the window manager does
+    not support other window states, this condition is also reported. Next, several
+    lines are displayed, reporting that the window's window listener has received
+    window-opened, activated, and gained-focus events. All the messages displayed
+    in the window are also sent to standard output.
+  id: totrans-28
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 当窗口出现时，已经显示了几条消息。一行报告您的窗口管理器是否支持MAXIMIZED_BOTH。如果窗口管理器不支持其他窗口状态，也会报告此条件。接下来，会显示几行，报告窗口的窗口监听器已接收到窗口打开、激活和获得焦点事件。窗口中显示的所有消息也会发送到标准输出。
+- en: Click another window. The "window lost focus" and "window deactivated" messages
+    will be displayed. If this window is not a frame or a dialog, it will receive
+    the activated or deactivated events.
+  id: totrans-29
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击另一个窗口。将显示“窗口失去焦点”和“窗口失活”消息。如果此窗口不是框架或对话框，则会接收激活或失活事件。
+- en: Click the WindowEventDemo window. You'll see "window activated" and "window
+    gained focus" messages.
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击WindowEventDemo窗口。您将看到“窗口激活”和“窗口获得焦点”消息。
+- en: Iconify the window, using the window controls. Two iconification messages are
+    displayed, one from the window listener and the other from the window state listener.
+    Unless you are looking at standard output, the messages will not display until
+    the window is deiconified. Window-deactivation and window-lost-focus events are
+    also reported.
+  id: totrans-31
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用窗口控件将窗口图标化。将显示两条图标化消息，一条来自窗口监听器，另一条来自窗口状态监听器。除非您查看标准输出，否则这些消息将在窗口取消图标化之前不会显示。还会报告窗口失活和窗口失去焦点事件。
+- en: De-iconify the window. Two deiconification messages are displayed, one from
+    the window listener and the other from the window state listener. The `windowStateChanged`
+    method in `WindowStateListener` class gives the same information that you get
+    using the `windowIconified` and `windowDeiconified` methods in `WindowListener`
+    class. Window-activation and window-gained-focus events are also reported.
+  id: totrans-32
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 取消图标化窗口。窗口监听器和窗口状态监听器都会显示两条取消图标化消息。`WindowStateListener`类中的`windowStateChanged`方法提供了与`WindowListener`类中的`windowIconified`和`windowDeiconified`方法相同的信息。还会报告窗口激活和窗口获得焦点事件。
+- en: Maximize the window, if your look and feel provides a way to do so. Note that
+    some look and feels running on some window managers, such as the Java look and
+    feel on dtwm, provide a way to maximize the window, but no events are reported.
+    This is because dtwm mimics maximization by resizing the window, but it is not
+    a true maximization event. Some look and feels provide a way to maximize the window
+    in the vertical or horizontal direction *only*. Experiment with your window controls
+    to see what options are available.
+  id: totrans-33
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 最大化窗口，如果你的外观提供了这样的功能。请注意，一些外观在一些窗口管理器上运行，比如在dtwm上的Java外观，提供了最大化窗口的方法，但不会报告任何事件。这是因为dtwm通过调整窗口大小来模拟最大化，但这不是真正的最大化事件。一些外观只提供在垂直或水平方向上最大化窗口的方法。尝试使用窗口控件来查看有哪些选项可用。
+- en: Close the window, using the window controls. A window closing message is displayed.
+    Once the window has closed, a window closed message is sent to standard output.
+  id: totrans-34
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用窗口控件关闭窗口。将显示一个窗口关闭消息。一旦窗口关闭，将向标准输出发送一个窗口关闭消息。
+- en: '* * *'
+  id: totrans-35
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Here is the demo''s window event handling code:'
+  id: totrans-36
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这是演示窗口事件处理代码：
+- en: '[PRE0]'
+  id: totrans-37
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The Window Listener API
+  id: totrans-38
+  prefs:
+  - PREF_IND
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 窗口监听器API
+- en: 'The window listener API consists of three window listener interfaces and the
+    `WindowEvent` class. Their methods are listed in the following tables:'
+  id: totrans-39
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 窗口监听器API由三个窗口监听器接口和`WindowEvent`类组成。它们的方法列在以下表中：
+- en: '[The WindowListener Interface](#windowlistener)'
+  id: totrans-40
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[WindowListener接口](#windowlistener)'
+- en: '[The WindowFocusListener Interface](#windowfocuslistener)'
+  id: totrans-41
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[WindowFocusListener接口](#windowfocuslistener)'
+- en: '[The WindowStateListener Interface](#windowstatelistener)'
+  id: totrans-42
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[WindowStateListener接口](#windowstatelistener)'
+- en: '[The WindowEvent Class](#windowevent)The methods from all three interfaces
+    are available through the [`WindowAdapter`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowAdapter.html)
+    class.'
+  id: totrans-43
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[WindowEvent类](#windowevent)所有三个接口的方法都可以通过[`WindowAdapter`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowAdapter.html)类来使用。'
+- en: The WindowListener Interface
+  id: totrans-44
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: WindowListener接口
+- en: '| Method | Purpose |'
+  id: totrans-45
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [windowOpened(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowOpened-java.awt.event.WindowEvent-)
+    | Called just after the listened-to window has been shown for the first time.
+    |'
+  id: totrans-46
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [windowOpened(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowOpened-java.awt.event.WindowEvent-)
+    | 在所监听窗口首次显示后立即调用。'
+- en: '| [windowClosing(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowClosing-java.awt.event.WindowEvent-)
+    | Called in response to a user request for the listened-to window to be closed.
+    To actually close the window, the listener should invoke the window''s `dispose`
+    or `setVisible(false)` method. |'
+  id: totrans-47
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [windowClosing(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowClosing-java.awt.event.WindowEvent-)
+    | 响应用户请求关闭所监听窗口时调用。要实际关闭窗口，监听器应调用窗口的`dispose`或`setVisible(false)`方法。'
+- en: '| [windowClosed(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowClosed-java.awt.event.WindowEvent-)
+    | Called just after the listened-to window has closed. |'
+  id: totrans-48
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [windowClosed(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowClosed-java.awt.event.WindowEvent-)
+    | 在所监听窗口关闭后立即调用。'
+- en: '| [windowIconified(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowIconified-java.awt.event.WindowEvent-)
+    [windowDeiconified(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowDeiconified-java.awt.event.WindowEvent-)
+    | Called just after the listened-to window is iconified or deiconified, respectively.
+    |'
+  id: totrans-49
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [windowIconified(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowIconified-java.awt.event.WindowEvent-)
+    [windowDeiconified(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowDeiconified-java.awt.event.WindowEvent-)
+    | 在所监听窗口最小化或取消最小化后立即调用。'
+- en: '| [windowActivated(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowActivated-java.awt.event.WindowEvent-)
+    [windowDeactivated(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowDeactivated-java.awt.event.WindowEvent-)
+    | Called just after the listened-to window is activated or deactivated, respectively.
+    These methods are not sent to windows that are not frames or dialogs. For this
+    reason, the `windowGainedFocus` and `windowLostFocus` methods to determine when
+    a window gains or loses the focus are preferred. |'
+  id: totrans-50
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [windowActivated(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowActivated-java.awt.event.WindowEvent-)
+    [windowDeactivated(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowListener.html#windowDeactivated-java.awt.event.WindowEvent-)
+    | 在所监听窗口激活或停用后立即调用。这些方法不会发送给非框架或对话框的窗口。因此，更倾向于使用`windowGainedFocus`和`windowLostFocus`方法来确定窗口何时获得或失去焦点。'
+- en: The WindowFocusListener Interface
+  id: totrans-51
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 窗口焦点监听器接口
+- en: '| Method | Purpose |'
+  id: totrans-52
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| Method | Purpose |'
+- en: '| [windowGainedFocus(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowFocusListener.html#windowGainedFocus-java.awt.event.WindowEvent-)
+    [windowLostFocus(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowFocusListener.html#windowLostFocus-java.awt.event.WindowEvent-)
+    | Called just after the listened-to window gains or loses the focus, respectively.
+    |'
+  id: totrans-53
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [windowGainedFocus(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowFocusListener.html#windowGainedFocus-java.awt.event.WindowEvent-)
+    [windowLostFocus(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowFocusListener.html#windowLostFocus-java.awt.event.WindowEvent-)
+    | 在所监听窗口获得或失去焦点后立即调用。'
+- en: The WindowStateListener Interface
+  id: totrans-54
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 窗口状态监听器接口
+- en: '| Method | Purpose |'
+  id: totrans-55
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| Method | Purpose |'
+- en: '| [windowStateChanged(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowStateListener.html#windowStateChanged-java.awt.event.WindowEvent-)
+    | Called just after the listened-to window''s state is changed by being iconified,
+    deiconified, maximized, or returned to normal. The state is available through
+    the `WindowEvent` as a bitwise mask. The possible values, defined in `java.awt.Frame`,
+    are:'
+  id: totrans-56
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '| [windowStateChanged(WindowEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowStateListener.html#windowStateChanged-java.awt.event.WindowEvent-)
+    | 在所监听窗口的状态通过最小化、最大化或恢复正常而改变后立即调用。状态通过`WindowEvent`以位掩码的形式可用。可能的值在`java.awt.Frame`中定义为：'
+- en: NORMAL. Indicates that no state bits are set.
+  id: totrans-57
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: NORMAL. 表示没有设置任何状态位。
+- en: ICONIFIED.
+  id: totrans-58
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: ICONIFIED.
+- en: MAXIMIZED_HORIZ.
+  id: totrans-59
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: MAXIMIZED_HORIZ.
+- en: MAXIMIZED_VERT.
+  id: totrans-60
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: MAXIMIZED_VERT.
+- en: MAXIMIZED_BOTH. Concatenates `MAXIMIZED_HORIZ` and `MAXIMIZED_VERT`. A window
+    manager may support `MAXIMIZED_BOTH`, while not supporting `MAXIMIZED_HORIZ` or
+    `MAXIMIZED_VERT`. The [`java.awt.Toolkit`](https://docs.oracle.com/javase/8/docs/api/java/awt/Toolkit.html)
+    method [`isFrameStateSupported(int)`](https://docs.oracle.com/javase/8/docs/api/java/awt/Toolkit.html#isFrameStateSupported-int-)
+    can be used to determine what states are supported by the window manager.
+  id: totrans-61
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: MAXIMIZED_BOTH. 连接`MAXIMIZED_HORIZ`和`MAXIMIZED_VERT`。窗口管理器可能支持`MAXIMIZED_BOTH`，而不支持`MAXIMIZED_HORIZ`或`MAXIMIZED_VERT`。[`java.awt.Toolkit`](https://docs.oracle.com/javase/8/docs/api/java/awt/Toolkit.html)方法[`isFrameStateSupported(int)`](https://docs.oracle.com/javase/8/docs/api/java/awt/Toolkit.html#isFrameStateSupported-int-)可用于确定窗口管理器支持哪些状态。
+- en: '|'
+  id: totrans-62
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '|'
+- en: The WindowEvent Class
+  id: totrans-63
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: WindowEvent 类
+- en: '| Method | Purpose |'
+  id: totrans-64
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Window getWindow()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowEvent.html#getWindow--)
+    | Returns the window that fired the event. You can use this instead of the `getSource`
+    method. |'
+  id: totrans-65
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [Window getWindow()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowEvent.html#getWindow--)
+    | 返回触发事件的窗口。您可以使用这个方法代替`getSource`方法。 |'
+- en: '| [Window getOppositeWindow()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowEvent.html#getOppositeWindow--)
+    | Returns the other window involved in this focus or activation change. For a
+    `WINDOW_ACTIVATED` or `WINDOW_GAINED_FOCUS` event, this returns the window that
+    lost activation or the focus. For a `WINDOW_DEACTIVATED` or `WINDOW_LOST_FOCUS`
+    event, this returns the window that gained activation or the focus. For any other
+    type of `WindowEvent` with a Java application in a different VM or context, or
+    with no other window, `null` is returned. |'
+  id: totrans-66
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [Window getOppositeWindow()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowEvent.html#getOppositeWindow--)
+    | 返回与此焦点或激活更改相关的另一个窗口。对于`WINDOW_ACTIVATED`或`WINDOW_GAINED_FOCUS`事件，返回失去激活或焦点的窗口。对于`WINDOW_DEACTIVATED`或`WINDOW_LOST_FOCUS`事件，返回获得激活或焦点的窗口。对于具有不同VM或上下文中的Java应用程序的任何其他类型的`WindowEvent`，或者没有其他窗口的情况，返回`null`。
+    |'
+- en: '| [int getOldState()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowEvent.html#getOldState--)
+    [int getNewState()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowEvent.html#getNewState--)
+    | For `WINDOW_STATE_CHANGED` events, these methods return the previous or new
+    state of the window as a bitwise mask. |'
+  id: totrans-67
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [int getOldState()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowEvent.html#getOldState--)
+    [int getNewState()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/WindowEvent.html#getNewState--)
+    | 对于`WINDOW_STATE_CHANGED`事件，这些方法返回窗口的先前状态或新状态作为位掩码。 |'
+- en: Examples that Use Window Listeners
+  id: totrans-68
+  prefs:
+  - PREF_IND
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用窗口监听器的示例
+- en: The following table lists the examples that use window listeners.
+  id: totrans-69
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 以下表格列出了使用窗口监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-70
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`WindowEventDemo`](../examples/events/index.html#WindowEventDemo) | This
+    section | Reports all window events that occur on one window to demonstrate the
+    circumstances under which window events are fired. |'
+  id: totrans-71
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [`WindowEventDemo`](../examples/events/index.html#WindowEventDemo) | 本节 |
+    报告在一个窗口上发生的所有窗口事件，以展示触发窗口事件的情况。 |'
+- en: '| [`SliderDemo`](../examples/components/index.html#SliderDemo) | [How to Use
+    Sliders](../components/slider.html) | Listens for window iconify and deiconify
+    events, so that it can stop the animation when the window isn''t visible. |'
+  id: totrans-72
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [`SliderDemo`](../examples/components/index.html#SliderDemo) | [如何使用滑块](../components/slider.html)
+    | 监听窗口最小化和还原事件，以便在窗口不可见时停止动画。 |'
+- en: '| [`InternalFrameEventDemo`](../examples/events/index.html#InternalFrameEventDemo)
+    | [How to Write an Internal Frame Listener](internalframelistener.html) | Reports
+    all internal frame events that occur on one internal frame to demonstrate the
+    circumstances under which internal frame events are fired. Internal frame events
+    are similar to window events. |'
+  id: totrans-73
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [`InternalFrameEventDemo`](../examples/events/index.html#InternalFrameEventDemo)
+    | [如何编写内部框架监听器](internalframelistener.html) | 报告在一个内部框架上发生的所有内部框架事件，以展示触发内部框架事件的情况。内部框架事件类似于窗口事件。
+    |'
+- en: '| [`DialogDemo`](../examples/components/index.html#DialogDemo) | [Text Component
+    Features](../components/generaltext.html) | [`CustomDialog.java`](../examples/components/DialogDemoProject/src/components/CustomDialog.java)
+    uses `setDefaultCloseOperation` instead of a window listener to determine what
+    action to take when the user closes the window. |'
+  id: totrans-74
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [`DialogDemo`](../examples/components/index.html#DialogDemo) | [文本组件特性](../components/generaltext.html)
+    | [`CustomDialog.java`](../examples/components/DialogDemoProject/src/components/CustomDialog.java)
+    使用`setDefaultCloseOperation`而不是窗口监听器来确定用户关闭窗口时要采取的操作。 |'
+- en: '| [`Framework`](../examples/components/index.html#Framework) | — | A demo that
+    allows multiple windows to be created and destroyed. |'
+  id: totrans-75
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| [`框架`](../examples/components/index.html#Framework) | — | 一个允许创建和销毁多个窗口的演示。
+    |'

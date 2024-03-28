@@ -1,0 +1,83 @@
+- en: Summary of Creating and Using Classes and Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建和使用类和对象摘要
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/summaryclasses.html](https://docs.oracle.com/javase/tutorial/java/javaOO/summaryclasses.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/summaryclasses.html](https://docs.oracle.com/javase/tutorial/java/javaOO/summaryclasses.html)
+- en: A class declaration names the class and encloses the class body between braces.
+    The class name can be preceded by modifiers. The class body contains fields, methods,
+    and constructors for the class. A class uses fields to contain state information
+    and uses methods to implement behavior. Constructors that initialize a new instance
+    of a class use the name of the class and look like methods without a return type.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类声明命名类并在大括号之间封装类体。类名可以由修饰符前置。类体包含类的字段、方法和构造函数。类使用字段来包含状态信息，并使用方法来实现行为。初始化类的新实例的构造函数使用类的名称，并且看起来像没有返回类型的方法。
+- en: 'You control access to classes and members in the same way: by using an access
+    modifier such as `public` in their declaration.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过在声明中使用访问修饰符（如`public`）来以相同的方式控制对类和成员的访问。
+- en: You specify a class variable or a class method by using the `static` keyword
+    in the member's declaration. A member that is not declared as `static` is implicitly
+    an instance member. Class variables are shared by all instances of a class and
+    can be accessed through the class name as well as an instance reference. Instances
+    of a class get their own copy of each instance variable, which must be accessed
+    through an instance reference.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过在成员声明中使用`static`关键字来指定类变量或类方法。未声明为`static`的成员隐式地是实例成员。类变量由类的所有实例共享，并且可以通过类名以及实例引用访问。类的实例会获得每个实例变量的自己的副本，必须通过实例引用访问。
+- en: You create an object from a class by using the `new` operator and a constructor.
+    The new operator returns a reference to the object that was created. You can assign
+    the reference to a variable or use it directly.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过使用`new`运算符和构造函数，您可以从类创建对象。`new`运算符返回一个对创建的对象的引用。您可以将引用分配给变量或直接使用它。
+- en: 'Instance variables and methods that are accessible to code outside of the class
+    that they are declared in can be referred to by using a qualified name. The qualified
+    name of an instance variable looks like this:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以通过使用限定名称来引用在声明它们的类之外的代码可访问的实例变量和方法。实例变量的限定名称如下所示：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The qualified name of a method looks like this:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法的限定名称如下所示：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'or:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或：
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The garbage collector automatically cleans up unused objects. An object is unused
+    if the program holds no more references to it. You can explicitly drop a reference
+    by setting the variable holding the reference to `null`.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 垃圾收集器会自动清理未使用的对象。如果程序不再持有对对象的引用，则该对象将被视为未使用。您可以通过将持有引用的变量设置为`null`来显式丢弃引用。

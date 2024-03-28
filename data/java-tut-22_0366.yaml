@@ -1,0 +1,765 @@
+- en: The Text Component API
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 文本组件API
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/textapi.html](https://docs.oracle.com/javase/tutorial/uiswing/components/textapi.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/textapi.html](https://docs.oracle.com/javase/tutorial/uiswing/components/textapi.html)
+- en: This section lists commonly used parts of the API that are shared by text components.
+    Much of this API is defined by the [`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)
+    class. [Text Component Features](generaltext.html) discusses how to use some of
+    this API.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节列出了文本组件共享的常用API部分。这些API大部分由[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)类定义。[文本组件特性](generaltext.html)讨论了如何使用部分API。
+- en: '[The JComponent Class](jcomponent.html) describes the API that text components
+    inherit from `JComponent`. For information about the API related to specific text
+    components, see the how-to page for that component: [text field](textfield.html),
+    [password field](passwordfield.html), [formatted text field](formattedtextfield.html),
+    [text area](textarea.html), or [editor pane and text pane](editorpane.html).'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JComponent类](jcomponent.html)描述了文本组件从`JComponent`继承的API。有关特定文本组件相关的API信息，请参阅该组件的操作页面：[文本字段](textfield.html)、[密码字段](passwordfield.html)、[格式化文本字段](formattedtextfield.html)、[文本区域](textarea.html)或[编辑器窗格和文本窗格](editorpane.html)。'
+- en: For complete details about the text API, see the API documentation for [`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)
+    and for the various classes and interfaces in the [text package](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/package-summary.html).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关文本API的完整详细信息，请参阅[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)的API文档以及[text
+    package](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/package-summary.html)中各种类和接口的文档。
+- en: 'The API listed in this section includes the following categories:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节列出的API包括以下类别：
+- en: '[Setting Attributes](#appearance)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置属性](#appearance)'
+- en: '[Manipulating the Selection](#selection)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[选择操作](#selection)'
+- en: '[Converting Positions Between the Model and the View](#conversions)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在模型和视图之间转换位置](#conversions)'
+- en: '[Text Editing Commands](#apiforcommands)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[文本编辑命令](#apiforcommands)'
+- en: '[Classes and Interfaces That Represent Documents](#docclasses)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[表示文档的类和接口](#docclasses)'
+- en: '[Working With Documents](#docmethods)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[处理文档](#docmethods)'
+- en: '[Manipulating Carets and Selection Highlighters](#carrots)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[操作插入符和选择高亮器](#carrots)'
+- en: '[Reading and Writing Text](#io)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[读取和写入文本](#io)'
+- en: '**Setting Attributes**'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**设置属性**'
+- en: '*These methods are defined in the `JTextComponent` class.*'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*这些方法在`JTextComponent`类中定义。*'
+- en: '| Method | Description |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| [void setEditable(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setEditable-boolean-)
+    [boolean isEditable()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#isEditable--)
+    | Sets or indicates whether the user can edit the text in the text component.
+    |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setEditable(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setEditable-boolean-)
+    [boolean isEditable()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#isEditable--)
+    | 设置或指示用户是否可以编辑文本组件中的文本。 |'
+- en: '| [void setDragEnabled(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setDragEnabled-boolean-)
+    [boolean getDragEnabled()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getDragEnabled--)
+    | Sets or gets the `dragEnabled` property, which must be true to enable drag handling
+    on this component. The default value is false. See [Drag and Drop and Data Transfer](../dnd/index.html)
+    for more details. |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setDragEnabled(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setDragEnabled-boolean-)
+    [boolean getDragEnabled()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getDragEnabled--)
+    | 设置或获取`dragEnabled`属性，必须为true才能在此组件上启用拖放处理。默认值为false。有关更多详细信息，请参阅[拖放和数据传输](../dnd/index.html)。
+    |'
+- en: '| [void setDisabledTextColor(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setDisabledTextColor-java.awt.Color-)
+    [Color getDisabledTextColor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getDisabledTextColor--)
+    | Sets or gets the color used to display text when the text component is disabled.
+    |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setDisabledTextColor(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setDisabledTextColor-java.awt.Color-)
+    [Color getDisabledTextColor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getDisabledTextColor--)
+    | 设置或获取文本组件被禁用时用于显示文本的颜色。 |'
+- en: '| [void setMargin(Insets)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setMargin-java.awt.Insets-)
+    [Insets getMargin()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getMargin--)
+    | Sets or gets the margin between the text and the text component''s border. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setMargin(Insets)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setMargin-java.awt.Insets-)
+    [Insets getMargin()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getMargin--)
+    | 设置或获取文本与文本组件边框之间的边距。 |'
+- en: Manipulating the Selection
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 操作选择
+- en: '*These methods are defined in the `JTextComponent` class.*'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*这些方法在`JTextComponent`类中定义。*'
+- en: '| Method | Description |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| [String getSelectedText()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getSelectedText--)
+    | Gets the currently selected text. |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| [String getSelectedText()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getSelectedText--)
+    | 获取当前选定的文本。 |'
+- en: '| [void selectAll()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#selectAll--)
+    [void select(int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#select-int-int-)
+    | Selects all text or selects text within a start and end range. |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void selectAll()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#selectAll--)
+    [void select(int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#select-int-int-)
+    | 选择所有文本或选择起始和结束范围内的文本。 |'
+- en: '| [void setSelectionStart(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setSelectionStart-int-)
+    [void setSelectionEnd(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setSelectionEnd-int-)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setSelectionStart(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setSelectionStart-int-)
+    [void setSelectionEnd(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setSelectionEnd-int-)'
+- en: '[int getSelectionStart()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getSelectionStart--)'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[int getSelectionStart()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getSelectionStart--)'
+- en: '[int getSelectionEnd()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getSelectionEnd--)
+    | Sets or gets the extent of the current selection by index. |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[int getSelectionEnd()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getSelectionEnd--)
+    | 通过索引设置或获取当前选择的范围。 |'
+- en: '| [void setSelectedTextColor(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setSelectedTextColor-java.awt.Color-)
+    [Color getSelectedTextColor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getSelectedTextColor--)
+    | Sets or gets the color of selected text. |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setSelectedTextColor(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setSelectedTextColor-java.awt.Color-)
+    [Color getSelectedTextColor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getSelectedTextColor--)
+    | 设置或获取选定文本的颜色。 |'
+- en: '| [void setSelectionColor(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setSelectionColor-java.awt.Color-)
+    [Color getSelectionColor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getSelectionColor--)
+    | Sets or gets the background color of selected text. |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setSelectionColor(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setSelectionColor-java.awt.Color-)
+    [Color getSelectionColor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getSelectionColor--)
+    | 设置或获取选定文本的背景颜色。 |'
+- en: Converting Positions Between the Model and the View
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在模型和视图之间转换位置
+- en: '*These methods are defined in the `JTextComponent` class.*'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*这些方法在`JTextComponent`类中定义。*'
+- en: '| Method | Description |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| [int viewToModel(Point)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#viewToModel-java.awt.Point-)
+    | Converts the specified point in the view coordinate system to a position within
+    the text. |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int viewToModel(Point)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#viewToModel-java.awt.Point-)
+    | 将视图坐标系中的指定点转换为文本中的位置。 |'
+- en: '| [Rectangle modelToView(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#modelToView-int-)
+    | Converts the specified position within the text to a rectangle in the view coordinate
+    system. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Rectangle modelToView(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#modelToView-int-)
+    | 将文本中指定位置转换为视图坐标系中的矩形。 |'
+- en: Text Editing Commands
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文本编辑命令
+- en: '| Class or Method | Description |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类或方法 | 描述 |'
+- en: '| [void cut()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#cut--)
+    [void copy()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#copy--)'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void cut()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#cut--)
+    [void copy()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#copy--)'
+- en: '[void paste()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#paste--)'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[void paste()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#paste--)'
+- en: '[void replaceSelection(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#replaceSelection-java.lang.String-)'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[void replaceSelection(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#replaceSelection-java.lang.String-)'
+- en: '*(in `JTextComponent`)* | Cuts, copies, and pastes text using the system clipboard,
+    or replaces the selected text with the string specified by an argument, respectively.
+    |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`JTextComponent`中)* | 使用系统剪贴板剪切、复制和粘贴文本，或分别用参数指定的字符串替换所选文本。 |'
+- en: '| [EditorKit](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/EditorKit.html)
+    | Provides a text component''s view factory, document, caret, and actions, as
+    well as reading and writing documents of a particular format. |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| [EditorKit](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/EditorKit.html)
+    | 提供文本组件的视图工厂、文档、插入符号和操作，以及读取和写入特定格式的文档。 |'
+- en: '| [DefaultEditorKit](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html)
+    | A concrete subclass of `EditorKit` that provides the basic text editing capabilities.
+    |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| [DefaultEditorKit](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html)
+    | `EditorKit`的具体子类，提供基本的文本编辑功能。 |'
+- en: '| [StyledEditorKit](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.html)
+    | A subclass of `Default EditorKit` that provides additional editing capabilities
+    for styled text. |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| [StyledEditorKit](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.html)
+    | `Default EditorKit`的子类，为带样式文本提供额外的编辑功能。 |'
+- en: '| [String *xxxx*Action](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html#field_summary)
+    *(in `DefaultEditorKit`)* | The names of all the actions supported by the default
+    editor kit. See [Associating Text Actions with Menus and Buttons](generaltext.html#commands).
+    |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| [字符串 *xxxx*操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html#field_summary)
+    *(在`DefaultEditorKit`中)* | 默认编辑器工具支持的所有操作的名称。请参见[将文本操作与菜单和按钮关联](generaltext.html#commands)。
+    |'
+- en: '| [BeepAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.BeepAction.html)
+    [CopyAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.CopyAction.html)'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [哔哔操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.BeepAction.html)
+    [复制操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.CopyAction.html)'
+- en: '[CutAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.CutAction.html)'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[剪切操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.CutAction.html)'
+- en: '[DefaultKeyTypedAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.DefaultKeyTypedAction.html)'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[默认键入操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.DefaultKeyTypedAction.html)'
+- en: '[InsertBreakAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.InsertBreakAction.html)'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[插入换行操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.InsertBreakAction.html)'
+- en: '[InsertContentAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.InsertContentAction.html)'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[插入内容操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.InsertContentAction.html)'
+- en: '[InsertTabAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.InsertTabAction.html)'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[插入制表符操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.InsertTabAction.html)'
+- en: '[PasteAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.PasteAction.html)'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[粘贴操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.PasteAction.html)'
+- en: '*(in `DefaultEditorKit`)* | Inner classes that implement various text editing
+    commands. |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`DefaultEditorKit`中)* | 实现各种文本编辑命令的内部类。 |'
+- en: '| [AlignmentAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.AlignmentAction.html)
+    [BoldAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.BoldAction.html)'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [对齐操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.AlignmentAction.html)
+    [加粗操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.BoldAction.html)'
+- en: '[FontFamilyAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.FontFamilyAction.html)'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[字体族操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.FontFamilyAction.html)'
+- en: '[FontSizeAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.FontSizeAction.html)'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[字体大小操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.FontSizeAction.html)'
+- en: '[ForegroundAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.ForegroundAction.html)'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[前景色操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.ForegroundAction.html)'
+- en: '[ItalicAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.ItalicAction.html)'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[斜体操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.ItalicAction.html)'
+- en: '[StyledTextAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.StyledTextAction.html)'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[样式文本操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.StyledTextAction.html)'
+- en: '[UnderlineAction](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.UnderlineAction.html)'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下划线操作](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.UnderlineAction.html)'
+- en: '*(in `StyledEditorKit`)* | Inner classes that implement various editing commands
+    for styled text. |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`StyledEditorKit`中)* | 实现各种编辑命令以处理带样式文本的内部类。 |'
+- en: '| [Action[] getActions()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getActions--)
+    *(in `JTextComponent`)* | Gets the actions supported by this component. This method
+    gets the array of actions from the editor kit if one is used by the component.
+    |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Action[] getActions()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getActions--)
+    *(在`JTextComponent`中)* | 获取此组件支持的操作。如果组件使用编辑器工具包，则此方法从编辑器工具包获取操作数组。 |'
+- en: '| [InputMap getInputMap()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getInputMap--)
+    *(in `JComponent`)* | Gets the input map that binds key strokes to actions. See
+    [Associating Text Actions with Key Strokes](generaltext.html#bindingkeystrokes).
+    |'
+  id: totrans-63
+  prefs: []
+  type: TYPE_TB
+  zh: '| [InputMap getInputMap()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getInputMap--)
+    *(在`JComponent`中)* | 获取将键绑定到操作的输入映射。参见[将文本操作与键绑定](generaltext.html#bindingkeystrokes)。
+    |'
+- en: '| [void put(KeyStroke, Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/InputMap.html#put-javax.swing.KeyStroke-java.lang.Object-)
+    *(in `InputMap`)* | Binds the specified key to the specified action. You generally
+    specify the action by its name, which for standard editing actions is represented
+    by a string constant such as `DefaultEditorKit.backwardAction`. |'
+  id: totrans-64
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void put(KeyStroke, Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/InputMap.html#put-javax.swing.KeyStroke-java.lang.Object-)
+    *(在`InputMap`中)* | 将指定的键绑定到指定的操作。通常通过名称指定操作，对于标准编辑操作，使用字符串常量表示，如`DefaultEditorKit.backwardAction`。
+    |'
+- en: Classes and Interfaces That Represent Documents
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 代表文档的类和接口
+- en: '| Interface or Class | Description |'
+  id: totrans-66
+  prefs: []
+  type: TYPE_TB
+  zh: '| 接口或类 | 描述 |'
+- en: '| [Document](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html)
+    | An interface that defines the API that must be implemented by all documents.
+    |'
+  id: totrans-67
+  prefs: []
+  type: TYPE_TB
+  zh: '| [文档](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html)
+    | 定义所有文档必须实现的API的接口。 |'
+- en: '| [AbstractDocument](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/AbstractDocument.html)
+    | An abstract superclass implementation of the `Document` interface. This is the
+    superclass for all documents provided by the Swing text package. |'
+  id: totrans-68
+  prefs: []
+  type: TYPE_TB
+  zh: '| [抽象文档](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/AbstractDocument.html)
+    | `Document`接口的抽象超类实现。这是Swing文本包提供的所有文档的超类。 |'
+- en: '| [PlainDocument](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/PlainDocument.html)
+    | A class that implements the `Document` interface. This is the default document
+    for the plain text components (text field, password field, and text area). Additionally,
+    this class is used by the editor panes and text panes when loading plain text
+    or text of an unknown format. |'
+  id: totrans-69
+  prefs: []
+  type: TYPE_TB
+  zh: '| [纯文本文档](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/PlainDocument.html)
+    | 实现`Document`接口的类。这是纯文本组件（文本字段、密码字段和文本区域）的默认文档。此外，在加载纯文本或未知格式的文本时，编辑器窗格和文本窗格使用此类。
+    |'
+- en: '| [StyledDocument](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledDocument.html)
+    | A `Document` subinterface. Defines the API that must be implemented by documents
+    that support styled text. `JTextPane` requires that its document be of this type.
+    |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '| [样式文档](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledDocument.html)
+    | `Document`子接口。定义支持带样式文本的文档必须实现的API。`JTextPane`要求其文档必须是这种类型。 |'
+- en: '| [DefaultStyledDocument](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultStyledDocument.html)
+    | A class that implements the `StyledDocument` interface. The default document
+    for `JTextPane`. |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| [默认样式文档](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultStyledDocument.html)
+    | 实现`StyledDocument`接口的类。`JTextPane`的默认文档。 |'
+- en: Working With Documents
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 处理文档
+- en: '| Class or Method | Description |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类或方法 | 描述 |'
+- en: '| [DocumentFilter](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DocumentFilter.html)
+    | The superclass of all document filters. You can use a document filter to change
+    what gets inserted or removed from a document, without having to implement a document
+    yourself. See [Implementing a Document Filter](generaltext.html#filter). |'
+  id: totrans-74
+  prefs: []
+  type: TYPE_TB
+  zh: '| [DocumentFilter](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DocumentFilter.html)
+    | 所有文档过滤器的超类。您可以使用文档过滤器来更改从文档中插入或移除的内容，而无需自己实现文档。参见[实现文档过滤器](generaltext.html#filter)。|'
+- en: '| [void setDocumentFilter(DocumentFilter)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/AbstractDocument.html#setDocumentFilter-javax.swing.text.DocumentFilter-)
+    *(in `AbstractDocument`)* | Sets the document filter. |'
+  id: totrans-75
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setDocumentFilter(DocumentFilter)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/AbstractDocument.html#setDocumentFilter-javax.swing.text.DocumentFilter-)
+    *(在`AbstractDocument`中)* | 设置文档过滤器。|'
+- en: '| [void setDocument(Document)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setDocument-javax.swing.text.Document-)
+    [Document getDocument()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getDocument--)'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setDocument(Document)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setDocument-javax.swing.text.Document-)
+    [Document getDocument()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getDocument--)
+    |'
+- en: '*(in `JTextComponent`)* | Sets or gets the document for a text component. |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`JTextComponent`中)* | 设置或获取文本组件的文档。|'
+- en: '| [Document createDefaultModel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#createDefaultModel--)
+    *(in `JTextField`)* | Creates a default PlainDocument model. Override this method
+    to create a custom document instead of the default `PlainDocument`. |'
+  id: totrans-78
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Document createDefaultModel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#createDefaultModel--)
+    *(在`JTextField`中)* | 创建一个默认的PlainDocument模型。覆盖此方法以创建自定义文档，而不是默认的`PlainDocument`。|'
+- en: '| [void addDocumentListener(DocumentListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#addDocumentListener-javax.swing.event.DocumentListener-)
+    [void removeDocumentListener(DocumentListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#removeDocumentListener-javax.swing.event.DocumentListener-)'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void addDocumentListener(DocumentListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#addDocumentListener-javax.swing.event.DocumentListener-)
+    [void removeDocumentListener(DocumentListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#removeDocumentListener-javax.swing.event.DocumentListener-)
+    |'
+- en: '*(in `Document`)* | Adds or removes a document listener. See [Listening for
+    Changes on a Document](generaltext.html#doclisteners). |'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`Document`中)* | 添加或移除文档监听器。参见[监听文档变化](generaltext.html#doclisteners)。|'
+- en: '| [void addUndoableEditListener(UndoableEditListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#addUndoableEditListener-javax.swing.event.UndoableEditListener-)
+    [void removeUndoableEditListener(UndoableEditlistener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#removeUndoableEditListener-javax.swing.event.UndoableEditListener-)'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void addUndoableEditListener(UndoableEditListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#addUndoableEditListener-javax.swing.event.UndoableEditListener-)
+    [void removeUndoableEditListener(UndoableEditlistener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#removeUndoableEditListener-javax.swing.event.UndoableEditListener-)
+    |'
+- en: '*(in `Document`)* | Adds or removes an undoable edit listener. Undoable edit
+    listeners are used in [Implementing Undo and Redo](generaltext.html#undo). |'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`Document`中)* | 添加或移除可撤销编辑监听器。可撤销编辑监听器用于[实现撤销和重做](generaltext.html#undo)。|'
+- en: '| [int getLength()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#getLength--)
+    [Position getStartPosition()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#getStartPosition--)'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [int getLength()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#getLength--)
+    [Position getStartPosition()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#getStartPosition--)
+    |'
+- en: '[Position getEndPosition()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#getEndPosition--)'
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Position getEndPosition()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#getEndPosition--)'
+- en: '[String getText(int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#getText-int-int-)'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[String getText(int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#getText-int-int-)
+    |'
+- en: '*(in `Document`)* | `Document` methods that return various descriptive information
+    about the document. |'
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`Document`中)* | 返回有关文档的各种描述信息的`Document`方法。|'
+- en: '| [Object getProperty(Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#getProperty-java.lang.Object-)
+    [void putProperty(Object, Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#putProperty-java.lang.Object-java.lang.Object-)'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [Object getProperty(Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#getProperty-java.lang.Object-)
+    [void putProperty(Object, Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html#putProperty-java.lang.Object-java.lang.Object-)'
+- en: '*(in `Document`)*'
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`Document`中)*'
+- en: '[void setDocumentProperties(Dictionary)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/AbstractDocument.html#setDocumentProperties-java.util.Dictionary-)'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[void setDocumentProperties(Dictionary)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/AbstractDocument.html#setDocumentProperties-java.util.Dictionary-)'
+- en: '[Dictionary getDocumentProperties()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/AbstractDocument.html#getDocumentProperties--)'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Dictionary getDocumentProperties()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/AbstractDocument.html#getDocumentProperties--)'
+- en: '*(in `AbstractDocument`)* | A `Document` maintains a set of properties that
+    you can manipulate with these methods. |'
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`AbstractDocument`中)* | 一个`Document`维护一组属性，您可以使用这些方法来操作。 |'
+- en: Manipulating Carets and Selection Highlighters
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 操纵插入符和选择高亮器
+- en: '*These methods are defined in the `JTextComponent` class.*'
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*这些方法在`JTextComponent`类中定义。*'
+- en: '| Interface, Class, or Method | Description |'
+  id: totrans-94
+  prefs: []
+  type: TYPE_TB
+  zh: '| 接口、类或方法 | 描述 |'
+- en: '| [Caret](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Caret.html)
+    | An interface that defines the API for objects that represent an insertion point
+    within documents. |'
+  id: totrans-95
+  prefs: []
+  type: TYPE_TB
+  zh: '| [插入符](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Caret.html)
+    | 定义表示文档内插入点的对象的 API 的接口。 |'
+- en: '| [DefaultCaret](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultCaret.html)
+    | The default caret used by all text components. |'
+  id: totrans-96
+  prefs: []
+  type: TYPE_TB
+  zh: '| [DefaultCaret](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultCaret.html)
+    | 所有文本组件使用的默认插入符。 |'
+- en: '| [void setCaret(Caret)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setCaret-javax.swing.text.Caret-)
+    [Caret getCaret()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getCaret--)
+    | Sets or gets the caret object used by a text component. |'
+  id: totrans-97
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setCaret(Caret)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setCaret-javax.swing.text.Caret-)
+    [Caret getCaret()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getCaret--)
+    | 设置或获取文本组件使用的插入符对象。 |'
+- en: '| [void setCaretColor(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setCaretColor-java.awt.Color-)
+    [Color getCaretColor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getCaretColor--)
+    | Sets or gets the color of the caret. |'
+  id: totrans-98
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setCaretColor(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setCaretColor-java.awt.Color-)
+    [Color getCaretColor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getCaretColor--)
+    | 设置或获取插入符的颜色。 |'
+- en: '| [void setCaretPosition(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setCaretPosition-int-)
+    [void moveCaretPosition(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#moveCaretPosition-int-)'
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setCaretPosition(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setCaretPosition-int-)
+    [void moveCaretPosition(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#moveCaretPosition-int-)'
+- en: '[int getCaretPosition()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getCaretPosition--)
+    | Sets or gets the current position of the caret within the document. |'
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[int getCaretPosition()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getCaretPosition--)
+    | 设置或获取文档内插入符的当前位置。 |'
+- en: '| [void addCaretListener(CaretListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#addCaretListener-javax.swing.event.CaretListener-)
+    [void removeCaretListener(CaretListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#removeCaretListener-javax.swing.event.CaretListener-)
+    | Adds or removes a caret listener from a text component. |'
+  id: totrans-101
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void addCaretListener(CaretListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#addCaretListener-javax.swing.event.CaretListener-)
+    [void removeCaretListener(CaretListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#removeCaretListener-javax.swing.event.CaretListener-)
+    | 向文本组件添加或移除插入符监听器。 |'
+- en: '| [NavigationFilter](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/NavigationFilter.html)
+    | The superclass for all navigation filters. A navigation filter lets you modify
+    caret changes that are about to occur for a text component. |'
+  id: totrans-102
+  prefs: []
+  type: TYPE_TB
+  zh: '| [NavigationFilter](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/NavigationFilter.html)
+    | 所有导航过滤器的超类。导航过滤器允许您修改即将发生在文本组件中的插入符更改。 |'
+- en: '| [void setNavigationFilter(NavigationFilter)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setNavigationFilter-javax.swing.text.NavigationFilter-)
+    | Attaches a navigation filter to a text component. |'
+  id: totrans-103
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setNavigationFilter(NavigationFilter)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setNavigationFilter-javax.swing.text.NavigationFilter-)
+    | 将导航过滤器附加到文本组件。 |'
+- en: '| [Highlighter](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Highlighter.html)
+    | An interface that defines the API for objects used to highlight the current
+    selection. |'
+  id: totrans-104
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Highlighter](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Highlighter.html)
+    | 定义用于突出显示当前选择的对象的 API 的接口。 |'
+- en: '| [DefaultHighlighter](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultHighlighter.html)
+    | The default highlighter used by all text components. |'
+  id: totrans-105
+  prefs: []
+  type: TYPE_TB
+  zh: '| [DefaultHighlighter](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultHighlighter.html)
+    | 所有文本组件使用的默认高亮器。 |'
+- en: '| [void setHighlighter(Highlighter)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setHighlighter-javax.swing.text.Highlighter-)
+    [Highlighter getHighlighter()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getHighlighter--)
+    | Sets or gets the highlighter used by a text component. |'
+  id: totrans-106
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setHighlighter(Highlighter)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setHighlighter-javax.swing.text.Highlighter-)
+    [Highlighter getHighlighter()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getHighlighter--)
+    | 设置或获取文本组件使用的高亮器。 |'
+- en: Reading and Writing Text
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 读取和写入文本
+- en: '| Method | Description |'
+  id: totrans-108
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| [void read(Reader, Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#read-java.io.Reader-java.lang.Object-)
+    [void write(Writer)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#write-java.io.Writer-)'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void read(Reader, Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#read-java.io.Reader-java.lang.Object-)
+    [void write(Writer)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#write-java.io.Writer-)'
+- en: '*(in `JTextComponent`)* | Reads or writes text. |'
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`JTextComponent`中)* | 读取或写入文本。 |'
+- en: '| [void read(Reader, Document, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/EditorKit.html#read-java.io.Reader-javax.swing.text.Document-int-)
+    [void read(InputStream, Document, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/EditorKit.html#read-java.io.InputStream-javax.swing.text.Document-int-)'
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void read(Reader, Document, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/EditorKit.html#read-java.io.Reader-javax.swing.text.Document-int-)
+    [void read(InputStream, Document, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/EditorKit.html#read-java.io.InputStream-javax.swing.text.Document-int-)'
+- en: '*(in `EditorKit`)* | Reads text from a stream into a document. |'
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`EditorKit`中)* | 从流中读取文本到文档中。 |'
+- en: '| [void write(Writer, Document, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/EditorKit.html#write-java.io.Writer-javax.swing.text.Document-int-int-)
+    [void write(OutputStream, Document, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/EditorKit.html#write-java.io.OutputStream-javax.swing.text.Document-int-int-)'
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void write(Writer, Document, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/EditorKit.html#write-java.io.Writer-javax.swing.text.Document-int-int-)
+    [void write(OutputStream, Document, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/EditorKit.html#write-java.io.OutputStream-javax.swing.text.Document-int-int-)'
+- en: '*(in `EditorKit`)* | Writes text from a document to a stream. |'
+  id: totrans-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`EditorKit`中)* | 将文本从文档写入流中。 |'

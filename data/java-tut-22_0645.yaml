@@ -1,0 +1,436 @@
+- en: Drawing Geometric Primitives
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 绘制几何图元
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/geometry/primitives.html](https://docs.oracle.com/javase/tutorial/2d/geometry/primitives.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/geometry/primitives.html](https://docs.oracle.com/javase/tutorial/2d/geometry/primitives.html)
+- en: The Java 2D API provides several classes that define common geometric objects
+    such as points, lines, curves, and rectangles. These geometry classes are part
+    of the [`java.awt.geom`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/package-frame.html)
+    package.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D API提供了几个定义常见几何对象（如点、线、曲线和矩形）的类。这些几何类是[`java.awt.geom`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/package-frame.html)包的一部分。
+- en: The [`PathIterator`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/PathIterator.html)
+    interface defines methods for retrieving elements from a path.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`PathIterator`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/PathIterator.html)接口定义了从路径中检索元素的方法。'
+- en: The [`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)
+    interface provides a set of methods for describing and inspecting geometric path
+    objects. This interface is implemented by the [`GeneralPath`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/GeneralPath.html)
+    class and other geometry classes.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)接口提供了一组描述和检查几何路径对象的方法。该接口由[`GeneralPath`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/GeneralPath.html)类和其他几何类实现。'
+- en: All examples represented in this section create geometries by using `java.awt.geom`
+    package and then render them by using the [`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)
+    class. To begin you obtain a `Graphics2D` object, for example by casting the `Graphics`
+    parameter of the `paint()` method.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节中的所有示例都是通过使用`java.awt.geom`包创建几何图形，然后通过使用[`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)类来呈现它们。首先，您需要获取一个`Graphics2D`对象，例如通过将`paint()`方法的`Graphics`参数进行强制转换。
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Point
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 点
+- en: The [`Point`](https://docs.oracle.com/javase/8/docs/api/java/awt/Point.html)
+    class creates a point representing a location in (x,y) [coordinate space](../overview/coordinate.html).
+    The subclasses `Point2D.Float` and `Point2D.Double` provide correspondingly float
+    and double precision for storing the coordinates of the point.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Point`](https://docs.oracle.com/javase/8/docs/api/java/awt/Point.html)类创建一个表示(x,y)坐标空间中位置的点。子类`Point2D.Float`和`Point2D.Double`分别提供存储点坐标的浮点和双精度。'
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: To create a point with the coordinates 0,0 you use the default constructor,
+    `Point2D.Double()`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建坐标为0,0的点，您可以使用默认构造函数`Point2D.Double()`。
+- en: 'You can use the `setLocation` method to set the position of the point as follows:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用`setLocation`方法设置点的位置如下：
+- en: '`setLocation(double x, double y)` – To set the location of the point- defining
+    coordinates as double values.'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setLocation(double x, double y)` – 以双精度值设置点的位置-定义坐标。'
+- en: '`setLocation(Point2D p)` – To set the location of the point using the coordinates
+    of another point.'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setLocation(Point2D p)` – 使用另一个点的坐标设置点的位置。'
+- en: Also, the `Point2D` class has methods to calculate the distance between the
+    current point and a point with given coordinates, or the distance between two
+    points.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，`Point2D`类有方法来计算当前点与给定坐标点之间的距离，或者两点之间的距离。
+- en: Line
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 线
+- en: 'The [`Line2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/Line2D.html)
+    class represents a line segment in (x, y) coordinate space. The `Line2D. Float`
+    and `Line2D.Double` subclasses specify lines in float and double precision. For
+    example:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Line2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/Line2D.html)类表示(x,
+    y)坐标空间中的线段。`Line2D.Float`和`Line2D.Double`子类指定了浮点和双精度的线。例如：'
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '![Line](../Images/1f60b6d533dfc9223a734c4f4352c33b.png)'
+  id: totrans-18
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Line](../Images/1f60b6d533dfc9223a734c4f4352c33b.png)'
+- en: This class includes several `setLine()` methods to define the endpoints of the
+    line.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该类包括几个`setLine()`方法来定义线的端点。
+- en: 'Alternatively, the endpoints of the line could be specified by using the constructor
+    for the `Line2D.Float` class as follows:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，可以使用`Line2D.Float`类的构造函数指定线的端点如下：
+- en: '`Line2D.Float(float X1, float Y1, float X2, float Y2)`'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Line2D.Float(float X1, float Y1, float X2, float Y2)`'
+- en: '`Line2D.Float(Point2D p1, Point2D p2)`'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Line2D.Float(Point2D p1, Point2D p2)`'
+- en: Use the [Stroke](strokeandfill.html) object in the `Graphics2D` class to define
+    the stroke for the line path.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`Graphics2D`类中使用[Stroke](strokeandfill.html)对象定义线路径的笔画。
+- en: Curves
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 曲线
+- en: The `java.awt.geom` package enables you to create a quadratic or cubic curve
+    segment.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.awt.geom`包使您能够创建二次或三次曲线段。'
+- en: Quadratic Curve Segment
+  id: totrans-26
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 二次曲线段
+- en: The [`QuadCurve2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/QuadCurve2D.html)
+    class implements the `Shape` interface. This class represents a quadratic parametric
+    curve segment in (x, y) coordinate space. The `QuadCurve2D.Float` and `QuadCurve2D.Double`
+    subclasses specify a quadratic curve in float and double precision.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`QuadCurve2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/QuadCurve2D.html)类实现了`Shape`接口。该类表示(x,
+    y)坐标空间中的二次参数曲线段。`QuadCurve2D.Float`和`QuadCurve2D.Double`子类指定了浮点和双精度的二次曲线。'
+- en: Several `setCurve` methods are used to specify two endpoints and a control point
+    of the curve, whose coordinates can be defined directly, by the coordinates of
+    other points and by using a given array.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 几个`setCurve`方法用于指定曲线的两个端点和控制点，其坐标可以直接定义，通过其他点的坐标定义，或使用给定数组。
+- en: 'A very useful method, `setCurve(QuadCurve2D)`, sets the quadratic curve with
+    the same endpoints and the control point as a supplied curve. For example:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个非常有用的方法，`setCurve(QuadCurve2D)`，设置具有与提供的曲线相同端点和控制点的二次曲线。例如：
+- en: '[PRE3]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '![Quadratic parametric curve segment](../Images/55e2a7b696f6c9ee1438de7990a6e646.png)'
+  id: totrans-31
+  prefs: []
+  type: TYPE_IMG
+  zh: '![二次参数曲线段](../Images/55e2a7b696f6c9ee1438de7990a6e646.png)'
+- en: Cubic Curve Segment
+  id: totrans-32
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 三次曲线段
+- en: The [`CubicCurve2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/CubicCurve2D.html)
+    class also implements the [`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)
+    interface. This class represents a cubic parametric curve segment in (x, y) coordinate
+    space. `CubicCurve2D.Float` and `CubicCurve2D.Double` subclasses specify a cubic
+    curve in float and double precision.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`CubicCurve2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/CubicCurve2D.html)类还实现了[`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)接口。该类表示(x,
+    y)坐标空间中的三次参数曲线段。`CubicCurve2D.Float`和`CubicCurve2D.Double`子类指定了浮点和双精度的三次曲线。'
+- en: 'The `CubicCurve2D` class has similar methods for setting the curve as the `QuadraticCurve2D`class,
+    except with a second control point. For example:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CubicCurve2D`类具有设置曲线的类似方法，与`QuadraticCurve2D`类相同，只是有第二个控制点。例如：'
+- en: '[PRE4]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '![Cubic Curve Segment](../Images/9ca28611a01364693ba33ae31ff70d0e.png)'
+  id: totrans-36
+  prefs: []
+  type: TYPE_IMG
+  zh: '![三次曲线段](../Images/9ca28611a01364693ba33ae31ff70d0e.png)'
+- en: Rectangle
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 矩形
+- en: Classes that specify primitives represented in the following example extend
+    the `RectangularShape` class, which implements the `Shape` interface and adds
+    a few methods of its own.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在下面的示例中表示的原语的类扩展了`RectangularShape`类，该类实现了`Shape`接口并添加了一些自己的方法。
+- en: These methods enables you to get information about a shape’s location and size,
+    to examine the center point of a rectangle, and to set the bounds of the shape.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些方法使您能够获取有关形状位置和大小的信息，检查矩形的中心点，并设置形状的边界。
+- en: 'The [`Rectangle2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/Rectangle2D.html)
+    class represents a rectangle defined by a location (x, y) and dimension (w x h).
+    The `Rectangle2D.Float` and `Rectangle2D.Double` subclasses specify a rectangle
+    in float and double precision. For example:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Rectangle2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/Rectangle2D.html)类表示由位置(x,
+    y)和尺寸(w x h)定义的矩形。`Rectangle2D.Float`和`Rectangle2D.Double`子类指定了浮点和双精度的矩形。例如：'
+- en: '[PRE5]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '![Rectangle](../Images/ffaf1fa113f080b669f969839ba83ad5.png)'
+  id: totrans-42
+  prefs: []
+  type: TYPE_IMG
+  zh: '![矩形](../Images/ffaf1fa113f080b669f969839ba83ad5.png)'
+- en: The [`RoundRectangle2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/RoundRectangle2D.html)
+    class represents a rectangle with rounded corners defined by a location (x, y),
+    a dimension (w x h), and the width and height of the corner arc. The `RoundRectangle2D.Float`
+    and `RoundRectangle2D.Double` subclasses specify a round rectangle in float and
+    double precision.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`RoundRectangle2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/RoundRectangle2D.html)类表示具有圆角的矩形，由位置(x,
+    y)、尺寸(w x h)和圆角的宽度和高度定义。`RoundRectangle2D.Float`和`RoundRectangle2D.Double`子类指定了浮点和双精度的圆角矩形。'
+- en: 'The rounded rectangle is specified with following parameters:'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 圆角矩形由以下参数指定：
+- en: Location
+  id: totrans-45
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 位置
+- en: Width
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 宽度
+- en: Height
+  id: totrans-47
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 高度
+- en: Width of the corner arc
+  id: totrans-48
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 圆角弧的宽度
+- en: Height of the corner arc
+  id: totrans-49
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 圆角弧的高度
+- en: 'To set the location, size, and arcs of a `RoundRectangle2D` object, use the
+    method `setRoundRect(double a, double y, double w, double h, double arcWidth,
+    double arcHeight)`. For example:'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要设置`RoundRectangle2D`对象的位置、大小和弧度，请使用方法`setRoundRect(double a, double y, double
+    w, double h, double arcWidth, double arcHeight)`。例如：
+- en: '[PRE6]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '![Rounded Rectangle](../Images/4ad6995d4cd9a952f1607f9eead72907.png)'
+  id: totrans-52
+  prefs: []
+  type: TYPE_IMG
+  zh: '![圆角矩形](../Images/4ad6995d4cd9a952f1607f9eead72907.png)'
+- en: Ellipse
+  id: totrans-53
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 椭圆
+- en: The [`Ellipse2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/Ellipse2D.html)
+    class represents an ellipse defined by a bounding rectangle. The `Ellipse2D.Float`
+    and `Ellipse2D.Double` subclasses specify an ellipse in float and double precision.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Ellipse2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/Ellipse2D.html)类表示由边界矩形定义的椭圆。`Ellipse2D.Float`和`Ellipse2D.Double`子类指定了以浮点和双精度表示的椭圆。'
+- en: 'Ellipse is fully defined by a location, a width and a height. For example:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 椭圆由位置、宽度和高度完全定义。例如：
+- en: '[PRE7]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '![Ellipse](../Images/fac4f5cba4ec9f5bb16fdc470b870567.png)'
+  id: totrans-57
+  prefs: []
+  type: TYPE_IMG
+  zh: '![椭圆](../Images/fac4f5cba4ec9f5bb16fdc470b870567.png)'
+- en: Arc
+  id: totrans-58
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 弧
+- en: To draw a piece of an ellipse, you use the [`Arc2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/Arc2D.html)
+    class. This class represents an arc defined by a bounding rectangle, a start angle,
+    an angular extent, and a closure type. The `Arc2D.Float` and `Arc2D.Double` subclasses
+    specify an arc in float and double precision.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要绘制椭圆的一部分，您可以使用[`Arc2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/Arc2D.html)类。这个类表示由边界矩形、起始角度、角度范围和闭合类型定义的弧。`Arc2D.Float`和`Arc2D.Double`子类指定了以浮点和双精度表示的弧。
+- en: 'The `Arc2D` class defines the following three types of arcs, represented by
+    corresponding constants in this class: OPEN, PIE and CHORD.'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Arc2D`类定义了这个类中对应常量表示的三种弧形：OPEN、PIE和CHORD。'
+- en: '![Arc](../Images/2def387f9d2e4027360b3e57db505ea7.png)'
+  id: totrans-61
+  prefs: []
+  type: TYPE_IMG
+  zh: '![弧](../Images/2def387f9d2e4027360b3e57db505ea7.png)'
+- en: 'Several methods set the size and parameters of the arc:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有几种方法可以设置弧的大小和参数：
+- en: Directly, by coordinates
+  id: totrans-63
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 直接，通过坐标
+- en: By supplied `Point2D` and `Dimension2D`
+  id: totrans-64
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过提供的`Point2D`和`Dimension2D`
+- en: By copying an existing `Arc2D`
+  id: totrans-65
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过复制现有的`Arc2D`
+- en: Also, you can use the `setArcByCenter` method to specify an arc from a center
+    point, given by its coordinates and a radius.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，您可以使用`setArcByCenter`方法来指定从中心点开始的弧，给定其坐标和半径。
+- en: '[PRE8]'
+  id: totrans-67
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: '![Arc](../Images/2def387f9d2e4027360b3e57db505ea7.png)'
+  id: totrans-68
+  prefs: []
+  type: TYPE_IMG
+  zh: '![弧](../Images/2def387f9d2e4027360b3e57db505ea7.png)'
+- en: The [`ShapesDemo2D.java`](examples/ShapesDemo2D.java) code example contains
+    implementations of all described geometric primitives. For more information about
+    classes and methods represented in this section, see the [`java.awt.geom`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/package-summary.html)
+    specification.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`ShapesDemo2D.java`](examples/ShapesDemo2D.java)代码示例包含了所有描述的几何原语的实现。有关本节中所代表的类和方法的更多信息，请参阅[`java.awt.geom`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/package-summary.html)规范。'

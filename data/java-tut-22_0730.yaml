@@ -1,0 +1,211 @@
+- en: Using Large Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用大对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/blob.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/blob.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/blob.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/blob.html)
+- en: An important feature of `Blob`, `Clob`, and `NClob` Java objects is that you
+    can manipulate them without having to bring all of their data from the database
+    server to your client computer. Some implementations represent an instance of
+    these types with a locator (logical pointer) to the object in the database that
+    the instance represents. Because a `BLOB`, `CLOB`, or `NCLOB` SQL object may be
+    very large, the use of locators can make performance significantly faster. However,
+    other implementations fully materialize large objects on the client computer.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Blob`、`Clob`和`NClob` Java对象的一个重要特性是，您可以在不将所有数据从数据库服务器传输到客户端计算机的情况下对它们进行操作。一些实现使用定位器（逻辑指针）来表示这些类型的实例，指向实例所代表的数据库中的对象。由于`BLOB`、`CLOB`或`NCLOB`
+    SQL对象可能非常大，使用定位器可以显著提高性能。但是，其他实现会在客户端计算机上完全实现大对象。'
+- en: If you want to bring the data of a `BLOB`, `CLOB`, or `NCLOB` SQL value to the
+    client computer, use methods in the `Blob`, `Clob`, and `NClob` Java interfaces
+    that are provided for this purpose. These large object type objects materialize
+    the data of the objects they represent as a stream.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果要将`BLOB`、`CLOB`或`NCLOB` SQL值的数据传输到客户端计算机，请使用为此目的提供的`Blob`、`Clob`和`NClob` Java接口中的方法。这些大对象类型对象将它们所代表的对象的数据实现为流。
+- en: 'The following topics are covered:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下主题涵盖：
+- en: '[Adding Large Object Type Objects to Databases](#add_lob)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[向数据库添加大对象类型对象](#add_lob)'
+- en: '[Retrieving CLOB Values](#retrieve_clob)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检索CLOB值](#retrieve_clob)'
+- en: '[Adding and Retrieving BLOB Objects](#add_retrieve_blob)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[添加和检索BLOB对象](#add_retrieve_blob)'
+- en: '[Releasing Resources Held by Large Objects](#release_large_objects)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[释放大对象占用的资源](#release_large_objects)'
+- en: Adding Large Object Type Object to Database
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 向数据库添加大对象类型对象
+- en: The following excerpt from [`ClobSample.addRowToCoffeeDescriptions`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/ClobSample.java)
+    adds a `CLOB` SQL value to the table `COFFEE_DESCRIPTIONS`. The `Clob` Java object
+    `myClob` contains the contents of the file specified by `fileName`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下摘录自[`ClobSample.addRowToCoffeeDescriptions`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/ClobSample.java)向`COFFEE_DESCRIPTIONS`表中添加`CLOB`
+    SQL值。`Clob` Java对象`myClob`包含由`fileName`指定的文件的内容。
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following line creates a `Clob` Java object:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一行创建一个`Clob` Java对象：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The following line retrieves a stream (in this case a `Writer` object named
+    `clobWriter`) that is used to write a stream of characters to the `Clob` Java
+    object `myClob`. The method `ClobSample.readFile` writes this stream of characters;
+    the stream is from the file specified by the `String` `fileName`. The method argument
+    `1` indicates that the `Writer` object will start writing the stream of characters
+    at the beginning of the `Clob` value:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一行检索一个流（在本例中为名为`clobWriter`的`Writer`对象），用于将一系列字符写入`Clob` Java对象`myClob`。`ClobSample.readFile`方法写入这些字符流；流来自由`String`
+    `fileName`指定的文件。方法参数`1`表示`Writer`对象将从`Clob`值的开头开始写入字符流：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The `ClobSample.readFile` method reads the file line-by-line specified by the
+    file `fileName` and writes it to the `Writer` object specified by `writerArg`:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ClobSample.readFile`方法逐行读取由文件`fileName`指定的文件，并将其写入由`writerArg`指定的`Writer`对象：'
+- en: '[PRE3]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The following excerpt creates a `PreparedStatement` object `pstmt` that inserts
+    the `Clob` Java object `myClob` into `COFFEE_DESCRIPTIONS`:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下摘录创建一个`PreparedStatement`对象`pstmt`，将`Clob` Java对象`myClob`插入`COFFEE_DESCRIPTIONS`中：
+- en: '[PRE4]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Retrieving CLOB Values
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检索CLOB值
+- en: 'The method [`ClobSample.retrieveExcerpt`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/ClobSample.java)
+    retrieves the `CLOB` SQL value stored in the `COF_DESC` column of `COFFEE_DESCRIPTIONS`
+    from the row whose column value `COF_NAME` is equal to the `String` value specified
+    by the `coffeeName` parameter:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法[`ClobSample.retrieveExcerpt`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/ClobSample.java)从`COFFEE_DESCRIPTIONS`表中`COF_NAME`列的值等于`coffeeName`参数指定的`String`值的行中检索存储在`COF_DESC`列中的`CLOB`
+    SQL值：
+- en: '[PRE5]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The following line retrieves the `Clob` Java value from the `ResultSet` object
+    `rs`:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一行从`ResultSet`对象`rs`中检索`Clob` Java值：
+- en: '[PRE6]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The following line retrieves a substring from the `myClob` object. The substring
+    begins at the first character of the value of `myClob` and has up to the number
+    of consecutive characters specified in `numChar`, where `numChar` is an integer.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下行从`myClob`对象中检索子字符串。子字符串从`myClob`值的第一个字符开始，最多有`numChar`指定的连续字符数，其中`numChar`是一个整数。
+- en: '[PRE7]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Adding and Retrieving BLOB Objects
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 添加和检索 BLOB 对象
+- en: Adding and retrieving `BLOB` SQL objects is similar to adding and retrieving
+    `CLOB` SQL objects. Use the `Blob.setBinaryStream` method to retrieve an `OutputStream`
+    object to write the `BLOB` SQL value that the `Blob` Java object (which called
+    the method) represents.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 添加和检索`BLOB` SQL对象类似于添加和检索`CLOB` SQL对象。使用`Blob.setBinaryStream`方法检索一个`OutputStream`对象，以写入调用该方法的`Blob`
+    Java对象（表示`BLOB` SQL值）的`BLOB` SQL值。
+- en: Releasing Resources Held by Large Objects
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 释放大对象所持有的资源
+- en: '`Blob`, `Clob`, and `NClob` Java objects remain valid for at least the duration
+    of the transaction in which they are created. This could potentially result in
+    an application running out of resources during a long running transaction. Applications
+    may release `Blob`, `Clob`, and `NClob` resources by invoking their `free` method.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Blob`、`Clob`和`NClob` Java对象在它们被创建的事务持续时间内至少保持有效。这可能导致应用程序在长时间运行的事务中耗尽资源。应用程序可以通过调用它们的`free`方法来释放`Blob`、`Clob`和`NClob`资源。'
+- en: 'In the following excerpt, the method `Clob.free` is called to release the resources
+    held for a previously created `Clob` object:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在以下摘录中，调用方法`Clob.free`来释放先前创建的`Clob`对象所持有的资源：
+- en: '[PRE8]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'

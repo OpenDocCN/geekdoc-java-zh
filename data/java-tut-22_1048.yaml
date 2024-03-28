@@ -1,0 +1,502 @@
+- en: Customizing Generated Classes and Java Program Elements
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 自定义生成的类和 Java 程序元素
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/customize.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/customize.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/customize.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/customize.html)
+- en: The following sections describe how to customize generated JAXB classes and
+    Java program elements.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下部分描述了如何自定义生成的 JAXB 类和 Java 程序元素。
+- en: Schema-to-Java
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 模式到 Java
+- en: Custom JAXB binding declarations enable you to customize your generated JAXB
+    classes beyond the XML-specific constraints in an XML schema to include Java-specific
+    refinements, such as class and package name mappings.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自定义 JAXB 绑定声明使您能够在 XML 模式中包含 Java 特定的细化，例如类和包名称映射，以定制生成的 JAXB 类。
+- en: 'JAXB provides two ways to customize an XML schema:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAXB 提供了两种自定义 XML 模式的方法：
+- en: As inline annotations in a source XML schema
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 作为源 XML 模式中的内联注释
+- en: As declarations in an external binding customization file that is passed to
+    the JAXB binding compiler
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 作为传递给 JAXB 绑定编译器的外部绑定自定义文件中的声明
+- en: Code examples that show how to customize JAXB bindings are provided later in
+    this document.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 提供了显示如何自定义 JAXB 绑定的代码示例，稍后在本文档中提供。
+- en: Java-to-Schema
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Java 到模式
+- en: The JAXB annotations defined in the `javax.xml.bind.annotation` package can
+    be used to customize Java program elements to XML schema mapping. The following
+    table summarizes the JAXB annotations that can be used with a Java package.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `javax.xml.bind.annotation` 包中定义的 JAXB 注释可用于自定义 Java 程序元素到 XML 模式的映射。以下表总结了可以与
+    Java 包一起使用的 JAXB 注释。
+- en: Table: JAXB Annotations Associated with a Java Package
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表：与 Java 包相关的 JAXB 注释
+- en: '| Annotation | Description and Default Setting |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| 注释 | 描述和默认设置 |'
+- en: '| `@XmlSchema` | Maps a package to an XML target namespace. Default settings:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlSchema` | 将包映射到 XML 目标命名空间。默认设置：'
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '|'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlAccessorType` | Controls default serialization of fields and properties.
+    Default settings:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlAccessorType` | 控制字段和属性的默认序列化。默认设置：'
+- en: '[PRE1]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '|'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlAccessorOrder` | Controls the default ordering of properties and fields
+    mapped to XML elements. Default settings:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlAccessorOrder` | 控制映射到 XML 元素的属性和字段的默认排序。默认设置：'
+- en: '[PRE2]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '|'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlSchemaType` | Allows a customized mapping to an XML Schema built-in
+    type. Default settings:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlSchemaType` | 允许自定义映射到 XML 模式内置类型。默认设置：'
+- en: '[PRE3]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '|'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlSchemaTypes` | A container annotation for defining multiple `@XmlSchemaType`
+    annotations. Default settings:None |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlSchemaTypes` | 用于定义多个 `@XmlSchemaType` 注释的容器注释。默认设置：无 |'
+- en: The following table summarizes JAXB annotations that can be used with a Java
+    class.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表总结了可以与 Java 类一起使用的 JAXB 注释。
+- en: Table: JAXB Annotations Associated with a Java Class
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表：与 Java 类相关的 JAXB 注释
+- en: '| Annotation | Description and Default Setting |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| 注释 | 描述和默认设置 |'
+- en: '| `@XmlType` | Maps a Java class to a schema type. Default settings:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlType` | 将 Java 类映射到模式类型。默认设置：'
+- en: '[PRE4]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '|'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlRootElement` | Associates a global element with the schema type to which
+    the class is mapped. Default settings:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlRootElement` | 将全局元素与类映射到的模式类型关联。默认设置：'
+- en: '[PRE5]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '|'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: The following table summarizes JAXB annotations that can be used with a Java
+    `enum` type.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表总结了可以与 Java `enum` 类型一起使用的 JAXB 注释。
+- en: Table: JAXB Annotations Associated with a Java `enum` Type
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表：与 Java `enum` 类型相关的 JAXB 注释
+- en: '| Annotation | Description and Default Setting |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| 注释 | 描述和默认设置 |'
+- en: '| `@XmlEnum` | Maps a Java type to an XML simple type. Default settings:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlEnum` | 将 Java 类型映射到 XML 简单类型。默认设置：'
+- en: '[PRE6]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '|'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlEnumValue` | Maps a Java type to an XML simple type. Default settings:None
+    |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlEnumValue` | 将 Java 类型映射到 XML 简单类型。默认设置：无 |'
+- en: '| `@XmlType` | Maps a Java class to a schema type. Default settings:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlType` | 将 Java 类映射到模式类型。默认设置：'
+- en: '[PRE7]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '|'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlRootElement` | Associates a global element with the schema type to which
+    the class is mapped. Default settings:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlRootElement` | 将全局元素与类映射到的模式类型关联。默认设置：'
+- en: '[PRE8]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: '|'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: The following table summarizes JAXB annotations that can be used with Java properties
+    and fields.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表总结了可以与 Java 属性和字段一起使用的 JAXB 注释。
+- en: Table: JAXB Annotations Associated with Java Properties and Fields
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表：与 Java 属性和字段相关的 JAXB 注释
+- en: '| Annotation | Description and Default Setting |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| 注释 | 描述和默认设置 |'
+- en: '| `@XmlElement` | Maps a JavaBeans property or field to an XML element derived
+    from a property or field name. Default settings:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlElement` | 将 JavaBeans 属性或字段映射到从属性或字段名称派生的 XML 元素。默认设置：'
+- en: '[PRE9]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '|'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlElements` | A container annotation for defining multiple `@XmlElement`
+    annotations. Default settings:None |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlElements` | 用于定义多个 `@XmlElement` 注解的容器注解。默认设置：无 |'
+- en: '| `@XmlElementRef` | Maps a JavaBeans property or field to an XML element derived
+    from a property or field’s type. Default settings:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlElementRef` | 将 JavaBeans 属性或字段映射到从属性或字段类型派生的 XML 元素。默认设置：'
+- en: '[PRE10]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: '|'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlElementRefs` | A container annotation for defining multiple `@XmlElementRef`
+    annotations. Default settings:None |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlElementRefs` | 用于定义多个 `@XmlElementRef` 注解的容器注解。默认设置：无 |'
+- en: '| `@XmlElementWrapper` | Generates a wrapper element around an XML representation.
+    It is typically used as a wrapper XML element around collections. Default settings:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlElementWrapper` | 在 XML 表示周围生成一个包装器元素。通常用作集合周围的包装 XML 元素。默认设置：'
+- en: '[PRE11]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: '|'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlAnyElement` | Maps a JavaBeans property to an XML infoset representation
+    or a JAXB element. Default settings:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlAnyElement` | 将 JavaBeans 属性映射到 XML 信息集表示或 JAXB 元素。默认设置：'
+- en: '[PRE12]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: '|'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlAttribute` | Maps a JavaBeans property to an XML attribute. Default
+    settings:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlAttribute` | 将一个 JavaBeans 属性映射到 XML 属性。默认设置：'
+- en: '[PRE13]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: '|'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlAnyAttribute` | Maps a JavaBeans property to a map of wildcard attributes.
+    Default settings:None |'
+  id: totrans-68
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlAnyAttribute` | 将 JavaBeans 属性映射到通配符属性映射。默认设置：无 |'
+- en: '| `@XmlTransient` | Prevents the mapping of a JavaBeans property to an XML
+    representation. Default settings:None |'
+  id: totrans-69
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlTransient` | 防止将 JavaBeans 属性映射到 XML 表示。默认设置：无 |'
+- en: '| `@XmlValue` | Defines mapping of a class to an XML Schema complex type with
+    a `simpleContent` or an XML Schema simple type. Default settings:None |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlValue` | 定义类到 XML Schema 复杂类型或 XML Schema 简单类型的映射。默认设置：无 |'
+- en: '| `@XmlID` | Maps a JavaBeans property to an XML ID. Default settings:None
+    |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlID` | 将 JavaBeans 属性映射到 XML ID。默认设置：无 |'
+- en: '| `@XmlIDREF` | Maps a JavaBeans property to an XML IDREF. Default settings:None
+    |'
+  id: totrans-72
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlIDREF` | 将 JavaBeans 属性映射到 XML IDREF。默认设置：无 |'
+- en: '| `@XmlList` | Maps a property to a list simple type. Default settings:None
+    |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlList` | 将属性映射到简单类型列表。默认设置：无 |'
+- en: '| `@XmlMixed` | Marks a JavaBeans multi-valued property to support mixed content.
+    Default settings:None |'
+  id: totrans-74
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlMixed` | 标记 JavaBeans 多值属性以支持混合内容。默认设置：无 |'
+- en: '| `@XmlMimeType` | Associates the MIME type that controls the XML representation
+    of the property. Default settings:None |'
+  id: totrans-75
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlMimeType` | 关联控制属性的 XML 表示的 MIME 类型。默认设置：无 |'
+- en: '| `@XmlAttachmentRef` | Marks a field/property that its XML form is a URI reference
+    to mime content. Default settings:None |'
+  id: totrans-76
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlAttachmentRef` | 标记字段/属性，其 XML 表单是指向 mime 内容的 URI 引用。默认设置：无 |'
+- en: '| `@XmlInlineBinaryData` | Disables consideration of XOP encoding for data
+    types that are bound to base64-encoded binary data in XML. Default settings:None
+    |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlInlineBinaryData` | 禁用对绑定到 XML 中 base64 编码二进制数据的数据类型考虑 XOP 编码。默认设置：无
+    |'
+- en: The following table summarizes the JAXB annotation that can be used with object
+    factories.
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表总结了可以与对象工厂一起使用的 JAXB 注解。
+- en: Table: JAXB Annotations Associated with Object Factories
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表格：与对象工厂相关的 JAXB 注解
+- en: '| Annotation | Description and Default Setting |'
+  id: totrans-80
+  prefs: []
+  type: TYPE_TB
+  zh: '| 注解 | 描述和默认设置 |'
+- en: '| `@XmlElementDecl` | Maps a factory method to an XML element. Default settings:'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlElementDecl` | 将工厂方法映射到 XML 元素。默认设置：'
+- en: '[PRE14]'
+  id: totrans-82
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: '|'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: The following table summarizes JAXB annotations that can be used with adapters.
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表总结了可以与适配器一起使用的 JAXB 注解。
+- en: Table: JAXB Annotations Associated with Adapters
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表格：与适配器相关的 JAXB 注解
+- en: '| Annotation | Description and Default Setting |'
+  id: totrans-86
+  prefs: []
+  type: TYPE_TB
+  zh: '| 注解 | 描述和默认设置 |'
+- en: '| `@XmlJavaTypeAdapter` | Use the adapter that implements the `@XmlAdapter`
+    annotation for custom marshalling. Default settings:'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `@XmlJavaTypeAdapter` | 使用实现 `@XmlAdapter` 注解的适配器进行自定义编组。默认设置：'
+- en: '[PRE15]'
+  id: totrans-88
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: '|'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `@XmlJavaTypeAdapters` | A container annotation for defining multiple `@XmlJavaTypeAdapter`
+    annotations at the package level. Default settings: None |'
+  id: totrans-90
+  prefs: []
+  type: TYPE_TB
+  zh: '| `@XmlJavaTypeAdapters` | 用于在包级别定义多个 `@XmlJavaTypeAdapter` 注解的容器注解。默认设置：无
+    |'

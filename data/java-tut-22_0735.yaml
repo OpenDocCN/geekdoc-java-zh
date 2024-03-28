@@ -1,0 +1,242 @@
+- en: Using Customized Type Mappings
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用自定义类型映射
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlcustommapping.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlcustommapping.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlcustommapping.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlcustommapping.html)
+- en: '**Note**: MySQL currently does not support user-defined types. MySQL and Java
+    DB currently do not support structured types, or the `DISTINCT` SQL data type.
+    No JDBC tutorial example is available to demonstrate the features described in
+    this section.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：MySQL目前不支持用户定义类型。MySQL和Java DB目前不支持结构化类型或`DISTINCT` SQL数据类型。没有可用的JDBC教程示例来演示本节中描述的功能。'
+- en: With business booming, the owner of The Coffee Break is regularly adding new
+    stores and making changes to the database. The owner has decided to use a custom
+    mapping for the structured type `ADDRESS`. This enables the owner to make changes
+    to the Java class that maps the `ADDRESS` type. The Java class will have a field
+    for each attribute of `ADDRESS`. The name of the class and the names of its fields
+    can be any valid Java identifier.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 随着生意蒸蒸日上，The Coffee Break的老板经常添加新店铺并对数据库进行更改。老板决定为结构化类型`ADDRESS`使用自定义映射。这使老板可以对映射`ADDRESS`类型的Java类进行更改。Java类将为`ADDRESS`的每个属性都有一个字段。类的名称和字段的名称可以是任何有效的Java标识符。
+- en: 'The following topics are covered:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面涵盖了以下主题：
+- en: '[Implementing SQLData](#implementing_sqldata)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[实现SQLData](#implementing_sqldata)'
+- en: '[Using a Connection''s Type Map](#using_connection_type_map)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用连接的类型映射](#using_connection_type_map)'
+- en: '[Using Your Own Type Map](#using_your_own_type_map)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用自定义类型映射](#using_your_own_type_map)'
+- en: Implementing SQLData
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 实现SQLData
+- en: The first thing required for a custom mapping is to create a class that implements
+    the interface `SQLData`.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现自定义映射所需的第一步是创建一个实现接口`SQLData`的类。
+- en: 'The SQL definition of the structured type `ADDRESS` looks like this:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 结构化类型`ADDRESS`的SQL定义如下：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'A class that implements the `SQLData` interface for the custom mapping of the
+    `ADDRESS` type might look like this:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了自定义映射`ADDRESS`类型而实现`SQLData`接口的类可能如下所示：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Using a Connection's Type Map
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用连接的类型映射
+- en: After writing a class that implements the interface `SQLData`, the only other
+    thing you have to do to set up a custom mapping is to make an entry in a type
+    map. For the example, this means entering the fully qualified SQL name for the
+    `ADDRESS` type and the `Class` object for the class `Address`. A type map, an
+    instance of the `java.util.Map` interface, is associated with every new connection
+    when it is created, so you use that one. Assuming that `con` is the active connection,
+    the following code fragment adds an entry for the UDT `ADDRESS` to the type map
+    associated with `con`.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编写一个实现`SQLData`接口的类之后，设置自定义映射的唯一其他事项就是在类型映射中进行条目设置。例如，这意味着输入`ADDRESS`类型的完全限定SQL名称和`Address`类的`Class`对象。类型映射是`java.util.Map`接口的一个实例，与每个新创建的连接相关联，因此您可以使用它。假设`con`是活动连接，以下代码片段向与`con`关联的类型映射添加了一个UDT
+    `ADDRESS`的条目。
+- en: '[PRE2]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Whenever you call the `getObject` method to retrieve an instance of the `ADDRESS`
+    type, the driver will check the type map associated with the connection and see
+    that it has an entry for `ADDRESS`. The driver will note the `Class` object for
+    the `Address` class, create an instance of it, and do many other things in the
+    background to map `ADDRESS` to `Address`. You do not have to do anything more
+    than generate the class for the mapping and then make an entry in a type map to
+    let the driver know that there is a custom mapping. The driver will do all the
+    rest.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当调用`getObject`方法检索`ADDRESS`类型的实例时，驱动程序将检查与连接关联的类型映射，并看到它有一个`ADDRESS`的条目。驱动程序将注意到`Address`类的`Class`对象，创建其实例，并在后台执行许多其他操作以将`ADDRESS`映射到`Address`。您只需生成映射的类，然后在类型映射中进行条目设置，让驱动程序知道有一个自定义映射。驱动程序将完成其余所有工作。
+- en: The situation is similar for storing a structured type that has a custom mapping.
+    When you call the method `setObject`, the driver will check to see if the value
+    to be set is an instance of a class that implements the interface `SQLData`. If
+    it is (meaning that there is a custom mapping), the driver will use the custom
+    mapping to convert the value to its SQL counterpart before returning it to the
+    database. Again, the driver does the custom mapping behind the scenes; all you
+    need to do is supply the method `setObject` with a parameter that has a custom
+    mapping. You will see an example of this later in this section.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 存储具有自定义映射的结构化类型时情况类似。当调用`setObject`方法时，驱动程序将检查要设置的值是否是实现了`SQLData`接口的类的实例。如果是（表示存在自定义映射），驱动程序将使用自定义映射将值转换为其SQL对应项，然后返回给数据库。再次强调，驱动程序在后台执行自定义映射；你只需向`setObject`方法提供具有自定义映射的参数即可。稍后在本节中将看到一个示例。
+- en: Look at the difference between working with the standard mapping, a `Struct`
+    object, and the custom mapping, a class in the Java programming language. The
+    following code fragment shows the standard mapping to a `Struct` object, which
+    is the mapping the driver uses when there is no entry in the connection's type
+    map.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看使用标准映射（`Struct`对象）和使用Java编程语言中的自定义映射（类）之间的区别。下面的代码片段展示了标准映射到`Struct`对象的映射，这是在连接的类型映射中没有条目时驱动程序使用的映射。
+- en: '[PRE3]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The variable `address` contains the following attribute values: `4344`, `"First_Street"`,
+    `"Verona"`, `"CA"`, `"94545"`.'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 变量`address`包含以下属性值：`4344`、`"First_Street"`、`"Verona"`、`"CA"`、`"94545"`。
+- en: The following code fragment shows what happens when there is an entry for the
+    structured type `ADDRESS` in the connection's type map. Remember that the column
+    `LOCATION` stores values of type `ADDRESS`.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的代码片段展示了当连接的类型映射中存在结构化类型`ADDRESS`的条目时会发生什么。请记住，列`LOCATION`存储类型为`ADDRESS`的值。
+- en: '[PRE4]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The variable `store_3` is now an instance of the class `Address`, with each
+    attribute value being the current value of one of the fields of `Address`. Note
+    that you must remember to convert the object retrieved by the `getObject` method
+    to an `Address` object before assigning it to `store_3`. Note also that `store_3`
+    must be an `Address` object.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 变量`store_3`现在是`Address`类的实例，每个属性值都是`Address`的一个字段的当前值。请注意，在将`getObject`方法检索的对象转换为`Address`对象并将其分配给`store_3`之前，必须记得进行转换。还要注意，`store_3`必须是一个`Address`对象。
+- en: 'Compare working with the `Struct` object to working with the instance of the
+    `Address` class. Suppose the store moved to a better location in the neighboring
+    town and therefore you must update the database. With the custom mapping, reset
+    the fields of `store_3`, as in the following code fragment:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将使用`Struct`对象与使用`Address`类的实例进行比较。假设商店搬到了邻近城镇的更好位置，因此您必须更新数据库。使用自定义映射，重置`store_3`的字段，如下面的代码片段所示：
+- en: '[PRE5]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Values in the column `LOCATION` are instances of the `ADDRESS` type. The driver
+    checks the connection's type map and sees that there is an entry linking `ADDRESS`
+    with the class `Address` and consequently uses the custom mapping indicated in
+    `Address`. When the code calls the method `setObject` with the variable `*store_3*`
+    as the second parameter, the driver checks and sees that `*store_3*` represents
+    an instance of the class `Address`, which implements the interface `SQLData` for
+    the structured type `ADDRESS`, and again automatically uses the custom mapping.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列`LOCATION`中的值是`ADDRESS`类型的实例。驱动程序检查连接的类型映射，看到将`ADDRESS`与类`Address`关联的条目，因此使用`Address`中指示的自定义映射。当代码使用变量`*store_3*`作为第二个参数调用`setObject`方法时，驱动程序检查并看到`*store_3*`表示`Address`类的实例，该类实现了结构化类型`ADDRESS`的`SQLData`接口，并再次自动使用自定义映射。
+- en: 'Without a custom mapping for `ADDRESS`, the update would look more like this:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 没有`ADDRESS`的自定义映射，更新将更像这样：
+- en: '[PRE6]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Using Your Own Type Map
+  id: totrans-30
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用您自己的类型映射
+- en: Up to this point, you have used only the type map associated with a connection
+    for custom mapping. Ordinarily, that is the only type map most programmers will
+    use. However, it is also possible to create a type map and pass it to certain
+    methods so that the driver will use that type map instead of the one associated
+    with the connection. This allows two different mappings for the same user-defined
+    type (UDT). In fact, it is possible to have multiple custom mappings for the same
+    UDT, just as long as each mapping is set up with a class implementing the `SQLData`
+    interface and an entry in a type map. If you do not pass a type map to a method
+    that can accept one, the driver will by default use the type map associated with
+    the connection.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，您仅使用了与连接关联的类型映射进行自定义映射。通常情况下，大多数程序员只会使用这种类型映射。但是，也可以创建一个类型映射并将其传递给某些方法，以便驱动程序将使用该类型映射而不是与连接关联的类型映射。这允许为同一用户定义类型（UDT）使用两种不同的映射。实际上，可以为相同的
+    UDT 拥有多个自定义映射，只要每个映射都设置为实现`SQLData`接口的类和类型映射中的条目。如果您没有向可以接受类型映射的方法传递类型映射，则驱动程序将默认使用与连接关联的类型映射。
+- en: There are very few situations that call for using a type map other than the
+    one associated with a connection. It could be necessary to supply a method with
+    a type map if, for instance, several programmers working on a JDBC application
+    brought their components together and were using the same connection. If two or
+    more programmers had created their own custom mappings for the same SQL UDT, each
+    would need to supply his or her own type map, thus overriding the connection's
+    type map.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在使用与连接关联的类型映射之外的类型映射的情况非常少见。例如，如果几个程序员共同开发 JDBC 应用程序并且在使用相同连接，则可能需要为方法提供一个类型映射。如果两个或更多程序员为相同的
+    SQL UDT 创建了自定义映射，则每个人都需要提供自己的类型映射，从而覆盖连接的类型映射。

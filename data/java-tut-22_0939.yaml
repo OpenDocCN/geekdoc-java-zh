@@ -1,0 +1,83 @@
+- en: 'Lesson: Programmatic Access to Network Parameters'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：程序化访问网络参数
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/nifs/index.html](https://docs.oracle.com/javase/tutorial/networking/nifs/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/nifs/index.html](https://docs.oracle.com/javase/tutorial/networking/nifs/index.html)
+- en: Systems often run with multiple active network connections, such as wired Ethernet,
+    `802.11 b/g` (wireless), and bluetooth. Some applications might need to access
+    this information to perform the particular network activity on a specific connection.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 系统通常会同时运行多个活动网络连接，比如有线以太网，`802.11 b/g`（无线）和蓝牙。一些应用程序可能需要访问这些信息，以便在特定连接上执行特定的网络活动。
+- en: The [`java.net.NetworkInterface`](https://docs.oracle.com/javase/8/docs/api/java/net/NetworkInterface.html)
+    class provides access to this information.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`java.net.NetworkInterface`](https://docs.oracle.com/javase/8/docs/api/java/net/NetworkInterface.html)
+    类提供了访问这些信息的途径。'
+- en: This lesson guides you through some of the more common uses of this class and
+    provides examples that list all the network interfaces on a machine as well as
+    their IP addresses and status.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程将指导您了解此类的一些常见用法，并提供列出机器上所有网络接口及其IP地址和状态的示例。
+- en: '[What Is a Network Interface?](definition.html)'
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[什么是网络接口？](definition.html)'
+- en: This page describes a network interface and explains why you might want to use
+    it.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页面描述了一个网络接口，并解释了为什么您可能想要使用它。
+- en: '[Retrieving Network Interfaces](retrieving.html)'
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[检索网络接口](retrieving.html)'
+- en: This page contains an example that illustrates how a client program can retrieve
+    all the network interfaces on a machine.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页面包含一个示例，演示了客户端程序如何检索机器上的所有网络接口。
+- en: '[Listing Network Interface Addresses](listing.html)'
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[列出网络接口地址](listing.html)'
+- en: This page shows you how to list the IP addresses assigned to all the network
+    interfaces on a machine.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页面向您展示如何列出分配给机器上所有网络接口的IP地址。
+- en: '[Network Interface Parameters](parameters.html)'
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[网络接口参数](parameters.html)'
+- en: This page shows you how to determine whether a network interface is running
+    or if the network interface is a loopback interface, a point-to-point interface,
+    or a virtual interface. You can also learn how to determine if the interface supports
+    multicasting.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页面向您展示如何确定网络接口是否正在运行，或者网络接口是环回接口、点对点接口还是虚拟接口。您还可以了解如何确定接口是否支持多播。

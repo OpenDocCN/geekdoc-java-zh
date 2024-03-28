@@ -1,0 +1,128 @@
+- en: 'Working with Manifest Files: The Basics'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 与清单文件一起工作：基础知识
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/manifestindex.html](https://docs.oracle.com/javase/tutorial/deployment/jar/manifestindex.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/manifestindex.html](https://docs.oracle.com/javase/tutorial/deployment/jar/manifestindex.html)
+- en: JAR files support a wide range of functionality, including electronic signing,
+    version control, package sealing, and others. What gives a JAR file this versatility?
+    The answer is the JAR file's *manifest*.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAR文件支持广泛的功能，包括电子签名、版本控制、包封装等。是什么赋予了JAR文件这种多功能性？答案就是JAR文件的*清单*。
+- en: The manifest is a special file that can contain information about the files
+    packaged in a JAR file. By tailoring this "meta" information that the manifest
+    contains, you enable the JAR file to serve a variety of purposes.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 清单是一个特殊的文件，可以包含关于打包在JAR文件中的文件的信息。通过调整清单包含的这些“元”信息，您可以使JAR文件具有各种用途。
+- en: 'This lesson will explain the contents of the manifest file and show you how
+    to work with it, with examples for the basic features:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程将解释清单文件的内容，并向您展示如何使用它，包括基本功能的示例：
+- en: '[Understanding the Default Manifest](defman.html)'
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[理解默认清单](defman.html)'
+- en: When you create a JAR file, a default manifest is created automatically. This
+    section describes the default manifest.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建JAR文件时，会自动创建一个默认清单。本节描述了默认清单。
+- en: '[Modifying a Manifest File](modman.html)'
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[修改清单文件](modman.html)'
+- en: This section shows you the basic method of modifying a manifest file. The later
+    sections demonstrate specific modifications you may want to make.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节向您展示了修改清单文件的基本方法。后续章节演示了您可能想要进行的具体修改。
+- en: '[Setting an Application''s Entry Point](appman.html)'
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[设置应用程序的入口点](appman.html)'
+- en: This section describes how to use the `Main-Class` header in the manifest file
+    to set an application's entry point.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了如何在清单文件中使用`Main-Class`头来设置应用程序的入口点。
+- en: '[Adding Classes to the JAR File''s Classpath](downman.html)'
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[将类添加到JAR文件的类路径](downman.html)'
+- en: This section describes how to use the `Class-Path` header in the manifest file
+    to add classes in other JAR files to the classpath when running an applet or application.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了如何在清单文件中使用`Class-Path`头来在运行小程序或应用程序时将其他JAR文件中的类添加到类路径中。
+- en: '[Setting Package Version Information](packageman.html)'
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[设置包版本信息](packageman.html)'
+- en: This section describes how to use the package version headers in the manifest
+    file.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了如何在清单文件中使用包版本头。
+- en: '[Sealing Packages within a JAR File](sealman.html)'
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[在JAR文件中封装包](sealman.html)'
+- en: This section describes how to seal packages within a JAR file by modifying the
+    manifest file.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了如何通过修改清单文件在JAR文件中封装包。
+- en: '[Enhancing Security with Manifest Attributes](secman.html)'
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用清单属性增强安全性](secman.html)'
+- en: This section describes how to use manifest attributes to increase the security
+    of an applet or Java Web Start application.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了如何使用清单属性来增加小程序或Java Web启动应用程序的安全性。
+- en: Additional Information
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 附加信息
+- en: A [specification](https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html#JARManifest)
+    of the manifest format is part of the on-line JDK documentation.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 清单格式的[规范](https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html#JARManifest)是在线JDK文档的一部分。

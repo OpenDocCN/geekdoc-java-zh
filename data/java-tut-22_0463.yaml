@@ -1,0 +1,152 @@
+- en: Setting the Drop Mode
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 设置拖放模式
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodes.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodes.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodes.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodes.html)
+- en: When enabling drop on a component, such as a list, you need to decide how you
+    want the drop location to be interpreted. For example, do you want to restrict
+    the user to replacing existing entries? Do you want to only allow adding or inserting
+    new entries? Do you want to allow both? To configure this behavior, the [`JList`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.html)
+    class provides the [`setDropMode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.html#setDropMode-javax.swing.DropMode-)
+    method which supports the following drop modes.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在启用组件的拖放时，例如列表，您需要决定如何解释放置位置。例如，您是否希望限制用户替换现有条目？您是否只允许添加或插入新条目？您是否希望两者都允许？为了配置这种行为，[`JList`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.html)
+    类提供了 [`setDropMode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.html#setDropMode-javax.swing.DropMode-)
+    方法，支持以下拖放模式。
+- en: The default drop mode for `JList` is `DropMode.USE_SELECTION`. When dragging
+    in this mode, the selected item in the list moves to echo the potential drop point.
+    On a drop the selected item shifts to the drop location. This mode is provided
+    for backwards compatibility but is otherwise not recommended.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JList` 的默认拖放模式是 `DropMode.USE_SELECTION`。在此模式下拖动时，列表中的选定项目会移动以匹配潜在的放置点。放置时，选定项目会移动到放置位置。此模式提供了向后兼容性，但不建议使用。'
+- en: In `DropMode.ON`, the selected item in the list moves to echo the potential
+    drop point, but the selected item is not affected on the drop. This mode can be
+    used to drop on top of existing list items.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在 `DropMode.ON` 中，列表中的选定项目会移动以匹配潜在的放置点，但在放置时不会影响选定项目。此模式可用于在现有列表项上放置。
+- en: In `DropMode.INSERT`, the user is restricted to selecting the space between
+    existing list items, or before the first item or after the last item in the list.
+    Selecting existing list items is not allowed.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在 `DropMode.INSERT` 中，用户被限制在选择现有列表项之间的空间，或在列表中的第一个项目之前或最后一个项目之后。不允许选择现有列表项。
+- en: '`DropMode.ON_OR_INSERT` is a combination of the `ON` and `INSERT` modes.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DropMode.ON_OR_INSERT` 是 `ON` 和 `INSERT` 模式的组合。'
+- en: The `JTree` class provides the same set of [drop modes](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setDropMode-javax.swing.DropMode-)
+    and the `JTable` class has [several more](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setDropMode-javax.swing.DropMode-)
+    specific to adding rows or columns.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JTree` 类提供了相同的[拖放模式](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setDropMode-javax.swing.DropMode-)，而
+    `JTable` 类有[更多](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setDropMode-javax.swing.DropMode-)特定于添加行或列的模式。'
+- en: To obtain the location of the drop, the `TransferSupport` class provides the
+    [`getDropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getDropLocation--)
+    method that returns the precise point where the drop has occurred. But for a list
+    component, the index of the drop is more useful than a pixel location, so `JList`
+    provides a special subclass, called [`JList.DropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html).
+    This class provides the [`getIndex`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html#getIndex--)
+    and [`isInsert`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html#isInsert--)
+    methods, which handle the math for you.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要获取放置的位置，`TransferSupport` 类提供了 [`getDropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getDropLocation--)
+    方法，该方法返回放置发生的精确点。但对于列表组件，放置的索引比像素位置更有用，因此 `JList` 提供了一个特殊的子类，称为 [`JList.DropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html)。该类提供了
+    [`getIndex`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html#getIndex--)
+    和 [`isInsert`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html#isInsert--)
+    方法，这些方法为您处理了数学计算。
+- en: 'The table, tree, and text components each provide an implementation of `DropLocation`
+    with methods that make the most sense for each component. The [`JTable.setDropMode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setDropMode-javax.swing.DropMode-)
+    method has the most choices. The following table shows the methods for all four
+    classes:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表格、树和文本组件分别提供了 `DropLocation` 的实现，其中的方法对每个组件都最合理。[`JTable.setDropMode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setDropMode-javax.swing.DropMode-)
+    方法提供了最多选择。以下表格显示了所有四个类的方法：
+- en: DropLocation Methods for JList, JTree, JTable and JTextComponent
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JList、JTree、JTable 和 JTextComponent 的 DropLocation 方法
+- en: '| [`JList.DropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html)
+    | [`JTree.DropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.DropLocation.html)
+    | [`JTable.DropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.DropLocation.html)
+    | [`JTextComponent.DropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.DropLocation.html)
+    |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`JList.DropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html)
+    | [`JTree.DropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.DropLocation.html)
+    | [`JTable.DropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.DropLocation.html)
+    | [`JTextComponent.DropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.DropLocation.html)
+    |'
+- en: '| [`isInsert`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html#isInsert--)
+    | [`getChildIndex`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.DropLocation.html#getChildIndex--)
+    | [`isInsertRow`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.DropLocation.html#isInsertRow--)
+    | [`getIndex`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.DropLocation.html#getIndex--)
+    |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`isInsert`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html#isInsert--)
+    | [`getChildIndex`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.DropLocation.html#getChildIndex--)
+    | [`isInsertRow`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.DropLocation.html#isInsertRow--)
+    | [`getIndex`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.DropLocation.html#getIndex--)
+    |'
+- en: '| [`getIndex`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html#getIndex--)
+    | [`getPath`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.DropLocation.html#getPath--)
+    | [`isInsertColumn`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.DropLocation.html#isInsertColumn--)
+    | [`getBias`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.DropLocation.html#getBias--)
+    |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`getIndex`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.DropLocation.html#getIndex--)
+    | [`getPath`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.DropLocation.html#getPath--)
+    | [`isInsertColumn`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.DropLocation.html#isInsertColumn--)
+    | [`getBias`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.DropLocation.html#getBias--)
+    |'
+- en: '|   |   | [`getRow`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.DropLocation.html#getRow--)
+    |   |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '|   |   | [`getRow`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.DropLocation.html#getRow--)
+    |   |'
+- en: '|   |   | [`getColumn`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.DropLocation.html#getColumn--)
+    |   |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '|   |   | [`getColumn`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.DropLocation.html#getColumn--)
+    |   |'
+- en: Next is a demo that implements a custom transfer handler for a list component
+    so that it fully participates in drag and drop.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来是一个演示，实现了一个自定义的传输处理程序，用于列表组件，以便它完全参与拖放操作。

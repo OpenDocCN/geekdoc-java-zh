@@ -1,0 +1,180 @@
+- en: Life Cycle of an Applet
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 小程序的生命周期
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/lifeCycle.html](https://docs.oracle.com/javase/tutorial/deployment/applet/lifeCycle.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/lifeCycle.html](https://docs.oracle.com/javase/tutorial/deployment/applet/lifeCycle.html)
+- en: 'An applet can react to major events in the following ways:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 小程序可以对以下重大事件做出反应：
+- en: It can *initialize* itself.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它可以*初始化*自身。
+- en: It can *start* running.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它可以*开始*运行。
+- en: It can *stop* running.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它可以*停止*运行。
+- en: It can perform a *final cleanup*, in preparation for being unloaded.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它可以执行*最终清理*，为即将卸载做准备。
+- en: This section introduces a new applet, `Simple`, that uses all of these methods.
+    Unlike Java applications, applets do *not* need to implement a `main` method.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍了一个新的小程序`Simple`，它使用了所有这些方法。与 Java 应用程序不同，小程序不需要实现`main`方法。
+- en: Here is the `Simple` applet.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是`Simple`小程序。
+- en: //&lt;![CDATA[ var attributes = { code:'Simple.class', archive:'examples/dist/applet_Simple/applet_Simple.jar',
+    width:500, height:20} ; var parameters = { permissions:'sandbox' } ; deployJava.runApplet(attributes,
+    parameters, '1.4'); //]]&gt;
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: //&lt;![CDATA[ var attributes = { code:'Simple.class', archive:'examples/dist/applet_Simple/applet_Simple.jar',
+    width:500, height:20} ; var parameters = { permissions:'sandbox' } ; deployJava.runApplet(attributes,
+    parameters, '1.4'); //]]&gt;
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到示例运行，请确保在浏览器中启用 JavaScript 解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The following is the source code for the `Simple` applet. This applet displays
+    a descriptive string whenever it encounters a major milestone in its life, such
+    as when the user first visits the page the applet is on.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是`Simple`小程序的源代码。该小程序在其生命周期中遇到重要里程碑时会显示描述性字符串，例如当用户首次访问包含小程序的页面时。
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** In this example, the `Applet` class is extended, not the Swing `JApplet`
+    class, as Swing components do not need to be added to this applet.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 在此示例中，`Applet` 类被扩展，而不是 Swing `JApplet` 类，因为 Swing 组件不需要添加到此小程序中。'
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Loading the Applet
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 加载小程序
+- en: 'As a result of the applet being loaded, you should see the text "initializing...
+    starting...". When an applet is loaded, here''s what happens:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于小程序被加载，您应该看到文本“初始化...启动...”。小程序加载时，会发生以下情况：
+- en: An instance of the applet's controlling class (an `Applet` subclass) is created.
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建小程序控制类的一个实例（`Applet`子类）。
+- en: The applet initializes itself.
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 小程序初始化自身。
+- en: The applet starts running.
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 小程序开始运行。
+- en: Leaving and Returning to the Applet's Page
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 离开并返回到小程序的页面
+- en: When the user leaves the page, for example, to go to another page, the browser
+    stops and destroys the applet. The state of the applet is not preserved. When
+    the user returns to the page, the browser initializes and starts a new instance
+    of the applet.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户离开页面，例如前往另一页时，浏览器会停止并销毁小程序。小程序的状态不会被保留。当用户返回页面时，浏览器会初始化并启动小程序的新实例。
+- en: Reloading the Applet
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 重新加载小程序
+- en: When you refresh or reload a browser page, the current instance of the applet
+    is stopped and destroyed and a new instance is created.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您刷新或重新加载浏览器页面时，当前小程序实例会被停止和销毁，并创建一个新实例。
+- en: Quitting the Browser
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 退出浏览器
+- en: When the user quits the browser, the applet has the opportunity to stop itself
+    and perform a final cleanup before the browser exits.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户退出浏览器时，小程序有机会在浏览器退出之前停止自身并执行最终清理。
+- en: '[Download source code](examplesIndex.html#Simple) for the *Simple Applet* example
+    to experiment further.'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#Simple)以进一步实验*Simple小程序*示例。'

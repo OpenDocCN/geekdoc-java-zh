@@ -1,0 +1,37 @@
+- en: StAX
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: StAX
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/stax.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/stax.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/stax.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/stax.html)
+- en: 'The specification for StAX, JSR 173, does not yet support the new properties.
+    However, StAX in the context of JAXP does include the support of these properties.
+    Setting the new properties is similar to SAX or DOM, but through the XMLInputFactory
+    as follows:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX、JSR 173 的规范尚不支持新属性。然而，在 JAXP 的上下文中，StAX 确实包括对这些属性的支持。设置新属性类似于 SAX 或 DOM，但通过
+    XMLInputFactory，如下所示：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The existing properties and features specified in the StAX, JSR 173 specification
+    will take preference over the new JAXP properties. The SupportDTD property for
+    example, when set to false, will cause a program to throw exception when an input
+    file contains DTD before it can be parsed. For applications that uses the SupportDTD
+    property to disable DTD therefore, the addition of the new properties shall have
+    no effect.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 存在于 StAX、JSR 173 规范中指定的属性和特性将优先于新的 JAXP 属性。例如，当 SupportDTD 属性设置为 false 时，将导致程序在输入文件包含
+    DTD 之前无法解析时抛出异常。对于使用 SupportDTD 属性禁用 DTD 的应用程序，新属性的添加不会产生影响。

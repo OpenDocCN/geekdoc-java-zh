@@ -1,0 +1,942 @@
+- en: Reading XML Data into a DOM
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 将 XML 数据读入 DOM
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/dom/readingXML.html](https://docs.oracle.com/javase/tutorial/jaxp/dom/readingXML.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/dom/readingXML.html](https://docs.oracle.com/javase/tutorial/jaxp/dom/readingXML.html)
+- en: In this section, you will construct a Document Object Model by reading in an
+    existing XML file.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本节中，您将通过读取现有的 XML 文件构造一个文档对象模型。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** In [Extensible Stylesheet Language Transformations](../xslt/index.html),
+    you will see how to write out a DOM as an XML file. (You will also see how to
+    convert an existing data file into XML with relative ease.)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 在[可扩展样式表语言转换](../xslt/index.html)中，您将看到如何将 DOM 写出为 XML 文件。（您还将看到如何相对容易地将现有数据文件转换为
+    XML。）'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Creating the Program
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建程序
+- en: The Document Object Model provides APIs that let you create, modify, delete,
+    and rearrange nodes. Before you try to create a DOM, it is helpful to understand
+    how a DOM is structured. This series of examples will make DOM internals visible
+    via a sample program called `DOMEcho`, which you will find in the directory `*INSTALL_DIR*/jaxp-*version*/samples/dom`
+    after you have installed the JAXP API.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文档对象模型提供了让您创建、修改、删除和重新排列节点的 API。在尝试创建 DOM 之前，了解 DOM 的结构是很有帮助的。这一系列示例将通过一个名为`DOMEcho`的示例程序展示
+    DOM 的内部结构，您可以在安装了 JAXP API 后在目录`*INSTALL_DIR*/jaxp-*version*/samples/dom`中找到它。
+- en: Create the Skeleton
+  id: totrans-8
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建骨架
+- en: First, build a simple program to read an XML document into a DOM and then write
+    it back out again.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，构建一个简单的程序，将 XML 文档读入 DOM，然后再将其写回。
+- en: 'Start with the normal basic logic for an application, and check to make sure
+    that an argument has been supplied on the command line:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从应用程序的正常基本逻辑开始，并检查确保命令行上已提供了参数：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This code performs all the basic set up operations. All output for `DOMEcho`
+    uses UTF-8 encoding. The `usage()` method that is called if no argument is specified
+    simply tells you what arguments `DOMEcho` expects, so the code is not shown here.
+    A `filename` string is also declared, which will be the name of the XML file to
+    be parsed into a DOM by `DOMEcho`.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码执行所有基本的设置操作。`DOMEcho`的所有输出都使用 UTF-8 编码。如果未指定参数，则调用`usage()`方法会简单地告诉您`DOMEcho`期望的参数，因此此处不显示代码。还声明了一个`filename`字符串，它将是要由`DOMEcho`解析为
+    DOM 的 XML 文件的名称。
+- en: Import the Required Classes
+  id: totrans-13
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 导入所需的类
+- en: In this section, all the classes are individually named so you that can see
+    where each class comes from, in case you want to reference the API documentation.
+    In the sample file, the import statements are made with the shorter form, such
+    as `javax.xml.parsers.*`.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本节中，所有类都以单独命名，以便您可以看到每个类来自何处，以便在需要引用 API 文档时参考。在示例文件中，导入语句使用较短的形式，如`javax.xml.parsers.*`。
+- en: 'These are the JAXP APIs used by `DOMEcho`:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些是`DOMEcho`使用的 JAXP API：
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'These classes are for the exceptions that can be thrown when the XML document
+    is parsed:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些类用于在解析 XML 文档时可能抛出的异常：
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'These classes read the sample XML file and manage output:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些类读取示例 XML 文件并管理输出：
+- en: '[PRE3]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Finally, import the W3C definitions for a DOM, DOM exceptions, entities and
+    nodes:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，导入 W3C 定义的 DOM、DOM 异常、实体和节点：
+- en: '[PRE4]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Handle Errors
+  id: totrans-23
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 处理错误
+- en: 'Next, add the error-handling logic. The most important point is that a JAXP-conformant
+    document builder is required to report SAX exceptions when it has trouble parsing
+    an XML document. The DOM parser does not have to actually use a SAX parser internally,
+    but because the SAX standard is already there, it makes sense to use it for reporting
+    errors. As a result, the error-handling code for DOM applications is very similar
+    to that for SAX applications:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，添加错误处理逻辑。最重要的一点是，当 JAXP 符合标准的文档构建器在解析 XML 文档时遇到问题时，需要报告 SAX 异常。DOM 解析器实际上不必在内部使用
+    SAX 解析器，但由于 SAX 标准已经存在，因此使用它来报告错误是有意义的。因此，DOM 应用程序的错误处理代码与 SAX 应用程序的错误处理代码非常相似：
+- en: '[PRE5]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: As you can see, the `DomEcho` class's error handler generates its output using
+    `PrintWriter` instances.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您所看到的，`DomEcho`类的错误处理程序使用`PrintWriter`实例生成其输出。
+- en: Instantiate the Factory
+  id: totrans-27
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 实例化工厂
+- en: Next, add the following code to the `main()` method, to obtain an instance of
+    a factory that can give us a document builder.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，在`main()`方法中添加以下代码，以获取一个可以提供文档构建器的工厂实例。
+- en: '[PRE6]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Get a Parser and Parse the File
+  id: totrans-30
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 获取解析器并解析文件
+- en: Now, add the following code to `main()` to get an instance of a builder, and
+    use it to parse the specified file.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，在`main()`中添加以下代码以获取一个构建器实例，并使用它来解析指定的文件。
+- en: '[PRE7]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The file being parsed is provided by the `filename` variable that was declared
+    at the beginning of the `main()` method, which is passed to `DOMEcho` as an argument
+    when the program is run.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 被解析的文件由在 `main()` 方法开头声明的 `filename` 变量提供，当程序运行时，它作为参数传递给 `DOMEcho`。
+- en: Configuring the Factory
+  id: totrans-34
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 配置工厂
+- en: By default, the factory returns a non-validating parser that knows nothing about
+    name spaces. To get a validating parser, or one that understands name spaces (or
+    both), you can configure the factory to set either or both of those options using
+    the following code.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，工厂返回一个不进行验证的解析器，不了解命名空间。要获得一个验证解析器，或者一个了解命名空间的解析器（或两者兼有），您可以配置工厂来设置这两个选项中的一个或两个，使用以下代码。
+- en: '[PRE8]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: As you can see, command line arguments are set up so that you can inform `DOMEcho`
+    to perform validation against either a DTD or an XML Schema, and the factory is
+    configured to be name space aware and to perform whichever type of validation
+    the user specifies.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，命令行参数已设置好，以便您可以通知 `DOMEcho` 对 DTD 或 XML Schema 执行验证，并且工厂已配置为了解命名空间并执行用户指定的验证类型。
+- en: '* * *'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** JAXP-conformant parsers are not required to support all combinations
+    of those options, even though the reference parser does. If you specify an invalid
+    combination of options, the factory generates a `ParserConfigurationException`
+    when you attempt to obtain a parser instance.'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 符合 JAXP 标准的解析器并不需要支持所有这些选项的所有组合，即使参考解析器支持。如果您指定了无效的选项组合，在尝试获取解析器实例时，工厂会生成一个
+    `ParserConfigurationException`。'
+- en: '* * *'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: More information about how to use name spaces and validation is provided in
+    [Validating with XML Schema](validating.html), in which the code that is missing
+    from the above extract will be described.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关如何使用命名空间和验证的更多信息，请参阅[使用 XML Schema 进行验证](validating.html)，其中将描述上述摘录中缺失的代码。
+- en: Handling Validation Errors
+  id: totrans-42
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 处理验证错误
+- en: The default response to a validation error, as dictated by the SAX standard,
+    is to do nothing. The JAXP standard requires throwing SAX exceptions, so you use
+    exactly the same error-handling mechanisms as you use for a SAX application. In
+    particular, you use the `DocumentBuilder` class's `setErrorHandler` method to
+    supply it with an object that implements the SAX `ErrorHandler` interface.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据 SAX 标准规定，对验证错误的默认响应是不执行任何操作。JAXP 标准要求抛出 SAX 异常，因此您使用与 SAX 应用程序相同的错误处理机制。特别是，您使用
+    `DocumentBuilder` 类的 `setErrorHandler` 方法来提供一个实现 SAX `ErrorHandler` 接口的对象。
+- en: '* * *'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** `DocumentBuilder` also has a `setEntityResolver` method you can
+    use.'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** `DocumentBuilder` 还有一个 `setEntityResolver` 方法可供使用。'
+- en: '* * *'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The following code configures the document builder to use the error handler
+    defined in [Handle Errors](readingXML.html#gestm).
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码配置文档构建器使用在[处理错误](readingXML.html#gestm)中定义的错误处理程序。
+- en: '[PRE9]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: The code you have seen so far has set up the document builder, and configured
+    it to perform validation upon request. Error handling is also in place. However,
+    `DOMEcho` does not do anything yet. In the next section, you will see how to display
+    the DOM structure and begin to explore it. For example, you will see what entity
+    references and CDATA sections look like in the DOM. And perhaps most importantly,
+    you will see how text nodes (which contain the actual data) reside under element
+    nodes in a DOM.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，您看到的代码已经设置了文档构建器，并配置它在请求时执行验证。错误处理也已就位。然而，`DOMEcho` 还没有做任何事情。在下一节中，您将看到如何显示
+    DOM 结构并开始探索它。例如，您将看到在 DOM 中实体引用和 CDATA 部分的样子。也许最重要的是，您将看到文本节点（包含实际数据）如何存在于 DOM
+    中的元素节点下。
+- en: Displaying the DOM Nodes
+  id: totrans-50
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 显示 DOM 节点
+- en: To create or manipulate a DOM, it helps to have a clear idea of how the nodes
+    in a DOM are structured. This section of the tutorial exposes the internal structure
+    of a DOM, so that you can see what it contains. The `DOMEcho` example does this
+    by echoing the DOM nodes, and then printing them out onscreen, with the appropriate
+    indentation to make the node hierarchy apparent. The specification of these node
+    types can be found in the [DOM Level 2 Core Specification](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113),
+    under the specification for `Node`. [Table 3-1](#gfzpy) below is adapted from
+    that specification.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建或操作 DOM，有一个清晰的关于 DOM 中节点结构的概念是很有帮助的。本教程的这一部分揭示了 DOM 的内部结构，这样你就可以看到它包含的内容。`DOMEcho`
+    示例通过回显 DOM 节点，然后在屏幕上打印出来，适当缩进以使节点层次结构明显可见。这些节点类型的规范可以在[DOM Level 2 Core Specification](http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113)中找到，在`Node`规范下。下面的[表 3-1](#gfzpy)是从该规范中调整过来的。
+- en: Table 3-1 Node Types
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 3-1 节点类型
+- en: '| Node | nodeName | nodeValue | Attributes |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| Node | 节点名称 | 节点值 | 属性 |'
+- en: '| `Attr` | Name of attribute | Value of attribute | null |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Attr` | 属性名称 | 属性值 | null |'
+- en: '| `CDATASection` | `#cdata-section` | Content of the CDATA section | null |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| `CDATASection` | `#cdata-section` | CDATA 部分的内容 | null |'
+- en: '| `Comment` | `#comment` | Content of the comment | null |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Comment` | `#comment` | 注释的内容 | null |'
+- en: '| `Document` | `#document` | null | null |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Document` | `#document` | null | null |'
+- en: '| `DocumentFragment` | `#documentFragment` | null | null |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DocumentFragment` | `#documentFragment` | null | null |'
+- en: '| `DocumentType` | Document Type name | null | null |'
+  id: totrans-59
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DocumentType` | 文档类型名称 | null | null |'
+- en: '| `Element` | Tag name | null | null |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Element` | 标签名称 | null | null |'
+- en: '| `Entity` | Entity name | null | null |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Entity` | 实体名称 | null | null |'
+- en: '| `EntityReference` | Name of entity referenced | null | null |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_TB
+  zh: '| `EntityReference` | 引用的实体名称 | null | null |'
+- en: '| `Notation` | Notation name | null | null |'
+  id: totrans-63
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Notation` | 符号名称 | null | null |'
+- en: '| `ProcessingInstruction` | Target | Entire content excluding the target |
+    null |'
+  id: totrans-64
+  prefs: []
+  type: TYPE_TB
+  zh: '| `ProcessingInstruction` | 目标 | 不包括目标的整个内容 | null |'
+- en: '| `Text` | `#text` | Content of the text node | null |'
+  id: totrans-65
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Text` | `#text` | 文本节点的内容 | null |'
+- en: The information in this table is extremely useful; you will need it when working
+    with a DOM, because all these types are intermixed in a DOM tree.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此表中的信息非常有用；在处理 DOM 时，你将需要它，因���所有这些类型都混合在 DOM 树中。
+- en: Obtaining Node Type Information
+  id: totrans-67
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 获取节点类型信息
+- en: The DOM node element type information is obtained by calling the various methods
+    of the `org.w3c.dom.Node` class. The node attributes by exposed by `DOMEcho` are
+    echoed by the following code.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过调用`org.w3c.dom.Node`类的各种方法来获取 DOM 节点元素类型信息。`DOMEcho`暴露的节点属性由以下代码回显。
+- en: '[PRE10]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: Every DOM node has at least a type, a name, and a value, which might or might
+    not be empty. In the example above, the `Node` interface's `getNamespaceURI()`,
+    `getPrefix()`, `getLocalName()`, and `getNodeValue()` methods return and print
+    the echoed node's namespace URI, namespace prefix, local qualified name and value.
+    Note that the `trim()` method is called on the value returned by `getNodeValue()`
+    to establish whether the node's value is empty white space and print a message
+    accordingly.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个 DOM 节点至少有一个类型、一个名称和一个值，这个值可能为空也可能不为空。在上面的示例中，`Node`接口的`getNamespaceURI()`、`getPrefix()`、`getLocalName()`和`getNodeValue()`方法返回并打印回显节点的命名空间
+    URI、命名空间前缀、本地限定名称和值。请注意，对`getNodeValue()`返回的值调用`trim()`方法，以确定节点的值是否为空白字符，并相应地打印消息。
+- en: For the full list of `Node` methods and the different information they return,
+    see the API documentation for [`Node`](https://docs.oracle.com/javase/8/docs/api/org/w3c/dom/Node.html).
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要查看`Node`方法的完整列表以及它们返回的不同信息，请参阅[`Node`](https://docs.oracle.com/javase/8/docs/api/org/w3c/dom/Node.html)的
+    API 文档。
+- en: Next, a method is defined to set the indentation for the nodes when they are
+    printed, so that the node hierarchy will be easily visible.
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，定义一个方法来设置节点打印时的缩进，以便节点层次结构能够清晰可见。
+- en: '[PRE11]'
+  id: totrans-73
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: The `basicIndent` constant to define the basic unit of indentation used when
+    `DOMEcho` displays the node tree hierarchy, is defined by adding the following
+    highlighted lines to the `DOMEcho` constructor class.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当`DOMEcho`显示节点树层次结构时，使用的基本缩进单位由`DOMEcho`构造函数类中添加以下突出显示的行来定义`basicIndent`常量。
+- en: '[PRE12]'
+  id: totrans-75
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: As was the case with the error handler defined in [Handle Errors](readingXML.html#gestm),
+    the `DOMEcho` program will create its output as `PrintWriter` instances.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就像在[处理错误](readingXML.html#gestm)中定义的错误处理程序一样，`DOMEcho` 程序将创建其输出作为 `PrintWriter`
+    实例。
+- en: Lexical Controls
+  id: totrans-77
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 词法控制
+- en: Lexical information is the information you need to reconstruct the original
+    syntax of an XML document. Preserving lexical information is important in editing
+    applications, where you want to save a document that is an accurate reflection
+    of the original-complete with comments, entity references, and any CDATA sections
+    it may have included at the outset.
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 词法信息是您需要重建XML文档原始语法的信息。在编辑应用程序中保留词法信息非常重要，因为您希望保存的文档是对原始文档的准确反映-包括注释、实体引用以及一开始可能包含的任何CDATA部分。
+- en: Most applications, however, are concerned only with the content of the XML structures.
+    They can afford to ignore comments, and they do not care whether data was coded
+    in a CDATA section or as plain text, or whether it included an entity reference.
+    For such applications, a minimum of lexical information is desirable, because
+    it simplifies the number and kind of DOM nodes that the application must be prepared
+    to examine.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，大多数应用程序只关注XML结构的内容。它们可以忽略注释，并且不在乎数据是在CDATA部分中编码还是作为纯文本，或者是否包含实体引用。对于这类应用程序，最好保留最少的词法信息，因为这简化了应用程序必须准备检查的DOM节点的数量和类型。
+- en: The following `DocumentBuilderFactory` methods give you control over the lexical
+    information you see in the DOM.
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下`DocumentBuilderFactory`方法让您控制在DOM中看到的词法信息。
+- en: '`setCoalescing()`'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`setCoalescing()`'
+- en: To convert `CDATA` nodes to `Text` nodes and append to an adjacent `Text` node
+    (if any).
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将`CDATA`节点转换为`Text`节点并附加到相邻的`Text`节点（如果有）。
+- en: '`setExpandEntityReferences()`'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`setExpandEntityReferences()`'
+- en: To expand entity reference nodes.
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了扩展实体引用节点。
+- en: '`setIgnoringComments()`'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`setIgnoringComments()`'
+- en: To ignore comments.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 忽略注释。
+- en: '`setIgnoringElementContentWhitespace()`'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`setIgnoringElementContentWhitespace()`'
+- en: To ignore whitespace that is not a significant part of element content.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 忽略不是元素内容的空白。
+- en: The default values for all these properties is false, which preserves all the
+    lexical information necessary to reconstruct the incoming document in its original
+    form. Setting them to true lets you construct the simplest possible DOM so that
+    the application can focus on the data's semantic content without having to worry
+    about lexical syntax details. [Table 3-2](#ggdxy) summarizes the effects of the
+    settings.
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有这些属性的默认值都是false，这保留了重建传入文档所需的所有词法信息，以其原始形式。将它们设置为true可以构建最简单的DOM，以便应用程序可以专注于数据的语义内容，而不必担心词法语法细节。[表 3-2](#ggdxy)
+    总结了设置的效果。
+- en: Table 3-2 Lexical Control Settings
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 3-2 词法控制设置
+- en: '| API | Preserve Lexical Info | Focus on Content |'
+  id: totrans-91
+  prefs: []
+  type: TYPE_TB
+  zh: '| API | 保留词法信息 | 关注内容 |'
+- en: '| `setCoalescing()` | False | True |'
+  id: totrans-92
+  prefs: []
+  type: TYPE_TB
+  zh: '| `setCoalescing()` | False | True |'
+- en: '| `setExpandEntityReferences()` | False | True |'
+  id: totrans-93
+  prefs: []
+  type: TYPE_TB
+  zh: '| `setExpandEntityReferences()` | False | True |'
+- en: '| `setIgnoringComments()` | False | True |'
+  id: totrans-94
+  prefs: []
+  type: TYPE_TB
+  zh: '| `setIgnoringComments()` | False | True |'
+- en: '| `setIgnoringElementContent``Whitespace()` | False | True |'
+  id: totrans-95
+  prefs: []
+  type: TYPE_TB
+  zh: '| `setIgnoringElementContent``Whitespace()` | False | True |'
+- en: The implementation of these methods in the main method of the `DomEcho` example
+    is shown below.
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些方法在`DomEcho`示例的主方法中的实现如下所示。
+- en: '[PRE13]'
+  id: totrans-97
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: The boolean variables `ignoreComments`, `ignoreWhitespace`, `putCDATAIntoText`,
+    and `createEntityRefs` are declared at the beginning of the main method code,
+    and they are set by command line arguments when `DomEcho` is run.
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 布尔变量`ignoreComments`、`ignoreWhitespace`、`putCDATAIntoText`和`createEntityRefs`在主方法代码的开头声明，并且当运行`DomEcho`时通过命令行参数设置。
+- en: '[PRE14]'
+  id: totrans-99
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: Printing DOM Tree Nodes
+  id: totrans-100
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 打印DOM树节点
+- en: The `DomEcho` application allows you to see the structure of a DOM, and demonstrates
+    what nodes make up the DOM and how they are arranged. Generally, the vast majority
+    of nodes in a DOM tree will be `Element` and `Text` nodes.
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DomEcho`应用程序允许您查看DOM的结构，并演示了DOM由哪些节点组成以及它们是如何排列的。一般来说，DOM树中绝大多数节点将是`Element`和`Text`节点。'
+- en: '* * *'
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** Text nodes exist **under** element nodes in a DOM, and data is always
+    stored in text nodes. Perhaps the most common error in DOM processing is to navigate
+    to an element node and expect it to contain the data that is stored in that element.
+    Not so! Even the simplest element node has a text node under it that contains
+    the data.'
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 文本节点存在于DOM中的元素节点**下方**，数据始终存储在文本节点中。在DOM处理中最常见的错误可能是导航到元素节点并期望它包含存储在该元素中的数据。事实并非如此！即使是最简单的元素节点下面也有一个包含数据的文本节点。'
+- en: '* * *'
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The code to print out the DOM tree nodes with the appropriate indentation is
+    shown below.
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 打印DOM树节点的代码以适当的缩进显示如下。
+- en: '[PRE15]'
+  id: totrans-106
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: This code first of all uses switch statements to print out the different node
+    types and any possible child nodes, with the appropriate indentation.
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该代码首先使用switch语句打印出不同的节点类型和任何可能的子节点，并进行适当的缩进。
+- en: Node attributes are not included as children in the DOM hierarchy. They are
+    instead obtained via the `Node` interface's `getAttributes` method.
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 节点属性不包括在DOM层次结构的子节点中。而是通过`Node`接口的`getAttributes`方法获取。
+- en: The `DocType` interface is an extension of `w3c.org.dom.Node`. It defines the
+    `getEntities` method, which you use to obtain `Entity` nodes - the nodes that
+    define entities. Like `Attribute` nodes, `Entity` nodes do not appear as children
+    of DOM nodes.
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DocType`接口是`w3c.org.dom.Node`的扩展。它定义了`getEntities`方法，您可以使用该方法获取`Entity`节点
+    - 定义实体的节点。与`Attribute`节点一样，`Entity`节点不会出现为DOM节点的子节点。'
+- en: Node Operations
+  id: totrans-110
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 节点操作
+- en: This section takes a quick look at some of the operations you might want to
+    apply to a DOM.
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节简要介绍了您可能想要应用于DOM的一些操作。
+- en: Creating nodes
+  id: totrans-112
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建节点
+- en: Traversing nodes
+  id: totrans-113
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 遍历节点
+- en: Searching for nodes
+  id: totrans-114
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 搜索节点
+- en: Obtaining node content
+  id: totrans-115
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取节点内容
+- en: Creating attributes
+  id: totrans-116
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建属性
+- en: Removing and changing nodes
+  id: totrans-117
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 删除和更改节点
+- en: Inserting nodes
+  id: totrans-118
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 插入节点
+- en: Creating Nodes
+  id: totrans-119
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建节点
+- en: You can create different types nodes using the methods of the `Document` interface.
+    For example, `createElement`, `createComment`, `createCDATAsection`, `createTextNode`,
+    and so on. The full list of methods for creating different nodes is provided in
+    the API documentation for [`org.w3c.dom.Document`](https://docs.oracle.com/javase/8/docs/api/org/w3c/dom/Document.html).
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用`Document`接口的方法创建不同类型的节点。例如，`createElement`、`createComment`、`createCDATAsection`、`createTextNode`等。有关创建不同节点的方法的完整列表，请参阅[`org.w3c.dom.Document`](https://docs.oracle.com/javase/8/docs/api/org/w3c/dom/Document.html)的API文档。
+- en: Traversing Nodes
+  id: totrans-121
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 遍历节点
+- en: The `org.w3c.dom.Node` interface defines a number of methods you can use to
+    traverse nodes, including `getFirstChild`, `getLastChild`, `getNextSibling`, `getPreviousSibling`,
+    and `getParentNode`. Those operations are sufficient to get from anywhere in the
+    tree to any other location in the tree.
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`org.w3c.dom.Node`接口定义了一些方法，您可以使用这些方法遍历节点，包括`getFirstChild`、`getLastChild`、`getNextSibling`、`getPreviousSibling`和`getParentNode`。这些操作足以从树中的任何位置到达树中的任何其他位置。'
+- en: Searching for Nodes
+  id: totrans-123
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 搜索节点
+- en: When you are searching for a node with a particular name, there is a bit more
+    to take into account. Although it is tempting to get the first child and inspect
+    it to see whether it is the right one, the search must account for the fact that
+    the first child in the sub-list could be a comment or a processing instruction.
+    If the XML data has not been validated, it could even be a text node containing
+    ignorable whitespace.
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您搜索具有特定名称的节点时，需要考虑更多因素。虽然诱人的做法是获取第一个子节点并检查它是否正确，但搜索必须考虑到子列表中的第一个子节点可能是注释或处理指令。如果XML数据尚未经过验证，甚至可能是包含可忽略空格的文本节点。
+- en: In essence, you need to look through the list of child nodes, ignoring the ones
+    that are of no concern and examining the ones you care about. Here is an example
+    of the kind of routine you need to write when searching for nodes in a DOM hierarchy.
+    It is presented here in its entirety (complete with comments) so that you can
+    use it as a template in your applications.
+  id: totrans-125
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本质上，您需要查看子节点列表，忽略那些不相关的节点，并检查您关心的节点。以下是在DOM层次结构中搜索节点时需要编写的一种例程。它在这里完整呈现（包括注释），以便您可以将其用作应用程序中的模板。
+- en: '[PRE16]'
+  id: totrans-126
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: For a deeper explanation of this code, see [Increasing the Complexity](when.html#gchls)
+    in [When to Use DOM](when.html). Note, too, that you can use APIs described in
+    [Lexical Controls](readingXML.html#ggdwv) to modify the kind of DOM the parser
+    constructs. The nice thing about this code, though, is that it will work for almost
+    any DOM.
+  id: totrans-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要深入了解此代码，请参阅[增加复杂性](when.html#gchls)中的[何时使用DOM](when.html)。此外，您还可以使用[词法控制](readingXML.html#ggdwv)中描述的API来修改解析器构造的DOM类型。不过，这段代码的好处是几乎适用于任何DOM。
+- en: Obtaining Node Content
+  id: totrans-128
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 获取节点内容
+- en: When you want to get the text that a node contains, you again need to look through
+    the list of child nodes, ignoring entries that are of no concern and accumulating
+    the text you find in `TEXT` nodes, `CDATA` nodes, and `EntityRef` nodes. Here
+    is an example of the kind of routine you can use for that process.
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您想要获取节点包含的文本时，您需要再次查看子节点列表，忽略不相关的条目，并在`TEXT`节点、`CDATA`节点和`EntityRef`节点中找到的文本累积起来。以下是您可以用于该过程的一种例程。
+- en: '[PRE17]'
+  id: totrans-130
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: For a deeper explanation of this code, see [Increasing the Complexity](when.html#gchls)
+    in [When to Use DOM](when.html). Again, you can simplify this code by using the
+    APIs described in [Lexical Controls](readingXML.html#ggdwv) to modify the kind
+    of DOM the parser constructs. But the nice thing about this code is that it will
+    work for almost any DOM.
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于这段代码的更深入解释，请参见[增加复杂性](when.html#gchls)中的[何时使用 DOM](when.html)。同样，你可以通过使用[词法控制](readingXML.html#ggdwv)中描述的
+    API 来简化这段代码，以修改解析器构造的 DOM 类型。但这段代码的好处是几乎适用于任何 DOM。
+- en: Creating Attributes
+  id: totrans-132
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建属性
+- en: The `org.w3c.dom.Element` interface, which extends Node, defines a `setAttribute`
+    operation, which adds an attribute to that node. (A better name from the Java
+    platform standpoint would have been `addAttribute`. The attribute is not a property
+    of the class, and a new object is created.) You can also use the `Document`'s
+    `createAttribute` operation to create an instance of `Attribute` and then use
+    the `setAttributeNode` method to add it.
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 扩展了 Node 接口的`org.w3c.dom.Element`接口定义了一个`setAttribute`操作，用于向该节点添加属性。（从 Java
+    平台的角度来看，更好的名称应该是`addAttribute`。该属性不是类的属性，而是创建了一个新对象。）你还可以使用`Document`的`createAttribute`操作来创建`Attribute`的实例，然后使用`setAttributeNode`方法来添加它。
+- en: Removing and Changing Nodes
+  id: totrans-134
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 删除和更改节点
+- en: To remove a node, you use its parent Node's `removeChild` method. To change
+    it, you can use either the parent node's `replaceChild` operation or the node's
+    `setNodeValue` operation.
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要删除一个节点，你可以使用其父节点的`removeChild`方法。要更改它，你可以使用父节点的`replaceChild`操作或节点的`setNodeValue`操作。
+- en: Inserting Nodes
+  id: totrans-136
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 插入节点
+- en: 'The important thing to remember when creating new nodes is that when you create
+    an element node, the only data you specify is a name. In effect, that node gives
+    you a hook to hang things on. You hang an item on the hook by adding to its list
+    of child nodes. For example, you might add a text node, a `CDATA` node, or an
+    attribute node. As you build, keep in mind the structure you have seen in this
+    tutorial. Remember: Each node in the hierarchy is extremely simple, containing
+    only one data element.'
+  id: totrans-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在创建新节点时要记住的重要事情是，当你创建一个元素节点时，你只需指定一个名称。实际上，该节点给你提供了一个挂载物件的钩子。你可以通过向其子节点列表添加内容来将物件挂在钩子上。例如，你可以添加一个文本节点、一个`CDATA`节点或一个属性节点。在构建过程中，请记住你在本教程中看到的结构。记住：层次结构中的每个节点都非常简单，只包含一个数据元素。
+- en: Running the `DOMEcho` Sample
+  id: totrans-138
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行`DOMEcho`示例
+- en: To run the `DOMEcho` sample, follow the steps below.
+  id: totrans-139
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要运行`DOMEcho`示例，请按照以下步骤操作。
+- en: '**Navigate to the `samples` directory.**`% cd *install-dir*`/jaxp-1_4_2-`*release-date*`/samples`.`'
+  id: totrans-140
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航至`samples`目录。**`% cd *install-dir*`/jaxp-1_4_2-`*release-date*`/samples`.`'
+- en: '**Compile the example class.**`% javac dom/*`'
+  id: totrans-141
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**编译示例类。**`% javac dom/*`'
+- en: '**Run the `DOMEcho` program on an XML file.**'
+  id: totrans-142
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**在 XML 文件上运行`DOMEcho`程序。**'
+- en: Choose one of the XML files in the `data` directory and run the `DOMEcho` program
+    on it. Here, we have chosen to run the program on the file `personal-schema.xml`.
+  id: totrans-143
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 选择`data`目录中的一个 XML 文件，并在其上运行`DOMEcho`程序。在这里，我们选择在文件`personal-schema.xml`上运行该程序。
+- en: '`% java dom/DOMEcho data/personal-schema.xml`'
+  id: totrans-144
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`% java dom/DOMEcho data/personal-schema.xml`'
+- en: The XML file `personal-schema.xml` contains the personnel files for a small
+    company. When you run the `DOMEcho` program on it, you should see the following
+    output.
+  id: totrans-145
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: XML 文件`personal-schema.xml`包含了一个小公司的人员档案。当你在其上运行`DOMEcho`程序时，你应该看到以下输出。
+- en: '[PRE18]'
+  id: totrans-146
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: As you can see, `DOMEcho` prints out all the nodes for the different elements
+    in the document, with the correct indentation to show the node hierarchy.
+  id: totrans-147
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 正如你所看到的，`DOMEcho`打印出文档中不同元素的所有节点，并正确缩进以显示节点层次结构。

@@ -1,0 +1,124 @@
+- en: DayOfWeek and Month Enums
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: DayOfWeek和Month枚举
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/enum.html](https://docs.oracle.com/javase/tutorial/datetime/iso/enum.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/enum.html](https://docs.oracle.com/javase/tutorial/datetime/iso/enum.html)
+- en: The Date-Time API provides enums for specifying days of the week and months
+    of the year.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间API提供了用于指定星期几和每年月份的枚举。
+- en: DayOfWeek
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: DayOfWeek
+- en: 'The [`DayOfWeek`](https://docs.oracle.com/javase/8/docs/api/java/time/DayOfWeek.html)
+    enum consists of seven constants that describe the days of the week: `MONDAY`
+    through `SUNDAY`. The integer values of the `DayOfWeek` constants range from 1
+    (Monday) through 7 (Sunday). Using the defined constants (`DayOfWeek.FRIDAY`)
+    makes your code more readable.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`DayOfWeek`](https://docs.oracle.com/javase/8/docs/api/java/time/DayOfWeek.html)枚举由描述一周中每天的七个常量组成：`MONDAY`到`SUNDAY`。`DayOfWeek`常量的整数值范围从1（星期一）到7（星期日）。使用定义的常量（`DayOfWeek.FRIDAY`）可以使您的代码更易读。'
+- en: 'This enum also provides a number of methods, similar to the methods provided
+    by the temporal-based classes. For example, the following code adds 3 days to
+    "Monday" and prints the result. The output is "THURSDAY":'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个枚举还提供了许多方法，类似于时间为基础的类提供的方法。例如，以下代码将“Monday”加3天并打印结果。输出为“THURSDAY”：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'By using the [`getDisplayName(TextStyle, Locale)`](https://docs.oracle.com/javase/8/docs/api/java/time/DayOfWeek.html#getDisplayName-java.time.format.TextStyle-java.util.Locale-)
+    method, you can retrieve a string to identify the day of the week in the user''s
+    locale. The [`TextStyle`](https://docs.oracle.com/javase/8/docs/api/java/time/format/TextStyle.html)
+    enum enables you to specify what sort of string you want to display: `FULL`, `NARROW`
+    (typically a single letter), or `SHORT` (an abbreviation). The `STANDALONE` `TextStyle`
+    constants are used in some languages where the output is different when used as
+    part of a date than when it is used by itself. The following example prints the
+    three primary forms of the `TextStyle` for "Monday":'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[`getDisplayName(TextStyle, Locale)`](https://docs.oracle.com/javase/8/docs/api/java/time/DayOfWeek.html#getDisplayName-java.time.format.TextStyle-java.util.Locale-)方法，您可以检索一个字符串来标识用户所在地区的星期几。[`TextStyle`](https://docs.oracle.com/javase/8/docs/api/java/time/format/TextStyle.html)枚举允许您指定要显示的字符串类型：`FULL`、`NARROW`（通常是一个字母）或`SHORT`（缩写）。`STANDALONE`的`TextStyle`常量在某些语言中使用，当作为日期的一部分时输出不同于单独使用时的输出。以下示例打印了“Monday”三种主要形式的`TextStyle`：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'This code has the following output for the `en` locale:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码在`en`区域设置下的输出如下：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Month
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 月
+- en: The [`Month`](https://docs.oracle.com/javase/8/docs/api/java/time/Month.html)
+    enum includes constants for the twelve months, `JANUARY` through `DECEMBER`. As
+    with the `DayOfWeek` enum, the `Month` enum is strongly typed, and the integer
+    value of each constant corresponds to the ISO range from 1 (January) through 12
+    (December). Using the defined constants (`Month.SEPTEMBER`) makes your code more
+    readable.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Month`](https://docs.oracle.com/javase/8/docs/api/java/time/Month.html)枚举包括了十二个月的常量，从`JANUARY`到`DECEMBER`。与`DayOfWeek`枚举一样，`Month`枚举是强类型的，每个常量的整数值对应ISO范围从1（一月）到12（十二月）。使用定义的常量（`Month.SEPTEMBER`）可以使您的代码更易读。'
+- en: 'The `Month` enum also includes a number of methods. The following line of code
+    uses the `maxLength` method to print the maximum possible number of days in the
+    month of February. The output is "29":'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Month`枚举还包括许多方法。以下代码使用`maxLength`方法打印二月份最大可能的天数。输出为“29”：'
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The `Month` enum also implements the [`getDisplayName(TextStyle, Locale)`](https://docs.oracle.com/javase/8/docs/api/java/time/Month.html#getDisplayName-java.time.format.TextStyle-java.util.Locale-)
+    method to retrieve a string to identify the month in the user''s locale using
+    the specified `TextStyle`. If a particular `TextStyle` is not defined, then a
+    string representing the numeric value of the constant is returned. The following
+    code prints the month of August using the three primary text styles:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Month`枚举还实现了[`getDisplayName(TextStyle, Locale)`](https://docs.oracle.com/javase/8/docs/api/java/time/Month.html#getDisplayName-java.time.format.TextStyle-java.util.Locale-)方法，使用指定的`TextStyle`检索一个字符串来标识用户所在地区的月份。如果特定的`TextStyle`未定义，则返回表示常量数值的字符串。以下代码使用三种主要文本样式打印八月份的月份：'
+- en: '[PRE4]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'This code has the following output for the `en` locale:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码在`en`区域设置下的输出如下：
+- en: '[PRE5]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'

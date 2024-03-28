@@ -1,0 +1,138 @@
+- en: Finding Files
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 查找文件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/find.html](https://docs.oracle.com/javase/tutorial/essential/io/find.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/find.html](https://docs.oracle.com/javase/tutorial/essential/io/find.html)
+- en: 'If you have ever used a shell script, you have most likely used pattern matching
+    to locate files. In fact, you have probably used it extensively. If you haven''t
+    used it, pattern matching uses special characters to create a pattern and then
+    file names can be compared against that pattern. For example, in most shell scripts,
+    the asterisk, `*`, matches any number of characters. For example, the following
+    command lists all the files in the current directory that end in `.html`:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你曾经使用过shell脚本，你很可能使用过模式匹配来定位文件。事实上，你可能已经广泛使用了它。如果你还没有使用过，模式匹配使用特殊字符创建模式，然后文件名可以与该模式进行比较。例如，在大多数shell脚本中，星号，`*`，匹配任意数量的字符。例如，以下命令列出当前目录中以`.html`结尾的所有文件：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The `java.nio.file` package provides programmatic support for this useful feature.
+    Each file system implementation provides a [`PathMatcher`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/PathMatcher.html).
+    You can retrieve a file system''s `PathMatcher` by using the [`getPathMatcher(String)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#getPathMatcher-java.lang.String-)
+    method in the `FileSystem` class. The following code snippet fetches the path
+    matcher for the default file system:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.nio.file`包为这一有用功能提供了编程支持。每个文件系统实现都提供了一个[`PathMatcher`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/PathMatcher.html)。你可以通过在`FileSystem`类中使用[`getPathMatcher(String)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#getPathMatcher-java.lang.String-)方法来检索文件系统的`PathMatcher`。以下代码片段获取默认文件系统的路径匹配器：'
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The string argument passed to `getPathMatcher` specifies the syntax flavor and
+    the pattern to be matched. This example specifies *glob* syntax. If you are unfamiliar
+    with glob syntax, see [What is a Glob](fileOps.html#glob).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传递给`getPathMatcher`的字符串参数指定语法风格和要匹配的模式。本示例指定了*glob*语法。如果你不熟悉glob语法，请参阅[什么是Glob](fileOps.html#glob)。
+- en: Glob syntax is easy to use and flexible but, if you prefer, you can also use
+    regular expressions, or *regex*, syntax. For further information about regex,
+    see the [Regular Expressions](../regex/index.html) lesson. Some file system implementations
+    might support other syntaxes.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Glob语法易于使用和灵活，但如果你喜欢，也可以使用正则表达式，或*regex*语法。有关正则表达式的更多信息，请参阅[正则表达式](../regex/index.html)课程。一些文件系统实现可能支持其他语法。
+- en: If you want to use some other form of string-based pattern matching, you can
+    create your own `PathMatcher` class. The examples in this page use glob syntax.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想使用其他形式的基于字符串的模式匹配，你可以创建自己的`PathMatcher`类。本页中的示例使用glob语法。
+- en: 'Once you have created your `PathMatcher` instance, you are ready to match files
+    against it. The `PathMatcher` interface has a single method, [`matches`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/PathMatcher.html#matches-java.nio.file.Path-),
+    that takes a `Path` argument and returns a boolean: It either matches the pattern,
+    or it does not. The following code snippet looks for files that end in `.java`
+    or `.class` and prints those files to standard output:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦你创建了`PathMatcher`实例，你就可以准备好根据它匹配文件。`PathMatcher`接口有一个方法，[`matches`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/PathMatcher.html#matches-java.nio.file.Path-)，它接受一个`Path`参数并返回一个布尔值：它要么匹配模式，要么不匹配。以下代码片段查找以`.java`或`.class`结尾的文件并将这些文件打印到标准输出：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Recursive Pattern Matching
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 递归模式匹配
+- en: Searching for files that match a particular pattern goes hand-in-hand with walking
+    a file tree. How many times do you know a file is *somewhere* on the file system,
+    but where? Or perhaps you need to find all files in a file tree that have a particular
+    file extension.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 搜索与特定模式匹配的文件与遍历文件树密切相关。有多少次你知道一个文件*在某处*在文件系统上，但在哪里？或者也许你需要找到文件树中具有特定文件扩展名的所有文件。
+- en: The [`Find`](examples/Find.java) example does precisely that. `Find` is similar
+    to the UNIX `find` utility, but has pared down functionally. You can extend this
+    example to include other functionality. For example, the `find` utility supports
+    the `-prune` flag to exclude an entire subtree from the search. You could implement
+    that functionality by returning `SKIP_SUBTREE` in the `preVisitDirectory` method.
+    To implement the `-L` option, which follows symbolic links, you could use the
+    four-argument `walkFileTree` method and pass in the `FOLLOW_LINKS` enum (but make
+    sure that you test for circular links in the `visitFile` method).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Find`](examples/Find.java)示例正是如此。`Find`类似于UNIX的`find`实用程序，但功能更简化。你可以扩展这个示例以包含其他功能。例如，`find`实用程序支持`-prune`标志来排除搜索中的整个子树。你可以通过在`preVisitDirectory`方法中返回`SKIP_SUBTREE`来实现该功能。要实现`-L`选项，即跟随符号链接，你可以使用四个参数的`walkFileTree`方法，并传入`FOLLOW_LINKS`枚举（但请确保在`visitFile`方法中测试循环链接）。'
+- en: 'To run the Find application, use the following format:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要运行Find应用程序，请使用以下格式：
+- en: '[PRE3]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The pattern is placed inside quotation marks so any wildcards are not interpreted
+    by the shell. For example:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 模式被放置在引号内，以防止shell解释任何通配符。例如：
+- en: '[PRE4]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Here is the source code for the `Find` example:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是`Find`示例的源代码：
+- en: '[PRE5]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Recursively walking a file tree is covered in [Walking the File Tree](walk.html).
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 递归遍历文件树的内容在[遍历文件树](walk.html)中有详细介绍。

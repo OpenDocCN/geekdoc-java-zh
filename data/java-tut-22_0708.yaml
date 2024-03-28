@@ -1,0 +1,287 @@
+- en: Bean Customization
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Bean 自定义
+- en: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/advanced/customization.html](https://docs.oracle.com/javase/tutorial/javabeans/advanced/customization.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/advanced/customization.html](https://docs.oracle.com/javase/tutorial/javabeans/advanced/customization.html)
+- en: '*Customization* provides a means for modifying the appearance and behavior
+    of a bean within an application builder so it meets your specific needs. There
+    are several levels of customization available for a bean developer to allow other
+    developers to get maximum benefit from a bean''s potential functionality.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*自定义*提供了一种修改 Bean 外观和行为的方式，使其在应用程序构建器中满足您的特定需求。对于 Bean 开发人员，有几个级别的自定义可用，以允许其他开发人员充分利用
+    Bean 的潜在功能。'
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The following links are useful for learning about property editors and customizers:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下链接对学习有关属性编辑器和自定义器很有用：
+- en: '[`PropertyEditor`](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyEditor.html)
+    interface'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`PropertyEditor`](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyEditor.html)
+    接口'
+- en: '[`PropertyEditorSupport`](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyEditorSupport.html)
+    class'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`PropertyEditorSupport`](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyEditorSupport.html)
+    类'
+- en: '[`PropertyEditorManager`](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyEditorManager.html)
+    class'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`PropertyEditorManager`](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyEditorManager.html)
+    类'
+- en: '[`Customizer`](https://docs.oracle.com/javase/8/docs/api/java/beans/Customizer.html)
+    interface'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Customizer`](https://docs.oracle.com/javase/8/docs/api/java/beans/Customizer.html)
+    接口'
+- en: '[`BeanInfo`](https://docs.oracle.com/javase/8/docs/api/java/beans/BeanInfo.html)
+    interface'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`BeanInfo`](https://docs.oracle.com/javase/8/docs/api/java/beans/BeanInfo.html)
+    接口'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'A bean''s appearance and behavior can be customized at design time within beans-compliant
+    builder tools. There are two ways to customize a bean:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在符合 Beans 规范的构建工具中，可以在设计时自定义 Bean 的外观和行为。有两种方式可以自定义 Bean：
+- en: By using a *property editor*. Each bean property has its own property editor.
+    The NetBeans GUI Builder usually displays a bean's property editors in the Properties
+    window. The property editor that is associated with a particular property type
+    edits that property type.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过使用*属性编辑器*。每个 Bean 属性都有自己的属性编辑器。NetBeans GUI Builder 通常在属性窗口中显示 Bean 的属性编辑器。与特定属性类型相关联的属性编辑器编辑该属性类型。
+- en: By using *customizers*. Customizers give you complete GUI control over bean
+    customization. Customizers are used where property editors are not practical or
+    applicable. Unlike a property editor, which is associated with a property, a customizer
+    is associated with a bean.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过使用*自定义器*。自定义器为您提供了完全的 GUI 控制权，用于对 Bean 进行自定义。当属性编辑器不实用或不适用时，将使用自定义器。与属性关联的属性编辑器不同，自定义器与
+    Bean 关联。
+- en: Property Editors
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 属性编辑器
+- en: A property editor is a tool for customizing a particular property type. Property
+    editors are activated in the Properties window. This window determines a property's
+    type, searches for a relevant property editor, and displays the property's current
+    value in a relevant way.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性编辑器是用于自定义特定属性类型的工具。属性编辑器在属性窗口中激活。此窗口确定属性的类型，搜索相关的属性编辑器，并以相关方式显示属性的当前值。
+- en: 'Property editors must implement the `PropertyEditor` interface, which provides
+    methods to specify how a property should be displayed in a property sheet. The
+    following figure represents the Properties window containing `myBean1` properties:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性编辑器必须实现`PropertyEditor`接口，该接口提供了指定属性在属性表中如何显示的方法。以下图表示包含`myBean1`属性的属性窗口：
+- en: '![This figure represents myBean1 properties in the Property window](../Images/930cb4b12b04375234f735fa3ea7fb16.png)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_IMG
+  zh: '![此图表示属性窗口中的 myBean1 属性](../Images/930cb4b12b04375234f735fa3ea7fb16.png)'
+- en: You begin the process of editing these properties by clicking the property entry.
+    Clicking most of these entries will bring up separate panels. For example, to
+    set up the `foreground` or `background` use selection boxes with choices of colors,
+    or press the "..." button to work with a standard ColorEditor window. Clicking
+    on the `toolTipText` property opens a StringEditor window.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过单击属性条目开始编辑这些属性。单击大多数条目将弹出单独的面板。例如，要设置`foreground`或`background`，请使用带有颜色选择的选择框，或按下“…”按钮以使用标准
+    ColorEditor 窗口。单击`toolTipText`属性将打开 StringEditor 窗口。
+- en: The support class `PropertyEditorSupport` provides a default implementation
+    of the `PropertyEditor` interface. By subclassing your property editor from `PropertyEditorSupport`,
+    you can simply override the methods you need.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 支持类`PropertyEditorSupport`提供了`PropertyEditor`接口的默认实现。通过从`PropertyEditorSupport`子类化您的属性编辑器，您可以简单地重写您需要的方法。
+- en: 'To display the current property value "sample" within the Properties window,
+    you need to override `isPaintable` to return `true`. You then must override `paintValue`
+    to paint the current property value in a rectangle in the property sheet. Here''s
+    how `ColorEditor` implements `paintValue`:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在属性窗口中显示当前属性值"sample"，需要重写`isPaintable`以返回`true`。然后必须重写`paintValue`以在属性表中的矩形中绘制当前属性值。以下是`ColorEditor`如何实现`paintValue`：
+- en: '[PRE0]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: To support the custom property editor, override two more methods. Override `supportsCustomEditor`
+    to return true, and then override `getCustomEditor` to return a custom editor
+    instance. `ColorEditor.getCustomEditor` returns `this`.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要支持自定义属性编辑器，需要重写另外两个方法。重写`supportsCustomEditor`以返回true，然后重写`getCustomEditor`以返回自定义编辑器实例。`ColorEditor.getCustomEditor`返回`this`。
+- en: In addition, the `PropertyEditorSupport` class maintains a `PropertyChangeListener`
+    list, and fires property change event notifications to those listeners when a
+    bound property is changed.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，`PropertyEditorSupport`类维护一个`PropertyChangeListener`列表，并在绑定属性更改时向这些侦听器发送属性更改事件通知。
+- en: How Property Editors are Associated with Properties
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 如何将属性编辑器与属性关联
+- en: 'Property editors are discovered and associated with a given property in the
+    following ways:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性编辑器是通过以下方式发现并与给定属性关联的：
+- en: 'Explicit association by way of a `BeanInfo` object. The editor of the title''s
+    property is set with the following line of code:'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过`BeanInfo`对象进行显式关联。标题的编辑器通过以下代码行设置：
+- en: '[PRE1]'
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Explicit registration by way of the `java.beans.PropertyEditorManager.registerEditor`
+    method. This method takes two arguments: the bean class type, and the editor class
+    to be associated with that type.'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过`java.beans.PropertyEditorManager.registerEditor`方法进行显式注册。此方法接受两个参数：bean类类型和要与该类型关联的编辑器类。
+- en: 'Name search. If a class has no explicitly associated property editor, then
+    the `PropertyEditorManager` searches for that class''s property editor in the
+    following ways:'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 名称搜索。如果一个类没有明确关联的属性编辑器，那么`PropertyEditorManager`将通过以下方式搜索该类的属性编辑器：
+- en: Appending "Editor" to the fully qualified class name. For example, for the `my.package.ComplexNumber`
+    class, the property editor manager would search for the `my.package.ComplexNumberEditor`
+    class.
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将"Editor"附加到完全限定的类名。例如，对于`my.package.ComplexNumber`类，属性编辑器管理器将搜索`my.package.ComplexNumberEditor`类。
+- en: Appending "Editor" to the class name and searching a class path.
+  id: totrans-31
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将"Editor"附加到类名并搜索类路径。
+- en: Customizers
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 自定义器
+- en: You have learned that builder tools provide support for you to create your own
+    property editors. What other needs should visual builders meet for complex, industrial-strength
+    beans? Often it is undesirable to have all the properties of a bean revealed on
+    a single (sometimes huge) property sheet. What if one single root choice about
+    the type of the bean rendered half the properties irrelevant? The JavaBeans specification
+    provides for user-defined customizers, through which you can define a higher level
+    of customization for bean properties than is available with property editors.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您已经了解到构建工具为您创建自己的属性编辑器提供支持。对于复杂的、工业强度的bean，视觉构建器应满足哪些其他需求？有时，将一个单一根选择关于bean类型渲染的一半属性变得无关紧要是不可取的。JavaBeans规范提供了用户定义的自定义器，通过它们您可以为bean属性定义比属性编辑器提供的更高级别的定制。
+- en: When you use a bean *Customizer*, you have complete control over how to configure
+    or edit a bean. A Customizer is an application that specifically targets a bean's
+    customization. Sometimes properties are insufficient for representing a bean's
+    configurable attributes. Customizers are used where sophisticated instructions
+    would be needed to change a bean, and where property editors are too primitive
+    to achieve bean customization.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您使用一个bean *自定义器*时，您完全控制如何配置或编辑一个bean。自定义器是专门针对bean定制的应用程序。有时属性不足以表示bean的可配置属性。自定义器用于需要复杂指令来更改bean的地方，以及属性编辑器过于原始无法实现bean定制的地方。
+- en: 'All customizers must:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有自定义器必须：
+- en: Extend `java.awt.Component` or one of its subclasses.
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 扩展`java.awt.Component`或其子类之一。
+- en: Implement the `java.beans.Customizer` interface This means implementing methods
+    to register `PropertyChangeListener` objects, and firing property change events
+    at those listeners when a change to the target bean has occurred.
+  id: totrans-37
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 实现`java.beans.Customizer`接口，这意味着实现方法来注册`PropertyChangeListener`对象，并在目标 bean
+    发生更改时向这些侦听器触发属性更改事件。
+- en: Implement a default constructor.
+  id: totrans-38
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 实现一个默认构造函数。
+- en: Associate the customizer with its target class via `BeanInfo.getBeanDescriptor`.
+  id: totrans-39
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过`BeanInfo.getBeanDescriptor`将自定义器与其目标类关联。

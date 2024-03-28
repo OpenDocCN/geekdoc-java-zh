@@ -1,0 +1,88 @@
+- en: Using a Common Build File for All Platforms
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用一个通用的构建文件适用于所有平台
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/commonbuild.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/commonbuild.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/commonbuild.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/commonbuild.html)
+- en: To generate a self-contained application bundle for each platform on which your
+    application runs, you must run the packaging tool on each platform. You have the
+    option of using platform-specific build files or setting up one build file that
+    can be run on all platforms. Platform-specific files can be simpler to set up,
+    but then you must maintain multiple files.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要为应用程序在每个平台上生成一个自包含的应用程序包，必须在每个平台上运行打包工具。您可以选择使用特定于平台的构建文件或设置一个可以在所有平台上运行的构建文件。特定于平台的文件可能更容易设置，但您必须维护多个文件。
+- en: The File Association Demo described in [Using File Associations](../selfContainedApps/fileassociation.html)
+    uses a single build file that works on all platforms.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[使用文件关联](../selfContainedApps/fileassociation.html)中描述的文件关联演示使用一个可以在所有平台上运行的单个构建文件。'
+- en: 'The following elements of the build file support its use for all platforms:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 构建文件的以下元素支持其在所有平台上的使用：
+- en: 'The main class for the application is `ScriptRunnerApplication.java` for Linux
+    and Windows and `ScriptRunnerApplicationMac.java` for OS X. The following code
+    in the `-pre-init` task is used to determine which class to use:'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 应用程序的主类为`ScriptRunnerApplication.java`，用于 Linux 和 Windows，以及`ScriptRunnerApplicationMac.java`，用于
+    OS X。在`-pre-init`任务中的以下代码用于确定使用哪个类：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following code in the `-pre-init` task is used to prevent the main class
+    for OS X from being compiled when running on Linux or Windows:'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在`-pre-init`任务中的以下代码用于防止在Linux或Windows上运行时编译 OS X 的主类：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '<fx:bundleArgument> elements are used to pass arguments to the different bundlers
+    available. Arguments that are not used by a bundler are ignored, so the build
+    file can contain the arguments needed by all platforms. The following code defines
+    arguments for Linux, OS X, and Windows:'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<fx:bundleArgument>` 元素用于向不同的打包程序传递参数。未被打包程序使用的参数将被忽略，因此构建文件可以包含所有平台所需的参数。以下代码定义了
+    Linux、OS X 和 Windows 的参数：'
+- en: '[PRE2]'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: See [`build.xml`](examples/packager_FileAssociations/build.xml) for the complete
+    build code.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请查看[`build.xml`](examples/packager_FileAssociations/build.xml)以获取完整的构建代码。
+- en: You can download the source files for the File Association Demo from [Self-Contained
+    Application Examples](../selfContainedApps/examplesIndex.html).
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以从[自包含应用程序示例](../selfContainedApps/examplesIndex.html)下载文件关联演示的源文件。

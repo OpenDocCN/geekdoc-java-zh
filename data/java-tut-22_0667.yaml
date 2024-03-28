@@ -1,0 +1,212 @@
+- en: Working with Print Services and Attributes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用打印服务和属性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/printing/services.html](https://docs.oracle.com/javase/tutorial/2d/printing/services.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/printing/services.html](https://docs.oracle.com/javase/tutorial/2d/printing/services.html)
+- en: From the previous lessons you have learned that the Java 2D printing API supports
+    page imaging, displays print and page setup dialogs, and specifies printing attributes.
+    Printing services is another key component of any printing subsystem.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从之前的课程中，您已经了解到Java 2D打印API支持页面成像，显示打印和页面设置对话框，并指定打印属性。 打印服务是任何打印子系统的另一个关键组件。
+- en: 'The **Java Print Service (JPS) API** extends the current Java 2D printing features
+    to offer the following functionality:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**Java打印服务（JPS）API**扩展了当前的Java 2D打印功能，提供以下功能：'
+- en: Application discovers printers that cater to its needs by dynamically querying
+    the printer capabilities.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 应用程序通过动态查询打印机功能来发现满足其需求的打印机。
+- en: Application extends the attributes included with the JPS API.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 应用程序扩展了包含在JPS API中的属性。
+- en: Third parties can plug in their own print services with the Service Provider
+    Interface, which print different formats, including Postscript, PDF, and SVG.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 第三方可以通过服务提供者接口插入其自己的打印服务，打印不同格式，包括Postscript、PDF和SVG。
+- en: 'The Java Print Service API consists of four packages:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java打印服务API由四个包组成：
+- en: '![This figure represents four packages necessary for printing](../Images/76a762eb0eca1f599ecc7ba5d0d6c628.png)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_IMG
+  zh: '![此图表示打印所需的四个包](../Images/76a762eb0eca1f599ecc7ba5d0d6c628.png)'
+- en: 'The [`javax.print`](https://docs.oracle.com/javase/8/docs/api/javax/print/package-summary.html)
+    package provides the principal classes and interfaces for the Java Print Service
+    API. It enables client and server applications to:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`javax.print`](https://docs.oracle.com/javase/8/docs/api/javax/print/package-summary.html)包为Java打印服务API提供了主要的类和接口。
+    它使客户端和服务器应用程序能够：'
+- en: Discover and select print services based on their capabilities.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 根据其功能发现和选择打印服务。
+- en: Specify the format of print data.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 指定打印数据的格式。
+- en: Submit print jobs to services that support the document type to be printed.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将打印作业提交给支持要打印的文档类型的服务。
+- en: Document Type Specification
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文档类型规范
+- en: 'The [`DocFlavor`](https://docs.oracle.com/javase/8/docs/api/javax/print/DocFlavor.html)
+    class represents format of the print data, such as JPEG or PostScript. The `DocFlavor`
+    format consists of two parts: a MIME type and a representation class name. A MIME
+    type describes the format, and a document representation class name indicates
+    how the document is delivered to the printer or output stream. An application
+    uses the `DocFlavor` and an attribute set to find printers with the capabilities
+    specified by the attribute set. This code sample demonstrates obtaining an array
+    of `StreamPrintServiceFactory` objects that can return `StreamPrintService` objects
+    able to convert a GIF image into PostScript:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`DocFlavor`](https://docs.oracle.com/javase/8/docs/api/javax/print/DocFlavor.html)类表示打印数据的格式，例如JPEG或PostScript。`DocFlavor`格式由两部分组成：一个是MIME类型，另一个是表示类名称。
+    MIME类型描述了格式，文档表示类名称指示文档如何传递给打印机或输出流。 应用程序使用`DocFlavor`和属性集来查找具有属性集指定功能的打印机。 此代码示例演示了获取能够将GIF图像转换为PostScript的`StreamPrintService`对象的`StreamPrintServiceFactory`对象数组：'
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Attribute Definitions
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 属性定义
+- en: The [`javax.print.attribute`](https://docs.oracle.com/javase/8/docs/api/javax/print/attribute/package-frame.html)
+    and [`javax.print.attribute.standard`](https://docs.oracle.com/javase/8/docs/api/javax/print/attribute/standard/package-frame.html)
+    packages define print attributes which describe the capabilities of a print service,
+    specify the requirements of a print job, and track the progress of the print job.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`javax.print.attribute`](https://docs.oracle.com/javase/8/docs/api/javax/print/attribute/package-frame.html)和[`javax.print.attribute.standard`](https://docs.oracle.com/javase/8/docs/api/javax/print/attribute/standard/package-frame.html)包定义了描述打印服务功能、指定打印作业要求以及跟踪打印作业进度的打印属性。'
+- en: 'For example, if you would like to use A4 paper format and print three copies
+    of your document you will have to create a set of the following attributes implementing
+    the `PrintRequestAttributeSet` interface:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，如果您想使用A4纸张格式并打印文档的三份副本，则必须创建一组实现`PrintRequestAttributeSet`接口的以下属性：
+- en: '[PRE1]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Then you must pass the attribute set to the print job's `print` method, along
+    with the `DocFlavor`.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，您必须将属性集传递给打印作业的`print`方法，以及`DocFlavor`。
+- en: Print Service Discovery
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 打印服务发现
+- en: 'An application invokes the static methods of the abstract class `PrintServiceLookup`
+    to locate print services that have the capabilities to satisfy the application''s
+    print request. For example, in order to print two copies of a double-sided document,
+    the application first needs to find printers that have double-sided printing capability:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序调用抽象类`PrintServiceLookup`的静态方法来定位具有满足应用程序打印请求能力的打印服务。例如，为了打印一份双面文档的两份副本，应用程序首先需要找到具有双面打印能力的打印机：
+- en: '[PRE2]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Common Use of the API
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: API的常见用法
+- en: 'In conclusion, the Java Print Service API performs the following steps to process
+    a print request:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 总之，Java打印服务API执行以下步骤来处理打印请求：
+- en: Chooses a `DocFlavor`.
+  id: totrans-26
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 选择一个`DocFlavor`。
+- en: Creates a set of attributes.
+  id: totrans-27
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一组属性。
+- en: Locates a print service that can handle the print request as specified by the
+    `DocFlavor` and the attribute set.
+  id: totrans-28
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 定位一个可以处理由`DocFlavor`和属性集指定的打印请求的打印服务。
+- en: Creates a `Doc` object encapsulating the `DocFlavor` and the actual print data.
+  id: totrans-29
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个封装了`DocFlavor`和实际打印数据的`Doc`对象。
+- en: Gets a print job, represented by `DocPrintJob`, from the print service.
+  id: totrans-30
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从打印服务获取由`DocPrintJob`表示的打印作业。
+- en: Calls the `print` method of the print job.
+  id: totrans-31
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调用打印作业的`print`方法。
+- en: For more information about Java Print Service, see [Java 2D Print Service API
+    User Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/jps/spec/JPSTOC.fm.html).
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关Java打印服务的更多信息，请参阅[Java 2D打印服务API用户指南](https://docs.oracle.com/javase/8/docs/technotes/guides/jps/spec/JPSTOC.fm.html)。

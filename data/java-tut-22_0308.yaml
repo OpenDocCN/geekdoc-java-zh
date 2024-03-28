@@ -1,0 +1,79 @@
+- en: Changing the Launch Button
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 更改启动按钮
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/changeLaunchButtonOfJWS.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/changeLaunchButtonOfJWS.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/changeLaunchButtonOfJWS.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/changeLaunchButtonOfJWS.html)
+- en: You can change your Java Web Start application's Launch button image, if you
+    don't like the default ![Launch button](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)
+    button or if you have another image that you have standardized on.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您不喜欢默认的启动按钮![启动按钮](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)，或者您有另一幅标准化的图像，您可以更改您的Java
+    Web Start应用程序的启动按钮图像。
+- en: Use the `deployJava.launchButtonPNG` variable to point to the location of your
+    Launch button's image.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`deployJava.launchButtonPNG`变量指向启动按钮图像的位置。
+- en: '**Variable:** `deployJava.launchButtonPNG`'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**变量:** `deployJava.launchButtonPNG`'
+- en: '**Usage:** Providing an alternate image URL'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**用法:** 提供替代图像URL'
+- en: In this example, the Notepad application's Launch button is now an image of
+    Duke waving.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，记事本应用程序的启动按钮现在是杜克挥手的图像。
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The Notepad application's new Launch button (Duke waving) follows. Click on
+    Duke's image to launch the Notepad application.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记事本应用程序的新启动按钮（杜克挥手）如下。点击杜克的图像启动记事本应用程序。
+- en: //&lt;![CDATA[ deployJava.launchButtonPNG='https://docs.oracle.com/javase/tutorial/images/DukeWave.gif';
+    var url = 'https://docs.oracle.com/javase/tutorialJWS/samples/deployment/NotepadJWSProject/Notepad.jnlp';
+    deployJava.createWebStartLaunchButton(url, '1.6.0'); //]]&gt;
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: //&lt;![CDATA[ deployJava.launchButtonPNG='https://docs.oracle.com/javase/tutorial/images/DukeWave.gif';
+    var url = 'https://docs.oracle.com/javase/tutorialJWS/samples/deployment/NotepadJWSProject/Notepad.jnlp';
+    deployJava.createWebStartLaunchButton(url, '1.6.0'); //]]&gt;
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意:** 如果您看不到示例运行，请确保在浏览器中启用JavaScript解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

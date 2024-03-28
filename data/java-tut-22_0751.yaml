@@ -1,0 +1,494 @@
+- en: Creating a Custom JMX Client
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建自定义 JMX 客户端
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jmx/remote/custom.html](https://docs.oracle.com/javase/tutorial/jmx/remote/custom.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jmx/remote/custom.html](https://docs.oracle.com/javase/tutorial/jmx/remote/custom.html)
+- en: The previous lessons in this trail have shown you how to create JMX technology
+    MBeans and MXBeans, and register them with a JMX agent. However, all the previous
+    examples have used an existing JMX client, JConsole. This lesson will demonstrate
+    how to create your own custom JMX client.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程中的前几课已经向您展示了如何创建 JMX 技术的 MBeans 和 MXBeans，并将它们注册到 JMX 代理中。然而，所有之前的示例都使用了现有的
+    JMX 客户端 JConsole。本课将演示如何创建您自己的自定义 JMX 客户端。
+- en: An example of a custom JMX client, [`Client`](../examples/Client.java) is included
+    in [`jmx_examples.zip`](../examples/jmx_examples.zip). This JMX client interacts
+    with the same MBean, MXBean and JMX agent as were seen in the previous lessons.
+    Due to the size of the `Client` class, it will be examined in chunks, in the following
+    sections.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个自定义 JMX 客户端的示例，[`Client`](../examples/Client.java)，包含在 [`jmx_examples.zip`](../examples/jmx_examples.zip)
+    中。这个 JMX 客户端与之前课程中看到的相同的 MBean、MXBean 和 JMX 代理进行交互。由于 `Client` 类的大小，将在以下部分中逐块进行检查。
+- en: Importing the JMX Remote API Classes
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 导入 JMX 远程 API 类
+- en: To be able to create connections to JMX agents that are running remotely from
+    the JMX client, you need to use the classes from the [`javax.management.remote`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/package-summary.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要能够从 JMX 客户端远程连接到运行的 JMX 代理，您需要使用 [`javax.management.remote`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/package-summary.html)
+    中的类。
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `Client` class will be creating [`JMXConnector`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXConnector.html)
+    instances, for which it will need a [`JMXConnectorFactory`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXConnectorFactory.html)
+    and a [`JMXServiceURL`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXServiceURL.html).
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Client` 类将创建 [`JMXConnector`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXConnector.html)
+    实例，为此它将需要一个 [`JMXConnectorFactory`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXConnectorFactory.html)
+    和一个 [`JMXServiceURL`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXServiceURL.html)。'
+- en: Creating a Notification Listener
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建一个通知监听器
+- en: The JMX client needs a notification handler, to listen for and to process any
+    notifications that might be sent by the MBeans that are registered in the JMX
+    agent's MBean server. The JMX client's notification handler is an instance of
+    the [`NotificationListener`](https://docs.oracle.com/javase/8/docs/api/javax/management/NotificationListener.html)
+    interface, as shown below.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JMX 客户端需要一个通知处理程序，以便监听并处理可能由注册在 JMX 代理的 MBean 服务器中的 MBeans 发送的任何通知。JMX 客户端的通知处理程序是
+    [`NotificationListener`](https://docs.oracle.com/javase/8/docs/api/javax/management/NotificationListener.html)
+    接口的一个实例，如下所示。
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This notification listener determines the origin of any notifications it receives,
+    and retrieves the information stored in the notification. It then performs different
+    actions with the notification information according to the type of notification
+    received. In this case, when the listener receives notifications of the type [`AttributeChangeNotification`](https://docs.oracle.com/javase/8/docs/api/javax/management/AttributeChangeNotification.html)
+    it will obtain the name and type of the MBean attribute that has changed, as well
+    as its old and new values, by calling the `AttributeChangeNotification` methods
+    `getAttributeName`, `getAttributeType`, `getNewValue` and `getOldValue`.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此通知监听器确定接收到的任何通知的来源，并检索通知中存储的信息。然后根据接收到的通知类型执行不同的操作。在这种情况下，当监听器接收到 [`AttributeChangeNotification`](https://docs.oracle.com/javase/8/docs/api/javax/management/AttributeChangeNotification.html)
+    类型的通知时，它将通过调用 `AttributeChangeNotification` 方法 `getAttributeName`、`getAttributeType`、`getNewValue`
+    和 `getOldValue` 获取已更改的 MBean 属性的名称和类型，��及其旧值和新值。
+- en: A new `ClientListener` instance is created by later in the code.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 代码稍后将创建一个新的 `ClientListener` 实例。
+- en: '[PRE2]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Creating an RMI Connector Client
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建 RMI 连接器客户端
+- en: The `Client` class creates an RMI connector client that is configured to connect
+    to an RMI connector server that you will launch when you start the JMX agent,
+    `Main`. This will allow the JMX client to interact with the JMX agent as if they
+    were running on the same machine.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Client` 类创建了一个 RMI 连接器客户端，配置为连接到在启动 JMX 代理 `Main` 时将要启动的 RMI 连接器服务器。这将允许 JMX
+    客户端与 JMX 代理进行交互，就好像它们在同一台机器上运行一样。'
+- en: '[PRE3]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: As you can see, the `Client` defines a [`JMXServiceURL`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXServiceURL.html)
+    named `url`, that represents the location at which the connector client expects
+    to find the connector server. This URL allows the connector client to retrieve
+    the RMI connector server stub `jmxrmi` from the RMI registry running on port 9999
+    of the local host, and to connect to the RMI connector server.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你所看到的，`Client`定义了一个名为`url`的[`JMXServiceURL`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXServiceURL.html)，表示连接器客户端期望找到连接器服务器的位置。此URL允许连接器客户端从运行在本地主机端口9999上的RMI注册表中检索RMI连接器服务器存根`jmxrmi`，并连接到RMI连接器服务器。
+- en: With the RMI registry thus identified, the connector client can be created.
+    The connector client, `jmxc`, is an instance of the interface [`JMXConnector`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXConnector.html),
+    created by the `connect()` method of [`JMXConnectorFactory`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXConnectorFactory.html).
+    The `connect()` method is passed the parameters `url` and a null environment map
+    when it is called.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 识别了RMI注册表后，可以创建连接器客户端。连接器客户端`jmxc`是[`JMXConnector`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXConnector.html)接口的一个实例，通过[`JMXConnectorFactory`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXConnectorFactory.html)的`connect()`方法创建。在调用`connect()`方法时，传递了参数`url`和一个空的环境映射。
+- en: Connecting to the Remote MBean Server
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 连接到远程MBean服务器
+- en: With the RMI connection in place, the JMX client must connect to the remote
+    MBean server, so that it can interact with the various MBeans registered in it
+    by the remote JMX agent.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有了RMI连接，JMX客户端必须连接到远程MBean服务器，以便可以通过远程JMX代理与其中注册的各种MBeans进行交互。
+- en: '[PRE4]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: An instance of [`MBeanServerConnection`](https://docs.oracle.com/javase/8/docs/api/javax/management/MBeanServerConnection.html),
+    named mbsc, is then created by calling the `getMBeanServerConnection()` method
+    of the `JMXConnector` instance `jmxc`.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过调用`JMXConnector`实例`jmxc`的`getMBeanServerConnection()`方法，创建了一个名为`MBeanServerConnection`的实例，命名为mbsc。
+- en: The connector client is now connected to the MBean server created by the JMX
+    agent, and can register MBeans and perform operations on them with the connection
+    remaining completely transparent to both ends.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，连接器客户端已连接到由JMX代理创建的MBean服务器，并且可以注册MBeans并对其执行操作，连接对双方完全透明。
+- en: To start with, the client defines some simple operations to discover information
+    about the MBeans found in the agent's MBean server.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要开始，客户端定义了一些简单的操作，以发现代理的MBean服务器中找到的信息。
+- en: '[PRE5]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The client calls various methods of `MBeanServerConnection` in order to obtain
+    the domains in which the different MBeans are operating, the number of MBeans
+    registered in the MBean server, and the object names for each of the MBeans it
+    discovers.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 客户端调用`MBeanServerConnection`的各种方法，以获取不同MBeans所在的域，MBean服务器中注册的MBeans数量，以及它发现的每个MBean的对象名称。
+- en: Performing Operations on Remote MBeans via Proxies
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 通过代理执行远程MBeans上的操作
+- en: The client accesses the `Hello` MBean in the MBean server through the MBean
+    server connection by creating an MBean **proxy**. This MBean proxy is local to
+    the client, and emulates the remote MBean.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 客户端通过创建一个MBean **代理**，通过MBean服务器连接访问MBean服务器中的`Hello` MBean。这个MBean代理是客户端本地的，并模拟了远程MBean。
+- en: '[PRE6]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: MBean proxies allow you to access an MBean through a Java interface, allowing
+    you to make calls on the proxy rather than having to write lengthy code to access
+    a remote MBean. An MBean proxy for `Hello` is created here by calling the method
+    `newMBeanProxy()` in the [`javax.management.JMX`](https://docs.oracle.com/javase/8/docs/api/javax/management/JMX.html)
+    class, passing it the MBean's `MBeanServerConnection`, object name, the class
+    name of the MBean interface and `true`, to signify that the proxy must behave
+    as a [`NotificationBroadcaster`](https://docs.oracle.com/javase/8/docs/api/javax/management/NotificationBroadcaster.html).
+    The JMX client can now perform the operations defined by `Hello` as if they were
+    the operations of a locally registered MBean. The JMX client also adds a notification
+    listener and changes the MBean's `CacheSize` attribute, to make it send a notification.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MBean代理允许您通过Java接口访问MBean，使您可以在代理上调用而不必编写冗长的代码来访问远程MBean。在此处通过在[`javax.management.JMX`](https://docs.oracle.com/javase/8/docs/api/javax/management/JMX.html)类中调用`newMBeanProxy()`方法创建`Hello`的MBean代理，传递MBean的`MBeanServerConnection`、对象名称、MBean接口的类名和`true`，表示代理必须表现为[`NotificationBroadcaster`](https://docs.oracle.com/javase/8/docs/api/javax/management/NotificationBroadcaster.html)。JMX客户端现在可以执行`Hello`定义的操作，就好像它们是本地注册的MBean的操作一样。JMX客户端还添加了一个通知监听器，并更改了MBean的`CacheSize`属性，使其发送通知。
+- en: Performing Operations on Remote MXBeans via Proxies
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 通过代理对远程MXBeans执行操作
+- en: You can create proxies for MXBeans in exactly the same way as you create MBean
+    proxies.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以像创建MBean代理一样创建MXBean的代理。
+- en: '[PRE7]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: As shown above, to create a proxy for an MXBean, all you have to do is call
+    [`JMX.newMXBeanProxy`](https://docs.oracle.com/javase/8/docs/api/javax/management/JMX.html#newMXBeanProxy-javax.management.MBeanServerConnection-javax.management.ObjectName-java.lang.Class-)
+    instead of `newMBeanProxy`. The MXBean proxy `mxbeanProxy` allows the client to
+    invoke the `QueueSample` MXBean's operations as if they were the operations of
+    a locally registered MXBean.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如上所示，要为MXBean创建代理，您只需调用[`JMX.newMXBeanProxy`](https://docs.oracle.com/javase/8/docs/api/javax/management/JMX.html#newMXBeanProxy-javax.management.MBeanServerConnection-javax.management.ObjectName-java.lang.Class-)而不是`newMBeanProxy`。MXBean代理`mxbeanProxy`允许客户端调用`QueueSample`
+    MXBean的操作，就好像它们是本地注册的MXBean的操作一样。
+- en: Closing the Connection
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 关闭连接
+- en: Once the JMX client has obtained all the information it needs and performed
+    all the required operations on the MBeans in the remote JMX agent's MBean server,
+    the connection must be closed down.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦JMX客户端获取了所需的所有信息，并在远程JMX代理的MBean服务器上执行了所有必要的操作，连接必须关闭。
+- en: '[PRE8]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: The connection is closed with a call to the [`JMXConnector.close`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXConnector.html#close--)
+    method.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过调用[`JMXConnector.close`](https://docs.oracle.com/javase/8/docs/api/javax/management/remote/JMXConnector.html#close--)方法关闭连接。
+- en: To Run the Custom JMX Client Example
+  id: totrans-39
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行自定义JMX客户端示例
+- en: 'This example requires version 6 of the Java SE platform. To monitor the `Main`
+    JMX agent remotely using a custom JMX client [`Client`](../examples/Client.java),
+    follow these steps:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例需要Java SE平台的6版本。要使用自定义JMX客户端[`Client`](../examples/Client.java)远程监视`Main`
+    JMX代理，请按照以下步骤操作：
+- en: If you have not done so already, save [`jmx_examples.zip`](../examples/jmx_examples.zip)
+    into your `work_dir` directory.
+  id: totrans-41
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果尚未这样做，请将[`jmx_examples.zip`](../examples/jmx_examples.zip)保存到您的`work_dir`目录中。
+- en: Unzip the bundle of sample classes by using the following command in a terminal
+    window.
+  id: totrans-42
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在终端窗口中使用以下命令解压示例类的捆绑包。
+- en: '[PRE9]'
+  id: totrans-43
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Compile the example Java classes from within the `work_dir` directory.
+  id: totrans-44
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从`work_dir`目录中编译示例Java类。
+- en: '[PRE10]'
+  id: totrans-45
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'Start the `Main` application, specifying the properties that expose `Main`
+    for remote management:'
+  id: totrans-46
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 启动`Main`应用程序，指定暴露`Main`以进行远程管理的属性：
+- en: '[PRE11]'
+  id: totrans-47
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: A confirmation that `Main` is waiting for something to happen is generated.
+  id: totrans-48
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 生成一个确认，表明`Main`正在等待某些事件发生。
+- en: 'Start the `Client` application in a different terminal window:'
+  id: totrans-49
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在另一个终端窗口中启动`Client`应用程序：
+- en: '[PRE12]'
+  id: totrans-50
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: A confirmation that an `MBeanServerConnection` has been obtained is displayed.
+  id: totrans-51
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示已获取`MBeanServerConnection`的确认。
+- en: Press Enter.
+  id: totrans-52
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 按Enter键。
+- en: The domains in which all the MBeans that are registered in the MBean server
+    started by `Main` are displayed.
+  id: totrans-53
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示了由`Main`启动的MBean服务器中注册的所有MBeans所在的域。
+- en: Press Enter again.
+  id: totrans-54
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次按Enter键。
+- en: The number of MBeans that are registered in the MBean server is displayed, as
+    well as the object names of all these MBeans. The MBeans displayed include all
+    the standard platform MXBeans running in the Java VM, as well as the `Hello` MBean
+    and the `QueueSampler` MXBean that were registered in the MBean server by `Main`.
+  id: totrans-55
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示在MBean服务器中注册的MBean数量，以及所有这些MBean的对象名称。显示的MBeans包括在Java VM中运行的所有标准平台MXBeans，以及由`Main`在MBean服务器中注册的`Hello`
+    MBean和`QueueSampler` MXBean。
+- en: Press Enter again.
+  id: totrans-56
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次按Enter键。
+- en: 'The `Hello` MBean''s operations are invoked by `Client`, with the following
+    results:'
+  id: totrans-57
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`Hello` MBean的操作由`Client`调用，结果如下：'
+- en: A notification listener is added to `Client` to listen for notifications from
+    `Main`.
+  id: totrans-58
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 向`Client`添加通知监听器，以侦听来自`Main`的通知。
+- en: The value of the `CacheSize` attribute is changed from 200 to 150.
+  id: totrans-59
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CacheSize`属性的值从200更改为150。'
+- en: In the terminal window in which you started `Main`, confirmation of the `CacheSize`
+    attribute change is displayed.
+  id: totrans-60
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在启动`Main`的终端窗口中，会显示`CacheSize`属性更改的确认信息。
+- en: In the terminal window in which you started `Client`, a notification from `Main`
+    is displayed, informing `Client` of the `CacheSize` attribute change.
+  id: totrans-61
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在启动`Client`的终端窗口中，显示来自`Main`的通知，通知`Client`有`CacheSize`属性更改。
+- en: The `Hello` MBean's `sayHello` operation is invoked.
+  id: totrans-62
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用`Hello` MBean的`sayHello`操作。
+- en: In the terminal window in which you started `Main`, the message "Hello world"
+    is displayed.
+  id: totrans-63
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在启动`Main`的终端窗口中，显示消息“Hello world”。
+- en: The `Hello` MBean's `add` operation is invoked, with the values 2 and 3 as parameters.
+    The result is displayed by `Client`.
+  id: totrans-64
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用`Hello` MBean的`add`操作，参数为2和3。结果由`Client`显示。
+- en: Press Enter again.
+  id: totrans-65
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次按Enter键。
+- en: 'The `QueueSampler` MXBean''s operations are invoked by `Client`, with the following
+    results:'
+  id: totrans-66
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`QueueSampler` MXBean的操作由`Client`调用，结果如下：'
+- en: The `QueueSample` values `date`, `head`, and `size` are displayed.
+  id: totrans-67
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 显示`QueueSample`值`date`、`head`和`size`。
+- en: The `clearQueue` operation is invoked.
+  id: totrans-68
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用`clearQueue`操作。
+- en: Press Enter again.
+  id: totrans-69
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次按Enter键。
+- en: The `Client` closes the connection to the MBean server and a confirmation is
+    displayed.
+  id: totrans-70
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`Client`关闭与MBean服务器的连接，并显示确认信息。'

@@ -1,0 +1,371 @@
+- en: 'Lesson: Common Problems (and Their Solutions)'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教训：常见问题（及其解决方法）
+- en: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/problems/index.html](https://docs.oracle.com/javase/tutorial/getStarted/problems/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/problems/index.html](https://docs.oracle.com/javase/tutorial/getStarted/problems/index.html)
+- en: Compiler Problems
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编译器问题
+- en: '**Common Error Messages on Microsoft Windows Systems**'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**Microsoft Windows系统上的常见错误消息**'
+- en: '`**''javac'' is not recognized as an internal or external command, operable
+    program or batch file**`'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`**''javac'' is not recognized as an internal or external command, operable
+    program or batch file**`'
+- en: If you receive this error, Windows cannot find the compiler (`javac`).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你收到这个错误，Windows找不到编译器(`javac`)。
+- en: 'Here''s one way to tell Windows where to find `javac`. Suppose you installed
+    the JDK in `C:\jdk1.8.0`. At the prompt you would type the following command and
+    press Enter:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是告诉Windows如何找到`javac`的一种方法。假设你将JDK安装在`C:\jdk1.8.0`中。在提示符下，你可以输入以下命令并按回车：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If you choose this option, you'll have to precede your `javac` and `java` commands
+    with `C:\jdk1.8.0\bin\` each time you compile or run a program. To avoid this
+    extra typing, consult the section [Updating the PATH variable](https://docs.oracle.com/javase/8/docs/technotes/guides/install/windows_jdk_install.html#BABGDJFH)
+    in the JDK 8 installation instructions.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果选择此选项，每次编译或运行程序时，都需要在`C:\jdk1.8.0\bin\`之前加上`javac`和`java`命令。为了避免这种额外的输入，可以参考JDK
+    8安装说明中的[更新PATH变量](https://docs.oracle.com/javase/8/docs/technotes/guides/install/windows_jdk_install.html#BABGDJFH)部分。
+- en: '`**Class names, ''HelloWorldApp'', are only accepted if annotation processing
+    is explicitly requested**`'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`**Class names, ''HelloWorldApp'', are only accepted if annotation processing
+    is explicitly requested**`'
+- en: If you receive this error, you forgot to include the `.java` suffix when compiling
+    the program. Remember, the command is `javac HelloWorldApp.java` not `javac HelloWorldApp`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你收到这个错误，那么在编译程序时忘记包含`.java`后缀。记住，命令是`javac HelloWorldApp.java`而不是`javac HelloWorldApp`。
+- en: '**Common Error Messages on UNIX Systems**'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**UNIX系统上的常见错误消息**'
+- en: '`javac: Command not found`'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`javac: Command not found`'
+- en: If you receive this error, UNIX cannot find the compiler, `javac`.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你收到这个错误，UNIX找不到编译器`javac`。
+- en: 'Here''s one way to tell UNIX where to find `javac`. Suppose you installed the
+    JDK in `/usr/local/jdk1.8.0`. At the prompt you would type the following command
+    and press Return:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是告诉UNIX如何找到`javac`的一种方法。假设你将JDK安装在`/usr/local/jdk1.8.0`中。在提示符下，你可以输入以下命令并按回车：
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '**Note:** If you choose this option, each time you compile or run a program,
+    you''ll have to precede your `javac` and `java` commands with `/usr/local/jdk1.8.0/`.
+    To avoid this extra typing, you could add this information to your PATH variable.
+    The steps for doing so will vary depending on which shell you are currently running.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果选择此选项，每次编译或运行程序时，都需要在`javac`和`java`命令之前加上`/usr/local/jdk1.8.0/`。为了避免这种额外的输入，你可以将这些信息添加到你的PATH变量中。具体操作步骤将取决于你当前正在运行的shell。'
+- en: '`**Class names, ''HelloWorldApp'', are only accepted if annotation processing
+    is explicitly requested**`'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`**Class names, ''HelloWorldApp'', are only accepted if annotation processing
+    is explicitly requested**`'
+- en: If you receive this error, you forgot to include the `.java` suffix when compiling
+    the program. Remember, the command is `javac HelloWorldApp.java` not `javac HelloWorldApp`.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你收到这个错误，那么在编译程序时忘记包含`.java`后缀。记住，命令是`javac HelloWorldApp.java`而不是`javac HelloWorldApp`。
+- en: '**Syntax Errors (All Platforms)**'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**语法错误（所有平台）**'
+- en: 'If you mistype part of a program, the compiler may issue a *syntax* error.
+    The message usually displays the type of the error, the line number where the
+    error was detected, the code on that line, and the position of the error within
+    the code. Here''s an error caused by omitting a semicolon (`;`) at the end of
+    a statement:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你在程序的某个部分打错了字，编译器可能会发出*语法*错误。错误信息通常显示错误的类型、检测到错误的行号、该行的代码以及错误在代码中的位置。以下是由于在语句末尾省略分号(`;`)而引起的错误：
+- en: '[PRE2]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: If you see any compiler errors, then your program did not successfully compile,
+    and the compiler did not create a `.class` file. Carefully verify the program,
+    fix any errors that you detect, and try again.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你看到任何编译器错误，那么你的程序没有成功编译，编译器没有创建`.class`文件。仔细检查程序，修复你发现的任何错误，然后再试一次。
+- en: '**Semantic Errors**'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**语义错误**'
+- en: 'In addition to verifying that your program is syntactically correct, the compiler
+    checks for other basic correctness. For example, the compiler warns you each time
+    you use a variable that has not been initialized:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了验证你的程序在语法上是否正确之外，编译器还会检查其他基本的正确性。例如，每次使用未初始化的变量时，编译器都会警告你：
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Again, your program did not successfully compile, and the compiler did not create
+    a `.class` file. Fix the error and try again.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次，你的程序没有成功编译，编译器没有创建`.class`文件。修复错误并重试。
+- en: Runtime Problems
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行时问题
+- en: Error Messages on Microsoft Windows Systems
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Microsoft Windows系统上的错误消息
+- en: '`Exception in thread "main" java.lang.NoClassDefFoundError: HelloWorldApp`'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`主线程中的异常"main" java.lang.NoClassDefFoundError: HelloWorldApp`'
+- en: If you receive this error, `java` cannot find your bytecode file, `HelloWorldApp.class`.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你收到这个错误，`java`找不到你的字节码文件`HelloWorldApp.class`。
+- en: 'One of the places `java` tries to find your `.class` file is your current directory.
+    So if your `.class` file is in `C:\java`, you should change your current directory
+    to that. To change your directory, type the following command at the prompt and
+    press Enter:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java`尝试查找你的`.class`文件的一个地方是你当前的目录。所以如果你的`.class`文件在`C:\java`中，你应该将当前目录更改为那个目录。要更改你的目录，请在提示符下输入以下命令并按回车键：'
+- en: '[PRE4]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The prompt should change to `C:\java>`. If you enter `dir` at the prompt, you
+    should see your `.java` and `.class` files. Now enter `java HelloWorldApp` again.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 提示符应该变成`C:\java>`。如果你在提示符下输入`dir`，你应该看到你的`.java`和`.class`文件。现在再次输入`java HelloWorldApp`。
+- en: If you still have problems, you might have to change your CLASSPATH variable.
+    To see if this is necessary, try clobbering the classpath with the following command.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你仍然遇到问题，你可能需要更改你的CLASSPATH变量。要查看是否需要这样做，请尝试使用以下命令清除类路径。
+- en: '[PRE5]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Now enter `java HelloWorldApp` again. If the program works now, you'll have
+    to change your CLASSPATH variable. To set this variable, consult the [Updating
+    the PATH variable](https://docs.oracle.com/javase/8/docs/technotes/guides/install/windows_jdk_install.html#BABGDJFH)
+    section in the JDK 8 installation instructions. The CLASSPATH variable is set
+    in the same manner.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在再次输入`java HelloWorldApp`。如果程序现在可以运行，那么你需要更改你的CLASSPATH变量。要设置这个变量，请参考JDK 8安装说明中的[更新PATH变量](https://docs.oracle.com/javase/8/docs/technotes/guides/install/windows_jdk_install.html#BABGDJFH)部分。CLASSPATH变量的设置方式相同。
+- en: '`**Could not find or load main class HelloWorldApp.class**`'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`**找不到或加载主类HelloWorldApp.class**`'
+- en: A common mistake made by beginner programmers is to try and run the `java` launcher
+    on the `.class` file that was created by the compiler. For example, you'll get
+    this error if you try to run your program with `java HelloWorldApp.class` instead
+    of `java HelloWorldApp`. Remember, the argument is the *name of the class* that
+    you want to use, *not* the filename.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 初学者程序员常犯的一个常见错误是尝试在编译器创建的`.class`文件上运行`java`启动器。例如，如果你尝试用`java HelloWorldApp.class`而不是`java
+    HelloWorldApp`来运行你的程序，你会得到这个错误。记住，参数是你想要使用的*类名*，*不是*文件名。
+- en: '**`Exception in thread "main" java.lang.NoSuchMethodError: main`**'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`主线程中的异常"main" java.lang.NoSuchMethodError: main`**'
+- en: The Java VM requires that the class you execute with it have a `main` method
+    at which to begin execution of your application. [A Closer Look at the "Hello
+    World!" Application](../application/index.html) discusses the `main` method in
+    detail.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java虚拟机要求你执行的类具有一个`main`方法，用于开始执行你的应用程序。[深入了解"Hello World!"应用程序](../application/index.html)详细讨论了`main`方法。
+- en: '**Error Messages on UNIX Systems**'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**UNIX系统上的错误消息**'
+- en: '`Exception in thread "main" java.lang.NoClassDefFoundError: HelloWorldApp`'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`主线程中的异常"main" java.lang.NoClassDefFoundError: HelloWorldApp`'
+- en: If you receive this error, `java` cannot find your bytecode file, `HelloWorldApp.class`.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你收到这个错误，`java`找不到你的字节码文件`HelloWorldApp.class`。
+- en: 'One of the places `java` tries to find your bytecode file is your current directory.
+    So, for example, if your bytecode file is in `/home/jdoe/java`, you should change
+    your current directory to that. To change your directory, type the following command
+    at the prompt and press Return:'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java`尝试查找你的字节码文件的一个地方是你当前的目录。所以，例如，如果你的字节码文件在`/home/jdoe/java`中，你应该将当前目录更改为那个目录。要更改你的目录，请在提示符下输入以下命令并按回车键：'
+- en: '[PRE6]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: If you enter `pwd` at the prompt, you should see `/home/jdoe/java`. If you enter
+    `ls` at the prompt, you should see your `.java` and `.class` files. Now enter
+    `java HelloWorldApp` again.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你在提示符下输入`pwd`，你应该看到`/home/jdoe/java`。如果你在提示符下输入`ls`，你应该看到你的`.java`和`.class`文件。现在再次输入`java
+    HelloWorldApp`。
+- en: If you still have problems, you might have to change your CLASSPATH environment
+    variable. To see if this is necessary, try clobbering the classpath with the following
+    command.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你仍然遇到问题，你可能需要更改你的CLASSPATH环境变量。要查看是否需要这样做，请尝试使用以下命令清除类路径。
+- en: '[PRE7]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Now enter `java HelloWorldApp` again. If the program works now, you'll have
+    to change your CLASSPATH variable in the same manner as the PATH variable above.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在再次输入`java HelloWorldApp`。如果程序现在可以运行，你需要像上面的PATH变量一样更改你的CLASSPATH变量。
+- en: '`**Exception in thread "main" java.lang.NoClassDefFoundError: HelloWorldApp/class**`'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`**主线程中的异常"main"java.lang.NoClassDefFoundError: HelloWorldApp/class**`'
+- en: A common mistake made by beginner programmers is to try and run the `java` launcher
+    on the `.class` file that was created by the compiler. For example, you'll get
+    this error if you try to run your program with `java HelloWorldApp.class` instead
+    of `java HelloWorldApp`. Remember, the argument is the *name of the class* that
+    you want to use, *not* the filename.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 初学者程序员常犯的一个错误是尝试在编译器创建的`.class`文件上运行`java`启动器。例如，如果你尝试用`java HelloWorldApp.class`而不是`java
+    HelloWorldApp`来运行你的程序，你会得到这个错误。记住，参数是你想要使用的*类名*，而不是文件名。
+- en: '**`Exception in thread "main" java.lang.NoSuchMethodError: main`**'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`主线程中的异常"main"java.lang.NoSuchMethodError: main`**'
+- en: The Java VM requires that the class you execute with it have a `main` method
+    at which to begin execution of your application. [A Closer Look at the "Hello
+    World!" Application](../application/index.html) discusses the `main` method in
+    detail.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java虚拟机要求你执行的类具有一个`main`方法，用于开始执行你的应用程序。[深入了解"Hello World!"应用程序](../application/index.html)详细讨论了`main`方法。
+- en: '**Applet or Java Web Start Application Is Blocked**'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**小程序或Java Web Start应用程序被阻止**'
+- en: 'If you are running an application through a browser and get security warnings
+    that say the application is blocked, check the following items:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你通过浏览器运行一个应用程序并收到安全警告说应用程序被阻止，请检查以下项目：
+- en: Verify that the attributes in the JAR file manifest are set correctly for the
+    environment in which the application is running. The Permissions attribute is
+    required. In a NetBeans project, you can open the manifest file from the Files
+    tab of the NetBeans IDE by expanding the project folder and double-clicking `manifest.mf`.
+  id: totrans-56
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 验证JAR文件清单中的属性是否针对应用程序运行的环境正确设置。权限属性是必需的。在NetBeans项目中，你可以通过在NetBeans IDE的文件选项卡中展开项目文件夹并双击`manifest.mf`来打开清单文件。
+- en: Verify that the application is signed by a valid certificate and that the certificate
+    is located in the Signer CA keystore.
+  id: totrans-57
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 验证应用程序是否由有效证书签名，并且证书位于签名者CA密钥库中。
+- en: If you are running a local applet, set up a web server to use for testing. You
+    can also add your application to the exception site list, which is managed in
+    the Security tab of the Java Control Panel.
+  id: totrans-58
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果你正在运行一个本地小程序，建立一个用于测试的Web服务器。你也可以将你的应用程序添加到例外站点列表中，在Java控制面板的安全选项卡中管理。

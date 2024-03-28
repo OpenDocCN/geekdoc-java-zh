@@ -1,0 +1,102 @@
+- en: Naming a Package
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 包命名
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html](https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html](https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html)
+- en: 'With programmers worldwide writing classes and interfaces using the Java programming
+    language, it is likely that many programmers will use the same name for different
+    types. In fact, the previous example does just that: It defines a `Rectangle`
+    class when there is already a `Rectangle` class in the `java.awt` package. Still,
+    the compiler allows both classes to have the same name if they are in different
+    packages. The fully qualified name of each `Rectangle` class includes the package
+    name. That is, the fully qualified name of the `Rectangle` class in the `graphics`
+    package is `graphics.Rectangle`, and the fully qualified name of the `Rectangle`
+    class in the `java.awt` package is `java.awt.Rectangle`.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 全球范围内的程序员使用 Java 编程语言编写类和接口，很可能许多程序员会为不同类型使用相同的名称。事实上，前面的例子就是这样做的：它定义了一个 `Rectangle`
+    类，而 `java.awt` 包中已经有一个 `Rectangle` 类。尽管如此，如果它们位于不同的包中，编译器仍允许两个类具有相同的名称。每个 `Rectangle`
+    类的完全限定名称包括包名。也就是说，`graphics` 包中的 `Rectangle` 类的完全限定名称是 `graphics.Rectangle`，而
+    `java.awt` 包中的 `Rectangle` 类的完全限定名称是 `java.awt.Rectangle`。
+- en: This works well unless two independent programmers use the same name for their
+    packages. What prevents this problem? Convention.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种方法很有效，除非两个独立的程序员使用相同的包名。如何避免这个问题？约定。
+- en: Naming Conventions
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 命名约定
+- en: Package names are written in all lower case to avoid conflict with the names
+    of classes or interfaces.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 包名全部小写以避免与类或接口的名称冲突。
+- en: "Companies use their reversed Internet domain name to begin their package names\x97\
+    for example, `com.example.mypackage` for a package named `mypackage` created by\
+    \ a programmer at `example.com`."
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "公司使用其反转的互联网域名作为其包名的起始部分\x97例如，`com.example.mypackage` 表示由 `example.com` 的程序员创建的名为\
+    \ `mypackage` 的包。"
+- en: Name collisions that occur within a single company need to be handled by convention
+    within that company, perhaps by including the region or the project name after
+    the company name (for example, `com.example.region.mypackage`).
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 公司内部发生的名称冲突需要在公司内部通过约定处理，也许可以在公司名称后面加上地区或项目名称（例如，`com.example.region.mypackage`）。
+- en: Packages in the Java language itself begin with `java.` or `javax.`
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 语言中的包以 `java.` 或 `javax.` 开头。
+- en: 'In some cases, the internet domain name may not be a valid package name. This
+    can occur if the domain name contains a hyphen or other special character, if
+    the package name begins with a digit or other character that is illegal to use
+    as the beginning of a Java name, or if the package name contains a reserved Java
+    keyword, such as "int". In this event, the suggested convention is to add an underscore.
+    For example:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某些情况下，互联网域名可能不是有效的包名。如果域名包含连字符或其他特殊字符，如果包名以数字或其他 Java 名称不允许用作 Java 名称开头的字符开头，或者包名包含保留的
+    Java 关键字，例如 "int"。在这种情况下，建议的约定是添加下划线。例如：
+- en: Legalizing Package Names
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 合法化包名
+- en: '| Domain Name | Package Name Prefix |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| 域名 | 包名前缀 |'
+- en: '| `hyphenated-name.example.org` | `org.example.hyphenated_name` |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `hyphenated-name.example.org` | `org.example.hyphenated_name` |'
+- en: '| `example.int` | `int_.example` |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| `example.int` | `int_.example` |'
+- en: '| `123name.example.com` | `com.example._123name` |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| `123name.example.com` | `com.example._123name` |'

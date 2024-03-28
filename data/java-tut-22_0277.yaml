@@ -1,0 +1,220 @@
+- en: Communicating With Other Applets
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 与其他小程序通信
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/iac.html](https://docs.oracle.com/javase/tutorial/deployment/applet/iac.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/iac.html](https://docs.oracle.com/javase/tutorial/deployment/applet/iac.html)
+- en: 'A Java applet can communicate with other Java applets by using JavaScript functions
+    in the parent web page. JavaScript functions enable communication between applets
+    by receiving messages from one applet and invoking methods of other applets. See
+    the following topics for more information about the interaction between Java code
+    and JavaScript code:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个Java小程序可以通过在父网页中使用JavaScript函数与其他Java小程序通信。JavaScript函数通过接收来自一个小程序的消息并调用其他小程序的方法来实现小程序之间的通信。有关Java代码与JavaScript代码交互的更多信息，请参阅以下主题：
+- en: '[Invoking JavaScript Code From an Applet](../applet/invokingJavaScriptFromApplet.html)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[从小程序调用JavaScript代码](../applet/invokingJavaScriptFromApplet.html)'
+- en: '[Invoking Applet Methods From JavaScript Code](../applet/invokingAppletMethodsFromJavaScript.html)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[从JavaScript代码调用小程序方法](../applet/invokingAppletMethodsFromJavaScript.html)'
+- en: 'You should avoid using the following mechanisms to find other applets and share
+    data between applets:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您应避免使用以下机制来查找其他小程序并在小程序之间共享数据：
+- en: Avoid using static variables to share data between applets.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 避免使用静态变量在小程序之间共享数据。
+- en: Do not use the `getApplet` and `getApplets` methods of the [`AppletContext`](https://docs.oracle.com/javase/8/docs/api/java/applet/AppletContext.html)
+    class to find other applets. These methods only find applets that are running
+    in the same instance of the Java Runtime Environment software.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 不要使用[`AppletContext`](https://docs.oracle.com/javase/8/docs/api/java/applet/AppletContext.html)类的`getApplet`和`getApplets`方法来查找其他小程序。这些方法只能找到在同一Java运行时环境软件实例中运行的小程序。
+- en: Applets must originate from the same directory on the server in order to communicate
+    with each other.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 小程序必须来自服务器上的同一目录，以便彼此通信。
+- en: The Sender and Receiver applets are shown next. When a user clicks the button
+    to increment the counter, the Sender applet invokes a JavaScript function to send
+    a request to the Receiver applet. Upon receiving the request, the Receiver applet
+    increments a counter variable and displays the value of the variable.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 发送器和接收器小程序如下所示。当用户点击按钮增加计数器时，发送器小程序调用JavaScript函数向接收器小程序发送请求。接收器小程序在接收请求后增加一个计数器变量并显示变量的值。
+- en: //&lt;![CDATA[ function sendMsgToIncrementCounter() { var myReceiver = document.getElementById("receiver");
+    myReceiver.incrementCounter(); } //]]&gt;
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: //&lt;![CDATA[ function sendMsgToIncrementCounter() { var myReceiver = document.getElementById("receiver");
+    myReceiver.incrementCounter(); } //]]&gt;
+- en: Sender Applet
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 发送器小程序
+- en: //&lt;![CDATA[ var attributes = { code:'Sender.class', archive:'examples/dist/applet_SenderReceiver/applet_SenderReceiver.jar',
+    width:300, height:50} ; var parameters = { permissions:'sandbox' }; deployJava.runApplet(attributes,
+    parameters, '1.6'); //]]&gt;
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: //&lt;![CDATA[ var attributes = { code:'Sender.class', archive:'examples/dist/applet_SenderReceiver/applet_SenderReceiver.jar',
+    width:300, height:50} ; var parameters = { permissions:'sandbox' }; deployJava.runApplet(attributes,
+    parameters, '1.6'); //]]&gt;
+- en: Receiver Applet
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接收器小程序
+- en: //&lt;![CDATA[ var attributes = { id:'receiver', code:'Receiver.class', archive:'examples/dist/applet_SenderReceiver/applet_SenderReceiver.jar',
+    width:300, height:50} ; var parameters = { permissions:'sandbox' }; deployJava.runApplet(attributes,
+    parameters, '1.6'); //]]&gt;
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: //&lt;![CDATA[ var attributes = { id:'receiver', code:'Receiver.class', archive:'examples/dist/applet_SenderReceiver/applet_SenderReceiver.jar',
+    width:300, height:50} ; var parameters = { permissions:'sandbox' }; deployJava.runApplet(attributes,
+    parameters, '1.6'); //]]&gt;
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，请至少安装[Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到示例运行，请确保在浏览器中启用JavaScript解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: To enable communication with another applet, obtain a reference to an instance
+    of the `netscape.javascript.JSObject` class. Use this instance to invoke JavaScript
+    functions. The [`Sender`](examples/applet_SenderReceiver/src/Sender.java) applet
+    uses an instance of the `netscape.javascript.JSObject` class to invoke a JavaScript
+    function called `sendMsgToIncrementCounter`.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要启用与另一个小程序的通信，获取 `netscape.javascript.JSObject` 类的实例的引用。使用此实例调用 JavaScript 函数。[`Sender`](examples/applet_SenderReceiver/src/Sender.java)
+    小程序使用 `netscape.javascript.JSObject` 类的实例来调用名为 `sendMsgToIncrementCounter` 的 JavaScript
+    函数。
+- en: '[PRE0]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** To compile Java code that has a reference to classes in the `netscape.javascript`
+    package, include `<your JDK path>/jre/lib/plugin.jar` in your classpath. At runtime,
+    the Java Plug-in software automatically makes these classes available to applets.'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 要编译具有对 `netscape.javascript` 包中类的引用的 Java 代码，请在类路径中包含 `<your JDK path>/jre/lib/plugin.jar`。在运行时，Java
+    插件软件会自动使这些类对小程序可用。'
+- en: '* * *'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Write the JavaScript function that will receive requests from one applet and
+    invoke methods of another applet on the web page. The `sendMsgToIncrementCounter`
+    JavaScript function invokes the Receiver applet's `incrementCounter` method.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编写 JavaScript 函数，该函数将接收来自一个小程序的请求，并调用网页上另一个小程序的方法。`sendMsgToIncrementCounter`
+    JavaScript 函数调用接收器小程序的 `incrementCounter` 方法。
+- en: '[PRE1]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Note that the JavaScript code uses the name `receiver` to obtain a reference
+    to the Receiver applet on the web page. This name should be the same as the value
+    of the `id` attribute that is specified when you deploy the Receiver applet.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，JavaScript 代码使用名称 `receiver` 来获取网页上接收器小程序的引用。此名称应与部署接收器小程序时指定的 `id` 属性的值相同。
+- en: The [`Receiver`](examples/applet_SenderReceiver/src/Receiver.java) applet's
+    `incrementCounter` method is shown next.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面显示了 [`Receiver`](examples/applet_SenderReceiver/src/Receiver.java) 小程序的 `incrementCounter`
+    方法。
+- en: '[PRE2]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Deploy the applets on the web page as shown in the following code snippet. You
+    can view the Sender and Receiver applets and associated JavaScript code in [``AppletPage.html``](examples/dist/applet_SenderReceiver/AppletPage.html).
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 部署小程序在网页上，如下面的代码片段所示。您可以在 [``AppletPage.html``](examples/dist/applet_SenderReceiver/AppletPage.html)
+    中查看发送器和接收器小程序以及相关的 JavaScript 代码。
+- en: '[PRE3]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '[Download source code](examplesIndex.html#SenderReceiver) for the *Sender Receiver
+    Applets* example to experiment further.'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#SenderReceiver) 以进一步进行实验的 *发送器接收器小程序* 示例。'

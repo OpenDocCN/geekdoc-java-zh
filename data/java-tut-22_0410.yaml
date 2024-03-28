@@ -1,0 +1,123 @@
+- en: Tasks that Have Interim Results
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 具有中间结果的任务
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/concurrency/interim.html](https://docs.oracle.com/javase/tutorial/uiswing/concurrency/interim.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/concurrency/interim.html](https://docs.oracle.com/javase/tutorial/uiswing/concurrency/interim.html)
+- en: It is often useful for a background task to provide interim results while it
+    is still working. The task can do this by invoking [`SwingWorker.publish`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html#publish-V...-).
+    This method accepts a variable number of arguments. Each argument must be of the
+    type specified by `SwingWorker`'s second type parameter.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在后台任务仍在运行时提供中间结果通常是有用的。任务可以通过调用[`SwingWorker.publish`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html#publish-V...-)来实现这一点。该方法接受可变数量的参数。每个参数必须是由`SwingWorker`的第二个类型参数指定的类型。
+- en: To collect results provided by `publish`, override [`SwingWorker.process`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html#process-java.util.List-)
+    This method will be invoked from the event dispatch thread. Results from multiple
+    invocations of `publish` are often accumulated for a single invocation of `process`.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要收集`publish`提供的结果，重写[`SwingWorker.process`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html#process-java.util.List-)。此方法将从事件分发线程中调用。通常会将多次调用`publish`的结果累积到单次调用`process`中。
+- en: Let's look at the way the [``Flipper.java``](../examples/concurrency/FlipperProject/src/concurrency/Flipper.java)
+    example uses `publish` to provide interim results. Click the Launch button to
+    run `Flipper` using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/concurrency/index.html#Flipper).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看看[``Flipper.java``](../examples/concurrency/FlipperProject/src/concurrency/Flipper.java)示例如何使用`publish`提供中间结果。单击启动按钮以使用[Java™
+    Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行`Flipper`（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/concurrency/index.html#Flipper)。
+- en: '[![Launches the Flipper example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/FlipperProject/Flipper.jnlp)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 Flipper 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/FlipperProject/Flipper.jnlp)'
+- en: This program tests the fairness of [`java.util.Random`](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)
+    by generating a series of random `boolean` values in a background task. This is
+    equivalent to flipping a coin; hence the name `Flipper`. To report its results,
+    the background task uses an object of type `FlipPair`
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序通过在后台任务中生成一系列随机的`boolean`值来测试[`java.util.Random`](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)的公平性。这相当于抛硬币；因此命名为`Flipper`。为了报告其结果，后台任务使用了类型为`FlipPair`的对象。
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `heads` field is the number of times the random value has been `true`; the
+    `total` field is the total number of random values.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`heads`字段是随机值为`true`的次数；`total`字段是随机值的总数。'
+- en: 'The background task is represented by an instance of `FlipTask`:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 后台任务由`FlipTask`的一个实例表示：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Since the task does not return a final result, it does not matter what the
+    first type parameter is; `Void` is used as a placeholder. The task invokes `publish`
+    after each "coin flip":'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于任务不返回最终结果，第一个类型参数是什么并不重要；`Void`被用作占位符。任务在每次“抛硬币”后调用`publish`：
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '(The `isCancelled` method is discussed in the next section.) Because `publish`
+    is invoked very frequently, a lot of `FlipPair` values will probably be accumulated
+    before `process` is invoked in the event dispatch thread; `process` is only interested
+    in the last value reported each time, using it to update the GUI:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: （`isCancelled`方法将在下一节中讨论。）由于`publish`被非常频繁地调用，很可能在事件分发线程中调用`process`之前会积累很多`FlipPair`值；`process`只对每次报告的最后一个值感兴趣，用它来更新
+    GUI：
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: If `Random` is fair, the value displayed in `devText` should get closer and
+    closer to 0 as `Flipper` runs.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`Random`是公平的，那么`devText`中显示的值应该在`Flipper`运行时越来越接近0。
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The `setText` method used in `Flipper` is actually "thread safe"
+    as defined in its [specification](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setText-java.lang.String-).
+    That means that we could dispense with `publish` and `process` and set the text
+    fields directly from the worker thread. We''ve chosen to ignore this fact in order
+    to provide a simple demonstration of `SwingWorker` interim results.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 在`Flipper`中使用的`setText`方法实际上符合其[规范](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setText-java.lang.String-)中定义的“线程安全”。这意味着我们可以在工作线程中直接设置文本字段，而不需要使用`publish`和`process`。为了提供`SwingWorker`中间结果的简单演示，我们选择忽略这一事实。'
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

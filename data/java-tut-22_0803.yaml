@@ -1,0 +1,29 @@
+- en: StAX
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: StAX
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/limits/stax.html](https://docs.oracle.com/javase/tutorial/jaxp/limits/stax.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/limits/stax.html](https://docs.oracle.com/javase/tutorial/jaxp/limits/stax.html)
+- en: StAX, JSR 173, does not support FSP. The StAX implementation in the JDK however,
+    supports the new limit properties and their corresponding system properties. This
+    means that, while there is no FSP to turn on and off the limits, the limits and
+    system properties described work exactly the same.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX，JSR 173，不支持FSP。然而，JDK中的StAX实现支持新的限制属性及其对应的系统属性。这意味着，虽然没有FSP来开启和关闭限制，但描述的限制和系统属性的工作方式完全相同。
+- en: For compatibility, the StAX specific properties always take effect before the
+    new JAXP limits. The `SupportDTD` property when set to false, for example, causes
+    an exception to be thrown when an input file contains an `Entity` reference. Therefore,
+    the addition of the new limits will have no effect for applications that use the
+    `SupportDTD` property to disable the DTD.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了兼容性，StAX特定属性总是在新的JAXP限制之前生效。例如，将`SupportDTD`属性设置为false会导致在输入文件包含`Entity`引用时抛出异常。因此，对于使用`SupportDTD`属性禁用DTD的应用程序，新限制的添加不会产生影响。

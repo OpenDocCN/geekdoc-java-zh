@@ -1,0 +1,184 @@
+- en: Branching Statements
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 分支语句
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/branch.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/branch.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/branch.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/branch.html)
+- en: The `break` Statement
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`break` 语句'
+- en: 'The `break` statement has two forms: labeled and unlabeled. You saw the unlabeled
+    form in the previous discussion of the `switch` statement. You can also use an
+    unlabeled `break` to terminate a `for`, `while`, or `do-while` loop, as shown
+    in the following [`BreakDemo`](examples/BreakDemo.java) program:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`break` 语句有两种形式：带标签和未标记。在前面讨论 `switch` 语句时看到了未标记形式。您还可以使用未标记的 `break` 终止 `for`、`while`
+    或 `do-while` 循环，如下所示的 [`BreakDemo`](examples/BreakDemo.java) 程序：'
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This program searches for the number 12 in an array. The `break` statement,
+    shown in boldface, terminates the `for` loop when that value is found. Control
+    flow then transfers to the statement after the `for` loop. This program''s output
+    is:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序在数组中搜索数字 12。粗体显示的 `break` 语句在找到该值时终止 `for` 循环。然后控制流转移到 `for` 循环后的语句。该程序的输出为：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'An unlabeled `break` statement terminates the innermost `switch`, `for`, `while`,
+    or `do-while` statement, but a labeled `break` terminates an outer statement.
+    The following program, [`BreakWithLabelDemo`](examples/BreakWithLabelDemo.java),
+    is similar to the previous program, but uses nested `for` loops to search for
+    a value in a two-dimensional array. When the value is found, a labeled `break`
+    terminates the outer `for` loop (labeled "search"):'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个未标记的 `break` 语句终止最内层的 `switch`、`for`、`while` 或 `do-while` 语句，但带标签的 `break`
+    终止外部语句。下面的程序，[`BreakWithLabelDemo`](examples/BreakWithLabelDemo.java)，类似于前一个程序，但使用嵌套的
+    `for` 循环在二维数组中搜索一个值。当找到该值时，带标签的 `break` 终止外部的 `for` 循环（标记为 "search"）：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: This is the output of the program.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是程序的输出。
+- en: '[PRE3]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The `break` statement terminates the labeled statement; it does not transfer
+    the flow of control to the label. Control flow is transferred to the statement
+    immediately following the labeled (terminated) statement.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`break` 语句终止带标签的语句；它不会将控制流转移到标签处。控制流会转移到带标签的（终止的）语句之后的语句。'
+- en: The `continue` Statement
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`continue` 语句'
+- en: The `continue` statement skips the current iteration of a `for`, `while` , or
+    `do-while` loop. The unlabeled form skips to the end of the innermost loop's body
+    and evaluates the `boolean` expression that controls the loop. The following program,
+    [`ContinueDemo`](examples/ContinueDemo.java) , steps through a `String`, counting
+    the occurrences of the letter "p". If the current character is not a p, the `continue`
+    statement skips the rest of the loop and proceeds to the next character. If it
+    *is* a "p", the program increments the letter count.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`continue` 语句跳过 `for`、`while` 或 `do-while` 循环的当前迭代。未标记形式跳到最内层循环体的末尾并评估控制循环的
+    `boolean` 表达式。下面的程序，[`ContinueDemo`](examples/ContinueDemo.java)，遍历一个 `String`，计算字母
+    "p" 的出现次数。如果当前字符不是 p，则 `continue` 语句跳过循环的其余部分并继续下一个字符。如果是 "p"，程序会增加字母计数。'
+- en: '[PRE4]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Here is the output of this program:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是该程序的输出：
+- en: '[PRE5]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: To see this effect more clearly, try removing the `continue` statement and recompiling.
+    When you run the program again, the count will be wrong, saying that it found
+    35 p's instead of 9.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要更清楚地看到这种效果，请尝试删除 `continue` 语句并重新编译。再次运行程序时，计数将出错，显示找到了 35 个 p，而不是 9 个。
+- en: 'A labeled `continue` statement skips the current iteration of an outer loop
+    marked with the given label. The following example program, `ContinueWithLabelDemo`,
+    uses nested loops to search for a substring within another string. Two nested
+    loops are required: one to iterate over the substring and one to iterate over
+    the string being searched. The following program, [`ContinueWithLabelDemo`](examples/ContinueWithLabelDemo.java),
+    uses the labeled form of continue to skip an iteration in the outer loop.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 带标签的 `continue` 语句跳过带有给定标签的外部循环的当前迭代。下面的示例程序，`ContinueWithLabelDemo`，使用嵌套循环在另一个字符串中搜索子字符串。需要两个嵌套循环：一个用于迭代子字符串，一个用于迭代被搜索的字符串。下面的程序，[`ContinueWithLabelDemo`](examples/ContinueWithLabelDemo.java)，使用带标签的
+    continue 形式跳过外部循环的一个迭代。
+- en: '[PRE6]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Here is the output from this program.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是该程序的输出。
+- en: '[PRE7]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The `return` Statement
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`return` 语句'
+- en: 'The last of the branching statements is the `return` statement. The `return`
+    statement exits from the current method, and control flow returns to where the
+    method was invoked. The `return` statement has two forms: one that returns a value,
+    and one that doesn''t. To return a value, simply put the value (or an expression
+    that calculates the value) after the `return` keyword.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分支语句中的最后一个是`return`语句。`return`语句退出当前方法，控制流返回到调用方法的位置。`return`语句有两种形式：一种返回一个值，另一种不返回。要返回一个值，只需在`return`关键字后面放置该值（或计算该值的表达式）。
+- en: '[PRE8]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: The data type of the returned value must match the type of the method's declared
+    return value. When a method is declared `void`, use the form of `return` that
+    doesn't return a value.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回值的数据类型必须与方法声明的返回值类型匹配。当方法声明为`void`时，使用不返回值的`return`形式。
+- en: '[PRE9]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: The [Classes and Objects](../javaOO/methods.html) lesson will cover everything
+    you need to know about writing methods.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[类和对象](../javaOO/methods.html)课程将涵盖你需要了解的关于编写方法的一切。'

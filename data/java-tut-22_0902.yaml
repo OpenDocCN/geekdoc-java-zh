@@ -1,0 +1,164 @@
+- en: Retrieving and Parsing Method Modifiers
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 检索和解析方法修饰符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/methodModifiers.html](https://docs.oracle.com/javase/tutorial/reflect/member/methodModifiers.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/methodModifiers.html](https://docs.oracle.com/javase/tutorial/reflect/member/methodModifiers.html)
+- en: 'There a several modifiers that may be part of a method declaration:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法声明中可能包含的几个修饰符：
+- en: 'Access modifiers: `public`, `protected`, and `private`'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 访问修饰符：`public`、`protected`和`private`
+- en: 'Modifier restricting to one instance: `static`'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 限制为一个实例的修饰符：`static`
+- en: 'Modifier prohibiting value modification: `final`'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 禁止值修改的修饰符：`final`
+- en: 'Modifier requiring override: `abstract`'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 要求覆盖的修饰符：`abstract`
+- en: 'Modifier preventing reentrancy: `synchronized`'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 防止重入的修饰符：`synchronized`
+- en: 'Modifier indicating implementation in another programming language: `native`'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 表示在另一种编程语言中实现的修饰符：`native`
+- en: 'Modifier forcing strict floating point behavior: `strictfp`'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 强制严格浮点行为的修饰符：`strictfp`
+- en: Annotations
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 注解
+- en: The [``MethodModifierSpy``](example/MethodModifierSpy.java) example lists the
+    modifiers of a method with a given name. It also displays whether the method is
+    synthetic (compiler-generated), of variable arity, or a bridge method (compiler-generated
+    to support generic interfaces).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``MethodModifierSpy``](example/MethodModifierSpy.java)示例列出了具有给定名称的方法的修饰符。它还显示方法是否是合成的（编译器生成的）、可变参数的，或者是桥接方法（编译器生成的以支持泛型接口）。'
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: A few examples of the output [``MethodModifierSpy``](example/MethodModifierSpy.java)
+    produces follow.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``MethodModifierSpy``](example/MethodModifierSpy.java)产生的输出示例如下。'
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '[PRE3]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '[PRE4]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '[PRE5]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'Note that [`Method.isVarArgs()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#isVarArgs--)
+    returns `true` for [`Class.getConstructor()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getConstructor-java.lang.Class...-).
+    This indicates that the method declaration looks like this:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，[`Method.isVarArgs()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#isVarArgs--)对于[`Class.getConstructor()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getConstructor-java.lang.Class...-)返回`true`。这表明方法声明如下：
+- en: '[PRE6]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'not like this:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不要这样：
+- en: '[PRE7]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Notice that the output for [`String.compareTo()`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#compareTo-java.lang.String-)
+    contains two methods. The method declared in `String.java`:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，[`String.compareTo()`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#compareTo-java.lang.String-)的输出包含两种方法。在`String.java`中声明的方法：
+- en: '[PRE8]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: and a second *synthetic* or compiler-generated *bridge* method. This occurs
+    because [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+    implements the parameterized interface [`Comparable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html).
+    During type erasure, the argument type of the inherited method [`Comparable.compareTo()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html#compareTo-T-)
+    is changed from `java.lang.Object` to `java.lang.String`. Since the parameter
+    types for the `compareTo` methods in `Comparable` and `String` no longer match
+    after erasure, overriding can not occur. In all other circumstances, this would
+    produce a compile-time error because the interface is not implemented. The addition
+    of the bridge method avoids this problem.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 和第二个*合成*或编译器生成的*桥接*方法。这是因为[`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)实现了参数化接口[`Comparable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html)。在类型擦除期间，继承方法[`Comparable.compareTo()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html#compareTo-T-)的参数类型从`java.lang.Object`更改为`java.lang.String`。由于`Comparable`和`String`中的`compareTo`方法的参数类型在擦除后不再匹配，因此无法进行覆盖。在所有其他情况下，这将产生编译时错误，因为接口未实现。桥接方法的添加避免了这个问题。
+- en: '[`Method`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html)
+    implements [`java.lang.reflect.AnnotatedElement`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AnnotatedElement.html).
+    Thus any runtime annotations with [`java.lang.annotation.RetentionPolicy.RUNTIME`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html#RUNTIME)
+    may be retrieved. For an example of obtaining annotations see the section [Examining
+    Class Modifiers and Types](../class/classModifiers.html).'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Method`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html)实现了[`java.lang.reflect.AnnotatedElement`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AnnotatedElement.html)。因此，任何具有[`java.lang.annotation.RetentionPolicy.RUNTIME`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html#RUNTIME)的运行时注解都可以被检索。有关获取注解的示例，请参见[检查类修饰符和类型](../class/classModifiers.html)部分。'

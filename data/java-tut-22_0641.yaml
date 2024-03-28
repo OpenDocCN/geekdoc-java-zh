@@ -1,0 +1,60 @@
+- en: Images
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 图像
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/images.html](https://docs.oracle.com/javase/tutorial/2d/overview/images.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/images.html](https://docs.oracle.com/javase/tutorial/2d/overview/images.html)
+- en: In the Java 2D API an image is typically a rectangular two-dimensional array
+    of pixels, where each *pixel* represents the color at that position of the image
+    and where the dimensions represent the horizontal extent (width) and vertical
+    extent (height) of the image as it is displayed.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java 2D API中，图像通常是一个矩形的二维像素数组，其中每个*像素*表示图像该位置的颜色，而维度表示图像显示时的水平范围（宽度）和垂直范围（高度）。
+- en: The most important image class for representing such images is the `java.awt.image.BufferedImage`
+    class. The Java 2D API stores the contents of such images in memory so that they
+    can be directly accessed.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表示此类图像最重要的图像类是`java.awt.image.BufferedImage`类。Java 2D API将这些图像的内容存储在内存中，以便可以直接访问。
+- en: Applications can directly create a `BufferedImage` object or obtain an image
+    from an external image format such as PNG or GIF.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序可以直接创建一个`BufferedImage`对象，或从外部图像格式（如PNG或GIF）获取图像。
+- en: In either case, the application can then draw on to image by using Java 2D API
+    graphics calls. So, images are not limited to displaying photographic type images.
+    Different objects such as line art, text, and other graphics and even other images
+    can be drawn onto an image (as shown on the following images).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在任一情况下，应用程序可以通过使用Java 2D API图形调用在图像上绘制。因此，图像不仅限于显示照片类型的图像。不同的对象，如线条艺术、文本和其他图形，甚至其他图像都可以绘制到图像上（如下图所示）。
+- en: '![This figure represents an images as a drawing surface](../Images/dbf98679049ee4df8dfb7f04644d9dc8.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![这个图表示图像作为一个绘图表面](../Images/dbf98679049ee4df8dfb7f04644d9dc8.png)'
+- en: The Java 2D API enables you to apply image filtering operations to `BufferedImage`
+    and includes several built-in filters. For example, the `ConvolveOp` filter can
+    be used to blur or sharpen images.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D API允许您对`BufferedImage`应用图像过滤操作，并包括几个内置过滤器。例如，`ConvolveOp`过滤器可用于模糊或锐化图像。
+- en: The resulting image can then be drawn to a screen, sent to a printer, or saved
+    in a graphics format such as PNG, GIF etc. To learn more about images see the
+    [Working with Images](../images/index.html) lesson.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后生成的图像可以绘制到屏幕上，发送到打印机上，或保存为PNG、GIF等图形格式。要了解更多关于图像的信息，请参阅[使用图像](../images/index.html)课程。

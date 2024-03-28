@@ -1,0 +1,71 @@
+- en: Import Methods
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 导入方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/import.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/import.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/import.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/import.html)
+- en: 'Now we will look at the methods used for importing data into a component. These
+    methods are invoked for the drop gesture, or the paste action, when the component
+    is the target of the operation. The `TransferHandler` methods for importing data
+    are:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们将看一下用于将数据导入组件的方法。这些方法在组件成为操作目标时，用于放置手势或粘贴操作。用于导入数据的`TransferHandler`方法包括：
+- en: '[`canImport(TransferHandler.TransferSupport)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.html#canImport-javax.swing.TransferHandler.TransferSupport-)
+    — This method is called repeatedly during a drag gesture and returns true if the
+    area below the cursor can accept the transfer, or false if the transfer will be
+    rejected. For example, if a user drags a color over a component that accepts only
+    text, the `canImport` method for that component''s `TransferHandler` should return
+    false.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`canImport(TransferHandler.TransferSupport)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.html#canImport-javax.swing.TransferHandler.TransferSupport-)
+    — 这个方法在拖拽手势期间被重复调用，如果光标下方的区域可以接受传输，则返回true，否则返回false。例如，如果用户将颜色拖动到只接受文本的组件上，那么该组件的`TransferHandler`的`canImport`方法应该返回false。'
+- en: '[`importData(TransferHandler.TransferSupport)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.html#importData-javax.swing.TransferHandler.TransferSupport-)
+    — This method is called on a successful drop (or paste) and initiates the transfer
+    of data to the target component. This method returns true if the import was successful
+    and false otherwise.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`importData(TransferHandler.TransferSupport)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.html#importData-javax.swing.TransferHandler.TransferSupport-)
+    — 这个方法在成功放置（或粘贴）时被调用，并启动数据传输到目标组件。如果导入成功则返回true，否则返回false。'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Version note:**'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**版本说明：**'
+- en: These methods replace older versions that do not use the `TransferSupport` class.
+    Unlike its replacement method, `canImport(JComponent, DataFlavor[])` is not called
+    continuously.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些方法替换了不使用`TransferSupport`类的旧版本。与其替代方法不同，`canImport(JComponent, DataFlavor[])`不会被连续调用。
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: You will notice that these import methods take a `TransferHandler.TransferSupport`
+    argument. Next we look at the `TransferSupport` class and then some sample import
+    methods.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您会注意到这些导入方法接受一个`TransferHandler.TransferSupport`参数。接下来我们将看一下`TransferSupport`类，然后一些示例导入方法。

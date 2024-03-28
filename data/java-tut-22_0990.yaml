@@ -1,0 +1,104 @@
+- en: Add, Replace Bindings with Attributes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 添加、替换具有属性的绑定
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/bindattr.html](https://docs.oracle.com/javase/tutorial/jndi/ops/bindattr.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/bindattr.html](https://docs.oracle.com/javase/tutorial/jndi/ops/bindattr.html)
+- en: The naming examples discussed how you can use [`bind()`, `rebind()`](bind.html).
+    The [`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html)
+    interface contains overloaded versions of these methods that accept attributes.
+    You can use these `DirContext` methods to associate attributes with the object
+    at the time that the binding or subcontext is added to the namespace. For example,
+    you might create a `Person` object and bind it to the namespace and at the same
+    time associate attributes about that `Person` object.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 讨论了命名示例如何使用[`bind()`，`rebind()`](bind.html)。[`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html)接口包含这些方法的重载版本，接受属性。您可以使用这些`DirContext`方法在将绑定或子上下文添加到命名空间时将属性与对象关联起来。例如，您可以创建一个`Person`对象并将其绑定到命名空间，并同时关联有关该`Person`对象的属性。
+- en: Adding a Binding That Has Attributes
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 添加具有属性的绑定
+- en: '[`DirContext.bind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#bind-javax.naming.Name-java.lang.Object-javax.naming.directory.Attributes-)
+    is used to add a binding that has attributes to a context. It accepts as arguments
+    the name of the object, the object to be bound, and a set of attributes.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`DirContext.bind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#bind-javax.naming.Name-java.lang.Object-javax.naming.directory.Attributes-)用于向上下文添加具有属性的绑定。它接受对象的名称、要绑定的对象和一组属性作为参数。'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[`This example`](examples/Bind.java) creates an object of class [``Fruit``](examples/Fruit.java)
+    and binds it to the name `"ou=favorite"` into the context named `"ou=Fruits"`,
+    relative to `ctx`. This binding has the `"objectclass"` attribute. If you subsequently
+    looked up the name `"ou=favorite, ou=Fruits"` in `ctx`, then you would get the
+    `fruit` object. If you then got the attributes of `"ou=favorite, ou=Fruits"`,
+    you would get those attributes with which the object was created. Following is
+    this example''s output.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`此示例`](examples/Bind.java)创建一个[``Fruit``](examples/Fruit.java)类的对象，并将其绑定到名称`"ou=favorite"`中，相对于`ctx`命名为`"ou=Fruits"`的上下文。此绑定具有`"objectclass"`属性。如果随后在`ctx`中查找名称`"ou=favorite,
+    ou=Fruits"`，则会获取`fruit`对象。然后获取`"ou=favorite, ou=Fruits"`的属性，您将获得创建对象时使用的属性。以下是此示例的输出。'
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The extra attributes and attribute values shown are used to store information
+    about the object (`fruit`). These extra attributes are discussed in more detail
+    in the trail.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 显示的额外属性和属性值用于存储有关对象（`fruit`）的信息。这些额外属性在本教程中将更详细地讨论。
+- en: If you were to run this example twice, then the second attempt would fail with
+    a [`NameAlreadyBoundException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameAlreadyBoundException.html).
+    This is because the name `"ou=favorite"` is already bound in the `"ou=Fruits"`
+    context. For the second attempt to succeed, you would have to use `rebind()`.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您运行此示例两次，则第二次尝试将失败，并显示[`NameAlreadyBoundException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameAlreadyBoundException.html)。这是因为名称`"ou=favorite"`已经绑定在`"ou=Fruits"`上下文中。为了使第二次尝试成功，您需要使用`rebind()`。
+- en: Replacing a Binding That Has Attributes
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 替换具有属性的绑定
+- en: '[`DirContext.rebind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#rebind-javax.naming.Name-java.lang.Object-javax.naming.directory.Attributes-)
+    is used to add or replace a binding and its attributes. It accepts the same arguments
+    as `bind()`. However, `rebind()`''s semantics require that if the name is already
+    bound, then it will be unbound and the newly given object and attributes will
+    be bound.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`DirContext.rebind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#rebind-javax.naming.Name-java.lang.Object-javax.naming.directory.Attributes-)用于添加或替换绑定及其属性。它接受与`bind()`相同的参数。然而，`rebind()`的语义要求，如果名称已经绑定，则将解除绑定，并绑定新给定的对象和属性。'
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: When you run [`this example`](examples/Rebind.java) , it replaces the binding
+    that the [``bind()``](examples/Bind.java) example created.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您运行[`此示例`](examples/Rebind.java)时，它将替换[``bind()``](examples/Bind.java)示例创建的绑定。
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

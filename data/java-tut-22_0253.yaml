@@ -1,0 +1,130 @@
+- en: Unicode Support
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Unicode支持
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/unicode.html](https://docs.oracle.com/javase/tutorial/essential/regex/unicode.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/unicode.html](https://docs.oracle.com/javase/tutorial/essential/regex/unicode.html)
+- en: As of the JDK 7 release, Regular Expression pattern matching has expanded functionality
+    to support Unicode 6.0.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从JDK 7版本开始，正则表达式模式匹配已扩展功能以支持Unicode 6.0。
+- en: '[Matching a Specific Code Point](#matchingSpecific)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[匹配特定代码点](#matchingSpecific)'
+- en: '[Unicode Character Properties](#properties)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Unicode字符属性](#properties)'
+- en: Matching a Specific Code Point
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 匹配特定代码点
+- en: You can match a specific Unicode code point using an escape sequence of the
+    form `\uFFFF`, where `FFFF` is the hexadecimal value of the code point you want
+    to match. For example, `\u6771` matches the Han character for east.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用形式为`\uFFFF`的转义序列匹配特定的Unicode代码点，其中`FFFF`是您想匹配的代码点的十六进制值。例如，`\u6771`匹配东方的汉字。
+- en: 'Alternatively, you can specify a code point using Perl-style hex notation,
+    `\x{...}`. For example:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，您可以使用Perl风格的十六进制表示法指定一个代码点，`\x{...}`。例如：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Unicode Character Properties
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Unicode字符属性
+- en: Each Unicode character, in addition to its value, has certain attributes, or
+    properties. You can match a single character belonging to a particular category
+    with the expression `\p{*prop*}`. You can match a single character *not* belonging
+    to a particular category with the expression `\P{*prop*}`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个Unicode字符除了其值之外，还具有某些属性或特性。您可以使用表达式`\p{*prop*}`匹配属于特定类别的单个字符。您可以使用表达式`\P{*prop*}`匹配*不*属于特定类别的单个字符。
+- en: The three supported property types are scripts, blocks, and a "general" category.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 支持的属性类型有脚本、区块和“通用”类别。
+- en: Scripts
+  id: totrans-12
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 脚本
+- en: To determine if a code point belongs to a specific script, you can either use
+    the `script` keyword, or the `sc` short form, for example, `\p{script=Hiragana}`.
+    Alternatively, you can prefix the script name with the string `Is`, such as `\p{IsHiragana}`.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要确定代码点是否属于特定脚本，您可以使用`script`关键字或`sc`的简写形式，例如，`\p{script=Hiragana}`。或者，您可以在脚本名称前加上字符串`Is`，例如`\p{IsHiragana}`。
+- en: Valid script names supported by `Pattern` are those accepted by [`UnicodeScript.forName`](https://docs.oracle.com/javase/8/docs/api/java/lang/Character.UnicodeScript.html#forName-java.lang.String-).
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Pattern`支持的有效脚本名称是[`UnicodeScript.forName`](https://docs.oracle.com/javase/8/docs/api/java/lang/Character.UnicodeScript.html#forName-java.lang.String-)接受的那些。'
+- en: Blocks
+  id: totrans-15
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 区块
+- en: A block can be specified using the `block` keyword, or the `blk` short form,
+    for example, `\p{block=Mongolian}`. Alternatively, you can prefix the block name
+    with the string `In`, such as `\p{InMongolian}`.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以使用`block`关键字或`blk`的简写形式指定一个区块，例如，`\p{block=Mongolian}`。或者，您可以在区块名称前加上字符串`In`，例如`\p{InMongolian}`。
+- en: Valid block names supported by `Pattern` are those accepted by [`UnicodeBlock.forName`](https://docs.oracle.com/javase/8/docs/api/java/lang/Character.UnicodeBlock.html#forName-java.lang.String-).
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Pattern`支持的有效区块名称是[`UnicodeBlock.forName`](https://docs.oracle.com/javase/8/docs/api/java/lang/Character.UnicodeBlock.html#forName-java.lang.String-)接受的那些。'
+- en: General Category
+  id: totrans-18
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 通用类别
+- en: Categories can be specified with optional prefix `Is`. For example, `IsL` matches
+    the category of Unicode letters. Categories can also be specified by using the
+    `general_category` keyword, or the short form `gc`. For example, an uppercase
+    letter can be matched using `general_category=Lu` or `gc=Lu`.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类别可以用可选前缀`Is`指定。例如，`IsL`匹配Unicode字母的类别。类别也可以通过使用`general_category`关键字或简写形式`gc`来指定。例如，大写字母可以使用`general_category=Lu`或`gc=Lu`来匹配。
+- en: Supported categories are those of [The Unicode Standard](http://www.unicode.org/unicode/standard/standard.html)
+    in the version specified by the [`Character`](https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html)
+    class.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 支持的类别是由[`Character`](https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html)类指定的[Unicode标准](http://www.unicode.org/unicode/standard/standard.html)版本中的类别。

@@ -1,0 +1,79 @@
+- en: Buffered Streams
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 缓冲流
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/buffers.html](https://docs.oracle.com/javase/tutorial/essential/io/buffers.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/buffers.html](https://docs.oracle.com/javase/tutorial/essential/io/buffers.html)
+- en: Most of the examples we've seen so far use *unbuffered* I/O. This means each
+    read or write request is handled directly by the underlying OS. This can make
+    a program much less efficient, since each such request often triggers disk access,
+    network activity, or some other operation that is relatively expensive.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们看到的大多数示例都使用*非缓冲*的I/O。这意味着每个读取或写入请求都直接由底层操作系统处理。这可能会使程序效率大大降低，因为每个这样的请求通常会触发磁盘访问、网络活动或其他相对昂贵的操作。
+- en: To reduce this kind of overhead, the Java platform implements *buffered* I/O
+    streams. Buffered input streams read data from a memory area known as a *buffer*;
+    the native input API is called only when the buffer is empty. Similarly, buffered
+    output streams write data to a buffer, and the native output API is called only
+    when the buffer is full.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了减少这种开销，Java平台实现了*缓冲* I/O 流。缓冲输入流从称为*缓冲区*的内存区域读取数据；只有当缓冲区为空时才调用本机输入API。类似地，缓冲输出流将数据写入缓冲区，只有当缓冲区满时才调用本机输出API。
+- en: 'A program can convert an unbuffered stream into a buffered stream using the
+    wrapping idiom we''ve used several times now, where the unbuffered stream object
+    is passed to the constructor for a buffered stream class. Here''s how you might
+    modify the constructor invocations in the `CopyCharacters` example to use buffered
+    I/O:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个程序可以使用我们已经多次使用的包装习惯将非缓冲流转换为缓冲流，其中非缓冲流对象传递给缓冲流类的构造函数。以下是您可能如何修改`CopyCharacters`示例中的构造函数调用以使用缓冲I/O的方式：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'There are four buffered stream classes used to wrap unbuffered streams: [`BufferedInputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedInputStream.html)
+    and [`BufferedOutputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedOutputStream.html)
+    create buffered byte streams, while [`BufferedReader`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html)
+    and [`BufferedWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedWriter.html)
+    create buffered character streams.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有四个缓冲流类用于包装非缓冲流：[`BufferedInputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedInputStream.html)和[`BufferedOutputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedOutputStream.html)创建缓冲字节流，而[`BufferedReader`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html)和[`BufferedWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedWriter.html)创建缓冲字符流。
+- en: Flushing Buffered Streams
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 刷新缓冲流
+- en: It often makes sense to write out a buffer at critical points, without waiting
+    for it to fill. This is known as *flushing* the buffer.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在关键点写出缓冲区而不等待其填满通常是有意义的。这被称为*刷新*缓冲区。
+- en: Some buffered output classes support *autoflush*, specified by an optional constructor
+    argument. When autoflush is enabled, certain key events cause the buffer to be
+    flushed. For example, an autoflush `PrintWriter` object flushes the buffer on
+    every invocation of `println` or `format`. See [Formatting](formatting.html) for
+    more on these methods.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些缓冲输出类支持*自动刷新*，可以通过可选的构造函数参数指定。启用自动刷新时，某些关键事件会导致缓冲区被刷新。例如，一个自动刷新的`PrintWriter`对象会在每次调用`println`或`format`时刷新缓冲区。查看[格式化](formatting.html)以获取更多关于这些方法的信息。
+- en: To flush a stream manually, invoke its `flush` method. The `flush` method is
+    valid on any output stream, but has no effect unless the stream is buffered.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要手动刷新流，请调用其`flush`方法。`flush`方法对任何输出流都有效，但除非流是缓冲的，否则不会产生任何效果。

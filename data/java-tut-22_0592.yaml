@@ -1,0 +1,209 @@
+- en: Backing a ResourceBundle with Properties Files
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用属性文件支持ResourceBundle
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/resbundle/propfile.html](https://docs.oracle.com/javase/tutorial/i18n/resbundle/propfile.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/resbundle/propfile.html](https://docs.oracle.com/javase/tutorial/i18n/resbundle/propfile.html)
+- en: This section steps through a sample program named [``PropertiesDemo``](examples/PropertiesDemo.java).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节将逐步介绍一个名为[``PropertiesDemo``](examples/PropertiesDemo.java)的示例程序。
+- en: 1\. Create the Default Properties File
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 1\. 创建默认属性文件
+- en: A properties file is a simple text file. You can create and maintain a properties
+    file with just about any text editor.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性文件是一个简单的文本文件。您可以使用几乎任何文本编辑器创建和维护属性文件。
+- en: 'You should always create a default properties file. The name of this file begins
+    with the base name of your `ResourceBundle` and ends with the `.properties` suffix.
+    In the `PropertiesDemo` program the base name is `LabelsBundle`. Therefore the
+    default properties file is called `LabelsBundle.properties`. This file contains
+    the following lines:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您应该始终创建一个默认属性文件。此文件的名称以您的`ResourceBundle`的基本名称开头，并以`.properties`后缀结尾。在`PropertiesDemo`程序中，基本名称为`LabelsBundle`。因此，默认属性文件称为`LabelsBundle.properties`。此文件包含以下行：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Note that in the preceding file the comment lines begin with a pound sign (#).
+    The other lines contain key-value pairs. The key is on the left side of the equal
+    sign and the value is on the right. For instance, `s2` is the key that corresponds
+    to the value `disk`. The key is arbitrary. We could have called `s2` something
+    else, like `msg5` or `diskID`. Once defined, however, the key should not change
+    because it is referenced in the source code. The values may be changed. In fact,
+    when your localizers create new properties files to accommodate additional languages,
+    they will translate the values into various languages.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，在前面的文件中，注释行以井号（#）开头。其他行包含键值对。键位于等号的左侧，值位于右侧。例如，`s2`是对应于值`disk`的键。键是任意的。我们可以将`s2`命名为其他名称，比如`msg5`或`diskID`。但一旦定义，键就不应更改，因为它在源代码中被引用。值可以更改。实际上，当您的本地化人员创建新的属性文件以适应其他语言时，他们将把值翻译成各种语言。
+- en: 2\. Create Additional Properties Files as Needed
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 2\. 根据需要创建其他属性文件
+- en: To support an additional `Locale`, your localizers will create a new properties
+    file that contains the translated values. No changes to your source code are required,
+    because your program references the keys, not the values.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要支持额外的`Locale`，您的本地化人员将创建一个包含翻译值的新属性文件。不需要更改源代码，因为您的程序引用键，而不是值。
+- en: 'For example, to add support for the German language, your localizers would
+    translate the values in `LabelsBundle.properties` and place them in a file named
+    `LabelsBundle_de.properties`. Notice that the name of this file, like that of
+    the default file, begins with the base name `LabelsBundle` and ends with the `.properties`
+    suffix. However, since this file is intended for a specific `Locale`, the base
+    name is followed by the language code (`de`). The contents of `LabelsBundle_de.properties`
+    are as follows:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，要添加对德语的支持，您的本地化人员将翻译`LabelsBundle.properties`中的值，并将其放入名为`LabelsBundle_de.properties`的文件中。请注意，此文件的名称与默认文件的名称相同，以基本名称`LabelsBundle`开头，并以`.properties`后缀结尾。但是，由于此文件用于特定的`Locale`，因此基本名称后面跟着语言代码（`de`）。`LabelsBundle_de.properties`的内容如下：
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The `PropertiesDemo` sample program ships with three properties files:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`PropertiesDemo`示例程序附带三个属性文件：'
+- en: '[PRE2]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 3\. Specify the Locale
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 3\. 指定Locale
+- en: 'The `PropertiesDemo` program creates the `Locale` objects as follows:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`PropertiesDemo`程序创建`Locale`对象如下：'
+- en: '[PRE3]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: These `Locale` objects should match the properties files created in the previous
+    two steps. For example, the `Locale.FRENCH` object corresponds to the `LabelsBundle_fr.properties`
+    file. The `Locale.ENGLISH` has no matching `LabelsBundle_en.properties` file,
+    so the default file will be used.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些`Locale`对象应该与前两个步骤中创建的属性文件相匹配。例如，`Locale.FRENCH`对象对应于`LabelsBundle_fr.properties`文件。`Locale.ENGLISH`没有匹配的`LabelsBundle_en.properties`文件，因此将使用默认文件。
+- en: 4\. Create the ResourceBundle
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 4\. 创建ResourceBundle
+- en: 'This step shows how the `Locale`, the properties files, and the `ResourceBundle`
+    are related. To create the `ResourceBundle`, invoke the `getBundle`method, specifying
+    the base name and `Locale`:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此步骤展示了`Locale`、属性文件和`ResourceBundle`之间的关系。要创建`ResourceBundle`，请调用`getBundle`方法，指定基本名称和`Locale`：
+- en: '[PRE4]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The `getBundle` method first looks for a class file that matches the base name
+    and the `Locale`. If it can't find a class file, it then checks for properties
+    files. In the `PropertiesDemo` program we're backing the `ResourceBundle` with
+    properties files instead of class files. When the `getBundle` method locates the
+    correct properties file, it returns a `PropertyResourceBundle` object containing
+    the key-value pairs from the properties file.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getBundle`方法首先查找与基本名称和`Locale`匹配的类文件。如果找不到类文件，则会检查属性文件。在`PropertiesDemo`程序中，我们使用属性文件而不是类文件来支持`ResourceBundle`。当`getBundle`方法找到正确的属性文件时，它会返回一个包含属性文件中键值对的`PropertyResourceBundle`对象。'
+- en: 5\. Fetch the Localized Text
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 5\. 获取本地化文本
+- en: 'To retrieve the translated value from the `ResourceBundle`, invoke the `getString`
+    method as follows:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要从`ResourceBundle`中检索翻译后的值，请按照以下方式调用`getString`方法：
+- en: '[PRE5]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The `String` returned by `getString` corresponds to the key specified. The `String`
+    is in the proper language, provided that a properties file exists for the specified
+    `Locale`.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getString`返回的`String`对应指定的键。只要为指定的`Locale`存在属性文件，该`String`就是正确的语言。'
+- en: 6\. Iterate through All the Keys
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 6\. 遍历所有键
+- en: 'This step is optional. When debugging your program, you might want to fetch
+    values for all of the keys in a `ResourceBundle`. The `getKeys` method returns
+    an `Enumeration` of all the keys in a `ResourceBundle`. You can iterate through
+    the `Enumeration` and fetch each value with the `getString` method. The following
+    lines of code, which are from the `PropertiesDemo` program, show how this is done:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一步是可选的。在调试程序时，您可能希望获取`ResourceBundle`中所有键的值。`getKeys`方法返回`ResourceBundle`中所有键的`Enumeration`。您可以遍历`Enumeration`并使用`getString`方法获取每个值。以下代码片段来自`PropertiesDemo`程序，展示了如何实现这一点：
+- en: '[PRE6]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 7\. Run the Demo Program
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 7\. 运行演示程序
+- en: Running the `PropertiesDemo` program generates the following output. The first
+    three lines show the values returned by `getString` for various `Locale` objects.
+    The program displays the last four lines when iterating through the keys with
+    the `getKeys` method.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行`PropertiesDemo`程序会生成以下输出。前三行显示了对各种`Locale`对象调用`getString`返回的值。当使用`getKeys`方法遍历键时，程序会显示最后四行。
+- en: '[PRE7]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'

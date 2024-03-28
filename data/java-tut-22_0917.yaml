@@ -1,0 +1,166 @@
+- en: Examining Enums
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 检查枚举
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/special/enumMembers.html](https://docs.oracle.com/javase/tutorial/reflect/special/enumMembers.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/special/enumMembers.html](https://docs.oracle.com/javase/tutorial/reflect/special/enumMembers.html)
+- en: 'Reflection provides three enum-specific APIs:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 反射提供了三个特定于枚举的 API：
+- en: '[`Class.isEnum()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isEnum--)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Class.isEnum()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isEnum--)'
+- en: Indicates whether this class represents an enum type
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表示此类是否表示枚举类型
+- en: '[`Class.getEnumConstants()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnumConstants--)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Class.getEnumConstants()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnumConstants--)'
+- en: Retrieves the list of enum constants defined by the enum in the order they're
+    declared
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检索由枚举定义的枚举常量列表，按照它们声明的顺序
+- en: '[`java.lang.reflect.Field.isEnumConstant()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#isEnumConstant--)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`java.lang.reflect.Field.isEnumConstant()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#isEnumConstant--)'
+- en: Indicates whether this field represents an element of an enumerated type
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表示此字段是否表示枚举类型的元素
+- en: Sometimes it is necessary to dynamically retrieve the list of enum constants;
+    in non-reflective code this is accomplished by invoking the implicitly declared
+    static method [`values()`](https://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html)
+    on the enum. If an instance of an enum type is not available the only way to get
+    a list of the possible values is to invoke [`Class.getEnumConstants()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnumConstants--)
+    since it is impossible to instantiate an enum type.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时需要动态检索枚举常量的列表；在非反射代码中，可以通过在枚举上调用隐式声明的静态方法 [`values()`](https://docs.oracle.com/javase/specs/jls/se7/html/jls-8.html)
+    来实现这一点。 如果枚举类型的实例不可用，则获取可能值列表的唯一方法是调用 [`Class.getEnumConstants()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnumConstants--)，因为无法实例化枚举类型。
+- en: Given a fully qualified name, the [``EnumConstants``](example/EnumConstants.java)
+    example shows how to retrieve an ordered list of constants in an enum using [`Class.getEnumConstants()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnumConstants--).
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 给定完全限定名称，[``EnumConstants``](example/EnumConstants.java) 示例显示如何使用 [`Class.getEnumConstants()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnumConstants--)
+    检索枚举中常量的有序列表。
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Samples of the output follows. User input is in italics.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出示例如下。 用户输入以斜体显示。
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '[PRE2]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: This example also shows that value returned by [`Class.getEnumConstants()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnumConstants--)
+    is identical to the value returned by invoking `values()` on an enum type.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例还表明，通过调用 [`Class.getEnumConstants()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnumConstants--)
+    返回的值与在枚举类型上调用 `values()` 返回的值相同。
+- en: '[PRE3]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Since enums are classes, other information may be obtained using the same Reflection
+    APIs described in the [Fields](../member/field.html), [Methods](../member/method.html),
+    and [Constructors](../member/ctor.html) sections of this trail. The [``EnumSpy``](example/EnumSpy.java)
+    code illustrates how to use these APIs to get additional information about the
+    enum's declaration. The example uses [`Class.isEnum()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isEnum--)
+    to restrict the set of classes examined. It also uses [`Field.isEnumConstant()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#isEnumConstant--)
+    to distinguish enum constants from other fields in the enum declaration (not all
+    fields are enum constants).
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于枚举是类，可以使用本教程中描述的[字段](../member/field.html)、[方法](../member/method.html)和[构造函数](../member/ctor.html)部分中描述的相同反射
+    API 获取其他信息。 [``EnumSpy``](example/EnumSpy.java) 代码示例说明了如何使用这些 API 获取有关枚举声明的其他信息。
+    该示例使用 [`Class.isEnum()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isEnum--)
+    来限制要检查的类集。 它还使用 [`Field.isEnumConstant()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#isEnumConstant--)
+    来区分枚举声明中的枚举常量和其他字段（并非所有字段都是枚举常量）。
+- en: '[PRE4]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '[PRE5]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The output shows that declaration of [`java.lang.annotation.RetentionPolicy`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html)
+    only contains the three enum constants. The enum constants are exposed as `public
+    static final` fields. The field, constructor, and methods are compiler generated.
+    The `$VALUES` field is related to the implementation of the `values()` method.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出显示，[`java.lang.annotation.RetentionPolicy`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html)的声明仅包含三个枚举常量。枚举常量暴露为`public
+    static final`字段。字段、构造函数和方法是由编译器生成的。`$VALUES`字段与`values()`方法的实现有关。
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** For various reasons, including support for evolution of the enum
+    type, the declaration order of enum constants is important. [`Class.getFields()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getFields--)
+    and [`Class.getDeclaredFields()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredFields--)
+    do not make any guarantee that the order of the returned values matches the order
+    in the declaring source code. If ordering is required by an application, use [`Class.getEnumConstants()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnumConstants--).'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**出于各种原因，包括支持枚举类型的演变，枚举常量的声明顺序很重要。[`Class.getFields()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getFields--)和[`Class.getDeclaredFields()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredFields--)不能保证返回值的顺序与声明源代码中的顺序匹配。如果应用程序需要排序，请使用[`Class.getEnumConstants()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getEnumConstants--)。'
+- en: '* * *'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The output for [`java.util.concurrent.TimeUnit`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/TimeUnit.html)
+    shows that much more complicated enums are possible. This class includes several
+    methods as well as additional fields declared `static final` which are not enum
+    constants.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于[`java.util.concurrent.TimeUnit`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/TimeUnit.html)的输出显示，更复杂的枚举是可能的。这个类包括几个方法以及额外声明为`static
+    final`的字段，这些字段不是枚举常量。
+- en: '[PRE6]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'

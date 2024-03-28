@@ -1,0 +1,135 @@
+- en: String Literals
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 字符串字面值
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/literals.html](https://docs.oracle.com/javase/tutorial/essential/regex/literals.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/literals.html](https://docs.oracle.com/javase/tutorial/essential/regex/literals.html)
+- en: 'The most basic form of pattern matching supported by this API is the match
+    of a string literal. For example, if the regular expression is `foo` and the input
+    string is `foo`, the match will succeed because the strings are identical. Try
+    this out with the test harness:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此 API 支持的最基本的模式匹配形式是字符串字面值的匹配。例如，如果正则表达式是`foo`，输入字符串是`foo`，则匹配将成功，因为字符串是相同的。使用测试工具尝试一下：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This match was a success. Note that while the input string is 3 characters
+    long, the start index is 0 and the end index is 3\. By convention, ranges are
+    inclusive of the beginning index and exclusive of the end index, as shown in the
+    following figure:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这次匹配成功了。请注意，虽然输入字符串长度为 3 个字符，但开始索引为 0，结束索引为 3。按照惯例，范围包括开始索引但不包括结束索引，如下图所示：
+- en: '![The string literal foo, with numbered cells and index values.](../Images/96cd7af1676b39fcd71678299a3a0614.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![字符串字面值foo，带有编号的单元格和索引值。](../Images/96cd7af1676b39fcd71678299a3a0614.png)'
+- en: The string literal foo, with numbered cells and index values.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字符串字面值foo，带有编号的单元格和索引值。
+- en: Each character in the string resides in its own *cell*, with the index positions
+    pointing between each cell. The string "foo" starts at index 0 and ends at index
+    3, even though the characters themselves only occupy cells 0, 1, and 2.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字符串中的每个字符都位于自己的*单元格*中，索引位置指向每个单元格之间。字符串“foo”从索引 0 开始，到索引 3 结束，即使字符本身只占据单元格 0、1
+    和 2。
+- en: 'With subsequent matches, you''ll notice some overlap; the start index for the
+    next match is the same as the end index of the previous match:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在后续匹配中，您会注意到一些重叠；下一个匹配的开始索引与上一个匹配的结束索引相同：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Metacharacters
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 元字符
+- en: 'This API also supports a number of special characters that affect the way a
+    pattern is matched. Change the regular expression to `cat.` and the input string
+    to `cats`. The output will appear as follows:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此 API 还支持许多特殊字符，这些字符会影响模式匹配的方式。将正则表达式更改为`cat.`，将输入字符串更改为`cats`。输出将如下所示：
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: "The match still succeeds, even though the dot \"`.`\" is not present in the\
+    \ input string. It succeeds because the dot is a *metacharacter* \x97 a character\
+    \ with special meaning interpreted by the matcher. The metacharacter \".\" means\
+    \ \"any character\" which is why the match succeeds in this example."
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "即使输入字符串中没有点“`.`”，匹配仍然成功。这是因为点是一个*元字符* \x97 由匹配器解释的具有特殊含义的字符。元字符“.”表示“任何字符”，这就是为什么在这个例子中匹配成功。"
+- en: 'The metacharacters supported by this API are: `<([{\^-=$!|]})?*+.>`'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此 API 支持的元字符为：`<([{\^-=$!|]})?*+.>`
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** In certain situations the special characters listed above will *not*
+    be treated as metacharacters. You''ll encounter this as you learn more about how
+    regular expressions are constructed. You can, however, use this list to check
+    whether or not a specific character will ever be considered a metacharacter. For
+    example, the characters `@` and `#` never carry a special meaning.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 在某些情况下，上面列出的特殊字符 *不* 会被视为元字符。随着您对正则表达式构造方式的了解越来越多，您会遇到这种情况。但是，您可以使用此列表来检查特定字符是否会被视为元字符。例如，字符`@`和`#`从不具有特殊含义。'
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'There are two ways to force a metacharacter to be treated as an ordinary character:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两种方法可以强制将元字符视为普通字符：
+- en: precede the metacharacter with a backslash, or
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在元字符之前加上反斜杠，或
+- en: enclose it within `\Q` (which starts the quote) and `\E` (which ends it).
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将其放在`\Q`（开始引用）和`\E`（结束引用）之间。
+- en: When using this technique, the `\Q` and `\E` can be placed at any location within
+    the expression, provided that the `\Q` comes first.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在使用这种技术时，`\Q`和`\E`可以放置在表达式的任何位置，只要`\Q`先出现。

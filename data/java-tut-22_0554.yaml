@@ -1,0 +1,84 @@
+- en: Date-Time Design Principles
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 日期时间设计原则
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/overview/design.html](https://docs.oracle.com/javase/tutorial/datetime/overview/design.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/overview/design.html](https://docs.oracle.com/javase/tutorial/datetime/overview/design.html)
+- en: The Date-Time API was developed using several design principles.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间 API 是根据几个设计原则开发的。
+- en: Clear
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 清晰
+- en: The methods in the API are well defined and their behavior is clear and expected.
+    For example, invoking a Date-Time method with a `null` parameter value typically
+    triggers a `NullPointerException`.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: API 中的方法被明确定义，其行为清晰可预期。例如，使用`null`参数值调用日期时间方法通常会触发`NullPointerException`。
+- en: Fluent
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 流畅
+- en: 'The Date-Time API provides a fluent interface, making the code easy to read.
+    Because most methods do not allow parameters with a `null` value and do not return
+    a `null` value, method calls can be chained together and the resulting code can
+    be quickly understood. For example:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间 API 提供了流畅的接口，使代码易于阅读。因为大多数方法不允许带有`null`值的参数，并且不返回`null`值，方法调用可以链接在一起，结果代码可以快速理解。例如：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Immutable
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 不可变
+- en: 'Most of the classes in the Date-Time API create objects that are [immutable](../../essential/concurrency/immutable.html),
+    meaning that, after the object is created, it cannot be modified. To alter the
+    value of an immutable object, a new object must be constructed as a modified copy
+    of the original. This also means that the Date-Time API is, by definition, thread-safe.
+    This affects the API in that most of the methods used to create date or time objects
+    are prefixed with `of`, `from`, or `with`, rather than constructors, and there
+    are no `set` methods. For example:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间 API 中的大多数类创建的对象是[不可变的](../../essential/concurrency/immutable.html)，这意味着在对象创建后，它是不能被修改的。要修改不可变对象的值，必须构建一个修改后的原始副本作为新对象。这也意味着日期时间
+    API 在定义上是线程安全的。这影响了 API，大多数用于创建日期或时间对象的方法都以`of`、`from`或`with`为前缀，而不是构造函数，并且没有`set`方法。例如：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Extensible
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 可扩展
+- en: The Date-Time API is extensible wherever possible. For example, you can define
+    your own time adjusters and queries, or build your own calendar system.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间 API 在尽可能的地方是可扩展的。例如，您可以定义自己的时间调整器和查询，或构建自己的日历系统。

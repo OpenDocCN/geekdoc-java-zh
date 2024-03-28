@@ -1,0 +1,330 @@
+- en: 'Lesson: Algorithms'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教训：算法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/algorithms/index.html](https://docs.oracle.com/javase/tutorial/collections/algorithms/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/algorithms/index.html](https://docs.oracle.com/javase/tutorial/collections/algorithms/index.html)
+- en: 'The *polymorphic algorithms* described here are pieces of reusable functionality
+    provided by the Java platform. All of them come from the [`Collections`](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html)
+    class, and all take the form of static methods whose first argument is the collection
+    on which the operation is to be performed. The great majority of the algorithms
+    provided by the Java platform operate on [`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html)
+    instances, but a few of them operate on arbitrary [`Collection`](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html)
+    instances. This section briefly describes the following algorithms:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里描述的*多态算法*是Java平台提供的可重用功能块。所有这些功能块都来自[`Collections`](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html)类，并且都采用静态方法的形式，其第一个参数是要执行操作的集合。Java平台提供的绝大多数算法都是在[`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html)实例上操作的，但其中有一些是在任意[`Collection`](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html)实例上操作的。本节简要描述了以下算法：
+- en: '[Sorting](#sorting)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[排序](#sorting)'
+- en: '[Shuffling](#shuffling)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[洗牌](#shuffling)'
+- en: '[Routine Data Manipulation](#rdm)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[常规数据操作](#rdm)'
+- en: '[Searching](#searching)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[搜索](#searching)'
+- en: '[Composition](#composition)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[组合](#composition)'
+- en: '[Finding Extreme Values](#fev)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[查找极值](#fev)'
+- en: Sorting
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 排序
+- en: The `sort` algorithm reorders a `List` so that its elements are in ascending
+    order according to an ordering relationship. Two forms of the operation are provided.
+    The simple form takes a `List` and sorts it according to its elements' *natural
+    ordering*. If you're unfamiliar with the concept of natural ordering, read the
+    [Object Ordering](../interfaces/order.html) section.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`sort`算法重新排列一个`List`，使其元素按照一种排序关系升序排列。提供了两种形式的操作。简单形式接受一个`List`，并根据其元素的*自然排序*对其进行排序。如果您对自然排序的概念不熟悉，请阅读[对象排序](../interfaces/order.html)部分。'
+- en: 'The `sort` operation uses a slightly optimized *merge sort* algorithm that
+    is fast and stable:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`sort`操作使用了一个稍微优化的*归并排序*算法，速度快且稳定：'
+- en: '**Fast**: It is guaranteed to run in `n log(n)` time and runs substantially
+    faster on nearly sorted lists. Empirical tests showed it to be as fast as a highly
+    optimized quicksort. A quicksort is generally considered to be faster than a merge
+    sort but isn''t stable and doesn''t guarantee `n log(n)` performance.'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**快速**：它保证在`n log(n)`时间内运行，并在几乎排序好的列表上运行得更快。经验测试表明它与高度优化的快速排序一样快。快速排序通常被认为比归并排序更快，但不稳定且不能保证`n
+    log(n)`性能。'
+- en: '**Stable**: It doesn''t reorder equal elements. This is important if you sort
+    the same list repeatedly on different attributes. If a user of a mail program
+    sorts the inbox by mailing date and then sorts it by sender, the user naturally
+    expects that the now-contiguous list of messages from a given sender will (still)
+    be sorted by mailing date. This is guaranteed only if the second sort was stable.'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**稳定**：它不会重新排序相等的元素。这一点对于在不同属性上重复对同一列表进行排序很重要。如果邮件程序的用户按邮件日期对收件箱进行排序，然后按发件人对其进行排序，用户自然期望来自同一发件人的现在连续的邮件列表仍然按邮件日期排序。只有第二次排序是稳定的才能保证这一点。'
+- en: The following [`trivial program`](examples/Sort.java) prints out its arguments
+    in lexicographic (alphabetical) order.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下[`简单程序`](examples/Sort.java)按字典顺序打印出其参数。
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Let's run the program.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们运行程序。
+- en: '[PRE1]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The following output is produced.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 产生了以下输出。
+- en: '[PRE2]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The program was included only to show you that algorithms really are as easy
+    to use as they appear to be.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序仅用于向您展示算法确实像看起来那样易于使用。
+- en: "The second form of `sort` takes a [`Comparator`](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html)\
+    \ in addition to a `List` and sorts the elements with the `Comparator`. Suppose\
+    \ you want to print out the anagram groups from our earlier example in reverse\
+    \ order of size \x97 largest anagram group first. The example that follows shows\
+    \ you how to achieve this with the help of the second form of the `sort` method."
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二种`sort`形式除了`List`之外还需要一个[`Comparator`](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html)，并使用`Comparator`对元素进行排序。假设你想要按照我们之前示例中的字谜分组的大小倒序打印出来，即最大的字谜组首先显示。接下来的示例展示了如何借助`sort`方法的第二种形式实现这一目标。
+- en: Recall that the anagram groups are stored as values in a `Map`, in the form
+    of `List` instances. The revised printing code iterates through the `Map`'s values
+    view, putting every `List` that passes the minimum-size test into a `List` of
+    `List`s. Then the code sorts this `List`, using a `Comparator` that expects `List`
+    instances, and implements reverse size-ordering. Finally, the code iterates through
+    the sorted `List`, printing its elements (the anagram groups). The following code
+    replaces the printing code at the end of the `main` method in the `Anagrams` example.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，变位词组以`List`实例的形式存储在`Map`中的值中。修改后的打印代码通过`Map`的值视图迭代，将通过最小大小测试的每个`List`放入一个`List`的`List`中。然后，该代码对此`List`进行排序，使用一个期望`List`实例的`Comparator`，并实现逆大小排序。最后，该代码对排序后的`List`进行迭代，打印其元素（变位词组）。以下代码替换了`Anagrams`示例中`main`方法末尾的打印代码。
+- en: '[PRE3]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Running [`the program`](examples/Anagrams2.java) on the [`same dictionary`](../interfaces/examples/dictionary.txt)
+    as in [The Map Interface](../interfaces/map.html) section, with the same minimum
+    anagram group size (eight), produces the following output.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在与[The Map Interface](../interfaces/map.html)部分相同的字典上运行[`程序`](examples/Anagrams2.java)，具有相同的最小变位词组大小（八），产生以下输出。
+- en: '[PRE4]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Shuffling
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 洗牌
+- en: The `shuffle` algorithm does the opposite of what `sort` does, destroying any
+    trace of order that may have been present in a `List`. That is, this algorithm
+    reorders the `List` based on input from a source of randomness such that all possible
+    permutations occur with equal likelihood, assuming a fair source of randomness.
+    This algorithm is useful in implementing games of chance. For example, it could
+    be used to shuffle a `List` of `Card` objects representing a deck. Also, it's
+    useful for generating test cases.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`shuffle`算法与`sort`的作用相反，破坏了`List`中可能存在的任何顺序痕迹。换句话说，该算法根据来自随机源的输入重新排序`List`，以使所有可能的排列以相等的概率发生，假设有一个公平的随机源。该算法在实现游戏机会时非常有用。例如，它可以用来洗牌代表一副牌的`Card`对象的`List`。此外，它还用于生成测试用例。'
+- en: 'This operation has two forms: one takes a `List` and uses a default source
+    of randomness, and the other requires the caller to provide a [Random](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)
+    object to use as a source of randomness. The code for this algorithm is used as
+    an example in the [`List` section](../interfaces/list.html#shuffle).'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此操作有两种形式：一种接受一个`List`并使用默认的随机源，另一种要求调用者提供一个[Random](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)对象作为随机源。该算法的代码被用作[`List`部分](../interfaces/list.html#shuffle)的示例。
+- en: Routine Data Manipulation
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 常规数据操作
+- en: 'The `Collections` class provides five algorithms for doing routine data manipulation
+    on `List` objects, all of which are pretty straightforward:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Collections`类提供了五种用于在`List`对象上进行常规数据操作的算法，所有这些算法都非常简单：'
+- en: "`reverse` \x97 reverses the order of the elements in a `List`."
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`reverse` \x97 颠倒`List`中元素的顺序。"
+- en: "`fill` \x97 overwrites every element in a `List` with the specified value.\
+    \ This operation is useful for reinitializing a `List`."
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`fill` \x97 用指定值覆盖`List`中的每个元素。此操作对重新初始化`List`非常有用。"
+- en: "`copy` \x97 takes two arguments, a destination `List` and a source `List`,\
+    \ and copies the elements of the source into the destination, overwriting its\
+    \ contents. The destination `List` must be at least as long as the source. If\
+    \ it is longer, the remaining elements in the destination `List` are unaffected."
+  id: totrans-33
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`copy` \x97 接受两个参数，目标`List`和源`List`，并将源的元素复制到目标中，覆盖其内容。目标`List`的长度必须至少与源相同。如果目标更长，则目标中剩余的元素不受影响。"
+- en: "`swap` \x97 swaps the elements at the specified positions in a `List`."
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`swap` \x97 交换`List`中指定位置的元素。"
+- en: "`addAll` \x97 adds all the specified elements to a `Collection`. The elements\
+    \ to be added may be specified individually or as an array."
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`addAll` \x97 将所有指定的元素添加到`Collection`中。要添加的元素可以逐个指定，也可以作为数组指定。"
+- en: Searching
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 搜索
+- en: The `binarySearch` algorithm searches for a specified element in a sorted `List`.
+    This algorithm has two forms. The first takes a `List` and an element to search
+    for (the "search key"). This form assumes that the `List` is sorted in ascending
+    order according to the natural ordering of its elements. The second form takes
+    a `Comparator` in addition to the `List` and the search key, and assumes that
+    the `List` is sorted into ascending order according to the specified `Comparator`.
+    The `sort` algorithm can be used to sort the `List` prior to calling `binarySearch`.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`binarySearch`算法在排序的`List`中搜索指定的元素。该算法有两种形式。第一种接受一个`List`和一个要搜索的元素（"搜索键"）。这种形式假定`List`根据其元素的自然顺序按升序排序。第二种形式除了`List`和搜索键外还接受一个`Comparator`，并假定`List`根据指定的`Comparator`按升序排序。在调用`binarySearch`之前，可以使用`sort`算法对`List`进行排序。'
+- en: The return value is the same for both forms. If the `List` contains the search
+    key, its index is returned. If not, the return value is `(-(insertion point) -
+    1)`, where the insertion point is the point at which the value would be inserted
+    into the `List`, or the index of the first element greater than the value or `list.size()`
+    if all elements in the `List` are less than the specified value. This admittedly
+    ugly formula guarantees that the return value will be `>= 0` if and only if the
+    search key is found. It's basically a hack to combine a boolean `(found)` and
+    an integer `(index)` into a single `int` return value.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两种形式的返回值相同。如果`List`包含搜索键，则返回其索引。如果没有，则返回值为`(-(插入点) - 1)`，其中插入点是将值插入`List`的位置，或者大于该值的第一个元素的索引，或者`list.size()`如果`List`中的所有元素都小于指定值。这个确实丑陋的公式保证了返回值仅当找到搜索键时为`>=
+    0`。这基本上是一个将布尔值`(found)`和整数值`(index)`组合成单个`int`返回值的技巧。
+- en: The following idiom, usable with both forms of the `binarySearch` operation,
+    looks for the specified search key and inserts it at the appropriate position
+    if it's not already present.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的习语可用于`binarySearch`操作的两种形式，查找指定的搜索键，并在适当位置插入它（如果尚未存在）。
+- en: '[PRE5]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Composition
+  id: totrans-41
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 组成
+- en: 'The frequency and disjoint algorithms test some aspect of the composition of
+    one or more `Collections`:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 频率和不相交算法测试一个或多个`Collections`的组成方面：
+- en: "`frequency` \x97 counts the number of times the specified element occurs in\
+    \ the specified collection"
+  id: totrans-43
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`frequency` \x97 计算指定元素在指定集合中出现的次数"
+- en: "`disjoint` \x97 determines whether two `Collections` are disjoint; that is,\
+    \ whether they contain no elements in common"
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`disjoint` \x97 确定两个`Collections`是否不相交；即它们是否没有共同元素。"
+- en: Finding Extreme Values
+  id: totrans-45
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 查找极值
+- en: The `min` and the `max` algorithms return, respectively, the minimum and maximum
+    element contained in a specified `Collection`. Both of these operations come in
+    two forms. The simple form takes only a `Collection` and returns the minimum (or
+    maximum) element according to the elements' natural ordering. The second form
+    takes a `Comparator` in addition to the `Collection` and returns the minimum (or
+    maximum) element according to the specified `Comparator`.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`min`和`max`算法分别返回指定`Collection`中包含的最小和最大元素。这两个操作有两种形式。简单形式只接受一个`Collection`，根据元素的自然顺序返回最小（或最大）元素。第二种形式除了`Collection`外还接受一个`Comparator`，根据指定的`Comparator`返回最小（或最大）元素。'

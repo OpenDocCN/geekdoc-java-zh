@@ -1,0 +1,234 @@
+- en: Time Zone and Offset Classes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 时区和偏移类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/timezones.html](https://docs.oracle.com/javase/tutorial/datetime/iso/timezones.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: '[https://docs.oracle.com/javase/tutorial/datetime/iso/timezones.html](https://docs.oracle.com/javase/tutorial/datetime/iso/timezones.html)'
+- en: A *time zone* is a region of the earth where the same standard time is used.
+    Each time zone is described by an identifier and usually has the format *region/city*
+    (`Asia/Tokyo`) and an offset from Greenwich/UTC time. For example, the offset
+    for Tokyo is `+09:00`.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*时区*是地球上使用相同标准时间的区域。每个时区由一个标识符描述，通常具有*region/city*（`Asia/Tokyo`）的格式和与格林威治/协调世界时的偏移。例如，东京的偏移是`+09:00`。'
+- en: ZoneId and ZoneOffset
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ZoneId和ZoneOffset
+- en: 'The Date-Time API provides two classes for specifying a time zone or an offset:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间API提供了两个用于指定时区或偏移的类：
+- en: '`ZoneId` specifies a time zone identifier and provides rules for converting
+    between an `Instant` and a `LocalDateTime`.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ZoneId`指定了一个时区标识符，并提供了在`Instant`和`LocalDateTime`之间转换的规则。'
+- en: '`ZoneOffset` specifies a time zone offset from Greenwich/UTC time.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ZoneOffset`指定了与格林威治/协调世界时的时区偏移。'
+- en: Offsets from Greenwich/UTC time are usually defined in whole hours, but there
+    are exceptions. The following code, from the [``TimeZoneId``](examples/TimeZoneId.java)
+    example, prints a list of all time zones that use offsets from Greenwich/UTC that
+    are not defined in whole hours.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从格林威治/协调世界时的偏移通常以整小时定义，但也有例外情况。以下代码来自[``TimeZoneId``](examples/TimeZoneId.java)示例，打印了所有使用非整小时定义的格林威治/协调世界时偏移的时区列表。
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This example prints the following list to standard out:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例将以下列表打印到标准输出：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `TimeZoneId` example also prints a list of all time zone IDs to a file called
+    [``timeZones``](examples/timeZones).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TimeZoneId`示例还会将所有时区ID打印到名为[``timeZones``](examples/timeZones)的文件中。'
+- en: The Date-Time Classes
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 日期时间类
+- en: 'The Date-Time API provides three temporal-based classes that work with time
+    zones:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间API提供了三个基于时间的类，可以与时区一起使用：
+- en: '`ZonedDateTime` handles a date and time with a corresponding time zone with
+    a time zone offset from Greenwich/UTC.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ZonedDateTime`处理具有与格林威治/协调世界时的相应时区偏移的日期和时间。'
+- en: '`OffsetDateTime` handles a date and time with a corresponding time zone offset
+    from Greenwich/UTC, without a time zone ID.'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`OffsetDateTime`处理具有与格林威治/协调世界时的相应时区偏移的日期和时间，没有时区ID。'
+- en: '`OffsetTime` handles time with a corresponding time zone offset from Greenwich/UTC,
+    without a time zone ID.'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`OffsetTime`处理具有与格林威治/协调世界时的相应时区偏移的时间，没有时区ID。'
+- en: When would you use `OffsetDateTime` instead of `ZonedDateTime`? If you are writing
+    complex software that models its own rules for date and time calculations based
+    on geographic locations, or if you are storing time-stamps in a database that
+    track only absolute offsets from Greenwich/UTC time, then you might want to use
+    `OffsetDateTime`. Also, XML and other network formats define date-time transfer
+    as `OffsetDateTime` or `OffsetTime`.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 何时使用`OffsetDateTime`而不是`ZonedDateTime`？如果您正在编写基于地理位置的自己的日期和时间计算规则的复杂软件，或者如果您正在存储仅跟踪与格林威治/协调世界时的绝对偏移的时间戳的数据库，那么您可能希望使用`OffsetDateTime`。此外，XML和其他网络格式将日期时间传输定义为`OffsetDateTime`或`OffsetTime`。
+- en: Although all three classes maintain an offset from Greenwich/UTC time, only
+    `ZonedDateTime` uses the [`ZoneRules`](https://docs.oracle.com/javase/8/docs/api/java/time/zone/ZoneRules.html),
+    part of the `java.time.zone` package, to determine how an offset varies for a
+    particular time zone. For example, most time zones experience a gap (typically
+    of 1 hour) when moving the clock forward to daylight saving time, and a time overlap
+    when moving the clock back to standard time and the last hour before the transition
+    is repeated. The `ZonedDateTime` class accommodates this scenario, whereas the
+    `OffsetDateTime` and `OffsetTime` classes, which do not have access to the `ZoneRules`,
+    do not.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管所有三个类都保持与格林威治/协调世界时的偏移，但只有`ZonedDateTime`使用[`ZoneRules`](https://docs.oracle.com/javase/8/docs/api/java/time/zone/ZoneRules.html)，这是`java.time.zone`包的一部分，用于确定特定时区的偏移如何变化。例如，大多数时区在将时钟向前调整到夏令时时会经历一个间隙（通常为1小时），在将时钟调回标准时间和过渡前最后一个小时重复时会发生时间重叠。`ZonedDateTime`类适应了这种情况，而没有访问`ZoneRules`的`OffsetDateTime`和`OffsetTime`类则没有。
+- en: ZonedDateTime
+  id: totrans-19
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: ZonedDateTime
+- en: The [ZonedDateTime](https://docs.oracle.com/javase/8/docs/api/java/time/ZonedDateTime.html)
+    class, in effect, combines the [`LocalDateTime`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDateTime.html)
+    class with the [`ZoneId`](https://docs.oracle.com/javase/8/docs/api/java/time/ZoneId.html)
+    class. It is used to represent a full date (year, month, day) and time (hour,
+    minute, second, nanosecond) with a time zone (region/city, such as `Europe/Paris`).
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[ZonedDateTime](https://docs.oracle.com/javase/8/docs/api/java/time/ZonedDateTime.html)类实际上将[`LocalDateTime`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDateTime.html)类与[`ZoneId`](https://docs.oracle.com/javase/8/docs/api/java/time/ZoneId.html)类结合在一起。它用于表示完整的日期（年、月、日）和时间（时、分、秒、纳秒）以及时区（地区/城市，如`Europe/Paris`）。'
+- en: The following code, from the [``Flight``](examples/Flight.java) example, defines
+    the departure time for a flight from San Francisco to Tokyo as a `ZonedDateTime`
+    in the America/Los Angeles time zone. The `withZoneSameInstant` and `plusMinutes`
+    methods are used to create an instance of `ZonedDateTime` that represents the
+    projected arrival time in Tokyo, after the 650 minute flight. The `ZoneRules.isDaylightSavings`
+    method determines whether it is daylight saving time when the flight arrives in
+    Tokyo.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码来自[``Flight``](examples/Flight.java)示例，定义了从旧金山飞往东京的航班的出发时间为美国/洛杉矶时区的`ZonedDateTime`。使用`withZoneSameInstant`和`plusMinutes`方法创建一个代表东京预计到达时间的`ZonedDateTime`实例，经过650分钟的飞行。`ZoneRules.isDaylightSavings`方法确定航班到达东京时是否为夏令时。
+- en: 'A `DateTimeFormatter` object is used to format the `ZonedDateTime` instances
+    for printing:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DateTimeFormatter`对象用于格式化`ZonedDateTime`实例以进行打印：'
+- en: '[PRE2]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'This produces the following output:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将产生以下输出：
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: OffsetDateTime
+  id: totrans-26
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: OffsetDateTime
+- en: The [OffsetDateTime](https://docs.oracle.com/javase/8/docs/api/java/time/OffsetDateTime.html)
+    class, in effect, combines the [`LocalDateTime`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDateTime.html)
+    class with the [`ZoneOffset`](https://docs.oracle.com/javase/8/docs/api/java/time/ZoneOffset.html)
+    class. It is used to represent a full date (year, month, day) and time (hour,
+    minute, second, nanosecond) with an offset from Greenwich/UTC time (+/-hours:minutes,
+    such as `+06:00` or `-08:00`).
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[OffsetDateTime](https://docs.oracle.com/javase/8/docs/api/java/time/OffsetDateTime.html)类实际上将[`LocalDateTime`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDateTime.html)类与[`ZoneOffset`](https://docs.oracle.com/javase/8/docs/api/java/time/ZoneOffset.html)类结合在一起。它用于表示完整的日期（年、月、日）和时间（时、分、秒、纳秒）以及与格林威治/UTC时间的偏移（+/-小时:分钟，如`+06:00`或`-08:00`）。'
+- en: The following example uses `OffsetDateTime` with the `TemporalAdjuster.lastDay`
+    method to find the last Thursday in July 2013.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用`OffsetDateTime`与`TemporalAdjuster.lastDay`方法找到2013年7月最后一个星期四。
+- en: '[PRE4]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The output from running this code is:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行此代码的输出为：
+- en: '[PRE5]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: OffsetTime
+  id: totrans-32
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: OffsetTime
+- en: The [OffsetTime](https://docs.oracle.com/javase/8/docs/api/java/time/OffsetTime.html)
+    class, in effect, combines the [`LocalTime`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalTime.html)
+    class with the [`ZoneOffset`](https://docs.oracle.com/javase/8/docs/api/java/time/ZoneOffset.html)
+    class. It is used to represent time (hour, minute, second, nanosecond) with an
+    offset from Greenwich/UTC time (+/-hours:minutes, such as `+06:00` or `-08:00`).
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[OffsetTime](https://docs.oracle.com/javase/8/docs/api/java/time/OffsetTime.html)类实际上将[`LocalTime`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalTime.html)类与[`ZoneOffset`](https://docs.oracle.com/javase/8/docs/api/java/time/ZoneOffset.html)类结合在一起。它用于表示时间（时、分、秒、纳秒）以及与格林威治/UTC时间的偏移（+/-小时:分钟，如`+06:00`或`-08:00`）。'
+- en: The `OffsetTime` class is used in the same situations as the `OffsetDateTime`
+    class, but when tracking the date is not needed.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`OffsetTime`类在与`OffsetDateTime`类相同的情况下使用，但不需要跟踪日期时使用。'

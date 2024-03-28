@@ -1,0 +1,970 @@
+- en: How to Support Assistive Technologies
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何支持辅助技术
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/access.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/access.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/access.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/access.html)
+- en: You might be wondering what exactly assistive technologies are, and why you
+    should care. Primarily, assistive technologies exist to enable people with permanent
+    or temporary disabilities to use the computer. For example, if you get carpal
+    tunnel syndrome, you can use assistive technologies to accomplish your work without
+    using your hands.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能想知道辅助技术到底是什么，以及为什么你应该关心。主要来说，辅助技术存在是为了让有永久或暂时残疾的人能够使用计算机。例如，如果你患上了腕管综合症，你可以使用辅助技术完成工作而不用手。
+- en: "Assistive technologies \x97 voice interfaces, screen readers, alternate input\
+    \ devices, and so on \x97 are useful not only for people with disabilities, but\
+    \ also for people using computers in non-office environments. For example, if\
+    \ you're stuck in a traffic jam, you might use assistive technologies to check\
+    \ your email, using only voice input and output. The information that enables\
+    \ assistive technologies can be used for other tools, as well, such as automated\
+    \ GUI testers and input devices such as touchscreens. Assistive technologies get\
+    \ information from components using the Accessibility API, which is defined in\
+    \ the [`javax.accessibility`](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/package-summary.html)\
+    \ package."
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "辅助技术 \x97 语音界面、屏幕阅读器、替代输入设备等等 \x97 不仅对残疾人有用，也适用于在非办公环境中使用计算机的人群。例如，如果你被困在交通拥堵中，你可以使用辅助技术来检查你的电子邮件，只需使用语音输入和输出。支持辅助技术的信息也可以用于其他工具，比如自动化\
+    \ GUI 测试工具和输入设备如触摸屏。辅助技术通过使用在[`javax.accessibility`](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/package-summary.html)包中定义的辅助功能\
+    \ API 从组件获取信息。"
+- en: 'Because support for the Accessibility API is built into the Swing components,
+    your Swing program will probably work just fine with assistive technologies, even
+    if you do nothing special. For example, assistive technologies can automatically
+    get the text information that is set by the following lines of code:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为对辅助功能 API 的支持内置在 Swing 组件中，你的 Swing 程序可能会很好地与辅助技术配合工作，即使你没有做任何特殊处理。例如，辅助技术可以自动获取以下代码设置的文本信息：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Assistive technologies can also grab the tool-tip text (if any) associated with
+    a component and use it to describe the component to the user.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 辅助技术还可以获取与组件关联的工具提示文本（如果有的话），并用它来向用户描述组件。
+- en: Making your program function smoothly with assistive technologies is easy to
+    do and, in the United States, may be required by federal law.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使你的程序与辅助技术顺畅配合是很容易的，而且在美国可能是联邦法律要求的。
+- en: 'The rest of this section covers these topics:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的其余部分涵盖了以下主题：
+- en: '[Rules for Supporting Accessibility](#supporting)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[支持辅助功能的规则](#supporting)'
+- en: '[Testing for Accessibility](#testing)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[辅助功能测试](#testing)'
+- en: '[Setting Accessible Names and Descriptions on Components](#namesdescriptions)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在组件上设置可访问名称和描述](#namesdescriptions)'
+- en: '[Concepts: How Accessibility Works](#developing)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[概念：辅助功能的工作原理](#developing)'
+- en: '[Making Custom Components Accessible](#accessiblecomponents)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使自定义组件可访问](#accessiblecomponents)'
+- en: '[The Accessibility API](#api)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[辅助功能 API](#api)'
+- en: '[Examples that Use the Accessibility API](#eg)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用辅助功能 API 的示例](#eg)'
+- en: Rules for Supporting Accessibility
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 支持辅助功能的规则
+- en: 'Here are a few things you can do to make your program work as well as possible
+    with assistive technologies:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是一些你可以做的事情，使你的程序尽可能与辅助技术配合良好：
+- en: If a component doesn't display a short string (which serves as its default name),
+    specify a name with the `setAccessibleName` method. You might want to do this
+    for image-only buttons, panels that provide logical groupings, text areas, and
+    so on.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果一个组件没有显示一个短字符串（作为其默认名称），可以使用`setAccessibleName`方法指定一个名称。你可能想为仅包含图像的按钮、提供逻辑分组的面板、文本区域等设置这个名称。
+- en: 'Set [tool tip](../components/tooltip.html) text for components whenever it
+    makes sense to do so. For example:'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在有意义的情况下为组件设置[工具提示](../components/tooltip.html)文本。例如：
+- en: '[PRE1]'
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'If you don''t want to provide a tool tip for a component, use the `setAccessibleDescription`
+    method to provide a description that assistive technologies can give the user.
+    For example:'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果你不想为一个组件提供工具提示，可以使用`setAccessibleDescription`方法提供一个描述，辅助技术可以向用户提供。例如：
+- en: '[PRE2]'
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Specify keyboard alternatives wherever possible. Make sure you can use your
+    program with only the keyboard. Try hiding your mouse! Note that if the focus
+    is in an editable text component, you can use Shift-Tab to move focus to the next
+    component.
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 尽可能指定键盘替代方案。确保您的程序只能使用键盘。尝试隐藏鼠标！请注意，如果焦点在可编辑文本组件中，则可以使用Shift-Tab将焦点移动到下一个组件。
+- en: Support for keyboard alternatives varies by component. [Buttons](../components/button.html)
+    support keyboard alternatives with the `setMnemonic` method. Menus inherit the
+    button mnemonic support and also support accelerators, as described in [Enabling
+    Keyboard Operation](../components/menu.html#mnemonic). Other components can use
+    [key bindings](../components/jcomponent.html#keyboardAction) to associate user
+    typing with program actions.
+  id: totrans-24
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 对于键盘替代方案的支持因组件而异。[按钮](../components/button.html)使用`setMnemonic`方法支持键盘替代方案。菜单继承按钮助记符支持，并且还支持加速键，如[启用键盘操作](../components/menu.html#mnemonic)中所述。其他组件可以使用[键绑定](../components/jcomponent.html#keyboardAction)将用户输入与程序操作关联起来。
+- en: Assign a textual description to all [`ImageIcon`](../components/icon.html) objects
+    in your program. You can set this property by using either the `setDescription`
+    method or one of the `String` forms of the `ImageIcon` constructors.
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 为程序中的所有[`ImageIcon`](../components/icon.html)对象分配文本描述。您可以使用`setDescription`方法或`ImageIcon`构造函数的一个`String`形式来设置此属性。
+- en: If a bunch of components form a logical group, try to put them into one container.
+    For example, use a [`JPanel`](../components/panel.html) to contain all the radio
+    buttons in a radio button group.
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果一组组件形成一个逻辑组，请尝试将它们放入一个容器中。例如，使用[`JPanel`](../components/panel.html)来包含单选按钮组中的所有单选按钮。
+- en: Whenever you have a [label](../components/label.html) that describes another
+    component, use the `setLabelFor` method so that assistive technologies can find
+    the component that the label is associated with. This is especially important
+    when the label displays a mnemonic for another component (such as a text field).
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 每当您有一个描述另一个组件的[标签](../components/label.html)时，请使用`setLabelFor`方法，以便辅助技术可以找到与标签关联的组件。当标签显示另一个组件的助记符（例如文本字段）时，这一点尤为重要。
+- en: 'If you create a custom component, make sure it supports accessibility. In particular,
+    be aware that subclasses of `JComponent` are not automatically accessible. Custom
+    components that are descendants of other Swing components should override inherited
+    accessibility information as necessary. For more information, see [Concepts: How
+    Accessibility Works](#developing) and [Making Custom Components Accessible](#accessiblecomponents).'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果您创建了自定义组件，请确保它支持可访问性。特别要注意的是，`JComponent`的子类不会自动支持可访问性。继承自其他 Swing 组件的自定义组件应根据需要覆盖继承的可访问性信息。有关更多信息，请参见[概念：可访问性工作原理](#developing)和[使自定义组件可访问](#accessiblecomponents)。
+- en: Use the examples provided with the accessibility utilities to test your program.
+    Although the primary purpose of these examples is to show programmers how to use
+    the Accessibility API when implementing assistive technologies, these examples
+    are also quite useful for testing application programs for accessibility. [Testing
+    for Accessibility](#testing) shows `ScrollDemo` running with Monkey, one of the
+    accessibility utilities examples. Monkey shows the tree of accessible components
+    in a program and lets you interact with those components.
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用提供的辅助功能实用程序示例来测试您的程序。尽管这些示例的主要目的是向程序员展示如何在实现辅助技术时使用辅助功能 API，但这些示例对于测试可访问性的应用程序程序也非常有用。[测试可访问性](#testing)展示了`ScrollDemo`与Monkey一起运行的情况，Monkey是辅助功能实用程序示例之一。Monkey显示程序中可访问组件的树，并允许您与这些组件进行交互。
+- en: Finally, don't break what you get for free! If your GUI has an inaccessible
+    container — for example, your own subclass of `Container` or `JComponent` or any
+    other container that doesn't implement the `Accessible` interface — any components
+    inside that container become inaccessible.
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 最后，不要破坏免费获得的内容！如果您的 GUI 有一个不可访问的容器 — 例如，您自己的`Container`或`JComponent`的子类或任何其他不实现`Accessible`接口的容器
+    — 那么该容器内的任何组件都将无法访问。
+- en: Testing for Accessibility
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 测试可访问性
+- en: The examples that come with the accessibility utilities can give you an idea
+    of how accessible your program is. For instructions on getting these utilities,
+    see the [Java SE Desktop Accessibility home page](http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140174.html).
+    Follow the instructions in the accessibility utilities documentation for setting
+    up the Java Virtual Machine (VM) to run one or more of the utilities automatically.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 随附辅助工具的示例可以让您了解您的程序的可访问性如何。有关获取这些实用程序的说明，请参阅[Java SE桌面可访问性主页](http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140174.html)。按照辅助工具文档中的说明设置Java虚拟机（VM）以自动运行一个或多个实用程序。
+- en: Let's use an accessibility utility to compare the original version of one of
+    our demos to a version in which the rules for supporting accessibility have been
+    applied. Here's a picture of a program called `ScrollDemo`.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们使用一个辅助工具来比较我们的演示程序的原始版本和已应用支持可访问性规则的版本。这里是一个名为`ScrollDemo`的程序的图片。
+- en: '![A snapshot of the original, inaccessible ScrollDemo.](../Images/ba1b073de5841c9e2ca73d8534c9ef2d.png)'
+  id: totrans-34
+  prefs: []
+  type: TYPE_IMG
+  zh: '![原始不可访问ScrollDemo的快照。](../Images/ba1b073de5841c9e2ca73d8534c9ef2d.png)'
+- en: '* * *'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run `ScrollDemo` using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/components/index.html#ScrollDemo).
+  id: totrans-37
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击启动按钮运行`ScrollDemo`，使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#ScrollDemo)。
+- en: '[![Launches the ScrollDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ScrollDemoProject/ScrollDemo.jnlp)'
+  id: totrans-38
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '[![启动ScrollDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ScrollDemoProject/ScrollDemo.jnlp)'
+- en: Next, click the Launch button to run `AccessibleScrollDemo` using [Java™ Web
+    Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/misc/index.html#AccessibleScrollDemo).[![Launches
+    the AccessibleScrollDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/AccessibleScrollDemoProject/AccessibleScrollDemo.jnlp)
+  id: totrans-39
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 接下来，点击启动按钮运行`AccessibleScrollDemo`，使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/misc/index.html#AccessibleScrollDemo)。[![启动AccessibleScrollDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/AccessibleScrollDemoProject/AccessibleScrollDemo.jnlp)
+- en: Compare the two versions side by side. The only noticeable difference is that
+    the **cm** toggle button and the photograph have tool tips in the accessible version.
+  id: totrans-40
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将两个版本并排进行比较。唯一显著的区别是在可访问版本中，**cm**切换按钮和照片具有工具提示。
+- en: Now run the two versions under the accessibility utility called Monkey. Note
+    that when the accessibility tools have been downloaded and configured in the `accessibility.properties`
+    file, the Monkey window automatically comes up when you click on the Run ScrollDemo
+    and AccessibleScrollDemo links (in steps 1 and 2).
+  id: totrans-41
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 现在在名为Monkey的辅助工具下运行这两个版本。请注意，当辅助工具已被下载并在`accessibility.properties`文件中配置时，当您点击运行ScrollDemo和AccessibleScrollDemo链接（在步骤1和2中）时，Monkey窗口会自动弹出。
+- en: If the Monkey window does not appear on startup, the problem may be that the
+    `accessibility.properties` file is not present in the version of the VM being
+    used by Java Web Start. You can change the VM you use by running the Java Web
+    Start [Application Manager](../../information/player.jnlp) and selecting **File
+    > Preferences > Java**.
+  id: totrans-42
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如果Monkey窗口在启动时没有出现，问题可能是`accessibility.properties`文件不存在于Java Web Start使用的VM版本中。您可以通过运行Java
+    Web Start [应用程序管理器](../../information/player.jnlp)并选择**文件 > 首选项 > Java**来更改您使用的VM。
+- en: Note that when the Monkey window comes up you need to select **File > Refresh
+    Trees** to see information appear under `Accessible Tree`. You can then expand
+    the tree by successively clicking on the horizontal icons displayed by each folder
+    icon. When the tree has been expanded, you can see detailed information for the
+    various components. The custom components (rules and corners) that weren't accessible
+    in the original version are accessible in the modified version. This can make
+    quite a difference to assistive technologies.
+  id: totrans-43
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 请注意，当Monkey窗口弹出时，您需要选择**文件 > 刷新树**以查看信息出现在`可访问树`下。然后，您可以通过依次单击每个文件夹图标显示的水平图标来展开树。当树已经展开时，您可以查看各个组件的详细信息。在修改后的版本中，原始版本中无法访问的自定义组件（规则和角落）现在可以访问。这对辅助技术可能产生很大的影响。
+- en: '* * *'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Here''s a snapshot of Monkey running on `ScrollDemo`:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是Monkey在`ScrollDemo`上运行的快照：
+- en: '![Monkey running on inaccessible version of ScrollDemo.](../Images/b6499785d40682121247c1ab5d35ccd0.png)'
+  id: totrans-46
+  prefs: []
+  type: TYPE_IMG
+  zh: '![在不可访问版本的ScrollDemo上奔跑的猴子。](../Images/b6499785d40682121247c1ab5d35ccd0.png)'
+- en: The left side of the split pane shows the actual component hierarchy for the
+    program. The right side shows the accessible components in the hierarchy, which
+    is what interests us.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分割窗格的左侧显示程序的实际组件层次结构。右侧显示层次结构中的可访问组件，这是我们感兴趣的。
+- en: The first thing to notice is that, even with no explicit support in `ScrollDemo`,
+    Monkey is able to discover a lot of information about the various components in
+    the program. Most of the components and their children appear in the tree. However,
+    the names for most of the components are empty (null), which is rather unhelpful.
+    The descriptions are also empty.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先要注意的是，即使在`ScrollDemo`中没有明确的支持，Monkey也能够发现关于程序中各个组件的许多信息。大多数组件及其子级都显示在树中。然而，大多数组件的名称为空（null），这相当没有帮助。描述也为空。
+- en: Further trouble comes with the program's custom components. The two rulers are
+    inaccessible, so they are not included in the accessible tree. The viewports that
+    contain the rulers are displayed as leaf nodes because they have no accessible
+    children. The custom corners are also missing from the accessible tree.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 进一步的问题出现在程序的自定义组件上。两个标尺是无法访问的，因此它们不包括在可访问树中。包含标尺的视口显示为叶节点，因为它们没有可访问的子级。自定义角落也不在可访问树中。
+- en: 'Now here''s a picture of the Monkey window for `AccessibleScrollDemo`:'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在这里是`AccessibleScrollDemo`的Monkey窗口图片：
+- en: '![Monkey running on accessible version of ScrollDemo.](../Images/9fb8dbd2918e4edf4f6e3e45fb066c16.png)'
+  id: totrans-51
+  prefs: []
+  type: TYPE_IMG
+  zh: '![在可访问版本的ScrollDemo上奔跑的猴子。](../Images/9fb8dbd2918e4edf4f6e3e45fb066c16.png)'
+- en: The rules are now listed as children of the viewports, and the corners are listed
+    as children of the scroll pane. Furthermore, many of the components now have non-null
+    names.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，规则被列为视口的子级，角落被列为滚动窗格的子级。此外，许多组件现在具有非空名称。
+- en: In the previous snapshot of Monkey, the Column Header item is selected. Monkey
+    highlights the corresponding component in `ScrollDemo` program.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Monkey的上一个快照中，选择了列标题项。Monkey会在`ScrollDemo`程序中突出显示相应的组件。
+- en: '![AccessibleScrollDemo screen shot.](../Images/50e92ce0f1ca042fc96a45c7fb9cd0e2.png)'
+  id: totrans-54
+  prefs: []
+  type: TYPE_IMG
+  zh: '![AccessibleScrollDemo的屏幕截图。](../Images/50e92ce0f1ca042fc96a45c7fb9cd0e2.png)'
+- en: When an item is selected, you can use Monkey's **Panels** menu to bring up one
+    of four different panels that let you interact with the selected component. Choosing
+    **Panels > Accessibility API panel** brings up a panel like the one shown in the
+    following figure. This panel displays information available through methods defined
+    in the `AccessibleContext` base class and the `AccessibleComponent` interface.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当选择一个项目时，您可以使用Monkey的**面板**菜单来打开四个不同的面板之一，让您与所选组件进行交互。选择**面板 > 可访问性API面板**会打开一个类似下图所示的面板。该面板显示通过`AccessibleContext`基类和`AccessibleComponent`接口定义的方法可用的信息。
+- en: '![Accessibility API Panel for Column Header.](../Images/5153f64d5079fabe4469b1f782f14fbe.png)'
+  id: totrans-56
+  prefs: []
+  type: TYPE_IMG
+  zh: '![列标题的可访问性API面板。](../Images/5153f64d5079fabe4469b1f782f14fbe.png)'
+- en: 'Monkey has three other panels:'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Monkey有另外三个面板：
+- en: '**AccessibleAction**: Shows the actions supported by an accessible component
+    and lets you invoke the action. Works only with an accessible component whose
+    context implements the `AccessibleAction` interface.'
+  id: totrans-58
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**AccessibleAction**：显示可访问组件支持的操作，并允许您调用该操作。仅适用于上下文实现了`AccessibleAction`接口的可访问组件。'
+- en: '**AccessibleSelection**: Shows the current selection of an accessible component
+    and lets you manipulate the selection. Works only with accessible component whose
+    context implements the `AccessibleSelection` interface.'
+  id: totrans-59
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**AccessibleSelection**：显示可访问组件的当前选择并允许您操作选择。仅适用于上下文实现了`AccessibleSelection`接口的可访问组件。'
+- en: '**AccessibleHypertext**: Shows any hyperlinks contained within an accessible
+    component and lets you traverse them. Works only with accessible component whose
+    context implements the `AccessibleHypertext` interface.'
+  id: totrans-60
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**AccessibleHypertext**：显示可访问组件中包含的任何超链接，并允许您遍历它们。仅适用于上下文实现了`AccessibleHypertext`接口的可访问组件。'
+- en: The accessibility utilities examples are handy as testing tools and can give
+    you an idea of how accessible the components in your program are. However, even
+    if your components behave well in Monkey or the other examples, they still might
+    not be completely accessible because Monkey and the other examples exercise only
+    certain portions of the Accessibility API.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 辅助功能实用工具示例可作为测试工具，帮助您了解程序中组件的可访问性如何。然而，即使您的组件在Monkey或其他示例中表现良好，它们仍然可能不完全可访问，因为Monkey和其他示例仅对辅助功能
+    API 的某些部分进行了测试。
+- en: 'The only true test of accessibility is to run your programs with real-world
+    assistive technologies, however, you may find the following free and open source
+    screen reader useful: [NonVisual Desktop Access (NVDA)](http://www.nvda-project.org/).'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 唯一真正的可访问性测试是使用真实世界的辅助技术运行您的程序，但是您可能会发现以下免费开源屏幕阅读器有用：[NonVisual Desktop Access
+    (NVDA)](http://www.nvda-project.org/)。
+- en: Setting Accessible Names and Descriptions on Components
+  id: totrans-63
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在组件上设置可访问名称和描述
+- en: Giving your program's components accessible names and descriptions is one of
+    the easiest and most important steps in making your program accessible. Following
+    is a complete listing of the `AccessibleScrollDemo` constructor that creates the
+    scroll pane and the custom components it uses. The boldface statements give components
+    names and descriptions that assistive technologies can use.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为程序的组件提供可访问名称和描述是使程序可访问性的最简单和最重要的步骤之一。以下是创建滚动窗格和其使用的自定义组件的`AccessibleScrollDemo`构造函数的完整列表。粗体语句提供了辅助技术可以使用的组件名称和描述。
+- en: '[PRE3]'
+  id: totrans-65
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Often, the program sets a component's name and description directly through
+    the component's accessible context. Other times, the program sets an accessible
+    description indirectly with tool tips. In the case of the **cm** toggle button,
+    the description is set automatically to the text on the button.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，程序通过组件的可访问上下文直接设置组件的名称和描述。其他时候，程序通过工具提示间接设置可访问描述。在**cm**切换按钮的情况下，描述会自动设置为按钮上的文本。
+- en: 'Concepts: How Accessibility Works'
+  id: totrans-67
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 概念：可访问性工作原理
+- en: 'An object is accessible if it implements the [`Accessible`](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/Accessible.html)
+    interface. The `Accessible` interface defines just one method, `getAccessibleContext`,
+    which returns an [`AccessibleContext`](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleContext.html)
+    object. The `AccessibleContext` object is an intermediary that contains the accessible
+    information for an accessible object. The following figure shows how assistive
+    technologies get the accessible context from an accessible object and query it
+    for information:'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果对象实现了[`Accessible`](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/Accessible.html)接口，则该对象是可访问的。`Accessible`接口仅定义了一个方法`getAccessibleContext`，该方法返回一个[`AccessibleContext`](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleContext.html)对象。`AccessibleContext`对象是一个中介，包含可访问对象的可访问信息。以下图显示了辅助技术如何从可访问对象获取可访问上下文并查询信息：
+- en: '![How assistive technologies get information from accessible objects.](../Images/538a9642395a66738b2f5997f54f85ab.png)'
+  id: totrans-69
+  prefs: []
+  type: TYPE_IMG
+  zh: '![辅助技术如何从可访问对象获取信息。](../Images/538a9642395a66738b2f5997f54f85ab.png)'
+- en: '`AccessibleContext` is an abstract class that defines the minimum set of information
+    an accessible object must provide about itself. The minimum set includes name,
+    description, role, state set, and so on. To identify its accessible object as
+    having particular capabilities, an accessible context can implement one or more
+    of the interfaces as shown in the [Accessible Interfaces](#interfaceList) table.
+    For example, `JButton` implements `AccessibleAction`, `AccessibleValue`, `AccessibleText`,
+    and `AccessibleExtendedComponent`. It is not necessary for `JButton` to implement
+    `AccessibleIcon` because that is implemented by the `ImageIcon` attached to the
+    button.'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`AccessibleContext`是一个抽象类，定义了可访问对象必须提供关于自身的最小信息集。最小信息集包括名称、描述、角色、状态集等。为了标识其可访问对象具有特定功能，可访问上下文可以实现如[可访问接口](#interfaceList)表中所示的一个或多个接口。例如，`JButton`实现了`AccessibleAction`、`AccessibleValue`、`AccessibleText`和`AccessibleExtendedComponent`。`JButton`不需要实现`AccessibleIcon`，因为这是由按钮附加的`ImageIcon`实现的。'
+- en: Because the `JComponent` class itself does not implement the `Accessible` interface,
+    instances of its direct subclasses are not accessible. If you write a custom component
+    that inherits directly from `JComponent`, you need to explicitly make it implement
+    the `Accessible` interface. `JComponent` does have an accessible context, called
+    `AccessibleJComponent`, that implements the `AccessibleComponent` interface and
+    provides a minimal amount of accessible information. You can provide an accessible
+    context for your custom components by creating a subclass of `AccessibleJComponent`
+    and overriding important methods. [Making Custom Components Accessible](#accessiblecomponents)
+    shows two examples of doing this.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`JComponent`类本身没有实现`Accessible`接口，其直接子类的实例是不可访问的。如果你编写一个直接继承自`JComponent`的自定义组件，你需要显式地让它实现`Accessible`接口。`JComponent`确实有一个可访问的上下文，称为`AccessibleJComponent`，它实现了`AccessibleComponent`接口并提供了最少量的可访问信息。你可以通过创建`AccessibleJComponent`的子类并重写重要方法为你的自定义组件提供可访问的上下文。[使自定义组件可访问](#accessiblecomponents)展示了两个示例。
+- en: 'All the other standard Swing components implement the `Accessible` interface
+    and have an accessible context that implements one or more of the preceding interfaces
+    as appropriate. The accessible contexts for Swing components are implemented as
+    inner classes and have names of this style:'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有其他标准的Swing组件都实现了`Accessible`接口，并具有一个实现一个或多个前述接口的可访问上下文。Swing组件的可访问上下文被实现为内部类，并具有以下样式的名称：
+- en: '[PRE4]'
+  id: totrans-73
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: If you create a subclass of a standard Swing component and your subclass is
+    substantially different from its superclass, then you should provide a custom
+    accessible context for it. The easiest way is to create a subclass of the superclass's
+    accessible context class and override methods as necessary. For example, if you
+    create a `JLabel` subclass substantially different from `JLabel`, then your `JLabel`
+    subclass should contain an inner class that extends `AccessibleJLabel`. The next
+    section shows how to do so, using examples in which `JComponent` subclasses extend
+    `AccessibleJComponent`.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你创建一个标准Swing组件的子类，并且你的子类与其超类有很大不同，那么你应该为其提供一个自定义的可访问上下文。最简单的方法是创建超类可访问上下文类的子类，并根据需要重写方法。例如，如果你创建一个与`JLabel`有很大不同的`JLabel`子类，那么你的`JLabel`子类应该包含一个扩展`AccessibleJLabel`的内部类。下一节将展示如何做到这一点，使用`JComponent`子类扩展`AccessibleJComponent`的示例。
+- en: Making Custom Components Accessible
+  id: totrans-75
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使自定义组件可访问
+- en: The scroll demo program uses three custom component classes. `ScrollablePicture`
+    is a subclass of `JLabel`, and `Corner` and `Rule` are both subclasses of `JComponent`.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 滚动演示程序使用了三个自定义组件类。`ScrollablePicture`是`JLabel`的子类，而`Corner`和`Rule`都是`JComponent`的子类。
+- en: The `ScrollablePicture` class relies completely on accessibility inherited from
+    `JLabel` through [`JLabel.AccessibleJLabel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.AccessibleJLabel.html).
+    The code that creates an instance of `ScrollablePicture` sets the tool-tip text
+    for the scrollable picture. The tool-tip text is used by the context as the component's
+    accessible description. This behavior is provided by `AccessibleJLabel`.
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ScrollablePicture`类完全依赖于从`JLabel`通过[`JLabel.AccessibleJLabel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.AccessibleJLabel.html)继承的可访问性。创建`ScrollablePicture`实例的代码为可滚动图片设置了工具提示文本。工具提示文本被上下文用作组件的可访问描述。这种行为由`AccessibleJLabel`提供。'
+- en: The accessible version of the `Corner` class contains just enough code to make
+    its instances accessible. We implemented accessibility support by adding the code
+    shown in bold to the original version of `Corner`.
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Corner`类的可访问版本仅包含足够的代码使其实例可访问。我们通过向原始版本的`Corner`添加粗体显示的代码来实现辅助功能支持。'
+- en: '[PRE5]'
+  id: totrans-79
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'All of the accessibility provided by this class is inherited from [`AccessibleJComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.AccessibleJComponent.html).
+    This approach is fine for `Corner` because `AccessibleJComponent` provides a reasonable
+    amount of default accessibility information and because corners are uninteresting:
+    they exist only to take up a little bit of space onscreen. Other classes, such
+    as `Rule`, need to provide customized information.'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此类提供的所有辅助功能都继承自[`AccessibleJComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.AccessibleJComponent.html)。这种方法对于`Corner`来说是可以的，因为`AccessibleJComponent`提供了合理数量的默认辅助功能信息，并且角落不那么有趣：它们只是为了在屏幕上占据一点空间。其他类，如`Rule`，需要提供定制信息。
+- en: '`Rule` provides an accessible context for itself in the same manner as `Corner`,
+    but the context overrides two methods to provide details about the component''s
+    role and state:'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Rule`以与`Corner`相同的方式为自身提供可访问上下文，但上下文覆盖了两个方法以提供有关组件角色和状态的详细信息：'
+- en: '[PRE6]'
+  id: totrans-82
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '[`AccessibleRole`](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleRole.html)
+    is an enumeration of objects that identify roles that Swing components can play.
+    It contains predefined roles such as label, button, and so on. The rulers in our
+    example don''t fit well into any of the predefined roles, so the program invents
+    a new one in a subclass of `AccessibleRole`:'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`AccessibleRole`](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleRole.html)是标识
+    Swing 组件可以扮演的角色的对象枚举。它包含预定义的角色，如标签、按钮等。我们示例中的标尺不适合任何预定义角色，因此程序在`AccessibleRole`的子类中发明了一个新角色：'
+- en: '[PRE7]'
+  id: totrans-84
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Any component that has state can provide state information to assistive technologies
+    by overriding the `getAccessibleStateSet` method. A rule has two sets of states:
+    its orientation can be either vertical or horizontal, and its units of measure
+    can be either centimeters or inches. [`AccessibleState`](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleState.html)
+    is an enumeration of predefined states. This program uses its predefined states
+    for vertical and horizontal orientation. Because `AccessibleState` contains nothing
+    for centimeters and inches, the program makes a subclass to provide appropriate
+    states:'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何具有状态的组件都可以通过覆盖`getAccessibleStateSet`方法向辅助技术提供状态信息。规则有两组状态：其方向可以是垂直或水平，其度量单位可以是厘米或英寸。[`AccessibleState`](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleState.html)是预定义状态的枚举。此程序使用其预定义的垂直和水平方向状态。因为`AccessibleState`不包含厘米和英寸的内容，所以程序创建一个子类来提供适当的状态：
+- en: '[PRE8]'
+  id: totrans-86
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: You've seen how to implement accessibility for two simple components, that exist
+    only to paint themselves onscreen. Components that do more, such as responding
+    to mouse or keyboard events, need to provide more elaborate accessible contexts.
+    You can find examples of implementing accessible contexts by delving in the source
+    code for the Swing components.
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您已经了解了如何为两个简单的组件实现辅助功能，这些组件仅存在于屏幕上绘制自身。执行更多操作的组件，例如响应鼠标或键盘事件，需要提供更复杂的可访问上下文。您可以通过深入研究
+    Swing 组件的源代码来找到实现可访问上下文的示例。
+- en: The Accessibility API
+  id: totrans-88
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 辅助功能 API
+- en: The tables in this section cover just part of the accessibility API. For more
+    information about the accessibility API, see the API documentation for the classes
+    and packages in the [accessibility package](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/package-summary.html).
+    Also, refer to the API documentation for the accessible contexts for individual
+    Swing components.
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节中的表格仅涵盖辅助功能 API 的一部分。有关辅助功能 API 的更多信息，请参阅[辅助功能包](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/package-summary.html)中类和包的
+    API 文档。此外，请参考各个 Swing 组件的可访问上下文的 API 文档。
+- en: 'The API for supporting accessibility falls into the following categories:'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 支持辅助功能的 API 分为以下几类：
+- en: '[Naming and Linking Components](#settingnamesapi)'
+  id: totrans-91
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[命名和链接组件](#settingnamesapi)'
+- en: '[Making a Custom Component Accessible](#accessibleapi)'
+  id: totrans-92
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建自定义可访问组件](#accessibleapi)'
+- en: '[Accessible Interfaces](#interfaceList)'
+  id: totrans-93
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[可访问接口](#interfaceList)'
+- en: Naming and Linking Components
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 命名和链接组件
+- en: '| Method | Purpose |'
+  id: totrans-95
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [getAccessibleContext().setAccessibleName(String)](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleContext.html#setAccessibleName-java.lang.String-)
+    [getAccessibleContext().setAccessibleDescription(String)](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleContext.html#setAccessibleDescription-java.lang.String-)'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [getAccessibleContext().setAccessibleName(String)](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleContext.html#setAccessibleName-java.lang.String-)
+    [getAccessibleContext().setAccessibleDescription(String)](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleContext.html#setAccessibleDescription-java.lang.String-)'
+- en: (*on a `JComponent` or `Accessible` object*) | Provide a name or description
+    for an accessible object. |
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: (*在 `JComponent` 或 `Accessible` 对象上*) | 为可访问对象提供名称或描述。 |
+- en: '| [void setToolTipText(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#setToolTipText-java.lang.String-)
+    (*in `JComponent`*) | Set a component''s tool tip. If you don''t set the description,
+    than many accessible contexts use the tool-tip text as the accessible description.
+    |'
+  id: totrans-98
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setToolTipText(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#setToolTipText-java.lang.String-)
+    (*在 `JComponent` 中*) | 设置组件的工具提示。如果您不设置描述，许多可访问上下文将使用工具提示文本作为可访问描述。 |'
+- en: '| [void setLabelFor(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setLabelFor-java.awt.Component-)
+    (*in `JLabel`*) | Associate a label with a component. This tells assistive technologies
+    that a label describes another component. |'
+  id: totrans-99
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setLabelFor(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setLabelFor-java.awt.Component-)
+    (*在 `JLabel` 中*) | 将标签与组件关联起来。这告诉辅助技术，标签描述另一个组件。 |'
+- en: '| [void setDescription(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#setDescription-java.lang.String-)
+    (*in `ImageIcon`*) | Provide a description for an image icon. |'
+  id: totrans-100
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setDescription(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#setDescription-java.lang.String-)
+    (*在 `ImageIcon` 中*) | 为图像图标提供描述。 |'
+- en: Making a Custom Component Accessible
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使自定义组件可访问
+- en: '| Interface or Class | Purpose |'
+  id: totrans-102
+  prefs: []
+  type: TYPE_TB
+  zh: '| 接口或类 | 目的 |'
+- en: '| [Accessible](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/Accessible.html)
+    (*an interface*) | Components that implement this interface are accessible. Subclasses
+    of `JComponent` must implement this explicitly. |'
+  id: totrans-103
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问性](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/Accessible.html)
+    (*一个接口*) | 实现此接口的组件是可访问的。`JComponent` 的子类必须显式实现这一点。 |'
+- en: '| [AccessibleContext](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleContext.html)
+    [*JComponent*.Accessible*JComponent*](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.AccessibleJComponent.html)'
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [AccessibleContext](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleContext.html)
+    [*JComponent*.Accessible*JComponent*](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.AccessibleJComponent.html)'
+- en: (*an abstract class and its subclasses*) | `AccessibleContext` defines the minimal
+    set of information required of accessible objects. The accessible context for
+    each Swing component is a subclass of this and named as shown. For example, the
+    accessible context for `JTree` is `JTree.AccessibleJTree`. To provide custom accessible
+    contexts, custom components should contain an inner class that is a subclass of
+    `AccessibleContext`. For more information, see [Making Custom Components Accessible](#accessiblecomponents).
+    |
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: (*一个抽象类及其子类*) | `AccessibleContext` 定义了可访问对象所需的最小信息集。每个 Swing 组件的可访问上下文都是此类的子类，并按照所示命名。例如，`JTree`
+    的可访问上下文是 `JTree.AccessibleJTree`。要提供自定义的可访问上下文，自定义组件应包含一个是 `AccessibleContext`
+    子类的内部类。有关更多信息，请参见[使自定义组件可访问](#accessiblecomponents)。 |
+- en: '| [AccessibleRole](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleRole.html)
+    [AccessibleStateSet](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleStateSet.html)'
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [AccessibleRole](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleRole.html)
+    [AccessibleStateSet](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleStateSet.html)'
+- en: (*classes*) | Define the objects returned by an `AccessibleContext` object's
+    `getAccessibleRole` and `getAccessibleStateSet` methods, respectively. |
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: (*类*) | 分别定义由 `AccessibleContext` 对象的 `getAccessibleRole` 和 `getAccessibleStateSet`
+    方法返回的对象。 |
+- en: '| [AccessibleRelation](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleRelation.html)
+    [AccessibleRelationSet](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleRelationSet.html)'
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [AccessibleRelation](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleRelation.html)
+    [AccessibleRelationSet](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleRelationSet.html)'
+- en: '| Define the relations between components that implement this interface and
+    one or more other objects. |'
+  id: totrans-109
+  prefs: []
+  type: TYPE_TB
+  zh: '| 定义实现此接口的组件与一个或多个其他对象之间的关系。 |'
+- en: Accessible Interfaces
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可访问接口
+- en: '| Interface | Purpose |'
+  id: totrans-111
+  prefs: []
+  type: TYPE_TB
+  zh: '| 接口 | 目的 |'
+- en: '| [AccessibleAction](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleAction.html)
+    | Indicates that the object can perform actions. By implementing this interface,
+    the accessible context can give information about what actions the accessible
+    object can perform and can tell the accessible object to perform them. |'
+  id: totrans-112
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问操作](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleAction.html)
+    | 表明对象可以执行操作。通过实现这个接口，可访问上下文可以提供关于可访问对象可以执行的操作的信息，并告诉可访问对象执行这些操作。 |'
+- en: '| [AccessibleComponent](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleComponent.html)
+    | Indicates that the accessible object has an onscreen presence. Through this
+    interface, an accessible object can provide information about its size, position,
+    visibility and so on. The accessible contexts for all standard Swing components
+    implement this interface, directly or indirectly. The accessible contexts for
+    your custom components should do the same. The `AccessibleExtendedComponent` method
+    is preferred. |'
+  id: totrans-113
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问组件](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleComponent.html)
+    | 表明可访问对象在屏幕上存在。通过这个接口，可访问对象可以提供关于其大小、位置、可见性等信息。所有标准 Swing 组件的可访问上下文都直接或间接实现了这个接口。您的自定义组件的可访问上下文应该也这样做。首选使用`AccessibleExtendedComponent`方法。
+    |'
+- en: '| [AccessibleEditableText](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleEditableText.html)  |
+    Indicates that the accessible object displays editable text. In addition to the
+    information available from its superinterface, `AccessibleText`, methods are provided
+    for cutting, pasting, deleting, selecting, and inserting text. |'
+  id: totrans-114
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问可编辑文本](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleEditableText.html)  |
+    表明可访问对象显示可编辑文本。除了从其超接口`AccessibleText`中可获得的信息外，还提供了用于剪切、粘贴、删除、选择和插入文本的方法。 |'
+- en: '| [AccessibleExtendedComponent](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleExtendedComponent.html)  |
+    In addition to the information available from its superinterface, `AccessibleComponent`,
+    methods are provided for obtaining key bindings, border text, and tool-tip text.
+    |'
+  id: totrans-115
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问扩展组件](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleExtendedComponent.html)  |
+    除了从其超接口`AccessibleComponent`中可获得的信息外，还提供了用于获取键绑定、边框文本和工具提示文本的方法。 |'
+- en: '| [AccessibleExtendedTable](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleExtendedTable.html)  |
+    In addition to the information available from its superinterface, `AccessibleTable`,
+    methods are provided to convert between an index and its row or column. |'
+  id: totrans-116
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问扩展表格](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleExtendedTable.html)  |
+    除了从其超接口`AccessibleTable`中可获得的信息外，还提供了在索引和其行或列之间转换的方法。 |'
+- en: '| [AccessibleHypertext](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleHypertext.html)
+    | Indicates that the accessible object contains hyperlinks. Through this interface,
+    an accessible object can provide information about its links and allow them to
+    be traversed. |'
+  id: totrans-117
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问超文本](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleHypertext.html)
+    | 表明可访问对象包含超链接。通过这个接口，可访问对象可以提供关于其链接的信息，并允许对其进行遍历。 |'
+- en: '| [AccessibleIcon](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleIcon.html)
+    | Indicates that the accessible object has an associated icon. Methods are provided
+    that return information about the icon, such as size and description. |'
+  id: totrans-118
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问图标](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleIcon.html)
+    | 表明可访问对象有一个关联的图标。提供了返回有关图标的信息，如大小和描述的方法。 |'
+- en: '| [AccessibleKeyBinding](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleKeyBinding.html)  |
+    Indicates that the accessible object supports one or more keyboard shortcuts that
+    can be used to select the object. Methods are provided that return the key bindings
+    for a given object. |'
+  id: totrans-119
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问键绑定](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleKeyBinding.html)  |
+    表明可访问对象支持一个或多个可用于选择对象的键盘快捷键。提供了返回给定对象的键绑定的方法。 |'
+- en: '| [AccessibleSelection](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleSelection.html)
+    | Indicates that the accessible object can contain a selection. Accessible contexts
+    that implement this interface can report information about the current selection
+    and can modify the selection. |'
+  id: totrans-120
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问选择](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleSelection.html)
+    | 表明可访问对象可以包含选择。实现此接口的可访问上下文可以报告有关当前选择的信息，并可以修改选择。 |'
+- en: '| [AccessibleTable](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleTable.html)
+    | Indicates that the accessible object presents data in a two-dimensional data
+    object. Through this interface information about the table such as table caption,
+    row and column size, description, and name are provided. The `AccessibleExtendedTable`
+    method is preferred. |'
+  id: totrans-121
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问表格](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleTable.html)
+    | 表明可访问对象以二维数据对象呈现数据。通过此接口提供有关表格的信息，如表格标题、行列大小、描述和名称。推荐使用`AccessibleExtendedTable`方法。
+    |'
+- en: '| [AccessibleText](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleText.html)
+    | Indicates that the accessible object displays text. This interface provides
+    methods for returning all or part of the text, attributes applied to it, and other
+    information about the text such as its length. |'
+  id: totrans-122
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问文本](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleText.html)
+    | 表明可访问对象显示文本。此接口提供返回文本的全部或部分、应用于文本的属性以及文本的其他信息（如长度）的方法。 |'
+- en: '| [AccessibleValue](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleValue.html)
+    | Indicates that the object has a numeric value. Through this interface an accessible
+    object provides information about its current value and its minimum and maximum
+    values. |'
+  id: totrans-123
+  prefs: []
+  type: TYPE_TB
+  zh: '| [可访问数值](https://docs.oracle.com/javase/8/docs/api/javax/accessibility/AccessibleValue.html)
+    | 表明对象具有数值。通过此接口，可访问对象提供有关其当前值及最小和最大值的信息。 |'
+- en: Examples that Use the Accessibility API
+  id: totrans-124
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用辅助功能API的示例
+- en: The following table lists some of our examples that have good support for assistive
+    technologies.
+  id: totrans-125
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了一些对辅助技术有良好支持的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-126
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`AccessibleScrollDemo`](../examples/misc/index.html#AccessibleScrollDemo)
+    | This section | Contains two custom components that implement the `Accessible`
+    interface. To see a less accessible version of this program see [How to Use Scroll
+    Panes](../components/scrollpane.html). |'
+  id: totrans-127
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`AccessibleScrollDemo`](../examples/misc/index.html#AccessibleScrollDemo)
+    | 本节 | 包含两个实现`Accessible`接口的自定义组件。要查看此程序的较不可访问版本，请参见[如何使用滚动窗格](../components/scrollpane.html)。
+    |'
+- en: '| [`ButtonDemo`](../examples/components/index.html#ButtonDemo) | [How to Use
+    the Common Button API](../components/button.html#abstractbutton) | Uses three
+    buttons. Supports accessibility through button text, mnemonics, and tool tips.
+    |'
+  id: totrans-128
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ButtonDemo`](../examples/components/index.html#ButtonDemo) | [如何使用通用按钮API](../components/button.html#abstractbutton)
+    | 使用三个按钮。通过按钮文本、助记键和工具提示支持可访问性。 |'

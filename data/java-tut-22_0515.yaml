@@ -1,0 +1,112 @@
+- en: A Closer Look at the Paint Mechanism
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 细看绘制机制
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/closer.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/closer.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/closer.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/closer.html)
+- en: 'By now you know that the `paintComponent` method is where all of your painting
+    code should be placed. It is true that this method will be invoked when it is
+    time to paint, but painting actually begins higher up the class hierarchy, with
+    the `paint` method (defined by `java.awt.Component`.) This method will be executed
+    by the painting subsystem whenever you component needs to be rendered. Its signature
+    is:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您知道`paintComponent`方法是放置所有绘制代码的地方。虽然这个方法在绘制时会被调用，但实际上绘制是从类层次结构的更高层开始的，即`paint`方法（由`java.awt.Component`定义）。每当您的组件需要呈现时，绘制子系统都会执行此方法。其签名为：
+- en: '`public void paint(Graphics g)`'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public void paint(Graphics g)`'
+- en: '`javax.swing.JComponent` extends this class and further factors the `paint`
+    method into three separate methods, which are invoked in the following order:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`javax.swing.JComponent`扩展了这个类，并将`paint`方法进一步分解为三个单独的方法，按以下顺序调用：'
+- en: '`protected void paintComponent(Graphics g)`'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`protected void paintComponent(Graphics g)`'
+- en: '`protected void paintBorder(Graphics g)`'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`protected void paintBorder(Graphics g)`'
+- en: '`protected void paintChildren(Graphics g)`'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`protected void paintChildren(Graphics g)`'
+- en: The API does nothing to prevent your code from overriding `paintBorder` and
+    `paintChildren`, but generally speaking, there is no reason for you to do so.
+    For all practical purposes `paintComponent` will be the only method that you will
+    ever need to override.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: API 并未阻止您的代码覆盖`paintBorder`和`paintChildren`，但一般来说，您没有理由这样做。在实际情况下，`paintComponent`将是您唯一需要覆盖的方法。
+- en: As previously mentioned, most of the standard Swing components have their look
+    and feel implemented by separate UI Delegates. This means that most (or all) of
+    the painting for the standard Swing components proceeds as follows.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如先前提到的，大多数标准的 Swing 组件都通过单独的 UI 代理实现其外观和感觉。这意味着大多数（或全部）标准 Swing 组件的绘制过程如下进行。
+- en: '`paint()` invokes `paintComponent()`.'
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`paint()`调用`paintComponent()`.'
+- en: If the `ui` property is non-null, `paintComponent()` invokes `ui.update()`.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果`ui`属性非空，则`paintComponent()`会调用`ui.update()`。
+- en: If the component's `opaque` property is true, `ui.update()` fills the component's
+    background with the background color and invokes `ui.paint()`.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果组件的`opaque`属性为 true，则`ui.update()`会用背景颜色填充组件的背景并调用`ui.paint()`。
+- en: '`ui.paint()` renders the content of the component.'
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`ui.paint()`渲染组件的内容。'
+- en: 'This is why our `SwingPaintDemo` code invokes `super.paintComponent(g)`. We
+    could add an additional comment to make this more clear:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这就是为什么我们的`SwingPaintDemo`代码调用`super.paintComponent(g)`。我们可以添加额外的注释以使其更清晰：
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If you have understood all of the demo code provided in this lesson, congratulations!
+    You have enough practical knowledge to write efficient painting code in your own
+    applications. If however you want a closer look "under the hood", please refer
+    to the SDN article linked to from the first page of this lesson.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您已经理解了本课程提供的所有演示代码，恭喜！您已经具备足够的实际知识来在自己的应用程序中编写高效的绘制代码。但是，如果您想更深入地了解“底层原理”，请参考本课程第一页链接的
+    SDN 文章。

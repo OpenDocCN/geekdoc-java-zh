@@ -1,0 +1,166 @@
+- en: Examining Class Modifiers and Types
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 检查类的修饰符和类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/class/classModifiers.html](https://docs.oracle.com/javase/tutorial/reflect/class/classModifiers.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/class/classModifiers.html](https://docs.oracle.com/javase/tutorial/reflect/class/classModifiers.html)
+- en: 'A class may be declared with one or more modifiers which affect its runtime
+    behavior:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个类可以用一个或多个修饰符声明，这些修饰符会影响其运行时行为：
+- en: 'Access modifiers: `public`, `protected`, and `private`'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 访问修饰符：`public`，`protected`和`private`
+- en: 'Modifier requiring override: `abstract`'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 要求覆盖的修饰符：`abstract`
+- en: 'Modifier restricting to one instance: `static`'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 限制为一个实例的修饰符：`static`
+- en: 'Modifier prohibiting value modification: `final`'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 禁止值修改的修饰符：`final`
+- en: 'Modifier forcing strict floating point behavior: `strictfp`'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 强制严格浮点行为的修饰符：`strictfp`
+- en: Annotations
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 注解
+- en: Not all modifiers are allowed on all classes, for example an interface cannot
+    be `final` and an enum cannot be `abstract`. [`java.lang.reflect.Modifier`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Modifier.html)
+    contains declarations for all possible modifiers. It also contains methods which
+    may be used to decode the set of modifiers returned by [`Class.getModifiers()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getModifiers--).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 并非所有修饰符都允许用于所有类，例如接口不能是`final`，枚举不能是`abstract`。[`java.lang.reflect.Modifier`](https://docs.oracle.com/8/docs/api/java/lang/reflect/Modifier.html)包含了所有可能的修饰符声明。它还包含可用于解码由[`Class.getModifiers()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getModifiers--)返回的修饰符集合的方法。
+- en: The [``ClassDeclarationSpy``](example/ClassDeclarationSpy.java) example shows
+    how to obtain the declaration components of a class including the modifiers, generic
+    type parameters, implemented interfaces, and the inheritance path. Since [`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)
+    implements the [`java.lang.reflect.AnnotatedElement`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AnnotatedElement.html)
+    interface it is also possible to query the runtime annotations.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``ClassDeclarationSpy``](example/ClassDeclarationSpy.java)示例展示了如何获取类的声明组件，包括修饰符、泛型类型参数、实现的接口和继承路径。由于[`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)实现了[`java.lang.reflect.AnnotatedElement`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AnnotatedElement.html)接口，因此也可以查询运行时注解。'
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: A few samples of the output follows. User input is in italics.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是一些输出示例。用户输入用斜体表示。
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'This is the actual declaration for [`java.util.concurrent.ConcurrentNavigableMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentNavigableMap.html)
+    in the source code:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是源代码中[`java.util.concurrent.ConcurrentNavigableMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentNavigableMap.html)的实际声明：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Note that since this is an interface, it is implicitly `abstract`. The compiler
+    adds this modifier for every interface. Also, this declaration contains two generic
+    type parameters, `K` and `V`. The example code simply prints the names of these
+    parameters, but is it possible to retrieve additional information about them using
+    methods in [`java.lang.reflect.TypeVariable`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/TypeVariable.html).
+    Interfaces may also implement other interfaces as shown above.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，由于这是一个接口，它隐式地是`abstract`的。编译器为每个接口添加这个修饰符。此外，此声明包含两个泛型类型参数，`K`和`V`。示例代码仅打印这些参数的名称，但可以使用[`java.lang.reflect.TypeVariable`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/TypeVariable.html)中的方法检索有关它们的其他信息。接口也可以像上面显示的那样实现其他接口。
+- en: '[PRE3]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Since arrays are runtime objects, all of the type information is defined by
+    the Java virtual machine. In particular, arrays implement [`Cloneable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Cloneable.html)
+    and [`java.io.Serializable`](https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html)
+    and their direct superclass is always [`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html).
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于数组是运行时对象，所有类型信息都由Java虚拟机定义。特别是，数组实现了[`Cloneable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Cloneable.html)和[`java.io.Serializable`](https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html)，它们的直接超类始终是[`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)。
+- en: '[PRE4]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: From the inheritance path, it may be deduced that [`java.io.InterruptedIOException`](https://docs.oracle.com/javase/8/docs/api/java/io/InterruptedIOException.html)
+    is a checked exception because [`RuntimeException`](https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html)
+    is not present.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从继承路径可以推断出[`java.io.InterruptedIOException`](https://docs.oracle.com/javase/8/docs/api/java/io/InterruptedIOException.html)是一个受检异常，因为[`RuntimeException`](https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html)不存在。
+- en: '[PRE5]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: This output shows that [`java.security.Identity`](https://docs.oracle.com/javase/8/docs/api/java/security/Identity.html),
+    a deprecated API, possesses the annotation [`java.lang.Deprecated`](https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html).
+    This may be used by reflective code to detect deprecated APIs.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此输出显示[`java.security.Identity`](https://docs.oracle.com/javase/8/docs/api/java/security/Identity.html)，一个已弃用的API，具有注解[`java.lang.Deprecated`](https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html)。这可能被反射代码用于检测已弃用的API。
+- en: '* * *'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Not all annotations are available via reflection. Only those which
+    have a [`java.lang.annotation.RetentionPolicy`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html)
+    of [`RUNTIME`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html#RUNTIME)
+    are accessible. Of the three annotations pre-defined in the language [`@Deprecated`](https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html),
+    [`@Override`](https://docs.oracle.com/javase/8/docs/api/java/lang/Override.html),
+    and [`@SuppressWarnings`](https://docs.oracle.com/javase/8/docs/api/java/lang/SuppressWarnings.html)
+    only [`@Deprecated`](https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html)
+    is available at runtime.'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 并非所有注解都可以通过反射获得。只有那些具有[`java.lang.annotation.RetentionPolicy`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html)为[`RUNTIME`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html#RUNTIME)的注解是可访问的。在语言中预定义的三个注解[`@Deprecated`](https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html)，[`@Override`](https://docs.oracle.com/javase/8/docs/api/java/lang/Override.html)，和[`@SuppressWarnings`](https://docs.oracle.com/javase/8/docs/api/java/lang/SuppressWarnings.html)中，只有[`@Deprecated`](https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html)在运行时可用。'
+- en: '* * *'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

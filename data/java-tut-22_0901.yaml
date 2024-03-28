@@ -1,0 +1,321 @@
+- en: Obtaining Names of Method Parameters
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 获取方法参数的名称
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/methodparameterreflection.html](https://docs.oracle.com/javase/tutorial/reflect/member/methodparameterreflection.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/methodparameterreflection.html](https://docs.oracle.com/javase/tutorial/reflect/member/methodparameterreflection.html)
+- en: You can obtain the names of the formal parameters of any method or constructor
+    with the method [`java.lang.reflect.Executable.getParameters`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Executable.html#getParameters--).
+    (The classes [`Method`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html)
+    and [`Constructor`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Executable.html)
+    extend the class [`Executable`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Executable.html)
+    and therefore inherit the method `Executable.getParameters`.) However, `.class`
+    files do not store formal parameter names by default. This is because many tools
+    that produce and consume class files may not expect the larger static and dynamic
+    footprint of `.class` files that contain parameter names. In particular, these
+    tools would have to handle larger `.class` files, and the Java Virtual Machine
+    (JVM) would use more memory. In addition, some parameter names, such as `secret`
+    or `password`, may expose information about security-sensitive methods.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用方法[`java.lang.reflect.Executable.getParameters`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Executable.html#getParameters--)获取任何方法或构造函数的形式参数的名称。（类[`Method`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html)和[`Constructor`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Executable.html)扩展了类[`Executable`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Executable.html)，因此继承了方法`Executable.getParameters`。）但是，默认情况下，`.class`文件不会存储形式参数名称。这是因为许多生成和消费类文件的工具可能不希望`.class`文件包含参数名称的更大的静态和动态占用空间。特别是，这些工具将不得不处理更大的`.class`文件，并且Java虚拟机（JVM）将使用更多内存。此外，一些参数名称，如`secret`或`password`，可能会暴露有关安全敏感方法的信息。
+- en: To store formal parameter names in a particular `.class` file, and thus enable
+    the Reflection API to retrieve formal parameter names, compile the source file
+    with the `-parameters` option to the `javac` compiler.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在特定的`.class`文件中存储形式参数名称，并使反射API能够检索形式参数名称，请使用`javac`编译器的`-parameters`选项编译源文件。
+- en: The [``MethodParameterSpy``](example/MethodParameterSpy.java) example illustrates
+    how to retrieve the names of the formal parameters of all constructors and methods
+    of a given class. The example also prints other information about each parameter.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``MethodParameterSpy``](example/MethodParameterSpy.java)示例演示了如何检索给定类的所有构造函数和方法的形式参数的名称。该示例还打印有关每个参数的其他信息。'
+- en: 'The following command prints the formal parameter names of the constructors
+    and methods of the class [``ExampleMethods``](example/ExampleMethods.java). **Note**:
+    Remember to compile the example `ExampleMethods` with the `-parameters` compiler
+    option:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下命令打印类[``ExampleMethods``](example/ExampleMethods.java)的构造函数和方法的形式参数名称。**注意**：记得使用`-parameters`编译器选项编译示例`ExampleMethods`：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This command prints the following:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此命令打印以下内容：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The `MethodParameterSpy` example uses the following methods from the [`Parameter`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html)
+    class:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MethodParameterSpy`示例使用[`Parameter`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html)类中的以下方法：'
+- en: '[`getType`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#getType--):
+    Returns a [`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)
+    object that identifies the declared type for the parameter.'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`getType`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#getType--):
+    返回标识参数声明类型的[`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)对象。'
+- en: '[`getName`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#getName--):
+    Returns the name of the parameter. If the parameter''s name is present, then this
+    method returns the name provided by the `.class` file. Otherwise, this method
+    synthesizes a name of the form `arg*N*`, where `*N*` is the index of the parameter
+    in the descriptor of the method that declares the parameter.'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`getName`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#getName--):
+    返回参数的名称。如果参数的名称存在，则此方法返回`.class`文件提供的名称。否则，此方法将合成一个形式为`arg*N*`的名称，其中`*N*`是声明参数的方法描述符中的参数索引。'
+- en: 'For example, suppose you compiled the class `ExampleMethods` without specifying
+    the `-parameters` compiler option. The example `MethodParameterSpy` would print
+    the following for the method `ExampleMethods.simpleMethod`:'
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 例如，假设您编译了类`ExampleMethods`而没有指定`-parameters`编译器选项。示例`MethodParameterSpy`将为方法`ExampleMethods.simpleMethod`打印以下内容：
+- en: '[PRE2]'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '[`getModifiers`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#getModifiers--)
+    : Returns an integer that represents various characteristics that the formal parameter
+    possesses. This value is the sum of the following values, if applicable to the
+    formal parameter:'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`getModifiers`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#getModifiers--)：返回一个整数，表示形式参数具有的各种特征。如果适用于形式参数，则此值是以下值的总和：'
+- en: '| Value (in decimal) | Value (in hexadecimal | Description |'
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| 值（十进制） | 值（十六进制） | 描述 |'
+- en: '| 16 | 0x0010 | The formal parameter is declared `final` |'
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| 16 | 0x0010 | 形式参数声明为`final` |'
+- en: '| 4096 | 0x1000 | The formal parameter is synthetic. Alternatively, you can
+    invoke the method `isSynthetic`. |'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| 4096 | 0x1000 | 形式参数是合成的。或者，您可以调用方法`isSynthetic`。 |'
+- en: '| 32768 | 0x8000 | The parameter is implicitly declared in source code. Alternatively,
+    you can invoke the method `isImplicit` |'
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  type: TYPE_TB
+  zh: '| 32768 | 0x8000 | 参数在源代码中是隐式声明的。或者，您可以调用方法`isImplicit` |'
+- en: '[`isImplicit`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#isImplicit--):
+    Returns `true` if this parameter is implicitly declared in source code. See the
+    section [Implicit and Synthetic Parameters](#implcit_and_synthetic) for more information.'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`isImplicit`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#isImplicit--)：如果此参数在源代码中是隐式声明的，则返回`true`。有关更多信息，请参阅[隐式和合成参数](#implcit_and_synthetic)部分。'
+- en: '[`isNamePresent`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#isNamePresent--):
+    Returns `true` if the parameter has a name according to the `.class` file.'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`isNamePresent`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#isNamePresent--)：如果参数在`.class`文件中具有名称，则返回`true`。'
+- en: '[`isSynthetic`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#isSynthetic--):
+    Returns `true` if this parameter is neither implicitly nor explicitly declared
+    in source code. See the section [Implicit and Synthetic Parameters](#implcit_and_synthetic)
+    for more information.'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`isSynthetic`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Parameter.html#isSynthetic--)：如果此参数在源代码中既不是隐式声明也不是显式声明，则返回`true`。有关更多信息，请参阅[隐式和合成参数](#implcit_and_synthetic)部分。'
+- en: Implicit and Synthetic Parameters
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 隐式和合成参数
+- en: 'Certain constructs are implicitly declared in the source code if they have
+    not been written explicitly. For example, the [``ExampleMethods``](example/ExampleMethods.java)
+    example does not contain a constructor. A default constructor is implicitly declared
+    for it. The `MethodParameterSpy` example prints information about the implicitly
+    declared constructor of `ExampleMethods`:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果源代码中未明确编写某些构造，则某些构造将被隐式声明。例如，[``ExampleMethods``](example/ExampleMethods.java)示例不包含构造函数。它将隐式声明一个默认构造函数。`MethodParameterSpy`示例打印有关`ExampleMethods`隐式声明构造函数的信息：
+- en: '[PRE3]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Consider the following excerpt from [``MethodParameterExamples``](example/MethodParameterExamples.java):'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请考虑来自[``MethodParameterExamples``](example/MethodParameterExamples.java)的以下摘录：
+- en: '[PRE4]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The class `InnerClass` is a non-static [nested class](../../java/javaOO/nested.html)
+    or inner class. A constructor for inner classes is also implicitly declared. However,
+    this constructor will contain a parameter. When the Java compiler compiles `InnerClass`,
+    it creates a `.class` file that represents code similar to the following:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类`InnerClass`是一个非静态[嵌套类](../../java/javaOO/nested.html)或内部类。内部类也会隐式声明一个构造函数。但是，此构造函数将包含一个参数。当Java编译器编译`InnerClass`时，它会创建一个代表以下代码的`.class`文件：
+- en: '[PRE5]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The `InnerClass` constructor contains a parameter whose type is the class that
+    encloses `InnerClass`, which is `MethodParameterExamples`. Consequently, the example
+    `MethodParameterExamples` prints the following:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`InnerClass`构造函数包含一个参数，其类型是包含`InnerClass`的类，即`MethodParameterExamples`。因此，示例`MethodParameterExamples`打印如下内容：'
+- en: '[PRE6]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Because the constructor of the class `InnerClass` is implicitly declared, its
+    parameter is implicit as well.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为类`InnerClass`的构造函数是隐式声明的，所以它的参数也是隐式的。
+- en: '**Note**:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：'
+- en: The Java compiler creates a formal parameter for the constructor of an inner
+    class to enable the compiler to pass a reference (representing the immediately
+    enclosing instance) from the creation expression to the member class's constructor.
+  id: totrans-33
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Java编译器为内部类的构造函数创建一个形式参数，以便编译器能够从创建表达式传递一个引用（表示立即封闭实例）到成员类的构造函数。
+- en: The value 32784 means that the parameter of the `InnerClass` constructor is
+    both final (16) and implicit (32768).
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 值32784表示`InnerClass`构造函数的参数既是final（16）又是隐式的（32768）。
+- en: The Java programming language allows variable names with dollar signs (`$`);
+    however, by convention, dollar signs are not used in variable names.
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Java编程语言允许在变量名中使用美元符号（`$`）；然而，按照惯例，在变量名中不使用美元符号。
+- en: 'Constructs emitted by a Java compiler are marked as *synthetic* if they do
+    not correspond to a construct declared explicitly or implicitly in source code,
+    unless they are class initialization methods. Synthetic constructs are artifacts
+    generated by compilers that vary among different implementations. Consider the
+    following excerpt from [``MethodParameterExamples``](example/MethodParameterExamples.java):'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编译器生成的构造如果不对应于源代码中显式或隐式声明的构造，则标记为*合成的*，除非它们是类初始化方法。合成的构造是编译器生成的在不同实现之间变化的工件。考虑以下摘录来自[``MethodParameterExamples``](example/MethodParameterExamples.java)：
+- en: '[PRE7]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'When the Java compiler encounters an `enum` construct, it creates several methods
+    that are compatible with the `.class` file structure and provide the expected
+    functionality of the `enum` construct. For example, the Java compiler would create
+    a `.class` file for the `enum` construct `Colors` that represents code similar
+    to the following:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当Java编译器遇到`enum`构造时，它会创建几个与`.class`文件结构兼容且提供`enum`构造所期望功能的方法。例如，Java编译器会为代表以下代码的`enum`构造`Colors`创建一个`.class`文件：
+- en: '[PRE8]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'The Java compiler creates three constructors and methods for this `enum` construct:
+    `Colors(String name, int ordinal)`, `Colors[] values()`, and `Colors valueOf(String
+    name)`. The methods `values` and `valueOf` are implicitly declared. Consequently,
+    their formal parameter names are implicitly declared as well.'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编译器为这个`enum`构造创建了三个构造函数和方法：`Colors(String name, int ordinal)`、`Colors[]
+    values()`和`Colors valueOf(String name)`。方法`values`和`valueOf`是隐式声明的。因此，它们的形式参数名称也是隐式声明的。
+- en: The `enum` constructor `Colors(String name, int ordinal)` is a default constructor
+    and it is implicitly declared. However, the formal parameters of this constructor
+    (`name` and `ordinal`) are *not* implicitly declared. Because these formal parameters
+    are neither explicitly or implicitly declared, they are synthetic. (The formal
+    parameters for the default constructor of an `enum` construct are not implicitly
+    declared because different compilers need not agree on the form of this constructor;
+    another Java compiler might specify different formal parameters for it. When compilers
+    compile expressions that use `enum` constants, they rely only on the public static
+    fields of the `enum` construct, which are implicitly declared, and not on their
+    constructors or how these constants are initialized.)
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`enum`构造函数`Colors(String name, int ordinal)`是一个默认构造函数，它是隐式声明的。然而，这个构造函数的形式参数（`name`和`ordinal`）*并没有*隐式声明。因为这些形式参数既没有显式声明也没有隐式声明，它们是合成的。（`enum`构造函数的默认构造函数的形式参数不是隐式声明的，因为不同的编译器可能对这个构造函数的形式参数形式有不同的规定；另一个Java编译器可能为其指定不同的形式参数。当编译器编译使用`enum`常量的表达式时，它们仅依赖于`enum`构造的公共静态字段，这些字段是隐式声明的，而不依赖于它们的构造函数或这些常量是如何初始化的。）'
+- en: 'Consequently, the example `MethodParameterExample` prints the following about
+    the `enum` construct `Colors`:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，示例`MethodParameterExample`关于`enum`构造`Colors`打印如下内容：
+- en: '[PRE9]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Refer to the [Java Language Specification](https://docs.oracle.com/javase/specs/)
+    for more information about implicitly declared constructs, including parameters
+    that appear as implicit in the Reflection API.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关隐式声明的构造的更多信息，请参考[Java语言规范](https://docs.oracle.com/javase/specs/)，包括在反射API中出现为隐式的参数。

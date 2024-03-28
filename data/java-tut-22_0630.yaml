@@ -1,0 +1,289 @@
+- en: Working with Bidirectional Text with the JTextComponent Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用 JTextComponent 类处理双向文本
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/bidi.html](https://docs.oracle.com/javase/tutorial/i18n/text/bidi.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/bidi.html](https://docs.oracle.com/javase/tutorial/i18n/text/bidi.html)
+- en: This section discusses how to work with bidirectional text with the [`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)
+    class. Bidirectional text is text that contains text that runs in two directions,
+    left-to-right and right-to-left. An example of bidirectional text is Arabic text
+    (which runs right-to-left) that contain numbers (which run left-to-right). It
+    is more difficult to display and manage bidirectional text; however the [`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)
+    handles these issues for you.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节讨论如何使用[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)类处理双向文本。双向文本是包含从左到右和从右到左两个方向运行的文本。双向文本的一个示例是包含从右到左运行的阿拉伯文本（包含从左到右运行的数字）。显示和管理双向文本更加困难；但是[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)会为您处理这些问题。
+- en: 'The following topics are covered:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面涵盖了以下主题：
+- en: '[Determining Directionality of Bidirectional Text](#directionality)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[确定双向文本的方向性](#directionality)'
+- en: '[Displaying and Moving Carets](#displaying-and-moving-carets)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[显示和移动插入符](#displaying-and-moving-carets)'
+- en: '[Hit Testing](#hit-testing)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[命��测试](#hit-testing)'
+- en: '[Highlighting Selections](#highlighting-selections)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[高亮选择](#highlighting-selections)'
+- en: '[Setting Component Orientation](#setting-component-orientation)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置组件方向](#setting-component-orientation)'
+- en: For more information about these issues, or if you want more control in handling
+    these issues, see [Working with Bidirectional Text](../../2d/text/textlayoutbidirectionaltext.html)
+    in the [2D Graphics](../../2d/index.html) trail.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 欲了解更多信息，或者如果您想更好地控制处理这些问题，请参阅[处理双向文本](../../2d/text/textlayoutbidirectionaltext.html)在[2D
+    图形](../../2d/index.html)教程中。
+- en: Determining Directionality of Bidirectional Text
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 确定双向文本的方向性
+- en: 'The sample [`BidiTextComponentDemo.java`](examples/BidiTextComponentDemo.java),
+    which is based on [`TextComponentDemo.java`](../../uiswing/examples/components/index.html#TextComponentDemo),
+    displays bidirectional text in a [`JTextPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html)
+    object. In most cases, the Java platform can determine the directionality of bidirectional
+    Unicode text:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例[`BidiTextComponentDemo.java`](examples/BidiTextComponentDemo.java)，基于[`TextComponentDemo.java`](../../uiswing/examples/components/index.html#TextComponentDemo)，在[`JTextPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html)对象中显示双向文本。在大多数情况下，Java
+    平台可以确定双向 Unicode 文本的方向性：
+- en: '![BidiTextComponentDemo.java](../Images/d025fc7a6bf76f85c7a77c8a495b580f.png)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_IMG
+  zh: '![BidiTextComponentDemo.java](../Images/d025fc7a6bf76f85c7a77c8a495b580f.png)'
+- en: Explicitly Specifying Text Run Direction in JTextComponent Objects
+  id: totrans-13
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 在 JTextComponent 对象中明确指定文本运行方向
+- en: 'You can specify the run direction of the [`Document`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html)
+    object of a [`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)
+    object. For example, the following statement specifies that the text in the [`JTextPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html)
+    object `textPane` runs right-to-left:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以指定[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)对象的[`Document`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html)对象的运行方向。例如，以下语句指定[`JTextPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html)对象`textPane`中的文本从右到左运行：
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Alternatively, you can specify the component orientation of a particular Swing
+    component based on locale. For example, the following statements specify that
+    the component orientation of the object `textPane` is based on the ar-SA locale:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，您可以根据语言环境指定特定 Swing 组件的组件方向。例如，以下语句指定对象`textPane`的组件方向基于 ar-SA 语言环境：
+- en: '[PRE1]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Because the run direction of the Arabic language is right-to-left, the run direction
+    of the text contained in the `textPane` object is right-to-left also.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为阿拉伯语的运行方向是从右到左，所以`textPane`对象中包含的文本的运行方向也是从右到左。
+- en: See the section [Setting Component Orientation](#setting-component-orientation)
+    for more information.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关更多信息，请参阅[设置组件方向](#setting-component-orientation)。
+- en: Displaying and Moving Carets
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 显示和移动插入符
+- en: In editable text, a *caret* is used to graphically represent the current insertion
+    point, the position in the text where new characters will be inserted. In the
+    [`BidiTextComponentDemo.java`](examples/BidiTextComponentDemo.java) sample, the
+    caret contains a small triangle that points toward the direction where an inserted
+    character will be displayed.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在可编辑文本中，*插入符*用于图形表示当前插入点，即文本中新字符将插入的位置。在[`BidiTextComponentDemo.java`](examples/BidiTextComponentDemo.java)示例中，插入符包含一个小三角形，指向插入字符将显示的方向。
+- en: By default, a [`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)
+    object creates a keymap (of type [`Keymap`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Keymap.html))
+    that is shared by all [`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)
+    instances as the default keymap. A keymap lets an application bind key strokes
+    to action. A default keymap (for [`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)
+    objects that support caret movement) includes the binding between caret movement
+    forward and backward with the left and right arrow keys, which supports caret
+    movement through bidirectional text.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)对象创建一个键映射（类型为[`Keymap`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Keymap.html)），该键映射作为所有[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)实例共享的默认键映射。键映射允许应用程序将按键绑定到操作。默认键映射（用于支持插入符移动的[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)对象）包括将插入符向前和向后移动与左右箭头键绑定，从而支持通过双向文本移动插入符。
+- en: Hit Testing
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 点击测试
+- en: Often, a location in device space must be converted to a text offset. For example,
+    when a user clicks the mouse on selectable text, the location of the mouse is
+    converted to a text offset and used as one end of the selection range. Logically,
+    this is the inverse of positioning a caret.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，设备空间中的位置必须转换为文本偏移量。例如，当用户在可选择文本上单击鼠标时，鼠标的位置将被转换为文本偏移量，并用作选择范围的一端。从逻辑上讲，这是定位插入符的逆过程。
+- en: You can attach a caret listener to an instance of an [`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html).
+    A caret listener enables you to handle caret events, which occur when the caret
+    moves or when the selection in a text component changes. You attach a caret listener
+    with the [`addCaretListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#addCaretListener-javax.swing.event.CaretListener-)
+    method. See [How to Write a Caret Listener](../../uiswing/events/caretlistener.html)
+    for more information.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以将插入符监听器附加到[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)的实例上。插入符监听器使您能够处理插入符事件，这些事件发生在插入符移动或文本组件中的选择更改时。您可以使用[`addCaretListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#addCaretListener-javax.swing.event.CaretListener-)方法附加插入符监听器。有关更多信息，请参见[如何编写插入符监听器](../../uiswing/events/caretlistener.html)。
+- en: Highlighting Selections
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 高亮选择
+- en: A selected range of characters is represented graphically by a highlight region,
+    an area in which glyphs are displayed with inverse video or against a different
+    background color.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一段选定的字符范围在图形上由一个高亮区域表示，该区域是以反色或不同背景颜色显示字形的区域。
+- en: '[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)
+    objects implement logical highlighting. This means that the selected characters
+    are always contiguous in the text model, and the highlight region is allowed to
+    be discontiguous. The following is an example of logical highlighting:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)对象实现了逻辑高亮。这意味着选定的字符在文本模型中始终是连续的，而高亮区域可以是不连续的。以下是逻辑高亮的示例：'
+- en: '![BidiTextComponentDemo: logical highlighting](../Images/230d6e7c5a8e8c1c565025b509ebfe58.png)'
+  id: totrans-29
+  prefs: []
+  type: TYPE_IMG
+  zh: '![BidiTextComponentDemo：逻辑高亮](../Images/230d6e7c5a8e8c1c565025b509ebfe58.png)'
+- en: Setting Component Orientation
+  id: totrans-30
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置组件方向
+- en: Swing's layout managers understand how locale affects a UI; it is not necessary
+    to create a new layout for each locale. For example, in a locale where text flows
+    right to left, the layout manager will arrange components in the same orientation.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing的布局管理器了解区域设置如何影响用户界面；不需要为每个区域设置创建新的布局。例如，在文本从右到左流动的区域，布局管理器将以相同的方向排列组件。
+- en: The sample [`InternationalizedMortgageCalculator.java`](../format/examples/InternationalizedMortgageCalculator.java)
+    has been localized for English, United States; English, United Kingdom; French,
+    France; French, Canada; and Arabic, Saudi Arabia.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例 [`InternationalizedMortgageCalculator.java`](../format/examples/InternationalizedMortgageCalculator.java)
+    已本地化为英语，美国；英语，英国；法语，法国；法语，加拿大；以及阿拉伯语，沙特阿拉伯。
+- en: 'The following uses the en-US locale:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用 en-US 区域设置：
+- en: '![Mortgage Calculator, en-US locale](../Images/eedc16110eba9cb8aae31edccfdd45c0.png)'
+  id: totrans-34
+  prefs: []
+  type: TYPE_IMG
+  zh: '![按揭计算器，en-US 区域设置](../Images/eedc16110eba9cb8aae31edccfdd45c0.png)'
+- en: 'The following uses the ar-SA locale:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用 ar-SA 区域设置：
+- en: '![Mortgage Calculator, ar-SA locale](../Images/e45d401000322f467894b528f43a321f.png)'
+  id: totrans-36
+  prefs: []
+  type: TYPE_IMG
+  zh: '![按揭计算器，ar-SA 区域设置](../Images/e45d401000322f467894b528f43a321f.png)'
+- en: 'Note that the components have been laid out in the same direction as the corresponding
+    locale: left-to-right for en-US and right-to-left for ar-SA. The [`InternationalizedMortgageCalculator.java`](../format/examples/InternationalizedMortgageCalculator.java)
+    sample calls the methods [`applyComponentOrientation`](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#applyComponentOrientation-java.awt.ComponentOrientation-)
+    and [`getOrientation`](https://docs.oracle.com/javase/8/docs/api/java/awt/ComponentOrientation.html#getOrientation-java.util.Locale-)
+    to specify the direction of its components by locale:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，组件的布局与相应区域设置的方向相同：en-US 为从左到右，ar-SA 为从右到左。示例 [`InternationalizedMortgageCalculator.java`](../format/examples/InternationalizedMortgageCalculator.java)
+    调用方法 [`applyComponentOrientation`](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#applyComponentOrientation-java.awt.ComponentOrientation-)
+    和 [`getOrientation`](https://docs.oracle.com/javase/8/docs/api/java/awt/ComponentOrientation.html#getOrientation-java.util.Locale-)
+    来指定其组件的方向：
+- en: '[PRE2]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The sample [`InternationalizedMortgageCalculator.java`](../format/examples/InternationalizedMortgageCalculator.java)
+    requires the following resource files:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例 [`InternationalizedMortgageCalculator.java`](../format/examples/InternationalizedMortgageCalculator.java)
+    需要以下资源文件：
+- en: '[`resources/Resources.properties`](../format/examples/resources/Resources.properties)'
+  id: totrans-40
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`resources/Resources.properties`](../format/examples/resources/Resources.properties)'
+- en: '[`resources/Resources_ar.properties`](../format/examples/resources/Resources_ar.properties)'
+  id: totrans-41
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`resources/Resources_ar.properties`](../format/examples/resources/Resources_ar.properties)'
+- en: '[`resources/Resources_fr.properties`](../format/examples/resources/Resources_fr.properties)'
+  id: totrans-42
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`resources/Resources_fr.properties`](../format/examples/resources/Resources_fr.properties)'

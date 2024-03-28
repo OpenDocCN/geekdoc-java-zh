@@ -1,0 +1,179 @@
+- en: Creating the CelsiusConverter GUI
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建CelsiusConverter GUI
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/learn/creatinggui.html](https://docs.oracle.com/javase/tutorial/uiswing/learn/creatinggui.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/learn/creatinggui.html](https://docs.oracle.com/javase/tutorial/uiswing/learn/creatinggui.html)
+- en: This section explains how to use the NetBeans IDE to create the application's
+    GUI. As you drag each component from the Palette to the Design Area, the IDE auto-generates
+    the appropriate source code.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍如何使用NetBeans IDE创建应用程序的GUI。当您将每个组件从工具栏拖动到设计区域时，IDE会自动生成适当的源代码。
+- en: 'Step 1: Set the Title'
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤1：设置标题
+- en: 'First, set the title of the application''s `JFrame` to "Celsius Converter",
+    by single-clicking the `JFrame` in the Inspector:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，通过在检查器中单击`JFrame`来将应用程序的`JFrame`的标题设置为“摄氏度转换器”：
+- en: '![Selecting the JFrame](../Images/a2a371d73a1e757f06f8df077cf360d4.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![选择JFrame](../Images/a2a371d73a1e757f06f8df077cf360d4.png)'
+- en: Selecting the JFrame
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 选择JFrame
+- en: 'Then, set its title with the Property Editor:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，使用属性编辑器设置其标题：
+- en: '![Setting the Title](../Images/79ee57e56e6ac0a01b7470a545aa9e2b.png)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_IMG
+  zh: '![设置标题](../Images/79ee57e56e6ac0a01b7470a545aa9e2b.png)'
+- en: Setting the Title
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置标题
+- en: You can set the title by either double-clicking the title property and entering
+    the new text directly, or by clicking the ![Ellipsis button](../Images/89b220482119ef811d1859f375e13269.png)
+    button and entering the title in the provided field. Or, as a shortcut, you could
+    single-click the `JFrame` of the inspector and enter its new text directly without
+    using the property editor.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过双击标题属性并直接输入新文本，或单击![省略号按钮](../Images/89b220482119ef811d1859f375e13269.png)按钮并在提供的字段中输入标题来设置标题。或者，作为快捷方式，您可以单击检查器中的`JFrame`并直接输入其新文本，而无需使用属性编辑器。
+- en: 'Step 2: Add a JTextField'
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤2：添加一个JTextField
+- en: 'Next, drag a `JTextField` from the Palette to the upper left corner of the
+    Design Area. As you approach the upper left corner, the GUI builder provides visual
+    cues (dashed lines) that suggest the appropriate spacing. Using these cues as
+    a guide, drop a `JTextField` into the upper left hand corner of the window as
+    shown below:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，从工具栏拖动一个`JTextField`到设计区域的左上角。当接近左上角时，GUI构建器会提供视觉线索（虚线），提示适当的间距。根据这些线索指导，将`JTextField`放置在窗口的左上角，如下所示：
+- en: '![Adding a JTextField](../Images/d2cecb2cc9169e5cc768b717b4f04e40.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_IMG
+  zh: '![添加一个JTextField](../Images/d2cecb2cc9169e5cc768b717b4f04e40.png)'
+- en: Adding a JTextField
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 添加一个JTextField
+- en: You may be tempted to erase the default text "JTextField1", but just leave it
+    in place for now. We will replace it later in this lesson as we make the final
+    adjustments to each component. For more information about this component, see
+    [How to Use Text Fields](../components/textfield.html).
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能会想要删除默认文本“JTextField1”，但现在就让它保持原样。稍后在本课程中，随着对每个组件的最终调整，我们将替换它。有关此组件的更多信息，请参见[如何使用文本字段](../components/textfield.html)。
+- en: 'Step 3: Add a JLabel'
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤3：添加一个JLabel
+- en: Next, drag a `JLabel` onto the Design Area. Place it to the right of the `JTextField`,
+    again watching for visual cues that suggest an appropriate amount of spacing.
+    Make sure that text base for this component is aligned with that of the `JTextField`.
+    The visual cues provided by the IDE should make this easy to determine.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，在设计区域拖动一个`JLabel`。将其放置在`JTextField`的右侧，再次注意视觉线索，以确定适当的间距。确保此组件的文本基线与`JTextField`的文本基线对齐。IDE提供的视觉线索应该很容易确定。
+- en: '![Adding a JLabel](../Images/e4d785061ab14d9e49b86d60c3f2643b.png)'
+  id: totrans-18
+  prefs: []
+  type: TYPE_IMG
+  zh: '![添加一个JLabel](../Images/e4d785061ab14d9e49b86d60c3f2643b.png)'
+- en: Adding a JLabel
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 添加一个JLabel
+- en: For more information about this component, see [How to Use Labels](../components/label.html).
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关此组件的更多信息，请参见[如何使用标签](../components/label.html)。
+- en: 'Step 4: Add a JButton'
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤4：添加一个JButton
+- en: Next, drag a `JButton` from the Palette and position it to the left and underneath
+    the `JTextField`. Again, the visual cues help guide it into place.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，从工具栏拖动一个`JButton`并将其放置在`JTextField`的左侧和下方。再次，视觉线索有助于将其放置在正确的位置。
+- en: '![Adding a JButton](../Images/0ffae40f166eb841cd6083316998585d.png)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_IMG
+  zh: '![添加一个JButton](../Images/0ffae40f166eb841cd6083316998585d.png)'
+- en: Adding a JButton
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 添加一个JButton
+- en: You may be tempted to manually adjust the width of the `JButton` and `JTextField`,
+    but just leave them as they are for now. You will learn how to correctly adjust
+    these components later in this lesson. For more information about this component,
+    see [How to Use Buttons](../components/button.html).
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能会想要手动调整`JButton`和`JTextField`的宽度，但现在就让它们保持原样。稍后在本课程中，您将学习如何正确调整这些组件。有关此组件的更多信息，请参见[如何使用按钮](../components/button.html)。
+- en: 'Step 5: Add a Second JLabel'
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤5：添加第二个JLabel
+- en: '![Adding a Second JLabel](../Images/f8519ad42460d2895ee3fbe631e481d9.png)'
+  id: totrans-27
+  prefs: []
+  type: TYPE_IMG
+  zh: '![添加第二个JLabel](../Images/f8519ad42460d2895ee3fbe631e481d9.png)'
+- en: Adding a Second JLabel
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 添加第二个JLabel
+- en: Finally, add a second `JLabel`, repeating the process in step 2\. Place this
+    second label to the right of the `JButton`, as shown above.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，添加第二个`JLabel`，重复第2步中的过程。将这第二个标签放置在`JButton`的右侧，如上所示。

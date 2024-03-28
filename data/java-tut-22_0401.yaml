@@ -1,0 +1,920 @@
+- en: How to Use Icons
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用图标
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html](https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html](https://docs.oracle.com/javase/tutorial/uiswing/components/icon.html)
+- en: "Many Swing components, such as labels, buttons, and tabbed panes, can be decorated\
+    \ with an *icon* \x97 a fixed-sized picture. An icon is an object that adheres\
+    \ to the [`Icon`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Icon.html)\
+    \ interface. Swing provides a particularly useful implementation of the `Icon`\
+    \ interface: [`ImageIcon`](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html),\
+    \ which paints an icon from a GIF, JPEG, or PNG image."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "许多Swing组件，如标签、按钮和选项卡窗格，可以用*图标*进行装饰 \x97 一个固定大小的图片。图标是一个遵循[`Icon`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Icon.html)接口的对象。Swing提供了一个特别有用的`Icon`接口实现：[`ImageIcon`](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html)，它可以从GIF、JPEG或PNG图像绘制图标。"
+- en: 'Here''s a snapshot of an application with three labels, two decorated with
+    an icon:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个带有三个标签的应用程序快照，其中两个标签装饰有图标：
+- en: '![An example of using image icons to decorate labels.](../Images/dd78495f649dca956bf097892d93d98a.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用图像图标装饰标签的示例。](../Images/dd78495f649dca956bf097892d93d98a.png)'
+- en: 'The program uses one image icon to contain and paint the yellow splats. One
+    statement creates the image icon and two more statements include the image icon
+    on each of the two labels:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序使用一个图像图标来包含和绘制黄色斑点。一个语句创建图像图标，另外两个语句将图像图标包含在两个标签中：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The `createImageIcon` method (used in the preceding snippet) is one we use
+    in many of our code samples. It finds the specified file and returns an `ImageIcon`
+    for that file, or `null` if that file couldn''t be found. Here is a typical implementation:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`createImageIcon`方法（在前面的片段中使用）是我们在许多代码示例中使用的方法。它查找指定的文件并为该文件返回一个`ImageIcon`，如果找不到该文件则返回`null`。以下是一个典型的实现：'
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: In the preceding snippet, the first argument to the `ImageIcon` constructor
+    is relative to the location of the current class, and will be resolved to an absolute
+    URL. The `description` argument is a string that allows [assistive technologies](../misc/access.html)
+    to help a visually impaired user understand what information the icon conveys.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前面的片段中，`ImageIcon`构造函数的第一个参数是相对于当前类位置的，并将解析为绝对URL。`description`参数是一个字符串，允许[辅助技术](../misc/access.html)帮助视觉障碍用户理解图标传达的信息。
+- en: 'Generally, applications provide their own set of images used as part of the
+    application, as is the case with the images used by many of our demos. You should
+    use the `Class` `getResource` method to obtain the path to the image. This allows
+    the application to verify that the image is available and to provide sensible
+    error handling if it is not. When the image is not part of the application, `getResource`
+    should not be used and the `ImageIcon` constructor is used directly. For example:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，应用程序提供自己的一组用作应用程序一部分的图像，就像我们许多演示中使用的图像一样。您应该使用`Class`的`getResource`方法获取图像的路径。这允许应用程序验证图像是否可用，并在图像不可用时提供合理的错误处理。当图像不是应用程序的一部分时，不应使用`getResource`，而应直接使用`ImageIcon`构造函数。例如：
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: When you specify a filename or URL to an `ImageIcon` constructor, processing
+    is blocked until after the image data is completely loaded or the data location
+    has proven to be invalid. If the data location is invalid (but non-null), an `ImageIcon`
+    is still successfully created; it just has no size and, therefore, paints nothing.
+    As shown in the `createImageIcon` method, it is advisable to first verify that
+    the URL points to an existing file before passing it to the `ImageIcon` constructor.
+    This allows graceful error handling when the file isn't present. If you want more
+    information while the image is loading, you can register an observer on an image
+    icon by calling its `setImageObserver` method.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您向`ImageIcon`构造函数指定文件名或URL时，处理将被阻塞，直到图像数据完全加载或数据位置被证明无效为止。如果数据位置无效（但非空），则仍会成功创建`ImageIcon`；只是它没有大小，因此不会绘制任何内容。如`createImageIcon`方法所示，建议在将URL传递给`ImageIcon`构造函数之前首先验证URL是否指向现有文件。这样可以在文件不存在时进行优雅的错误处理。如果您希望在图像加载时获得更多信息，可以通过调用其`setImageObserver`方法在图像图标上注册观察者。
+- en: Under the covers, each image icon uses an [`Image`](https://docs.oracle.com/javase/8/docs/api/java/awt/Image.html)
+    object to hold the image data.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在底层，每个图像图标都使用一个[`Image`](https://docs.oracle.com/javase/8/docs/api/java/awt/Image.html)对象来保存图像数据。
+- en: 'The rest of this section covers the following topics:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的其余部分涵盖以下主题：
+- en: '[A More Complex Image Icon Example](#example)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[更复杂的图像图标示例](#example)'
+- en: '[Loading Images Using getResource](#getresource)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 getResource 加载图像](#getresource)'
+- en: '[Loading Images Into Applets](#applet)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将图像加载到小程序中](#applet)'
+- en: '[Improving Perceived Performance When Loading Image Icons](#efficiency)'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[提高加载图像图标时的感知性能](#efficiency)'
+- en: '[Creating a Custom Icon Implementation](#custom)'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建自定义图标实现](#custom)'
+- en: '[The Image Icon API](#api)'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[图像图标 API](#api)'
+- en: '[Examples that Use Icons](#eg)'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用图标的示例](#eg)'
+- en: A More Complex Image Icon Example
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更复杂的图像图标示例
+- en: Here's an application that uses six image icons. Five of them display thumbnail
+    images and the sixth displays the full-size photograph.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个使用六个图像图标的应用程序。其中五个显示缩略图图像，第六个显示全尺寸照片。
+- en: '![The initial view of the IconDemo application.](../Images/4617f2ff9f63ed8367f163465c7d94dd.png)'
+  id: totrans-24
+  prefs: []
+  type: TYPE_IMG
+  zh: '![IconDemo 应用程序的初始视图。](../Images/4617f2ff9f63ed8367f163465c7d94dd.png)'
+- en: '* * *'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run IconDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/components/index.html#IconDemo).
+  id: totrans-27
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用 [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    运行 IconDemo（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#IconDemo)。
+- en: '[![Launches the IconDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/IconDemoProject/IconDemo.jnlp)'
+  id: totrans-28
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '[![启动 IconDemo 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/IconDemoProject/IconDemo.jnlp)'
+- en: Click any of the thumbnail images to view the full size photographs.
+  id: totrans-29
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击任何缩略图图像以查看全尺寸照片。
+- en: Hold the mouse over a photograph. A tool tip appears that displays the photograph
+    caption.
+  id: totrans-30
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将鼠标悬停在照片上。将显示一个工具提示，显示照片标题。
+- en: '* * *'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**IconDemoApp** demonstrates icons used in the following ways:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**IconDemoApp** 展示了以下方式中使用的图标：'
+- en: As a GUI element attached to a button (the thumbnail images on the buttons).
+  id: totrans-33
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 作为附加到按钮的 GUI 元素（按钮上的缩略图图像）。
+- en: To display an image (the five photographs).
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 用于显示图像（五张照片）。
+- en: The photographs are loaded in a separate thread by `loadimages.execute`. The
+    `loadimages` code is shown a little later in this section.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 照片通过 `loadimages.execute` 在单独的线程中加载。稍后在本节中显示 `loadimages` 代码。
+- en: The `ThumbnailAction` class, an inner class in [`IconDemoApp.java`](../examples/components/IconDemoProject/src/components/IconDemoApp.java),
+    is a descendant of `AbstractAction` that manages our full size image icon, a thumbnail
+    version, and its description. When the `actionPerformed` method is called the
+    full size image is loaded into the main display area. Each button has its own
+    instance of `ThumbnailAction` which specifies a different image to show.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ThumbnailAction` 类是 [`IconDemoApp.java`](../examples/components/IconDemoProject/src/components/IconDemoApp.java)
+    中的一个内部类，是 `AbstractAction` 的子类，用于管理我们的全尺寸图标、缩略图版本及其描述。当调用 `actionPerformed` 方法时，全尺寸图像将加载到主显示区域中。每个按钮都有自己的
+    `ThumbnailAction` 实例，指定要显示的不同图像。'
+- en: '[PRE3]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Loading Images Using getResource
+  id: totrans-38
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用 getResource 加载图像
+- en: 'Most often, an image icon''s data comes from an image file. There are a number
+    of valid ways that your application''s class and image files may be configured
+    on your file server. You might have your class files in a JAR file, or your image
+    files in a JAR file; they might be in the same JAR file, or they might be in different
+    JAR files. The following figures illustrate a few of the ways these files can
+    be configured:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数情况下，图像图标的数据来自图像文件。您的应用程序的类文件和图像文件可能以多种有效方式配置在文件服务器上。您可能将类文件放在一个 JAR 文件中，或者将图像文件放在一个
+    JAR 文件中；它们可能在同一个 JAR 文件中，也可能在不同的 JAR 文件中。以下图示说明了这些文件可以配置的几种方式：
+- en: '| ![Diagram showing MyDemo.class and images/myImage.png under the parent directory](../Images/9de368875ce1c42803d589313c45d4da.png)
+    | ![Diagram showing MyDemo.class and image.jar under the parent directory](../Images/560ebeab3a2da9e72493e858e0e04af3.png)
+    |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![显示 MyDemo.class 和父目录下的 images/myImage.png 的图示](../Images/9de368875ce1c42803d589313c45d4da.png)
+    | ![显示 MyDemo.class 和父目录下的 image.jar 的图示](../Images/560ebeab3a2da9e72493e858e0e04af3.png)
+    |'
+- en: '| Class file next to an image directory containing the image file, in PNG format.
+    | Class file in same directory as JAR file. The JAR file was created with all
+    the images in an `images` directory. |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类文件与包含 PNG 格式图像文件的图像目录相邻。 | 类文件与 JAR 文件在同一目录中。JAR 文件中包含一个 `images` 目录，其中包含所有图像。
+    |'
+- en: '| ![Diagram showing MyDemo.jar and image.jar under the parent directory](../Images/e5ca4c45d831df8fef68a3ec627cd0f5.png)
+    | ![Diagram showing MyDemo.class and images/myImage.png in the same JAR file](../Images/7ed96fa2516c4bcc4cc253ef2615bb6a.png)
+    |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![显示MyDemo.jar和image.jar在父目录下的图表](../Images/e5ca4c45d831df8fef68a3ec627cd0f5.png)
+    | ![显示MyDemo.class和images/myImage.png在同一个JAR文件中的图表](../Images/7ed96fa2516c4bcc4cc253ef2615bb6a.png)
+    |'
+- en: '| Class file in one JAR file and the images in another JAR file. | Class and
+    image files in same JAR file. |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类文件在一个JAR文件中，图片在另一个JAR文件中。 | 类和图片文件在同一个JAR文件中。 |'
+- en: 'If you are writing a real-world application, it is likely (and recommended)
+    that you put your files into a package. For more information on packages, see
+    [Creating and Using Packages](../../java/package/packages.html) in the [Learning
+    the Java Language](../../java/) trail. Here are some possible configurations using
+    a package named "omega":'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你正在编写真实世界的应用程序，很可能（也建议）将文件放入包中。有关包的更多信息，请参阅[创建和使用包](../../java/package/packages.html)中的[学习Java语言](../../java/)教程。以下是使用名为"omega"的包的一些可能配置：
+- en: '| ![Diagram showing omega package with MyDemo.class and image/myImage.png](../Images/92c2ea5565706ddda646025c53c070d4.png)
+    | ![Diagram showing omega package with MyDemo.class and image.jar](../Images/645a401beae83a2ce6e06d70a1f6b07b.png)
+    |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![显示omega包中MyDemo.class和image/myImage.png的图表](../Images/92c2ea5565706ddda646025c53c070d4.png)
+    | ![显示omega包中MyDemo.class和image.jar的图表](../Images/645a401beae83a2ce6e06d70a1f6b07b.png)
+    |'
+- en: '| Class file in directory named `omega`. Image in `omega/images` directory.
+    | Class file in `omega` directory. Image in JAR file not inside of `omega` directory,
+    but created with `omega/images` hierarchy. |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类文件在名为`omega`的目录中。图片在`omega/images`目录中。 | 类文件在`omega`目录中。图片在不在`omega`目录内的JAR文件中，但是按照`omega/images`层次结构创建。
+    |'
+- en: '| ![Diagram showing omega.jar which contains omega/MyDemo.class and omega/images/myImage.png](../Images/fbe2810858a9c42bf945b2cc2a5e075b.png)
+    |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![显示包含omega/MyDemo.class和omega/images/myImage.png的omega.jar的图表](../Images/fbe2810858a9c42bf945b2cc2a5e075b.png)
+    |'
+- en: '| One big JAR file with class files under `omega` directory and image files
+    under `omega/images` directory. |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| 一个包含类文件在`omega`目录下，图片文件在`omega/images`目录下的大型JAR文件。 |'
+- en: 'All seven configurations shown are valid, and the same code reads the image:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有七种配置都是有效的，相同的代码读取图片：
+- en: '[PRE4]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The `getResource` method causes the class loader to look through the directories
+    and JAR files in the program's class path, returning a URL as soon as it finds
+    the desired file. In the example the MyDemo program attempts to load the `images/myImage.png`
+    file from the `omega` class. The class loader looks through the directories and
+    JAR files in the program's class path for `/omega/images/myImage.png`. If the
+    class loader finds the file, it returns the URL of the JAR file or directory that
+    contained the file. If another JAR file or directory in the class path contains
+    the `images/myImage.png` file, the class loader returns the first instance that
+    contains the file.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getResource`方法会导致类加载器在程序的类路径中查找目标文件，一旦找到所需文件就会返回一个URL。在这个例子中，MyDemo程序尝试从`omega`类加载`images/myImage.png`文件。类加载器会在程序的类路径中查找`/omega/images/myImage.png`。如果类加载器找到了文件，就会返回包含该文件的JAR文件或目录的URL。如果类路径中的另一个JAR文件或目录包含`images/myImage.png`文件，类加载器会返回第一个包含该文件的实例。'
+- en: 'Here are three ways to specify the class path:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有三种指定类路径的方式：
+- en: 'Using the `-cp` or `-classpath` command-line argument. For example, in the
+    case where the images are in a JAR file named `images.jar` and the class file
+    is in the current directory:'
+  id: totrans-53
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`-cp`或`-classpath`命令行参数。例如，在图片存储在名为`images.jar`的JAR文件中，而类文件在当前目录的情况下：
+- en: '[PRE5]'
+  id: totrans-54
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'If your image and class files are in separate JAR files, your command line
+    will look something like:'
+  id: totrans-55
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如果你的图片和类文件存储在不同的JAR文件中，你的命令行会类似于：
+- en: '[PRE6]'
+  id: totrans-56
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'In the situation where all the files are in one JAR file, you can use either
+    of the following commands:'
+  id: totrans-57
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在所有文件都在一个JAR文件中的情况下，你可以使用以下任一命令：
+- en: '[PRE7]'
+  id: totrans-58
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: For more information, see the [JAR Files](../../deployment/jar/) trail.
+  id: totrans-59
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 欲了解更多信息，请参阅[JAR文件](../../deployment/jar/)教程。
+- en: 'In the program''s JNLP file (used by Java Web Start). For example, here is
+    the JNLP file used by `DragPictureDemo`:'
+  id: totrans-60
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在程序的JNLP文件中（Java Web Start使用）。例如，这是`DragPictureDemo`使用的JNLP文件：
+- en: '[PRE8]'
+  id: totrans-61
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: In this example, the class files and the images files are in separate JAR files.
+    The JAR files are specified using the XML `jar` tag.
+  id: totrans-62
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在这个例子中，类文件和图片文件分别存储在不同的JAR文件中。使用XML `jar`标签指定JAR文件。
+- en: Setting the `CLASSPATH` environment variable. This last approach is *not recommended*.
+    If `CLASSPATH` is not set, the current directory (".") followed by the location
+    of the system classes shipped with the JRE are used by default.
+  id: totrans-63
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 设置`CLASSPATH`环境变量。这种方法*不推荐*。如果未设置`CLASSPATH`，则默认使用当前目录(".")，然后是随JRE一起提供的系统类的位置。
+- en: "Most of the Swing Tutorial examples put the images in an `images` directory\
+    \ under the directory that contains the examples' class files. When we create\
+    \ JAR files for the examples, we keep the same relative locations, although often\
+    \ we put the class files in a different JAR file than the image JAR file. No matter\
+    \ where the class and image files are in the file system \x97 in one JAR file,\
+    \ or in multiple JAR files, in a named package, or in the default package \x97\
+    \ the same code finds the image files using `getResource`."
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "大多数Swing教程示例将图像放在包含示例类文件的目录下的`images`目录中。当为示例创建JAR文件时，我们保持相同的相对位置，尽管通常我们将类文件放在与图像JAR文件不同的JAR文件中。无论类文件和图像文件在文件系统中的位置如何\
+    \ \x97 在一个JAR文件中，或在多个JAR文件中，在命名包中，或在默认包中 \x97 相同的代码使用`getResource`查找图像文件。"
+- en: For more information, see [Accessing Resources in a Location-Independent Manner](https://docs.oracle.com/javase/8/docs/technotes/guides/lang/resources.html)
+    and the [Application Development Considerations](https://docs.oracle.com/javase/8/docs/technotes/guides/javaws/developersguide/development.html).
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 欲了解更多信息，请参阅[以位置无关的方式访问资源](https://docs.oracle.com/javase/8/docs/technotes/guides/lang/resources.html)和[应用程序开发注意事项](https://docs.oracle.com/javase/8/docs/technotes/guides/javaws/developersguide/development.html)。
+- en: Loading Images Into Applets
+  id: totrans-66
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将图像加载到Applets中
+- en: Applets generally load image data from the computer that served up the applet.
+    The `APPLET` tag is where you specify information about the images used in the
+    applet. For more information on the `APPLET` tag see [Using the APPLET Tag](../../deployment/applet/html.html)
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Applets通常从提供applet的计算机加载图像数据。`APPLET`标签是您指定applet中使用的图像信息的地方。有关`APPLET`标签的更多信息，请参阅[使用APPLET标签](../../deployment/applet/html.html)。
+- en: Improving Perceived Performance When Loading Image Icons
+  id: totrans-68
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在加载图像图标时改善感知性能
+- en: Because the photograph images can be slow to access, [`IconDemoApp.java`](../examples/components/IconDemoProject/src/components/IconDemoApp.java)
+    uses a `SwingWorker` to improve the performance of the program as perceived by
+    the user.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于访问照片图像可能很慢，[`IconDemoApp.java`](../examples/components/IconDemoProject/src/components/IconDemoApp.java)使用`SwingWorker`来改善用户感知的程序性能。
+- en: "**Background image loading** \x97 the program uses a [javax.swing.SwingWorker](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html)\
+    \ object to load each photograph image and compute it's thumbnail in a background\
+    \ thread. Using a `SwingWorker` prevents the program from appearing to freeze\
+    \ up while loading and scaling the images."
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "**后台图像加载** \x97 该程序使用[javax.swing.SwingWorker](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html)对象在后台线程中加载每张照片图像并计算其缩略图。使用`SwingWorker`可以防止程序在加载和缩放图像时出现冻结的情况。"
+- en: 'Here''s the code to process each image:'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是处理每个图像的代码：
+- en: '[PRE9]'
+  id: totrans-72
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: SwingWorker invokes the `doInBackground` method in a background thread. The
+    method places a full size image, thumbnail size image and caption into a `ThumbnailAction`
+    object. The SwingWorker then delivers the `ThumbnailAction` to the `process` method.
+    The `process` method executes on the event dispatch thread and updates the GUI
+    by adding a button to the toolbar. `JButton` has a constructor that takes an action
+    object. The action object determines a number of the button's properties. In our
+    case the button icon, the caption and the action to be performed when the button
+    is pressed is all determined by the `ThumbnailAction`.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SwingWorker在后台线程中调用`doInBackground`方法。该方法将全尺寸图像、缩略图图像和标题放入`ThumbnailAction`对象中。然后，SwingWorker将`ThumbnailAction`传递给`process`方法。`process`方法在事件分发线程上执行，并通过向工具栏添加按钮来更新GUI。`JButton`有一个接受动作对象的构造函数。动作对象确定按钮的许多属性。在我们的情况下，按钮图标、标题和按下按钮时执行的操作都由`ThumbnailAction`确定。
+- en: "**Overhead** \x97 this program eventually loads all the source images into\
+    \ memory. This may not be desirable in all situations. Loading a number of very\
+    \ large files could cause the program to allocate a very large amount or memory.\
+    \ Care should be taken to manage the number and size of images that are loaded."
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "**开销** \x97 该程序最终将所有源图像加载到内存中。这在所有情况下可能并不理想。加载大量非常大的文件可能会导致程序分配大量内存。应注意管理加载的图像数量和大小。"
+- en: As with all performance-related issues, this technique is applicable in some
+    situations and not others. Also the technique described here is designed to improve
+    the program's perceived performance, but does not necessarily impact its real
+    performance.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与所有与性能相关的问题一样，这种技术在某些情况下适用，而在其他情况下则不适用。此外，这里描述的技术旨在改善程序的感知性能，但不一定影响其实际性能。
+- en: Creating a Custom Icon Implementation
+  id: totrans-76
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建自定义图标实现
+- en: The `createImageIcon` method returns null when it cannot find an image, but
+    what should the program do then? One possibility would be to ignore that image
+    and move on. Another option would be to provide some sort of default icon to display
+    when the real one cannot be loaded. Making another call to `createImageIcon` might
+    result in another null so using that is not a good idea. Instead lets create a
+    custom `Icon` implementation.
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当`createImageIcon`方法无法找到图像时会返回null，但程序应该怎么做呢？一种可能性是忽略该图像并继续。另一个选择是在无法加载真实图像时提供某种默认图标来显示。再次调用`createImageIcon`可能会导致另一个null，因此使用它不是一个好主意。相反，让我们创建一个自定义`Icon`实现。
+- en: '![An example of MissingIcon.](../Images/d79a700437d28616486829f96a50ea9a.png)'
+  id: totrans-78
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个MissingIcon的示例。](../Images/d79a700437d28616486829f96a50ea9a.png)'
+- en: 'You can find the implementation of the custom icon class in [`MissingIcon.java`](../examples/components/IconDemoProject/src/components/MissingIcon.java).
+    Here are the interesting parts of its code:'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在[`MissingIcon.java`](../examples/components/IconDemoProject/src/components/MissingIcon.java)中找到自定义图标类的实现。以下是其代码中的有趣部分：
+- en: '[PRE10]'
+  id: totrans-80
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: The `paintIcon` method is passed a `Graphics` object. The `Graphics` object
+    gives the `paintIcon` method access to the entire Java2D API. For more information
+    about painting and Java2D, see [Performing Custom Painting](../painting/index.html).
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`paintIcon`方法接收一个`Graphics`对象。`Graphics`对象使`paintIcon`方法可以访问整个Java2D API。有关绘图和Java2D的更多信息，请参见[执行自定义绘图](../painting/index.html)。'
+- en: The following code demonstrates how the `MissingIcon` class is used in the `SwingWorker`
+    `doInBackground` method.
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码演示了`MissingIcon`类在`SwingWorker`的`doInBackground`方法中的使用。
+- en: '[PRE11]'
+  id: totrans-83
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'Using a custom icon has a few implications:'
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用自定义图标会有一些影响：
+- en: "Because the icon's appearance is determined dynamically, the icon painting\
+    \ code can use any information \x97 component and application state, for example\
+    \ \x97 to determine what to paint."
+  id: totrans-85
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "因为图标的外观是动态确定的，图标绘制代码可以使用任何信息 \x97 例如组件和应用程序状态 \x97 来确定要绘制什么。"
+- en: Depending on the platform and the type of image, you may get a performance boost
+    with custom icons, since painting simple shapes can sometimes be faster than copying
+    images.
+  id: totrans-86
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 根据平台和图像类型，使用自定义图标可能会提高性能，因为绘制简单形状有时比复制图像更快。
+- en: Because `MissingIcon` does not do any file I/O there is no need for separate
+    threads to load the image.
+  id: totrans-87
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 因为`MissingIcon`不执行任何文件I/O，所以不需要单独的线程来加载图像。
+- en: The Image Icon API
+  id: totrans-88
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 图像图标API
+- en: The following tables list the commonly used `ImageIcon` constructors and methods.
+    Note that `ImageIcon` is not a descendent of `JComponent` or even of `Component`.
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的`ImageIcon`构造函数和方法。请注意，`ImageIcon`不是`JComponent`甚至不是`Component`的子类。
+- en: 'The API for using image icons falls into these categories:'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用图像图标的API分为以下几类：
+- en: '[Setting, Getting, and Painting the Image Icon''s Image](#contents)'
+  id: totrans-91
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置、获取和绘制图像图标的图像](#contents)'
+- en: '[Setting or Getting Information about the Image Icon](#info)'
+  id: totrans-92
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置或获取有关图像图标的信息](#info)'
+- en: '[Watching the Image Icon''s Image Load](#loadstatus)'
+  id: totrans-93
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[观察图像图标的图像加载状态](#loadstatus)'
+- en: Setting, Getting, and Painting the Image Icon's Image
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置、获取和绘制图像图标的图像
+- en: '| Method or Constructor | Purpose |'
+  id: totrans-95
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法或构造函数 | 目的 |'
+- en: '| [ImageIcon()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon--)
+    [ImageIcon(byte[])](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-byte:A-)'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [ImageIcon()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon--)
+    [ImageIcon(byte[])](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-byte:A-)
+    |'
+- en: '[ImageIcon(byte[], String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-byte:A-java.lang.String-)'
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[ImageIcon(byte[], String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-byte:A-java.lang.String-)'
+- en: '[ImageIcon(Image)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.awt.Image-)'
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[ImageIcon(Image)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.awt.Image-)'
+- en: '[ImageIcon(Image, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.awt.Image-java.lang.String-)'
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[ImageIcon(Image, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.awt.Image-java.lang.String-)'
+- en: '[ImageIcon(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.lang.String-)'
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[ImageIcon(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.lang.String-)'
+- en: '[ImageIcon(String, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.lang.String-java.lang.String-)'
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[ImageIcon(String, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.lang.String-java.lang.String-)'
+- en: '[ImageIcon(URL)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.net.URL-)'
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[ImageIcon(URL)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.net.URL-)'
+- en: "[ImageIcon(URL, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.net.URL-java.lang.String-)\
+    \ | Create an `ImageIcon` instance, initializing it to contain the specified image.\
+    \ The first argument indicates the source \x97 image, byte array, filename, or\
+    \ URL \x97 from which the image icon's image should be loaded. The source must\
+    \ be in a format supported by the `java.awt.Image` class: namely GIF, JPEG, or\
+    \ PNG. The second argument, when present, provides a description for the image.\
+    \ The description may also be set via `setDescription` and provides useful textual\
+    \ information for [assistive technologies](../misc/access.html). |"
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[ImageIcon(URL, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#ImageIcon-java.net.URL-java.lang.String-)
+    | 创建一个`ImageIcon`实例，并初始化为包含指定图像。第一个参数指示源——图像、字节数组、文件名或URL——从中应加载图像图标的图像。源必须是`java.awt.Image`类支持的格式：即GIF、JPEG或PNG。第二个参数（如果存在）为图像提供描述。描述也可以通过`setDescription`设置，并为[辅助技术](../misc/access.html)提供有用的文本信息。
+    |'
+- en: '| [void setImage(Image)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#setImage-java.awt.Image-)
+    [Image getImage()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getImage--)
+    | Set or get the image displayed by the image icon. |'
+  id: totrans-104
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setImage(Image)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#setImage-java.awt.Image-)
+    [Image getImage()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getImage--)
+    | 设置或获取图像图标显示的图像。 |'
+- en: '| [void paintIcon(Component, Graphics, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#paintIcon-java.awt.Component-java.awt.Graphics-int-int-)
+    | Paint the image icon''s image in the specified graphics context. You would override
+    this only if you''re implementing a custom icon that performs its own painting.
+    The `Component` object is used as an image observer. You can rely on the default
+    behavior provided by `Component` class, and pass in any component. The two `int`
+    arguments specify the top-left corner where the icon is painted. |'
+  id: totrans-105
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void paintIcon(Component, Graphics, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#paintIcon-java.awt.Component-java.awt.Graphics-int-int-)
+    | 在指定的图形上下文中绘制图像图标的图像。只有在实现执行自己的绘图的自定义图标时才会覆盖此方法。`Component`对象用作图像观察者。您可以依赖`Component`类提供的默认行为，并传入任何组件。两个`int`参数指定绘制图标的左上角。
+    |'
+- en: '| [URL getResource(String)](https://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html#getResource-java.lang.String-)
+    in (*java.lang.ClassLoader*) | Find the resource with the given name. For more
+    information, see [Loading Images Using getResource](#getresource). |'
+  id: totrans-106
+  prefs: []
+  type: TYPE_TB
+  zh: '| [URL getResource(String)](https://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html#getResource-java.lang.String-)
+    in (*java.lang.ClassLoader*) | 查找具有给定名称的资源。有关更多信息，请参见[使用getResource加载图像](#getresource)。
+    |'
+- en: '| [InputStream getResourceAsStream(String)](https://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html#getResourceAsStream-java.lang.String-)
+    in (*java.lang.ClassLoader*) | Find the resource with the given name and return
+    an input stream for reading the resource. For more information, see the [Loading
+    Images Into Applets](#applet) discussion. |'
+  id: totrans-107
+  prefs: []
+  type: TYPE_TB
+  zh: '| [InputStream getResourceAsStream(String)](https://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html#getResourceAsStream-java.lang.String-)
+    in (*java.lang.ClassLoader*) | 查找具有给定名称的资源，并返回用于读取资源的输入流。有关更多信息，请参见[将图像加载到小程序中](#applet)讨论。
+    |'
+- en: Setting or Getting Information about the Image Icon
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置或获取有关图像图标的信息
+- en: '| Method | Purpose |'
+  id: totrans-109
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setDescription(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#setDescription-java.lang.String-)
+    [String getDescription()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getDescription--)
+    | Set or get a description of the image. This description is intended for use
+    by [assistive technologies](../misc/access.html). |'
+  id: totrans-110
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setDescription(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#setDescription-java.lang.String-)
+    [String getDescription()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getDescription--)
+    | 设置或获取图像的描述。此描述供[辅助技术](../misc/access.html)使用。 |'
+- en: '| [int getIconWidth()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getIconWidth--)
+    [int getIconHeight()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getIconHeight--)
+    | Get the width or height of the image icon in pixels. |'
+  id: totrans-111
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getIconWidth()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getIconWidth--)
+    [int getIconHeight()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getIconHeight--)
+    | 获取图像图标的宽度或高度（以像素为单位）。'
+- en: Watching the Image Icon's Image Load
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 观察图像图标的图像加载
+- en: '| Method | Purpose |'
+  id: totrans-113
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setImageObserver(ImageObserver)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#setImageObserver-java.awt.image.ImageObserver-)
+    [ImageObserver getImageObserver()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getImageObserver--)
+    | Set or get an image observer for the image icon. |'
+  id: totrans-114
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setImageObserver(ImageObserver)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#setImageObserver-java.awt.image.ImageObserver-)
+    [ImageObserver getImageObserver()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getImageObserver--)
+    | 为图像图标设置或获取图像观察器。'
+- en: '| [int getImageLoadStatus()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getImageLoadStatus--)
+    | Get the loading status of the image icon''s image. The values returned by this
+    method are defined by `MediaTracker`. |'
+  id: totrans-115
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getImageLoadStatus()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ImageIcon.html#getImageLoadStatus--)
+    | 获取图像图标的图像加载状态。此方法返回的值由`MediaTracker`定义。'
+- en: Examples that Use Icons
+  id: totrans-116
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用图标的示例
+- en: The following table lists just a few of the many examples that use `ImageIcon`.
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了仅有的一些使用`ImageIcon`的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-118
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`LabelDemo`](../examples/components/index.html#LabelDemo) | This section
+    and [How to Use Labels](../components/label.html) | Demonstrates using icons in
+    an application''s label, with and without accompanying text. |'
+  id: totrans-119
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`LabelDemo`](../examples/components/index.html#LabelDemo) | 本节和[如何使用标签](../components/label.html)
+    | 演示如何在应用程序的标签中使用图标，带有或不带有相应文本。'
+- en: '| [`IconDemo`](../examples/components/index.html#IconDemo) | This section |
+    Uses a label to show large images; uses buttons that have both images and text.
+    |'
+  id: totrans-120
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`IconDemo`](../examples/components/index.html#IconDemo) | 本节 | 使用标签显示大图像；使用既有图像又有文本的按钮。'
+- en: '| [`CustomIconDemo`](../examples/components/index.html#CustomIconDemo) | This
+    section | Uses a custom icon class implemented by [`ArrowIcon.java`](../examples/components/CustomIconDemoProject/src/components/ArrowIcon.java).
+    |'
+  id: totrans-121
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`CustomIconDemo`](../examples/components/index.html#CustomIconDemo) | 本节
+    | 使用由[`ArrowIcon.java`](../examples/components/CustomIconDemoProject/src/components/ArrowIcon.java)实现的自定义图标类。'
+- en: '| [`TumbleItem`](../examples/components/index.html#TumbleItem) | [How to Make
+    Applets](../components/applet.html) | An applet. Uses image icons in an animation.
+    Shows how to call `ImageIcon`''s `paintIcon` method. |'
+  id: totrans-122
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TumbleItem`](../examples/components/index.html#TumbleItem) | [如何制作小程序](../components/applet.html)
+    | 一个小程序。在动画中使用图像图标。展示如何调用`ImageIcon`的`paintIcon`方法。'
+- en: '| [`ButtonDemo`](../examples/components/index.html#ButtonDemo) | [How to Use
+    Buttons, Check Boxes, and Radio Buttons](../components/button.html) | Shows how
+    to use icons in an application''s buttons. |'
+  id: totrans-123
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ButtonDemo`](../examples/components/index.html#ButtonDemo) | [如何使用按钮、复选框和单选按钮](../components/button.html)
+    | 展示如何在应用程序的按钮中使用图标。'
+- en: '| [`CheckBoxDemo`](../examples/components/index.html#CheckBoxDemo) | [How to
+    Use Check Boxes](../components/button.html#checkbox) | Uses multiple GIF images.
+    |'
+  id: totrans-124
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`CheckBoxDemo`](../examples/components/index.html#CheckBoxDemo) | [如何使用复选框](../components/button.html#checkbox)
+    | 使用多个 GIF 图像。'
+- en: '| [`TabbedPaneDemo`](../examples/components/index.html#TabbedPaneDemo) | [How
+    to Use Tabbed Panes](../components/tabbedpane.html) | Demonstrates adding icons
+    to tabs in a tabbed pane. |'
+  id: totrans-125
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TabbedPaneDemo`](../examples/components/index.html#TabbedPaneDemo) | [如何使用选项卡窗格](../components/tabbedpane.html)
+    | 演示如何在选项卡窗格中添加图标到选项卡中。'
+- en: '| [`DialogDemo`](../examples/components/index.html#DialogDemo) | [How to Make
+    Dialogs](../components/dialog.html) | Shows how to use standard icons in dialogs.
+    |'
+  id: totrans-126
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`DialogDemo`](../examples/components/index.html#DialogDemo) | [如何制作对话框](../components/dialog.html)
+    | 展示如何在对话框中使用标准图标。'
+- en: '| [`TreeIconDemo`](../examples/components/index.html#TreeIconDemo) | [How to
+    Use Trees](../components/tree.html) | Shows how to change the icons displayed
+    by a tree''s nodes. |'
+  id: totrans-127
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TreeIconDemo`](../examples/components/index.html#TreeIconDemo) | [如何使用树](../components/tree.html)
+    | 展示如何更改树节点显示的图标。'
+- en: '| [`ActionDemo`](../examples/misc/index.html#ActionDemo) | [How to Use Actions](../misc/action.html)
+    | Shows how to specify the icon in a tool-bar button or menu item using an `Action`.
+    |'
+  id: totrans-128
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ActionDemo`](../examples/misc/index.html#ActionDemo) | [如何使用操作](../misc/action.html)
+    | 展示如何使用`Action`在工具栏按钮或菜单项中指定图标。'
+- en: '| [`FileChooserDemo2`](../examples/components/index.html#FileChooserDemo2)
+    | [How to Use File Choosers](../components/filechooser.html) | Uses a `PNG` image.
+    Shows how to implement an image previewer and an image filter in a file chooser.
+    |'
+  id: totrans-129
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`FileChooserDemo2`](../examples/components/index.html#FileChooserDemo2)
+    | [如何使用文件选择器](../components/filechooser.html) | 使用了 `PNG` 图像。展示了如何在文件选择器中实现图像预览和图像过滤器。
+    |'
+- en: '* * *'
+  id: totrans-130
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The photographs used in the [`IconDemo`](../examples/components/index.html#IconDemo)
+    are copyright ©2006 [spriggs.net](http://photos.spriggs.net/) and licenced under
+    a [Creative Commons Licence](http://creativecommons.org/licenses/by-sa/3.0/).'
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** [`IconDemo`](../examples/components/index.html#IconDemo) 中使用的照片版权归
+    ©2006 [spriggs.net](http://photos.spriggs.net/) 所有，并在 [知识共享许可协议](http://creativecommons.org/licenses/by-sa/3.0/)
+    下授权使用。'
+- en: '* * *'
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

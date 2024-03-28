@@ -1,0 +1,213 @@
+- en: Modes of Authenticating to LDAP
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: LDAP的认证方式
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/authentication.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/authentication.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/authentication.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/authentication.html)
+- en: In the LDAP, authentication information is supplied in the "bind" operation.
+    In LDAP v2, a client initiates a connection with the LDAP server by sending the
+    server a "bind" operation that contains the authentication information.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在LDAP中，认证信息是在"bind"操作中提供的。在LDAP v2中，客户端通过发送包含认证信息的"bind"操作与LDAP服务器建立连接。
+- en: In the LDAP v3, this operation serves the same purpose, but it is optional.
+    A client that sends an LDAP request without doing a "bind" is treated as an *anonymous*
+    client (see the [Anonymous](anonymous.html) section for details). In the LDAP
+    v3, the "bind" operation may be sent at any time, possibly more than once, during
+    the connection. A client can send a "bind" request in the middle of a connection
+    to change its identity. If the request is successful, then all outstanding requests
+    that use the old identity on the connection are discarded and the connection is
+    associated with the new identity.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在LDAP v3中，此操作具有相同的目的，但是是可选的。发送LDAP请求而不执行"bind"操作的客户端被视为*匿名*客户端（有关详细信息，请参见[匿名](anonymous.html)部分）。在LDAP
+    v3中，"bind"操作可以在连接期间的任何时候发送，可能会多次发送。客户端可以在连接的中间发送"bind"请求以更改其身份。如果请求成功，则所有使用旧身份的连接上的未完成请求都将被丢弃，并且连接将与新身份关联。
+- en: The authentication information supplied in the "bind" operation depends on the
+    *authentication mechanism* that the client chooses. See [Authentication Mechanisms](auth_mechs.html)
+    for a discussion of the authentication mechanism.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在"bind"操作中提供的认证信息取决于客户端选择的*认证机制*。有关认证机制的讨论，请参见[认证机制](auth_mechs.html)。
+- en: Authenticating to the LDAP by Using the JNDI
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用JNDI进行LDAP认证
+- en: In the JNDI, authentication information is specified in environment properties.
+    When you create an initial context by using the [`InitialDirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/InitialDirContext.html)
+    class (or its superclass or subclass), you supply a set of environment properties,
+    some of which might contain authentication information. You can use the following
+    environment properties to specify the authentication information.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在JNDI中，认证信息是在环境属性中指定的。当您使用[`InitialDirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/InitialDirContext.html)类（或其超类或子类）创建初始上下文时，您提供一组环境属性，其中一些可能包含认证信息。您可以使用以下环境属性来指定认证信息。
+- en: '[`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION)
+    (`"java.naming.security.authentication"`).'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION)
+    (`"java.naming.security.authentication"`).'
+- en: 'Specifies the authentication mechanism to use. For the LDAP service provider
+    in the JDK, this can be one of the following strings: `"none"`, `"simple"`, *sasl_mech*,
+    where *sasl_mech* is a space-separated list of SASL mechanism names. See the [Authentication
+    Mechanisms](auth_mechs.html) for a description of these strings.'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 指定要使用的认证机制。对于JDK中的LDAP服务提供程序，这可以是以下字符串之一："none"，"simple"，*sasl_mech*，其中*sasl_mech*是一组以空格分隔的SASL机制名称。有关这些字符串的描述，请参见[认证机制](auth_mechs.html)。
+- en: '[`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL)
+    (`"java.naming.security.principal"`).'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL)
+    (`"java.naming.security.principal"`).'
+- en: Specifies the name of the user/program doing the authentication and depends
+    on the value of the `Context.SECURITY_AUTHENTICATION` property. See the next few
+    sections in this lesson for details and examples.
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 指定进行认证的用户/程序的名称，取决于`Context.SECURITY_AUTHENTICATION`属性的值。有关详细信息和示例，请参见本课程的接下来几节。
+- en: '[`Context.SECURITY_CREDENTIALS`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS)
+    (`"java.naming.security.credentials"`).'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Context.SECURITY_CREDENTIALS`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS)
+    (`"java.naming.security.credentials"`).'
+- en: Specifies the credentials of the user/program doing the authentication and depends
+    on the value of the `Context.SECURITY_AUTHENTICATION` property. See the next few
+    sections in this lesson for details and examples.
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 指定进行认证的用户/程序的凭据，取决于`Context.SECURITY_AUTHENTICATION`属性的值。有关详细信息和示例，请参见本课程的接下来几节。
+- en: When the initial context is created, the underlying LDAP service provider extracts
+    the authentication information from these environment properties and uses the
+    LDAP "bind" operation to pass them to the server.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建初始上下文时，底层LDAP服务提供程序从这些环境属性中提取认证信息，并使用LDAP的“绑定”操作将其传递给服务器。
+- en: The [`following example`](examples/Simple.java) shows how, by using a simple
+    clear-text password, a client authenticates to an LDAP server.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`以下示例`](examples/Simple.java)展示了如何通过使用简单的明文密码，客户端向LDAP服务器进行身份验证。'
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Using Different Authentication Information for a Context
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为上下文使用不同的认证信息
+- en: If you want to use different authentication information for an existing context,
+    then you can use [`Context.addToEnvironment()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#addToEnvironment-java.lang.String-java.lang.Object-)
+    and [`Context.removeFromEnvironment()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#removeFromEnvironment-java.lang.String-)
+    to update the environment properties that contain the authentication information.
+    Subsequent invocations of methods on the context will use the new authentication
+    information to communicate with the server.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果要为现有上下文使用不同的认证信息，则可以使用[`Context.addToEnvironment()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#addToEnvironment-java.lang.String-java.lang.Object-)和[`Context.removeFromEnvironment()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#removeFromEnvironment-java.lang.String-)来更新包含认证信息的环境属性。随后对上下文的方法调用将使用新的认证信息与服务器通信。
+- en: The [`following example`](examples/UseDiff.java) shows how the authentication
+    information of a context is changed to `"none"` after the context has been created.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`以下示例`](examples/UseDiff.java)展示了如何在创建上下文后将上下文的认证信息更改为`"none"`。'
+- en: '[PRE1]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Authentication Failures
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 认证失败
+- en: Authentication can fail for a number of reasons. For example, if you supply
+    incorrect authentication information, such as an incorrect password or principal
+    name, then an [`AuthenticationException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/AuthenticationException.html)
+    is thrown.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 认证可能因多种原因而失败。例如，如果提供了不正确的认证信息，比如不正确的密码或主体名称，那么会抛出[`AuthenticationException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/AuthenticationException.html)。
+- en: Here is [`an example`](examples/BadPasswd.java) that is a variation of the previous
+    example. This time, an incorrect password causes the authentication to fail.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个变体的[`示例`](examples/BadPasswd.java)。这次，不正确的密码导致认证失败。
+- en: '[PRE2]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: This produces the following output.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将产生以下输出。
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Because different servers support different authentication mechanisms, you might
+    request an authentication mechanism that the server does not support. In this
+    case, an [`AuthenticationNotSupportedException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/AuthenticationNotSupportedException.html)
+    will be thrown.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为不同的服务器支持不同的认证机制，您可能请求服务器不支持的认证机制。在这种情况下，将抛出[`AuthenticationNotSupportedException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/AuthenticationNotSupportedException.html)。
+- en: Here is [`an example`](examples/BadAuth.java) that is a variation of the previous
+    example. This time, an unsupported authentication mechanism (`"custom"`) causes
+    the authentication to fail.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个变体的[`示例`](examples/BadAuth.java)。这次，不支持的认证机制（`"custom"`）导致认证失败。
+- en: '[PRE4]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: This produces the following output.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将产生以下输出。
+- en: '[PRE5]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'

@@ -1,0 +1,197 @@
+- en: 'Questions and Exercises: Laying Out Components within a Container'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习：在容器内布置组件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch4.html](https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch4.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch4.html](https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch4.html)
+- en: Questions
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 问题
+- en: In each of the following questions, choose the layout manager(s) most naturally
+    suited for the described layout. Assume that the container controlled by the layout
+    manager is a `JPanel`.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在以下每个问题中，选择最适合描述布局的布局管理器。假设由布局管理器控制的容器是`JPanel`。
+- en: 1\. The container has one component that should take up as much space as possible
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. 该容器有一个组件应尽可能占据空间
+- en: '| ![Layout1-1.png](../Images/b38bbad53f3494d668c27028b63d6b89.png) | ![Layout1-2.png](../Images/c5f368956cfdfa003d3c6efc4c084069.png)
+    |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![Layout1-1.png](../Images/b38bbad53f3494d668c27028b63d6b89.png) | ![Layout1-2.png](../Images/c5f368956cfdfa003d3c6efc4c084069.png)
+    |'
+- en: a. `BorderLayout`
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: a. `BorderLayout`
+- en: b. `GridLayout`
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: b. `GridLayout`
+- en: c. `GridBagLayout`
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: c. `GridBagLayout`
+- en: d. a and b
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: d. a 和 b
+- en: e. b and c
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: e. b 和 c
+- en: 2\. The container has a row of components that should all be displayed at the
+    same size, filling the container’s entire area.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. 该容器有一行组件，应该以相同大小显示，填充容器的整个区域。
+- en: '![Layout2-1.png](../Images/dc674c959632ad95fb62ce0514ac81b8.png) ![Layout2-2.png](../Images/a1448c7ae98d8f50bf1fe8ae4c3f9d2b.png)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Layout2-1.png](../Images/dc674c959632ad95fb62ce0514ac81b8.png) ![Layout2-2.png](../Images/a1448c7ae98d8f50bf1fe8ae4c3f9d2b.png)'
+- en: a. `FlowLayout`
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: a. `FlowLayout`
+- en: b. `GridLayout`
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: b. `GridLayout`
+- en: c. `BoxLayout`
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: c. `BoxLayout`
+- en: d. a and b
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: d. a 和 b
+- en: 3\. The container displays a number of components in a column, with any extra
+    space going between the first two components.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 3\. 该容器以列形式显示多个组件，额外的空间位于前两个组件之间。
+- en: '| ![Layout3-1.png](../Images/b9ef4ed676266bf873ea7854a25bbd48.png) | ![Layout3-2.png](../Images/dfcc51b23788f4775d64052fb84f537c.png)
+    |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![Layout3-1.png](../Images/b9ef4ed676266bf873ea7854a25bbd48.png) | ![Layout3-2.png](../Images/dfcc51b23788f4775d64052fb84f537c.png)
+    |'
+- en: a. `FlowLayout`
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: a. `FlowLayout`
+- en: b. `BoxLayout`
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: b. `BoxLayout`
+- en: c. `GridLayout`
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: c. `GridLayout`
+- en: d. `BorderLayout`
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: d. `BorderLayout`
+- en: 4\. The container can display three completely different components at different
+    times, depending perhaps on user input or program state. Even if the components’
+    sizes differ, switching from one component to the next shouldn’t change the amount
+    of space devoted to the component.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 4\. 该容器可以在不同时间显示三个完全不同的组件，可能取决于用户输入或程序状态。即使组件的大小不同，从一个组件切换到下一个也不应更改为组件分配的空间量。
+- en: '![Layout4-1.png](../Images/e939e058e336515aaa4232bb3818bdaf.png) ![Layout4-2.png](../Images/021bc8948bc6bcd7cd54184a8bc8ee63.png)'
+  id: totrans-24
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Layout4-1.png](../Images/e939e058e336515aaa4232bb3818bdaf.png) ![Layout4-2.png](../Images/021bc8948bc6bcd7cd54184a8bc8ee63.png)'
+- en: a. `SpringLayout`
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: a. `SpringLayout`
+- en: b. `BoxLayout`
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: b. `BoxLayout`
+- en: c. `CardLayout`
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: c. `CardLayout`
+- en: d. `GridBagLayout`
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: d. `GridBagLayout`
+- en: Exercises
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 练习
+- en: 1\. Implement the layout described and shown in question 1.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. 实现问题1中描述和显示的布局。
+- en: 2\. Implement the layout described and shown in question 2.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. 实现问题2中描述和显示的布局。
+- en: 3\. Implement the layout described and shown in question 3.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 3\. 实现问题3中描述和显示的布局。
+- en: 4\. Implement the layout described and shown in question 4.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 4\. 实现问题4中描述和显示的布局。
+- en: 5\. By adding a single line of code, make the program you wrote for Exercise
+    2 display the components from right-to-left, instead of from left-to-right.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 5\. 通过添加一行代码，使您为练习2编写的程序显示组件从右到左，而不是从左到右。
+- en: '![Layout2-3.png](../Images/ceb14c230365902b0642b6816410884c.png) [Check your
+    answers.](answers-ch4.html)'
+  id: totrans-35
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Layout2-3.png](../Images/ceb14c230365902b0642b6816410884c.png) [检查您的答案。](answers-ch4.html)'

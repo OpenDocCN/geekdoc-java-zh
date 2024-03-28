@@ -1,0 +1,95 @@
+- en: Unicode
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Unicode
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/unicode.html](https://docs.oracle.com/javase/tutorial/i18n/text/unicode.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/unicode.html](https://docs.oracle.com/javase/tutorial/i18n/text/unicode.html)
+- en: '*Unicode* is a computing industry standard designed to consistently and uniquely
+    encode characters used in written languages throughout the world. The Unicode
+    standard uses hexadecimal to express a character. For example, the value 0x0041
+    represents the Latin character A. The Unicode standard was initially designed
+    using 16 bits to encode characters because the primary machines were 16-bit PCs.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*Unicode* 是一个计算行业标准，旨在一致且独特地编码世界各地书面语言中使用的字符。Unicode 标准使用十六进制表示字符。例如，值 0x0041
+    表示拉丁字符 A。Unicode 标准最初设计时使用 16 位来编码字符，因为主要的计算机是 16 位的个人电脑。'
+- en: When the specification for the Java language was created, the Unicode standard
+    was accepted and the `char` primitive was defined as a 16-bit data type, with
+    characters in the hexadecimal range from 0x0000 to 0xFFFF.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在创建 Java 语言规范时，接受了 Unicode 标准，并将 `char` 原始数据类型定义为 16 位数据类型，字符的十六进制范围为 0x0000
+    到 0xFFFF。
+- en: Because 16-bit encoding supports 2^(16) (65,536) characters, which is insufficient
+    to define all characters in use throughout the world, the Unicode standard was
+    extended to 0x10FFFF, which supports over one million characters. The definition
+    of a character in the Java programming language could not be changed from 16 bits
+    to 32 bits without causing millions of Java applications to no longer run properly.
+    To correct the definition, a scheme was developed to handle characters that could
+    not be encoded in 16 bits.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于 16 位编码支持 2^(16)（65,536）个字符，这不足以定义世界各地使用的所有字符，因此将 Unicode 标准扩展到 0x10FFFF，支持超过一百万个字符。在
+    Java 编程语言中，字符的定义无法从 16 位更改为 32 位，否则会导致数百万个 Java 应用程序无法正常运行。为了纠正这一定义，开发了一种方案来处理无法用
+    16 位编码的字符。
+- en: The characters with values that are outside of the 16-bit range, and within
+    the range from 0x10000 to 0x10FFFF, are called *supplementary characters* and
+    are defined as a pair of `char` values.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值在 16 位范围之外，且在 0x10000 到 0x10FFFF 范围内的字符被称为*补充字符*，并被定义为一对 `char` 值。
+- en: 'This lesson includes the following sections:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程包括以下部分：
+- en: "[Terminology](terminology.html) \x96 Code points and other terms are explained."
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[术语](terminology.html) \x96 解释了代码点和其他术语。"
+- en: "[Supplementary Characters as Surrogates](supplementaryChars.html) \x96 16-bit\
+    \ surrogates are used to implement supplementary characters, which cannot be implemented\
+    \ as a single primitive `char` data type."
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[补充字符作为代理](supplementaryChars.html) \x96 使用 16 位代理实现无法作为单个原始 `char` 数据类型实现的补充字符。"
+- en: "[Character and String API](characterClass.html) \x96 A listing of related API\
+    \ for the `Character`, `String`, and related classes."
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[字符和字符串 API](characterClass.html) \x96 列出了与 `Character`、`String` 和相关类相关的 API。"
+- en: "[Sample Usage](usage.html) \x96 Several useful code snippets are provided."
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[示例用法](usage.html) \x96 提供了几个有用的代码片段。"
+- en: "[Design Considerations](design.html) \x96 Design considerations to keep in\
+    \ mind to ensure that your application will work with any language script."
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[设计考虑](design.html) \x96 要牢记的设计考虑，以确保您的应用程序能够与任何语言脚本一起工作。"
+- en: "[More Information](info.html) \x96 A list of further resources are provided."
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[更多信息](info.html) \x96 提供了更多资源列表。"

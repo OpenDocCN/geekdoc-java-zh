@@ -1,0 +1,559 @@
+- en: Processing Audio with Controls
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用控件处理音频
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sound/controls.html](https://docs.oracle.com/javase/tutorial/sound/controls.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sound/controls.html](https://docs.oracle.com/javase/tutorial/sound/controls.html)
+- en: Previous sections have discussed how to play or capture audio samples. The implicit
+    goal has been to deliver samples as faithfully as possible, without modification
+    (other than possibly mixing the samples with those from other audio lines). Sometimes,
+    however, you want to be able to modify the signal. The user might want it to sound
+    louder, quieter, fuller, more reverberant, higher or lower in pitch, and so on.
+    This page discusses the Java Sound API features that provide these kinds of signal
+    processing.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 先前的部分已经讨论了如何播放或捕获音频样本。隐含的目标是尽可能忠实地传递样本，而不进行修改（除了可能将样本与其他音频线路的样本混合）。然而，有时您可能希望能够修改信号。用户可能希望声音听起来更响亮、更安静、更丰满、更具混响、音高更高或更低等。本页讨论了提供这些类型信号处理的Java
+    Sound API功能。
+- en: 'There are two ways to apply signal processing:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两种应用信号处理的方式：
+- en: You can use any processing supported by the mixer or its component lines, by
+    querying for [`Control`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/Control.html)
+    objects and then setting the controls as the user desires. Typical controls supported
+    by mixers and lines include gain, pan, and reverberation controls.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以通过查询[`Control`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/Control.html)对象并根据用户的需求设置控件来使用混音器或其组件线路支持的任何处理。混音器和线路通常支持的控件包括增益、声像和混响控件。
+- en: If the kind of processing you need isn't provided by the mixer or its lines,
+    your program can operate directly on the audio bytes, manipulating them as desired.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果混音器或其线路提供的处理方式不符合您的需求，您的程序可以直接操作音频字节，根据需要进行操作。
+- en: This page discusses the first technique in greater detail, because there is
+    no special API for the second technique.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页更详细地讨论了第一种技术，因为第二种技术没有专门的 API。
+- en: Introduction to Controls
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 控件介绍
+- en: A mixer can have various sorts of signal-processing controls on some or all
+    of its lines. For example, a mixer used for audio capture might have an input
+    port with a gain control, and target data lines with gain and pan controls. A
+    mixer used for audio playback might have sample-rate controls on its source data
+    lines. In each case, the controls are all accessed through methods of the `Line`
+    interface.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 混音器的某些或所有线路上可以有各种信号处理控件。例如，用于音频捕获的混音器可能具有带增益控制的输入端口，以及带增益和声像控制的目标数据线。用于音频播放的混音器可能在其源数据线上具有采样率控制。在每种情况下，所有控件都通过`Line`接口的方法访问。
+- en: Because the `Mixer` interface extends `Line`, the mixer itself can have its
+    own set of controls. These might serve as master controls affecting all the mixer's
+    source or target lines. For example, the mixer might have a master gain control
+    whose value in decibels is added to the values of individual gain controls on
+    its target lines.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`Mixer`接口扩展了`Line`，混音器本身可以具有自己的一组控件。这些控件可能作为主控件，影响所有混音器的源或目标线路。例如，混音器可能具有主增益控制，其分贝值会添加到其目标线路上各个增益控制的值中。
+- en: Others of the mixer's own controls might affect a special line, neither a source
+    nor a target, that the mixer uses internally for its processing. For example,
+    a global reverb control might choose the sort of reverberation to apply to a mixture
+    of the input signals, and this "wet" (reverberated) signal would get mixed back
+    into the "dry" signal before delivery to the mixer's target lines.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 混音器的其他控件可能会影响一个特殊的线路，既不是源也不是目标，混音器在内部用于其处理。例如，全局混响控制可能选择应用于输入信号混合的混响类型，这个“湿”（混响）信号会在传递到混音器的目标线路之前混合回“干”信号中。
+- en: If the mixer or any of its lines have controls, you might wish to expose the
+    controls via graphical objects in your program's user interface, so that the user
+    can adjust the audio characteristics as desired. The controls are not themselves
+    graphical; they just allow you to retrieve and change their settings. It's up
+    to you to decide what sort of graphical representations (sliders, buttons, etc.),
+    if any, to use in your program.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果混音器或其任何线路具有控件，则您可能希望通过程序用户界面中的图形对象公开控件，以便用户可以根据需要调整音频特性。这些控件本身并不是图形化的；它们只是允许您检索和更改其设置。由您决定在程序中使用何种图形表示（滑块、按钮等）。
+- en: All controls are implemented as concrete subclasses of the abstract class `Control`.
+    Many typical audio-processing controls can be described by abstract subclasses
+    of `Control` based on a data type (such as boolean, enumerated, or float). Boolean
+    controls, for example, represent binary-state controls, such as on/off controls
+    for mute or reverb. Float controls, on the other hand, are well suited to represent
+    continuously variable controls, such as pan, balance, or volume.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有控件都作为抽象类`Control`的具体子类实现。许多典型的音频处理控件可以通过基于数据类型（如布尔值、枚举值或浮点数）的`Control`的抽象子类来描述。例如，布尔控件代表二进制状态控件，如静音或混响的开/关控件。另一方面，浮点控件非常适合表示连续可变控件，如声道、平衡或音量。
+- en: 'The Java Sound API specifies the following abstract subclasses of `Control`:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java音频API指定了以下`Control`的抽象子类：
+- en: '[`BooleanControl`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/BooleanControl.html)—
+    represents a binary-state (true or false) control. For example, mute, solo, and
+    on/off switches would be good candidates for `BooleanControls`.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`BooleanControl`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/BooleanControl.html)
+    — 代表二进制状态（真或假）控件。例如，静音、独奏和开/关开关都是`BooleanControls`的良好候选。'
+- en: '[`FloatControl`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/FloatControl.html)
+    — data model providing control over a range of floating-point values. For example,
+    volume and pan are `FloatControls` that could be manipulated via a dial or slider.'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`FloatControl`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/FloatControl.html)
+    — 提供对一系列浮点值的控制的数据模型。例如，音量和声道是可以通过旋钮或滑块操作的`FloatControls`。'
+- en: '[`EnumControl`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/EnumControl.html)—
+    offers a choice from a set of objects. For example, you might associate a set
+    of buttons in the user interface with an `EnumControl` to select one of several
+    preset reverberation settings.'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`EnumControl`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/EnumControl.html)
+    — 提供从一组对象中进行选择的选项。例如，您可以将用户界面中的一组按钮与`EnumControl`关联起来，以选择几个预设混响设置中的一个。'
+- en: '[`CompoundControl`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/CompoundControl.html)—provides
+    access to a collection of related items, each of which is itself an instance of
+    a `Control` subclass. `CompoundControls` represent multi-control modules such
+    as graphic equalizers. (A graphic equalizer would typically be depicted by a set
+    of sliders, each affecting a `FloatControl`.)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`CompoundControl`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/CompoundControl.html)
+    — 提供对一组相关项目的访问，其中每个项目本身都是`Control`子类的实例。`CompoundControls`代表多控件模块，如图形均衡器。（图形均衡器通常由一组滑块表示，每个滑块影响一个`FloatControl`。）'
+- en: Each subclass of `Control` above has methods appropriate for its underlying
+    data type. Most of the classes include methods that set and get the control's
+    current value(s), get the control's label(s), and so on.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 上述每个`Control`的子类都有适用于其基础数据类型的方法。大多数类包括设置和获取控件当前值的方法，获取控件标签等。
+- en: Of course, each class has methods that are particular to it and the data model
+    represented by the class. For example, `EnumControl` has a method that lets you
+    get the set of its possible values, and `FloatControl` permits you to get its
+    minimum and maximum values, as well as the precision (increment or step size)
+    of the control.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当然，每个类都有特定于它和类所代表的数据模型的方法。例如，`EnumControl`有一个方法让您获取其可能值的集合，而`FloatControl`允许您获取其最小和最大值，以及控件的精度（增量或步长）。
+- en: Each subclass of `Control` has a corresponding `Control.Type` subclass, which
+    includes static instances that identify specific controls.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个`Control`的子类都有一个对应的`Control.Type`子类，其中包括标识特定控件的静态实例。
+- en: 'The following table shows each `Control` subclass, its corresponding `Control.Type`
+    subclass, and the static instances that indicate specific kinds of controls:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格显示了每个`Control`子类、其对应的`Control.Type`子类以及指示特定控件类型的静态实例：
+- en: '| `Control` | `Control.Type` | `Control.Type` **instances** |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Control` | `Control.Type` | `Control.Type` **实例** |'
+- en: '| `BooleanControl` | `BooleanControl.Type` | `MUTE` – Mute status of line `APPLY_REVERB`
+    – Reverberation on/off |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| `BooleanControl` | `BooleanControl.Type` | `MUTE` – 线路静音状态 `APPLY_REVERB`
+    – 混响开/关 |'
+- en: '| `CompoundControl` | `CompoundControl.Type` | (none) |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| `CompoundControl` | `CompoundControl.Type` | (无) |'
+- en: '| `EnumControl` | `EnumControl.Type` | `REVERB` – Access to reverb settings
+    (each is an instance of ReverbType) |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| `EnumControl` | `EnumControl.Type` | `REVERB` – 访问混响设置（每个都是ReverbType的实例）
+    |'
+- en: '| `FloatControl` | `FloatControl.Type` | `AUX_RETURN` – Auxiliary return gain
+    on a line `AUX_SEND` – Auxiliary send gain on a line'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `FloatControl` | `FloatControl.Type` | `AUX_RETURN` – 线路上的辅助返回增益 `AUX_SEND`
+    – 线路上的辅助发送增益'
+- en: '`BALANCE` – Left-right volume balance'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`BALANCE` – 左右音量平衡'
+- en: '`MASTER_GAIN` – Overall gain on a line'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MASTER_GAIN` – 线路上的总增益'
+- en: '`PAN` – Left-right position'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`PAN` – 左右位置'
+- en: '`REVERB_RETURN` – Post-reverb gain on a line'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`REVERB_RETURN` – 线路上的后混响增益'
+- en: '`REVERB_SEND` – Pre-reverb gain on a line'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`REVERB_SEND` – 线路上的前混响增益'
+- en: '`SAMPLE_RATE` – Playback sample rate'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SAMPLE_RATE` – 播放采样率'
+- en: '`VOLUME` – Volume on a line |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VOLUME` – 线路上的音量 |'
+- en: An implementation of the Java Sound API can provide any or all of these control
+    types on its mixers and lines. It can also supply additional control types not
+    defined in the Java Sound API. Such control types could be implemented via concrete
+    subclasses of any of these four abstract subclasses, or via additional `Control`
+    subclasses that don't inherit from any of these four abstract subclasses. An application
+    program can query each line to find what controls it supports.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API 的实现可以在其混音器和线路上提供任何或所有这些控件类型。它还可以提供 Java Sound API 中未定义的其他控件类型。这些控件类型可以通过这四个抽象子类的具体子类或不继承这四个抽象子类的其他
+    `Control` 子类来实现。应用程序可以查询每条线路以查找它支持的控件。
+- en: Getting a Line that Has the Desired Controls
+  id: totrans-35
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 获取具有所需控件的线路
+- en: In many cases, an application program will simply display whatever controls
+    happen to be supported by the line in question. If the line doesn't have any controls,
+    so be it. But what if it's important to find a line that has certain controls?
+    In that case, you can use a `Line.Info` to obtain a line that has the right characteristics,
+    as previously described under [Getting a Line of a Desired Type](accessing.html#113154).
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在许多情况下，应用程序将简单地显示该线路支持的任何控件。如果线路没有任何控件，那就算了。但是如果重要的是找到具有特定控件的线路呢？在这种情况下，您可以使用
+    `Line.Info` 来获取具有正确特征的线路，如之前在 [获取所需类型的线路](accessing.html#113154) 中描述的。
+- en: 'For example, suppose you prefer an input port that lets the user set the volume
+    of the sound input. The following code excerpt shows how one might query the default
+    mixer to determine whether it has the desired port and control:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设您希望有一个输入端口，让用户设置声音输入的音量。以下代码摘录显示了如何查询默认混音器以确定它是否具有所需的端口和控件：
+- en: '[PRE0]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Getting the Controls from the Line
+  id: totrans-39
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 从线路获取控件
+- en: An application program that needs to expose controls in its user interface might
+    simply query the available lines and controls, and then display an appropriate
+    user-interface element for every control on every line of interest. In such a
+    case, the program's only mission is to provide the user with "handles" on the
+    control; not to know what those controls do to the audio signal. As long as the
+    program knows how to map a line's controls into user-interface elements, the Java
+    Sound API architecture of `Mixer`, `Line`, and `Control` will generally take care
+    of the rest.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个需要在其用户界面中公开控件的应用程序可能只需查询可用的线路和控件，然后为感兴趣的每条线路上的每个控件显示适当的用户界面元素。在这种情况下，程序的唯一任务是为用户提供对控件的“处理”，而不是知道这些控件对音频信号做了什么。只要程序知道如何将线路的控件映射到用户界面元素，Java
+    Sound API 的 `Mixer`、`Line` 和 `Control` 架构通常会处理其余部分。
+- en: 'For example, suppose your program plays back sound. You''re using a `SourceDataLine`,
+    which you''ve obtained as previously described under [Getting a Line of a Desired
+    Type](accessing.html#113154). You can access the line''s controls by invoking
+    the following `Line` method:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设您的程序播放声音。您正在使用一个 `SourceDataLine`，如之前在 [获取所需类型的线路](accessing.html#113154)
+    中描述的那样获取。您可以通过调用以下 `Line` 方法来访问线路的控件：
+- en: '[PRE1]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Then, for each of the controls in this returned array, you then use the following
+    `Control` method to get the control''s type:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，对于返回的数组中的每个控件，您可以使用以下 `Control` 方法来获取控件的类型：
+- en: '[PRE2]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Knowing the specific `Control.Type` instance, your program can display a corresponding
+    user-interface element. Of course, choosing "a corresponding user-interface element"
+    for a specific `Control.Type` depends on the approach taken by your program. On
+    the one hand, you might use the same kind of element to represent all `Control.Type`
+    instances of the same class. This would require you to query the *class* of the
+    `Control.Type` instance using, for example, the `Object.getClass` method. Let's
+    say the result matched `BooleanControl.Type`. In this case, your program might
+    display a generic check box or toggle button, but if its class matched `FloatControl.Type`,
+    then you might display a graphic slider.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 知道特定的`Control.Type`实例后，您的程序可以显示相应的用户界面元素。当然，为特定的`Control.Type`选择“相应的用户界面元素”取决于您的程序采取的方法。一方面，您可能会使用相同类型的元素来表示同一类别的所有`Control.Type`实例。这将需要您使用例如`Object.getClass`方法查询`Control.Type`实例的*类*。假设结果匹配了`BooleanControl.Type`。在这种情况下，您的程序可能会显示一个通用的复选框或切换按钮，但如果其类匹配了`FloatControl.Type`，那么您可能会显示一个图形滑块。
+- en: On the other hand, your program might distinguish between different types of
+    controls—even those of the same class—and use a different user-interface element
+    for each one. This would require you to test the *instance* returned by `Control's
+    getType` method. Then if, for example, the type matched `BooleanControl.Type.APPLY_REVERB`,
+    your program might display a check box; while if the type matched `BooleanControl.Type.MUTE`,
+    you might instead display a toggle button.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，您的程序可能会区分不同类型的控件，甚至是同一类别的控件，并为每个控件使用不同的用户界面元素。这将需要您测试`Control's getType`方法返回的*实例*。然后，例如，如果类型匹配了`BooleanControl.Type.APPLY_REVERB`，您的程序可能会显示一个复选框；而如果类型匹配了`BooleanControl.Type.MUTE`，您可能会显示一个切换按钮。
+- en: Using a Control to Change the Audio Signal
+  id: totrans-47
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用控件更改音频信号
+- en: 'Now that you know how to access a control and determine its type, this section
+    will describe how to use `Controls` to change aspects of the audio signal. This
+    section doesn''t cover every available control; rather, it provides a few examples
+    in this area to show you how to get started. These example include:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您知道如何访问控件并确定其类型，本节将描述如何使用`Controls`来更改音频信号的各个方面。本节不涵盖所有可用的控件；相反，它提供了一些示例，以展示如何入门。这些示例包括：
+- en: Controlling a line's mute state
+  id: totrans-49
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 控制线的静音状态
+- en: Changing a line's volume
+  id: totrans-50
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 更改线路的音量
+- en: Selecting among various reverberation presets
+  id: totrans-51
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在各种混响预设中进行选择
+- en: Suppose that your program has accessed all of its mixers, their lines and the
+    controls on those lines, and that it has a data structure to manage the logical
+    associations between the controls and their corresponding user-interface elements.
+    Then, translating the user's manipulations of those controls into the corresponding
+    `Control` methods becomes a fairly straightforward matter.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您的程序已经访问了所有的混音器、它们的线路以及这些线路上的控件，并且它有一个数据结构来管理控件与其对应的用户界面元素之间的逻辑关联。那么，将用户对这些控件的操作转换为相应的`Control`方法就变得相当简单。
+- en: The following subsections describe some of the methods that must be invoked
+    to affect the changes to specific controls.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下各小节描述了必须调用的一些方法，以影响特定控件的更改。
+- en: Controlling a Line's Mute State
+  id: totrans-54
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 控制线的静音状态
+- en: 'Controlling the mute state of any line is simply a matter of calling the following
+    `BooleanControl` method:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 控制任何线的静音状态只需调用以下`BooleanControl`方法：
+- en: '[PRE3]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: (Presumably, the program knows, by referring to its control-management data
+    structures, that the mute is an instance of a `BooleanControl`.) To mute the signal
+    that's passing through the line, the program invokes the method above, specifying
+    `true` as the value. To turn muting off, permitting the signal to flow through
+    the line, the program invokes the method with the parameter set to `false`.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: （可以假设程序通过引用其控件管理数据结构知道，静音是`BooleanControl`的一个实例。）为了使通过线路传递的信号静音，程序调用上述方法，指定值为`true`。要关闭静音，允许信号通过线路流动，程序调用该方法并将参数设置为`false`。
+- en: Changing a Line's Volume
+  id: totrans-58
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 更改线路的音量
+- en: 'Let''s assume your program associates a particular graphic slider with a particular
+    line''s volume control. The value of a volume control (that is, `FloatControl.Type.VOLUME`)
+    is set using the following `FloatControl` method:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您的程序将特定的图形滑块与特定线路的音量控制相关联。音量控制的值（即`FloatControl.Type.VOLUME`）是使用以下`FloatControl`方法设置的：
+- en: '[PRE4]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Detecting that the user moved the slider, the program gets the slider's current
+    value and passes it, as the parameter `newValue`, to the method above. This changes
+    the volume of the signal flowing though the line that "owns" the control.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检测到用户移动滑块后，程序会获取滑块的当前值，并将其作为参数`newValue`传递给上述方法。这会改变通过拥有该控件的线路流动的信号的音量。
+- en: Selecting among Various Reverberation Presets
+  id: totrans-62
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 在各种混响预设中进行选择
+- en: 'Let''s suppose that our program has a mixer with a line that has a control
+    of type `EnumControl.Type.REVERB`. Calling the `EnumControl` method:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设我们的程序有一个带有类型为`EnumControl.Type.REVERB`的控件的混音器。调用`EnumControl`方法：
+- en: '[PRE5]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'on that control produces an array of `ReverbType` objects. If desired, the
+    particular parameter settings of each of these objects can be accessed using the
+    following `ReverbType` methods:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在该控件上会生成一个`ReverbType`对象数组。如果需要，可以使用以下`ReverbType`方法访问每个对象的特定参数设置：
+- en: '[PRE6]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: For example, if a program only wants a single reverb setting that sounds like
+    a cavern, it can iterate over the `ReverbType` objects until it finds one for
+    which `getDecayTime` returns a value greater than 2000\. For a thorough explanation
+    of these methods, including a table of representative return values, see the API
+    reference documentation for `javax.sound.sampled.ReverbType`.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，如果一个程序只想要一个听起来像洞穴的混响设置，它可以迭代`ReverbType`对象，直到找到一个`getDecayTime`返回大于2000的值。有关这些方法的详细解释，包括代表性返回值表，请参阅`javax.sound.sampled.ReverbType`的API参考文档。
+- en: Typically, though, a program will create a user-interface element, for example,
+    a radio button, for each of the `ReverbType` objects within the array returned
+    by the `getValues` method. When the user clicks on one of these radio buttons,
+    the program invokes the `EnumControl` method
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，程序会为`getValues`方法返回的数组中的每个`ReverbType`对象创建一个用户界面元素，例如单选按钮。当用户点击其中一个单选按钮时，程序会调用`EnumControl`方法。
+- en: '[PRE7]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: where `value` is set to the `ReverbType` that corresponds to the newly engaged
+    button. The audio signal sent through the line that "owns" this `EnumControl`
+    will then be reverberated according to the parameter settings that constitute
+    the control's current `ReverbType` (that is, the particular `ReverbType` specified
+    in the `value` argument of the `setValue` method).
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中`value`设置为与新选择的按钮对应的`ReverbType`。通过拥有此`EnumControl`的线路发送的音频信号将根据构成控件当前`ReverbType`（即`setValue`方法的`value`参数中指定的特定`ReverbType`）的参数设置而产生混响效果。
+- en: So, from our application program's perspective, enabling a user to move from
+    one reverberation preset (that is, ReverbType) to another is simply a matter of
+    connecting each element of the array returned by `getValues` to a distinct radio
+    button.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，从我们应用程序的角度来看，让用户从一个混响预设（即ReverbType）移动到另一个只是将`getValues`返回的数组的每个元素连接到不同的单选按钮。
+- en: Manipulating the Audio Data Directly
+  id: totrans-72
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 直接操作音频数据
+- en: The `Control` API allows an implementation of the Java Sound API, or a third-party
+    provider of a mixer, to supply arbitrary sorts of signal processing through controls.
+    But what if no mixer offers the kind of signal processing you need? It will take
+    more work, but you might be able to implement the signal processing in your program.
+    Because the Java Sound API gives you access to the audio data as an array of bytes,
+    you can alter these bytes in any way you choose.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Control` API允许Java Sound API的实现或混音器的第三方提供商通过控件提供任意类型的信号处理。但是如果没有混音器提供所需类型的信号处理怎么办？这需要更多的工作，但您可能可以在程序中实现信号处理。因为Java
+    Sound API允许您将音频数据作为字节数组访问，您可以以任何您选择的方式修改这些字节。'
+- en: If you're processing incoming sound, you can read the bytes from a `TargetDataLine`
+    and then manipulate them. An algorithmically trivial example that can yield sonically
+    intriguing results is to play a sound backwards by arranging its frames in reverse
+    order. This trivial example may not be of much use for your program, but there
+    are numerous sophisticated digital signal processing (DSP) techniques that might
+    be more appropriate. Some examples are equalization, dynamic-range compression,
+    peak limiting, and time stretching or compression, as well as special effects
+    such as delay, chorus, flanging, distortion, and so on.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在处理传入的声音，您可以从`TargetDataLine`中读取字节，然后对其进行操作。一个算法上微不足道但可以产生引人入胜结果的例子是通过将其帧按相反顺序排列来倒放声音。这个微不足道的例子可能对您的程序没有太大用处，但有许多复杂的数字信号处理（DSP）技术可能更合适。一些例子包括均衡、动态范围压缩、峰值限制、时间拉伸或压缩，以及延迟、合唱、混响、失真等特效。
+- en: To play back processed sound, you can place your manipulated array of bytes
+    into a `SourceDataLine` or `Clip`. Of course, the array of bytes need not be derived
+    from an existing sound. You can synthesize sounds from scratch, although this
+    requires some knowledge of acoustics or else access to sound-synthesis functions.
+    For either processing or synthesis, you may want to consult an audio DSP textbook
+    for the algorithms in which you're interested, or else import a third-party library
+    of signal-processing functions into your program. For playback of synthesized
+    sound, consider whether the `Synthesizer` API in the `javax.sound.midi` package
+    meets your needs instead. You'll learn about more about `javax.sound.midi` later
+    under [Synthesizing Sound](MIDI-synth.html).
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要播放处理过的声音，您可以将处理后的字节数组放入`SourceDataLine`或`Clip`中。当然，字节数组不一定需要来自现有的声音。您可以从头开始合成声音，尽管这需要一些声学知识或者访问声音合成函数。无论是处理还是合成，您可能需要查阅音频DSP教科书以获取您感兴趣的算法，或者将第三方信号处理函数库导入到您的程序中。对于合成声音的播放，考虑一下`javax.sound.midi`包中的`Synthesizer`
+    API是否符合您的需求。稍后在[合成声音](MIDI-synth.html)下您将了解更多关于`javax.sound.midi`的内容。

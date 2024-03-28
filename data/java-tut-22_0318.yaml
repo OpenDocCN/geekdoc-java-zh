@@ -1,0 +1,63 @@
+- en: 'Lesson: Deploying Self-Contained Applications'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：部署自包含应用程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/index.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/index.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/index.html)
+- en: A self-contained application consists of a single, installable bundle that contains
+    your application and a copy of the JRE needed to run the application. When the
+    application is installed, it behaves the in the same way as any native application.
+    Providing users with a self-contained application avoids the security issues related
+    to running an application in a browser.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自包含应用程序由一个单独的可安装捆绑包组成，其中包含您的应用程序和运行应用程序所需的JRE的副本。当安装应用程序时，它的行为与任何本地应用程序相同。为用户提供自包含应用程序可以避免在浏览器中运行应用程序时出现的安全问题。
+- en: You can customize a self-contained application by providing your own icons.
+    File associations can be set up so when a user opens a file that your application
+    can handle, your application is started automatically. Multiple entry points are
+    supported so you can deliver a suite of applications in a single self-contained
+    application bundle.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过提供自己的图标来自定义自包含应用程序。可以设置文件关联，因此当用户打开您的应用程序可以处理的文件时，您的应用程序会自动启动。支持多个入口点，因此您可以在单个自包含应用程序捆绑包中提供一套应用程序。
+- en: Self-contained applications can be packaged using the Java Packaging tools.
+    The `javapackager` command creates the bundle for self-contained applications
+    from the command line. NetBeans can also be used to created self-contained application
+    bundles. This lesson describes how to use Ant tasks to create the bundles.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可使用Java打包工具打包自包含应用程序。`javapackager`命令可以从命令行创建自包含应用程序的捆绑包。NetBeans也可以用于创建自包含应用程序捆绑包。本课程描述了如何使用Ant任务创建这些捆绑包。
+- en: Additional References
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 其他参考资料
+- en: For more information about self-contained applications, see [Self-Contained
+    Application Packaging](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html)
+    in the Java Platform, Standard Edition Deployment Guide.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关自包含应用程序的更多信息，请参阅Java平台标准版部署指南中的[自包含应用程序打包](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html)。
+- en: For information about Ant tasks for Java packaging, see [JavaFX Ant Tasks](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_tasks.html),
+    which are used for packaging Java SE and JavaFX applications.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关Java打包的Ant任务的信息，请参阅[JavaFX Ant Tasks](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_tasks.html)，用于打包Java
+    SE和JavaFX应用程序。
+- en: For information about the `javapackager` command, see [Java Deployment Tools](https://docs.oracle.com/javase/8/docs/technotes/tools/index.html#deployment).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关`javapackager`命令的信息，请参阅[Java部署工具](https://docs.oracle.com/javase/8/docs/technotes/tools/index.html#deployment)。

@@ -1,0 +1,121 @@
+- en: 'Trail: Custom Networking'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：自定义网络
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/index.html](https://docs.oracle.com/javase/tutorial/networking/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/index.html](https://docs.oracle.com/javase/tutorial/networking/index.html)
+- en: The Java platform is highly regarded in part because of its suitability for
+    writing programs that use and interact with the resources on the Internet and
+    the World Wide Web. In fact, Java-compatible browsers use this ability of the
+    Java platform to the extreme to transport and run applets over the Internet.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台备受推崇，部分原因是其适用于编写使用和与互联网资源以及万维网进行交互的程序。事实上，兼容Java的浏览器极大地利用了Java平台的这种能力，在互联网上传输和运行小程序。
+- en: This trail walks you through the complexities of writing Java applications and
+    applets that can be used on the Internet.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程将引导您了解编写可在互联网上使用的Java应用程序和小程序的复杂性。
+- en: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **Overview of
+    Networking**](overview/index.html) has two sections. The first describes the networking
+    capabilities of the Java platform that you may already be using without realizing
+    that you are using the network. The second provides a brief overview of networking
+    to familiarize you with terms and concepts that you should understand before reading
+    how to use URLs, sockets, and datagrams.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **网络概述**](overview/index.html)有两个部分。第一部分描述了Java平台的网络功能，您可能已经在不知不觉中使用网络。第二部分简要概述了网络，使您熟悉在阅读如何使用URL、套接字和数据报之前应了解的术语和概念。'
+- en: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **Working With
+    URLs**](urls/index.html) discusses how your Java programs can use URLs to access
+    information on the Internet. A URL (Uniform Resource Locator) is the address of
+    a resource on the Internet. Your Java programs can use URLs to connect to and
+    retrieve information over a network. This lesson provides a more complete definition
+    of a URL and shows you how to create and parse a URL, how to open a connection
+    to a URL, and how to read from and write to that connection.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **使用URL**](urls/index.html)讨论了您的Java程序如何使用URL来访问互联网上的信息。URL（统一资源定位符）是互联网上资源的地址。您的Java程序可以使用URL来连接并检索网络上的信息。本课程提供了URL的更完整定义，并向您展示如何创建和解析URL，如何打开与URL的连接，以及如何从该连接读取和写入。'
+- en: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **All About
+    Sockets**](sockets/index.html) explains how to use sockets so that your programs
+    can communicate with other programs on the network. A socket is one endpoint of
+    a two-way communication link between two programs running on the network. This
+    lesson shows you how a client can connect to a standard server, the Echo server,
+    and communicate with it via a socket. It then walks you through the details of
+    a complete client/server example, which shows you how to implement both the client
+    side and the server side of a client/server pair.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **套接字全解**](sockets/index.html)解释了如何使用套接字，以便您的程序可以与网络上的其他程序通信。套接字是运行在网络上的两个程序之间的双向通信链路的一个端点。本课程向您展示了客户端如何连接到标准服务器Echo服务器，并通过套接字与其通信。然后，它详细介绍了一个完整客户端/服务器示例的细节，展示了如何实现客户端和服务器端的客户端/服务器对。'
+- en: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **All About
+    Datagrams**](datagrams/index.html) takes you step by step through a simple client/server
+    example that uses datagrams to communicate. It then challenges you to rewrite
+    the example using multicast socket instead.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **数据报全解**](datagrams/index.html)逐步带您完成一个使用数据报进行通信的简单客户端/服务器示例。然后，它挑战您使用多播套接字重新编写示例。'
+- en: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **Programmatic
+    Access to Network Parameters**](nifs/index.html) explains why you might want to
+    access network interface parameters and how to do so. It gives examples of how
+    to list all the IP addresses assigned to the machine as well as other useful information
+    such as whether the interface is running.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **程序访问网络参数**](nifs/index.html)解释了为什么您可能想要访问网络接口参数以及如何做到这一点。它提供了如何列出分配给计算机的所有IP地址以及其他有用信息的示例，例如接口是否正在运行。'
+- en: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **Working With
+    Cookies**](cookies/index.html) discusses how cookies are used to create a session
+    between a client and server, and how you can take advantage of cookies in your
+    HTTP URL connections.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![Trail icon](../Images/b929e6c2f9f6c31f7b36a0212d7f1fef.png) **使用 Cookies**](cookies/index.html)
+    讨论了如何使用 cookies 在客户端和服务器之间创建会话，以及如何在 HTTP URL 连接中利用 cookies。'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Security considerations:**'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**安全考虑：**'
+- en: Note that communications over the network are subject to approval by the current
+    security manager. [The Security Manager](../essential/environment/security.html)
+    describes what a security manager is and how it impacts your applications. For
+    general information about the security features provided by the JDK, refer to
+    [Security Features in Java SE](../security/index.html) .
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，网络通信需经当前安全管理器批准。[安全管理器](../essential/environment/security.html) 描述了安全管理器是什么以及它如何影响您的应用程序。有关
+    JDK 提供的安全功能的一般信息，请参考 [Java SE 中的安全功能](../security/index.html)。
+- en: The example programs in the following lessons that cover URLs, sockets, and
+    datagrams are standalone applications, which, by default, have no security manager.
+    If you convert these applications to applets, they may be unable to communicate
+    over the network, depending on the browser or viewer in which they are running.
+    See [What Applets Can and Cannot Do](../deployment/applet/security.html) for information
+    about the security restrictions placed on applets.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面课程中的示例程序涵盖了 URL、套接字和数据报，它们都是独立的应用程序，默认情况下没有安全管理器。如果将这些应用程序转换为小程序，根据运行它们的浏览器或查看器的不同，它们可能无法在网络上通信。请参阅
+    [小程序的功能和限制](../deployment/applet/security.html) 以获取有关小程序所受安全限制的信息。
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

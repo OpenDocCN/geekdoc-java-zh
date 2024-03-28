@@ -1,0 +1,421 @@
+- en: Standard MBeans
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 标准 MBeans
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jmx/mbeans/standard.html](https://docs.oracle.com/javase/tutorial/jmx/mbeans/standard.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jmx/mbeans/standard.html](https://docs.oracle.com/javase/tutorial/jmx/mbeans/standard.html)
+- en: This section presents an example of a straightforward, standard MBean.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍了一个简单的标准 MBean 示例。
+- en: A standard MBean is defined by writing a Java interface called `SomethingMBean`
+    and a Java class called `Something` that implements that interface. Every method
+    in the interface defines either an attribute or an operation in the MBean. By
+    default, every method defines an operation. Attributes and operations are methods
+    that follow certain design patterns. A standard MBean is composed of an MBean
+    interface and a class. The MBean interface lists the methods for all exposed attributes
+    and operations. The class implements this interface and provides the functionality
+    of the instrumented resource.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过编写一个名为 `SomethingMBean` 的 Java 接口和一个实现该接口的名为 `Something` 的 Java 类来定义标准 MBean。接口中的每个方法默认定义一个操作。属性和操作是遵循特定设计模式的方法。标准
+    MBean 由一个 MBean 接口和一个类组成。MBean 接口列出了所有公开属性和操作的方法。类实现此接口并提供受监视资源的功能。
+- en: The following sections examine an example of a standard MBean and a simple JMX
+    technology-enabled agent (JMX agent) that manages the MBean.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下部分将介绍一个标准 MBean 和一个简单的支持 JMX 技术的代理（JMX 代理）管理该 MBean。
+- en: MBean Interface
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: MBean 接口
+- en: 'An example of a basic MBean interface, [`HelloMBean`](../examples/HelloMBean.java)
+    , follows:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个基本 MBean 接口的示例，[`HelloMBean`](../examples/HelloMBean.java)，如下所示：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: By convention, an MBean interface takes the name of the Java class that implements
+    it, with the suffix *`MBean`* added. In this case, the interface is called `HelloMBean`.
+    The `Hello` class that implements this interface is described in the next section.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 按照惯例，一个 MBean 接口采用实现它的 Java 类的名称，后缀 *`MBean`* 添加在后面。在这种情况下，接口被称为 `HelloMBean`。实现此接口的
+    `Hello` 类将在下一节中描述。
+- en: 'According to the JMX specification, an MBean interface consists of named and
+    typed attributes that are readable and possibly writable, in addition to the named
+    and typed operations that can be invoked by the applications that are managed
+    by the MBean. The `HelloMBean` interface declares two operations: the Java methods
+    `add()` and `sayHello()`.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据 JMX 规范，一个 MBean 接口由具有名称和类型的属性组成，这些属性可读取并可能可写，另外还包括由 MBean 管理的应用程序可以调用的具有名称和类型的操作。`HelloMBean`
+    接口声明了两个操作：Java 方法 `add()` 和 `sayHello()`。
+- en: '`HelloMBean` declares two attributes: `Name` is a read-only string, and `CacheSize`
+    is an integer that can be both read and written. Getter and setter methods are
+    declared to allow the managed application to access and possibly change the attribute
+    values. As defined by the JMX specification, a *getter* is any public method that
+    does not return void and whose name begins with `get`. A getter enables a manager
+    to read the value of the attribute, whose type is that of the returned object.
+    A *setter* is any public method that takes a single parameter and whose name begins
+    with `set`. A setter enables a manager to write a new value in the attribute,
+    whose type is the same as that of the parameter.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`HelloMBean` 声明了两个属性：`Name` 是一个只读字符串，`CacheSize` 是一个既可读又可写的整数。声明了 getter 和
+    setter 方法，允许受管应用程序访问并可能更改属性值。根据 JMX 规范的定义，*getter* 是任何不返回 void 并且名称以 `get` 开头的公共方法。getter
+    使管理者能够读取属性的值，其类型与返回对象的类型相同。*setter* 是任何接受单个参数并且名称以 `set` 开头的公共方法。setter 使管理者能够在属性中写入新值，其类型与参数的类型相同。'
+- en: The implementation of these operations and attributes is shown in the following
+    section.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些操作和属性的实现在下一节中展示。
+- en: MBean Implementation
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: MBean 实现
+- en: 'The [`Hello`](../examples/Hello.java) Java class that follows implements the
+    `HelloMBean` MBean interface:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的 [`Hello`](../examples/Hello.java) Java 类实现了 `HelloMBean` MBean 接口：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The straightforward `Hello` class provides the definitions of the operations
+    and attributes that are declared by `HelloMBean`. The `sayHello()` and `add()`
+    operations are extremely simple, but real-life operations can be as simple or
+    as sophisticated as needed.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 直接的 `Hello` 类提供了由 `HelloMBean` 声明的操作和属性的定义。`sayHello()` 和 `add()` 操作非常简单，但实际操作可以根据需要简单或复杂。
+- en: The methods to get the `Name` attribute and to get and set the `CacheSize` attribute
+    are also defined. In this example, the `Name` attribute value never changes. However,
+    in a real scenario this attribute might change as the managed resource runs. For
+    example, the attribute might represent statistics such as uptime or memory usage.
+    Here, the attribute is merely the name `Reginald`.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还定义了获取`Name`属性和获取/设置`CacheSize`属性的方法。在此示例中，`Name`属性值永远不会改变。但是，在实际情况下，此属性可能随着受管资源的运行而发生变化。例如，该属性可能代表诸如正常运行时间或内存使用情况之类的统计信息。在这里，该属性仅仅是名称`Reginald`。
+- en: Calling the `setCacheSize` method enables you to alter the `CacheSize` attribute
+    from its declared default value of 200\. In a real scenario, changing the `CacheSize`
+    attribute could require other operations to be performed, such as discarding entries
+    or allocating new entries. This example merely prints a message to confirm that
+    the cache size has changed. However, more sophisticated operations could be defined
+    instead of the simple call to `println()`.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调用`setCacheSize`方法可以修改`CacheSize`属性，将其从声明的默认值200改变。在实际情况下，更改`CacheSize`属性可能需要执行其他操作，例如丢弃条目或分配新条目。此示例仅仅打印一条消息以确认缓存大小已更改。但是，可以定义更复杂的操作，而不是简单调用`println()`。
+- en: With the `Hello` MBean and its interface thus defined, they can now be used
+    to manage the resource they represent, as shown in the following section.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有了`Hello` MBean及其接口的定义，它们现在可以用来管理它们所代表的资源，如下一节所示。
+- en: Creating a JMX Agent to Manage a Resource
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建一个用于管理资源的JMX代理
+- en: Once a resource has been instrumented by MBeans, the management of that resource
+    is performed by a JMX agent.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦资源被MBeans进行了仪器化，该资源的管理就由JMX代理执行。
+- en: The core component of a JMX agent is the MBean server. An MBean server is a
+    managed object server in which MBeans are registered. A JMX agent also includes
+    a set of services to manage MBeans. See the API documentation for the [`MBeanServer`](https://docs.oracle.com/javase/8/docs/api/javax/management/MBeanServer.html)
+    interface for details of the MBean server implementation.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JMX代理的核心组件是MBean服务器。MBean服务器是一个托管对象服务器，其中注册了MBeans。JMX代理还包括一组服务来管理MBeans。有关MBean服务器实现的详细信息，请参阅[`MBeanServer`](https://docs.oracle.com/javase/8/docs/api/javax/management/MBeanServer.html)接口的API文档。
+- en: 'The [`Main`](../examples/Main.java) class that follows represents a basic JMX
+    agent:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的[`Main`](../examples/Main.java)类代表了一个基本的JMX代理：
+- en: '[PRE2]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The JMX agent `Main` begins by obtaining an MBean server that has been created
+    and initialized by the platform, by calling the `getPlatformMBeanServer()` method
+    of the [`java.lang.management.ManagementFactory`](https://docs.oracle.com/javase/8/docs/api/java/lang/management/ManagementFactory.html)
+    class. If no MBean server has been created by the platform already, then `getPlatformMBeanServer()`
+    creates an MBean server automatically by calling the JMX method [`MBeanServerFactory.createMBeanServer()`](https://docs.oracle.com/javase/8/docs/api/javax/management/MBeanServerFactory.html#createMBeanServer--).
+    The `MBeanServer` instance obtained by `Main` is named `mbs`.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JMX代理`Main`首先通过调用[`java.lang.management.ManagementFactory`](https://docs.oracle.com/javase/8/docs/api/java/lang/management/ManagementFactory.html)类的`getPlatformMBeanServer()`方法来获取由平台创建和初始化的MBean服务器。如果平台尚未创建MBean服务器，则`getPlatformMBeanServer()`会通过调用JMX方法[`MBeanServerFactory.createMBeanServer()`](https://docs.oracle.com/javase/8/docs/api/javax/management/MBeanServerFactory.html#createMBeanServer--)自动创建MBean服务器。`Main`获取的`MBeanServer`实例命名为`mbs`。
+- en: Next, `Main` defines an object name for the MBean instance that it will create.
+    Every JMX MBean must have an object name. The object name is an instance of the
+    JMX class [`ObjectName`](https://docs.oracle.com/javase/8/docs/api/javax/management/ObjectName.html)
+    and must conform to the syntax defined by the JMX specification. Namely, the object
+    name must contain a domain and a list of key-properties. In the object name defined
+    by `Main`, the domain is `com.example` (the package in which the example MBean
+    is contained). In addition, the key-property declares that this object is of the
+    type `Hello`.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，`Main`为将要创建的MBean实例定义了一个对象名称。每个JMX MBean都必须有一个对象名称。对象名称是JMX类[`ObjectName`](https://docs.oracle.com/javase/8/docs/api/javax/management/ObjectName.html)的一个实例，并且必须符合JMX规范定义的语法。换句话说，对象名称必须包含一个域和一组键-属性。在`Main`定义的对象名称中，域是`com.example`（示例MBean所在的包）。此外，键-属性声明此对象是`Hello`类型。
+- en: An instance of a `Hello` object, named `mbean`, is created. The `Hello` object
+    named `mbean` is then registered as an MBean in the MBean server `mbs` with the
+    object name `name`, by passing the object and the object name into a call to the
+    JMX method [`MBeanServer.registerMBean()`](https://docs.oracle.com/javase/8/docs/api/javax/management/MBeanServer.html#registerMBean-java.lang.Object-javax.management.ObjectName-).
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建了一个名为`mbean`的`Hello`对象实例。然后，通过将对象和对象名称传递给JMX方法[`MBeanServer.registerMBean()`](https://docs.oracle.com/javase/8/docs/api/javax/management/MBeanServer.html#registerMBean-java.lang.Object-javax.management.ObjectName-)，将名为`mbean`的`Hello`对象注册为MBean在MBean服务器`mbs`中。
+- en: With the `Hello` MBean registered in the MBean server, `Main` simply waits for
+    management operations to be performed on `Hello`. In this example, these management
+    operations are invoking `sayHello()` and `add()`, and getting and setting the
+    attribute values.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在MBean服务器中注册了`Hello` MBean后，`Main`只是等待对`Hello`执行管理操作。在这个示例中，这些管理操作包括调用`sayHello()`和`add()`，以及获取和设置属性值。
+- en: Running the Standard MBean Example
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行标准MBean示例
+- en: Having examined the example classes, you can now run the example. In this example,
+    JConsole is used to interact with the MBean.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在检查了示例类之后，现在可以运行示例了。在这个示例中，使用JConsole与MBean交互。
+- en: 'To run the example, follow these steps:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要运行示例，请按照以下步骤操作：
+- en: Save the bundle of JMX API sample classes, [`jmx_examples.zip`](../examples/jmx_examples.zip),
+    to your working directory, `work_dir`.
+  id: totrans-31
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将JMX API示例类的包[`jmx_examples.zip`](../examples/jmx_examples.zip)保存到你的工作目录`work_dir`。
+- en: Unzip the bundle of sample classes by using the following command in a terminal
+    window.
+  id: totrans-32
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用以下命令在终端窗口中解压示例类的包。
+- en: '[PRE3]'
+  id: totrans-33
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Compile the example Java classes from within the `work_dir` directory.
+  id: totrans-34
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在`work_dir`目录中编译示例Java类。
+- en: '[PRE4]'
+  id: totrans-35
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: If you are running the Java Development Kit (JDK) version 6, start the `Main`
+    application with the following command.
+  id: totrans-36
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果你正在运行Java开发工具包（JDK）版本6，请使用以下命令启动`Main`应用程序。
+- en: '[PRE5]'
+  id: totrans-37
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: If you are running a JDK version that is older than version 6, you will need
+    to start the `Main` application with the following option specified, to expose
+    the application for monitoring and management.
+  id: totrans-38
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如果你使用的JDK版本低于6，你需要使用以下选项启动`Main`应用程序，以便监控和管理应用程序。
+- en: '[PRE6]'
+  id: totrans-39
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: A confirmation that `Main` is waiting for something to happen is displayed.
+  id: totrans-40
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示`Main`正在等待某些事件发生的确认。
+- en: Start JConsole in a different terminal window on the same machine.
+  id: totrans-41
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在同一台机器的不同终端窗口中启动JConsole。
+- en: '[PRE7]'
+  id: totrans-42
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The New Connection dialog box is displayed, presenting a list of running JMX
+    agents that you can connect to.
+  id: totrans-43
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示新连接对话框，列出了可以连接的正在运行的JMX代理的列表。
+- en: In the New Connection dialog box, select `com.example.Main` from the list and
+    click Connect.
+  id: totrans-44
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在新连接对话框中，从列表中选择`com.example.Main`，然后点击连接。
+- en: A summary of your platform's current activity is displayed.
+  id: totrans-45
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示您平台当前活动的摘要。
+- en: Click the MBeans tab.
+  id: totrans-46
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击MBeans选项卡。
+- en: This panel shows all the MBeans that are currently registered in the MBean server.
+  id: totrans-47
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此面板显示当前在MBean服务器中注册的所有MBean。
+- en: In the left frame, expand the `com.example` node in the MBean tree.
+  id: totrans-48
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在左侧框架中，展开MBean树中的`com.example`节点。
+- en: You see the example MBean `Hello` that was created and registered by `Main`.
+    If you click `Hello`, you see its associated Attributes and Operations nodes in
+    the MBean tree.
+  id: totrans-49
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 你会看到由`Main`创建和注册的示例MBean `Hello`。如果你点击`Hello`，你会在MBean树中看到其关联的属性和操作节点。
+- en: Expand the Attributes node of the `Hello` MBean in the MBean tree.
+  id: totrans-50
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 展开MBean树中`Hello` MBean的属性节点。
+- en: The MBean attributes that were defined by the `Hello` class are displayed.
+  id: totrans-51
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示由`Hello`类定义的MBean属性。
+- en: Change the value of the `CacheSize` attribute to 150.
+  id: totrans-52
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将`CacheSize`属性的值更改为150。
+- en: In the terminal window in which you started `Main`, a confirmation of this attribute
+    change is generated.
+  id: totrans-53
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在你启动`Main`的终端窗口中，会生成对属性更改的确认。
+- en: Expand the Operations node of the `Hello` MBean in the MBean tree.
+  id: totrans-54
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 展开MBean树中`Hello` MBean的操作节点。
+- en: The two operations declared by the `Hello` MBean, `sayHello()` and `add()`,
+    are visible.
+  id: totrans-55
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`Hello` MBean声明的两个操作，`sayHello()`和`add()`，是可见的。'
+- en: Invoke the `sayHello()` operation by clicking the `sayHello` button.
+  id: totrans-56
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 通过点击`sayHello`按钮调用`sayHello()`操作。
+- en: A JConsole dialog box informs you that the method was invoked successfully.
+    The message *"hello, world"* is generated in the terminal window in which `Main`
+    is running.
+  id: totrans-57
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 一个JConsole对话框通知您方法已成功调用。消息“hello, world”会在运行`Main`的终端窗口中生成。
+- en: Provide two integers for the `add()` operation to add and click the `add` button.
+  id: totrans-58
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 为`add()`操作提供两个整数相加，然后点击`add`按钮。
+- en: The answer is displayed in a JConsole dialog box.
+  id: totrans-59
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 答案显示在一个 JConsole 对话框中。
+- en: To close JConsole, select Connection -> Exit.
+  id: totrans-60
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 要关闭 JConsole，请选择 Connection -> Exit。

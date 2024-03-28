@@ -1,0 +1,43 @@
+- en: Representing XML Content
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 表示XML内容
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/repcon.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/repcon.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/repcon.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/repcon.html)
+- en: This section describes how JAXB represents XML content as Java objects.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了JAXB如何将XML内容表示为Java对象。
+- en: Java Representation of XML Schema
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: XML模式的Java表示
+- en: 'JAXB supports the grouping of generated classes in Java packages. A package
+    consists of the following:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAXB支持将生成的类分组到Java包中。一个包包括以下内容：
+- en: A Java class name that is derived from the XML element name or specified by
+    a binding customization.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 从XML元素名称派生的Java类名称，或者由绑定自定义指定。
+- en: An `ObjectFactory` class, which is a factory that is used to return instances
+    of a bound Java class.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个`ObjectFactory`类，这是一个工厂，用于返回绑定的Java类的实例。

@@ -1,0 +1,80 @@
+- en: 'Lesson: Generating and Verifying Signatures'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：生成和验证签名
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/index.html](https://docs.oracle.com/javase/tutorial/security/apisign/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/index.html](https://docs.oracle.com/javase/tutorial/security/apisign/index.html)
+- en: This lesson walks you through the steps necessary to use the JDK Security API
+    to generate a digital signature for data and to verify that a signature is authentic.
+    This lesson is meant for developers who wish to incorporate security functionality
+    into their programs, including cryptography services.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程将指导您使用JDK安全API为数据生成数字签名并验证签名的步骤。本课程适用于希望将安全功能纳入其程序中的开发人员，包括密码服务。
+- en: This lesson demonstrates the use of the JDK Security API with respect to signing
+    documents. The lesson shows what one program, executed by the person who has the
+    original document, would do to generate keys, generate a digital signature for
+    the document using the private key, and export the public key and the signature
+    to files.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程演示了使用JDK安全API签署文档。该课程展示了一个程序，由拥有原始文档的人执行，用于生成密钥、使用私钥为文档生成数字签名，并将公钥和签名导出到文件。
+- en: Then it shows an example of another program, executed by the receiver of the
+    document, signature, and public key. It shows how the program could import the
+    public key and verify the authenticity of the signature. The lesson also discusses
+    and demonstrates possible alternative approaches and methods of supplying and
+    importing keys, including in certificates.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后展示了另一个程序的示例，由文档、签名和公钥的接收者执行。展示了程序如何导入公钥并验证签名的真实性。该课程还讨论并演示了可能的替代方法和提供和导入密钥的方法，包括在证书中。
+- en: For further information about the concepts and terminology (digital signatures,
+    certificates, keystores), see the [API and Tools Use for Secure Code and File
+    Exchanges](../sigcert/index.html) lesson.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 欲了解有关概念和术语（数字签名、证书、密钥库）的更多信息，请参阅[用于安全代码和文件交换的API和工具使用](../sigcert/index.html)课程。
+- en: In this lesson you create two basic applications, one for the digital signature
+    generation and the other for the verification. This is followed by a discussion
+    and demonstration of potential enhancements. The lesson contains three sections.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本课程中，您将创建两个基本应用程序，一个用于数字签名生成，另一个用于验证。接着讨论和演示了潜在的增强功能。本课程包含三个部分。
+- en: '[Generating a Digital Signature](gensig.html) shows using the API to generate
+    keys and a digital signature for data using the private key and to export the
+    public key and the signature to files. The application gets the data file name
+    from the command line.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[生成数字签名](gensig.html)展示了使用API生成数据的密钥和数字签名，使用私钥并将公钥和签名导出到文件。应用程序从命令行获取数据文件名。'
+- en: '[Verifying a Digital Signature](versig.html) shows using the API to import
+    a public key and a signature that is alleged to be the signature of a specified
+    data file and to verify the authenticity of the signature. The data, public key,
+    and signature file names are specified on the command line.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[验证数字签名](versig.html)展示了使用API导入一个公钥和一个据称是指定数据文件签名的签名，并验证签名的真实性。数据、公钥和签名文件名在命令行中指定。'
+- en: '[Weaknesses and Alternatives](enhancements.html) discusses potential weaknesses
+    of the approach used by the basic programs. It then presents and demonstrates
+    possible alternative approaches and methods of supplying and importing keys, including
+    the use of files containing encoded key bytes and the use of certificates containing
+    public keys.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[弱点和替代方案](enhancements.html)讨论了基本程序使用的方法可能存在的弱点。然后介绍并演示了可能的替代方法和提供和导入密钥的方法，包括使用包含编码密钥字节的文件和使用包含公钥的证书。'

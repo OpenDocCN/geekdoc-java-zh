@@ -1,0 +1,272 @@
+- en: How to Write a Property Change Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写属性更改侦听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/propertychangelistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/propertychangelistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/propertychangelistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/propertychangelistener.html)
+- en: Property-change events occur whenever the value of a *bound property* changes
+    for a *bean* — a component that conforms to the JavaBeans™ specification. You
+    can find out more about beans from the [JavaBeans](../../javabeans/) trail of
+    the Java Tutorial. All Swing components are also beans.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当*bean*（符合JavaBeans™规范的组件）的*bound property*的值更改时，都会触发属性更改事件。您可以从Java教程的[JavaBeans](../../javabeans/)
+    trail中了解更多关于beans的信息。所有Swing组件也都是beans。
+- en: A JavaBeans property is accessed through its *get* and *set* methods. For example,
+    `JComponent` has the property *font* which is accessible through the `getFont`
+    and `setFont` methods.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个JavaBeans属性通过其*get*和*set*方法访问。例如，`JComponent`具有*font*属性，可以通过`getFont`和`setFont`方法访问。
+- en: Besides the *get* and *set* methods, a bound property fires a property-change
+    event when its value changes. For more information, see the [Bound Properties](../../javabeans/writing/properties.html#bound)
+    page in the JavaBeans trail.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了*get*和*set*方法外，绑定属性在其值更改时会触发属性更改事件。有关更多信息，请参阅JavaBeans trail中的[Bound Properties](../../javabeans/writing/properties.html#bound)页面。
+- en: 'Some scenarios that commonly require property-change listeners include:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些常常需要属性更改侦听器的场景包括：
+- en: You have implemented a formatted text field and need a way to detect when the
+    user has entered a new value. You can register a property-change listener on the
+    formatted text field to listen to changes on the *value* property. See `FormattedTextFieldDemo`
+    in [How to Use Formatted Text Fields](../components/formattedtextfield.html#value)
+    for an example of this.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您已经实现了一个格式化文本字段，并且需要一种方法来检测用户何时输入了新值。您可以在格式化文本字段上注册一个属性更改侦听器，以侦听*value*属性的更改。请参阅[How
+    to Use Formatted Text Fields](../components/formattedtextfield.html#value)中的`FormattedTextFieldDemo`示例。
+- en: You have implemented a dialog and need to know when a user has clicked one of
+    the dialog's buttons or changed a selection in the dialog. See `DialogDemo` in
+    [How to Make Dialogs](../components/dialog.html#stayup) for an example of registering
+    a property-change listener on an option pane to listen to changes to the *value*
+    property. You can also check out `FileChooserDemo2` in [How to Use File Choosers](../components/filechooser.html#advancedexample)
+    for an example of how to register a property-change listener to listen to changes
+    to the *directoryChanged* and *selectedFileChanged* properties.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您已经实现了一个对话框，并且需要知道用户何时单击了对话框的按钮或更改了对话框中的选择。请参阅[How to Make Dialogs](../components/dialog.html#stayup)中的`DialogDemo`示例，了解如何在选项面板上注册属性更改侦听器以侦听*value*属性的更改。您还可以查看[How
+    to Use File Choosers](../components/filechooser.html#advancedexample)中的`FileChooserDemo2`示例，了解如何注册属性更改侦听器以侦听*directoryChanged*和*selectedFileChanged*属性的更改。
+- en: You need to be notified when the component that has the focus changes. You can
+    register a property-change listener on the keyboard focus manager to listen to
+    changes to the *focusOwner* property. See `TrackFocusDemo` and `DragPictureDemo`
+    in [How to Use the Focus Subsystem](../misc/focus.html#trackingFocus) for examples
+    of this.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您需要在具有焦点的组件更改时收到通知。您可以在键盘焦点管理器上注册一个属性更改侦听器，以侦听*focusOwner*属性的更改。请参阅[How to Use
+    the Focus Subsystem](../misc/focus.html#trackingFocus)中的`TrackFocusDemo`和`DragPictureDemo`示例。
+- en: Although these are some of the more common uses for property-change listeners,
+    you can register a property-change listener on the bound property of any component
+    that conforms to the JavaBeans specification.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管这些是属性更改侦听器的一些常见用途，但您可以在符合JavaBeans规范的任何组件的绑定属性上注册属性更改侦听器。
+- en: 'You can register a property change listener in two ways. The first uses the
+    method `addPropertyChangeListener(PropertyChangeListener)`. When you register
+    a listener this way, you are notified of every change to every bound property
+    for that object. In the `propertyChange` method, you can get the name of the property
+    that has changed using the `PropertyChangeEvent` `getPropertyName` method, as
+    in the following code snippet:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过两种方式注册属性更改侦听器。第一种使用`addPropertyChangeListener(PropertyChangeListener)`方法。当以这种方式注册侦听器时，您将收到有关该对象的每个绑定属性的每次更改的通知。在`propertyChange`方法中，您可以使用`PropertyChangeEvent`的`getPropertyName`方法获取已更改的属性的名称，如以下代码片段所示：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The second way to register a property change listener uses the method `addPropertyChangeListener(String,
+    PropertyChangeListener)`. The `String` argument is the name of a property. Using
+    this method means that you only receive notification when a change occurs to that
+    particular property. So, for example, if you registered a property change listener
+    like this:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二种注册属性更改监听器的方法使用了方法 `addPropertyChangeListener(String, PropertyChangeListener)`。`String`
+    参数是属性的名称。使用这种方法意味着只有在特定属性发生更改时才会收到通知。例如，如果你像这样注册了一个属性更改监听器：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '`FontListener` only receives notification when the value of the component''s
+    *font* property changes. It does *not* receive notification when the value changes
+    for *transferHandler*, *opaque*, *border*, or any other property.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`FontListener` 只有在组件的 *font* 属性值更改时才会收到通知。它 *不会* 在 *transferHandler*、*opaque*、*border*
+    或任何其他属性值更改时收到通知。'
+- en: 'The following example shows how to register a property change listener on the
+    *value* property of a formatted text field using the two-argument version of `addPropertyChangeListener`:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例展示了如何使用 `addPropertyChangeListener` 的两个参数版本在格式化文本字段的 *value* 属性上注册属性更改监听器：
+- en: '[PRE2]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The Property Change Listener API
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 属性更改监听器 API
+- en: Registering a PropertyChangeListener
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注册 PropertyChangeListener
+- en: '| Method | Purpose |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [addPropertyChangeListener(PropertyChangeListener)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#addPropertyChangeListener-java.beans.PropertyChangeListener-)
+    | Add a property-change listener to the listener list. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| [addPropertyChangeListener(PropertyChangeListener)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#addPropertyChangeListener-java.beans.PropertyChangeListener-)
+    | 向监听器列表中添加一个属性更改监听器。 |'
+- en: '| [addPropertyChangeListener(String, PropertyChangeListener)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#addPropertyChangeListener-java.lang.String-java.beans.PropertyChangeListener-)
+    | Add a property-change listener for a specific property. The listener is called
+    only when there is a change to the specified property. |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| [addPropertyChangeListener(String, PropertyChangeListener)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#addPropertyChangeListener-java.lang.String-java.beans.PropertyChangeListener-)
+    | 为特定属性添加属性更改监听器。只有当指定属性发生更改时才会调用监听器。 |'
+- en: The PropertyChangeListener Interface
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: PropertyChangeListener 接口
+- en: '*Because `PropertyChangeListener` has only one method, it has no corresponding
+    adapter class.*'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*因为 `PropertyChangeListener` 只有一个方法，所以没有相应的适配器类。*'
+- en: '| Method | Purpose |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [propertyChange(PropertyChangeEvent)](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyChangeListener.html#propertyChange-java.beans.PropertyChangeEvent-)
+    | Called when the listened-to bean changes a bound property. |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| [propertyChange(PropertyChangeEvent)](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyChangeListener.html#propertyChange-java.beans.PropertyChangeEvent-)
+    | 当被监听的 bean 更改绑定属性时调用。 |'
+- en: The PropertyChangeEvent Class
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`PropertyChangeEvent` 类'
+- en: '| Method | Purpose |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Object getNewValue()](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyChangeEvent.html#getNewValue--)
+    [Object getOldValue()](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyChangeEvent.html#getOldValue--)
+    | Return the new, or old, value of the property, respectively. |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getNewValue()](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyChangeEvent.html#getNewValue--)
+    [Object getOldValue()](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyChangeEvent.html#getOldValue--)
+    | 分别返回属性的新值或旧值。 |'
+- en: '| [String getPropertyName()](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyChangeEvent.html#getPropertyName--)
+    | Return the name of the property that was changed. |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| [String getPropertyName()](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyChangeEvent.html#getPropertyName--)
+    | 返回已更改的属性的名称。 |'
+- en: '| [void setPropagationId()](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyChangeEvent.html#setPropagationId--)
+    | Get or set the propagation ID value. Reserved for future use. |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setPropagationId()](https://docs.oracle.com/javase/8/docs/api/java/beans/PropertyChangeEvent.html#setPropagationId--)
+    | 获取或设置传播 ID 值。保留供将来使用。 |'
+- en: Examples that Use Property Change Listeners
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用属性更改监听器的示例
+- en: The following table lists the examples that use property-change listeners.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了使用属性更改监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`FormattedTextFieldDemo`](../examples/components/index.html#FormattedTextFieldDemo)
+    | [How to Use Formatted Text Fields](../components/formattedtextfield.html#value)
+    | A property-change listener is registered on several formatted text fields to
+    track changes to the *value* property. |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`FormattedTextFieldDemo`](../examples/components/index.html#FormattedTextFieldDemo)
+    | [如何使用格式化文本字段](../components/formattedtextfield.html#value) | 在多个格式化文本字段上注册了属性更改监听器，以跟踪
+    *value* 属性的更改。 |'
+- en: '| [`DialogDemo`](../examples/components/index.html#DialogDemo) | [How to Make
+    Dialogs](../components/dialog.html#stayup) | The [`CustomDialog`](../examples/components/DialogDemoProject/src/components/CustomDialog.java)
+    class registers a property-change listener on an option pane to listen to the
+    *value* and *inputValue* properties. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`DialogDemo`](../examples/components/index.html#DialogDemo) | [如何创建对话框](../components/dialog.html#stayup)
+    | [`CustomDialog`](../examples/components/DialogDemoProject/src/components/CustomDialog.java)类在选项面板上注册属性更改监听器，以监听*value*和*inputValue*属性的变化。'
+- en: '| [`FileChooserDemo2`](../examples/components/index.html#FileChooserDemo2)
+    | [How to Use File Choosers](../components/filechooser.html#advancedexample) |
+    The [`ImagePreview`](../examples/components/FileChooserDemo2Project/src/components/ImagePreview.java)
+    class registers a property-change listener on the file chooser to listen to the
+    *directoryChanged* and *selectedFileChanged* properties. |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`FileChooserDemo2`](../examples/components/index.html#FileChooserDemo2)
+    | [如何使用文件选择器](../components/filechooser.html#advancedexample) | [`ImagePreview`](../examples/components/FileChooserDemo2Project/src/components/ImagePreview.java)类在文件选择器上注册属性更改监听器，以监听*directoryChanged*和*selectedFileChanged*属性的变化。'
+- en: '| [`TrackFocusDemo`](../examples/misc/index.html#TrackFocusDemo) | [How to
+    Use the Focus Subsystem](../misc/focus.html#trackingFocus) | A property-change
+    listener is registered on the keyboard focus manager to track changes to the *focusOwner*
+    property. |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TrackFocusDemo`](../examples/misc/index.html#TrackFocusDemo) | [如何使用焦点子系统](../misc/focus.html#trackingFocus)
+    | 在键盘焦点管理器上注册属性更改监听器以跟踪*focusOwner*属性的变化。'

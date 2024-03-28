@@ -1,0 +1,62 @@
+- en: Erasure of Generic Types
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 泛型类型的擦除
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/genTypes.html](https://docs.oracle.com/javase/tutorial/java/generics/genTypes.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/genTypes.html](https://docs.oracle.com/javase/tutorial/java/generics/genTypes.html)
+- en: During the type erasure process, the Java compiler erases all type parameters
+    and replaces each with its first bound if the type parameter is bounded, or `Object`
+    if the type parameter is unbounded.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在类型擦除过程中，Java编译器擦除所有类型参数，并用其第一个边界替换每个类型参数（如果类型参数是有界的），或者用`Object`替换（如果类型参数是无界的）。
+- en: 'Consider the following generic class that represents a node in a singly linked
+    list:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑下面表示单链表中节点的泛型类：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Because the type parameter `T` is unbounded, the Java compiler replaces it
+    with `Object`:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为类型参数`T`是无界的，Java编译器将其替换为`Object`：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'In the following example, the generic `Node` class uses a bounded type parameter:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在下面的示例中，泛型`Node`类使用了有界类型参数：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The Java compiler replaces the bounded type parameter `T` with the first bound
+    class, `Comparable`:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编译器将有界类型参数`T`替换为第一个边界类`Comparable`：
+- en: '[PRE3]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

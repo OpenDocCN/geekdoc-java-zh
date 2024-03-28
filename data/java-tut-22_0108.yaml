@@ -1,0 +1,137 @@
+- en: Converting Between Numbers and Strings
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 在数字和字符串之间进行转换
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/data/converting.html](https://docs.oracle.com/javase/tutorial/java/data/converting.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/data/converting.html](https://docs.oracle.com/javase/tutorial/java/data/converting.html)
+- en: Converting Strings to Numbers
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将字符串转换为数字
+- en: "Frequently, a program ends up with numeric data in a string object\x97a value\
+    \ entered by the user, for example."
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "经常情况下，程序最终会在字符串对象中包含数值数据\x97例如用户输入的值。"
+- en: 'The `Number` subclasses that wrap primitive numeric types ( [`Byte`](https://docs.oracle.com/javase/8/docs/api/java/lang/Byte.html),
+    [`Integer`](https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html),
+    [`Double`](https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html), [`Float`](https://docs.oracle.com/javase/8/docs/api/java/lang/Float.html),
+    [`Long`](https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html), and [`Short`](https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html))
+    each provide a class method named `valueOf` that converts a string to an object
+    of that type. Here is an example, [`ValueOfDemo`](examples/ValueOfDemo.java) ,
+    that gets two strings from the command line, converts them to numbers, and performs
+    arithmetic operations on the values:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 包装原始数值类型的`Number`子类（[`Byte`](https://docs.oracle.com/javase/8/docs/api/java/lang/Byte.html)、[`Integer`](https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html)、[`Double`](https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html)、[`Float`](https://docs.oracle.com/javase/8/docs/api/java/lang/Float.html)、[`Long`](https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html)和[`Short`](https://docs.oracle.com/javase/8/docs/api/java/lang/Short.html)）每个都提供一个名为`valueOf`的类方法，将字符串转换为该类型的对象。以下是一个示例，[`ValueOfDemo`](examples/ValueOfDemo.java)，从命令行获取两个字符串，将它们转换为数字，并对这些值执行算术运算：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following is the output from the program when you use `4.5` and `87.2`
+    for the command-line arguments:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您使用`4.5`和`87.2`作为命令行参数时，程序的输出如下：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Each of the `Number` subclasses that wrap primitive numeric types
+    also provides a `parseXXXX()` method (for example, `parseFloat()`) that can be
+    used to convert strings to primitive numbers. Since a primitive type is returned
+    instead of an object, the `parseFloat()` method is more direct than the `valueOf()`
+    method. For example, in the `ValueOfDemo` program, we could use:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**包装原始数值类型的每个`Number`子类还提供一个`parseXXXX()`方法（例如，`parseFloat()`），可用于将字符串转换为原始数值。由于返回的是原始类型而不是对象，因此`parseFloat()`方法比`valueOf()`方法更直接。例如，在`ValueOfDemo`程序中，我们可以使用：'
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Converting Numbers to Strings
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将数字转换为字符串
+- en: 'Sometimes you need to convert a number to a string because you need to operate
+    on the value in its string form. There are several easy ways to convert a number
+    to a string:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时您需要将数字转换为字符串，因为您需要在其字符串形式上进行操作。有几种简单的方法可以将数字转换为字符串：
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: or
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者
+- en: '[PRE4]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Each of the `Number` subclasses includes a class method, `toString()`, that
+    will convert its primitive type to a string. For example:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个`Number`子类都包括一个类方法`toString()`，将其原始类型转换为字符串。例如：
+- en: '[PRE5]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The [`ToStringDemo`](examples/ToStringDemo.java) example uses the `toString`
+    method to convert a number to a string. The program then uses some string methods
+    to compute the number of digits before and after the decimal point:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`ToStringDemo`](examples/ToStringDemo.java)示例使用`toString`方法将数字转换为字符串。然后程序使用一些字符串方法来计算小数点前后的数字位数：'
+- en: '[PRE6]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The output of this program is:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序的输出为：
+- en: '[PRE7]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'

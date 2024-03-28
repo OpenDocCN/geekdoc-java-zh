@@ -1,0 +1,101 @@
+- en: Defining Simple Generics
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 定义简单的通用类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/simple.html](https://docs.oracle.com/javase/tutorial/extra/generics/simple.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/simple.html](https://docs.oracle.com/javase/tutorial/extra/generics/simple.html)
+- en: 'Here is a small excerpt from the definitions of the interfaces `List` and `Iterator`
+    in package `java.util`:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是包`java.util`中接口`List`和`Iterator`的定义的一个小节选：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This code should all be familiar, except for the stuff in angle brackets. Those
+    are the declarations of the *formal type parameters* of the interfaces `List`
+    and `Iterator`.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这段代码应该都很熟悉，除了尖括号中的内容。那些是接口`List`和`Iterator`的*形式类型参数*的声明。
+- en: Type parameters can be used throughout the generic declaration, pretty much
+    where you would use ordinary types (though there are some important restrictions;
+    see the section [The Fine Print](fineprint.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类型参数可以在通用声明中的几乎任何地方使用，就像你会使用普通类型一样（尽管有一些重要的限制；请参阅[细则](fineprint.html)部分）。
+- en: In the introduction, we saw *invocations* of the generic type declaration `List`,
+    such as `List<Integer>`. In the invocation (usually called a *parameterized type*),
+    all occurrences of the formal type parameter (`E` in this case) are replaced by
+    the *actual type argument* (in this case, `Integer`).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在介绍中，我们看到了`List`的*调用*，比如`List<Integer>`。在调用（通常称为*参数化类型*）中，所有形式类型参数（在本例中为`E`）的所有出现都被*实际类型参数*（在本例中为`Integer`）替换。
+- en: 'You might imagine that `List<Integer>` stands for a version of `List` where
+    `E` has been uniformly replaced by `Integer`:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能会想象`List<Integer>`代表了`List`的一个版本，其中`E`已经被`Integer`统一替换：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This intuition can be helpful, but it's also misleading.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种直觉可能有所帮助，但也是误导的。
+- en: It is helpful, because the parameterized type `List<Integer>` does indeed have
+    methods that look just like this expansion.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这很有帮助，因为参数化类型`List<Integer>`确实有看起来像这个展开的方法。
+- en: It is misleading, because the declaration of a generic is never actually expanded
+    in this way. There aren't multiple copies of the code—not in source, not in binary,
+    not on disk and not in memory. If you are a C++ programmer, you'll understand
+    that this is very different than a C++ template.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是误导的，因为通用的声明实际上从未以这种方式展开。代码中没有多个副本——不在源代码中，也不在二进制代码中，也不在磁盘上，也不在内存中。如果您是C++程序员，您会明白这与C++模板非常不同。
+- en: A generic type declaration is compiled once and for all, and turned into a single
+    class file, just like an ordinary class or interface declaration.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通用类型声明只编译一次，并转换为单个类文件，就像普通类或接口声明一样。
+- en: Type parameters are analogous to the ordinary parameters used in methods or
+    constructors. Much like a method has *formal value parameters* that describe the
+    kinds of values it operates on, a generic declaration has formal type parameters.
+    When a method is invoked, *actual arguments* are substituted for the formal parameters,
+    and the method body is evaluated. When a generic declaration is invoked, the actual
+    type arguments are substituted for the formal type parameters.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类型参数类似于方法或构造函数中使用的普通参数。就像方法有描述其操作的值种类的*形式值参数*一样，通用声明有形式类型参数。当调用方法时，*实际参数*被替换为形式参数，并且方法体被评估。当调用通用声明时，实际类型参数被替换为形式类型参数。
+- en: A note on naming conventions. We recommend that you use pithy (single character
+    if possible) yet evocative names for formal type parameters. It's best to avoid
+    lower case characters in those names, making it easy to distinguish formal type
+    parameters from ordinary classes and interfaces. Many container types use `E`,
+    for element, as in the examples above. We'll see some additional conventions in
+    later examples.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于命名约定的说明。我们建议您为形式类型参数使用简洁（如果可能的话是单个字符）但富有启发性的名称。最好避免在这些名称中使用小写字符，这样可以轻松区分形式类型参数和普通类和接口。许多容器类型使用`E`，表示元素，就像上面的例子一样。我们将在后面的例子中看到一些额外的约定。

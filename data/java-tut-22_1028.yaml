@@ -1,0 +1,104 @@
+- en: Sort Control
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 排序控制
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/sort.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/sort.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/sort.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/sort.html)
+- en: The sort control is used when a client wants the server to send the sorted search
+    results. The server-side sorting is useful in a situation where the client needs
+    to sort the results according to some criteria but is not equipped to perform
+    the sort process on its own. The sort control is specified in [RFC 2891](http://www.ietf.org/rfc/rfc2891.txt).
+    The classes below provide the functionality required to support sort control.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当客户端希望服务器发送排序后的搜索结果时，使用排序控制。服务器端排序在客户端需要根据某些标准对结果进行排序但无法自行执行排序过程的情况下非常有用。排序控制在[RFC
+    2891](http://www.ietf.org/rfc/rfc2891.txt)中指定。下面的类提供了支持排序控制所需的功能。
+- en: '[`javax.naming.ldap.SortControl`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/SortControl.html)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.ldap.SortControl`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/SortControl.html)'
+- en: '[`javax.naming.ldap.SortKey`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/SortKey.html)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.ldap.SortKey`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/SortKey.html)'
+- en: '[`javax.naming.ldap.SortResponseControl`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/SortResponseControl.html)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.ldap.SortResponseControl`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/SortResponseControl.html)'
+- en: The SortKey is an ordered list of keys based upon which the server sorts the
+    result.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SortKey是一个基于其排序结果的键的有序列表。
+- en: How to use Sort Control?
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 如何使用排序控制？
+- en: The example below illustrates the client-server interaction between a client
+    performing a search requesting a server-side sorting based on the attribute "cn".
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的示例说明了客户端执行搜索请求服务器端基于属性“cn”进行排序的客户端-服务器交互。
+- en: Client sends a search request asking for
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 客户端发送搜索请求请求
+- en: '[PRE0]'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The server responds with entries that are sorted based on the "cn" attribute
+    and its corresponding matching rule.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 服务器响应的条目是根据“cn”属性及其对应的匹配规则排序的。
+- en: '[PRE1]'
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The complete JNDI example can be found [`here`](examples/SortedResults.java).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 完整的JNDI示例可以在[`这里`](examples/SortedResults.java)找到。
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The sort control is supported by both Oracle Directory Server and
+    the Windows Active Directory server.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 排序控制由Oracle Directory Server和Windows Active Directory服务器都支持。'
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

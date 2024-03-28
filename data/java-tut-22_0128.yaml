@@ -1,0 +1,110 @@
+- en: Wildcards and Subtyping
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 通配符和子类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/subtyping.html](https://docs.oracle.com/javase/tutorial/java/generics/subtyping.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/subtyping.html](https://docs.oracle.com/javase/tutorial/java/generics/subtyping.html)
+- en: As described in [Generics, Inheritance, and Subtypes](inheritance.html), generic
+    classes or interfaces are not related merely because there is a relationship between
+    their types. However, you can use wildcards to create a relationship between generic
+    classes or interfaces.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[泛型、继承和子类型](inheritance.html)中所述，泛型类或接口之间并不仅仅因为它们的类型之间存在关系而相关。但是，您可以使用通配符来创建泛型类或接口之间的关系。
+- en: 'Given the following two regular (non-generic) classes:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 给定以下两个常规（非泛型）类：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'It would be reasonable to write the following code:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编写以下代码是合理的：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'This example shows that inheritance of regular classes follows this rule of
+    subtyping: class `B` is a subtype of class `A` if `B` extends `A`. This rule does
+    not apply to generic types:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例显示了常规类的继承遵循子类型规则：如果`B`扩展`A`，则类`B`是类`A`的子类型。这个规则不适用于泛型类型：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Given that `Integer` is a subtype of `Number`, what is the relationship between
+    `List<Integer>` and `List<Number>`?
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 鉴于`Integer`是`Number`的子类型，那么`List<Integer>`和`List<Number>`之间的关系是什么？
+- en: '![diagram showing that the common parent of List<Number> and List<Integer>
+    is the list of unknown type](../Images/dc022f9377d33074da806ba77ff31bd6.png)The
+    common parent is `List<?>`.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![显示List<Number>和List<Integer>的共同父类是未知类型列表的图表](../Images/dc022f9377d33074da806ba77ff31bd6.png)共同父类是`List<?>`。'
+- en: Although `Integer` is a subtype of `Number`, `List<Integer>` is not a subtype
+    of `List<Number>` and, in fact, these two types are not related. The common parent
+    of `List<Number>` and `List<Integer>` is `List<?>`.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管`Integer`是`Number`的子类型，但`List<Integer>`不是`List<Number>`的子类型，实际上，这两种类型没有关系。`List<Number>`和`List<Integer>`的共同父类是`List<?>`。
+- en: 'In order to create a relationship between these classes so that the code can
+    access `Number`''s methods through `List<Integer>`''s elements, use an upper bounded
+    wildcard:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了创建这些类之间的关系，以便代码可以通过`List<Integer>`的元素访问`Number`的方法，请使用上界通配符：
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Because `Integer` is a subtype of `Number`, and `numList` is a list of `Number`
+    objects, a relationship now exists between `intList` (a list of `Integer` objects)
+    and `numList`. The following diagram shows the relationships between several `List`
+    classes declared with both upper and lower bounded wildcards.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`Integer`是`Number`的子类型，而`numList`是`Number`对象的列表，现在`intList`（`Integer`对象的列表）和`numList`之间存在关系。以下图表显示了使用上下界通配符声明的几个`List`类之间的关系。
+- en: '![diagram showing that List<Integer> is a subtype of both List<? extends Integer>
+    and List<?super Integer>. List<? extends Integer> is a subtype of List<? extends
+    Number> which is a subtype of List<?>. List<Number> is a subtype of List<? super
+    Number> and List>? extends Number>. List<? super Number> is a subtype of List<?
+    super Integer> which is a subtype of List<?>.](../Images/7e91e8f2f44799ac416b04b63ecb5570.png)A
+    hierarchy of several generic `List` class declarations.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![显示List<Integer>是List<? extends Integer>和List<? super Integer>的子类型。List<?
+    extends Integer>是List<? extends Number>的子类型，后者是List<?>的子类型。List<Number>是List<?
+    super Number>和List>? extends Number>的子类型。List<? super Number>是List<? super Integer>的子类型，后者是List<?>的子类型。](../Images/7e91e8f2f44799ac416b04b63ecb5570.png)几个泛型`List`类声明的层次结构。'
+- en: The [Guidelines for Wildcard Use](wildcardGuidelines.html) section has more
+    information about the ramifications of using upper and lower bounded wildcards.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[通配符使用指南](wildcardGuidelines.html)部分有关于使用上下界通配符的更多信息。'

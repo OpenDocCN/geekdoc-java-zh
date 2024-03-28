@@ -1,0 +1,51 @@
+- en: Refining the Design
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 优化设计
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/refining.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/refining.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/refining.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/refining.html)
+- en: For demonstration purposes it makes sense to keep the painting logic entirely
+    contained within the `MyPanel` class. But if your application will need to track
+    multiple instances, one pattern that you could use is to factor that code out
+    into a separate class so that each square can be treated as an individual object.
+    This technique is common in 2D game programming and is sometimes referred to as
+    "sprite animation."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了演示目的，将绘图逻辑完全包含在`MyPanel`类中是有意义的。但是，如果您的应用程序需要跟踪多个实例，您可以使用一种模式，将该代码提取到一个单独的类中，以便每个正方形可以被视为一个独立的对象。这种技术在2D游戏编程中很常见，有时被称为“精灵动画”。
+- en: Click the Launch button to run SwingPaintDemo4 using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/painting/index.html#SwingPaintDemo4).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行SwingPaintDemo4（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/painting/index.html#SwingPaintDemo4)。
+- en: '[![Launches the SwingPaintDemo4 example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SwingPaintDemo4Project/SwingPaintDemo4.jnlp)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动SwingPaintDemo4示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SwingPaintDemo4Project/SwingPaintDemo4.jnlp)'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: In this particular implementation we have created a `RedSquare` class entirely
+    from scratch. Another approach would be to reuse the functionality of `java.awt.Rectangle`
+    by making the `RedSquare` a subclass of it. Regardless of how `RedSquare` is implemented,
+    the important point is that we have given the class a method that accepts a `Graphics`
+    object, and that method is invoked from the panel's `paintComponent` method. This
+    separation keeps your code clean because it essentially tells each red square
+    to paint itself.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个特定的实现中，我们完全从头开始创建了一个`RedSquare`类。另一种方法是通过使`RedSquare`成为`java.awt.Rectangle`的子类来重用其功能。无论`RedSquare`如何实现，重要的是我们给该类一个接受`Graphics`对象的方法，并且该方法从面板的`paintComponent`方法中调用。这种分离使您的代码保持清晰，因为它基本上告诉每个红色正方形自己绘制。

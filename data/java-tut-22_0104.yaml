@@ -1,0 +1,48 @@
+- en: Summary of Numbers
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 数字总结
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/data/numbersummary.html](https://docs.oracle.com/javase/tutorial/java/data/numbersummary.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/data/numbersummary.html](https://docs.oracle.com/javase/tutorial/java/data/numbersummary.html)
+- en: You use one of the wrapper classes – `Byte`, `Double`, `Float`, `Integer`, `Long`,
+    or `Short` – to wrap a number of primitive type in an object. The Java compiler
+    automatically wraps (boxes) primitives for you when necessary and unboxes them,
+    again when necessary.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用包装类之一 - `Byte`、`Double`、`Float`、`Integer`、`Long` 或 `Short` - 将原始类型的数字包装在对象中。在必要时，Java
+    编译器会自动为您包装（装箱）原始类型，并在必要时对其进行拆箱。
+- en: The `Number` classes include constants and useful class methods. The `MIN_VALUE`
+    and `MAX_VALUE` constants contain the smallest and largest values that can be
+    contained by an object of that type. The `byteValue`, `shortValue`, and similar
+    methods convert one numeric type to another. The `valueOf` method converts a string
+    to a number, and the `toString` method converts a number to a string.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Number` 类包括常量和有用的类方法。`MIN_VALUE` 和 `MAX_VALUE` 常量包含该类型对象可以包含的最小值和最大值。`byteValue`、`shortValue`
+    和类似方法将一个数值类型转换为另一个数值类型。`valueOf` 方法将字符串转换为数字，`toString` 方法将数字转换为字符串。'
+- en: To format a string containing numbers for output, you can use the `printf()`
+    or `format()` methods in the `PrintStream` class. Alternatively, you can use the
+    `NumberFormat` class to customize numerical formats using patterns.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要格式化包含数字的字符串以进行输出，可以使用 `PrintStream` 类中的 `printf()` 或 `format()` 方法。或者，您可以使用
+    `NumberFormat` 类使用模式自定义数字格式。
+- en: The `Math` class contains a variety of class methods for performing mathematical
+    functions, including exponential, logarithmic, and trigonometric methods. `Math`
+    also includes basic arithmetic functions, such as absolute value and rounding,
+    and a method, `random()`, for generating random numbers.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Math` 类包含各种执行数学函数的类方法，包括指数、对数和三角函数方法。`Math` 还包括基本算术函数，如绝对值和四舍五入，以及用于生成随机数的
+    `random()` 方法。'

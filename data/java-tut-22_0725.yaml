@@ -1,0 +1,738 @@
+- en: Using CachedRowSetObjects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用CachedRowSetObjects
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/cachedrowset.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/cachedrowset.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/cachedrowset.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/cachedrowset.html)
+- en: A `CachedRowSet` object is special in that it can operate without being connected
+    to its data source, that is, it is a *disconnected* `RowSet` object. It gets its
+    name from the fact that it stores (caches) its data in memory so that it can operate
+    on its own data rather than on the data stored in a database.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CachedRowSet`对象很特殊，它可以在不连接到数据源的情况下运行，也就是说，它是一个*断开连接*的`RowSet`对象。它的名字来源于它将数据存储（缓存）在内存中，这样它可以操作自己的数据而不是数据库中存储的数据。'
+- en: The `CachedRowSet` interface is the superinterface for all disconnected `RowSet`
+    objects, so everything demonstrated here also applies to `WebRowSet`, `JoinRowSet`,
+    and `FilteredRowSet` objects.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CachedRowSet`接口是所有断开连接的`RowSet`对象的超级接口，因此这里展示的所有内容也适用于`WebRowSet`、`JoinRowSet`和`FilteredRowSet`对象。'
+- en: Note that although the data source for a `CachedRowSet` object (and the `RowSet`
+    objects derived from it) is almost always a relational database, a `CachedRowSet`
+    object is capable of getting data from any data source that stores its data in
+    a tabular format. For example, a flat file or spreadsheet could be the source
+    of data. This is true when the `RowSetReader` object for a disconnected `RowSet`
+    object is implemented to read data from such a data source. The `CachedRowSet`
+    interface has a `RowSetReader` object that reads data from a relational database,
+    so in this tutorial, the data source is always a database.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，尽管`CachedRowSet`对象（以及从中派生的`RowSet`对象）的数据源几乎总是关系数据库，但`CachedRowSet`对象能够从以表格格式存储数据的任何数据源获取数据。例如，平面文件或电子表格可以是数据的来源。当为断开连接的`RowSet`对象实现`RowSetReader`对象以从这样的数据源读取数据时，这一点是正确的。`CachedRowSet`接口有一个从关系数据库读取数据的`RowSetReader`对象，因此在本教程中，数据源始终是数据库。
+- en: 'The following topics are covered:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面涵盖了以下主题：
+- en: '[Setting Up CachedRowSet Objects](#setting-up-cachedrowset-object)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置CachedRowSet对象](#setting-up-cachedrowset-object)'
+- en: '[Populating CachedRowSet Objects](#populating-cachedrowset-object)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[填充CachedRowSet对象](#populating-cachedrowset-object)'
+- en: '[What Reader Does](#reader)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Reader的作用](#reader)'
+- en: '[Updating CachedRowSet Objects](#updating-cachedrowset-object)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[更新CachedRowSet对象](#updating-cachedrowset-object)'
+- en: '[Updating Data Sources](#updating-data-source)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[更新数据源](#updating-data-source)'
+- en: '[What Writer Does](#writer)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Writer的作用](#writer)'
+- en: '[Notifying Listeners](#notifying-listeners)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[通知监听器](#notifying-listeners)'
+- en: '[Sending Large Amounts of Data](#sending-large-amounts-of-data)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[发送大量数据](#sending-large-amounts-of-data)'
+- en: Setting Up CachedRowSet Objects
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置CachedRowSet对象
+- en: 'Setting up a `CachedRowSet` object involves the following:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置`CachedRowSet`对象涉及以下内容：
+- en: '[Creating CachedRowSet Objects](#creating-cachedrowset-object)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建CachedRowSet对象](#creating-cachedrowset-object)'
+- en: '[Setting CachedRowSet Properties](#setting-cachedrowset-properties)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置CachedRowSet属性](#setting-cachedrowset-properties)'
+- en: '[Setting Key Columns](#setting-key-columns)'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置关键列](#setting-key-columns)'
+- en: Creating CachedRowSet Objects
+  id: totrans-19
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建CachedRowSet对象
+- en: Create a new `CachedRowSet` object by using an instance of `RowSetFactory`,
+    which is created from the class `RowSetProvider`.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过使用`RowSetProvider`类创建的`RowSetFactory`实例来创建一个新的`CachedRowSet`对象。
+- en: 'The following example from [`CachedRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CachedRowSetSample.java)
+    creates a `CachedRowSet` object:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例来自[`CachedRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CachedRowSetSample.java)创建了一个`CachedRowSet`对象：
+- en: '[PRE0]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The object `crs` has the same default values for its properties that a `JdbcRowSet`
+    object has when it is first created. In addition, it has been assigned an instance
+    of the default `SyncProvider` implementation, `RIOptimisticProvider`.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对象`crs`的属性具有与创建时`JdbcRowSet`对象相同的默认值。此外，它已被分配默认`SyncProvider`实现`RIOptimisticProvider`的实例。
+- en: A `SyncProvider` object supplies a `RowSetReader` object (a *reader*) and a
+    `RowSetWriter` object (a *writer*), which a disconnected `RowSet` object needs
+    in order to read data from its data source or to write data back to its data source.
+    What a reader and writer do is explained later in the sections [What Reader Does](#reader)
+    and [What Writer Does](#writer). One thing to keep in mind is that readers and
+    writers work entirely in the background, so the explanation of how they work is
+    for your information only. Having some background on readers and writers should
+    help you understand what some of the methods defined in the `CachedRowSet` interface
+    do in the background.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`SyncProvider`对象提供了一个`RowSetReader`对象（一个*读取器*）和一个`RowSetWriter`对象（一个*写入器*），一个断开连接的`RowSet`对象需要这些对象来从数据源读取数据或将数据写回数据源。读取器和写入器的功能将在后面的章节[读取器的功能](#reader)和[写入器的功能](#writer)中解释。需要记住的一点是，读取器和写入器完全在后台工作，因此它们如何工作的解释仅供参考。了解读取器和写入器的一些背景知识应该有助于你理解`CachedRowSet`接口中一些方法在后台做什么。
+- en: Setting CachedRowSet Properties
+  id: totrans-25
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 设置CachedRowSet属性
+- en: Generally, the default values for properties are fine as they are, but you may
+    change the value of a property by calling the appropriate setter method. There
+    are some properties without default values that you must set yourself.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，属性的默认值都是可以的，但是你可以通过调用适当的setter方法来更改属性的值。有一些没有默认值的属性，你必须自己设置。
+- en: In order to get data, a disconnected `RowSet` object must be able to connect
+    to a data source and have some means of selecting the data it is to hold. The
+    following properties hold information necessary to obtain a connection to a database.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了获取数据，一个断开连接的`RowSet`对象必须能够连接到数据源，并且有一些选择要保存的数据的方法。以下属性保存了获取数据库连接所需的信息。
+- en: '`username`: The name a user supplies to a database as part of gaining access'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`username`: 用户在获取访问权限时向数据库提供的名称'
+- en: '`password`: The user''s database password'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`password`: 用户的数据库密码'
+- en: '`url`: The JDBC URL for the database to which the user wants to connect'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`url`: 用户想要连接的数据库的JDBC URL'
+- en: '`datasourceName`: The name used to retrieve a DataSource object that has been
+    registered with a JNDI naming service'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`datasourceName`: 用于检索已经注册到JNDI命名服务的DataSource对象的名称'
+- en: Which of these properties you must set depends on how you are going to make
+    a connection. The preferred way is to use a `DataSource` object, but it may not
+    be practical for you to register a `DataSource` object with a JNDI naming service,
+    which is generally done by a system administrator. Therefore, the code examples
+    all use the `DriverManager` mechanism to obtain a connection, for which you use
+    the `url` property and not the `datasourceName` property.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你必须设置哪些属性取决于你将如何建立连接。首选的方式是使用`DataSource`对象，但是你可能无法将`DataSource`对象注册到JNDI命名服务中，这通常由系统管理员完成。因此，代码示例都使用`DriverManager`机制来获取连接，你需要使用`url`属性而不是`datasourceName`属性。
+- en: The following lines of code set the `username`, `password`, and `url` properties
+    so that a connection can be obtained using the `DriverManager` class. (You will
+    find the JDBC URL to set as the value for the `url` property in the documentation
+    for your JDBC driver.)
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码行设置了`username`、`password`和`url`属性，以便使用`DriverManager`类获取连接。（你可以在你的JDBC驱动程序的文档中找到要设置为`url`属性值的JDBC
+    URL。）
+- en: '[PRE1]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Another property that you must set is the `command` property. Data is read
+    into a `RowSet` object from a `ResultSet` object. The query that produces that
+    `ResultSet` object is the value for the `command` property. For example, the following
+    line of code sets the `command` property with a query that produces a `ResultSet`
+    object containing all the data in the table `MERCH_INVENTORY`:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个你必须设置的属性是`command`属性。数据从`ResultSet`对象读入`RowSet`对象。产生该`ResultSet`对象的查询是`command`属性的值。例如，以下代码行使用一个查询设置了`command`属性，该查询产生一个包含表`MERCH_INVENTORY`中所有数据的`ResultSet`对象：
+- en: '[PRE2]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Setting Key Columns
+  id: totrans-37
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 设置关键列
+- en: 'If you are going make any updates to the `crs` object and want those updates
+    saved in the database, you must set one more piece of information: the key columns.
+    Key columns are essentially the same as a primary key because they indicate one
+    or more columns that uniquely identify a row. The difference is that a primary
+    key is set on a table in the database, whereas key columns are set on a particular
+    `RowSet` object. The following lines of code set the key columns for `crs` to
+    the first column:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果要对 `crs` 对象进行任何更新并希望将这些更新保存到数据库中，必须设置另一个信息：关键列。关键列本质上与主键相同，因为它们指示唯一标识一行的一个或多个列。不同之处在于，主键设置在数据库中的表上，而关键列设置在特定的
+    `RowSet` 对象上。以下代码行将 `crs` 的关键列设置为第一列：
+- en: '[PRE3]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The first column in the table `MERCH_INVENTORY` is `ITEM_ID`. It can serve as
+    the key column because every item identifier is different and therefore uniquely
+    identifies one row and only one row in the table `MERCH_INVENTORY`. In addition,
+    this column is specified as a primary key in the definition of the `MERCH_INVENTORY`
+    table. The method `setKeyColumns` takes an array to allow for the fact that it
+    may take two or more columns to identify a row uniquely.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 `MERCH_INVENTORY` 中的第一列是 `ITEM_ID`。它可以作为关键列，因为每个项目标识符都不同，因此唯一标识表 `MERCH_INVENTORY`
+    中的一行且仅一行。此外，该列在 `MERCH_INVENTORY` 表的定义中被指定为主键。方法 `setKeyColumns` 接受一个数组，以允许可能需要两个或更多列来唯一标识一行。
+- en: As a point of interest, the method `setKeyColumns` does not set a value for
+    a property. In this case, it sets the value for the field `keyCols`. Key columns
+    are used internally, so after setting them, you do nothing more with them. You
+    will see how and when key columns are used in the section [Using SyncResolver
+    Objects](#syncresolver).
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有趣的一点是，方法 `setKeyColumns` 不设置属性的值。在这种情况下，它为字段 `keyCols` 设置值。关键列在内部使用，因此在设置它们之后，您不再对其进行任何操作。您将在
+    [使用 SyncResolver 对象](#syncresolver) 部分中看到关键列是如何使用的。
+- en: Populating CachedRowSet Objects
+  id: totrans-42
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 填充 CachedRowSet 对象
+- en: 'Populating a disconnected `RowSet` object involves more work than populating
+    a connected `RowSet` object. Fortunately, the extra work is done in the background.
+    After you have done the preliminary work to set up the `CachedRowSet` object `crs`,
+    the following line of code populates `crs`:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 填充断开连接的 `RowSet` 对象比填充连接的 `RowSet` 对象需要更多的工作。幸运的是，额外的工作是在后台完成的。在完成了设置 `CachedRowSet`
+    对象 `crs` 的初步工作后，以下代码行填充了 `crs`：
+- en: '[PRE4]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The data in `crs` is the data in the `ResultSet` object produced by executing
+    the query in the command property.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`crs` 中的数据是通过执行命令属性中的查询生成的 `ResultSet` 对象中的数据。'
+- en: What is different is that the `CachedRowSet` implementation for the `execute`
+    method does a lot more than the `JdbcRowSet` implementation. Or more correctly,
+    the `CachedRowSet` object's reader, to which the method execute delegates its
+    tasks, does a lot more.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不同的是，`CachedRowSet` 实现的 `execute` 方法比 `JdbcRowSet` 实现做了更多的工作。更正确地说，`CachedRowSet`
+    对象的读取器，该方法委托其任务的对象，做了更多的工作。
+- en: Every disconnected `RowSet` object has a `SyncProvider` object assigned to it,
+    and this `SyncProvider` object is what provides the `RowSet` object's *reader*
+    (a `RowSetReader` object). When the `crs` object was created, it was used as the
+    default `CachedRowSetImpl` constructor, which, in addition to setting default
+    values for properties, assigns an instance of the `RIOptimisticProvider` implementation
+    as the default `SyncProvider` object.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个断开连接的 `RowSet` 对象都分配了一个 `SyncProvider` 对象，并且这个 `SyncProvider` 对象提供了 `RowSet`
+    对象的 *读取器*（一个 `RowSetReader` 对象）。当创建 `crs` 对象时，它被用作默认的 `CachedRowSetImpl` 构造函数，除了为属性设置默认值外，还将
+    `RIOptimisticProvider` 实现的实例分配为默认的 `SyncProvider` 对象。
+- en: What Reader Does
+  id: totrans-48
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 读取器的功能
+- en: When an application calls the method `execute`, a disconnected `RowSet` object's
+    reader works behind the scenes to populate the `RowSet` object with data. A newly
+    created `CachedRowSet` object is not connected to a data source and therefore
+    must obtain a connection to that data source in order to get data from it. The
+    default `SyncProvider` object (`RIOptimisticProvider`) provides a reader that
+    obtains a connection by using the values set for the user name, password, and
+    either the JDBC URL or the data source name, whichever was set more recently.
+    Then the reader executes the query set for the command. It reads the data in the
+    `ResultSet` object produced by the query, populating the `CachedRowSet` object
+    with that data. Finally, the reader closes the connection.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当应用程序调用`execute`方法时，一个断开连接的`RowSet`对象的读取器在后台工作，将`RowSet`对象填充到数据中。新创建的`CachedRowSet`对象未连接到数据源，因此必须获取与该数据源的连接才能从中获取数据。默认的`SyncProvider`对象（`RIOptimisticProvider`）提供一个读取器，通过使用最近设置的用户名、密码和JDBC
+    URL或数据源名称中的值来获取连接。然后读取器执行为命令设置的查询。它读取查询生成的`ResultSet`对象中的数据，将`CachedRowSet`对象填充到该数据中。最后，读取器关闭连接。
+- en: Updating CachedRowSet Object
+  id: totrans-50
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更新CachedRowSet对象
+- en: In the Coffee Break scenario, the owner wants to streamline operations. The
+    owner decides to have employees at the warehouse enter inventory directly into
+    a PDA (personal digital assistant), thereby avoiding the error-prone process of
+    having a second person do the data entry. A `CachedRowSet` object is ideal in
+    this situation because it is lightweight, serializable, and can be updated without
+    a connection to the data source.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Coffee Break场景中，所有者希望简化操作。所有者决定让仓库员工直接在PDA（个人数字助理）中输入库存，从而避免让第二个人进行数据输入的容易出错的过程。在这种情况下，`CachedRowSet`对象是理想的，因为它轻量级、可序列化，并且可以在没有与数据源连接的情况下进行更新。
+- en: The owner will have the application development team create a GUI tool for the
+    PDA that warehouse employees will use for entering inventory data. Headquarters
+    will create a `CachedRowSet` object populated with the table showing the current
+    inventory and send it using the Internet to the PDAs. When a warehouse employee
+    enters data using the GUI tool, the tool adds each entry to an array, which the
+    `CachedRowSet` object will use to perform the updates in the background. Upon
+    completion of the inventory, the PDAs send their new data back to headquarters,
+    where the data is uploaded to the main server.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有者将要求应用程序开发团队为仓库员工用于输入库存数据的PDA创建一个GUI工具。总部将创建一个填充有显示当前库存的表格的`CachedRowSet`对象，并通过互联网将其发送到PDA。当仓库员工使用GUI工具输入数据时，该工具将每个条目添加到一个数组中，`CachedRowSet`对象将使用该数组在后台执行更新。完成库存后，PDA将其新数据发送回总部，数据将上传到主服务器。
+- en: 'This section covers the following topics:'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下主题：
+- en: '[Updating Column Values](#updating-column-value)'
+  id: totrans-54
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[更新列值](#updating-column-value)'
+- en: '[Inserting and Deleting Rows](#inserting-and-deleting-rows)'
+  id: totrans-55
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[插入和删除行](#inserting-and-deleting-rows)'
+- en: Updating Column Values
+  id: totrans-56
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 更新列值
+- en: 'Updating data in a `CachedRowSet` object is just the same as updating data
+    in a `JdbcRowSet` object. For example, the following code fragment from `CachedRowSetSample.java`
+    increments the value in the column `QUAN` by 1 in the row whose `ITEM_ID` column
+    has an item identifier of `12345`:'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更新`CachedRowSet`对象中的数据与更新`JdbcRowSet`对象中的数据完全相同。例如，来自`CachedRowSetSample.java`的以下代码片段将`ITEM_ID`列具有`12345`物品标识符的行中的`QUAN`列的值增加1：
+- en: '[PRE5]'
+  id: totrans-58
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Inserting and Deleting Rows
+  id: totrans-59
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 插入和删除行
+- en: Just as with updating a column value, the code for inserting and deleting rows
+    in a `CachedRowSet` object is the same as for a `JdbcRowSet` object.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就像更新列值一样，在`CachedRowSet`对象中插入和删除行的代码与`JdbcRowSet`对象相同。
+- en: 'The following excerpt from `CachedRowSetSample.java` inserts a new row into
+    the `CachedRowSet` object `crs`:'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 来自`CachedRowSetSample.java`的以下摘录将新行插入到`CachedRowSet`对象`crs`中：
+- en: '[PRE6]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'If headquarters has decided to stop stocking a particular item, it would probably
+    remove the row for that coffee itself. However, in the scenario, a warehouse employee
+    using a PDA also has the capability of removing it. The following code fragment
+    finds the row where the value in the `ITEM_ID` column is `12345` and deletes it
+    from the `CachedRowSet` `crs`:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果总部决定停止储存某个特定物品，可能会直接删除咖啡本身的行。然而，在这种情况下，使用PDA的仓库员工也有能力删除它。以下代码片段找到`ITEM_ID`列中值为`12345`的行，并从`CachedRowSet`
+    `crs`中删除它：
+- en: '[PRE7]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Updating Data Sources
+  id: totrans-65
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更新数据源
+- en: There is a major difference between making changes to a `JdbcRowSet` object
+    and making changes to a `CachedRowSet` object. Because a `JdbcRowSet` object is
+    connected to its data source, the methods `updateRow`, `insertRow`, and `deleteRow`
+    can update both the `JdbcRowSet` object and the data source. In the case of a
+    disconnected `RowSet` object, however, these methods update the data stored in
+    the `CachedRowSet` object's memory but cannot affect the data source. A disconnected
+    `RowSet` object must call the method `acceptChanges` in order to save its changes
+    to the data source. In the inventory scenario, back at headquarters, an application
+    will call the method `acceptChanges` to update the database with the new values
+    for the column `QUAN`.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对`JdbcRowSet`对象进行更改与对`CachedRowSet`对象进行更改之间存在重大差异。因为`JdbcRowSet`对象连接到其数据源，`updateRow`、`insertRow`和`deleteRow`方法可以更新`JdbcRowSet`对象和数据源。然而，在断开连接的`RowSet`对象的情况下，这些方法会更新`CachedRowSet`对象内存中存储的数据，但无法影响数据源。断开连接的`RowSet`对象必须调用`acceptChanges`方法才能将其更改保存到数据源。在库存场景中，总部的应用程序将调用`acceptChanges`方法以更新数据库中`QUAN`列的新值。
+- en: '[PRE8]'
+  id: totrans-67
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: What Writer Does
+  id: totrans-68
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 写入器的功能
+- en: Like the method `execute`, the method `acceptChanges` does its work invisibly.
+    Whereas the method `execute` delegates its work to the `RowSet` object's reader,
+    the method `acceptChanges` delegates its tasks to the `RowSet` object's writer.
+    In the background, the writer opens a connection to the database, updates the
+    database with the changes made to the `RowSet` object, and then closes the connection.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`execute`方法类似，`acceptChanges`方法会在后台完成其工作。`execute`方法将其工作委托给`RowSet`对象的读取器，而`acceptChanges`方法将其任务委托给`RowSet`对象的写入器。在后台，写入器会打开与数据库的连接，使用`RowSet`对象所做的更改更新数据库，然后关闭连接。
+- en: Using Default Implementation
+  id: totrans-70
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用默认实现
+- en: The difficulty is that a *conflict* can arise. A conflict is a situation in
+    which another party has updated a value in the database that corresponds to a
+    value that was updated in a `RowSet` object. Which value should persist in the
+    database? What the writer does when there is a conflict depends on how it is implemented,
+    and there are many possibilities. At one end of the spectrum, the writer does
+    not even check for conflicts and just writes all changes to the database. This
+    is the case with the `RIXMLProvider` implementation, which is used by a `WebRowSet`
+    object. At the other end, the writer ensures that there are no conflicts by setting
+    database locks that prevent others from making changes.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 难点在于可能会出现*冲突*。冲突是指另一方已经更新了数据库中与`RowSet`对象中更新的值对应的值的情况。数据库中应该保留哪个值？当存在冲突时，写入器的处理方式取决于其如何实现，有许多可能性。在一个极端，写入器甚至不检查冲突，只是将所有更改写入数据库。这是`RIXMLProvider`实现的情况，它被`WebRowSet`对象使用。在另一端，写入器通过设置数据库锁来确保没有冲突，防止他人进行更改。
+- en: The writer for the `crs` object is the one provided by the default `SyncProvider`
+    implementation, `RIOptimisticProvider`. The `RIOPtimisticProvider` implementation
+    gets its name from the fact that it uses an optimistic concurrency model. This
+    model assumes that there will be few, if any, conflicts and therefore sets no
+    database locks. The writer checks to see if there are any conflicts, and if there
+    is none, it writes the changes made to the `crs` object to the database, and those
+    changes become persistent. If there are any conflicts, the default is not to write
+    the new `RowSet` values to the database.
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`crs`对象的写入器是默认`SyncProvider`实现提供的一个，名为`RIOptimisticProvider`。`RIOPtimisticProvider`实现得名于其采用的乐观并发模型。该模型假设冲突会很少，甚至没有，因此不设置数据库锁。写入器会检查是否存在冲突，如果没有，则将对`crs`对象所做的更改写入数据库，这些更改变得持久。如果存在冲突，默认情况下不会将新的`RowSet`值写入数据库。'
+- en: In the scenario, the default behavior works very well. Because no one at headquarters
+    is likely to change the value in the `QUAN` column of `COF_INVENTORY`, there will
+    be no conflicts. As a result, the values entered into the `crs` object at the
+    warehouse will be written to the database and thus will be persistent, which is
+    the desired outcome.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，默认行为非常有效。因为总部的人不太可能更改`COF_INVENTORY`的`QUAN`列中的值，所以不会发生冲突。因此，在仓库中输入到`crs`对象中的值将被写入数据库，从而变得持久，这是期望的结果。
+- en: Using SyncResolver Objects
+  id: totrans-74
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用SyncResolver对象
+- en: In other situations, however, it is possible for conflicts to exist. To accommodate
+    these situations, the `RIOPtimisticProvider` implementation provides an option
+    that lets you look at the values in conflict and decide which ones should be persistent.
+    This option is the use of a `SyncResolver` object.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，在其他情况下，可能存在冲突。为了适应这些情况，`RIOPtimisticProvider`实现提供了一个选项，让你查看冲突中的值，并决定哪些值应该持久化。这个选项就是使用`SyncResolver`对象。
+- en: 'When the writer has finished looking for conflicts and has found one or more,
+    it creates a `SyncResolver` object containing the database values that caused
+    the conflicts. Next, the method `acceptChanges` throws a `SyncProviderException`
+    object, which an application may catch and use to retrieve the `SyncResolver`
+    object. The following lines of code retrieve the `SyncResolver` object `resolver`:'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当写入程序完成查找冲突并找到一个或多个冲突时，它会创建一个包含导致冲突的数据库值的`SyncResolver`对象。接下来，方法`acceptChanges`抛出一个`SyncProviderException`对象，应用程序可以捕获并用于检索`SyncResolver`对象。以下代码行检索`SyncResolver`对象`resolver`：
+- en: '[PRE9]'
+  id: totrans-77
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: The object `resolver` is a `RowSet` object that replicates the `crs` object
+    except that it contains only the values in the database that caused a conflict.
+    All other column values are null.
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对象`resolver`是一个`RowSet`对象，复制了`crs`对象，只包含导致冲突的数据库中的值。所有其他列值都为null。
+- en: 'With the `resolver` object, you can iterate through its rows to locate the
+    values that are not null and are therefore values that caused a conflict. Then
+    you can locate the value at the same position in the `crs` object and compare
+    them. The following code fragment retrieves `resolver` and uses the `SyncResolver`
+    method `nextConflict` to iterate through the rows that have conflicting values.
+    The object `resolver` gets the status of each conflicting value, and if it is
+    `UPDATE_ROW_CONFLICT`, meaning that the `crs` was attempting an update when the
+    conflict occurred, the `resolver` object gets the row number of that value. Then
+    the code moves the cursor for the `crs` object to the same row. Next, the code
+    finds the column in that row of the `resolver` object that contains a conflicting
+    value, which will be a value that is not null. After retrieving the value in that
+    column from both the `resolver` and `crs` objects, you can compare the two and
+    decide which one you want to become persistent. Finally, the code sets that value
+    in both the `crs` object and the database using the method `setResolvedValue`,
+    as shown in the following code from `CachedRowSetSample.java`:'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`resolver`对象，你可以迭代其行以定位不为空且因此引起冲突的值。然后你可以定位`crs`对象中相同位置的值并进行比较。以下代码片段检索`resolver`并使用`SyncResolver`方法`nextConflict`来迭代具有冲突值的行。对象`resolver`获取每个冲突值的状态，如果是`UPDATE_ROW_CONFLICT`，表示`crs`在冲突发生时正在尝试更新，则`resolver`对象获取该值的行号。然后代码将`crs`对象的游标移动到相同的行。接下来，代码找到`resolver`对象中包含冲突值的行中的列，该列将是一个不为空的值。从`resolver`和`crs`对象中检索该列中的值后，你可以比较两者并决定哪个值应该持久化。最后，代码使用`setResolvedValue`方法在`crs`对象和数据库中设置该值，如下所示来自`CachedRowSetSample.java`的代码：
+- en: '[PRE10]'
+  id: totrans-80
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: Notifying Listeners
+  id: totrans-81
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 通知监听器
+- en: Being a JavaBeans component means that a `RowSet` object can notify other components
+    when certain things happen to it. For example, if data in a `RowSet` object changes,
+    the `RowSet` object can notify interested parties of that change. The nice thing
+    about this notification mechanism is that, as an application programmer, all you
+    have to do is add or remove the components that will be notified.
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为JavaBeans组件意味着`RowSet`对象在发生某些事情时可以通知其他组件。例如，如果`RowSet`对象中的数据发生变化，`RowSet`对象可以通知感兴趣的方。这种通知机制的好处在于，作为应用程序员，你只需添加或移除将被通知的组件。
+- en: 'This section covers the following topics:'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下主题：
+- en: '[Setting Up Listeners](#setting-up-listeners)'
+  id: totrans-84
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置监听器](#setting-up-listeners)'
+- en: '[How Notification Works](#how-notification-works)'
+  id: totrans-85
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[通知工作原理](#how-notification-works)'
+- en: Setting Up Listeners
+  id: totrans-86
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 设置监听器
+- en: 'A *listener* for a `RowSet` object is a component that implements the following
+    methods from the `RowSetListener` interface:'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`RowSet`对象的*监听器*是一个实现`RowSetListener`接口的组件，该接口包括以下方法：
+- en: '`cursorMoved`: Defines what the listener will do, if anything, when the cursor
+    in the `RowSet` object moves.'
+  id: totrans-88
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`cursorMoved`：定义了当`RowSet`对象中的游标移动时，监听器将执行什么操作（如果有的话）。'
+- en: '`rowChanged`: Defines what the listener will do, if anything, when one or more
+    column values in a row have changed, a row has been inserted, or a row has been
+    deleted.'
+  id: totrans-89
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`rowChanged`：定义了监听器在一行中一个或多个列值发生变化、插入了一行或删除了一行时将执行的操作（如果有的话）。'
+- en: '`rowSetChanged`: Defines what the listener will do, if anything, when the `RowSet`
+    object has been populated with new data.'
+  id: totrans-90
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`rowSetChanged`：定义了监听器在`RowSet`对象被填充新数据时将执行的操作（如果有的话）。'
+- en: An example of a component that might want to be a listener is a `BarGraph` object
+    that graphs the data in a `RowSet` object. As the data changes, the `BarGraph`
+    object can update itself to reflect the new data.
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个可能想要成为监听器的组件示例是一个将`RowSet`对象中的数据制成图表的`BarGraph`对象。随着数据的变化，`BarGraph`对象可以更新自身以反映新数据。
+- en: 'As an application programmer, the only thing you must do to take advantage
+    of the notification mechanism is to add or remove listeners. The following line
+    of code means that every time the cursor for the `crs` objects moves, values in
+    `crs` are changed, or `crs` as a whole gets new data, the `BarGraph` object `bar`
+    will be notified:'
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为一个应用程序员，利用通知机制的唯一要做的事情就是添加或移除监听器。下面这行代码意味着每当`crs`对象的光标移动，`crs`中的值发生变化，或者整个`crs`获取新数据时，`BarGraph`对象`bar`都会收到通知：
+- en: '[PRE11]'
+  id: totrans-93
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'You can also stop notifications by removing a listener, as is done in the following
+    line of code:'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你也可以通过移除监听器来停止通知，就像下面这行代码所做的那样：
+- en: '[PRE12]'
+  id: totrans-95
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: Using the Coffee Break scenario, assume that headquarters checks with the database
+    periodically to get the latest price list for the coffees it sells online. In
+    this case, the listener is the `PriceList` object `priceList` at the Coffee Break
+    web site, which must implement the `RowSetListener` methods `cursorMoved`, `rowChanged`,
+    and `rowSetChanged`. The implementation of the `cursorMoved` method could be to
+    do nothing because the position of the cursor does not affect the `priceList`
+    object. The implementations for the `rowChanged` and `rowSetChanged` methods,
+    on the other hand, must ascertain what changes have been made and update `priceList`
+    accordingly.
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用咖啡休息场景，假设总部定期检查数据库以获取在线销售的咖啡最新价格列表。在这种情况下，监听器是咖啡休息网站上的`PriceList`对象`priceList`，它必须实现`RowSetListener`方法`cursorMoved`、`rowChanged`和`rowSetChanged`。`cursorMoved`方法的实现可能是什么都不做，因为光标的位置不会影响`priceList`对象。另一方面，`rowChanged`和`rowSetChanged`方法的实现必须确定所做的更改，并相应地更新`priceList`。
+- en: How Notification Works
+  id: totrans-97
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 通知如何工作
+- en: Methods that cause any of the `RowSet` events automatically notify all registered
+    listeners. For example, any method that moves the cursor also calls the method
+    `cursorMoved` on each of the listeners. Similarly, the method `execute` calls
+    the method `rowSetChanged` on all listeners, and `acceptChanges` calls `rowChanged`
+    on all listeners.
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 导致任何`RowSet`事件的方法会自动通知所有注册的监听器。例如，任何移动光标的方法也会调用每个监听器的`cursorMoved`方法。同样，`execute`方法会调用所有监听器的`rowSetChanged`方法，而`acceptChanges`会调用所有监听器的`rowChanged`方法。
+- en: Sending Large Amounts of Data
+  id: totrans-99
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 发送大量数据
+- en: The method [`CachedRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CachedRowSetSample.java)
+    demonstrates how data can be sent in smaller pieces.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该方法[`CachedRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CachedRowSetSample.java)演示了如何将数据分成较小的部分发送。

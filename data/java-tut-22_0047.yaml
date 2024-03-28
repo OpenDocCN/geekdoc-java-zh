@@ -1,0 +1,199 @@
+- en: Defining Methods
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 定义方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html](https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html](https://docs.oracle.com/javase/tutorial/java/javaOO/methods.html)
+- en: 'Here is an example of a typical method declaration:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个典型方法声明的示例：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The only required elements of a method declaration are the method's return type,
+    name, a pair of parentheses, `()`, and a body between braces, `{}`.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法声明的唯一必需元素是方法的返回类型、名称、一对括号`()`，以及大括号`{}`之间的方法体。
+- en: 'More generally, method declarations have six components, in order:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更一般地，方法声明有六个组成部分，顺序如下：
+- en: "Modifiers\x97such as `public`, `private`, and others you will learn about later."
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: "修饰符\x97例如`public`、`private`等，以及其他你将在后面学习的内容。"
+- en: "The return type\x97the data type of the value returned by the method, or `void`\
+    \ if the method does not return a value."
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: "返回类型\x97方法返回的值的数据类型，或者如果方法不返回值，则为`void`。"
+- en: "The method name\x97the rules for field names apply to method names as well,\
+    \ but the convention is a little different."
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: "方法名称\x97字段名称的规则也适用于方法名称，但约定略有不同。"
+- en: "The parameter list in parenthesis\x97a comma-delimited list of input parameters,\
+    \ preceded by their data types, enclosed by parentheses, `()`. If there are no\
+    \ parameters, you must use empty parentheses."
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: "括号中的参数列表\x97以逗号分隔的输入参数列表，前面是它们的数据类型，用括号`()`括起来。如果没有参数，必须使用空括号。"
+- en: "An exception list\x97to be discussed later."
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: "一个异常列表\x97稍后讨论。"
+- en: "The method body, enclosed between braces\x97the method's code, including the\
+    \ declaration of local variables, goes here."
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: "方法体，用大括号括起来\x97方法的代码，包括局部变量的声明，在这里。"
+- en: Modifiers, return types, and parameters will be discussed later in this lesson.
+    Exceptions are discussed in a later lesson.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 修饰符、返回类型和参数将在本课程的后续部分讨论。异常将在后续课程中讨论。
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: "**Definition:** Two of the components of a method declaration comprise the\
+    \ *method signature*\x97the method's name and the parameter types."
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "**定义：** 方法声明的两个组成部分构成了*方法签名*\x97方法的名称和参数类型。"
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The signature of the method declared above is:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 上面声明的方法的签名是：
+- en: '[PRE1]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Naming a Method
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 命名方法
+- en: 'Although a method name can be any legal identifier, code conventions restrict
+    method names. By convention, method names should be a verb in lowercase or a multi-word
+    name that begins with a verb in lowercase, followed by adjectives, nouns, etc.
+    In multi-word names, the first letter of each of the second and following words
+    should be capitalized. Here are some examples:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管方法名称可以是任何合法标识符，但代码约定限制了方法名称。按照约定，方法名称应该是小写的动词或以小写动词开头的多词名称，后面跟着形容词、名词等。在多词名称中，第二个及后续单词的第一个字母应大写。以下是一些示例：
+- en: '[PRE2]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Typically, a method has a unique name within its class. However, a method might
+    have the same name as other methods due to *method overloading*.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，一个方法在其类中具有唯一的名称。但是，由于*方法重载*，一个方法可能与其他方法具有相同的名称。
+- en: Overloading Methods
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 方法重载
+- en: The Java programming language supports *overloading* methods, and Java can distinguish
+    between methods with different *method signatures*. This means that methods within
+    a class can have the same name if they have different parameter lists (there are
+    some qualifications to this that will be discussed in the lesson titled "Interfaces
+    and Inheritance").
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编程语言支持*方法重载*，并且Java可以区分具有不同*方法签名*的方法。这意味着类中的方法如果具有不同的参数列表，则可以具有相同的名称（对此有一些限制，将在标题为“接口和继承”的课程中讨论）。
+- en: "Suppose that you have a class that can use calligraphy to draw various types\
+    \ of data (strings, integers, and so on) and that contains a method for drawing\
+    \ each data type. It is cumbersome to use a new name for each method\x97for example,\
+    \ `drawString`, `drawInteger`, `drawFloat`, and so on. In the Java programming\
+    \ language, you can use the same name for all the drawing methods but pass a different\
+    \ argument list to each method. Thus, the data drawing class might declare four\
+    \ methods named `draw`, each of which has a different parameter list."
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "假设你有一个可以使用书法来绘制各种类型数据（字符串、整数等）的类，并且包含一个用于绘制每种数据类型的方法。为每个方法使用新名称很麻烦\x97例如，`drawString`、`drawInteger`、`drawFloat`等。在Java编程语言中，你可以为所有绘制方法使用相同的名称，但对每个方法传递不同的参数列表。因此，数据绘制类可能声明四个名为`draw`的方法，每个方法都有不同的参数列表。"
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Overloaded methods are differentiated by the number and the type of the arguments
+    passed into the method. In the code sample, `draw(String s)` and `draw(int i)`
+    are distinct and unique methods because they require different argument types.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 过载方法通过传入方法的参数的数量和类型来区分。在代码示例中，`draw(String s)` 和 `draw(int i)` 是不同且独特的方法，因为它们需要不同的参数类型。
+- en: You cannot declare more than one method with the same name and the same number
+    and type of arguments, because the compiler cannot tell them apart.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你不能声明多个具有相同名称和相同数量及类型参数的方法，因为编译器无法区分它们。
+- en: The compiler does not consider return type when differentiating methods, so
+    you cannot declare two methods with the same signature even if they have a different
+    return type.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编译器在区分方法时不考虑返回类型，因此即使它们具有不同的返回类型，也不能声明具有相同签名的两个方法。
+- en: '* * *'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Overloaded methods should be used sparingly, as they can make code
+    much less readable.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 过载方法应该谨慎使用，因为它们会使代码变得难以阅读。'
+- en: '* * *'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

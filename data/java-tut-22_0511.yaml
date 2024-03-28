@@ -1,0 +1,87 @@
+- en: Creating the Demo Application (Step 1)
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建演示应用程序（第1步）
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/step1.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/step1.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/step1.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/step1.html)
+- en: All Graphical User Interfaces require some kind of main application frame in
+    which to display. In Swing, this is an instance of `javax.swing.JFrame`. Therefore,
+    our first step is to instantiate this class and make sure that everything works
+    as expected. Note that when programming in Swing, your GUI creation code should
+    be placed on the Event Dispatch Thread (EDT). This will prevent potential race
+    conditions that could lead to deadlock. The following code listing shows how this
+    is done.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有图形用户界面都需要某种主应用程序框架来显示。在 Swing 中，这是`javax.swing.JFrame`的一个实例。因此，我们的第一步是实例化这个类，并确保一切按预期工作。请注意，在
+    Swing 中编程时，你的 GUI 创建代码应该放在事件分发线程（EDT）上。这将防止潜在的竞争条件，可能导致死锁。以下代码清单显示了如何实现这一点。
+- en: '![Figure of an empty JFrame with Swing Paint Demo as the title ](../Images/2a817a9b9f73c4615c1d5afa733a18c8.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个空的 JFrame，标题为 Swing Paint Demo 的图](../Images/2a817a9b9f73c4615c1d5afa733a18c8.png)'
+- en: An Instance of javax.swing.JFrame
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`javax.swing.JFrame`的实例
+- en: Click the Launch button to run SwingPaintDemo1 using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/painting/index.html#SwingPaintDemo1).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行
+    SwingPaintDemo1（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/painting/index.html#SwingPaintDemo1)。
+- en: '[![Launches the SwingPaintDemo1 example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SwingPaintDemo1Project/SwingPaintDemo1.jnlp)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 SwingPaintDemo1 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SwingPaintDemo1Project/SwingPaintDemo1.jnlp)'
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This creates the frame, sets its title, and makes everything visible. We have
+    used the `SwingUtilities` helper class to construct this GUI on the Event Dispatch
+    Thread. Note that by default, a `JFrame` does not exit the application when the
+    user clicks its "close" button. We provide this behavior by invoking the `setDefaultCloseOperation`
+    method, passing in the appropriate argument. Also, we are explicitly setting the
+    frame's size to 250 x 250 pixels. This step will not be necessary once we start
+    adding components to the frame.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将创建框架，设置其标题，并使一切可见。我们使用`SwingUtilities`辅助类在事件分发线程上构建此 GUI。请注意，默认情况下，当用户单击“关闭”按钮时，`JFrame`不会退出应用程序。我们通过调用`setDefaultCloseOperation`方法并传入适当的参数来提供此行为。此外，我们明确设置框架的大小为250
+    x 250像素。一旦我们开始向框架添加组件，这一步将不再必要。
+- en: 'Exercises:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 练习：
+- en: Compile and run the application.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编译并运行应用程序。
+- en: Test the minimize and maximize buttons.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 测试最小化和最大化按钮。
+- en: Click the close button (the application should exit.)
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击关闭按钮（应用程序应该退出）。

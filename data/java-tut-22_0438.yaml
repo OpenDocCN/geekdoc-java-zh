@@ -1,0 +1,681 @@
+- en: How to Use GridBagLayout
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用 GridBagLayout
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html)
+- en: '* * *'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程涵盖了手动编写布局代码，这可能具有挑战性。如果您对学习布局管理的所有细节不感兴趣，您可能更喜欢使用 `GroupLayout`
+    布局管理器结合构建工具来布局您的 GUI。其中一个构建工具是 [NetBeans IDE](../learn/index.html)。否则，如果您想手动编写代码而不想使用
+    `GroupLayout`，那么推荐使用 `GridBagLayout` 作为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有兴趣使用 JavaFX 创建您的 GUI，请参阅 [JavaFX 中的布局](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: Here is a picture of an example that uses [`GridBagLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/GridBagLayout.html).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个使用 [`GridBagLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/GridBagLayout.html)
+    的示例图片。
+- en: '![A snapshot of GridBagLayoutDemo](../Images/6ede3d7f6d186f09fd9b0e05029fe3b9.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![GridBagLayoutDemo 的快照](../Images/6ede3d7f6d186f09fd9b0e05029fe3b9.png)'
+- en: Click the Launch button to run GridBagLayoutDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/layout/index.html#GridBagLayoutDemo).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用 [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    运行 GridBagLayoutDemo（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考
+    [示例索引](../examples/layout/index.html#GridBagLayoutDemo)。
+- en: '[![Launches the GridBagLayoutDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/GridBagLayoutDemoProject/GridBagLayoutDemo.jnlp)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 GridBagLayoutDemo 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/GridBagLayoutDemoProject/GridBagLayoutDemo.jnlp)'
+- en: The code for GridBagDemo is in [`GridBagLayoutDemo.java`](../examples/layout/GridBagLayoutDemoProject/src/layout/GridBagLayoutDemo.java).
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GridBagDemo` 的代码位于 [`GridBagLayoutDemo.java`](../examples/layout/GridBagLayoutDemoProject/src/layout/GridBagLayoutDemo.java)
+    中。'
+- en: "`GridBagLayout` is one of the most flexible \x97 and complex \x97 layout managers\
+    \ the Java platform provides. A `GridBagLayout` places components in a grid of\
+    \ rows and columns, allowing specified components to span multiple rows or columns.\
+    \ Not all rows necessarily have the same height. Similarly, not all columns necessarily\
+    \ have the same width. Essentially, `GridBagLayout` places components in rectangles\
+    \ (cells) in a grid, and then uses the components' preferred sizes to determine\
+    \ how big the cells should be."
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "`GridBagLayout` 是 Java 平台提供的最灵活 \x97 也是最复杂 \x97 布局管理器之一。`GridBagLayout` 将组件放置在行和列的网格中，允许指定的组件跨越多行或多列。并非所有行都必须具有相同的高度。同样，并非所有列都必须具有相同的宽度。基本上，`GridBagLayout`\
+    \ 将组件放置在网格中的矩形（单元格）中，然后使用组件的首选大小来确定单元格的大小。"
+- en: The following figure shows the grid for the preceding applet. As you can see,
+    the grid has three rows and three columns. The button in the second row spans
+    all the columns; the button in the third row spans the two right columns.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图显示了前面小程序的网格。您可以看到，网格有三行三列。第二行的按钮跨越所有列；第三行的按钮跨越了右侧两列。
+- en: '![A snapshot of GridBagLayoutDemo with its grid](../Images/8397cd59b8a5299f93c8173acce2bfaf.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_IMG
+  zh: '![GridBagLayoutDemo 的快照及其网格](../Images/8397cd59b8a5299f93c8173acce2bfaf.png)'
+- en: "If you enlarge the window as shown in the following figure, you will notice\
+    \ that the bottom row, which contains Button 5, gets all the new vertical space.\
+    \ The new horizontal space is split evenly among all the columns. This resizing\
+    \ behavior is based on weights the program assigns to individual components in\
+    \ the `GridBagLayout`. You will also notice that each component takes up all the\
+    \ available horizontal space \x97 but not (as you can see with button 5) all the\
+    \ available vertical space. This behavior is also specified by the program."
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "如果您按照下图所示放大窗口，您会注意到包含按钮 5 的底部行获得了所有新的垂直空间。新的水平空间均匀分配给所有列。此调整大小行为基于程序为`GridBagLayout`中的各个组件分配的权重。您还会注意到每个组件占用所有可用的水平空间\
+    \ \x97 但不占用所有可用的垂直空间（正如您可以看到的按钮 5）。此行为也由程序指定。"
+- en: '![GridBagLayout shown after the user enlarged it.](../Images/65e683c9f8038d8f109f74e261118613.png)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_IMG
+  zh: '![用户放大后显示的GridBagLayout。](../Images/65e683c9f8038d8f109f74e261118613.png)'
+- en: The way the program specifies the size and position characteristics of its components
+    is by specifying *constraints* for each component. The preferred approach to set
+    constraints on a component is to use the `Container.add` variant, passing it a
+    `GridBagConstraints` object, as demonstrated in the next sections.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 程序指定其组件的大小和位置特征的方式是为每个组件指定*约束条件*。在组件上设置约束的首选方法是使用`Container.add`变体，传递一个`GridBagConstraints`对象，如下一节所示。
+- en: The following sections explain the constraints you can set and provide examples.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下各节解释了您可以设置的约束条件并提供了示例。
+- en: Specifying Constraints
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定约束条件
+- en: The following code is typical of what goes in a container that uses a [`GridBagLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/GridBagLayout.html).
+    You will see a more detailed example in the next section.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码是典型的使用[`GridBagLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/GridBagLayout.html)的容器中的内容。您将在下一节看到更详细的示例。
+- en: '[PRE0]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: As you might have guessed from the above example, it is possible to reuse the
+    same `GridBagConstraints` instance for multiple components, even if the components
+    have different constraints. However, it is recommended that you do not reuse `GridBagConstraints`,
+    as this can very easily lead to you introducing subtle bugs if you forget to reset
+    the fields for each new instance.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您可能从上面的示例中猜到的那样，即使组件具有不同的约束条件，也可以重用相同的`GridBagConstraints`实例。但是，建议您不要重用`GridBagConstraints`，因为如果您忘记为每个新实例重置字段，这很容易导致引入细微的错误。
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The following discussion assumes that the `GridBagLayout` controls
+    a container that has a left-to-right component orientation.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**以下讨论假定`GridBagLayout`控制具有从左到右组件方向的容器。'
+- en: '* * *'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'You can set the following [`GridBagConstraints`](https://docs.oracle.com/javase/8/docs/api/java/awt/GridBagConstraints.html)
+    instance variables:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以设置以下[`GridBagConstraints`](https://docs.oracle.com/javase/8/docs/api/java/awt/GridBagConstraints.html)实例变量：
+- en: '**`gridx`**, **`gridy`**'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`gridx`**，**`gridy`**'
+- en: Specify the row and column at the upper left of the component. The leftmost
+    column has address `gridx=0` and the top row has address `gridy=0`. Use `GridBagConstraints.RELATIVE`
+    (the default value) to specify that the component be placed just to the right
+    of (for `gridx`) or just below (for `gridy`) the component that was added to the
+    container just before this component was added. We recommend specifying the `gridx`
+    and `gridy` values for each component rather than just using `GridBagConstraints.RELATIVE`;
+    this tends to result in more predictable layouts.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定组件左上角的行和列。最左侧的列地址为`gridx=0`，最顶部的行地址为`gridy=0`。使用`GridBagConstraints.RELATIVE`（默认值）指定组件放置在刚刚在此组件之前添加到容器的组件的右侧（对于`gridx`）或下方（对于`gridy`）。我们建议为每个组件指定`gridx`和`gridy`值，而不仅仅使用`GridBagConstraints.RELATIVE`；这样往往会产生更可预测的布局。
+- en: '**`gridwidth`**, **`gridheight`**'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`gridwidth`**，**`gridheight`**'
+- en: Specify the number of columns (for `gridwidth`) or rows (for `gridheight`) in
+    the component's display area. These constraints specify the number of cells the
+    component uses, *not* the number of pixels it uses. The default value is 1\. Use
+    `GridBagConstraints.REMAINDER` to specify that the component be the last one in
+    its row (for `gridwidth`) or column (for `gridheight`). Use `GridBagConstraints.RELATIVE`
+    to specify that the component be the next to last one in its row (for `gridwidth`)
+    or column (for `gridheight`). We recommend specifying the `gridwidth` and `gridheight`
+    values for each component rather than just using `GridBagConstraints.RELATIVE`
+    and `GridBagConstraints.REMAINDER`; this tends to result in more predictable layouts.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定组件显示区域中的列数（对于`gridwidth`）或行数（对于`gridheight`）。这些约束指定组件使用的单元格数，*而不是*它使用的像素数。默认值为1。使用`GridBagConstraints.REMAINDER`指定组件为其行（对于`gridwidth`）或列（对于`gridheight`）中的最后一个。使用`GridBagConstraints.RELATIVE`指定组件为其行（对于`gridwidth`）或列（对于`gridheight`）中的倒数第二个。我们建议为每个组件指定`gridwidth`和`gridheight`值，而不仅仅使用`GridBagConstraints.RELATIVE`和`GridBagConstraints.REMAINDER`；这样往往会产生更可预测的布局。
+- en: '**Note:** `GridBagLayout` does not allow components to span multiple rows unless
+    the component is in the leftmost column or you have specified positive `gridx`
+    and `gridy` values for the component.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** `GridBagLayout`不允许组件跨越多行，除非组件位于最左侧列，或者您已为组件指定了正值的`gridx`和`gridy`值。'
+- en: '**`fill`**'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`fill`**'
+- en: Used when the component's display area is larger than the component's requested
+    size to determine whether and how to resize the component. Valid values (defined
+    as `GridBagConstraints` constants) include `NONE` (the default), `HORIZONTAL`
+    (make the component wide enough to fill its display area horizontally, but do
+    not change its height), `VERTICAL` (make the component tall enough to fill its
+    display area vertically, but do not change its width), and `BOTH` (make the component
+    fill its display area entirely).
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当组件的显示区域大于组件请求的大小时使用，以确定是否以及如何调整组件的大小。有效值（定义为`GridBagConstraints`常量）包括`NONE`（默认值），`HORIZONTAL`（使组件足够宽以水平填充其显示区域，但不更改其高度），`VERTICAL`（使组件足够高以垂直填充其显示区域，但不更改其宽度）和`BOTH`（使组件完全填充其显示区域）。
+- en: '**`ipadx`**, **`ipady`**'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`ipadx`**，**`ipady`**'
+- en: 'Specifies the internal padding: how much to add to the size of the component.
+    The default value is zero. The width of the component will be at least its minimum
+    width plus `ipadx*2` pixels, since the padding applies to both sides of the component.
+    Similarly, the height of the component will be at least its minimum height plus
+    `ipady*2` pixels.'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定内部填充：需要添加到组件大小的量。默认值为零。组件的宽度至少为其最小宽度加上`ipadx*2`像素，因为填充应用于组件的两侧。同样，组件的高度至少为其最小高度加上`ipady*2`像素。
+- en: '**`insets`**'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`insets`**'
+- en: Specifies the external padding of the component -- the minimum amount of space
+    between the component and the edges of its display area. The value is specified
+    as an [`Insets`](https://docs.oracle.com/javase/8/docs/api/java/awt/Insets.html)
+    object. By default, each component has no external padding.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定组件的外部填充--组件与其显示区域边缘之间的最小空间量。该值被指定为一个[`Insets`](https://docs.oracle.com/javase/8/docs/api/java/awt/Insets.html)对象。默认情况下，每个组件都没有外部填充。
+- en: '**`anchor`**'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`anchor`**'
+- en: Used when the component is smaller than its display area to determine where
+    (within the area) to place the component. Valid values (defined as `GridBagConstraints`
+    constants) are `CENTER` (the default), `PAGE_START`, `PAGE_END`, `LINE_START`,
+    `LINE_END`, `FIRST_LINE_START`, `FIRST_LINE_END`, `LAST_LINE_END`, and `LAST_LINE_START`.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当组件比其显示区域小时使用，以确定在区域内的哪个位置放置组件。有效值（定义为`GridBagConstraints`常量）为`CENTER`（默认值），`PAGE_START`，`PAGE_END`，`LINE_START`，`LINE_END`，`FIRST_LINE_START`，`FIRST_LINE_END`，`LAST_LINE_END`和`LAST_LINE_START`。
+- en: Here is a picture of how these values are interpreted in a container that has
+    the default, left-to-right component orientation.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个容器中这些值在默认的从左到右的组件方向中如何解释的图片。
+- en: '| FIRST_LINE_START | PAGE_START | FIRST_LINE_END |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| FIRST_LINE_START | PAGE_START | FIRST_LINE_END |'
+- en: '| LINE_START | CENTER | LINE_END |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| LINE_START | CENTER | LINE_END |'
+- en: '| LAST_LINE_START | PAGE_END | LAST_LINE_END |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| LAST_LINE_START | PAGE_END | LAST_LINE_END |'
+- en: '* * *'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Version note:** The `PAGE_*` and `*LINE_*` constants were introduced in 1.4\.
+    Previous releases require values named after points of the compass. For example,
+    `NORTHEAST` indicates the top-right part of the display area. We recommend that
+    you use the new constants, instead, since they enable easier localization.'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**版本说明：** `PAGE_*` 和 `*LINE_*` 常量是在 1.4 版本中引入的。之前的版本需要使用指向罗盘方向的常量。例如，`NORTHEAST`
+    表示显示区域的右上部分。我们建议您使用新的常量，因为它们更容易本地化。'
+- en: '* * *'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**`weightx`**, **`weighty`**'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`weightx`**，**`weighty`**'
+- en: Specifying weights is an art that can have a significant impact on the appearance
+    of the components a `GridBagLayout` controls. Weights are used to determine how
+    to distribute space among columns (`weightx`) and among rows (`weighty`); this
+    is important for specifying resizing behavior.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定权重是一门艺术，可以对 `GridBagLayout` 控制的组件的外观产生重大影响。权重用于确定如何在列之间（`weightx`）和行之间（`weighty`）分配空间；这对于指定调整大小行为很重要。
+- en: Unless you specify at least one non-zero value for `weightx` or `weighty`, all
+    the components clump together in the center of their container. This is because
+    when the weight is 0.0 (the default), the `GridBagLayout` puts any extra space
+    between its grid of cells and the edges of the container.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除非您至少为 `weightx` 或 `weighty` 指定一个非零值，否则所有组件都会聚集在容器的中心。这是因为当权重为 0.0（默认值）时，`GridBagLayout`
+    将任何额外的空间放在其单元格网格和容器边缘之间。
+- en: 'Generally weights are specified with 0.0 and 1.0 as the extremes: the numbers
+    in between are used as necessary. Larger numbers indicate that the component''s
+    row or column should get more space. For each column, the weight is related to
+    the highest `weightx` specified for a component within that column, with each
+    multicolumn component''s weight being split somehow between the columns the component
+    is in. Similarly, each row''s weight is related to the highest `weighty` specified
+    for a component within that row. Extra space tends to go toward the rightmost
+    column and bottom row.'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，权重用 0.0 和 1.0 来指定极端值：中间的数字根据需要使用。较大的数字表示组件的行或列应该获得更多的空间。对于每一列，权重与该列中指定的最高
+    `weightx` 相关，每个多列组件的权重在组件所在的列之间以某种方式分配。同样，每一行的权重与该行中指定的最高 `weighty` 相关。额外的空间倾向于分配给最右边的列和底部的行。
+- en: The next section discusses constraints in depth, in the context of explaining
+    how the example program works.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一节将深入讨论约束条件，以解释示例程序的工作原理。
+- en: The Example Explained
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例解释
+- en: Here, again, is a picture of the GridBagLayoutDemo application.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里，再次展示了 GridBagLayoutDemo 应用程序的图片。
+- en: '![A snapshot of GridBagLayoutDemo](../Images/6ede3d7f6d186f09fd9b0e05029fe3b9.png)'
+  id: totrans-53
+  prefs: []
+  type: TYPE_IMG
+  zh: '![GridBagLayoutDemo 的快照](../Images/6ede3d7f6d186f09fd9b0e05029fe3b9.png)'
+- en: Click the Launch button to run GridBagLayoutDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/layout/index.html#GridBagLayoutDemo).
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用 [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    运行 GridBagLayoutDemo（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/layout/index.html#GridBagLayoutDemo)。
+- en: '[![Launches the GridBagLayoutDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/GridBagLayoutDemoProject/GridBagLayoutDemo.jnlp)'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 GridBagLayoutDemo 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/GridBagLayoutDemoProject/GridBagLayoutDemo.jnlp)'
+- en: The following code creates the `GridBagLayout` and the components it manages.
+    You can find the entire source file in [`GridBagLayoutDemo.java`](../examples/layout/GridBagLayoutDemoProject/src/layout/GridBagLayoutDemo.java).
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码创建了 `GridBagLayout` 和它管理的组件。您可以在 [`GridBagLayoutDemo.java`](../examples/layout/GridBagLayoutDemoProject/src/layout/GridBagLayoutDemo.java)
+    中找到整个源文件。
+- en: '[PRE1]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This example uses one `GridBagConstraints` instance for all the components the
+    `GridBagLayout` manages, however in real-life situations it is recommended that
+    you do not reuse `GridBagConstraints`, as this can very easily lead to you introducing
+    subtle bugs if you forget to reset the fields for each new instance. Just before
+    each component is added to the container, the code sets (or resets to default
+    values) the appropriate instance variables in the `GridBagConstraints` object.
+    It then adds the component to its container, specifying the `GridBagConstraints`
+    object as the second argument to the `add` method.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例对`GridBagLayout`管理的所有组件使用一个`GridBagConstraints`实例，但在实际情况中，建议不要重用`GridBagConstraints`，因为如果忘记为每个新实例重置字段，很容易引入细微错误。在将每个组件添加到容器之前，代码设置（或重置为默认值）`GridBagConstraints`对象中的适当实例变量。然后将组件添加到其容器，将`GridBagConstraints`对象指定为`add`方法的第二个参数。
+- en: 'For example, to make button 4 be extra tall, the example has this code:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，要使按钮 4 变得特别高，示例中有这段代码：
+- en: '[PRE2]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'And before setting the constraints of the next component, the code resets the
+    value of `ipady` to the default:'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在设置下一个组件的约束之前，代码将`ipady`的值重置为默认值：
+- en: '[PRE3]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: If a component's display area is larger than the component itself, then you
+    can specify whereabouts in the display area the component will be displayed by
+    using the `GridBagConstraints.anchor` constraint. The `anchor` constraint's values
+    can be absolute (north, south, east, west, and so on), or orientation-relative
+    (at start of page, at end of line, at the start of the first line, and so on),
+    or relative to the component's baseline. For a full list of the possible values
+    of the `anchor` constraint, including baseline-relative values,see the API documentation
+    for [`GridBagConstraints.anchor`](https://docs.oracle.com/javase/8/docs/api/java/awt/GridBagConstraints.html#anchor).
+    You can see in the code extract above that Button 5 specifies that it should be
+    displayed at the end of the display area by setting an anchor at `GridBagConstraints.PAGE_END`.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果组件的显示区域大于组件本身，则可以使用`GridBagConstraints.anchor`约束指定组件在显示区域中的显示位置。`anchor`约束的值可以是绝对的（北、南、东、西等），也可以是相对于方向的（在页面的开始、在行的末尾、在第一行的开始等），或者相对于组件的基线。有关`anchor`约束的可能值的完整列表，包括基线相关值，请参阅[`GridBagConstraints.anchor`](https://docs.oracle.com/javase/8/docs/api/java/awt/GridBagConstraints.html#anchor)的API文档。您可以在上面的代码片段中看到，按钮
+    5 指定应在显示区域的末尾显示，通过设置`GridBagConstraints.PAGE_END`作为锚点。
+- en: '* * *'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The Tutorial''s examples used to specify the constraints object a
+    different way, which you might see in other programs as well. Rather than specifying
+    the constraints with the `add` method, our examples used to invoke the `setConstraints`
+    method on the `GridBagLayout` object. For example:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 教程的示例以不同的方式指定约束对象，您可能在其他程序中也会看到。我们的示例以前是通过在`GridBagLayout`对象上调用`setConstraints`方法来指定约束。例如：'
+- en: '[PRE4]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: However, we recommend you use the `Container.add` method since it makes for
+    cleaner code than if you were to use `setConstraints`.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，我们建议您使用`Container.add`方法，因为这比使用`setConstraints`更清晰。
+- en: '* * *'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Here is a table that shows all the constraints for each component in GridBagLayoutDemo's
+    content pane. Values that are not the default are marked in **boldface**. Values
+    that are different from those in the previous table entry are marked in *italics*.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个表格，显示了`GridBagLayoutDemo`内容窗格中每个组件的所有约束条件。非默认值用**粗体**标记。与前一表项不同的值用*斜体*标记。
+- en: '| Component | Constraints |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '| 组件 | 约束条件 |'
+- en: '| All components |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| 所有组件 |'
+- en: '[PRE5]'
+  id: totrans-72
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '|'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| Button 1 |'
+  id: totrans-74
+  prefs: []
+  type: TYPE_TB
+  zh: '| 按钮 1 |'
+- en: '[PRE6]'
+  id: totrans-75
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '|'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| Button 2 |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_TB
+  zh: '| 按钮 2 |'
+- en: '[PRE7]'
+  id: totrans-78
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '|'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| Button 3 |'
+  id: totrans-80
+  prefs: []
+  type: TYPE_TB
+  zh: '| 按钮 3 |'
+- en: '[PRE8]'
+  id: totrans-81
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: '|'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| Button 4 |'
+  id: totrans-83
+  prefs: []
+  type: TYPE_TB
+  zh: '| 按钮 4 |'
+- en: '[PRE9]'
+  id: totrans-84
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '|'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| Button 5 |'
+  id: totrans-86
+  prefs: []
+  type: TYPE_TB
+  zh: '| 按钮 5 |'
+- en: '[PRE10]'
+  id: totrans-87
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: '|'
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: GridBagLayoutDemo has two components that span multiple columns (buttons 4 and
+    5). To make button 4 tall, we added internal padding (`ipady`) to it. To put space
+    between buttons 4 and 5, we used insets to add a minimum of 10 pixels above button
+    5, and we made button 5 hug the bottom edge of its cell.
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GridBagLayoutDemo`有两个跨越多列的组件（按钮 4 和按钮 5）。为了使按钮 4 变高，我们向其添加了内部填充（`ipady`）。为了在按钮
+    4 和按钮 5 之间留出空间，我们使用插入来在按钮 5 上方添加至少 10 像素，并使按钮 5 贴近其单元格的底边。'
+- en: 'All the components in the `pane` container are as wide as possible, given the
+    cells that they occupy. The program accomplishes this by setting the `GridBagConstraints`
+    `fill` instance variable to `GridBagConstraints.HORIZONTAL`, leaving it at that
+    setting for all the components. If the program did not specify the fill, the buttons
+    would be at their natural width, like this:'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`pane`容器中的所有组件都尽可能宽，给定它们所占用的单元格。程序通过将`GridBagConstraints`的`fill`实例变量设置为`GridBagConstraints.HORIZONTAL`来实现这一点，并为所有组件保持该设置。如果程序没有指定填充，按钮将保持其自然宽度，如下所示：'
+- en: '![GridBagLayoutDemo with default fill values.](../Images/76c5bc9ab2f78c5dcdd528a588086169.png)'
+  id: totrans-91
+  prefs: []
+  type: TYPE_IMG
+  zh: '![具有默认填充值的GridBagLayoutDemo。](../Images/76c5bc9ab2f78c5dcdd528a588086169.png)'
+- en: 'When you enlarge GridBagLayoutDemo''s window, the columns grow proportionately.
+    This is because each component in the first row, where each component is one column
+    wide, has `weightx = 0.5`. The actual value of these components'' `weightx` is
+    unimportant. What matters is that all the components, and consequently, all the
+    columns, have an equal weight that is greater than 0\. If no component managed
+    by the `GridBagLayout` had `weightx` set, then when the components'' container
+    was made wider, the components would stay clumped together in the center of the
+    container, like this:'
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您放大GridBagLayoutDemo的窗口时，列会成比例增长。这是因为第一行中的每个组件，每个组件都是一列宽，`weightx = 0.5`。这些组件的`weightx`的实际值并不重要。重要的是所有组件，因此所有列，具有大于0的相等权重。如果由`GridBagLayout`管理的任何组件未设置`weightx`，则当组件的容器变宽时，组件将保持在容器中心聚集在一起，如下所示：
+- en: '![GridBagLayoutDemo with default weightx values and enlarged by the user.](../Images/5495be1489cf07f2d56d81ffd7dd1ef8.png)'
+  id: totrans-93
+  prefs: []
+  type: TYPE_IMG
+  zh: '![具有默认weightx值并由用户放大的GridBagLayoutDemo。](../Images/5495be1489cf07f2d56d81ffd7dd1ef8.png)'
+- en: If the container is given a size that is smaller or bigger than the preferred
+    size, then any space is distributed according to the `GridBagContainer` weights.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果容器的大小比首选大小小或大，则任何空间都根据`GridBagContainer`的权重分配。
+- en: Note that if you enlarge the window, the last row is the only one that gets
+    taller. This is because only button 5 has `weighty` greater than zero.
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，如果您放大窗口，只有最后一行会变高。这是因为只有按钮5的`weighty`大于零。
+- en: The GridBagLayout API
+  id: totrans-96
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: GridBagLayout API
+- en: The `GridBagLayout` and `GridBagConstraints` classes each have only one constructor,
+    with no arguments. Instead of invoking methods on a `GridBagConstraints` object,
+    you manipulate its instance variables, as described in [Specifying Constraints](#gridbagConstraints).
+    Generally, the only method you invoke on a `GridBagLayout` object is `setConstraints`,
+    as demonstrated in [The Example Explained](#gridbagExample).
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GridBagLayout`和`GridBagConstraints`类各自只有一个构造函数，没有参数。您不是在`GridBagConstraints`对象上调用方法，而是操作其实例变量，如[指定约束](#gridbagConstraints)中所述。通常，您在`GridBagLayout`对象上调用的唯一方法是`setConstraints`，如[示例解释](#gridbagExample)中所示。'
+- en: Examples that Use GridBagLayout
+  id: totrans-98
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用GridBagLayout的示例
+- en: You can find examples of using `GridBagLayout` throughout this tutorial. The
+    following table lists a few.
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在本教程中找到使用`GridBagLayout`的示例。以下表格列出了一些示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-100
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: "| [`GridBagLayoutDemo`](../examples/layout/index.html#GridBagLayoutDemo) |\
+    \ This section | Uses many features \x97 weights, insets, internal padding, horizontal\
+    \ fill, exact cell positioning, multi-column cells, and anchoring (component positioning\
+    \ within a cell). |"
+  id: totrans-101
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`GridBagLayoutDemo`](../examples/layout/index.html#GridBagLayoutDemo) |
+    本节 | 使用许多功能——权重、插入、内部填充、水平填充、精确单元格定位、多列单元格和锚定（组件在单元格内的定位）。 |'
+- en: '| [`TextSamplerDemo`](../components/../examples/components/index.html#TextSamplerDemo)
+    | [Using Text Components](../components/text.html) | Aligns two pairs of labels
+    and text fields, plus adds a label across the full width of the container. |'
+  id: totrans-102
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextSamplerDemo`](../components/../examples/components/index.html#TextSamplerDemo)
+    | [使用文本组件](../components/text.html) | 对齐两对标签和文本字段，并在容器的整个宽度上添加一个标签。 |'
+- en: '| [`ContainerEventDemo`](../events/../examples/events/index.html#ContainerEventDemo)
+    | [How to Write a Container Listener](../events/containerlistener.html) | Positions
+    five components within a container, using weights, fill, and relative positioning.
+    |'
+  id: totrans-103
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ContainerEventDemo`](../events/../examples/events/index.html#ContainerEventDemo)
+    | [如何编写容器监听器](../events/containerlistener.html) | 使用权重、填充和相对定位在容器中定位五个组件。 |'

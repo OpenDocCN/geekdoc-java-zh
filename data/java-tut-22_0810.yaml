@@ -1,0 +1,164 @@
+- en: Creating a Client Program
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建客户端程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/rmi/client.html](https://docs.oracle.com/javase/tutorial/rmi/client.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/rmi/client.html](https://docs.oracle.com/javase/tutorial/rmi/client.html)
+- en: 'The compute engine is a relatively simple program: it runs tasks that are handed
+    to it. The clients for the compute engine are more complex. A client needs to
+    call the compute engine, but it also has to define the task to be performed by
+    the compute engine.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 计算引擎是一个相对简单的程序：它运行交给它的任务。计算引擎的客户端更加复杂。客户端需要调用计算引擎，但也必须定义计算引擎执行的任务。
+- en: Two separate classes make up the client in our example. The first class, `ComputePi`,
+    looks up and invokes a `Compute` object. The second class, `Pi`, implements the
+    `Task` interface and defines the work to be done by the compute engine. The job
+    of the `Pi` class is to compute the value of ![the pi symbol](../Images/1000ed6961e308609010dca5338f3e68.png)
+    to some number of decimal places.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在我们的示例中，客户端由两个单独的类组成。第一个类`ComputePi`查找并调用`Compute`对象。第二个类`Pi`实现`Task`接口并定义计算引擎执行的工作。`Pi`类的工作是计算到某个小数位数的![π符号](../Images/1000ed6961e308609010dca5338f3e68)的值。
+- en: 'The non-remote [``Task``](examples/compute/Task.java) interface is defined
+    as follows:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 非远程[`Task`](examples/compute/Task.java)接口定义如下：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The code that invokes a `Compute` object's methods must obtain a reference to
+    that object, create a `Task` object, and then request that the task be executed.
+    The definition of the task class `Pi` is shown later. A `Pi` object is constructed
+    with a single argument, the desired precision of the result. The result of the
+    task execution is a `java.math.BigDecimal` representing ![the pi symbol](../Images/1000ed6961e308609010dca5338f3e68.png)
+    calculated to the specified precision.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调用`Compute`对象方法的代码必须获取对该对象的引用，创建一个`Task`对象，然后请求执行该任务。稍后将显示任务类`Pi`的定义。使用单个参数构造`Pi`对象，该参数是所需结果的精度。任务执行的结果是表示计算到指定精度的![π符号](../Images/1000ed6961e308609010dca5338f3e68.png)的`java.math.BigDecimal`。
+- en: 'Here is the source code for [``client.ComputePi``](examples/client/ComputePi.java),
+    the main client class:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是[`client.ComputePi`](examples/client/ComputePi.java)的源代码，主要客户端类：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Like the `ComputeEngine` server, the client begins by installing a security
+    manager. This step is necessary because the process of receiving the server remote
+    object's stub could require downloading class definitions from the server. For
+    RMI to download classes, a security manager must be in force.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 像`ComputeEngine`服务器一样，客户端首先安装安全管理器。这一步是必要的，因为接收服务器远程对象存根的过程可能需要从服务器下载类定义。为了让RMI下载类，必须启用安全管理器。
+- en: After installing a security manager, the client constructs a name to use to
+    look up a `Compute` remote object, using the same name used by `ComputeEngine`
+    to bind its remote object. Also, the client uses the `LocateRegistry.getRegistry`
+    API to synthesize a remote reference to the registry on the server's host. The
+    value of the first command-line argument, `args[0]`, is the name of the remote
+    host on which the `Compute` object runs. The client then invokes the `lookup`
+    method on the registry to look up the remote object by name in the server host's
+    registry. The particular overload of `LocateRegistry.getRegistry` used, which
+    has a single `String` parameter, returns a reference to a registry at the named
+    host and the default registry port, 1099\. You must use an overload that has an
+    `int` parameter if the registry is created on a port other than 1099.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 安装安全管理器后，客户端构造一个名称用于查找`Compute`远程对象，使用与`ComputeEngine`绑定其远程对象相同的名称。此外，客户端使用`LocateRegistry.getRegistry`
+    API合成服务器主机上注册表的远程引用。第一个命令行参数`args[0]`的值是`Compute`对象运行的远程主机的名称。然后客户端在注册表上调用`lookup`方法，通过名称在服务器主机的注册表中查找远程对象。使用的`LocateRegistry.getRegistry`重载版本具有单个`String`参数，返回命名主机和默认注册表端口1099的注册表引用。如果注册表在除1099之外的端口上创建，则必须使用具有`int`参数的重载。
+- en: Next, the client creates a new `Pi` object, passing to the `Pi` constructor
+    the value of the second command-line argument, `args[1]`, parsed as an integer.
+    This argument indicates the number of decimal places to use in the calculation.
+    Finally, the client invokes the `executeTask` method of the `Compute` remote object.
+    The object passed into the `executeTask` invocation returns an object of type
+    `BigDecimal`, which the program stores in the variable `result`. Finally, the
+    program prints the result. The following figure depicts the flow of messages among
+    the `ComputePi` client, the `rmiregistry`, and the `ComputeEngine`.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，客户端创建一个新的`Pi`对象，将第二个命令行参数`args[1]`解析为整数传递给`Pi`构造函数。这个参数指示计算中要使用的小数位数。最后，客户端调用`Compute`远程对象的`executeTask`方法。传入`executeTask`调用的对象返回一个`BigDecimal`类型的对象，程序将其存储在变量`result`中。最后，程序打印结果。下图描述了`ComputePi`客户端、`rmiregistry`和`ComputeEngine`之间消息流的过程。
+- en: '![the flow of messages between the compute engine, the registry, and the client.](../Images/632c05578175cb6c2d3d273437073676.png)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_IMG
+  zh: '![计算引擎、注册表和客户端之间消息流的示意图。](../Images/632c05578175cb6c2d3d273437073676.png)'
+- en: The `Pi` class implements the `Task` interface and computes the value of ![the
+    pi symbol](../Images/18da0a76f9e973138bc9428740982fff.png) to a specified number
+    of decimal places. For this example, the actual algorithm is unimportant. What
+    is important is that the algorithm is computationally expensive, meaning that
+    you would want to have it executed on a capable server.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Pi`类实现了`Task`接口，并计算了![π符号](../Images/18da0a76f9e973138bc9428740982fff.png)的值到指定的小数位数。对于这个示例，实际算法并不重要。重要的是算法是计算密集型的，这意味着你希望它在一个能力强大的服务器上执行。'
+- en: 'Here is the source code for [``client.Pi``](examples/client/Pi.java), the class
+    that implements the `Task` interface:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是[``client.Pi``](examples/client/Pi.java)的源代码，该类实现了`Task`接口：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Note that all serializable classes, whether they implement the `Serializable`
+    interface directly or indirectly, must declare a `private` `static` `final` field
+    named `serialVersionUID` to guarantee serialization compatibility between versions.
+    If no previous version of the class has been released, then the value of this
+    field can be any `long` value, similar to the `227L` used by `Pi`, as long as
+    the value is used consistently in future versions. If a previous version of the
+    class has been released without an explicit `serialVersionUID` declaration, but
+    serialization compatibility with that version is important, then the default implicitly
+    computed value for the previous version must be used for the value of the new
+    version's explicit declaration. The `serialver` tool can be run against the previous
+    version to determine the default computed value for it.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，所有可序列化的类，无论它们是否直接或间接实现了`Serializable`接口，都必须声明一个名为`serialVersionUID`的`private`
+    `static` `final`字段，以确保在不同版本之间的序列化兼容性。如果该类之前没有发布过版本，则该字段的值可以是任何`long`值，类似于`Pi`使用的`227L`，只要该值在未来版本中一致使用即可。如果该类的先前版本已发布但没有显式声明`serialVersionUID`，但与该版本的序列化兼容性很重要，则必须使用先前版本的默认隐式计算值作为新版本显式声明的值。可以运行`serialver`工具来确定先前版本的默认计算值。
+- en: The most interesting feature of this example is that the `Compute` implementation
+    object never needs the `Pi` class's definition until a `Pi` object is passed in
+    as an argument to the `executeTask` method. At that point, the code for the class
+    is loaded by RMI into the `Compute` object's Java virtual machine, the `execute`
+    method is invoked, and the task's code is executed. The result, which in the case
+    of the `Pi` task is a `BigDecimal` object, is handed back to the calling client,
+    where it is used to print the result of the computation.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例最有趣的特点是`Compute`实现对象在`Pi`对象作为参数传递给`executeTask`方法之前从不需要`Pi`类的定义。在那时，RMI会将该类的代码加载到`Compute`对象的Java虚拟机中，调用`execute`方法，并执行任务的代码。结果，对于`Pi`任务来说是一个`BigDecimal`对象，会被传回给调用客户端，在那里用于打印计算结果。
+- en: The fact that the supplied `Task` object computes the value of `Pi` is irrelevant
+    to the `ComputeEngine` object. You could also implement a task that, for example,
+    generates a random prime number by using a probabilistic algorithm. That task
+    would also be computationally intensive and therefore a good candidate for passing
+    to the `ComputeEngine`, but it would require very different code. This code could
+    also be downloaded when the `Task` object is passed to a `Compute` object. In
+    just the way that the algorithm for computing ![the pi symbol](../Images/18da0a76f9e973138bc9428740982fff.png)
+    is brought in when needed, the code that generates the random prime number would
+    be brought in when needed. The `Compute` object knows only that each object it
+    receives implements the `execute` method. The `Compute` object does not know,
+    and does not need to know, what the implementation does.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 供给的`Task`对象计算`Pi`值这一事实对于`ComputeEngine`对象来说并不重要。你也可以实现一个任务，比如通过使用概率算法生成一个随机素数。这个任务也会需要大量计算，因此是传递给`ComputeEngine`的一个很好的选择，但它需要非常不同的代码。当`Task`对象传递给`Compute`对象时，这段代码也可以被下载。就像在需要时引入计算![派符号](../Images/18da0a76f9e973138bc9428740982fff.png)的算法一样，生成随机素数的代码也会在需要时被引入。`Compute`对象只知道它接收到的每个对象都实现了`execute`方法。`Compute`对象不知道，也不需要知道实现的具体内容。

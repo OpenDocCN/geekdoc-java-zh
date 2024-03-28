@@ -1,0 +1,1176 @@
+- en: Lambda Expressions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Lambda表达式
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html](https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html](https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html)
+- en: One issue with anonymous classes is that if the implementation of your anonymous
+    class is very simple, such as an interface that contains only one method, then
+    the syntax of anonymous classes may seem unwieldy and unclear. In these cases,
+    you're usually trying to pass functionality as an argument to another method,
+    such as what action should be taken when someone clicks a button. Lambda expressions
+    enable you to do this, to treat functionality as method argument, or code as data.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 匿名类的一个问题是，如果您的匿名类的实现非常简单，例如只包含一个方法的接口，那么匿名类的语法可能显得笨拙和不清晰。在这些情况下，通常您试图将功能作为参数传递给另一个方法，例如当某人单击按钮时应执行什么操作。Lambda表达式使您能够做到这一点，将功能视为方法参数，或将代码视为数据。
+- en: The previous section, [Anonymous Classes](anonymousclasses.html), shows you
+    how to implement a base class without giving it a name. Although this is often
+    more concise than a named class, for classes with only one method, even an anonymous
+    class seems a bit excessive and cumbersome. Lambda expressions let you express
+    instances of single-method classes more compactly.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前一节，[匿名类](anonymousclasses.html)，向您展示了如何实现一个没有名称的基类。尽管这通常比具有名称的类更简洁，但对于只有一个方法的类来说，即使是匿名类似乎也有点过多和繁琐。Lambda表达式让您更简洁地表达单方法类的实例。
+- en: 'This section covers the following topics:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下主题：
+- en: '[Ideal Use Case for Lambda Expressions](#use-case)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Lambda表达式的理想使用情况](#use-case)'
+- en: '[Approach 1: Create Methods That Search for Members That Match One Characteristic](#approach1)'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[方法1：创建搜索符合一个特征的成员的方法](#approach1)'
+- en: '[Approach 2: Create More Generalized Search Methods](#approach2)'
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[方法2：创建更通用的搜索方法](#approach2)'
+- en: '[Approach 3: Specify Search Criteria Code in a Local Class](#approach3)'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[方法3：在本地类中指定搜索条件代码](#approach3)'
+- en: '[Approach 4: Specify Search Criteria Code in an Anonymous Class](#approach4)'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[方法4：在匿名类中指定搜索条件代码](#approach4)'
+- en: '[Approach 5: Specify Search Criteria Code with a Lambda Expression](#approach5)'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[方法5：使用Lambda表达式指定搜索条件代码](#approach5)'
+- en: '[Approach 6: Use Standard Functional Interfaces with Lambda Expressions](#approach6)'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[方法6：使用Lambda表达式与标准功能接口](#approach6)'
+- en: '[Approach 7: Use Lambda Expressions Throughout Your Application](#approach7)'
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[方法7：在整个应用程序中使用Lambda表达式](#approach7)'
+- en: '[Approach 8: Use Generics More Extensively](#approach8)'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[方法8：更广泛地使用泛型](#approach8)'
+- en: '[Approach 9: Use Aggregate Operations That Accept Lambda Expressions as Parameters](#approach9)'
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[方法9：使用接受Lambda表达式作为参数的聚合操作](#approach9)'
+- en: '[Lambda Expressions in GUI Applications](#lambda-expressions-in-gui-applications)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[GUI应用程序中的Lambda表达式](#lambda-expressions-in-gui-applications)'
+- en: '[Syntax of Lambda Expressions](#syntax)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Lambda表达式的语法](#syntax)'
+- en: '[Accessing Local Variables of the Enclosing Scope](#accessing-local-variables)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[访问封闭范围的局部变量](#accessing-local-variables)'
+- en: '[Target Typing](#target-typing)'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[目标类型](#target-typing)'
+- en: '[Target Types and Method Arguments](#target-types-and-method-arguments)'
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[目标类型和方法参数](#target-types-and-method-arguments)'
+- en: '[Serialization](#serialization)'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[序列化](#serialization)'
+- en: Ideal Use Case for Lambda Expressions
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Lambda表达式的理想使用情况
+- en: 'Suppose that you are creating a social networking application. You want to
+    create a feature that enables an administrator to perform any kind of action,
+    such as sending a message, on members of the social networking application that
+    satisfy certain criteria. The following table describes this use case in detail:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您正在创建一个社交网络应用程序。您希望创建一个功能，使管理员能够对满足特定条件的社交网络应用程序成员执行任何类型的操作，例如发送消息。以下表格详细描述了这种用例：
+- en: '| Field | Description |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| 字段 | 描述 |'
+- en: '| Name | Perform action on selected members |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | 对所选成员执行操作 |'
+- en: '| Primary Actor | Administrator |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| 主要执行者 | 管理员 |'
+- en: '| Preconditions | Administrator is logged in to the system. |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| 前提条件 | 管理员已登录到系统。 |'
+- en: '| Postconditions | Action is performed only on members that fit the specified
+    criteria. |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| 后置条件 | 操作仅在符合指定条件的成员上执行。 |'
+- en: '| Main Success Scenario |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| 主要成功场景 |'
+- en: Administrator specifies criteria of members on which to perform a certain action.
+  id: totrans-29
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 管理员指定要执行某个操作的成员的条件。
+- en: Administrator specifies an action to perform on those selected members.
+  id: totrans-30
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 管理员指定对所选成员执行的操作。
+- en: Administrator selects the **Submit** button.
+  id: totrans-31
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 管理员选择**提交**按钮。
+- en: The system finds all members that match the specified criteria.
+  id: totrans-32
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 系统找到所有符合指定条件的成员。
+- en: The system performs the specified action on all matching members.
+  id: totrans-33
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 系统对所有匹配成员执行指定操作。
+- en: '|'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| Extensions | 1a. Administrator has an option to preview those members who
+    match the specified criteria before he or she specifies the action to be performed
+    or before selecting the **Submit** button. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| 扩展 | 1a. 管理员在指定执行操作或选择**提交**按钮之前有选项预览符合指定条件的成员。 |'
+- en: '| Frequency of Occurrence | Many times during the day. |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| 出现频率 | 一天中多次。 |'
+- en: 'Suppose that members of this social networking application are represented
+    by the following [`Person`](examples/Person.java) class:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设这个社交网络应用程序的成员由以下[`Person`](examples/Person.java)类表示：
+- en: '[PRE0]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Suppose that the members of your social networking application are stored in
+    a `List<Person>` instance.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您的社交网络应用程序的成员存储在`List<Person>`实例中。
+- en: This section begins with a naive approach to this use case. It improves upon
+    this approach with local and anonymous classes, and then finishes with an efficient
+    and concise approach using lambda expressions. Find the code excerpts described
+    in this section in the example [`RosterTest`](examples/RosterTest.java).
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节从一个简单的方法开始处理这种用例。它通过本地和匿名类改进了这种方法，然后以使用lambda表达式的高效简洁方法结束。在示例[`RosterTest`](examples/RosterTest.java)中找到本节描述的代码摘录。
+- en: 'Approach 1: Create Methods That Search for Members That Match One Characteristic'
+  id: totrans-41
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 方法1：创建搜索符合一个特征的成员的方法
+- en: 'One simplistic approach is to create several methods; each method searches
+    for members that match one characteristic, such as gender or age. The following
+    method prints members that are older than a specified age:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个简单的方法是创建几种方法；每种方法搜索符合一个特征的成员，例如性别或年龄。以下方法打印比指定年龄更老的成员：
+- en: '[PRE1]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '**Note**: A [`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html)
+    is an ordered [`Collection`](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html).
+    A *collection* is an object that groups multiple elements into a single unit.
+    Collections are used to store, retrieve, manipulate, and communicate aggregate
+    data. For more information about collections, see the [Collections](../../collections/index.html)
+    trail.'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：[`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html)是一个有序的[`Collection`](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html)。*集合*是将多个元素组合成单个单元的对象。集合用于存储、检索、操作和传递聚合数据。有关集合的更多信息，请参阅[Collections](../../collections/index.html)教程。'
+- en: This approach can potentially make your application *brittle*, which is the
+    likelihood of an application not working because of the introduction of updates
+    (such as newer data types). Suppose that you upgrade your application and change
+    the structure of the `Person` class such that it contains different member variables;
+    perhaps the class records and measures ages with a different data type or algorithm.
+    You would have to rewrite a lot of your API to accommodate this change. In addition,
+    this approach is unnecessarily restrictive; what if you wanted to print members
+    younger than a certain age, for example?
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种方法可能会使您的应用程序变得*脆弱*，这是应用程序由于引入更新（如新数据类型）而无法工作的可能性。假设您升级了应用程序并更改了`Person`类的结构，使其包含不同的成员变量；也许该类使用不同的数据类型或算法记录和测量年龄。您将不得不重写大量API以适应这种变化。此外，这种方法是不必要地限制性的；例如，如果您想打印比某个年龄更年轻的成员会怎样？
+- en: 'Approach 2: Create More Generalized Search Methods'
+  id: totrans-46
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 方法2：创建更通用的搜索方法
+- en: 'The following method is more generic than `printPersonsOlderThan`; it prints
+    members within a specified range of ages:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下方法比`printPersonsOlderThan`更通用；它打印指定年龄范围内的成员：
+- en: '[PRE2]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: What if you want to print members of a specified sex, or a combination of a
+    specified gender and age range? What if you decide to change the `Person` class
+    and add other attributes such as relationship status or geographical location?
+    Although this method is more generic than `printPersonsOlderThan`, trying to create
+    a separate method for each possible search query can still lead to brittle code.
+    You can instead separate the code that specifies the criteria for which you want
+    to search in a different class.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想打印指定性别的成员，或者指定性别和年龄范围的组合会怎样？如果您决定更改`Person`类并添加其他属性，例如关系状态或地理位置会怎样？尽管这种方法比`printPersonsOlderThan`更通用，但尝试为每个可能的搜索查询创建单独的方法仍可能导致脆弱的代码。您可以将指定要搜索的条件的代码与不同类分开。
+- en: 'Approach 3: Specify Search Criteria Code in a Local Class'
+  id: totrans-50
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 方法3：在本地类中指定搜索条件代码
+- en: 'The following method prints members that match search criteria that you specify:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下方法打印符合您指定搜索条件的成员：
+- en: '[PRE3]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: This method checks each `Person` instance contained in the `List` parameter
+    `roster` whether it satisfies the search criteria specified in the `CheckPerson`
+    parameter `tester` by invoking the method `tester.test`. If the method `tester.test`
+    returns a `true` value, then the method `printPersons` is invoked on the `Person`
+    instance.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此方法检查`roster`参数中包含的每个`Person`实例是否满足`CheckPerson`参数`tester`中指定的搜索条件，方法是调用`tester.test`方法。如果`tester.test`方法返回`true`值，则在`Person`实例上调用`printPersons`方法。
+- en: 'To specify the search criteria, you implement the `CheckPerson` interface:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要指定搜索条件，您需要实现`CheckPerson`接口：
+- en: '[PRE4]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The following class implements the `CheckPerson` interface by specifying an
+    implementation for the method `test`. This method filters members that are eligible
+    for Selective Service in the United States: it returns a `true` value if its `Person`
+    parameter is male and between the ages of 18 and 25:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下类通过为`test`方法指定实现来实现`CheckPerson`接口。该方法过滤符合美国选择性服务资格的成员：如果其`Person`参数是男性且年龄在18至25岁之间，则返回`true`值：
+- en: '[PRE5]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'To use this class, you create a new instance of it and invoke the `printPersons`
+    method:'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用此类，您需要创建一个新实例并调用`printPersons`方法：
+- en: '[PRE6]'
+  id: totrans-59
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'Although this approach is less brittle—you don''t have to rewrite methods if
+    you change the structure of the `Person`—you still have additional code: a new
+    interface and a local class for each search you plan to perform in your application.
+    Because `CheckPersonEligibleForSelectiveService` implements an interface, you
+    can use an anonymous class instead of a local class and bypass the need to declare
+    a new class for each search.'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管这种方法不太脆弱——如果更改`Person`的结构，您不必重新编写方法——但仍然会有额外的代码：为应用程序中计划执行的每个搜索创建一个新接口和一个本地类。由于`CheckPersonEligibleForSelectiveService`实现了一个接口，您可以使用匿名类代替本地类，避免为每个搜索声明一个新类的需要。
+- en: 'Approach 4: Specify Search Criteria Code in an Anonymous Class'
+  id: totrans-61
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 方法4：在匿名类中指定搜索条件代码
+- en: 'One of the arguments of the following invocation of the method `printPersons`
+    is an anonymous class that filters members that are eligible for Selective Service
+    in the United States: those who are male and between the ages of 18 and 25:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面方法`printPersons`的一个参数是一个匿名类，用于过滤符合美国选择性服务资格的成员：即男性且年龄在18至25岁之间的成员：
+- en: '[PRE7]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: This approach reduces the amount of code required because you don't have to
+    create a new class for each search that you want to perform. However, the syntax
+    of anonymous classes is bulky considering that the `CheckPerson` interface contains
+    only one method. In this case, you can use a lambda expression instead of an anonymous
+    class, as described in the next section.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种方法减少了所需的代码量，因为您不必为要执行的每个搜索创建一个新类。然而，考虑到`CheckPerson`接口仅包含一个方法，匿名类的语法很臃肿。在这种情况下，您可以使用Lambda表达式代替匿名类，如下一节所述。
+- en: 'Approach 5: Specify Search Criteria Code with a Lambda Expression'
+  id: totrans-65
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 方法5：使用Lambda表达式指定搜索条件代码
+- en: 'The `CheckPerson` interface is a *functional interface*. A functional interface
+    is any interface that contains only one [abstract method](../../java/IandI/abstract.html).
+    (A functional interface may contain one or more [default methods](../../java/IandI/defaultmethods.html)
+    or [static methods](../../java/IandI/defaultmethods.html#static).) Because a functional
+    interface contains only one abstract method, you can omit the name of that method
+    when you implement it. To do this, instead of using an anonymous class expression,
+    you use a *lambda expression*, which is highlighted in the following method invocation:'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CheckPerson`接口是一个*函数式接口*。函数式接口是仅包含一个[抽象方法](../../java/IandI/abstract.html)的任何接口。（函数式接口可以包含一个或多个[默认方法](../../java/IandI/defaultmethods.html)或[静态方法](../../java/IandI/defaultmethods.html#static)。）因为函数式接口仅包含一个抽象方法，所以在实现它时可以省略该方法的名称。为此，您可以使用Lambda表达式，如下面方法调用中所示：'
+- en: '[PRE8]'
+  id: totrans-67
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: See [Syntax of Lambda Expressions](#syntax) for information about how to define
+    lambda expressions.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关如何定义Lambda表达式的语法，请参阅[Lambda表达式的语法](#syntax)。
+- en: You can use a standard functional interface in place of the interface `CheckPerson`,
+    which reduces even further the amount of code required.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用标准的函数式接口来替代`CheckPerson`接口，从而进一步减少所需的代码量。
+- en: 'Approach 6: Use Standard Functional Interfaces with Lambda Expressions'
+  id: totrans-70
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 第六种方法：使用Lambda表达式与标准函数式接口
+- en: 'Reconsider the `CheckPerson` interface:'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 重新考虑`CheckPerson`接口：
+- en: '[PRE9]'
+  id: totrans-72
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: This is a very simple interface. It's a functional interface because it contains
+    only one abstract method. This method takes one parameter and returns a `boolean`
+    value. The method is so simple that it might not be worth it to define one in
+    your application. Consequently, the JDK defines several standard functional interfaces,
+    which you can find in the package `java.util.function`.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个非常简单的接口。它是一个函数式接口，因为它只包含一个抽象方法。这个方法接受一个参数并返回一个`boolean`值。这个方法如此简单，以至于在你的应用程序中定义一个可能不值得。因此，JDK定义了几个标准的函数式接口，你可以在`java.util.function`包中找到。
+- en: 'For example, you can use the `Predicate<T>` interface in place of `CheckPerson`.
+    This interface contains the method `boolean test(T t)`:'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，你可以在`CheckPerson`的位置使用`Predicate<T>`接口。这个接口包含方法`boolean test(T t)`：
+- en: '[PRE10]'
+  id: totrans-75
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'The interface `Predicate<T>` is an example of a generic interface. (For more
+    information about generics, see the [Generics (Updated)](../../java/generics/index.html)
+    lesson.) Generic types (such as generic interfaces) specify one or more type parameters
+    within angle brackets (`<>`). This interface contains only one type parameter,
+    `T`. When you declare or instantiate a generic type with actual type arguments,
+    you have a parameterized type. For example, the parameterized type `Predicate<Person>`
+    is the following:'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接口`Predicate<T>`是一个泛型接口的示例。（有关泛型的更多信息，请参阅[泛型（更新）](../../java/generics/index.html)课程。）泛型类型（如泛型接口）在尖括号（`<>`）内指定一个或多个类型参数。这个接口只包含一个类型参数`T`。当你声明或实例化一个带有实际类型参数的泛型类型时，你就有了一个参数化类型。例如，参数化类型`Predicate<Person>`如下所示：
+- en: '[PRE11]'
+  id: totrans-77
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'This parameterized type contains a method that has the same return type and
+    parameters as `CheckPerson.boolean test(Person p)`. Consequently, you can use
+    `Predicate<T>` in place of `CheckPerson` as the following method demonstrates:'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个参数化类型包含一个与`CheckPerson.boolean test(Person p)`具有相同返回类型和参数的方法。因此，你可以像下面的方法演示的那样使用`Predicate<T>`来替代`CheckPerson`：
+- en: '[PRE12]'
+  id: totrans-79
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'As a result, the following method invocation is the same as when you invoked
+    `printPersons` in [Approach 3: Specify Search Criteria Code in a Local Class](#approach3)
+    to obtain members who are eligible for Selective Service:'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，下面的方法调用与你在[第3种方法：在本地类中指定搜索条件代码](#approach3)中调用`printPersons`以获取符合选择性服务资格的成员时是相同的：
+- en: '[PRE13]'
+  id: totrans-81
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: This is not the only possible place in this method to use a lambda expression.
+    The following approach suggests other ways to use lambda expressions.
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个方法中使用Lambda表达式的地方并不是唯一的。以下方法建议其他使用Lambda表达式的方式。
+- en: 'Approach 7: Use Lambda Expressions Throughout Your Application'
+  id: totrans-83
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 第七种方法：在整个应用程序中使用Lambda表达式
+- en: 'Reconsider the method `printPersonsWithPredicate` to see where else you could
+    use lambda expressions:'
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 重新考虑`printPersonsWithPredicate`方法，看看还能在哪里使用Lambda表达式：
+- en: '[PRE14]'
+  id: totrans-85
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: This method checks each `Person` instance contained in the `List` parameter
+    `roster` whether it satisfies the criteria specified in the `Predicate` parameter
+    `tester`. If the `Person` instance does satisfy the criteria specified by `tester`,
+    the method `printPerson` is invoked on the `Person` instance.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个方法检查`roster`参数中包含的每个`Person`实例是否满足`tester`参数指定的条件。如果`Person`实例确实满足`tester`指定的条件，则在`Person`实例上调用`printPerson`方法。
+- en: 'Instead of invoking the method `printPerson`, you can specify a different action
+    to perform on those `Person` instances that satisfy the criteria specified by
+    `tester`. You can specify this action with a lambda expression. Suppose you want
+    a lambda expression similar to `printPerson`, one that takes one argument (an
+    object of type `Person`) and returns void. Remember, to use a lambda expression,
+    you need to implement a functional interface. In this case, you need a functional
+    interface that contains an abstract method that can take one argument of type
+    `Person` and returns void. The `Consumer<T>` interface contains the method `void
+    accept(T t)`, which has these characteristics. The following method replaces the
+    invocation `p.printPerson()` with an instance of `Consumer<Person>` that invokes
+    the method `accept`:'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以指定一个不同的操作来执行那些满足`tester`指定的条件的`Person`实例，而不是调用`printPerson`方法。你可以用lambda表达式指定这个操作。假设你想要一个类似于`printPerson`的lambda表达式，一个接受一个参数（一个`Person`类型的对象）并返回`void`的。记住，要使用lambda表达式，你需要实现一个函数式接口。在这种情况下，你需要一个包含可以接受一个`Person`类型参数并返回`void`的抽象方法的函数式接口。`Consumer<T>`接口包含方法`void
+    accept(T t)`，具有这些特征。以下方法用一个调用`accept`方法的`Consumer<Person>`实例替换了`p.printPerson()`的调用：
+- en: '[PRE15]'
+  id: totrans-88
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: 'As a result, the following method invocation is the same as when you invoked
+    `printPersons` in [Approach 3: Specify Search Criteria Code in a Local Class](#approach3)
+    to obtain members who are eligible for Selective Service. The lambda expression
+    used to print members is highlighted:'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，以下方法调用与在[方法3：在本地类中指定搜索条件代码](#approach3)中调用`printPersons`以获取符合应征条件的成员时是相同的。用于打印成员的lambda表达式被突出显示：
+- en: '[PRE16]'
+  id: totrans-90
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: 'What if you want to do more with your members'' profiles than printing them
+    out. Suppose that you want to validate the members'' profiles or retrieve their
+    contact information? In this case, you need a functional interface that contains
+    an abstract method that returns a value. The `Function<T,R>` interface contains
+    the method `R apply(T t)`. The following method retrieves the data specified by
+    the parameter `mapper`, and then performs an action on it specified by the parameter
+    `block`:'
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想对成员的个人资料做更多操作而不仅仅是打印它们。假设你想验证成员的个人资料或检索他们的联系信息？在这种情况下，你需要一个包含返回值的抽象方法的函数式接口。`Function<T,R>`接口包含方法`R
+    apply(T t)`。以下方法检索由参数`mapper`指定的数据，然后执行由参数`block`指定的操作：
+- en: '[PRE17]'
+  id: totrans-92
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: 'The following method retrieves the email address from each member contained
+    in `roster` who is eligible for Selective Service and then prints it:'
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下方法从`roster`中包含的每个符合应征条件的成员中检索电子邮件地址，然后打印它：
+- en: '[PRE18]'
+  id: totrans-94
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: 'Approach 8: Use Generics More Extensively'
+  id: totrans-95
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 方法8：更广泛地使用泛型
+- en: 'Reconsider the method `processPersonsWithFunction`. The following is a generic
+    version of it that accepts, as a parameter, a collection that contains elements
+    of any data type:'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 重新考虑`processPersonsWithFunction`方法。以下是一个通用版本，它接受一个包含任何数据类型元素的集合作为参数：
+- en: '[PRE19]'
+  id: totrans-97
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: 'To print the e-mail address of members who are eligible for Selective Service,
+    invoke the `processElements` method as follows:'
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要打印符合应征条件的成员的电子邮件地址，请按照以下方式调用`processElements`方法：
+- en: '[PRE20]'
+  id: totrans-99
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: 'This method invocation performs the following actions:'
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此方法调用执行以下操作：
+- en: Obtains a source of objects from the collection `source`. In this example, it
+    obtains a source of `Person` objects from the collection `roster`. Notice that
+    the collection `roster`, which is a collection of type `List`, is also an object
+    of type `Iterable`.
+  id: totrans-101
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从集合`source`中获取对象的源。在这个例子中，它从集合`roster`中获取`Person`对象的源。注意，集合`roster`是一个`List`类型的集合，也是一个`Iterable`类型的对象。
+- en: Filters objects that match the `Predicate` object `tester`. In this example,
+    the `Predicate` object is a lambda expression that specifies which members would
+    be eligible for Selective Service.
+  id: totrans-102
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 过滤与`tester`对象匹配的对象。在这个例子中，`Predicate`对象是一个指定哪些成员符合应征条件的lambda表达式。
+- en: Maps each filtered object to a value as specified by the `Function` object `mapper`.
+    In this example, the `Function` object is a lambda expression that returns the
+    e-mail address of a member.
+  id: totrans-103
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将每个经过筛选的对象映射到由`mapper`对象指定的值。在这个例子中，`Function`对象是一个返回成员电子邮件地址的lambda表达式。
+- en: Performs an action on each mapped object as specified by the `Consumer` object
+    `block`. In this example, the `Consumer` object is a lambda expression that prints
+    a string, which is the e-mail address returned by the `Function` object.
+  id: totrans-104
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 根据`Consumer`对象`block`指定的操作对每个映射对象执行动作。在此示例中，`Consumer`对象是一个打印字符串的Lambda表达式，该字符串是由`Function`对象返回的电子邮件地址。
+- en: You can replace each of these actions with an aggregate operation.
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以用聚合操作替换每个这些操作。
+- en: 'Approach 9: Use Aggregate Operations That Accept Lambda Expressions as Parameters'
+  id: totrans-106
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 方法9：使用接受Lambda表达式作为参数的聚合操作
+- en: 'The following example uses aggregate operations to print the e-mail addresses
+    of those members contained in the collection `roster` who are eligible for Selective
+    Service:'
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用聚合操作打印出集合`roster`中符合选择性服务资格的成员的电子邮件地址：
+- en: '[PRE21]'
+  id: totrans-108
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: 'The following table maps each of the operations the method `processElements`
+    performs with the corresponding aggregate operation:'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格将方法`processElements`执行的每个操作与相应的聚合操作进行了映射：
+- en: '| `processElements` Action | Aggregate Operation |'
+  id: totrans-110
+  prefs: []
+  type: TYPE_TB
+  zh: '| `processElements`操作 | 聚合操作 |'
+- en: '| Obtain a source of objects | `Stream<E> **stream**()` |'
+  id: totrans-111
+  prefs: []
+  type: TYPE_TB
+  zh: '| 获取对象源 | `Stream<E> **stream**()` |'
+- en: '| Filter objects that match a `Predicate` object | `Stream<T> **filter**(Predicate<?
+    super T> predicate)` |'
+  id: totrans-112
+  prefs: []
+  type: TYPE_TB
+  zh: '| 过滤与`Predicate`对象匹配的对象 | `Stream<T> **filter**(Predicate<? super T> predicate)`
+    |'
+- en: '| Map objects to another value as specified by a `Function` object | `<R> Stream<R>
+    **map**(Function<? super T,? extends R> mapper)` |'
+  id: totrans-113
+  prefs: []
+  type: TYPE_TB
+  zh: '| 根据`Function`对象将对象映射到另一个值 | `<R> Stream<R> **map**(Function<? super T,? extends
+    R> mapper)` |'
+- en: '| Perform an action as specified by a `Consumer` object | `void **forEach**(Consumer<?
+    super T> action)` |'
+  id: totrans-114
+  prefs: []
+  type: TYPE_TB
+  zh: '| 根据`Consumer`对象指定的操作执行动作 | `void **forEach**(Consumer<? super T> action)`
+    |'
+- en: The operations `filter`, `map`, and `forEach` are *aggregate operations*. Aggregate
+    operations process elements from a stream, not directly from a collection (which
+    is the reason why the first method invoked in this example is `stream`). A *stream*
+    is a sequence of elements. Unlike a collection, it is not a data structure that
+    stores elements. Instead, a stream carries values from a source, such as collection,
+    through a pipeline. A *pipeline* is a sequence of stream operations, which in
+    this example is `filter`- `map`-`forEach`. In addition, aggregate operations typically
+    accept lambda expressions as parameters, enabling you to customize how they behave.
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 操作`filter`、`map`和`forEach`是*聚合操作*。聚合操作处理来自流的元素，而不是直接来自集合（这就是为什么此示例中调用的第一个方法是`stream`的原因）。*流*是元素的序列。与集合不同，它不是存储元素的数据结构。相反，流通过管道从源（例如集合）传递值。*管道*是一系列流操作，本示例中是`filter`-`map`-`forEach`。此外，聚合操作通常接受Lambda表达式作为参数，使您能够自定义它们的行为。
+- en: For a more thorough discussion of aggregate operations, see the [Aggregate Operations](../../collections/streams/index.html)
+    lesson.
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于更深入讨论聚合操作，请参阅[聚合操作](../../collections/streams/index.html)课程。
+- en: Lambda Expressions in GUI Applications
+  id: totrans-117
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: GUI应用程序中的Lambda表达式
+- en: To process events in a graphical user interface (GUI) application, such as keyboard
+    actions, mouse actions, and scroll actions, you typically create event handlers,
+    which usually involves implementing a particular interface. Often, event handler
+    interfaces are functional interfaces; they tend to have only one method.
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要处理图形用户界面（GUI）应用程序中的事件，例如键盘操作、鼠标操作和滚动操作，通常需要创建事件处理程序，这通常涉及实现特定的接口。通常，事件处理程序接口是函数式接口；它们往往只有一个方法。
+- en: 'In the JavaFX example [`HelloWorld.java`](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/hello_world.htm)
+    (discussed in the previous section [Anonymous Classes](anonymousclasses.html)),
+    you can replace the highlighted anonymous class with a lambda expression in this
+    statement:'
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在JavaFX示例[`HelloWorld.java`](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/hello_world.htm)（在上一节[匿名类](anonymousclasses.html)中讨论）中，您可以在此语句中用Lambda表达式替换突出显示的匿名类：
+- en: '[PRE22]'
+  id: totrans-120
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: 'The method invocation `btn.setOnAction` specifies what happens when you select
+    the button represented by the `btn` object. This method requires an object of
+    type `EventHandler<ActionEvent>`. The `EventHandler<ActionEvent>` interface contains
+    only one method, `void handle(T event)`. This interface is a functional interface,
+    so you could use the following highlighted lambda expression to replace it:'
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法调用`btn.setOnAction`指定了当选择由`btn`对象表示的按钮时会发生什么。此方法需要一个`EventHandler<ActionEvent>`类型的对象。`EventHandler<ActionEvent>`接口只包含一个方法`void
+    handle(T event)`。该接口是一个函数式接口，因此您可以使用以下突出显示的Lambda表达式来替换它：
+- en: '[PRE23]'
+  id: totrans-122
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: Syntax of Lambda Expressions
+  id: totrans-123
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Lambda表达式的语法
+- en: 'A lambda expression consists of the following:'
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个lambda表达式由以下内容组成：
+- en: A comma-separated list of formal parameters enclosed in parentheses. The `CheckPerson.test`
+    method contains one parameter, `p`, which represents an instance of the `Person`
+    class.
+  id: totrans-125
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 用括号括起的逗号分隔的形式参数列表。`CheckPerson.test`方法包含一个参数`p`，它表示`Person`类的一个实例。
+- en: '**Note**: You can omit the data type of the parameters in a lambda expression.
+    In addition, you can omit the parentheses if there is only one parameter. For
+    example, the following lambda expression is also valid:'
+  id: totrans-126
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '**注意**：您可以在lambda表达式中省略参数的数据类型。此外，如果只有一个参数，您可以省略括号。例如，以下lambda表达式也是有效的：'
+- en: '[PRE24]'
+  id: totrans-127
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: The arrow token, `->`
+  id: totrans-128
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 箭头标记，`->`
+- en: 'A body, which consists of a single expression or a statement block. This example
+    uses the following expression:'
+  id: totrans-129
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个由单个表达式或语句块组成的主体。本示例使用以下表达式：
+- en: '[PRE25]'
+  id: totrans-130
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: 'If you specify a single expression, then the Java runtime evaluates the expression
+    and then returns its value. Alternatively, you can use a return statement:'
+  id: totrans-131
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如果您指定一个单一表达式，那么Java运行时将评估该表达式，然后返回其值。或者，您可以使用一个返回语句：
+- en: '[PRE26]'
+  id: totrans-132
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: 'A return statement is not an expression; in a lambda expression, you must enclose
+    statements in braces (`{}`). However, you do not have to enclose a void method
+    invocation in braces. For example, the following is a valid lambda expression:'
+  id: totrans-133
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 返回语句不是一个表达式；在lambda表达式中，您必须用大括号（`{}`）括起语句。然而，在void方法调用中，您不必用大括号括起。例如，以下是一个有效的lambda表达式：
+- en: '[PRE27]'
+  id: totrans-134
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: Note that a lambda expression looks a lot like a method declaration; you can
+    consider lambda expressions as anonymous methods—methods without a name.
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，lambda表达式看起来很像方法声明；您可以将lambda表达式视为匿名方法——没有名称的方法。
+- en: 'The following example, [`Calculator`](examples/Calculator.java), is an example
+    of lambda expressions that take more than one formal parameter:'
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例[`Calculator`](examples/Calculator.java)是一个使用多个形式参数的lambda表达式的示例：
+- en: '[PRE28]'
+  id: totrans-137
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: 'The method `operateBinary` performs a mathematical operation on two integer
+    operands. The operation itself is specified by an instance of `IntegerMath`. The
+    example defines two operations with lambda expressions, `addition` and `subtraction`.
+    The example prints the following:'
+  id: totrans-138
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`operateBinary`对两个整数操作数执行数学运算。操作本身由`IntegerMath`的实例指定。该示例使用lambda表达式定义了两个操作，`addition`和`subtraction`。该示例打印如下内容：
+- en: '[PRE29]'
+  id: totrans-139
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: Accessing Local Variables of the Enclosing Scope
+  id: totrans-140
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 访问封闭范围的局部变量
+- en: 'Like local and anonymous classes, lambda expressions can [capture variables](localclasses.html#accessing-members-of-an-enclosing-class);
+    they have the same access to local variables of the enclosing scope. However,
+    unlike local and anonymous classes, lambda expressions do not have any shadowing
+    issues (see [Shadowing](../../java/javaOO/nested.html#shadowing) for more information).
+    Lambda expressions are lexically scoped. This means that they do not inherit any
+    names from a supertype or introduce a new level of scoping. Declarations in a
+    lambda expression are interpreted just as they are in the enclosing environment.
+    The following example, [`LambdaScopeTest`](examples/LambdaScopeTest.java), demonstrates
+    this:'
+  id: totrans-141
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 像局部类和匿名类一样，lambda表达式可以[捕获变量](localclasses.html#accessing-members-of-an-enclosing-class)；它们对封闭范围的局部变量具有相同的访问权限。然而，与局部类和匿名类不同，lambda表达式没有任何遮蔽问题（有关更多信息，请参见[遮蔽](../../java/javaOO/nested.html#shadowing)）。Lambda表达式是词法作用域的。这意味着它们不继承任何名称来自超类型，也不引入新的作用域级别。lambda表达式中的声明被解释为在封闭环境中一样。以下示例[`LambdaScopeTest`](examples/LambdaScopeTest.java)演示了这一点：
+- en: '[PRE30]'
+  id: totrans-142
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: 'This example generates the following output:'
+  id: totrans-143
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本示例生成以下输出：
+- en: '[PRE31]'
+  id: totrans-144
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: 'If you substitute the parameter `x` in place of `y` in the declaration of the
+    lambda expression `myConsumer`, then the compiler generates an error:'
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在lambda表达式`myConsumer`的声明中，将参数`x`替换为`y`，那么编译器会生成一个错误：
+- en: '[PRE32]'
+  id: totrans-146
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: The compiler generates the error "Lambda expression's parameter x cannot redeclare
+    another local variable defined in an enclosing scope" because the lambda expression
+    does not introduce a new level of scoping. Consequently, you can directly access
+    fields, methods, and local variables of the enclosing scope. For example, the
+    lambda expression directly accesses the parameter `x` of the method `methodInFirstLevel`.
+    To access variables in the enclosing class, use the keyword `this`. In this example,
+    `this.x` refers to the member variable `FirstLevel.x`.
+  id: totrans-147
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编译器生成错误“Lambda 表达式的参数 x 不能重新声明在封闭范围中定义的另一个局部变量”，因为 lambda 表达式不引入新的作用域级别。因此，可以直接访问封闭范围的字段、方法和局部变量。例如，lambda
+    表达式直接访问方法`methodInFirstLevel`的参数`x`。要访问封闭类中的变量，请使用关键字`this`。在这个例子中，`this.x`指的是成员变量`FirstLevel.x`。
+- en: 'However, like local and anonymous classes, a lambda expression can only access
+    local variables and parameters of the enclosing block that are final or effectively
+    final. In this example, the variable `z` is effectively final; its value is never
+    changed after it''s initialized. However, suppose that you add the following assignment
+    statement in the the lambda expression `myConsumer`:'
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，与本地和匿名类一样，lambda 表达式只能访问封闭块的局部变量和参数，这些变量必须是 final 或有效 final。在这个例子中，变量`z`是有效
+    final；在初始化后其值不会改变。然而，假设在 lambda 表达式`myConsumer`中添加以下赋值语句：
+- en: '[PRE33]'
+  id: totrans-149
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: Because of this assignment statement, the variable `z` is not effectively final
+    anymore. As a result, the Java compiler generates an error message similar to
+    "Local variable z defined in an enclosing scope must be final or effectively final".
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于这个赋值语句，变量`z`不再是有效 final。因此，Java 编译器生成类似于“定义在封闭范围中的局部变量 z 必须是 final 或有效 final”的错误消息。
+- en: Target Typing
+  id: totrans-151
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 目标类型
+- en: 'How do you determine the type of a lambda expression? Recall the lambda expression
+    that selected members who are male and between the ages 18 and 25 years:'
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如何确定 lambda 表达式的类型？回想一下选择男性会员且年龄在 18 到 25 岁之间的 lambda 表达式：
+- en: '[PRE34]'
+  id: totrans-153
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: 'This lambda expression was used in the following two methods:'
+  id: totrans-154
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此 lambda 表达式在以下两个方法中使用：
+- en: '`public static void printPersons(List<Person> roster, CheckPerson tester)`
+    in [Approach 3: Specify Search Criteria Code in a Local Class](#approach3)'
+  id: totrans-155
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[方法 3：在本地类中指定搜索条件代码](#approach3) 中的 `public static void printPersons(List<Person>
+    roster, CheckPerson tester)`'
+- en: '`public void printPersonsWithPredicate(List<Person> roster, Predicate<Person>
+    tester)` in [Approach 6: Use Standard Functional Interfaces with Lambda Expressions](#approach6)'
+  id: totrans-156
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[方法 6：使用标准函数接口和 Lambda 表达式](#approach6) 中的 `public void printPersonsWithPredicate(List<Person>
+    roster, Predicate<Person> tester)`'
+- en: 'When the Java runtime invokes the method `printPersons`, it''s expecting a
+    data type of `CheckPerson`, so the lambda expression is of this type. However,
+    when the Java runtime invokes the method `printPersonsWithPredicate`, it''s expecting
+    a data type of `Predicate<Person>`, so the lambda expression is of this type.
+    The data type that these methods expect is called the *target type*. To determine
+    the type of a lambda expression, the Java compiler uses the target type of the
+    context or situation in which the lambda expression was found. It follows that
+    you can only use lambda expressions in situations in which the Java compiler can
+    determine a target type:'
+  id: totrans-157
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当 Java 运行时调用方法 `printPersons` 时，它期望的数据类型是 `CheckPerson`，因此 lambda 表达式就是这种类型。然而，当
+    Java 运行时调用方法 `printPersonsWithPredicate` 时，它期望的数据类型是 `Predicate<Person>`，因此 lambda
+    表达式就是这种类型。这些方法期望的数据类型称为*目标类型*。为了确定 lambda 表达式的类型，Java 编译器使用 lambda 表达式所在上下文或情况的目标类型。由此可知，只能在
+    Java 编译器能够确定目标类型的情况下使用 lambda 表达式：
+- en: Variable declarations
+  id: totrans-158
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 变量声明
+- en: Assignments
+  id: totrans-159
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 赋值语句
+- en: Return statements
+  id: totrans-160
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 返回语句
+- en: Array initializers
+  id: totrans-161
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 数组初始化器
+- en: Method or constructor arguments
+  id: totrans-162
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 方法或构造函数参数
+- en: Lambda expression bodies
+  id: totrans-163
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Lambda 表达式主体
+- en: Conditional expressions, `?:`
+  id: totrans-164
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 条件表达式，`?:`
+- en: Cast expressions
+  id: totrans-165
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 强制类型转换表达式
+- en: Target Types and Method Arguments
+  id: totrans-166
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 目标类型和方法参数
+- en: 'For method arguments, the Java compiler determines the target type with two
+    other language features: overload resolution and type argument inference.'
+  id: totrans-167
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于方法参数，Java 编译器使用另外两个语言特性来确定目标类型：重载解析和类型参数推断。
+- en: 'Consider the following two functional interfaces ( [`java.lang.Runnable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html)
+    and [`java.util.concurrent.Callable<V>`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Callable.html)):'
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑以下两个函数式接口（[`java.lang.Runnable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html)和[`java.util.concurrent.Callable<V>`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Callable.html)）：
+- en: '[PRE35]'
+  id: totrans-169
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: The method `Runnable.run` does not return a value, whereas `Callable<V>.call`
+    does.
+  id: totrans-170
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`Runnable.run`不返回值，而`Callable<V>.call`返回值。
+- en: 'Suppose that you have overloaded the method `invoke` as follows (see [Defining
+    Methods](methods.html) for more information about overloading methods):'
+  id: totrans-171
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您已经重载了方法`invoke`如下（有关重载方法的更多信息，请参见[定义方法](methods.html)）：
+- en: '[PRE36]'
+  id: totrans-172
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: Which method will be invoked in the following statement?
+  id: totrans-173
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在下面的语句中将调用哪个方法？
+- en: '[PRE37]'
+  id: totrans-174
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE37]'
+- en: The method `invoke(Callable<T>)` will be invoked because that method returns
+    a value; the method `invoke(Runnable)` does not. In this case, the type of the
+    lambda expression `() -> "done"` is `Callable<T>`.
+  id: totrans-175
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将调用方法`invoke(Callable<T>)`，因为该方法返回一个值；方法`invoke(Runnable)`不返回值。在这种情况下，lambda
+    表达式`() -> "done"`的类型是`Callable<T>`。
+- en: Serialization
+  id: totrans-176
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 序列化
+- en: You can [serialize](../../jndi/objects/serial.html) a lambda expression if its
+    target type and its captured arguments are serializable. However, like [inner
+    classes](nested.html#serialization), the serialization of lambda expressions is
+    strongly discouraged.
+  id: totrans-177
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果 lambda 表达式的目标类型和捕获的参数都是可序列化的，则可以对其进行[序列化](../../jndi/objects/serial.html)。然而，与[内部类](nested.html#serialization)一样，强烈不建议序列化
+    lambda 表达式。

@@ -1,0 +1,68 @@
+- en: Streaming API for XML APIs
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: XML 的流 API
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/intro/streaming.html](https://docs.oracle.com/javase/tutorial/jaxp/intro/streaming.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/intro/streaming.html](https://docs.oracle.com/javase/tutorial/jaxp/intro/streaming.html)
+- en: StAX is the latest API in the JAXP family, and provides an alternative to SAX,
+    DOM, TrAX, and DOM for developers looking to do high-performance stream filtering,
+    processing, and modification, particularly with low memory and limited extensibility
+    requirements.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX 是 JAXP 家族中最新的 API，为那些希望进行高性能流过滤、处理和修改的开发人员提供了一种替代方案，特别是对于内存较低和扩展性要求有限的情况。
+- en: To summarize, StAX provides a standard, bidirectional **pull parser** interface
+    for streaming XML processing, offering a simpler programming model than SAX and
+    more efficient memory management than DOM. StAX enables developers to parse and
+    modify XML streams as events, and to extend XML information models to allow application-specific
+    additions. More detailed comparisons of StAX with several alternative APIs are
+    provided in [Streaming API for XML](../stax/index.html), in [Comparing StAX to
+    Other JAXP APIs](../stax/why.html#bnbea).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 总结一下，StAX 提供了标准的、双向的**拉取解析器**接口，用于流式 XML 处理，提供了比 SAX 更简单的编程模型，比 DOM 更高效的内存管理。StAX
+    使开发人员能够将 XML 流解析和修改为事件，并扩展 XML 信息模型以允许特定于应用程序的添加。有关 StAX 与几种替代 API 的更详细比较，请参见
+    [XML 流 API](../stax/index.html)，以及 [将 StAX 与其他 JAXP API 进行比较](../stax/why.html#bnbea)。
+- en: StAX Packages
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: StAX 包
+- en: The StAX APIs are defined in the packages shown in [Table 1-4](#gfoor).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX API 定义在 [表 1-4](#gfoor) 中所示的包中。
+- en: Table 1-4 StAX Packages
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 1-4 StAX 包
+- en: '| Package | Description |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| 包 | 描述 |'
+- en: '| `javax.xml.stream` | Defines the `XMLStreamReader` interface, which is used
+    to iterate over the elements of an XML document. The `XMLStreamWriter` interface
+    specifies how the XML should be written. |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.xml.stream` | 定义了 `XMLStreamReader` 接口，用于迭代 XML 文档的元素。`XMLStreamWriter`
+    接口指定了 XML 的写入方式。 |'
+- en: '| `javax.xml.transform.stax` | Provides StAX-specific transformation APIs.
+    |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.xml.transform.stax` | 提供了专门针对 StAX 的转换 API。 |'

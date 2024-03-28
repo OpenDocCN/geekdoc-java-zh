@@ -1,0 +1,120 @@
+- en: The Security Manager
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 安全管理器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/environment/security.html](https://docs.oracle.com/javase/tutorial/essential/environment/security.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/environment/security.html](https://docs.oracle.com/javase/tutorial/essential/environment/security.html)
+- en: A *security manager* is an object that defines a security policy for an application.
+    This policy specifies actions that are unsafe or sensitive. Any actions not allowed
+    by the security policy cause a [`SecurityException`](https://docs.oracle.com/javase/8/docs/api/java/lang/SecurityException.html)
+    to be thrown. An application can also query its security manager to discover which
+    actions are allowed.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*安全管理器*是为应用程序定义安全策略的对象。该策略指定了不安全或敏感的操作。安全策略不允许的任何操作都会导致抛出[`SecurityException`](https://docs.oracle.com/javase/8/docs/api/java/lang/SecurityException.html)。应用程序还可以查询其安全管理器以发现哪些操作是允许的。'
+- en: Typically, a web applet runs with a security manager provided by the browser
+    or Java Web Start plugin. Other kinds of applications normally run without a security
+    manager, unless the application itself defines one. If no security manager is
+    present, the application has no security policy and acts without restrictions.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，Web小程序在浏览器或Java Web Start插件提供的安全管理器下运行。其他类型的应用程序通常在没有安全管理器的情况下运行，除非应用程序本身定义了一个。如果没有安全管理器存在，应用程序就没有安全策略，并且可以无限制地运行。
+- en: This section explains how an application interacts with an existing security
+    manager. For more detailed information, including information on how to design
+    a security manager, refer to the [Security Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/security/index.html).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节解释了应用程序如何与现有安全管理器交互。有关更详细的信息，包括如何设计安全管理器的信息，请参考[安全指南](https://docs.oracle.com/javase/8/docs/technotes/guides/security/index.html)。
+- en: Interacting with the Security Manager
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 与安全管理器交互
+- en: The security manager is an object of type [`SecurityManager`](https://docs.oracle.com/javase/8/docs/api/java/lang/SecurityManager.html);
+    to obtain a reference to this object, invoke `System.getSecurityManager`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 安全管理器是[`SecurityManager`](https://docs.oracle.com/javase/8/docs/api/java/lang/SecurityManager.html)类型的对象；要获取对此对象的引用，请调用`System.getSecurityManager`。
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If there is no security manager, this method returns `null`.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果没有安全管理器，则此方法返回`null`。
+- en: Once an application has a reference to the security manager object, it can request
+    permission to do specific things. Many classes in the standard libraries do this.
+    For example, `System.exit`, which terminates the Java virtual machine with an
+    exit status, invokes `SecurityManager.checkExit` to ensure that the current thread
+    has permission to shut down the application.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦应用程序有了安全管理器对象的引用，��可以请求执行特定操作的权限。标准库中的许多类都会这样做。例如，`System.exit`用于终止具有退出状态的Java虚拟机，会调用`SecurityManager.checkExit`来确保当前线程有权限关闭应用程序。
+- en: The SecurityManager class defines many other methods used to verify other kinds
+    of operations. For example, `SecurityManager.checkAccess` verifies thread accesses,
+    and `SecurityManager.checkPropertyAccess` verifies access to the specified property.
+    Each operation or group of operations has its own `check*XXX*()` method.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SecurityManager类定义了许多其他方法，用于验证其他类型的操作。例如，`SecurityManager.checkAccess`验证线程访问，`SecurityManager.checkPropertyAccess`验证对指定属性的访问。每个操作或操作组都有自己的`check*XXX*()`方法。
+- en: In addition, the set of `check*XXX*()` methods represents the set of operations
+    that are already subject to the protection of the security manager. Typically,
+    an application does not have to directly invoke any `check*XXX*()` methods.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，`check*XXX*()`方法集表示已受安全管理器保护的操作集。通常，应用程序不必直接调用任何`check*XXX*()`方法。
+- en: Recognizing a Security Violation
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 识别安全违规
+- en: 'Many actions that are routine without a security manager can throw a `SecurityException`
+    when run with a security manager. This is true even when invoking a method that
+    isn''t documented as throwing `SecurityException`. For example, consider the following
+    code used to write to a file:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多在没有安全管理器的情况下是例行操作的操作，在有安全管理器的情况下可能会抛出`SecurityException`。即使调用一个没有记录为抛出`SecurityException`的方法也是如此。例如，考虑以下用于写入文件的代码：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'In the absence of a security manager, this statement executes without error,
+    provided `xanadu.txt` exists and is writeable. But suppose this statement is inserted
+    in a web applet, which typically runs under a security manager that does not allow
+    file output. The following error messages might result:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在没有安全管理器的情况下，此语句执行时不会出错，前提是`xanadu.txt`存在且可写。但假设此语句插入到一个通常在不允许文件输出的安全管理器下运行的Web小程序中。可能会导致以下错误消息：
+- en: '[PRE2]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Note that the specific exception thrown in this case, [`java.security.AccessControlException`](https://docs.oracle.com/javase/8/docs/api/java/security/AccessControlException.html),
+    is a subclass of `SecurityException`.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，在这种情况下抛出的具体异常[`java.security.AccessControlException`](https://docs.oracle.com/javase/8/docs/api/java/security/AccessControlException.html)是`SecurityException`的子类。

@@ -1,0 +1,80 @@
+- en: Lower Bounded Wildcards
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 下界通配符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/lowerBounded.html](https://docs.oracle.com/javase/tutorial/java/generics/lowerBounded.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/lowerBounded.html](https://docs.oracle.com/javase/tutorial/java/generics/lowerBounded.html)
+- en: The [Upper Bounded Wildcards](upperBounded.html) section shows that an upper
+    bounded wildcard restricts the unknown type to be a specific type or a subtype
+    of that type and is represented using the `extends` keyword. In a similar way,
+    a *lower bounded* wildcard restricts the unknown type to be a specific type or
+    a *super type* of that type.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[上界通配符](upperBounded.html) 部分显示，上界通配符将未知类型限制为特定类型或该类型的子类型，并使用 `extends` 关键字表示。类似地，*下界*
+    通配符将未知类型限制为特定类型或该类型的 *超类型*。'
+- en: 'A lower bounded wildcard is expressed using the wildcard character (''`?`''),
+    following by the `super` keyword, followed by its *lower bound*: `<? super A>`.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用通配符字符（'`?`'）表示下界通配符，后跟 `super` 关键字，再跟着其 *下界*：`<? super A>`。
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** You can specify an upper bound for a wildcard, or you can specify
+    a lower bound, but you cannot specify both.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 你可以为通配符指定上界，也可以指定下界，但不能同时指定两者。'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Say you want to write a method that puts `Integer` objects into a list. To maximize
+    flexibility, you would like the method to work on `List<Integer>`, `List<Number>`,
+    and `List<Object>` — anything that can hold `Integer` values.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想编写一个将 `Integer` 对象放入列表的方法。为了最大限度地提高灵活性，你希望该方法适用于 `List<Integer>`、`List<Number>`
+    和 `List<Object>` — 任何可以容纳 `Integer` 值的东西。
+- en: To write the method that works on lists of `Integer` and the supertypes of `Integer`,
+    such as `Integer`, `Number`, and `Object`, you would specify `List<? super Integer>`.
+    The term `List<Integer>` is more restrictive than `List<? super Integer>` because
+    the former matches a list of type `Integer` only, whereas the latter matches a
+    list of any type that is a supertype of `Integer`.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编写适用于 `Integer` 列表和 `Integer` 的超类型（如 `Integer`、`Number` 和 `Object`）的方法，你应该指定
+    `List<? super Integer>`。术语 `List<Integer>` 比 `List<? super Integer>` 更具限制性，因为前者仅匹配类型为
+    `Integer` 的列表，而后者匹配任何是 `Integer` 超类型的列表。
+- en: 'The following code adds the numbers 1 through 10 to the end of a list:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码将数字 1 到 10 添加到列表的末尾：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The [Guidelines for Wildcard Use](wildcardGuidelines.html) section provides
+    guidance on when to use upper bounded wildcards and when to use lower bounded
+    wildcards.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[通配符使用指南](wildcardGuidelines.html) 部分提供了何时使用上界通配符和何时使用下界通配符的指导。'

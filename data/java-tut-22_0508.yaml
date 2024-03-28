@@ -1,0 +1,84 @@
+- en: Solving Common Event-Handling Problems
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 解决常见事件处理问题
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/problems.html](https://docs.oracle.com/javase/tutorial/uiswing/events/problems.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/problems.html](https://docs.oracle.com/javase/tutorial/uiswing/events/problems.html)
+- en: This section discusses problems that you might encounter while handling events.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节讨论您在处理事件时可能遇到的问题。
+- en: '**Problem:** I''m trying to handle certain events from a component, but the
+    component isn''t generating the events it should.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我试图处理组件的某些事件，但组件没有生成应该生成的事件。'
+- en: First, make sure you registered the right kind of listener to detect the events.
+    See whether another kind of listener might detect the kind of events you need.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 首先，请确保您注册了正确类型的监听器以侦测事件。看看是否另一种类型的监听器可以检测到你需要的事件类型。
+- en: Make sure you registered the listener on the right object.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 确保您在正确的对象上注册了监听器。
+- en: Did you implement the event handler correctly? For example, if you extended
+    an adapter class, then make sure you used the right method signature. Make sure
+    each event-handling method is `public void`, that the name spelled right and that
+    the argument is of the right type.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您是否正确实现了事件处理程序？例如，如果您扩展了适配器类，则确保使用了正确的方法签名。确保每个事件处理方法是`public void`，名称拼写正确，参数类型正确。
+- en: '**Problem:** My combo box isn''t generating low-level events such as focus
+    events.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我的组合框没有生成诸如焦点事件之类的低级事件。'
+- en: Combo boxes are compound components — components implemented using multiple
+    components. For this reason, combo boxes don't fire the low-level events that
+    simple components fire. For more information, see [Handling Events on a Combo
+    Box](../components/combobox.html#listeners).
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 组合框是复合组件 —— 使用多个组件实现的组件。因此，组合框不会触发简单组件触发的低级事件。有关更多信息，请参见[在组合框上处理事件](../components/combobox.html#listeners)。
+- en: '**Problem:** The document for an editor pane (or text pane) isn''t firing document
+    events.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 编辑器窗格（或文本窗格）的文档没有触发文档事件。'
+- en: The document instance for an editor pane or text pane might change when loading
+    text from a URL. Thus, your listeners might be listening for events on an unused
+    document. For example, if you load an editor pane or text pane with HTML that
+    was previously loaded with plain text, the document will change to an `HTMLDocument`
+    instance. If your program dynamically loads text into an editor pane or text pane,
+    make sure the code adjusts for possible changes to the document (re-register document
+    listeners on the new document, and so on).
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 编辑器窗格或文本窗格的文档实例在从 URL 加载文本时可能会更改。因此，您的监听器可能在未使用的文档上监听事件。例如，如果您使用先前加载过纯文本的 HTML
+    加载编辑器窗格或文本窗格，则文档将更改为`HTMLDocument`实例。如果您的程序动态将文本加载到编辑器窗格或文本窗格中，请确保代码调整以适应文档可能发生的更改（在新文档上重新注册文档监听器等）。
+- en: If you don't see your problem in this list, see [Solving Common Component Problems](../components/problems.html).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您在此列表中找不到您的问题，请参见[解决常见组件问题](../components/problems.html)。

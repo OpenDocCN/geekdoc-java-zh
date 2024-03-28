@@ -1,0 +1,94 @@
+- en: The Scope of a Locale
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 区域的范围
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/scope.html](https://docs.oracle.com/javase/tutorial/i18n/locale/scope.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/scope.html](https://docs.oracle.com/javase/tutorial/i18n/locale/scope.html)
+- en: The Java platform does not require you to use the same `Locale` throughout your
+    program. If you wish, you can assign a different `Locale` to every locale-sensitive
+    object in your program. This flexibility allows you to develop multilingual applications,
+    which can display information in multiple languages.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台不要求您在整个程序中使用相同的`Locale`。如果愿意，您可以为程序中的每个区域敏感对象分配不同的`Locale`。这种灵活性使您能够开发多语言应用程序，可以在多种语言中显示信息。
+- en: However, most applications are not multi-lingual and their locale-sensitive
+    objects rely on the default `Locale`. Set by the Java Virtual Machine when it
+    starts up, the default `Locale` corresponds to the locale of the host platform.
+    To determine the default `Locale` of your Java Virtual Machine, invoke the `Locale.getDefault`
+    method.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，大多数应用程序不是多语言的，它们的区域敏感对象依赖于默认的`Locale`。当Java虚拟机启动时由其设置，默认的`Locale`对应于主机平台的区域设置。要确定您的Java虚拟机的默认`Locale`，请调用`Locale.getDefault`方法。
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: 'It is possible to independently set the default locale for two types of uses:
+    the *format* setting is used for formatting resources, and the *display* setting
+    is used in menus and dialogs. Introduced in the Java SE 7 release, the [`Locale.getDefault(Locale.Category)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getDefault-java.util.Locale.Category-)
+    method takes a [`Locale.Category`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.Category.html)
+    parameter. Passing the `FORMAT` enum to the `getDefault(Locale.Category)` method
+    returns the default locale for formatting resources. Similarly, passing the `DISPLAY`
+    enum returns the default locale used by the UI. The corresponding [`setDefault(Locale.Category,
+    Locale)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#setDefault-java.util.Locale.Category-java.util.Locale-)
+    method allows setting the locale for the desired category. The no-argument `getDefault`
+    method returns the `DISPLAY` default value.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以独立设置两种用途的默认区域设置：*format*设置用于格式化资源，*display*设置用于菜单和对话框。在Java SE 7版本中引入的[`Locale.getDefault(Locale.Category)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getDefault-java.util.Locale.Category-)方法接受一个[`Locale.Category`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.Category.html)参数。将`FORMAT`枚举传递给`getDefault(Locale.Category)`方法会返回用于格式化资源的默认区域设置。类似地，传递`DISPLAY`枚举会返回UI使用的默认区域设置。相应的[`setDefault(Locale.Category,
+    Locale)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#setDefault-java.util.Locale.Category-java.util.Locale-)方法允许设置所需类别的区域设置。无参数的`getDefault`方法返回`DISPLAY`的默认值。
+- en: On the Windows platform, these default values are initialized according to the
+    "Standards and Formats" and "Display Language" settings in the Windows control
+    panel.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Windows平台上，这些默认值根据Windows控制面板中的“标准和格式”和“显示语言”设置进行初始化。
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: You should not set the default `Locale` programmatically because it is shared
+    by all locale-sensitive classes.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你不应该通过编程方式设置默认的`Locale`，因为它被所有区域敏感类共享。
+- en: Distributed computing raises some interesting issues. For example, suppose you
+    are designing an application server that will receive requests from clients in
+    various countries. If the `Locale` for each client is different, what should be
+    the `Locale` of the server? Perhaps the server is multithreaded, with each thread
+    set to the `Locale` of the client it services. Or perhaps all data passed between
+    the server and the clients should be locale-independent.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分布式计算引发了一些有趣的问题。例如，假设您正在设计一个应用服务器，该服务器将接收来自各个国家的客户端的请求。如果每个客户端的`Locale`不同，那么服务器的`Locale`应该是什么？也许服务器是多线程的，每个线程设置为服务的客户端的`Locale`。或者也许服务器和客户端之间传递的所有数据都应该是与区域设置无关的。
+- en: Which design approach should you take? If possible, the data passed between
+    the server and the clients should be locale-independent. This simplifies the design
+    of the server by making the clients responsible for displaying the data in a locale-sensitive
+    manner. However, this approach won't work if the server must store the data in
+    a locale-specific form. For example, the server might store Spanish, English,
+    and French versions of the same data in different database columns. In this case,
+    the server might want to query the client for its `Locale`, since the `Locale`
+    may have changed since the last request.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你应该采取哪种设计方法？如果可能的话，服务器和客户端之间传递的数据应该是与地区无关的。这样可以简化服务器的设计，让客户端负责以地区敏感的方式显示数据。然而，如果服务器必须以特定地区的形式存储数据，这种方法就行不通了。例如，服务器可能会在不同的数据库列中存储相同数据的西班牙语、英语和法语版本。在这种情况下，服务器可能希望查询客户端的`Locale`，因为`Locale`可能在上次请求之后发生了变化。

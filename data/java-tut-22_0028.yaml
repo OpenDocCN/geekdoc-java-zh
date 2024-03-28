@@ -1,0 +1,204 @@
+- en: Assignment, Arithmetic, and Unary Operators
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 赋值、算术和一元运算符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op1.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op1.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op1.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op1.html)
+- en: The Simple Assignment Operator
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 简单赋值运算符
+- en: 'One of the most common operators that you''ll encounter is the simple assignment
+    operator "`=`". You saw this operator in the Bicycle class; it assigns the value
+    on its right to the operand on its left:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您将遇到的最常见运算符之一是简单赋值运算符"`=`"。您在自行车类中看到了这个运算符；它将右侧的值分配给左侧的操作数：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This operator can also be used on objects to assign *object references*, as
+    discussed in [Creating Objects](../javaOO/objectcreation.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个运算符也可以用于对象上，分配*对象引用*，如[创建对象](../javaOO/objectcreation.html)中所讨论的。
+- en: The Arithmetic Operators
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 算术运算符
+- en: The Java programming language provides operators that perform addition, subtraction,
+    multiplication, and division. There's a good chance you'll recognize them by their
+    counterparts in basic mathematics. The only symbol that might look new to you
+    is "`%`", which divides one operand by another and returns the remainder as its
+    result.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编程语言提供了执行加法、减法、乘法和除法的运算符。您很可能会通过基本数学中的对应物来认识它们。唯一可能看起来新的符号是"`%`"，它将一个操作数除以另一个操作数，并返回余数作为其结果。
+- en: '| Operator | Description |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| 运算符 | 描述 |'
+- en: '| `+` | Additive operator (also used for String concatenation) |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `+` | 加法运算符（也用于字符串连接） |'
+- en: '| `-` | Subtraction operator |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-` | 减法运算符 |'
+- en: '| `*` | Multiplication operator |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| `*` | 乘法运算符 |'
+- en: '| `/` | Division operator |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `/` | 除法运算符 |'
+- en: '| `%` | Remainder operator |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| `%` | 取余运算符 |'
+- en: The following program, [`ArithmeticDemo`](examples/ArithmeticDemo.java), tests
+    the arithmetic operators.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的程序，[`ArithmeticDemo`](examples/ArithmeticDemo.java)，测试了算术运算符。
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'This program prints the following:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序打印如下内容：
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: You can also combine the arithmetic operators with the simple assignment operator
+    to create *compound assignments*. For example, `x+=1;` and `x=x+1;` both increment
+    the value of `x` by 1.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以将算术运算符与简单赋值运算符结合使用，创建*复合赋值*。例如，`x+=1;` 和 `x=x+1;` 都会将 `x` 的值增加1。
+- en: 'The `+` operator can also be used for concatenating (joining) two strings together,
+    as shown in the following [`ConcatDemo`](examples/ConcatDemo.java) program:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`+` 运算符也可以用于连接（拼接）两个字符串，如下所示的[`ConcatDemo`](examples/ConcatDemo.java)程序：'
+- en: '[PRE3]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: By the end of this program, the variable `thirdString` contains "This is a concatenated
+    string.", which gets printed to standard output.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到程序结束时，变量 `thirdString` 包含"这是一个连接的字符串。"，并将其打印到标准输出。
+- en: The Unary Operators
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一元运算符
+- en: The unary operators require only one operand; they perform various operations
+    such as incrementing/decrementing a value by one, negating an expression, or inverting
+    the value of a boolean.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一元运算符只需要一个操作数；它们执行各种操作，如将值增加/减少一，否定表达式，或反转布尔值的值。
+- en: '| Operator | Description |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| 运算符 | 描述 |'
+- en: '| `+` | Unary plus operator; indicates positive value (numbers are positive
+    without this, however) |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| `+` | 一元加号运算符；表示正值（数字没有这个也是正的） |'
+- en: '| `-` | Unary minus operator; negates an expression |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-` | 一元减号运算符；否定表达式 |'
+- en: '| `++` | Increment operator; increments a value by 1 |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| `++` | 递增运算符；将值增加1 |'
+- en: '| `--` | Decrement operator; decrements a value by 1 |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| `--` | 递减运算符；将值减少1 |'
+- en: '| `!` | Logical complement operator; inverts the value of a boolean |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| `!` | 逻辑补运算符；反转布尔值的值 |'
+- en: 'The following program, [`UnaryDemo`](examples/UnaryDemo.java), tests the unary
+    operators:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的程序，[`UnaryDemo`](examples/UnaryDemo.java)，测试了一元运算符：
+- en: '[PRE4]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The increment/decrement operators can be applied before (prefix) or after (postfix)
+    the operand. The code `result++;` and `++result;` will both end in `result` being
+    incremented by one. The only difference is that the prefix version (`++result`)
+    evaluates to the incremented value, whereas the postfix version (`result++`) evaluates
+    to the original value. If you are just performing a simple increment/decrement,
+    it doesn't really matter which version you choose. But if you use this operator
+    in part of a larger expression, the one that you choose may make a significant
+    difference.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 递增/递减运算符可以在操作数之前（前缀）或之后（后缀）应用。代码 `result++;` 和 `++result;` 都会使 `result` 增加一。唯一的区别在于前缀版本（`++result`）会计算为递增后的值，而后缀版本（`result++`）会计算为原始值。如果只是进行简单的递增/递减，选择哪个版本并不重要。但如果在较大表达式的一部分中使用此运算符，则您选择的版本可能会产生重大差异。
+- en: 'The following program, [`PrePostDemo`](examples/PrePostDemo.java), illustrates
+    the prefix/postfix unary increment operator:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序，[`PrePostDemo`](examples/PrePostDemo.java)，演示了前缀/后缀一元递增运算符：
+- en: '[PRE5]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'

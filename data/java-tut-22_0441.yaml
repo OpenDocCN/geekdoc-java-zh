@@ -1,0 +1,223 @@
+- en: A GroupLayout Example
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 一个GroupLayout示例
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/groupExample.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/groupExample.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/groupExample.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/groupExample.html)
+- en: '* * *'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程涵盖了手动编写布局代码，这可能具有挑战性。如果您对学习布局管理的所有细节不感兴趣，您可能更喜欢使用`GroupLayout`布局管理器结合构建工具来布局您的GUI。其中一个构建工具是[NetBeans
+    IDE](../learn/index.html)。否则，如果您想手动编码而不想使用`GroupLayout`，那么建议使用`GridBagLayout`作为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有兴趣使用JavaFX创建GUI，请参阅[JavaFX中的布局](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: 'As an example of GUI creation with `GroupLayout`, let us create a layout for
+    this "Find" dialog box:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为使用`GroupLayout`创建GUI的示例，让我们为这个“查找”对话框创建一个布局：
+- en: '![Find.](../Images/00f007d7ae784f49a507eb570bb0bc37.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Find.](../Images/00f007d7ae784f49a507eb570bb0bc37.png)'
+- en: Horizontal layout
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 横向布局
+- en: 'Examining the horizontal dimension *from left to right*, we can see there are
+    3 groups in a sequence. The first one is actually not a group, just a component
+    -- the label. The second one is a group containing the text field and the check
+    boxes (we will decompose it later). And the third is a group of the two buttons.
+    As illustrated here:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从*左到右*检查水平维度，我们可以看到有3个组成序列。第一个实际上不是一个组，只是一个组件--标签。第二个是包含文本字段和复选框的组（我们稍后将对其进行分解）。第三个是两个按钮的组。如下图所示：
+- en: '![Find.](../Images/bb4a562cba9ef353b60c093504ad7b84.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Find.](../Images/bb4a562cba9ef353b60c093504ad7b84.png)'
+- en: Let us sketch out the sequential group in code. Note that `GroupLayout.Alignment.LEADING`
+    corresponds to left alignment in the horizontal dimension. Also note we do not
+    specify gaps, assuming the *gap auto-insertion* feature is turned on.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们用代码勾画出顺序组。请注意，`GroupLayout.Alignment.LEADING`对应于水平维度中的左对齐。还请注意，我们不指定间隙，假设*自动插入间隙*功能已打开。
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Now let us decompose the group in the middle. This is the hardest one. There
+    is a text field in parallel with a sequence of two parallel groups each containing
+    two check boxes. See the following illustration:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们分解中间的组。这是最难的部分。有一个文本字段与两个包含两个复选框的并行组序列。请参考以下插图：
+- en: '![Find_a2.](../Images/f3ec7f8a1c9c51fc56b503086605506c.png)'
+  id: totrans-14
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Find_a2.](../Images/f3ec7f8a1c9c51fc56b503086605506c.png)'
+- en: 'Let us add the corresponding code:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们添加相应的代码：
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: We want the text field to be resizable, but that happens automatically since
+    `JTextField` returns the right maximum size by default.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们希望文本字段可以调整大小，但由于`JTextField`默认返回正确的最大大小，这是自动发生的。
+- en: 'The remaining group on the right is trivial: it contains just two buttons.
+    Here is the code:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 右侧剩余的组很简单：只包含两个按钮。以下是代码：
+- en: '[PRE2]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'And finally, we would like the buttons to be always the same size, so let us
+    link them:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，我们希望按钮始终保持相同大小，因此让我们将它们链接起来：
+- en: '[PRE3]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Now we are done with the horizontal dimension. Let us switch to the vertical
+    dimension. From now, we will only need to think about the y axis.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们完成了水平维度。让我们切换到垂直维度。从现在开始，我们只需要考虑y轴。
+- en: Vertical layout
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 纵向布局
+- en: In the vertical dimension, we examine the layout from *top to bottom*. We definitely
+    want all the components on the first line aligned on the baseline. So along the
+    vertical axis there is a sequence of the baseline group, followed by a group of
+    the remaining components. See the following picture.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在纵向维度上，我们从*上到下*检查布局。我们绝对希望第一行上的所有组件都对齐在基线上。因此，在垂直轴上，有一个基线组的序列，然后是剩余组件的一组。请参考以下图片。
+- en: '![Find_a3.](../Images/53c62326103c56242745a4bf474b2a0f.png)'
+  id: totrans-25
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Find_a3.](../Images/53c62326103c56242745a4bf474b2a0f.png)'
+- en: Let us sketch out the code. First, we need to define two parallel groups. Note
+    that `GroupLayout.Alignment.LEADING` corresponds to the top alignment in the vertical
+    dimension.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们勾画出代码。首先，我们需要定义两个并行组。请注意，`GroupLayout.Alignment.LEADING`对应于垂直维度中的顶部对齐。
+- en: '[PRE4]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'We can fill the baseline group right away:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以立即填充基线组：
+- en: '[PRE5]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'Now let us look at the bottom group. Note the Cancel button is not on a shared
+    baseline with the check boxes; it is aligned at the top. So the second parallel
+    group comprises the button and a sequential group of two baseline groups with
+    check boxes:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们看看底部组。请注意，取消按钮与复选框不在共享基线上；它与顶部对齐。因此，第二个平行组包括按钮和两个基线组的顺序组，其中包含复选框：
+- en: '![Find_a4.](../Images/3b9b7a65c2421e386fbabe35abb49da7.png)'
+  id: totrans-31
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Find_a4.](../Images/3b9b7a65c2421e386fbabe35abb49da7.png)'
+- en: 'The corresponding code looks as follows:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相应的代码如下所示：
+- en: '[PRE6]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'So, we have created a complete layout, including resize behavior, without specifying
+    a single number in pixels—a true cross platform layout. Note that we do not need
+    to specify gaps between components, we get correct spacing automatically and according
+    to the look and feel guidelines. Here is the complete code for the Find dialog''s
+    layout:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，我们创建了一个完整的布局，包括调整大小行为，而不需要指定一个像素的数字——一个真正的跨平台布局。请注意，我们不需要指定组件之间的间隙，我们会自动获得正确的间距，并根据外观和感觉指南。这是查找对话框布局的完整代码：
+- en: '[PRE7]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Here is the complete [`Find.java`](../examples/layout/FindProject/src/layout/Find.java)
+    file. You can compile and run it. Try resizing the dialog horizontally to see
+    how the layout automatically adjusts to the new size.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是完整的[`Find.java`](../examples/layout/FindProject/src/layout/Find.java)文件。您可以编译并运行它。尝试水平调整对话框的大小，看看布局如何自动调整到新的大小。

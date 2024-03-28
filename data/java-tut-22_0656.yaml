@@ -1,0 +1,102 @@
+- en: Drawing Multiple Lines of Text
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 绘制多行文本
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/text/drawmulstring.html](https://docs.oracle.com/javase/tutorial/2d/text/drawmulstring.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/text/drawmulstring.html](https://docs.oracle.com/javase/tutorial/2d/text/drawmulstring.html)
+- en: If you have a paragraph of styled text that you would like to fit within a specific
+    width, you can use the `LineBreakMeasurer` class. This class enables styled text
+    to be broken into lines so that they fit within a particular visual advance. Each
+    line is returned as a `TextLayout` object, which represents unchangeable, styled
+    character data. However, this class also enables access to layout information.
+    The `getAscent` and `getDescent` methods of `TextLayout` return information about
+    the font that is used to position the lines in the component. The text is stored
+    as an `AttributedCharacterIterator` object so that the font and point size attributes
+    can be stored with the text.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有一段带样式的文本，希望将其适应特定宽度，可以使用 `LineBreakMeasurer` 类。这个类使得带样式的文本可以被分成行，以便它们适应特定的视觉前进。每一行作为一个
+    `TextLayout` 对象返回，代表不可改变的、带样式的字符数据。然而，这个类也使得可以访问布局信息。`TextLayout` 的 `getAscent`
+    和 `getDescent` 方法返回有关用于在组件中定位行的字体的信息。文本被存储为 `AttributedCharacterIterator` 对象，以便字体和点大小属性可以与文本一起存储。
+- en: The following applet positions a paragraph of styled text within a component,
+    using `LineBreakMeasurer`, `TextLayout` and `AttributedCharacterIterator`.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下小程序使用 `LineBreakMeasurer`、`TextLayout` 和 `AttributedCharacterIterator` 在组件中定位一段带样式的文本。
+- en: <applet code="LineBreakSample" archive="examples/lib/LineBreakSampleApplet.jar"
+    width="400" height="250" alt="LineBreakSample applet"><param name="permissions"
+    value="sandbox"></applet>
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="LineBreakSample" archive="examples/lib/LineBreakSampleApplet.jar"
+    width="400" height="250" alt="LineBreakSample applet"><param name="permissions"
+    value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，您需要安装至少 [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    版本。'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The complete code for this applet is in [``LineBreakSample.java``](examples/LineBreakSample.java).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个小程序的完整代码在 [``LineBreakSample.java``](examples/LineBreakSample.java) 中。
+- en: The following code creates an iterator with the string `vanGogh`. The start
+    and end of the iterator is retrieved and a new `LineBreakMeasurer` is created
+    from the iterator.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码创建一个包含字符串 `vanGogh` 的迭代器。检索迭代器的开始和结束，并从迭代器创建一个新的 `LineBreakMeasurer`。
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The size of the window is used to determine where the line should break. Also
+    a `TextLayout` object is created for each line in the paragraph.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 窗口的大小用于确定何处应该断行。同时为段落中的每一行创建一个 `TextLayout` 对象。
+- en: '[PRE1]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `TextLayout` class is not frequently created directly by applications. However,
+    this class is useful when applications need to work directly with text that has
+    had styles (text attributes) applied at specific positions in text. For example,
+    to draw a single word italicized in a paragraph, an application would need to
+    perform measurements and set the font for each substring. If the text is bidirectional,
+    this task is not so easy to do correctly. Creating a `TextLayout` object from
+    an `AttributedString` object handles this problem for you. Consult the Java SE
+    specification for more information about [`TextLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/TextLayout.html).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextLayout` 类通常不会被应用程序直接创建。然而，当应用程序需要直接处理在文本中特定位置应用了样式（文本属性）的文本时，这个类就非常有用。例如，要在段落中画一个单词斜体，应用程序需要为每个子字符串执行测量并设置字体。如果文本是双向的，这个任务就不那么容易正确完成。通过从
+    `AttributedString` 对象创建一个 `TextLayout` 对象来处理这个问题。请参考 Java SE 规范了解更多关于 [`TextLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/TextLayout.html)
+    的信息。'

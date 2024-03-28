@@ -1,0 +1,78 @@
+- en: What Is a Network Interface?
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 什么是网络接口？
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/nifs/definition.html](https://docs.oracle.com/javase/tutorial/networking/nifs/definition.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/nifs/definition.html](https://docs.oracle.com/javase/tutorial/networking/nifs/definition.html)
+- en: A *network interface* is the point of interconnection between a computer and
+    a private or public network. A network interface is generally a network interface
+    card (NIC), but does not have to have a physical form. Instead, the network interface
+    can be implemented in software. For example, the loopback interface (`127.0.0.1`
+    for IPv4 and `::1` for IPv6) is not a physical device but a piece of software
+    simulating a network interface. The loopback interface is commonly used in test
+    environments.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*网络接口*是计算机与私有或公共网络之间的连接点。网络接口通常是网络接口卡（NIC），但不一定要有物理形式。相反，网络接口可以在软件中实现。例如，环回接口（IPv4的`127.0.0.1`和IPv6的`::1`）不是物理设备，而是模拟网络接口的软件部分。环回接口通常用于测试环境。'
+- en: The [`java.net.NetworkInterface`](https://docs.oracle.com/javase/8/docs/api/java/net/NetworkInterface.html)
+    class represents both types of interfaces.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`java.net.NetworkInterface`](https://docs.oracle.com/javase/8/docs/api/java/net/NetworkInterface.html)类代表两种类型的接口。'
+- en: '`NetworkInterface` is useful for a multi-homed system, which is a system with
+    multiple NICs. Using `NetworkInterface`, you can specify which NIC to use for
+    a particular network activity.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`NetworkInterface`对于具有多个NIC的多宿主系统非常有用。使用`NetworkInterface`，您可以指定要用于特定网络活动的NIC。'
+- en: 'For example, assume you have a machine with two configured NICs, and you want
+    to send data to a server. You create a socket like this:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设您有一台配置了两个NIC的机器，并且您想向服务器发送数据。您可以这样创建一个套接字：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To send the data, the system determines which interface is used. However, if
+    you have a preference or otherwise need to specify which NIC to use, you can query
+    the system for the appropriate interfaces and find an address on the interface
+    you want to use. When you create the socket and bind it to that address, the system
+    uses the associated interface. For example:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 发送数据时，系统会确定使用哪个接口。但是，如果您有偏好或需要指定要使用的NIC，您可以查询系统以找到适当的接口并在您想要使用的接口上找到一个地址。当您创建套接字并将其绑定到该地址时，系统将使用相关联的接口。例如：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'You can also use `NetworkInterface` to identify the local interface on which
+    a multicast group is to be joined. For example:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以使用`NetworkInterface`来识别要加入多播组的本地接口。例如：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: NetworkInterface can be used with Java APIs in many other ways beyond the two
+    uses described here.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`NetworkInterface`可以与Java API一起以许多其他方式使用，超出了此处描述的两种用途。'

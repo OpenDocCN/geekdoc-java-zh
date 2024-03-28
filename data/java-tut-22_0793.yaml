@@ -1,0 +1,151 @@
+- en: Using the Properties
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用属性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/usingProps.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/usingProps.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 译文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/usingProps.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/usingProps.html)
+- en: This section focuses on the new properties introduced in JAXP 1.5.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节重点介绍了 JAXP 1.5 中引入的新属性。
+- en: When to Use the Properties
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 何时使用属性
+- en: Restrictions to fetching external resources are only needed if applications
+    process untrusted XML contents. Internal systems and applications that do not
+    handle untrusted contents do not need to be concerned with the new restrictions
+    or make any changes. Since 7u40 and JDK8 have no requirement on such restrictions
+    by default, applications shall experience no behavioral change when upgrading
+    to 7u40 and JDK8.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只有处理不受信任的 XML 内容的应用程序才需要限制获取外部资源。不处理不受信任内容的内部系统和应用程序不需要关注新的限制或进行任何更改。自 7u40
+    和 JDK8 默认没有对此类限制的要求，应用程序在升级到 7u40 和 JDK8 时不会出现行为变化。
+- en: For applications that do handle untrusted XML input, Schema, or Stylesheet,
+    if there is already existing security measures, such as enabling the Java Security
+    Manager to grant only trusted external connections, or resolving entities using
+    resolvers, there is no need for the new features added in JAXP 1.5.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于处理不受信任的 XML 输入、Schema 或样式表的应用程序，如果已经存在安全措施，比如启用 Java 安全管理器仅授予受信任的外部连接，或者使用解析器解析实体，则不需要
+    JAXP 1.5 中添加的新功能。
+- en: However, JAXP 1.5 does provide straight-forward protections for system and applications
+    that run without security manager. For such applications, restrictions may be
+    considered by using the new feature as described in detail below.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，JAXP 1.5 确实为没有安全管理器运行的系统和应用程序提供了直接的保护。对于这类应用程序，可以考虑使用下面详细描述的新功能来进行限制。
+- en: Setting Properties Through the API
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 通过 API 设置属性
+- en: 'When changing code is feasible, setting the new properties through JAXP factories
+    or parser is the best way to enable restrictions. The properties can be set through
+    the following interfaces:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当改变代码可行时，通过 JAXP 工厂或解析器设置新属性是启用限制的最佳方式。属性可以通过以下接口设置：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following is an example of limiting a DOM parser to local connection only
+    for external DTDs:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是一个将 DOM 解析器限制为仅本地连接的外部 DTD 的示例：
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: When code change is possible, and for new development, it is recommended that
+    the new properties be set as demonstrated above. By setting the properties this
+    way, applications can be sure to maintain the desired behavior whether they are
+    deployed to older or newer version of the JDK, or whether the properties are set
+    through System Properties or `jaxp.properties`.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当代码更改可行，并且对于新开发，建议设置新属性如上所示。通过这种方式设置属性，应用程序可以确保无论部署到较旧还是较新版本的 JDK，或者通过系统属性或`jaxp.properties`设置属性，都能保持所需的行为。
+- en: Using System Properities
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用系统属性
+- en: System properties may be useful if changing code is not feasible.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果改变代码不可行，系统属性可能会有用。
+- en: 'If it is desirable to set restrictions for an entire invocation of the JDK/JRE,
+    set the system properties on the command line; If it is needed for only a portion
+    of the application, the system properties may be set before the section and cleared
+    afterwards. For example, the following code shows how system properties may be
+    used:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果希望为整个 JDK/JRE 调用设置限制，可以在命令行上设置系统属性；如果仅需要部分应用程序，可以在该部分之前设置系统属性，然后在之后清除。例如，以下代码展示了如何使用系统属性：
+- en: '[PRE2]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Using jaxp.properties
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用 jaxp.properties
+- en: '`jaxp.properties` is a plain configuration file. It is located at `${java.home}/lib/jaxp.properties`
+    where `java.home` is the JRE install directory, for example, `[path to installation
+    directory]/jdk7/jre`.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`jaxp.properties` 是一个普通的配置文件。它位于`${java.home}/lib/jaxp.properties`，其中 `java.home`
+    是 JRE 安装目录，例如，`[安装目录路径]/jdk7/jre`。'
+- en: 'An external access restriction can be set by adding this line into jaxp.properties
+    file:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可通过将以下行添加到 jaxp.properties 文件来设置外部访问限制：
+- en: '[PRE3]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: When this is set, all invocations of the JDK/JRE will observe the restriction
+    with regards to loading external Stylesheet.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置此项后，所有 JDK/JRE 的调用将遵守加载外部样式表的限制。
+- en: This feature may be useful for systems that do not want to allow any external
+    connection by XML processors, in which case, all three properties may be set to,
+    for example, file only.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于不希望允许 XML 处理器进行任何外部连接的系统，此功能可能很有用，此时，所有三个属性可以设置为，例如，仅文件。

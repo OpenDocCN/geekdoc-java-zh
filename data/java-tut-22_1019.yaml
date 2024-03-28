@@ -1,0 +1,337 @@
+- en: Configuration
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 配置
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/config.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/config.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/config.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/config.html)
+- en: Connection pooling is configured and maintained per Java runtime. Connections
+    are not shared across different runtimes. To use connection pooling, no configuration
+    is required. Configuration is necessary only if you want to customize how pooling
+    is done, such as to control the size of the pools and which types of connections
+    are pooled.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 连接池是针对每个Java运行时配置和维护的。连接不会跨不同的运行时共享。要使用连接池，不需要任何配置。只有在想要自定义池化方式时才需要配置，比如控制池的大小和哪些类型的连接被池化。
+- en: You configure connection pooling by using a number of system properties at program
+    startup time. Note that these are system properties, *not* environment properties
+    and that they affect all connection pooling requests.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在程序启动时通过一些系统属性来配置连接池。请注意这些是系统属性，*不是*环境属性，并且它们影响所有连接池请求。
+- en: Here is an example of a command line that sets the maximum pool size to 20,
+    the preferred pool size to 10, and the idle timeout to a minute for pooled connections.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个设置最大池大小为20，首选池大小为10，并且空闲超时为一分钟的池化连接的命令行示例。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The following table lists the system properties for configuring connection pooling.
+    They are described in more detail in the rest of this section.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了用于配置连接池的系统属性。它们在本节的其余部分中有更详细的描述。
+- en: '| System Property Name | Description | Default |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| 系统属性名称 | 描述 | 默认值 |'
+- en: '| `com.sun.jndi.ldap.connect.pool.authentication` | A list of space-separated
+    authentication types of connections that may be pooled. Valid types are "none",
+    "simple", and "DIGEST-MD5". | `"none simple"` |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| `com.sun.jndi.ldap.connect.pool.authentication` | 一个以空格分隔的连接认证类型列表，可以被池化。有效类型为"none"、"simple"和"DIGEST-MD5"。
+    | `"none simple"` |'
+- en: '| `com.sun.jndi.ldap.connect.pool.debug` | A string that indicates the level
+    of debug output to produce. Valid values are `"fine"` (trace connection creation
+    and removal) and "all" (all debugging information). |   |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `com.sun.jndi.ldap.connect.pool.debug` | 一个指示要生成的调试输出级别的字符串。有效值为`"fine"`（跟踪连接的创建和移除）和"all"（所有调试信息）。
+    |   |'
+- en: '| `com.sun.jndi.ldap.connect.pool.initsize` | The string representation of
+    an integer that represents the number of connections per connection identity to
+    create when initially creating a connection for the identity. | 1 |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `com.sun.jndi.ldap.connect.pool.initsize` | 一个整数的字符串表示，表示在为标识创建连接时初始创建的每个连接标识的连接数。
+    | 1 |'
+- en: '| `com.sun.jndi.ldap.connect.pool.maxsize` | The string representation of an
+    integer that represents the maximum number of connections per connection identity
+    that can be maintained concurrently. | no maximum size |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| `com.sun.jndi.ldap.connect.pool.maxsize` | 一个整数的字符串表示，表示每个连接标识可以同时维护的最大连接数。
+    | 无最大大小 |'
+- en: '| `com.sun.jndi.ldap.connect.pool.prefsize` | The string representation of
+    an integer that represents the preferred number of connections per connection
+    identity that should be maintained concurrently. | no preferred size |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `com.sun.jndi.ldap.connect.pool.prefsize` | 一个整数的字符串表示，表示应同时维护的每个连接标识的首选连接数。
+    | 无首选大小 |'
+- en: '| `com.sun.jndi.ldap.connect.pool.protocol` | A list of space-separated protocol
+    types of connections that may be pooled. Valid types are "plain" and "ssl". |
+    `"plain"` |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| `com.sun.jndi.ldap.connect.pool.protocol` | 一个以空格分隔的连接协议类型列表，可以被池化。有效类型为"plain"和"ssl"。
+    | `"plain"` |'
+- en: '| `com.sun.jndi.ldap.connect.pool.timeout` | The string representation of an
+    integer that represents the number of milliseconds that an idle connection may
+    remain in the pool without being closed and removed from the pool. | no timeout
+    |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| `com.sun.jndi.ldap.connect.pool.timeout` | 一个整数的字符串表示，表示空闲连接在池中可以保持的毫秒数，超过这个时间将被关闭并从池中移除。
+    | 无超时 |'
+- en: What Gets Pooled
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 被池化的内容
+- en: When you request that a `Context` instance use connection pooling by using the
+    `"com.sun.jndi.ldap.connect.pool"` environment property, the connection that is
+    used might or might not be pooled. The default rule is that plain (non-SSL) connections
+    that use simple or no authentication are allowed to be pooled. You can change
+    this default to include SSL connections and the DIGEST-MD5 authentication type
+    by using system properties. To allow both plain and SSL connections to be pooled,
+    set the `"com.sun.jndi.ldap.connect.pool.protocol"` system property to the string
+    `"plain ssl"`. To allow connections of anonymous (none), simple and DIGEST-MD5
+    authentication types to be pooled, set the `com.sun.jndi.ldap.connect.pool.authentication`
+    system property to the string `"none simple DIGEST-MD5"`.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您请求`Context`实例使用连接池时，可以通过使用`"com.sun.jndi.ldap.connect.pool"`环境属性，所使用的连接可能会被池化，也可能不会。默认规则是允许使用简单或无身份验证的普通（非
+    SSL）连接进行池化。您可以通过使用系统属性来更改此默认设置，以包括 SSL 连接和 DIGEST-MD5 身份验证类型。要允许普通和 SSL 连接都被池化，请将`"com.sun.jndi.ldap.connect.pool.protocol"`系统属性设置为字符串`"plain
+    ssl"`。要允许匿名（无）、简单和 DIGEST-MD5 身份验证类型的连接被池化，请将`com.sun.jndi.ldap.connect.pool.authentication`系统属性设置为字符串`"none
+    simple DIGEST-MD5"`。
+- en: There are a couple of environment properties that automatically disqualify a
+    `Context` instance from using a pooled connection. A `Context` instance cannot
+    use a pooled connection if it has its `"java.naming.ldap.factory.socket"` property
+    set to a custom socket factory class, or its `"java.naming.security.sasl.callback"`
+    property set to a custom callback handler class, or its `"com.sun.jndi.ldap.trace.ber"`
+    property set to enable protocol tracing.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有几个环境属性会自动使`Context`实例无法使用池化连接。如果`Context`实例将其`"java.naming.ldap.factory.socket"`属性设置为自定义套接字工厂类，或将其`"java.naming.security.sasl.callback"`属性设置为自定义回调处理程序类，或将其`"com.sun.jndi.ldap.trace.ber"`属性设置为启用协议跟踪，则`Context`实例无法使用池化连接。
+- en: How Connections are Pooled
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 连接是如何被池化的
+- en: When a `Context` instance requests to use a pooled connection, the LDAP provider
+    needs to determine whether the request can be satisfied by an existing pooled
+    connection. It does this by assigning a *connection identity* to each pooled connection
+    and checking whether the incoming request has the same connection identity as
+    that of one of its pooled connections.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当`Context`实例请求使用池化连接时，LDAP 提供程序需要确定是否可以通过现有的池化连接满足请求。它通过为每个池化连接分配*连接标识*并检查传入请求是否具有与其池化连接之一的连接标识相同来实现这一点。
+- en: A connection identity is the set of the parameters required to create a possibly
+    authenticated LDAP connection. Its composition depends on the authentication type
+    of the request, as shown in the following table.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 连接标识是创建可能经过身份验证的 LDAP 连接所需的参数集。其组成取决于请求的身份验证类型，如下表所示。
+- en: '| Authentication Type | Connection Identity Contents |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| 身份验证类型 | 连接标识内容 |'
+- en: '| none |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| none |'
+- en: connection controls
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 连接控制
+- en: host name, port number as specified in the `"java.naming.provider.url"` property,
+    referral, or URL supplied to the initial context
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 主机名、端口号如在`"java.naming.provider.url"`属性中指定的，引荐或提供给初始上下文的 URL。
+- en: 'the contents of the following properties:'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 以下属性的内容：
+- en: '[PRE1]'
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '|'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| simple |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| simple |'
+- en: all of the information listed for none
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有列出的关于无身份验证的信息
+- en: 'the contents of following properties:'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 以下属性的内容：
+- en: '[PRE2]'
+  id: totrans-31
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '|'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| DIGEST-MD5 |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| DIGEST-MD5 |'
+- en: all of the information listed for simple
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有列出的关于简单身份验证的信息
+- en: 'the contents of following properties:'
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 以下属性的内容：
+- en: '[PRE3]'
+  id: totrans-36
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '|'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: Pool Sizes
+  id: totrans-38
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 池大小
+- en: The LDAP provider maintains pools of connections; each pool holds connections
+    (either in-use or idle) that have the same connection identity. There are three
+    sizes that affect the management of each pool. These sizes are global and affect
+    all pools.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP 提供程序维护连接池；每个池保存具有相同连接标识的连接（正在使用或空闲）。有三个大小影响每个池的管理。这些大小是全局的，影响所有池。
+- en: The *initial pool size* is the number of connections per connection identity
+    that the LDAP service provider creates when first creating the pool (which corresponds
+    to when the application first requests a pooled connection for that connection
+    identity). Authentication of each connection in the pool is performed on demand,
+    as the connection gets used. By default, the initial pool size is 1 and can be
+    changed by using the system property `"com.sun.jndi.ldap.connect.pool.initsize"`.
+    It is typically used at application start-up time to prime the pool with a certain
+    number of connections to a server.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*初始池大小*是LDAP服务提供程序在首次创建池时（即应用程序首次为该连接标识请求池化连接时）创建的每个连接标识的连接数。池中每个连接的身份验证是按需执行的，随着连接的使用而进行。默认情况下，初始池大小为1，并且可以通过使用系统属性`"com.sun.jndi.ldap.connect.pool.initsize"`进行更改。通常在应用程序启动时使用，以向服务器预先提供一定数量的连接。'
+- en: 'The *maximum pool size* is the maximum number of connections per connection
+    identity that can be maintained concurrently by the LDAP service provider. Both
+    in-use and idle connections contribute to this number. When the pool size reaches
+    this number, no new connection for the corresponding connection identity may be
+    created until a connection in the pool has been removed (that is, the physical
+    connection is closed). When the pool size reaches the maximum and all of the connections
+    in the pool are in use, the application''s request for a connection from that
+    pool is blocked until a connection in the pool either becomes idle or is removed.
+    A maximum pool size of 0 means that there is no maximum size: A request for a
+    pooled connection will use an existing pooled idle connection or a newly created
+    pooled connection.'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*最大池大小*是LDAP服务提供程序可以同时维护的每个连接标识的最大连接数。使用中和空闲连接都计入此数字。当池大小达到此数字时，对应连接标识的新连接将无法创建，直到池中的连接被移除（即物理连接被关闭）。当池大小达到最大值且池中的所有连接都在使用中时，应用程序从该池请求连接时将被阻塞，直到池中的连接变为空闲或被移除。最大池大小为0意味着没有最大大小：对池化连接的请求将使用现有的空闲池化连接或新创建的池化连接。'
+- en: 'The *preferred pool size* is the preferred number of connections per connection
+    identity that the LDAP service provider should maintain. Both in-use and idle
+    connections contribute to this number. When an application requests the use of
+    a pooled connection and the pool size is less than the preferred size, the LDAP
+    provider will create and use a new pooled connection regardless of whether an
+    idle connection is available. When an application is finished with a pooled connection
+    (by invoking `Context.close()` on all contexts that share the connection) and
+    the pool size is greater than the preferred size, the LDAP provider will close
+    and remove the pooled connection from the pool. A preferred pool size of 0 means
+    that there is no preferred size: A request for a pooled connection will result
+    in a newly created connection only if no idle ones are available.'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*首选池大小*是LDAP服务提供程序应该维护的每个连接标识的首选连接数。使用中和空闲连接都计入此数字。当应用程序请求使用池化连接且池大小小于首选大小时，LDAP提供程序将创建并使用新的池化连接，而不管是否有空闲连接可用。当应用程序完成对池化连接的使用（通过在共享连接上调用`Context.close()`）且池大小大于首选大小时，LDAP提供程序将关闭并从池中移除池化连接。首选池大小为0意味着没有首选大小：对池化连接的请求只会在没有空闲连接可用时才会创建新连接。'
+- en: Note that the maximum pool size overrides both the initial and preferred pool
+    sizes. For example, setting the preferred pool size greater than the maximum pool
+    size is effectively setting it to the maximum pool size.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，最大池大小会覆盖初始和首选池大小。例如，将首选池大小设置为大于最大池大小实际上是将其设置为最大池大小。
+- en: Idle Connections
+  id: totrans-44
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 空闲连接
+- en: When the application is finished with a pooled connection (by invoking `Context.close()`
+    on all contexts that share the connection), the underlying pooled connection is
+    marked as idle, waiting to be reused. By default, idle connections remain in the
+    pool indefinitely until they are garbage-collected. If the `"com.sun.jndi.ldap.connect.pool.timeout"`
+    system property has been set, the LDAP provider will automatically close and remove
+    pooled connections that have been idle for more than the specified period.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当应用程序完成对池化连接的使用（通过在共享连接的所有上下文上调用`Context.close()`），底层的池化连接被标记为空闲，等待重新使用。默认情况下，空闲连接会一直保留在池中，直到被垃圾回收。如果设置了`"com.sun.jndi.ldap.connect.pool.timeout"`系统属性，LDAP提供程序将自动关闭并移除空闲时间超过指定时期的池化连接。

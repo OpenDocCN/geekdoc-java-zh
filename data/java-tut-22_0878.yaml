@@ -1,0 +1,122 @@
+- en: 'Trail: The Extension Mechanism'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：扩展机制
+- en: 原文：[https://docs.oracle.com/javase/tutorial/ext/index.html](https://docs.oracle.com/javase/tutorial/ext/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/ext/index.html](https://docs.oracle.com/javase/tutorial/ext/index.html)
+- en: The extension mechanism provides a standard, scalable way to make custom APIs
+    available to all applications running on the Java platform. *Java extensions*
+    are also referred to as *optional packages*. This trail may use both terms interchangeably.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 扩展机制提供了一种标准、可扩展的方式，使自定义API对在Java平台上运行的所有应用程序可用。*Java扩展*也被称为*可选包*。本教程可能会交替使用这两个术语。
+- en: '*Extensions* are groups of packages and classes that augment the Java platform
+    through the extension mechanism. The extension mechanism enables the runtime environment
+    to find and load extension classes without the extension classes having to be
+    named on the class path. In that respect, extension classes are similar to the
+    Java platform''s core classes. That''s also where extensions get their name --
+    they, in effect, extend the platform''s core API.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*扩展*是通过扩展机制增强Java平台的一组包和类。扩展机制使运行时环境能够找到并加载扩展类，而无需在类路径上命名扩展类。在这方面，扩展类类似于Java平台的核心类。这也是扩展得名的原因--它们实际上扩展了平台的核心API。'
+- en: Since this mechanism extends the platform's core API, its use should be judiciously
+    applied. Most commonly it is used for well standardized interfaces such as those
+    defined by the Java Community Process, although it may also be appropriate for
+    site wide interfaces.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于此机制扩展了平台的核心API，应谨慎使用。最常见的用途是用于由Java社区流程定义的标准化接口，尽管也可能适用于站点范围接口。
+- en: '![This figure shows the relationships between Application, Java Platform, and
+    Extensions.](../Images/2cca8984c05f1e9af28bedbfc63e4343.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![此图显示了应用程序、Java平台和扩展之间的关系。](../Images/2cca8984c05f1e9af28bedbfc63e4343.png)'
+- en: As the diagram indicates, extensions act as "add-on" modules to the Java platform.
+    Their classes and public APIs are automatically available to any applications
+    running on the platform.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如图所示，扩展充当Java平台的“附加”模块。它们的类和公共API自动对在平台上运行的任何应用程序可用。
+- en: The extension mechanism also provides a means for extension classes to be downloaded
+    from remote locations for use by applets.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 扩展机制还提供了一种从远程位置下载扩展类供applets使用的方法。
+- en: 'Extensions are bundled as Java Archive (JAR) files, and this trail assumes
+    that you are familiar with the JAR file format. If you''re not up to speed on
+    JAR files, you might want to review some JAR-file documentation before proceeding
+    with the lessons in this trail:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 扩展被打包为Java存档（JAR）文件，本教程假定您熟悉JAR文件格式。如果您对JAR文件不熟悉，您可能需要在继续本教程的课程之前查阅一些JAR文件文档：
+- en: The [Packaging Programs in JAR Files](../deployment/jar/index.html) lesson in
+    this tutorial.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 本教程中的[在JAR文件中打包程序](../deployment/jar/index.html)课程。
+- en: The [JAR Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jarGuide.html)
+    in the JDK™ documentation.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: JDK™文档中的[JAR指南](https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jarGuide.html)。
+- en: 'This trail has two lessons:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程有两个课程：
+- en: '[Creating and Using Extensions](./basics/index.html)'
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[创建和使用扩展](./basics/index.html)'
+- en: This section shows you what you need to do to add an extension to your Java
+    platform and how applets can benefit from the extension mechanism by downloading
+    remote extension classes.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分向您展示了如何向您的Java平台添加扩展，并且applets如何通过下载远程扩展类从扩展机制中受益。
+- en: '[Making Extensions Secure](./security/index.html)'
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使扩展安全](./security/index.html)'
+- en: This section describes security privileges and permissions that are granted
+    to extensions on your platform. You'll see how to use the Java platform's security
+    architecture if you're writing extensions classes of your own.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了在您的平台上授予扩展的安全特权和权限。如果您正在编写自己的扩展类，您将了解如何使用Java平台的安全架构。
+- en: Additional Documentation
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 附加文档
+- en: You can find further information about extensions in the [The Java Extensions
+    Mechanism](https://docs.oracle.com/javase/8/docs/technotes/guides/extensions/)
+    section of the JDK documentation.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在JDK文档的[Java扩展机制](https://docs.oracle.com/javase/8/docs/technotes/guides/extensions/)部分找到有关扩展的更多信息。

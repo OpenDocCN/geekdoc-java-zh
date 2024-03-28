@@ -1,0 +1,71 @@
+- en: Obtaining Field Types
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 获取字段类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/fieldTypes.html](https://docs.oracle.com/javase/tutorial/reflect/member/fieldTypes.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/fieldTypes.html](https://docs.oracle.com/javase/tutorial/reflect/member/fieldTypes.html)
+- en: 'A field may be either of primitive or reference type. There are eight primitive
+    types: `boolean`, `byte`, `short`, `int`, `long`, `char`, `float`, and `double`.
+    A reference type is anything that is a direct or indirect subclass of [`java.lang.Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)
+    including interfaces, arrays, and enumerated types.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字段可以是原始类型或引用类型。有八种原始类型：`boolean`、`byte`、`short`、`int`、`long`、`char`、`float`
+    和 `double`。引用类型是任何直接或间接是 [`java.lang.Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)
+    的子类，包括接口、数组和枚举类型。
+- en: The [``FieldSpy``](example/FieldSpy.java) example prints the field's type and
+    generic type given a fully-qualified binary class name and field name.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``FieldSpy``](example/FieldSpy.java) 示例根据完全限定的二进制类名和字段名打印字段的类型和泛型类型。'
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Sample output to retrieve the type of the three public fields in this class
+    (`b`, `name`, and the parameterized type `list`), follows. User input is in italics.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 获取此类中三个公共字段（`b`、`name` 和参数化类型 `list`）的类型的示例输出如下。用户输入以斜体表示。
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The type for the field `b` is two-dimensional array of boolean. The syntax for
+    the type name is described in [`Class.getName()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getName--).
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字段 `b` 的类型是布尔值的二维数组。类型名称的语法在 [`Class.getName()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getName--)
+    中有描述。
+- en: The type for the field `val` is reported as `java.lang.Object` because generics
+    are implemented via *type erasure* which removes all information regarding generic
+    types during compilation. Thus `T` is replaced by the upper bound of the type
+    variable, in this case, `java.lang.Object`.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字段 `val` 的类型报告为 `java.lang.Object`，因为泛型是通过*类型擦除*实现的，在编译期间删除了关于泛型类型的所有信息。因此，`T`
+    被替换为类型变量的上界，在本例中为 `java.lang.Object`。
+- en: '[`Field.getGenericType()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#getGenericType--)
+    will consult the Signature Attribute in the class file if it''s present. If the
+    attribute isn''t available, it falls back on [`Field.getType()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#getType--)
+    which was not changed by the introduction of generics. The other methods in reflection
+    with name `getGeneric*Foo*` for some value of *Foo* are implemented similarly.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Field.getGenericType()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#getGenericType--)
+    如果存在，将查阅类文件中的 Signature 属性。如果该属性不可用，则退而求其次使用 [`Field.getType()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#getType--)，这个方法在引入泛型之后并没有改变。反射中其他以
+    `getGeneric*Foo*` 命名的方法，对于某个 *Foo* 值的实现方式类似。'

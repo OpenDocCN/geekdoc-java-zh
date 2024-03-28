@@ -1,0 +1,153 @@
+- en: Parsing a URL
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 解析URL
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/urlInfo.html](https://docs.oracle.com/javase/tutorial/networking/urls/urlInfo.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/urlInfo.html](https://docs.oracle.com/javase/tutorial/networking/urls/urlInfo.html)
+- en: 'The `URL` class provides several methods that let you query `URL` objects.
+    You can get the protocol, authority, host name, port number, path, query, filename,
+    and reference from a URL using these accessor methods:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`URL`类提供了几种方法，让您可以查询`URL`对象。您可以使用这些访问器方法从URL中获取协议、权限、主机名、端口号、路径、查询、文件名和引用：'
+- en: '**`getProtocol`**'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`getProtocol`**'
+- en: Returns the protocol identifier component of the URL.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回URL的协议标识符组件。
+- en: '**`getAuthority`**'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`getAuthority`**'
+- en: Returns the authority component of the URL.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回URL的权限组件。
+- en: '**`getHost`**'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`getHost`**'
+- en: Returns the host name component of the URL.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回URL的主机名组件。
+- en: '**`getPort`**'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`getPort`**'
+- en: Returns the port number component of the URL. The `getPort` method returns an
+    integer that is the port number. If the port is not set, `getPort` returns -1.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回URL的端口号组件。`getPort`方法返回一个整数，即端口号。如果端口未设置，`getPort`返回-1。
+- en: '**`getPath`**'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`getPath`**'
+- en: Returns the path component of this URL.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回此URL的路径组件。
+- en: '**`getQuery`**'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`getQuery`**'
+- en: Returns the query component of this URL.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回此URL的查询组件。
+- en: '**`getFile`**'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`getFile`**'
+- en: Returns the filename component of the URL. The `getFile` method returns the
+    same as `getPath`, plus the concatenation of the value of `getQuery`, if any.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回URL的文件名组件。`getFile`方法返回与`getPath`相同的内容，再加上`getQuery`的值（如果有的话）。
+- en: '**`getRef`**'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`getRef`**'
+- en: Returns the reference component of the URL.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回URL的引用组件。
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: Remember that not all URL addresses contain these components. The URL class
+    provides these methods because HTTP URLs do contain these components and are perhaps
+    the most commonly used URLs. The URL class is somewhat HTTP-centric.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，并非所有URL地址都包含这些组件。URL类提供这些方法是因为HTTP URL包含这些组件，可能是最常用的URL。URL类在某种程度上是以HTTP为中心的。
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: You can use these `get*XXX*` methods to get information about the URL regardless
+    of the constructor that you used to create the URL object.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用这些`get*XXX*`方法获取有关URL的信息，而不管您使用哪种构造函数创建URL对象。
+- en: 'The URL class, along with these accessor methods, frees you from ever having
+    to parse URLs again! Given any string specification of a URL, just create a new
+    URL object and call any of the accessor methods for the information you need.
+    This small example program creates a URL from a string specification and then
+    uses the URL object''s accessor methods to parse the URL:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: URL类以及这些访问器方法使您永远不必再解析URL！只需给定任何URL的字符串规范，创建一个新的URL对象，并调用所需信息的任何访问器方法即可。这个小例子程序从字符串规范创建一个URL，然后使用URL对象的访问器方法解析URL：
+- en: '[PRE0]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Here is the output displayed by the program:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是程序显示的输出：
+- en: '[PRE1]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

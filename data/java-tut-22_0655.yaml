@@ -1,0 +1,126 @@
+- en: Using Text Attributes to Style Text
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用文本属性来设置文本样式
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/text/textattributes.html](https://docs.oracle.com/javase/tutorial/2d/text/textattributes.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/text/textattributes.html](https://docs.oracle.com/javase/tutorial/2d/text/textattributes.html)
+- en: 'Applications typically need the capability to apply the following text attributes:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序通常需要能够应用以下文本属性：
+- en: '*Underline* – A line that is drawn underneath text'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*下划线* – 在文本下方绘制的线'
+- en: '*Strikethrough* – A horizontal line that is drawn through the text'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*删除线* – 通过文本绘制的水平线'
+- en: '*Superscript* or *Subscript* – A text or a letter that appears slightly above
+    a line or correspondingly below a line'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*上标*或*下标* – 文本或字母略高于一行或相应地低于一行'
+- en: '*Kerning* – The adjustment of the space between characters'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*字间距* – 调整字符之间的空间'
+- en: These and other text attributes can be applied by using the Java 2D `TextAttribute`
+    class.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些以及其他文本属性可以通过使用 Java 2D `TextAttribute` 类来应用。
+- en: 'To apply these text attributes by add them to a `Font` object. For example:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要应用这些文本属性，请将它们添加到 `Font` 对象中。例如：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The code example represented below shows the application of text attributes
+    in the following order:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的代码示例显示了按以下顺序应用文本属性：
+- en: Sample string (no text attributes applied)
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 示例字符串（未应用文本属性）
+- en: Kerning
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 字间距
+- en: Kerning and Underlining
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 字间距和下划线
+- en: Kerning,Underlining and Strikethrough
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 字间距、下划线和删除线
+- en: Kerning,Underlining, Strikethrough and Color
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 字间距、下划线、删除线和颜色
+- en: <applet code="AttributedText" archive="examples/lib/AttributedTextApplet.jar"
+    alt="AttributedText applet" width="300" height="250"><param name="permissions"
+    value="sandbox"></applet>
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="AttributedText" archive="examples/lib/AttributedTextApplet.jar"
+    alt="AttributedText applet" width="300" height="250"><param name="permissions"
+    value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到 applet 运行，您需要安装至少 [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    版本。'
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The complete code for this applet is in [`AttributedText.java`](examples/AttributedText.java).
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此 applet 的完整代码在 [`AttributedText.java`](examples/AttributedText.java) 中。

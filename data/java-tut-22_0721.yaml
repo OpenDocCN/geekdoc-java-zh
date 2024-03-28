@@ -1,0 +1,298 @@
+- en: Using Prepared Statements
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用预编译语句
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html)
+- en: 'This page covers the following topics:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页涵盖以下主题：
+- en: '[Overview of Prepared Statements](#overview_ps)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[预编译语句概述](#overview_ps)'
+- en: '[Creating a PreparedStatement Object](#create_ps)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建一个PreparedStatement对象](#create_ps)'
+- en: '[Supplying Values for PreparedStatement Parameters](#supply_values_ps)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[为PreparedStatement参数提供值](#supply_values_ps)'
+- en: Overview of Prepared Statements
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 预编译语句概述
+- en: Sometimes it is more convenient to use a `PreparedStatement` object for sending
+    SQL statements to the database. This special type of statement is derived from
+    the more general class, `Statement`, that you already know.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时，使用`PreparedStatement`对象向数据库发送SQL语句更加方便。这种特殊类型的语句源自你已经了解的更一般的`Statement`类。
+- en: If you want to execute a `Statement` object many times, it usually reduces execution
+    time to use a `PreparedStatement` object instead.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想多次执行一个`Statement`对象，通常使用`PreparedStatement`对象可以减少执行时间。
+- en: The main feature of a `PreparedStatement` object is that, unlike a `Statement`
+    object, it is given a SQL statement when it is created. The advantage to this
+    is that in most cases, this SQL statement is sent to the DBMS right away, where
+    it is compiled. As a result, the `PreparedStatement` object contains not just
+    a SQL statement, but a SQL statement that has been precompiled. This means that
+    when the `PreparedStatement` is executed, the DBMS can just run the `PreparedStatement`
+    SQL statement without having to compile it first.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`PreparedStatement`对象的主要特点是，与`Statement`对象不同，它在创建时就被赋予了一个SQL语句。这样做的好处是，在大多数情况下，这个SQL语句会立即发送到数据库管理系统（DBMS）中进行编译。因此，`PreparedStatement`对象不仅包含一个SQL语句，而且包含一个已经预编译过的SQL语句。这意味着当执行`PreparedStatement`时，DBMS可以直接运行`PreparedStatement`的SQL语句，而无需先进行编译。'
+- en: Although you can use `PreparedStatement` objects for SQL statements with no
+    parameters, you probably use them most often for SQL statements that take parameters.
+    The advantage of using SQL statements that take parameters is that you can use
+    the same statement and supply it with different values each time you execute it.
+    Examples of this are in the following sections.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管你可以使用`PreparedStatement`对象执行没有参数的SQL语句，但通常你最常使用它们来执行带有参数的SQL语句。使用带有参数的SQL语句的优点是，你可以多次执行相同的语句，并每次执行时提供不同的值。以下部分中有相关示例。
+- en: 'However, the most important advantage of prepared statements is that they help
+    prevent SQL injection attacks. SQL injection is a technique to maliciously exploit
+    applications that use client-supplied data in SQL statements. Attackers trick
+    the SQL engine into executing unintended commands by supplying specially crafted
+    string input, thereby gaining unauthorized access to a database to view or manipulate
+    restricted data. SQL injection techniques all exploit a single vulnerability in
+    the application: Incorrectly validated or nonvalidated string literals are concatenated
+    into a dynamically built SQL statement and interpreted as code by the SQL engine.
+    Prepared statements always treat client-supplied data as content of a parameter
+    and never as a part of an SQL statement. See the section [SQL Injection](https://docs.oracle.com/en/database/oracle/oracle-database/20/lnpls/dynamic-sql.html#GUID-1E31057E-057F-4A53-B1DD-8BC2C337AA2C)
+    in *Database PL/SQL Language Reference*, part of Oracle Database documentation,
+    for more information.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，预编译语句最重要的优点是可以帮助防止SQL注入攻击。SQL注入是一种恶意利用应用程序中使用客户端提供的数据的技术，用于在SQL语句中执行意外命令。攻击者通过提供经过特殊设计的字符串输入来欺骗SQL引擎，从而未经授权地访问数据库以查看或操纵受限数据。所有SQL注入技术都利用应用程序中的一个漏洞：未正确验证或未验证的字符串文字被连接到动态构建的SQL语句中，并被SQL引擎解释为代码。预编译语句始终将客户端提供的数据视为参数的内容，而不是SQL语句的一部分。有关更多信息，请参阅Oracle数据库文档中的*数据库PL/SQL语言参考*部分中的[SQL注入](https://docs.oracle.com/en/database/oracle/oracle-database/20/lnpls/dynamic-sql.html#GUID-1E31057E-057F-4A53-B1DD-8BC2C337AA2C)部分。
+- en: 'The following method, [`CoffeesTable.updateCoffeeSales`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTable.java),
+    stores the number of pounds of coffee sold in the current week in the `SALES`
+    column for each type of coffee, and updates the total number of pounds of coffee
+    sold in the `TOTAL` column for each type of coffee:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下方法，[`CoffeesTable.updateCoffeeSales`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTable.java)，将当前周内销售的咖啡磅数存储在每种咖啡的`SALES`列中，并更新每种咖啡的`TOTAL`列中销售的咖啡总磅数：
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Creating a PreparedStatement Object
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建PreparedStatement对象
+- en: 'The following creates a `PreparedStatement` object that takes two input parameters:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下创建了一个接受两个输入参数的`PreparedStatement`对象：
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Supplying Values for PreparedStatement Parameters
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为PreparedStatement参数提供值
+- en: 'You must supply values in place of the question mark placeholders (if there
+    are any) before you can execute a `PreparedStatement` object. Do this by calling
+    one of the setter methods defined in the `PreparedStatement` class. The following
+    statements supply the two question mark placeholders in the `PreparedStatement`
+    named `updateSales`:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在执行`PreparedStatement`对象之前，必须在问号占位符的位置提供值（如果有的话）。通过调用`PreparedStatement`类中定义的setter方法来实现。以下语句为名为`updateSales`的`PreparedStatement`提供了两个问号占位符的值：
+- en: '[PRE2]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The first argument for each of these setter methods specifies the question mark
+    placeholder. In this example, `setInt` specifies the first placeholder and `setString`
+    specifies the second placeholder.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些setter方法的每个第一个参数指定了问号占位符。在这个例子中，`setInt`指定了第一个占位符，`setString`指定了第二个占位符。
+- en: 'After a parameter has been set with a value, it retains that value until it
+    is reset to another value, or the method `clearParameters` is called. Using the
+    `PreparedStatement` object `updateSales`, the following code fragment illustrates
+    reusing a prepared statement after resetting the value of one of its parameters
+    and leaving the other one the same:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在为参数设置了值之后，它会保留该值，直到被重置为另一个值，或者调用方法`clearParameters`。使用`PreparedStatement`对象`updateSales`，以下代码片段演示了在重置其参数值并保持另一个参数值不变后重用准备好的语句：
+- en: '[PRE3]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Using Loops to Set Values
+  id: totrans-23
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用循环设置值
+- en: You can often make coding easier by using a `for` loop or a `while` loop to
+    set values for input parameters.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常可以通过使用`for`循环或`while`循环为输入参数设置值，从而使编码更加简单。
+- en: 'The [`CoffeesTable.updateCoffeeSales`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTable.java)
+    method uses a for-each loop to repeatedly set values in the `PreparedStatement`
+    objects `updateSales` and `updateTotal`:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`CoffeesTable.updateCoffeeSales`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTable.java)方法使用for-each循环重复设置`updateSales`和`updateTotal`中的值：'
+- en: '[PRE4]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The method `CoffeesTable.updateCoffeeSales` takes one argument, `HashMap`. Each
+    element in the `HashMap` argument contains the name of one type of coffee and
+    the number of pounds of that type of coffee sold during the current week. The
+    for-each loop iterates through each element of the `HashMap` argument and sets
+    the appropriate question mark placeholders in `updateSales` and `updateTotal`.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`CoffeesTable.updateCoffeeSales`接受一个参数，`HashMap`。`HashMap`参数中的每个元素都包含当前周内销售的一种咖啡的名称和该种咖啡的磅数。for-each循环遍历`HashMap`参数的每个元素，并设置`updateSales`和`updateTotal`中相应的问号占位符。
+- en: Executing PreparedStatement Objects
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 执行PreparedStatement对象
+- en: 'As with `Statement` objects, to execute a `PreparedStatement` object, call
+    an execute statement: `executeQuery` if the query returns only one `ResultSet`
+    (such as a `SELECT` SQL statement), `executeUpdate` if the query does not return
+    a `ResultSet` (such as an `UPDATE` SQL statement), or `execute` if the query might
+    return more than one `ResultSet` object. Both `PreparedStatement` objects in `CoffeesTable.updateCoffeeSales(HashMap<String,
+    Integer>)` contain `UPDATE` SQL statements, so both are executed by calling `executeUpdate`:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`Statement`对象一样，要执行`PreparedStatement`对象，调用一个执行语句：如果查询只返回一个`ResultSet`（如`SELECT`
+    SQL语句），则调用`executeQuery`，如果查询不返回`ResultSet`（如`UPDATE` SQL语句），则调用`executeUpdate`，如果查询可能返回多个`ResultSet`对象，则调用`execute`。`CoffeesTable.updateCoffeeSales(HashMap<String,
+    Integer>)`中的两个`PreparedStatement`对象都包含`UPDATE` SQL语句，因此都通过调用`executeUpdate`来执行：
+- en: '[PRE5]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: No arguments are supplied to `executeUpdate` when they are used to execute `updateSales`
+    and `updateTotals`; both `PreparedStatement` objects already contain the SQL statement
+    to be executed.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在执行`updateSales`和`updateTotals`时，`executeUpdate`不需要提供参数；两个`PreparedStatement`对象已经包含要执行的SQL语句。
+- en: '**Note**: At the beginning of `CoffeesTable.updateCoffeeSales`, the auto-commit
+    mode is set to false:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：在`CoffeesTable.updateCoffeeSales`的开头，自动提交模式被设置为false：'
+- en: '[PRE6]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Consequently, no SQL statements are committed until the method `commit` is called.
+    For more information about the auto-commit mode, see [Transactions](transactions.html).
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，在调用方法`commit`之前，不会提交任何SQL语句。有关自动提交模式的更多信息，请参阅[事务](transactions.html)。
+- en: Return Values for the executeUpdate Method
+  id: totrans-35
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: executeUpdate方法的返回值
+- en: 'Whereas `executeQuery` returns a `ResultSet` object containing the results
+    of the query sent to the DBMS, the return value for `executeUpdate` is an `int`
+    value that indicates how many rows of a table were updated. For instance, the
+    following code shows the return value of `executeUpdate` being assigned to the
+    variable `n`:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 而`executeQuery`返回一个包含发送到DBMS的查询结果的`ResultSet`对象，`executeUpdate`的返回值是一个`int`值，表示更新了表的多少行。例如，下面的代码展示了`executeUpdate`的返回值被赋给变量`n`：
+- en: '[PRE7]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The table `COFFEES` is updated; the value 50 replaces the value in the column
+    `SALES` in the row for `Espresso`. That update affects one row in the table, so
+    `n` is equal to 1.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表`COFFEES`已更新；值`50`替换了`Espresso`行中`SALES`列的值。这次更新影响了表中的一行，因此`n`等于1。
+- en: 'When the method `executeUpdate` is used to execute a DDL (data definition language)
+    statement, such as in creating a table, it returns the `int` value of 0\. Consequently,
+    in the following code fragment, which executes the DDL statement used to create
+    the table `COFFEES`, `n` is assigned a value of 0:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用方法`executeUpdate`执行DDL（数据定义语言）语句时，比如创建表时，它会返回值为`int`的0。因此，在下面的代码片段中，用于执行创建表`COFFEES`的DDL语句时，`n`被赋值为0：
+- en: '[PRE8]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'Note that when the return value for `executeUpdate` is 0, it can mean one of
+    two things:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，当`executeUpdate`的返回值为0时，可能意味着两种情况之一：
+- en: The statement executed was an update statement that affected zero rows.
+  id: totrans-42
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 执行的语句是一个影响零行的更新语句。
+- en: The statement executed was a DDL statement.
+  id: totrans-43
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 执行的语句是一个DDL语句。

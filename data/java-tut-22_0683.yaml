@@ -1,0 +1,683 @@
+- en: Using Files and Format Converters
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用文件和格式转换器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sound/converters.html](https://docs.oracle.com/javase/tutorial/sound/converters.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sound/converters.html](https://docs.oracle.com/javase/tutorial/sound/converters.html)
+- en: Most application programs that deal with sound need to read sound files or audio
+    streams. This is common functionality, regardless of what the program may subsequently
+    do with the data it reads (such as play, mix, or process it). Similarly, many
+    programs need to write sound files (or streams). In some cases, the data that
+    has been read (or that will be written) needs to be converted to a different format.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数处理声音的应用程序需要读取声音文件或音频流。这是常见的功能，无论程序随后对读取的数据做什么（如播放、混合或处理）。同样，许多程序需要写入声音文件（或流）。在某些情况下，已读取的数据（或将要写入的数据）需要转换为不同的格式。
+- en: As was briefly mentioned in [Accessing Audio System Resources](accessing.html),
+    the Java Sound API provides application developers with various facilities for
+    file input/output and format translations. Application programs can read, write,
+    and translate between a variety of sound file formats and audio data formats.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如在[访问音频系统资源](accessing.html)中简要提到的，Java Sound API为应用程序开发人员提供了各种设施，用于文件输入/输出和格式转换。应用程序可以读取、写入和在各种声音文件格式和音频数据格式之间进行转换。
+- en: '[Overview of the Sampled Package](sampled-overview.html) introduced the main
+    classes related to sound files and audio data formats. As a review:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[采样包概述](sampled-overview.html)介绍了与声音文件和音频数据格式相关的主要类。作为回顾：'
+- en: A stream of audio data, as might be read from or written to a file, is represented
+    by an `AudioInputStream` object. (`AudioInputStream` inherits from `java.io.InputStream`.)
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 从文件中读取或写入的音频数据流由`AudioInputStream`对象表示。（`AudioInputStream`继承自`java.io.InputStream`。）
+- en: The format of this audio data is represented by an `AudioFormat` object.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 此音频数据的格式由`AudioFormat`对象表示。
+- en: This format specifies how the audio samples themselves are arranged, but not
+    the structure of a file that they might be stored in. In other words, an `AudioFormat`
+    describes "raw" audio data, such as the system might hand your program after capturing
+    it from a microphone input or after parsing it from a sound file. An `AudioFormat`
+    includes such information as the encoding, the byte order, the number of channels,
+    the sampling rate, and the number of bits per sample.
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此格式指定了音频样本本身的排列方式，但不指定它们可能存储在的文件的结构。换句话说，`AudioFormat`描述了“原始”音频数据，例如系统在从麦克风输入捕获或从声音文件解析后可能传递给程序的数据。`AudioFormat`包括编码、字节顺序、通道数、采样率和每个样本的位数等信息。
+- en: There are several well-known, standard formats for sound files, such as WAV,
+    AIFF, or AU. The different types of sound file have different structures for storing
+    audio data as well as for storing descriptive information about the audio data.
+    A sound file format is represented in the Java Sound API by an `AudioFileFormat`
+    object. The `AudioFileFormat` includes an `AudioFormat` object to describe the
+    format of the audio data stored in the file, and also includes information about
+    the file type and the length of the data in the file.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 有几种众所周知的标准声音文件格式，如WAV、AIFF或AU。不同类型的声音文件具有不同的存储音频数据以及存储有关音频数据的描述信息的结构。Java Sound
+    API中通过`AudioFileFormat`对象表示声音文件格式。`AudioFileFormat`包括一个`AudioFormat`对象来描述文件中存储的音频数据的格式，还包括有关文件类型和文件中数据长度的信息。
+- en: The `AudioSystem` class provides methods for (1) storing a stream of audio data
+    from an `AudioInputStream` into an audio file of a particular type (in other words,
+    writing a file), (2) extracting a stream of audio bytes (an `AudioInputStream`)
+    from an audio file (in other words, reading a file), and (3) converting audio
+    data from one data format to another. This page, which is divided into three sections,
+    explains these three kinds of activity.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`AudioSystem`类提供了方法，用于将来自`AudioInputStream`的音频数据流存储到特定类型的音频文件中（换句话说，写入文件），从音频文件中提取音频字节流（`AudioInputStream`）（换句话说，读取文件），以及将音频数据从一种数据格式转换为另一种数据格式。本页分为三个部分，解释了这三种活动。'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: an implementation of the Java Sound API does not necessarily provide comprehensive
+    facilities for reading, writing, and converting audio in different data and file
+    formats. It might support only the most common data and file formats. However,
+    service providers can develop and distribute conversion services that extend this
+    set, as you'll later see in [Providing Sampled-Audio Services](SPI-providing-sampled.html).
+    The `AudioSystem` class supplies methods that allow application programs to learn
+    what conversions are available, as described later under [Converting File and
+    Data Formats](#114640).
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API的实现不一定提供全面的设施来读取、写入和转换不同数据和文件格式的音频。它可能仅支持最常见的数据和文件格式。然而，服务提供者可以开发和分发扩展这一集合的转换服务，正如你稍后将在[提供采样音频服务](SPI-providing-sampled.html)中看到的那样。`AudioSystem`类提供了允许应用程序了解可用转换的方法，稍后在[转换文件和数据格式](#114640)下描述。
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Reading Sound Files
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 读取声音文件
+- en: 'The `AudioSystem` class provides two types of file-reading services:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`AudioSystem`类提供了两种类型的文件读取服务：'
+- en: Information about the format of the audio data stored in the sound file
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 存储在声音文件中的音频数据格式的信息
+- en: A stream of formatted audio data that can be read from the sound file
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 可从声音文件中读取的格式化音频数据流
+- en: 'The first of these is given by three variants of the `getAudioFileFormat` method:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个是`getAudioFileFormat`方法的三个变体：
+- en: '[PRE0]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: As mentioned above, the returned `AudioFileFormat` object tells you the file
+    type, the length of the data in the file, encoding, the byte order, the number
+    of channels, the sampling rate, and the number of bits per sample.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如上所述，返回的`AudioFileFormat`对象告诉你文件类型、文件中数据的长度、编码、字节顺序、通道数、采样率和每个样本的位数。
+- en: The second type of file-reading functionality is given by these `AudioSystem`
+    methods
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二种文件读取功能由这些`AudioSystem`方法提供。
+- en: '[PRE1]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: These methods give you an object (an `AudioInputStream`) that lets you read
+    the file's audio data, using one of the read methods of `AudioInputStream`. We'll
+    see an example momentarily.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些方法给你一个对象（一个`AudioInputStream`），让你使用`AudioInputStream`的读取方法读取文件的音频数据。我们马上会看到一个例子。
+- en: 'Suppose you''re writing a sound-editing application that allows the user to
+    load sound data from a file, display a corresponding waveform or spectrogram,
+    edit the sound, play back the edited data, and save the result in a new file.
+    Or perhaps your program will read the data stored in a file, apply some kind of
+    signal processing (such as an algorithm that slows the sound down without changing
+    its pitch), and then play the processed audio. In either case, you need to get
+    access to the data contained in the audio file. Assuming that your program provides
+    some means for the user to select or specify an input sound file, reading that
+    file''s audio data involves three steps:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你正在编写一个声音编辑应用程序，允许用户从文件中加载声音数据，显示相应的波形图或频谱图，编辑声音，播放编辑后的数据，并将结果保存在新文件中。或者你的程序将读取文件中存储的数据，应用某种信号处理（例如减慢声音而不改变音调的算法），然后播放处理后的音频。在任何情况下，你需要访问音频文件中包含的数据。假设你的程序提供了一些方式让用户选择或指定输入声音文件，读取该文件的音频数据涉及三个步骤：
+- en: Get an `AudioInputStream` object from the file.
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从文件中获取一个`AudioInputStream`对象。
+- en: Create a byte array in which you'll store successive chunks of data from the
+    file.
+  id: totrans-26
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个字节数组，用于存储文件中连续的数据块。
+- en: Repeatedly read bytes from the audio input stream into the array. On each iteration,
+    do something useful with the bytes in the array (for example, you might play them,
+    filter them, analyze them, display them, or write them to another file).
+  id: totrans-27
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 重复从音频输入流中读取字节到数组中。在每次迭代中，对数组中的字节执行一些有用的操作（例如，你可以播放它们、过滤它们、分析它们、显示它们或将它们写入另一个文件）。
+- en: 'The following code snippet outlines these steps:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段概述了这些步骤：
+- en: '[PRE2]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Let's take a look at what's happening in the above code sample. First, the outer
+    try clause instantiates an `AudioInputStream` object through the call to the `AudioSystem.getAudioInputStream(File)`
+    method. This method transparently performs all of the testing required to determine
+    whether the specified file is actually a sound file of a type that is supported
+    by the Java Sound API. If the file being inspected (`fileIn` in this example)
+    is not a sound file, or is a sound file of some unsupported type, an `UnsupportedAudioFileException`
+    exception is thrown. This behavior is convenient, in that the application programmer
+    need not be bothered with testing file attributes, nor with adhering to any file-naming
+    conventions. Instead, the `getAudioInputStream` method takes care of all the low-level
+    parsing and verification that is required to validate the input file. The outer
+    `try` clause then creates a byte array, `audioBytes`, of an arbitrary fixed length.
+    We make sure that its length in bytes equals an integral number of frames, so
+    that we won't end up reading only part of a frame or, even worse, only part of
+    a sample. This byte array will serve as a buffer to temporarily hold a chunk of
+    audio data as it's read from the stream. If we knew we would be reading nothing
+    but very short sound files, we could make this array the same length as the data
+    in the file, by deriving the length in bytes from the length in frames, as returned
+    by `AudioInputStream's getFrameLength` method. (Actually, we'd probably just use
+    a `Clip` object instead.) But to avoid running out of memory in the general case,
+    we instead read the file in chunks, one buffer at a time.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看看上面代码示例中发生了什么。首先，外部的`try`子句通过调用`AudioSystem.getAudioInputStream(File)`方法实例化了一个`AudioInputStream`对象。此方法透明地执行了所有必要的测试，以确定指定的文件实际上是Java
+    Sound API支持的声音文件类型。如果正在检查的文件（例如此示例中的`fileIn`）不是声音文件，或者是某种不受支持的声音文件类型，将抛出`UnsupportedAudioFileException`异常。这种行为很方便，因为应用程序员不需要测试文件属性，也不需要遵守任何文件命名约定。相反，`getAudioInputStream`方法负责处理验证输入文件所需的所有底层解析和验证。然后，外部的`try`子句创建了一个名为`audioBytes`的字节数组，长度是任意固定的。我们确保其字节长度等于整数帧数，这样我们就不会最终只读取部分帧或更糟糕的是只读取部分样本。这个字节数组将作为一个缓冲区，临时保存从流中读取的一块音频数据。如果我们知道我们将只读取非常短的声音文件，我们可以使此数组与文件中的数据长度相同，通过从`AudioInputStream`的`getFrameLength`方法返回的帧数长度来推导其字节长度。（实际上，我们可能会使用`Clip`对象。）但为了避免在一般情况下耗尽内存，我们会一次读取一个缓冲区的文件。
+- en: The inner `try` clause contains a `while` loop, which is where we read the audio
+    data from the `AudioInputStream` into the byte array. You should add code in this
+    loop to handle the audio data in this array in whatever way is appropriate for
+    your program's needs. If you're applying some kind of signal processing to the
+    data, you'll probably need to query the `AudioInputStream's AudioFormat` further,
+    to learn the number of bits per sample and so on.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内部的`try`子句包含一个`while`循环，在这里我们将音频数据从`AudioInputStream`读入字节数组中。您应该在此循环中添加代码，以适当处理此数组中的音频数据，以满足程序的需求。如果您对数据应用某种信号处理，您可能需要进一步查询`AudioInputStream`的`AudioFormat`，以了解每个样本的位数等信息。
+- en: Note that the method `AudioInputStream.read(byte[])` returns the number of *bytes*
+    read—not the number of samples or frames. This method returns -1 when there's
+    no more data to read. Upon detecting this condition, we break from the `while`
+    loop.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，方法`AudioInputStream.read(byte[])`返回读取的*字节数*，而不是样本数或帧数。当没有更多数据可读取时，此方法返回-1。一旦检测到这种情况，我们就会跳出`while`循环。
+- en: Writing Sound Files
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 写入声音文件
+- en: The previous section described the basics of reading a sound file, using specific
+    methods of the `AudioSystem` and `AudioInputStream` classes. This section describes
+    how to write audio data out to a new file.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前一节描述了读取声音文件的基础知识，使用了`AudioSystem`和`AudioInputStream`类的特定方法。本节描述了如何将音频数据写入新文件。
+- en: 'The following `AudioSystem` method creates a disk file of a specified file
+    type. The file will contain the audio data that''s in the specified `AudioInputStream`:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下`AudioSystem`方法创建指定文件类型的磁盘文件。该文件将包含指定`AudioInputStream`中的音频数据：
+- en: '[PRE3]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Note that the second argument must be one of the file types supported by the
+    system (for example, AU, AIFF, or WAV), otherwise the `write` method will throw
+    an `IllegalArgumentException`. To avoid this, you can test whether or not a particular
+    `AudioInputStream` may be written to a particular type of file, by invoking this
+    `AudioSystem` method:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，第二个参数必须是系统支持的文件类型之一（例如，AU、AIFF或WAV），否则`write`方法将抛出`IllegalArgumentException`。为了避免这种情况，您可以通过调用此`AudioSystem`方法来测试特定`AudioInputStream`是否可以写入特定类型的文件：
+- en: '[PRE4]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: which will return `true` only if the particular combination is supported.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只有在支持特定组合时才会返回`true`。
+- en: 'More generally, you can learn what types of file the system can write by invoking
+    one of these `AudioSystem` methods:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更一般地，您可以通过调用这些`AudioSystem`方法来了解系统可以写入哪些类型的文件：
+- en: '[PRE5]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The first of these returns all the types of file that the system can write,
+    and the second returns only those that the system can write from the given audio
+    input stream.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中第一个返回系统可以写入的所有文件类型，第二个仅返回系统可以从给定音频输入流写入的文件类型。
+- en: The following excerpt demonstrates one technique for creating an output file
+    from an `AudioInputStream` using the `write` method mentioned above.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下摘录演示了使用上述提到的`write`方法从`AudioInputStream`创建输出文件的一种技术。
+- en: '[PRE6]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The first statement above, creates a new `File` object, `fileOut`, with a user-
+    or program-specified pathname. The second statement gets a file type from a pre-existing
+    `AudioFileFormat` object called `fileFormat`, which might have been obtained from
+    another sound file, such as the one that was read in [Reading Sound Files](#114527)
+    above. (You could instead supply whatever supported file type you want, instead
+    of getting the file type from elsewhere. For example, you might delete the second
+    statement and replace the other two occurrences of `fileType` in the code above
+    with `AudioFileFormat.Type.WAVE`.)
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 上面的第一个语句创建了一个新的`File`对象`fileOut`，带有用户或程序指定的路径名。第二个语句从名为`fileFormat`的预先存在的`AudioFileFormat`对象中获取文件类型，该对象可能已从其他声音文件（例如，在上面的[读取声音文件](#114527)中读取的文件）中获取。
+    （您可以选择提供您想要的任何支持的文件类型，而不是从其他地方获取文件类型。例如，您可以删除第二个语句，并将上面代码中的其他两个`fileType`出现替换为`AudioFileFormat.Type.WAVE`。）
+- en: The third statement tests whether a file of the designated type can be written
+    from a desired `AudioInputStream`. Like the file format, this stream might have
+    been derived from the sound file previously read. (If so, presumably you've processed
+    or altered its data in some way, because otherwise there are easier ways to simply
+    copy a file.) Or perhaps the stream contains bytes that have been freshly captured
+    from the microphone input.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第三个语句测试指定类型的文件是否可以从所需的`AudioInputStream`写入。与文件格式一样，此流可能是先前读取的声音文件派生而来的。（如果是这样，那么您可能以某种方式处理或更改了其数据，否则有更简单的方法可以简单地复制文件。）或者也许该流包含从麦克风输入中新捕获的字节。
+- en: Finally, the stream, file type, and output file are passed to the `AudioSystem`.`write`
+    method, to accomplish the goal of writing the file.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，流、文件类型和输出文件被传递给`AudioSystem`.`write`方法，以实现写入文件的目标。
+- en: Converting File and Data Formats
+  id: totrans-48
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 转换文件和数据格式
+- en: Recall from [What is Formatted Audio Data?](sampled-overview.html#formatted),
+    that the Java Sound API distinguishes between audio *file* formats and audio *data*
+    formats. The two are more or less independent. Roughly speaking, the data format
+    refers to the way in which the computer represents each raw data point (sample),
+    while the file format refers to the organization of a sound file as stored on
+    a disk. Each sound file format has a particular structure that defines, for example,
+    the information stored in the file's header. In some cases, the file format also
+    includes structures that contain some form of meta-data, in addition to the actual
+    "raw" audio samples. The remainder of this page examines methods of the Java Sound
+    API that enable a variety of file-format and data-format conversions.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请回想一下[什么是格式化音频数据？](sampled-overview.html#formatted)，Java Sound API区分音频*文件*格式和音频*数据*格式。这两者或多或少是独立的。粗略地说，数据格式指的是计算机表示每个原始数据点（样本）的方式，而文件格式指的是存储在磁盘上的声音文件的组织方式。每种声音文件格式都有一个定义文件头中存储信息的特定结构。在某些情况下，文件格式还包括包含某种形式元数据的结构，除了实际的“原始”音频样本。本页的其余部分将探讨Java
+    Sound API的方法，这些方法使得可以进行各种文件格式和数据格式的转换。
+- en: Converting from One File Format to Another
+  id: totrans-50
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 从一种文件格式转换为另一种
+- en: This section covers the fundamentals of converting audio file types in the Java
+    Sound API. Once again we pose a hypothetical program whose purpose, this time,
+    is to read audio data from an arbitrary input file and write it into a file whose
+    type is AIFF. Of course, the input file must be of a type that the system is capable
+    of reading, and the output file must be of a type that the system is capable of
+    writing. (In this example, we assume that the system is capable of writing AIFF
+    files.) The example program doesn't do any data format conversion. If the input
+    file's data format can't be represented as an AIFF file, the program simply notifies
+    the user of that problem. On the other hand, if the input sound file is an already
+    an AIFF file, the program notifies the user that there is no need to convert it.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍了在Java Sound API中转换音频文件类型的基础知识。再次，我们提出一个假设的程序，其目的是从任意输入文件中读取音频数据并将其写入类型为AIFF的文件中。当然，输入文件必须是系统能够读取的类型，输出文件必须是系统能够写入的类型。（在此示例中，我们假设系统能够写入AIFF文件。）示例程序不执行任何数据格式转换。如果输入文件的数据格式无法表示为AIFF文件，则程序简单地通知用户存在问题。另一方面，如果输入音频文件已经是AIFF文件，则程序会通知用户无需转换。
+- en: 'The following function implements the logic just described:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下函数实现了刚才描述的逻辑：
+- en: '[PRE7]'
+  id: totrans-53
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: As mentioned, the purpose of this example function, `ConvertFileToAIFF`, is
+    to query an input file to determine whether it's an AIFF sound file, and if it
+    isn't, to try to convert it to one, producing a new copy whose pathname is specified
+    by the second argument. (As an exercise, you might try making this function more
+    general, so that instead of always converting to AIFF, the function converts to
+    the file type specified by a new function argument.) Note that the audio data
+    format of the copy—that is, the new file-mimics the audio data format of original
+    input file.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，此示例函数`ConvertFileToAIFF`的目的是查询输入文件，以确定它是否是AIFF音频文件，如果不是，则尝试将其转换为AIFF格式，生成一个新的副本，其路径名由第二个参数指定。（作为练习，您可以尝试使此函数更通用，以便不总是转换为AIFF，而是根据新的函数参数指定的文件类型进行转换。）请注意，副本的音频数据格式——即新文件模仿原始输入文件的音频数据格式。
+- en: 'Most of this function is self-explanatory and is not specific to the Java Sound
+    API. There are, however, a few Java Sound API methods used by the routine that
+    are crucial for sound file-type conversions. These method invocations are all
+    found in the second `try` clause, above, and include the following:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大部分此函数是不言自明的，并且与Java Sound API无关。然而，例程中使用了一些Java Sound API方法，这些方法对于音频文件类型转换至关重要。这些方法调用都在上面的第二个`try`子句中找到，包括以下内容：
+- en: '`AudioSystem.getAudioFileFormat`: used here to determine whether the input
+    file is already an AIFF type. If so, the function quickly returns; otherwise the
+    conversion attempt proceeds.'
+  id: totrans-56
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`AudioSystem.getAudioFileFormat`：在此处用于确定输入文件是否已经是AIFF类型。如果是，则函数会快速返回；否则，转换尝试继续进行。'
+- en: '`AudioSystem.isFileTypeSupported`: Indicates whether the system can write a
+    file of the specified type that contains audio data from the specified `AudioInputStream.`
+    In our example, this method returns `true` if the specified audio input file can
+    be converted to AIFF audio file format. If `AudioFileFormat.Type.AIFF` isn''t
+    supported, `ConvertFileToAIFF` issues a warning that the input file can''t be
+    converted, then returns.'
+  id: totrans-57
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`AudioSystem.isFileTypeSupported`：指示系统是否可以写入包含来自指定`AudioInputStream`的音频数据的指定类型文件。在我们的示例中，如果指定的音频输入文件可以转换为AIFF音频文件格式，则此方法返回`true`。如果不支持`AudioFileFormat.Type.AIFF`，`ConvertFileToAIFF`会发出警告，指出无法转换输入文件，然后返回。'
+- en: '`AudioSystem.write`: used here to write the audio data from the AudioInputStream
+    `inFileAIS` to the output file `outFile`.'
+  id: totrans-58
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`AudioSystem.write`：在此处用于将`inFileAIS`的音频数据从`AudioInputStream`写入到输出文件`outFile`中。'
+- en: The second of these methods, `isFileTypeSupported`, helps to determine, in advance
+    of the write, whether a particular input sound file can be converted to a particular
+    output sound file type. In the next section we will see how, with a few modifications
+    to this `ConvertFileToAIFF` sample routine, we can convert the audio data format,
+    as well as the sound file type.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些方法中的第二个`isFileTypeSupported`方法有助于在写入之前确定特定输入音频文件是否可以转换为特定输出音频文件类型。在下一节中，我们将看到如何通过对`ConvertFileToAIFF`示例例程进行一些修改，可以转换音频数据格式以及音频文件类型。
+- en: Converting Audio between Different Data Formats
+  id: totrans-60
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在不同数据格式之间转换音频
+- en: The previous section showed how to use the Java Sound API to convert a file
+    from one *file* format (that is, one type of sound file) to another. This section
+    explores some of the methods that enable audio *data* format conversions.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前一节展示了如何使用Java Sound API将文件从一种*文件*格式（即一种声音文件类型）转换为另一种。本节探讨了一些方法，这些方法使音频*数据*格式转换成为可能。
+- en: In the previous section, we read data from a file of an arbitrary type, and
+    saved it in an AIFF file. Note that although we changed the type of file used
+    to store the data, we didn't change the format of the audio data itself. (Most
+    common audio file types, including AIFF, can contain audio data of various formats.)
+    So if the original file contained CD-quality audio data (16-bit sample size, 44.1-kHz
+    sample rate, and two channels), so would our output AIFF file.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前一节中，我们从一个任意类型的文件中读取数据，并将其保存在一个AIFF文件中。请注意，尽管我们改变了用于存储数据的文件类型，但我们并没有改变音频数据本身的格式。（大多数常见的音频文件类型，包括AIFF，可以包含各种格式的音频数据。）因此，如果原始文件包含CD音质音频数据（16位样本大小、44.1kHz采��率和两个声道），那么我们的输出AIFF文件也会包含相同的数据。
+- en: Now suppose that we want to specify the *data* format of the output file, as
+    well as the file type. For example, perhaps we are saving many long files for
+    use on the Internet, and are concerned about the amount of disk space and download
+    time required by our files. We might choose to create smaller AIFF files that
+    contain lower-resolution data-for example, data that has an 8-bit sample size,
+    an 8-kHz sample rate, and a single channel.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在假设我们想要指定输出文件的*数据*格式，以及文件类型。例如，也许我们正在保存许多长文件以供在互联网上使用，并且担心我们的文件所需的磁盘空间和下载时间。我们可能选择创建包含低分辨率数据的较小的AIFF文件-例如，具有8位样本大小、8kHz采样率和单声道的数据。
+- en: Without going into as much coding detail as before, let's explore some of the
+    methods used for data format conversion, and consider the modifications that we
+    would need to make to the `ConvertFileToAIFF` function to accomplish the new goal.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不像之前那样详细地进行编码，让我们探讨一些用于数据格式转换的方法，并考虑我们需要对`ConvertFileToAIFF`函数进行的修改以实现新目标。
+- en: 'The principal method for audio data conversion is, once again, found in the
+    `AudioSystem` class. This method is a variant of `getAudioInputStream`:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 音频数据转换的主要方法再次在`AudioSystem`类中找到。这个方法是`getAudioInputStream`的一个变体：
+- en: '[PRE8]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: This function returns an `AudioInputStream` that is the result of converting
+    the `AudioInputStream`, `stream`, using the indicated `AudioFormat`, `format`.
+    If the conversion isn't supported by `AudioSystem`, this function throws an `IllegalArgumentException`.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此函数返回一个`AudioInputStream`，该流是使用指定的`AudioFormat``format`转换`stream`的结果。如果`AudioSystem`不支持转换，此函数会抛出`IllegalArgumentException`。
+- en: 'To avoid that, we can first check whether the system can perform the required
+    conversion by invoking this `AudioSystem` method:'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了避免这种情况，我们可以首先通过调用这个`AudioSystem`方法来检查系统是否可以执行所需的转换：
+- en: '[PRE9]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: In this case, we'd pass `stream.getFormat()` as the second argument.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，我们将`stream.getFormat()`作为第二个参数传递。
+- en: 'To create a specific `AudioFormat` object, we use one of the two `AudioFormat`
+    constructors shown below, either:'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建一个特定的`AudioFormat`对象，我们使用下面显示的两个`AudioFormat`构造函数之一，要么：
+- en: '[PRE10]'
+  id: totrans-72
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'which constructs an `AudioFormat` with a linear PCM encoding and the given
+    parameters, or:'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用线性PCM编码和给定参数构造一个`AudioFormat`，或者：
+- en: '[PRE11]'
+  id: totrans-74
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: which also constructs an `AudioFormat`, but lets you specify the encoding, frame
+    size, and frame rate, in addition to the other parameters.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还构造了一个`AudioFormat`，但允许您指定编码、帧大小和帧速率，除了其他参数。
+- en: 'Now, armed with the methods above, let''s see how we might extend our `ConvertFileToAIFF`
+    function to perform the desired "low-res" audio data format conversion. First,
+    we would construct an `AudioFormat` object describing the desired output audio
+    data format. The following statement would suffice and could be inserted near
+    the top of the function:'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，有了上面的方法，让我们看看如何扩展我们的`ConvertFileToAIFF`函数以执行所需的“低分辨率”音频数据格式转换。首先，我们将构造一个描述所需输出音频数据格式的`AudioFormat`对象。以下语句就足够了，并且可以插入到函数的顶部附近：
+- en: '[PRE12]'
+  id: totrans-77
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: Since the `AudioFormat` constructor above is describing a format with 8-bit
+    samples, the last parameter to the constructor, which specifies whether the samples
+    are big or little endian, is irrelevant. (Big versus little endian is only an
+    issue if the sample size is greater than a single byte.)
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于上面的`AudioFormat`构造函数描述了一个具有8位样本的格式，因此构造函数的最后一个参数，指定样本是大端还是小端，是无关紧要的。（大端与小端只有在样本大小大于一个字节时才是一个问题。）
+- en: 'The following example shows how we would use this new `AudioFormat` to convert
+    the `AudioInputStream`, `inFileAIS`, that we created from the input file:'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例展示了我们如何使用这个新的`AudioFormat`来转换我们从输入文件创建的`AudioInputStream`，`inFileAIS`：
+- en: '[PRE13]'
+  id: totrans-80
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: It wouldn't matter too much where we inserted this code, as long as it was after
+    the construction of `inFileAIS`. Without the `isConversionSupported` test, the
+    call would fail and throw an `IllegalArgumentException` if the particular conversion
+    being requested was unsupported. (In this case, control would transfer to the
+    appropriate `catch` clause in our function.)
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不管我们在何处插入这段代码，只要它在构建`inFileAIS`之后即可。如果没有`isConversionSupported`测试，如果请求的特定转换不受支持，调用将失败并抛出`IllegalArgumentException`。（在这种情况下，控制将转移到我们函数中适当的`catch`子句。）
+- en: So by this point in the process, we would have produced a new `AudioInputStream`,
+    resulting from the conversion of the original input file (in its `AudioInputStream`
+    form) to the desired low-resolution audio data format as defined by `outDataFormat`.
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，在这个过程中，我们将产生一个新的`AudioInputStream`，这是通过将原始输入文件（以其`AudioInputStream`形式）转换为由`outDataFormat`定义的所需低分辨率音频数据格式而产生的。
+- en: 'The final step to produce the desired low-resolution, AIFF sound file would
+    be to replace the `AudioInputStream` parameter in the call to `AudioSystem.write`
+    (that is, the first parameter) with our converted stream, `lowResAIS`, as follows:'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 生成所需的低分辨率AIFF声音文件的最后一步是将`AudioSystem.write`调用中的`AudioInputStream`参数（即第一个参数）替换为我们转换后的流`lowResAIS`，如下所示：
+- en: '[PRE14]'
+  id: totrans-84
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: These few modifications to our earlier function produce something that converts
+    both the audio data and the file format of any specified input file, assuming
+    of course that the system supports the conversion.
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对我们之前的函数进行这几处修改，可以产生一个能够转换任何指定输入文件的音频数据和文件格式的东西，前提是系统支持转换。
+- en: Learning What Conversions Are Available
+  id: totrans-86
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 学习可用的转换方式
+- en: 'Several `AudioSystem` methods test their parameters to determine whether the
+    system supports a particular data format conversion or file-writing operation.
+    (Typically, each method is paired with another that performs the data conversion
+    or writes the file.) One of these query methods, `AudioSystem.isFileTypeSupported`,
+    was used in our example function, `ConvertFileToAIFF`, to determine whether the
+    system was capable of writing the audio data to an AIFF file. A related `AudioSystem`
+    method, `getAudioFileTypes(AudioInputStream)`, returns the complete list of supported
+    file types for the given stream, as an array of `AudioFileFormat.Type` instances.
+    The method: BEGINCODE boolean isConversionSupported(AudioFormat.Encoding encoding,'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 几个`AudioSystem`方法会测试它们的参数，以确定系统是否支持特定的数据格式转换或文件写入操作。（通常，每个方法都与另一个方法配对，执行数据转换或写入文件。）其中一个查询方法`AudioSystem.isFileTypeSupported`在我们的示例函数`ConvertFileToAIFF`中被使用，以确定系统是否能够将音频数据写入AIFF文件。相关的`AudioSystem`方法`getAudioFileTypes(AudioInputStream)`返回给定流支持的所有文件类型的完整列表，作为`AudioFileFormat.Type`实例的数组。该方法：BEGINCODE
+    boolean isConversionSupported(AudioFormat.Encoding encoding，
+- en: AudioFormat format)
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: AudioFormat格式）
+- en: 'is used to determine whether an audio input stream of the specified encoding
+    can be obtained from an audio input stream that has the specified audio format.
+    Similarly, the method:'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于确定是否可以从具有指定音频格式的音频输入流中获取具有指定编码的音频输入流。类似地，该方法：
+- en: '[PRE15]'
+  id: totrans-90
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: tells us whether an `AudioInputStream` with the specified audio format, `newFormat`,
+    can be obtained through the conversion of an `AudioInputStream` that has the audio
+    format `oldFormat`. (This method was invoked in the previous section's code excerpt
+    that created a low-resolution audio input stream, `lowResAIS`.)
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 告诉我们是否可以通过将具有音频格式`oldFormat`的`AudioInputStream`转换为具有指定音频格式`newFormat`的`AudioInputStream`来获得`AudioInputStream`。（这个方法在前一节代码片段中被调用，用于创建低分辨率音频输入流`lowResAIS`。）
+- en: These format-related queries help prevent errors when attempting to perform
+    format conversions with the Java Sound API.
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些与格式相关的查询有助于在尝试使用Java Sound API执行格式转换时防止错误。

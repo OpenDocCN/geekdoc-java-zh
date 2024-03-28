@@ -1,0 +1,58 @@
+- en: Retrieving Distinguished Name
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 检索 Distinguished Name
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/dn.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/dn.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/dn.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/dn.html)
+- en: 'In the JDK releases prior to 5.0, there is no direct way of obtaining the Distinguished
+    Name (DN) from the search results. The `SearchResults.getName()` method always
+    returns the name that is relative to the context on which the search is performed.
+    In order to get the absolute, or full name of the search entry some amount of
+    book-keeping is required to track the ancestor contexts. Two new APIs below are
+    added in JDK 5.0 to retrieve the absolute name from the NameClassPair, whenever
+    a search, list, or listBindings operation is performed on a context:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 JDK 5.0 之前的版本中，没有直接的方法从搜索结果中获取 Distinguished Name (DN)。`SearchResults.getName()`
+    方法始终返回相对于执行搜索的上下文的名称。为了获取搜索条目的绝对或完整名称，需要一定的记录来跟踪祖先上下文。在 JDK 5.0 中添加了以下两个新的 API，用于在对上下文执行搜索、列出或列出绑定操作时从
+    NameClassPair 中检索绝对名称：
+- en: '[`NameClassPair.getNameInNameSpace(Name name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getNameInNamespace-Name-)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`NameClassPair.getNameInNameSpace(Name name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getNameInNamespace-Name-)'
+- en: '[`NameClassPair.getNameInNameSpace(String name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getNameInNamespace-String-)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`NameClassPair.getNameInNameSpace(String name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getNameInNamespace-String-)'
+- en: 'Here is an example that retrieves DNs from an LDAP search:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个从 LDAP 搜索中检索 DN 的示例：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The complete example can be obtained from [`here`](examples/FullName.java).
+    This program generates the output as below:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 完整的示例可以从[`这里`](examples/FullName.java)获取。该程序生成以下输出：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

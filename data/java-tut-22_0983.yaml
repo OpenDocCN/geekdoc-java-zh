@@ -1,0 +1,155 @@
+- en: List the Context
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 列出上下文
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/list.html](https://docs.oracle.com/javase/tutorial/jndi/ops/list.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/list.html](https://docs.oracle.com/javase/tutorial/jndi/ops/list.html)
+- en: 'Instead of getting a single object at a time, as with [`Context.lookup()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#lookup-javax.naming.Name-)
+    , you can list an entire context by using a single operation. There are two methods
+    for listing a context: one that returns the bindings and one that returns only
+    the name-to-object class name pairs.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与[`Context.lookup()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#lookup-javax.naming.Name-)一次获取一个对象不同，您可以通过一次操作列出整个上下文。有两种列出上下文的方法：一种返回绑定，另一种仅返回名称到对象类名对。
+- en: The Context.List() Method
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Context.List()方法
+- en: '[`Context.list()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#list-javax.naming.Name-)
+    returns an enumeration of [`NameClassPair`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html).
+    Each `NameClassPair` consists of the object''s name and its class name. The following
+    code fragment lists the contents of the `"ou=People"` directory (that is, the
+    files and directories found in `"ou=People"` directory).'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Context.list()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#list-javax.naming.Name-)返回一个[`NameClassPair`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html)的枚举。每个`NameClassPair`包含对象的名称和类名。以下代码片段列出了`"ou=People"`目录的内容（即在`"ou=People"`目录中找到的文件和目录）。'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Running [`this example`](examples/List.java) yields the following output.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行[`这个示例`](examples/List.java)会产生以下输出。
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The Context.listBindings() Method
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Context.listBindings()方法
+- en: '[`Context.listBindings()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#listBindings-javax.naming.Name-)
+    returns an enumeration of [`Binding`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Binding.html).
+    `Binding` is a subclass of `NameClassPair`. A binding contains not only the object''s
+    name and class name, but also the object. The following code enumerates the `"ou=People"`
+    context, printing out each binding''s name and object.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Context.listBindings()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#listBindings-javax.naming.Name-)返回一个[`Binding`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Binding.html)的枚举。`Binding`是`NameClassPair`的子类。一个绑定不仅包含对象的名称和类名，还包含对象本身。以下代码枚举了`"ou=People"`上下文，打印出每个绑定的名称和对象。'
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Running [`this example`](examples/ListBindings.java) yields the following output.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行[`这个示例`](examples/ListBindings.java)会产生以下输出。
+- en: '[PRE3]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Terminating a NamingEnumeration
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 终止NamingEnumeration
+- en: 'A [`NamingEnumeration`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html)
+    can be terminated in one of three ways: naturally, explicitly, or unexpectedly.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个[`NamingEnumeration`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html)可以以自然、显式或意外的方式终止。
+- en: When [`NamingEnumeration.hasMore()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html#hasMore--)
+    returns `false`, the enumeration is complete and effectively terminated.
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当[`NamingEnumeration.hasMore()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html#hasMore--)返回`false`时，枚举已完成并实际上被终止。
+- en: You can terminate an enumeration explicitly before it has completed by invoking
+    [`NamingEnumeration.close()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html#close--).
+    Doing this provides a hint to the underlying implementation to free up any resources
+    associated with the enumeration.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以通过调用[`NamingEnumeration.close()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html#close--)在枚举完成之前显式终止枚举。这样做会向底层实现提供一个提示，释放与枚举相关的任何资源。
+- en: If either `hasMore()` or [`next()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html#next--)
+    throws a [`NamingException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingException.html),
+    then the enumeration is effectively terminated.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果`hasMore()`或[`next()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html#next--)抛出[`NamingException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingException.html)，则枚举实际上被终止。
+- en: Regardless of how an enumeration has been terminated, once terminated it can
+    no longer be used. Invoking a method on a terminated enumeration yields an undefined
+    result.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 无论枚举如何被终止，一旦终止，就不能再使用。在终止的枚举上调用方法会产生未定义的结果。
+- en: Why Two Different List Methods?
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为什么有两种不同的列出方法？
+- en: '`list()` is intended for browser-style applications that just want to display
+    the names of objects in a context. For example, a browser might list the names
+    in a context and wait for the user to select one or a few of the names displayed
+    to perform further operations. Such applications typically do not need access
+    to all of the objects in a context.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`list()`适用于浏览器样式的应用程序，只需显示上下文中对象的名称。例如，浏览器可能会列出上下文中的名称，并等待用户选择其中一个或几个名称以执行进一步操作。这类应用程序通常不需要访问上下文中的所有对象。'
+- en: '`listBindings()` is intended for applications that need to perform operations
+    on the objects in a context *en* masse. For example, a backup application might
+    need to perform "file stats" operations on all of the objects in a file directory.
+    Or a printer administration program might want to restart all of the printers
+    in a building. To perform such operations, these applications need to obtain all
+    of the objects bound in a context. Thus it is more expedient to have the objects
+    returned as part of the enumeration.'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`listBindings()` 适用于需要对上下文中的对象进行批量操作的应用程序。例如，备份应用程序可能需要对文件目录中的所有对象执行“文件统计”操作。或者打印机管理程序可能希望重新启动建筑物中的所有打印机。为了执行这些操作，这些应用程序需要获取上下文中绑定的所有对象。因此，将对象作为枚举的一部分返回更为方便。'
+- en: The application can use either `list()` or the potentially more expensive `listBindings()`,
+    depending on the type of information it needs.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序可以使用`list()`或可能更昂贵的`listBindings()`，具体取决于它所需的信息类型。

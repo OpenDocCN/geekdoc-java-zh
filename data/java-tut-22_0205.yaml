@@ -1,0 +1,124 @@
+- en: Thread Interference
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 线程干扰
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/interfere.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/interfere.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/interfere.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/interfere.html)
+- en: Consider a simple class called [``Counter``](examples/Counter.java)
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑一个简单的名为 [``Counter``](examples/Counter.java) 的类
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '`Counter` is designed so that each invocation of `increment` will add 1 to
+    `c`, and each invocation of `decrement` will subtract 1 from `c`. However, if
+    a `Counter` object is referenced from multiple threads, interference between threads
+    may prevent this from happening as expected.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Counter` 被设计成每次调用 `increment` 都会将 `c` 加 1，每次调用 `decrement` 都会从 `c` 减 1。然而，如果从多个线程引用
+    `Counter` 对象，线程之间的干扰可能会阻止预期的操作发生。'
+- en: Interference happens when two operations, running in different threads, but
+    acting on the same data, *interleave*. This means that the two operations consist
+    of multiple steps, and the sequences of steps overlap.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当两个操作在不同线程中运行，但作用于相同数据时，*干扰*就会发生。这意味着这两个操作由多个步骤组成，步骤序列会交叉。
+- en: "It might not seem possible for operations on instances of `Counter` to interleave,\
+    \ since both operations on `c` are single, simple statements. However, even simple\
+    \ statements can translate to multiple steps by the virtual machine. We won't\
+    \ examine the specific steps the virtual machine takes \x97 it is enough to know\
+    \ that the single expression `c++` can be decomposed into three steps:"
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "对于 `Counter` 实例的操作似乎不可能交错，因为对 `c` 的操作都是单个简单语句。然而，即使是简单语句也可以被虚拟机翻译为多个步骤。我们不会检查虚拟机执行的具体步骤\
+    \ \x97 知道单个表达式 `c++` 可以分解为三个步骤就足够了："
+- en: Retrieve the current value of `c`.
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 检索当前值 `c`。
+- en: Increment the retrieved value by 1.
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 递增检索到的值 1。
+- en: Store the incremented value back in `c`.
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将递增后的值存储回 `c`。
+- en: The expression `c--` can be decomposed the same way, except that the second
+    step decrements instead of increments.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表达式 `c--` 可以以相同方式分解，只是第二步是减少而不是增加。
+- en: 'Suppose Thread A invokes `increment` at about the same time Thread B invokes
+    `decrement`. If the initial value of `c` is `0`, their interleaved actions might
+    follow this sequence:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设线程 A 大约在同一时间调用 `increment`，而线程 B 调用 `decrement`。如果 `c` 的初始值为 `0`，它们交错的操作可能会按照这个顺序进行：
+- en: 'Thread A: Retrieve c.'
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 线程 A：检索 c。
+- en: 'Thread B: Retrieve c.'
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 线程 B：检索 c。
+- en: 'Thread A: Increment retrieved value; result is 1.'
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 线程 A：递增检索到的值；结果为 1。
+- en: 'Thread B: Decrement retrieved value; result is -1.'
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 线程 B：减少检索到的值；结果为 -1。
+- en: 'Thread A: Store result in c; c is now 1.'
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 线程 A：将结果存储在 c 中；c 现在为 1。
+- en: 'Thread B: Store result in c; c is now -1.'
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 线程 B：将结果存储在 c 中；c 现在为 -1。
+- en: Thread A's result is lost, overwritten by Thread B. This particular interleaving
+    is only one possibility. Under different circumstances it might be Thread B's
+    result that gets lost, or there could be no error at all. Because they are unpredictable,
+    thread interference bugs can be difficult to detect and fix.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 线程 A 的结果丢失，被线程 B 覆盖。这种特定的交错只是一种可能性。在不同情况下，可能会丢失线程 B 的结果，或者根本没有错误。由于它们是不可预测的，线程干扰
+    bug 可能很难检测和修复。

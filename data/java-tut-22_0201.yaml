@@ -1,0 +1,107 @@
+- en: Interrupts
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 中断
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/interrupt.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/interrupt.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/interrupt.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/interrupt.html)
+- en: An *interrupt* is an indication to a thread that it should stop what it is doing
+    and do something else. It's up to the programmer to decide exactly how a thread
+    responds to an interrupt, but it is very common for the thread to terminate. This
+    is the usage emphasized in this lesson.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*中断*是对线程的指示，告诉它应该停止当前操作并执行其他操作。程序员需要决定线程如何响应中断，但通常线程会终止。这是本课程强调的用法。'
+- en: A thread sends an interrupt by invoking [`interrupt`](https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html#interrupt--)
+    on the `Thread` object for the thread to be interrupted. For the interrupt mechanism
+    to work correctly, the interrupted thread must support its own interruption.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个线程通过在要中断的线程的`Thread`对象上调用[`interrupt`](https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html#interrupt--)来发送中断。为了使中断机制正常工作，被中断的线程必须支持自身的中断。
+- en: Supporting Interruption
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 支持中断
+- en: 'How does a thread support its own interruption? This depends on what it''s
+    currently doing. If the thread is frequently invoking methods that throw `InterruptedException`,
+    it simply returns from the `run` method after it catches that exception. For example,
+    suppose the central message loop in the `SleepMessages` example were in the `run`
+    method of a thread''s `Runnable` object. Then it might be modified as follows
+    to support interrupts:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个线程如何支持自身的中断？这取决于它当前正在做什么。如果线程频繁调用抛出`InterruptedException`的方法，它只需在捕获异常后从`run`方法返回。例如，假设`SleepMessages`示例中的中央消息循环在线程的`Runnable`对象的`run`方法中。那么可以修改如下以支持中断：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Many methods that throw `InterruptedException`, such as `sleep`, are designed
+    to cancel their current operation and return immediately when an interrupt is
+    received.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多抛出`InterruptedException`的方法，如`sleep`，设计为在接收到中断时取消当前操作并立即返回。
+- en: 'What if a thread goes a long time without invoking a method that throws `InterruptedException`?
+    Then it must periodically invoke `Thread.interrupted`, which returns `true` if
+    an interrupt has been received. For example:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个线程长时间不调用抛出`InterruptedException`的方法会怎样？那么它必须定期调用`Thread.interrupted`，如果接收到中断则返回`true`。例如：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'In this simple example, the code simply tests for the interrupt and exits the
+    thread if one has been received. In more complex applications, it might make more
+    sense to throw an `InterruptedException`:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个简单的例子中，代码只是检测中断并在接收到中断时退出线程。在更复杂的应用程序中，抛出`InterruptedException`可能更合理：
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: This allows interrupt handling code to be centralized in a `catch` clause.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这使得中断处理代码可以集中在`catch`子句中。
+- en: The Interrupt Status Flag
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 中断状态标志
+- en: The interrupt mechanism is implemented using an internal flag known as the *interrupt
+    status*. Invoking `Thread.interrupt` sets this flag. When a thread checks for
+    an interrupt by invoking the static method `Thread.interrupted`, interrupt status
+    is cleared. The non-static `isInterrupted` method, which is used by one thread
+    to query the interrupt status of another, does not change the interrupt status
+    flag.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 中断机制是通过一个称为*中断状态*的内部标志实现的。调用`Thread.interrupt`会设置这个标志。当线程通过调用静态方法`Thread.interrupted`检查中断时，中断状态会被清除。非静态的`isInterrupted`方法用于一个线程查询另一个线程的中断状态，不会改变中断状态标志。
+- en: By convention, any method that exits by throwing an `InterruptedException` clears
+    interrupt status when it does so. However, it's always possible that interrupt
+    status will immediately be set again, by another thread invoking `interrupt`.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 按照惯例，任何通过抛出`InterruptedException`退出的方法在这样做时会清除中断状态。然而，另一个线程调用`interrupt`可能会立即再次设置中断状态。

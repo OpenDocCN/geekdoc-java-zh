@@ -1,0 +1,109 @@
+- en: Java Application Setup
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Java应用程序设置
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/software/package.html](https://docs.oracle.com/javase/tutorial/jndi/software/package.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/software/package.html](https://docs.oracle.com/javase/tutorial/jndi/software/package.html)
+- en: To use the JNDI in your program, you need to set up its compilation and execution
+    environments.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在程序中使用JNDI，您需要设置其编译和执行环境。
+- en: Importing the JNDI Classes
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 导入JNDI类
+- en: 'Following are the JNDI packages:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是JNDI包：
+- en: '[`javax.naming`](https://docs.oracle.com/javase/8/docs/api/javax/naming/package-summary.html)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming`](https://docs.oracle.com/javase/8/docs/api/javax/naming/package-summary.html)'
+- en: '[`javax.naming.directory`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/package-summary.html)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.directory`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/package-summary.html)'
+- en: '[`javax.naming.event`](https://docs.oracle.com/javase/8/docs/api/javax/naming/event/package-summary.html)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.event`](https://docs.oracle.com/javase/8/docs/api/javax/naming/event/package-summary.html)'
+- en: '[`javax.naming.ldap`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/package-summary.html)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.ldap`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/package-summary.html)'
+- en: '[`javax.naming.spi`](https://docs.oracle.com/javase/8/docs/api/javax/naming/spi/package-summary.html)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.spi`](https://docs.oracle.com/javase/8/docs/api/javax/naming/spi/package-summary.html)'
+- en: The examples in this trail use classes and interfaces from the first two packages.
+    You need to import these two packages into your program or import individual classes
+    and interfaces that you use. The following two lines import all of the classes
+    and interfaces from the two packages `javax.naming` and `javax.naming.directory`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程中的示例使用来自前两个包的类和接口。您需要将这两个包导入到您的程序中，或者导入您使用的单个类和接口。以下两行导入了两个包`javax.naming`和`javax.naming.directory`中的所有类和接口。
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Compilation Environment
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编译环境
+- en: To compile a program that uses the JNDI, you need access to the JNDI classes.
+    The Java SE 6 already include the JNDI classes, so if you are using it you need
+    not take further actions.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编译使用JNDI的程序，您需要访问JNDI类。 Java SE 6已经包含了JNDI类，因此如果您正在使用它，您无需采取进一步的操作。
+- en: Execution Environment
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 执行环境
+- en: To run a program that uses the JNDI, you need access to the JNDI classes and
+    classes for any service providers that the program uses. The Java Runtime Environment
+    (JRE) 6 already includes the JNDI classes and service providers for LDAP, COS
+    naming, the RMI registry and the DNS .
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要运行使用JNDI的程序，您需要访问JNDI类和程序使用的任何服务提供商的类。 Java Runtime Environment（JRE）6已经包含了LDAP、COS命名、RMI注册表和DNS的JNDI类和服务提供商。
+- en: If you are using some other service providers, then you need to download and
+    install their archive files in the *JAVA_HOME*`/jre/lib/ext` directory, where
+    *JAVA_HOME* is the directory that contains the JRE. The [JNDI page](http://www.oracle.com/technetwork/java/jndi/index.html#download)
+    lists some service providers. You may download these providers or use providers
+    from other vendors.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在使用其他服务提供商，则需要下载并安装它们的存档文件到*JAVA_HOME*`/jre/lib/ext`目录中，其中*JAVA_HOME*是包含JRE的目录。
+    [JNDI页面](http://www.oracle.com/technetwork/java/jndi/index.html#download)列出了一些服务提供商。您可以下载这些提供商或使用其他供应商的提供商。

@@ -1,0 +1,222 @@
+- en: How to Write an Internal Frame Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写内部框架监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/internalframelistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/internalframelistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/internalframelistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/internalframelistener.html)
+- en: An `InternalFrameListener` is similar to a `WindowListener`. Like the window
+    listener, the internal frame listener listens for events that occur when the "window"
+    has been shown for the first time, disposed of, iconified, deiconified, activated,
+    or deactivated. Before using an internal frame listener, please familiarize yourself
+    with the `WindowListener` interface in [How to Write Window Listeners](windowlistener.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`InternalFrameListener`类似于`WindowListener`。与窗口监听器类似，内部框架监听器监听发生在“窗口”首次显示、销毁、图标化、取消图标化、激活或停用时的事件。在使用内部框架监听器之前，请熟悉[如何编写窗口监听器](windowlistener.html)中的`WindowListener`接口。'
+- en: The application shown in the following figure demonstrates internal frame events.
+    The application listens for internal frame events from the Event Generator frame,
+    displaying a message that describes each event.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下图中显示的应用程序演示了内部框架事件。该应用程序监听来自事件生成器框架的内部框架事件，显示描述每个事件的消息。
+- en: '![A window which demonstrates internal frame events that are fired by Event
+    Generator frame](../Images/d7d578a41f836f7a93550b3182de244c.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![演示由事件生成器框架触发的内部框架事件的窗口](../Images/d7d578a41f836f7a93550b3182de244c.png)'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run InternalFrameEventDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/events/index.html#InternalFrameEventDemo).[![Launches
+    the InternalFrameEventDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/InternalFrameEventDemoProject/InternalFrameEventDemo.jnlp)
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行InternalFrameEventDemo（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/events/index.html#InternalFrameEventDemo)。[![启动InternalFrameEventDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/InternalFrameEventDemoProject/InternalFrameEventDemo.jnlp)
+- en: Bring up the Event Generator internal frame by clicking the **Show internal
+    frame** button.
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击**显示内部框架**按钮，打开事件生成器内部框架。
+- en: You should see an "Internal frame opened" message in the display area.
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在显示区域中应该看到一个“内部框架已打开”的消息。
+- en: Try various operations to see what happens. For example, click the Event Generator
+    so that it gets activated. Click the Event Watcher so that the Event Generator
+    gets deactivated. Click the Event Generator's decorations to iconify, maximize,
+    minimize, and close the window.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 尝试各种操作，看看会发生什么。例如，点击事件生成器以激活它。点击事件监视器以使事件生成器停用。点击事件生成器的装饰以将窗口图标化、最大化、最小化和关闭。
+- en: See [How to Write Window Listeners](windowlistener.html) for information on
+    what kinds of events you will see.
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 查看[如何编写窗口监听器](windowlistener.html)以获取有关您将看到的事件类型的信息。
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Here is the internal frame event handling code:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是处理内部框架事件的代码：
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The Internal Frame Listener API
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 内部框架监听器API
+- en: The InternalFrameListener Interface
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内部框架监听器接口
+- en: '*The corresponding adapter class is [`InternalFrameAdapter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameAdapter.html).*'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*相应的适配器类是[`InternalFrameAdapter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameAdapter.html)。*'
+- en: '| Method | Purpose |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [internalFrameOpened(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameListener.html#internalFrameOpened-javax.swing.event.InternalFrameEvent-)
+    | Called just after the listened-to internal frame has been shown for the first
+    time. |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| [internalFrameOpened(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameListener.html#internalFrameOpened-javax.swing.event.InternalFrameEvent-)
+    | 在监听的内部框架首次显示后调用。 |'
+- en: '| [internalFrameClosing(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameListener.html#internalFrameClosing-javax.swing.event.InternalFrameEvent-)
+    | Called in response to a user request that the listened-to internal frame be
+    closed. By default, `JInternalFrame` hides the window when the user closes it.
+    You can use the `JInternalFrame` `setDefaultCloseOperation` method to specify
+    another option, which must be either `DISPOSE_ON_CLOSE` or `DO_NOTHING_ON_CLOSE`
+    (both defined in `WindowConstants`, an interface that `JInternalFrame` implements).
+    Or by implementing an `internalFrameClosing` method in the internal frame''s listener,
+    you can add custom behavior (such as bringing up dialogs or saving data) to internal
+    frame closing. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| [internalFrameClosing(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameListener.html#internalFrameClosing-javax.swing.event.InternalFrameEvent-)
+    | 响应用户请求关闭监听的内部框架时调用。默认情况下，`JInternalFrame`在用户关闭时隐藏窗口。您可以使用`JInternalFrame`的`setDefaultCloseOperation`方法指定另一个选项，该选项必须是`DISPOSE_ON_CLOSE`或`DO_NOTHING_ON_CLOSE`（都在`WindowConstants`中定义，`JInternalFrame`实现了该接口）。或者通过在内部框架的监听器中实现`internalFrameClosing`方法，您可以添加自定义行为（例如弹出对话框或保存数据）以响应内部框架的关闭。
+    |'
+- en: '| [internalFrameClosed(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameListener.html#internalFrameClosed-javax.swing.event.InternalFrameEvent-)
+    | Called just after the listened-to internal frame has been disposed of. |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| [internalFrameClosed(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameListener.html#internalFrameClosed-javax.swing.event.InternalFrameEvent-)
+    | 在监听的内部框架被销毁后立即调用。 |'
+- en: '| [internalFrameIconified(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameEvent.html#internalFrameIconified-javax.swing.event.InternalFrameEvent-)
+    [internalFrameDeiconified(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameEvent.html#internalFrameDeiconified-javax.swing.event.InternalFrameEvent-)
+    | Called just after the listened-to internal frame is iconified or deiconified,
+    respectively. |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| [internalFrameIconified(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameEvent.html#internalFrameIconified-javax.swing.event.InternalFrameEvent-)
+    [internalFrameDeiconified(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameEvent.html#internalFrameDeiconified-javax.swing.event.InternalFrameEvent-)
+    | 在监听的内部框架被图标化或取消图标化后立即调用。 |'
+- en: '| [internalFrameActivated(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameListener.html#internalFrameActivated-javax.swing.event.InternalFrameEvent-)
+    [internalFrameDeactivated(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameListener.html#internalFrameDeactivated-javax.swing.event.InternalFrameEvent-)
+    | Called just after the listened-to internal frame is activated or deactivated,
+    respectively. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| [internalFrameActivated(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameListener.html#internalFrameActivated-javax.swing.event.InternalFrameEvent-)
+    [internalFrameDeactivated(InternalFrameEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameListener.html#internalFrameDeactivated-javax.swing.event.InternalFrameEvent-)
+    | 在监听的内部框架被激活或停用后立即调用。 |'
+- en: 'Each internal frame event method has a single parameter: an [`InternalFrameEvent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameEvent.html)
+    object. The `InternalFrameEvent` class defines no generally useful methods. To
+    get the internal frame that fired the event, use the `getSource` method, which
+    `InternalFrameEvent` inherits from `java.util.EventObject`.'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个内部框架事件方法都有一个参数：一个[`InternalFrameEvent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/InternalFrameEvent.html)对象。`InternalFrameEvent`类定义了没有通用用途的方法。要获取触发事件的内部框架，使用`getSource`方法，该方法是`InternalFrameEvent`从`java.util.EventObject`继承而来。
+- en: Examples that Use Internal Frame Listeners
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用内部框架监听器的示例
+- en: 'No other source files currently contain internal frame listeners. However,
+    internal frame listeners are very similar to `WindowListener`s and several Swing
+    programs have window listeners:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 目前没有其他源文件包含内部框架监听器。但是，内部框架监听器与`WindowListener`非常相似，几个Swing程序都有窗口监听器：
+- en: '| Example | Where Described | Notes |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`InternalFrameEventDemo`](../examples/events/index.html#InternalFrameEventDemo)
+    | This section | Reports all internal frame events that occur on one internal
+    frame to demonstrate the circumstances under which internal frame events are fired.
+    |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`InternalFrameEventDemo`](../examples/events/index.html#InternalFrameEventDemo)
+    | 本节 | 报告发生在一个内部框架上的所���内部框架事件，以演示触发内部框架事件的情况。 |'
+- en: '| [`DialogDemo`](../examples/components/index.html#DialogDemo) | [Text Component
+    Features](../components/generaltext.html) | [`CustomDialog.java`](../examples/components/DialogDemoProject/src/components/CustomDialog.java)
+    uses `setDefaultCloseOperation` instead of a window listener to determine what
+    action to take when the user closes the window. |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`DialogDemo`](../examples/components/index.html#DialogDemo) | [文本组件功能](../components/generaltext.html)
+    | [`CustomDialog.java`](../examples/components/DialogDemoProject/src/components/CustomDialog.java)
+    使用 `setDefaultCloseOperation` 而不是窗口监听器来确定用户关闭窗口时要采取的操作。 |'
+- en: '| [`SliderDemo`](../examples/components/index.html#SliderDemo) | [How to Use
+    Sliders](../components/slider.html) | Listens for window iconify and deiconify
+    events, so that it can stop the animation when the window is not visible. |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SliderDemo`](../examples/components/index.html#SliderDemo) | [如何使用滑块](../components/slider.html)
+    | 监听窗口最小化和最大化事件，以便在窗口不可见时停止动画。 |'

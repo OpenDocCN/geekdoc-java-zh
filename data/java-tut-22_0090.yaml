@@ -1,0 +1,369 @@
+- en: Overriding and Hiding Methods
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 覆盖和隐藏方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/override.html](https://docs.oracle.com/javase/tutorial/java/IandI/override.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/override.html](https://docs.oracle.com/javase/tutorial/java/IandI/override.html)
+- en: Instance Methods
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 实例方法
+- en: An instance method in a subclass with the same signature (name, plus the number
+    and the type of its parameters) and return type as an instance method in the superclass
+    *overrides* the superclass's method.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 子类中具有与超类中实例方法相同签名（名称，以及其参数的数量和类型）和返回类型的实例方法*覆盖*了超类的方法。
+- en: The ability of a subclass to override a method allows a class to inherit from
+    a superclass whose behavior is "close enough" and then to modify behavior as needed.
+    The overriding method has the same name, number and type of parameters, and return
+    type as the method that it overrides. An overriding method can also return a subtype
+    of the type returned by the overridden method. This subtype is called a *covariant
+    return type*.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 子类覆盖方法的能力允许一个类从一个行为“足够接近”的超类继承，然后根据需要修改行为。覆盖方法具有与其覆盖的方法相同的名称、参数数量和类型以及返回类型。覆盖方法还可以返回被覆盖方法返回类型的子类型。这个子类型被称为*协变返回类型*。
+- en: When overriding a method, you might want to use the `@Override` annotation that
+    instructs the compiler that you intend to override a method in the superclass.
+    If, for some reason, the compiler detects that the method does not exist in one
+    of the superclasses, then it will generate an error. For more information on `@Override`,
+    see [`Annotations`](../annotations/index.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在覆盖方法时，您可能希望使用`@Override`注解，指示编译器您打算覆盖超类中的方法。如果由于某种原因，编译器检测到该方法在任何一个超类中不存在，则会生成一个错误。有关`@Override`的更多信息，请参见[`Annotations`](../annotations/index.html)。
+- en: Static Methods
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 静态方法
+- en: If a subclass defines a static method with the same signature as a static method
+    in the superclass, then the method in the subclass *hides* the one in the superclass.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个子类定义了一个与超类中静态方法相同签名的静态方法，则子类中的方法*隐藏*超类中的方法。
+- en: 'The distinction between hiding a static method and overriding an instance method
+    has important implications:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 隐藏静态方法和覆盖实例方法之间的区别具有重要的影响：
+- en: The version of the overridden instance method that gets invoked is the one in
+    the subclass.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用的覆盖实例方法的版本是在子类中的版本。
+- en: The version of the hidden static method that gets invoked depends on whether
+    it is invoked from the superclass or the subclass.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用的隐藏静态方法的版本取决于它是从超类还是从子类调用的。
+- en: 'Consider an example that contains two classes. The first is `Animal`, which
+    contains one instance method and one static method:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑一个包含两个类的示例。第一个是`Animal`，包含一个实例方法和一个静态方法：
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The second class, a subclass of `Animal`, is called `Cat`:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二个类，`Cat`，是`Animal`的一个子类：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `Cat` class overrides the instance method in `Animal` and hides the static
+    method in `Animal`. The `main` method in this class creates an instance of `Cat`
+    and invokes `testClassMethod()` on the class and `testInstanceMethod()` on the
+    instance.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Cat`类覆盖了`Animal`中的实例方法，并隐藏了`Animal`中的静态方法。这个类中的`main`方法创建了一个`Cat`的实例，并在类上调用`testClassMethod()`，在实例上调用`testInstanceMethod()`。'
+- en: 'The output from this program is as follows:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个程序的输出如下：
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: As promised, the version of the hidden static method that gets invoked is the
+    one in the superclass, and the version of the overridden instance method that
+    gets invoked is the one in the subclass.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如约定，调用的隐藏静态方法的版本是在超类中的版本，调用的覆盖实例方法的版本是在子类中的版本。
+- en: Interface Methods
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 接口方法
+- en: '[Default methods](../../java/IandI/defaultmethods.html) and [abstract methods](../../java/IandI/abstract.html)
+    in interfaces are inherited like instance methods. However, when the supertypes
+    of a class or interface provide multiple default methods with the same signature,
+    the Java compiler follows inheritance rules to resolve the name conflict. These
+    rules are driven by the following two principles:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[默认方法](../../java/IandI/defaultmethods.html)和[抽象方法](../../java/IandI/abstract.html)在接口中像实例方法一样被继承。然而，当一个类或接口的超类型提供了多个具有相同签名的默认方法时，Java编译器遵循继承规则来解决名称冲突。这些规则受以下两个原则驱动：'
+- en: Instance methods are preferred over interface default methods.
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 实例方法优先于接口默认方法。
+- en: 'Consider the following classes and interfaces:'
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 考虑以下类和接口：
+- en: '[PRE3]'
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '[PRE4]'
+  id: totrans-24
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '[PRE5]'
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '[PRE6]'
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The method `Pegasus.identifyMyself` returns the string `I am a horse.`
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 方法`Pegasus.identifyMyself`返回字符串`I am a horse.`
+- en: Methods that are already overridden by other candidates are ignored. This circumstance
+    can arise when supertypes share a common ancestor.
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 已经被其他候选方法覆盖的方法将被忽略。当超类型共享一个共同的祖先时，就会出现这种情况。
+- en: 'Consider the following interfaces and classes:'
+  id: totrans-29
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 考虑以下接口和类：
+- en: '[PRE7]'
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '[PRE8]'
+  id: totrans-31
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: '[PRE9]'
+  id: totrans-32
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '[PRE10]'
+  id: totrans-33
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: The method `Dragon.identifyMyself` returns the string `I am able to lay eggs.`
+  id: totrans-34
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 方法`Dragon.identifyMyself`返回字符串`I am able to lay eggs.`
+- en: If two or more independently defined default methods conflict, or a default
+    method conflicts with an abstract method, then the Java compiler produces a compiler
+    error. You must explicitly override the supertype methods.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果两个或更多独立定义的默认方法冲突，或者默认方法与抽象方法冲突，则Java编译器会产生编译错误。您必须显式覆盖超类型方法。
+- en: 'Consider the example about computer-controlled cars that can now fly. You have
+    two interfaces (`OperateCar` and `FlyCar`) that provide default implementations
+    for the same method, (`startEngine`):'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑一下关于现在可以飞行的计算机控制汽车的例子。您有两个接口（`OperateCar`和`FlyCar`），它们为相同方法（`startEngine`）提供默认实现：
+- en: '[PRE11]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: '[PRE12]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: A class that implements both `OperateCar` and `FlyCar` must override the method
+    `startEngine`. You could invoke any of the of the default implementations with
+    the `super` keyword.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现`OperateCar`和`FlyCar`的类必须覆盖方法`startEngine`。您可以使用`super`关键字调用任何默认实现中的任何一个。
+- en: '[PRE13]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: The name preceding `super` (in this example, `FlyCar` or `OperateCar`) must
+    refer to a direct superinterface that defines or inherits a default for the invoked
+    method. This form of method invocation is not restricted to differentiating between
+    multiple implemented interfaces that contain default methods with the same signature.
+    You can use the `super` keyword to invoke a default method in both classes and
+    interfaces.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`super`之前的名称（在本例中为`FlyCar`或`OperateCar`）必须引用直接定义或继承了被调用方法的超接口。这种形式的方法调用不仅限于区分包含具有相同签名的默认方法的多个实现接口。您可以使用`super`关键字在类和接口中调用默认方法。
+- en: 'Inherited instance methods from classes can override abstract interface methods.
+    Consider the following interfaces and classes:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从类中继承的实例方法可以覆盖抽象接口方法。考虑以下接口和类：
+- en: '[PRE14]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: '[PRE15]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: '[PRE16]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: The method `Mustang.identifyMyself` returns the string `I am a horse.` The class
+    `Mustang` inherits the method `identifyMyself` from the class `Horse`, which overrides
+    the abstract method of the same name in the interface `Mammal`.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`Mustang.identifyMyself`返回字符串`I am a horse.` 类`Mustang`继承自类`Horse`的方法`identifyMyself`，该方法覆盖了接口`Mammal`中同名的抽象方法。
+- en: '**Note**: Static methods in interfaces are never inherited.'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：接口中的静态方法不会被继承。'
+- en: Modifiers
+  id: totrans-48
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 修饰符
+- en: The access specifier for an overriding method can allow more, but not less,
+    access than the overridden method. For example, a protected instance method in
+    the superclass can be made public, but not private, in the subclass.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 覆盖方法的访问修饰符可以允许更多的访问权限，但不能少于被覆盖方法的访问权限。例如，超类中的受保护实例方法可以在子类中变为公共方法，但不能变为私有方法。
+- en: You will get a compile-time error if you attempt to change an instance method
+    in the superclass to a static method in the subclass, and vice versa.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您尝试将超类中的实例方法更改为子类中的静态方法，或者反之，则会收到编译时错误。
+- en: Summary
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 总结
+- en: The following table summarizes what happens when you define a method with the
+    same signature as a method in a superclass.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格总结了当您定义一个与超类中方法具有相同签名的方法时会发生什么。
+- en: Defining a Method with the Same Signature as a Superclass's Method
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定义一个与超类方法具有相同签名的方法
+- en: '|   | Superclass Instance Method | Superclass Static Method |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '|   | 超类实例方法 | 超类静态方法 |'
+- en: '| Subclass Instance Method | Overrides | Generates a compile-time error |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| 子类实例方法 | 覆盖 | 生成编译时错误 |'
+- en: '| Subclass Static Method | Generates a compile-time error | Hides |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '| 子类静态方法 | 生成编译时错误 | 隐藏 |'
+- en: '* * *'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: "**Note:** In a subclass, you can overload the methods inherited from the superclass.\
+    \ Such overloaded methods neither hide nor override the superclass instance methods\x97\
+    they are new methods, unique to the subclass."
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：在子类中，您可以重载从超类继承的方法。这样重载的方法既不隐藏也不覆盖超类实例方法——它们是子类独有的新方法。'
+- en: '* * *'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

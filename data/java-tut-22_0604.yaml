@@ -1,0 +1,229 @@
+- en: Dealing with Compound Messages
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 处理复合消息
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/messageFormat.html](https://docs.oracle.com/javase/tutorial/i18n/format/messageFormat.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/messageFormat.html](https://docs.oracle.com/javase/tutorial/i18n/format/messageFormat.html)
+- en: 'A compound message may contain several kinds of variables: dates, times, strings,
+    numbers, currencies, and percentages. To format a compound message in a locale-independent
+    manner, you construct a pattern that you apply to a `MessageFormat` object, and
+    store this pattern in a `ResourceBundle`.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 复合消息可能包含几种类型的变量：日期、时间、字符串、数字、货币和百分比。为了以与语言环境无关的方式格式化复合消息，您构造一个模式，将其应用于 `MessageFormat`
+    对象，并将此模式存储在 `ResourceBundle` 中。
+- en: By stepping through a sample program, this section demonstrates how to internationalize
+    a compound message. The sample program makes use of the [`MessageFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html)
+    class. The full source code for this program is in the file called [`MessageFormatDemo.java`](examples/MessageFormatDemo.java).
+    The German locale properties are in the file called [`MessageBundle_de_DE.properties`](examples/MessageBundle_de_DE.properties).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过逐步执行示例程序，本节演示了如何国际化复合消息。示例程序使用了 [`MessageFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html)
+    类。此程序的完整源代码在名为 [`MessageFormatDemo.java`](examples/MessageFormatDemo.java) 的文件中。德语区域设置属性在名为
+    [`MessageBundle_de_DE.properties`](examples/MessageBundle_de_DE.properties) 的文件中。
+- en: 1\. Identify the Variables in the Message
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 1\. 识别消息中的变量
+- en: 'Suppose that you want to internationalize the following message:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您想要国际化以下消息：
+- en: '![The following line of text: At 1:15 on April 13, 1998, we detected 7 spaceships
+    on the planet Mars.  The variable data (1:15, April 13,1998, 7, and Mars) have
+    been underlined.](../Images/e3ed737400f94a595293b94464e6df58.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![以下一行文本：1998年4月13日1:15，在火星上我们探测到7艘飞船。变量数据（1:15，1998年4月13日，7，和火星）已被划线。](../Images/e3ed737400f94a595293b94464e6df58.png)'
+- en: Notice that we've underlined the variable data and have identified what kind
+    of objects will represent this data.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，我们已经划线标出了变量数据，并确定了将表示这些数据的对象的类型。
+- en: 2\. Isolate the Message Pattern in a ResourceBundle
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 2\. 在 ResourceBundle 中隔离消息模式
+- en: 'Store the message in a `ResourceBundle` named `MessageBundle`, as follows:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将消息存储在名为 `MessageBundle` 的 `ResourceBundle` 中，如下所示：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This `ResourceBundle` is backed by a properties file for each `Locale`. Since
+    the `ResourceBundle` is called `MessageBundle`, the properties file for U.S. English
+    is named `MessageBundle_en_US.properties`. The contents of this file is as follows:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个 `ResourceBundle` 是由每个 `Locale` 的属性文件支持的。由于 `ResourceBundle` 名称为 `MessageBundle`，因此美国英语的属性文件名为
+    `MessageBundle_en_US.properties`。此文件的内容如下：
+- en: '[PRE1]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The first line of the properties file contains the message pattern. If you compare
+    this pattern with the message text shown in step 1, you'll see that an argument
+    enclosed in braces replaces each variable in the message text. Each argument starts
+    with a digit called the argument number, which matches the index of an element
+    in an `Object` array that holds the argument values. Note that in the pattern
+    the argument numbers are not in any particular order. You can place the arguments
+    anywhere in the pattern. The only requirement is that the argument number have
+    a matching element in the array of argument values.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性文件的第一行包含消息模式。如果您将此模式与步骤1中显示的消息文本进行比较，您将看到在消息文本中的每个变量都由大括号括起的参数替换。每个参数以称为参数编号的数字开头，该数字与保存参数值的
+    `Object` 数组中的元素的索引相匹配。请注意，在模式中，参数编号没有特定顺序。您可以将参数放置在模式的任何位置。唯一的要求是参数编号在参数值数组中有一个匹配的元素。
+- en: 'The next step discusses the argument value array, but first let''s look at
+    each of the arguments in the pattern. The following table provides some details
+    about the arguments:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一步讨论了参数值数组，但首先让我们看一下模式中的每个参数。以下表格提供了有关参数的一些详细信息：
+- en: Arguments for `template` in `MessageBundle_en_US.properties`
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `MessageBundle_en_US.properties` 中为 `template` 参数提供参数
+- en: '| Argument | Description |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| 参数 | 描述 |'
+- en: '| `{2,time,short}` | The time portion of a `Date` object. The `short` style
+    specifies the `DateFormat.SHORT` formatting style. |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| `{2,time,short}` | 一个 `Date` 对象的时间部分。`short` 样式指定了 `DateFormat.SHORT` 格式化样式。
+    |'
+- en: '| `{2,date,long}` | The date portion of a `Date` object. The same `Date` object
+    is used for both the date and time variables. In the `Object` array of arguments
+    the index of the element holding the `Date` object is 2\. (This is described in
+    the next step.) |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| `{2,date,long}` | 一个`Date`对象的日期部分。相同的`Date`对象用于日期和时间变量。在参数的`Object`数组中，保存`Date`对象的元素的索引为2。
+    （这在下一步中描述。） |'
+- en: '| `{1,number,integer}` | A `Number` object, further qualified with the `integer`
+    number style. |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| `{1,number,integer}` | 一个带有`integer`数字样式的`Number`对象。 |'
+- en: '| `{0}` | The `String` in the `ResourceBundle` that corresponds to the `planet`
+    key. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| `{0}` | 与`planet`键对应的`ResourceBundle`中的`String`。 |'
+- en: For a full description of the argument syntax, see the API documentation for
+    the [`MessageFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html)
+    class.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于参数语法的完整描述，请参阅[`MessageFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html)类的API文档。
+- en: 3\. Set the Message Arguments
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 3\. 设置消息参数
+- en: 'The following lines of code assign values to each argument in the pattern.
+    The indexes of the elements in the `messageArguments` array match the argument
+    numbers in the pattern. For example, the `Integer` element at index 1 corresponds
+    to the `{1,number,integer}` argument in the pattern. Because it must be translated,
+    the `String` object at element 0 will be fetched from the `ResourceBundle` with
+    the `getString` method. Here is the code that defines the array of message arguments:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码行为模式中的每个参数分配值。`messageArguments`数组中元素的索引与模式中的参数编号相匹配。例如，索引为1的`Integer`元素对应于模式中的`{1,number,integer}`参数。因为必须进行翻译，所以元素0处的`String`对象将使用`getString`方法从`ResourceBundle`中获取。以下是定义消息参数数组的代码：
+- en: '[PRE2]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 4\. Create the Formatter
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 4\. 创建格式化程序
+- en: Next, create a `MessageFormat` object. You set the `Locale` because the message
+    contains `Date` and `Number` objects, which should be formatted in a locale-sensitive
+    manner.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，创建一个`MessageFormat`对象。您设置`Locale`，因为消息包含应以区域敏感的方式格式化的`Date`和`Number`对象。
+- en: '[PRE3]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 5\. Format the Message Using the Pattern and the Arguments
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 5\. 使用模式和参数格式化消息
+- en: 'This step shows how the pattern, message arguments, and formatter all work
+    together. First, fetch the pattern `String` from the `ResourceBundle` with the
+    `getString` method. The key to the pattern is `template`. Pass the pattern `String`
+    to the formatter with the `applyPattern` method. Then format the message using
+    the array of message arguments, by invoking the `format` method. The `String`
+    returned by the `format` method is ready to be displayed. All of this is accomplished
+    with just two lines of code:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一步展示了模式、消息参数和格式化程序如何协同工作。首先，使用`getString`方法从`ResourceBundle`中获取模式`String`。模式的关键是`template`。使用`applyPattern`方法将模式`String`传递给格式化程序。然后通过调用`format`方法使用消息参数的数组格式化消息。`format`方法返回的`String`已经准备好显示。所有这些只需两行代码就可以完成：
+- en: '[PRE4]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 6\. Run the Demo Program
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 6\. 运行演示程序
+- en: 'The demo program prints the translated messages for the English and German
+    locales and properly formats the date and time variables. Note that the English
+    and German verbs ("detected" and "entdeckt") are in different locations relative
+    to the variables:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 演示程序打印了英语和德语区域设置的翻译消息，并正确格式化了日期和时间变量。请注意，英语和德语动词（"detected"和"entdeckt"）相对于变量的位置不同：
+- en: '[PRE5]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'

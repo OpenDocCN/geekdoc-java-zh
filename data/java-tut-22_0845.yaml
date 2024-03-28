@@ -1,0 +1,206 @@
+- en: See the Policy File Effects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 查看策略文件效果
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/rstep4.html](https://docs.oracle.com/javase/tutorial/security/toolsign/rstep4.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/rstep4.html](https://docs.oracle.com/javase/tutorial/security/toolsign/rstep4.html)
+- en: In the previous steps you created an entry in the `exampleraypolicy` policy
+    file granting code signed by `susan` permission to read files from the `C:\TestData\`
+    directory (or the `testdata` directory in your home directory if you're working
+    on UNIX). Now you should be able to successfully execute the `Count` program to
+    read and to count the characters in a file from the specified directory, even
+    when you run the application with a security manager.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在之前的步骤中，你在`exampleraypolicy`策略文件中创建了一个条目，授予由`susan`签名的代码从`C:\TestData\`目录（或者如果你在UNIX上工作，则是你的主目录中的`testdata`目录）读取文件的权限。现在，你应该能够成功地执行`Count`程序，从指定目录中读取文件并计算字符数，即使在使用安全管理器运行应用程序时也是如此。
+- en: As described at the end of the [Creating a Policy File](../tour1/index.html)
+    lesson, there are two possible ways you can have the `exampleraypolicy` file be
+    considered as part of the overall policy, in addition to the policy files specified
+    in the security properties file. The first approach is to specify the additional
+    policy file in a property passed to the runtime system. The second approach is
+    to add a line in the security properties file specifying the additional policy
+    file.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如在[创建策略文件](../tour1/index.html)课程的结尾所述，有两种可能的方式可以使`exampleraypolicy`文件作为整体策略的一部分被考虑，除了在安全属性文件中指定的策略文件之外。第一种方法是在传递给运行时系统的属性中指定额外的策略文件。第二种方法是在安全属性文件中添加一行指定额外的策略文件。
+- en: Approach 1
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 方法 1
+- en: You can use a `-Djava.security.policy` command-line argument to specify a policy
+    file that should be used in addition to or instead of the ones specified in the
+    security properties file.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用`-Djava.security.policy`命令行参数来指定一个策略文件，该文件应该被用来补充或替代安全属性文件中指定的文件。
+- en: 'To run the `Count` application and have the `exampleraypolicy` policy file
+    included, type the following while in the directory containing the `sCount.jar`
+    and `exampleraypolicy` files:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要运行`Count`应用程序并包含`exampleraypolicy`策略文件，请在包含`sCount.jar`和`exampleraypolicy`文件的目录中键入以下内容：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Note: Type the command on a single line, with a space before `-D` and `-cp`.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意：在一行上键入命令，`-D`和`-cp`之前加上一个空格。
+- en: The program should report the number of characters in the specified file.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 程序应该报告指定文件中的字符数。
+- en: If it still reports an error, something is wrong in the policy file. Use the
+    Policy Tool to check the permission you just created in the [previous step](rstep3.html),
+    and change any typos or other errors.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果仍然报错，那么策略文件中可能存在问题。使用策略工具检查你在[上一步](rstep3.html)中创建的权限，并更正任何拼写错误或其他错误。
+- en: Approach 2
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 方法 2
+- en: You can specify a number of URLs -- including ones of the form "http://" --
+    in `policy.url.n` properties in the security properties file, and all the designated
+    policy files will get loaded.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在安全属性文件中的`policy.url.n`属性中指定多个URL，包括形如"http://"的URL，所有指定的策略文件都将被加载。
+- en: So one way to have your `exampleraypolicy` file's policy entries considered
+    by the interpreter is to add an entry indicating that file in the security properties
+    file.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，让解释器考虑你的`exampleraypolicy`文件的策略条目的一种方法是在安全属性文件中添加指示该文件的条目。
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Important:** If you are running your own copy of the JDK, you can easily
+    edit your security properties file. If you are running a version shared with others,
+    you may only be able to modify the system-wide security properties file if you
+    have write access to it or if you ask your system administrator to modify the
+    file when appropriate. However, it''s probably not appropriate for you to make
+    modifications to a system-wide policy file for this tutorial test; we suggest
+    that you just read the following to see how it''s done or that you install your
+    own private version of the JDK to use for the tutorial lessons.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**重要提示：**如果你正在运行自己的JDK副本，你可以轻松编辑你的安全属性文件。如果你正在运行与他人共享的版本，只有在你有写入权限或在适当时向系统管理员请求修改文件时，你才能修改系统范围的安全属性文件。然而，在本教程测试中，对于你来说可能不适合修改系统范围的策略文件；我们建议你只是阅读以下内容以了解如何操作，或者安装你自己的私人版本的JDK
+    以供教程课程使用。'
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The security properties file is located at
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 安全属性文件位于
+- en: '**Windows**: `*java.home*\lib\security\java.security`'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**Windows**：`*java.home*\lib\security\java.security`'
+- en: '**UNIX**: `*java.home*/lib/security/java.security`'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**UNIX**：`*java.home*/lib/security/java.security`'
+- en: The *`java.home`* portion indicates the directory into which the JRE was installed.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*`java.home`*部分表示JRE安装的目录。'
+- en: 'To modify the security properties file, open it in an editor suitable for editing
+    an ASCII text file. Then add the following line after the line starting with `policy.url.2`:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要修改安全属性文件，请在适合编辑ASCII文本文件的编辑器中打开它。然后在以`policy.url.2`开头的行后添加以下行：
+- en: '**Windows**: `**policy.url.3=file:/C:/Test/exampleraypolicy**`'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**Windows**：`**policy.url.3=file:/C:/Test/exampleraypolicy**`'
+- en: '**UNIX**: `**policy.url.3=file:${user.home}/test/exampleraypolicy**`'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**UNIX**：`**policy.url.3=file:${user.home}/test/exampleraypolicy**`'
+- en: On a UNIX system you can alternatively explicitly specify your home directory,
+    as in
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在UNIX系统上，您还可以显式指定您的主目录，如
+- en: '[PRE1]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Next, in your command window, go to the directory containing the `sCount.jar`
+    file, that is, the `C:\Test` or `~/test` directory. Type the following command
+    on one line:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，在您的命令窗口中，转到包含`sCount.jar`文件的目录，即`C:\Test`或`~/test`目录。在一行上键入以下命令：
+- en: '[PRE2]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: As with approach 1, if the program still reports an error, something is wrong
+    with the policy file. Use the Policy Tool to check the permission you just created
+    in the [previous step](rstep3.html), and change any typos or other errors.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与第一种方法一样，如果程序仍然报告错误，则可能是策略文件出现问题。使用策略工具检查您在[上一步](rstep3.html)中创建的权限，并更正任何拼写错误或其他错误。
+- en: '* * *'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Important:** Before continuing, you may want to delete the line you just
+    added in the security properties file (or comment it out), since you probably
+    do not want the `exampleraypolicy` file included when you are not running the
+    tutorial lessons.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**重要提示：**在继续之前，您可能希望删除您刚刚在安全属性文件中添加的行（或将其注释掉），因为您可能不希望在不运行教程课程时包含`exampleraypolicy`文件。'
+- en: '* * *'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

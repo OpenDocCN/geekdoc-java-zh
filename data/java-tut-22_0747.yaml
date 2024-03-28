@@ -1,0 +1,470 @@
+- en: MXBeans
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: MXBeans
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jmx/mbeans/mxbeans.html](https://docs.oracle.com/javase/tutorial/jmx/mbeans/mxbeans.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jmx/mbeans/mxbeans.html](https://docs.oracle.com/javase/tutorial/jmx/mbeans/mxbeans.html)
+- en: This section explains a special type of MBean, called *MXBeans*.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍了一种特殊类型的 MBean，称为 *MXBeans*。
+- en: An *MXBean* is a type of MBean that references only a predefined set of data
+    types. In this way, you can be sure that your MBean will be usable by any client,
+    including remote clients, without any requirement that the client have access
+    to model-specific classes representing the types of your MBeans. MXBeans provide
+    a convenient way to bundle related values together, without requiring clients
+    to be specially configured to handle the bundles.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*MXBean* 是一种只引用预定义数据类型的 MBean 类型。通过这种方式，您可以确保您的 MBean 可以被任何客户端使用，包括远程客户端，而无需客户端访问表示您的
+    MBeans 类型的特定模型类。MXBeans 提供了一种方便的方式将相关值捆绑在一起，而无需客户端特别配置以处理这些捆绑。'
+- en: In the same way as for standard MBeans, an MXBean is defined by writing a Java
+    interface called `SomethingMXBean` and a Java class that implements that interface.
+    However, unlike standard MBeans, MXBeans do not require the Java class to be called
+    `Something`. Every method in the interface defines either an attribute or an operation
+    in the MXBean. The annotation `@MXBean` can be also used to annotate the Java
+    interface, instead of requiring the interface's name to be followed by the MXBean
+    suffix.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与标准 MBeans 一样，MXBean 是通过编写一个名为 `SomethingMXBean` 的 Java 接口和实现该接口的 Java 类来定义的。但是，与标准
+    MBeans 不同，MXBeans 不要求 Java 类的名称为 `Something`。接口中的每个方法都定义了 MXBean 中的属性或操作。注解 `@MXBean`
+    也可以用于注解 Java 接口，而不需要接口的名称后跟 MXBean 后缀。
+- en: MXBeans existed in the Java 2 Platform, Standard Edition (J2SE) 5.0 software,
+    in the package [`java.lang.management`](https://docs.oracle.com/javase/8/docs/api/java/lang/management/package-summary.html).
+    However, users can now define their own MXBeans, in addition to the standard set
+    that is defined in `java.lang.management`.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MXBeans 存在于 Java 2 Platform, Standard Edition (J2SE) 5.0 软件中，位于 [`java.lang.management`](https://docs.oracle.com/javase/8/docs/api/java/lang/management/package-summary.html)
+    包中。然而，用户现在可以定义自己的 MXBeans，除了在 `java.lang.management` 中定义的标准集之外。
+- en: The main idea behind MXBeans is that types such as [`java.lang.management.MemoryUsage`](https://docs.oracle.com/javase/8/docs/api/java/lang/management/MemoryUsage.html)
+    that are referenced in the MXBean interface, [`java.lang.management.MemoryMXBean`](https://docs.oracle.com/javase/8/docs/api/java/lang/management/MemoryMXBean.html)
+    in this case, are mapped into a standard set of types, the so-called *Open Types*
+    that are defined in the package [`javax.management.openmbean`](https://docs.oracle.com/javase/8/docs/api/javax/management/openmbean/package-summary.html).
+    The exact mapping rules appear in the MXBean specification. However, the general
+    principle is for simple types such as int or String to remain unchanged, while
+    complex types such as `MemoryUsage` get mapped to the standard type [`CompositeDataSupport`](https://docs.oracle.com/javase/8/docs/api/javax/management/openmbean/CompositeDataSupport.html).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MXBeans 的主要思想是，例如在 MXBean 接口中引用的 [`java.lang.management.MemoryUsage`](https://docs.oracle.com/javase/8/docs/api/java/lang/management/MemoryUsage.html)
+    这样的类型，在本例中是 [`java.lang.management.MemoryMXBean`](https://docs.oracle.com/javase/8/docs/api/java/lang/management/MemoryMXBean.html)，被映射到一组标准类型，即所谓的
+    *Open Types*，这些类型在 [`javax.management.openmbean`](https://docs.oracle.com/javase/8/docs/api/javax/management/openmbean/package-summary.html)
+    包中定义。确切的映射规则出现在 MXBean 规范中。然而，一般原则是简单类型如 int 或 String 保持不变，而复杂类型如 `MemoryUsage`
+    被映射为标准类型 [`CompositeDataSupport`](https://docs.oracle.com/javase/8/docs/api/javax/management/openmbean/CompositeDataSupport.html)。
+- en: 'The MXBean example consists of the following files, which are found in [`jmx_examples.zip`](../examples/jmx_examples.zip):'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MXBean 示例包括以下文件，这些文件位于 [`jmx_examples.zip`](../examples/jmx_examples.zip) 中：
+- en: '`QueueSamplerMXBean` interface'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`QueueSamplerMXBean` 接口'
+- en: '`QueueSampler` class that implements the MXBean interface'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 实现 MXBean 接口的 `QueueSampler` 类
+- en: '`QueueSample` Java type returned by the `getQueueSample()` method in the MXBean
+    interface'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`QueueSample` 是由 MXBean 接口中的 `getQueueSample()` 方法返回的 Java 类型'
+- en: '`Main`, the program that sets up and runs the example'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Main`，设置并运行示例的程序'
+- en: 'The MXBean example uses these classes to perform the following actions:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MXBean 示例使用这些类执行以下操作：
+- en: Defines a simple MXBean that manages a resource of type `Queue<String>`
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 定义了一个管理 `Queue<String>` 类型资源的简单 MXBean
+- en: 'Declares a getter, `getQueueSample`, in the MXBean that takes a snapshot of
+    the queue when invoked and returns a Java class `QueueSample` that bundles the
+    following values together:'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在 MXBean 中声明一个 getter，`getQueueSample`，当调用时获取队列的快照并返回一个捆绑以下值的 Java 类 `QueueSample`：
+- en: The time the snapshot was taken
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取快照的时间
+- en: The queue size
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 队列大小
+- en: The head of the queue at that given time
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 给定时间的队列头
+- en: Registers the MXBean in an MBean server
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在 MBean 服务器中注册 MXBean
+- en: MXBean Interface
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: MXBean 接口
+- en: 'The following code shows the example [`QueueSamplerMXBean`](../examples/QueueSamplerMXBean.java)
+    MXBean interface:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码显示了示例 [`QueueSamplerMXBean`](../examples/QueueSamplerMXBean.java) MXBean
+    接口：
+- en: '[PRE0]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Note that you declare an MXBean interface in exactly the same way as you declare
+    a standard MBean interface. The `QueueSamplerMXBean` interface declares a getter,
+    `getQueueSample` and an operation, `clearQueue`.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，声明 MXBean 接口的方式与声明标准 MBean 接口的方式完全相同。`QueueSamplerMXBean` 接口声明了一个 getter，`getQueueSample`
+    和一个操作，`clearQueue`。
+- en: Defining MXBean Operations
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定义 MXBean 操作
+- en: 'The MXBean operations are declared in the [`QueueSampler`](../examples/QueueSampler.java)
+    example class, as follows:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MXBean 操作在 [`QueueSampler`](../examples/QueueSampler.java) 示例类中声明如下：
+- en: '[PRE1]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '`QueueSampler` defines the `getQueueSample()` getter and `clearQueue()` operation
+    that were declared by the MXBean interface. The `getQueueSample()` operation returns
+    an instance of the `QueueSample` Java type which was created with the values returned
+    by the [`java.util.Queue`](https://docs.oracle.com/javase/8/docs/api/java/util/Queue.html)
+    methods `peek()` and `size()`, and an instance of [`java.util.Date`](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html).'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`QueueSampler` 定义了由 MXBean 接口声明的 `getQueueSample()` getter 和 `clearQueue()`
+    操作。`getQueueSample()` 操作返回一个 `QueueSample` Java 类型的实例，该实例是使用 [`java.util.Queue`](https://docs.oracle.com/javase/8/docs/api/java/util/Queue.html)
+    方法 `peek()` 和 `size()` 返回的值以及 [`java.util.Date`](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html)
+    的实例创建的。'
+- en: Defining the Java Type Returned by the MXBean Interface
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定义 MXBean 接口返回的 Java 类型
+- en: 'The `QueueSample` instance returned by `QueueSampler` is defined in the [`QueueSample`](../examples/QueueSample.java)
+    class, as follows:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`QueueSampler` 返回的 `QueueSample` 实例在 [`QueueSample`](../examples/QueueSample.java)
+    类中定义如下：'
+- en: '[PRE2]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: In the `QueueSample` class, the MXBean framework calls all the getters in `QueueSample`
+    to convert the given instance into a [`CompositeData`](https://docs.oracle.com/javase/8/docs/api/javax/management/openmbean/CompositeData.html)
+    instance and uses the `@ConstructorProperties` annotation to reconstruct a `QueueSample`
+    instance from a `CompositeData` instance.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `QueueSample` 类中，MXBean 框架调用 `QueueSample` 中的所有 getter 将给定实例转换为一个 [`CompositeData`](https://docs.oracle.com/javase/8/docs/api/javax/management/openmbean/CompositeData.html)
+    实例，并使用 `@ConstructorProperties` 注解从 `CompositeData` 实例重建一个 `QueueSample` 实例。
+- en: Creating and Registering the MXBean in the MBean Server
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建并在 MBean 服务器中注册 MXBean
+- en: 'So far, the following have been defined: an MXBean interface and the class
+    that implements it, as well as the Java type that is returned. Next, the MXBean
+    must be created and registered in an MBean server. These actions are performed
+    by the same [`Main`](../examples/Main.java) example JMX agent that was used in
+    the standard MBean example, but the relevant code was not shown in the [Standard
+    MBean](standard.html) lesson.'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，已经定义了以下内容：一个 MXBean 接口和实现它的类，以及返回的 Java 类型。接下来，MXBean 必须在 MBean 服务器中创建并注册。这些操作由相同的
+    [`Main`](../examples/Main.java) 示例 JMX 代理执行，该代理在标准 MBean 示例中使用，但相关代码未在 [标准 MBean](standard.html)
+    课程中显示。
+- en: '[PRE3]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The `Main` class performs the following actions:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Main` 类执行以下操作：'
+- en: Gets the platform MBean server.
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取平台 MBean 服务器。
+- en: Creates an object name for the MXBean `QueueSampler.`
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 为 MXBean `QueueSampler` 创建对象名称。
+- en: Creates a `Queue` instance for the `QueueSampler` MXBean to process.
+  id: totrans-37
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 为 `QueueSampler` MXBean 创建一个 `Queue` 实例以进行处理。
+- en: Feeds the `Queue` instance to a newly created `QueueSampler` MXBean.
+  id: totrans-38
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将 `Queue` 实例提供给新创建的 `QueueSampler` MXBean。
+- en: Registers the MXBean in the MBean server in exactly the same way as a standard
+    MBean.
+  id: totrans-39
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 以与标准 MBean 完全相同的方式在 MBean 服务器中注册 MXBean。
+- en: Running the MXBean Example
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行 MXBean 示例
+- en: 'The MXBean example uses classes from the [`jmx_examples.zip`](../examples/jmx_examples.zip)
+    bundle that you used in the [Standard MBeans](standard.html) section. This example
+    requires version 6 of the Java SE platform. To run the MXBeans example follow
+    these steps:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MXBean 示例使用了您在 [标准 MBeans](standard.html) 部分中使用的 [`jmx_examples.zip`](../examples/jmx_examples.zip)
+    包中的类。此示例需要 Java SE 平台的第 6 版本。要运行 MXBeans 示例，请按照以下步骤操作：
+- en: If you have not done so already, save [`jmx_examples.zip`](../examples/jmx_examples.zip)
+    into your `work_dir` directory.
+  id: totrans-42
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果尚未这样做，请将[`jmx_examples.zip`](../examples/jmx_examples.zip)保存到`work_dir`目录中。
+- en: Unzip the bundle of sample classes by using the following command in a terminal
+    window.
+  id: totrans-43
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在终端窗口中使用以下命令解压示例类的捆绑包。
+- en: '[PRE4]'
+  id: totrans-44
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Compile the example Java classes from within the `work_dir` directory.
+  id: totrans-45
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从`work_dir`目录中编译示例Java类。
+- en: '[PRE5]'
+  id: totrans-46
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Start the `Main` application. A confirmation that `Main` is waiting for something
+    to happen is generated.
+  id: totrans-47
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 启动`Main`应用程序。生成一个确认信息，表示`Main`正在等待某些事件发生。
+- en: '[PRE6]'
+  id: totrans-48
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Start JConsole in a different terminal window on the same machine. The New Connection
+    dialog box is displayed, presenting a list of running JMX agents that you can
+    connect to.
+  id: totrans-49
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在同一台机器的不同终端窗口中启动JConsole。显示新连接对话框，展示可以连接的运行中的JMX代理列表。
+- en: '[PRE7]'
+  id: totrans-50
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: In the New Connection dialog box, select `com.example.Main` from the list and
+    click Connect.
+  id: totrans-51
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在新连接对话框中，从列表中选择`com.example.Main`并点击连接。
+- en: A summary of your platform's current activity is displayed.
+  id: totrans-52
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示平台当前活动的摘要。
+- en: Click the MBeans tab.
+  id: totrans-53
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击MBeans选项卡。
+- en: This panel shows all the MBeans that are currently registered in the MBean server.
+  id: totrans-54
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此面板显示当前在MBean服务器中注册的所有MBeans。
+- en: In the left frame, expand the `com.example` node in the MBean tree.
+  id: totrans-55
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在左侧框架中，展开MBean树中的`com.example`节点。
+- en: You see the example MBean `QueueSampler` that was created and registered by
+    `Main`. If you click `QueueSampler`, you see its associated Attributes and Operations
+    nodes in the MBean tree.
+  id: totrans-56
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 你会看到示例MBean `QueueSampler`是由`Main`创建和注册的。如果你点击`QueueSampler`，你会在MBean树中看到其关联的属性和操作节点。
+- en: Expand the Attributes node.
+  id: totrans-57
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 展开属性节点。
+- en: You see the `QueueSample` attribute appear in the right pane, with its value
+    of `javax.management.openmbean.CompositeDataSupport`.
+  id: totrans-58
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 你会看到`QueueSample`属性出现在右侧窗格中，其值为`javax.management.openmbean.CompositeDataSupport`。
+- en: Double-click the `CompositeDataSupport` value.
+  id: totrans-59
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 双击`CompositeDataSupport`值。
+- en: You see the `QueueSample` values `date`, `head`, and `size` because the MXBean
+    framework has converted the `QueueSample` instance into `CompositeData`. If you
+    had defined `QueueSampler` as a standard MBean rather than as an MXBean, JConsole
+    would not have found the `QueueSample` class because it would not be in its class
+    path. If `QueueSampler` had been a standard MBean, you would have received a `ClassNotFoundException`
+    message when retrieving the `QueueSample` attribute value. The fact that JConsole
+    finds `QueueSampler` demonstrates the usefulness of using MXBeans when connecting
+    to JMX agents through generic JMX clients such as JConsole.
+  id: totrans-60
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 你会看到`QueueSample`值`date`、`head`和`size`，因为MXBean框架已将`QueueSample`实例转换为`CompositeData`。如果你将`QueueSampler`定义为标准MBean而不是MXBean，JConsole将找不到`QueueSample`类，因为它不在其类路径中。如果`QueueSampler`是标准MBean，当检索`QueueSample`属性值时，你会收到`ClassNotFoundException`消息。JConsole找到`QueueSampler`这一事实展示了在通过通用JMX客户端（如JConsole）连接到JMX代理时使用MXBeans的实用性。
+- en: Expand the Operations node.
+  id: totrans-61
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 展开操作节点。
+- en: A button to invoke the `clearQueue` operation is displayed.
+  id: totrans-62
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示一个按钮来调用`clearQueue`操作。
+- en: Click the `clearQueue` button.
+  id: totrans-63
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击`clearQueue`按钮。
+- en: A confirmation that the method was invoked successfully is displayed.
+  id: totrans-64
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示成功调用方法的确认信息。
+- en: Expand the Attributes node again, and double click on the `CompositeDataSupport`
+    value.
+  id: totrans-65
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次展开属性节点，并双击`CompositeDataSupport`值。
+- en: The `head` and `size` values have been reset.
+  id: totrans-66
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`head`和`size`值已重置。'
+- en: To close JConsole, select Connection -> Exit.
+  id: totrans-67
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 要关闭JConsole，选择连接 -> 退出。

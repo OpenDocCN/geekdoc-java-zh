@@ -1,0 +1,136 @@
+- en: Designing a Remote Interface
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 设计远程接口
+- en: 原文：[https://docs.oracle.com/javase/tutorial/rmi/designing.html](https://docs.oracle.com/javase/tutorial/rmi/designing.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/rmi/designing.html](https://docs.oracle.com/javase/tutorial/rmi/designing.html)
+- en: At the core of the compute engine is a protocol that enables tasks to be submitted
+    to the compute engine, the compute engine to run those tasks, and the results
+    of those tasks to be returned to the client. This protocol is expressed in the
+    interfaces that are supported by the compute engine. The remote communication
+    for this protocol is illustrated in the following figure.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 计算引擎的核心是一种协议，使得任务可以提交到计算引擎，计算引擎可以运行这些任务，并将这些任务的结果返回给客户端。这个协议在支持计算引擎的接口中表达。该协议的远程通信在下图中有所体现。
+- en: '![remote communication between a client and the compute engine](../Images/2d17251718df852db3f07f02f669679e.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![客户端和计算引擎之间的远程通信](../Images/2d17251718df852db3f07f02f669679e.png)'
+- en: Each interface contains a single method. The compute engine's remote interface,
+    `Compute`, enables tasks to be submitted to the engine. The client interface,
+    `Task,` defines how the compute engine executes a submitted task.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个接口包含一个方法。计算引擎的远程接口`Compute`允许任务提交到引擎。客户端接口`Task`定义了计算引擎如何执行提交的任务。
+- en: 'The [``compute.Compute``](examples/compute/Compute.java) interface defines
+    the remotely accessible part, the compute engine itself. Here is the source code
+    for the `Compute` interface:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``compute.Compute``](examples/compute/Compute.java)接口定义了远程访问部分，即计算引擎本身。这里是`Compute`接口的源代码：'
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: By extending the interface `java.rmi.Remote`, the `Compute` interface identifies
+    itself as an interface whose methods can be invoked from another Java virtual
+    machine. Any object that implements this interface can be a remote object.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过扩展接口`java.rmi.Remote`，`Compute`接口将自身标识为一个可以从另一个Java虚拟机中调用其方法的接口。实现这个接口的任何对象都可以是一个远程对象。
+- en: As a member of a remote interface, the `executeTask` method is a remote method.
+    Therefore, this method must be defined as being capable of throwing a `java.rmi.RemoteException`.
+    This exception is thrown by the RMI system from a remote method invocation to
+    indicate that either a communication failure or a protocol error has occurred.
+    A `RemoteException` is a checked exception, so any code invoking a remote method
+    needs to handle this exception by either catching it or declaring it in its `throws`
+    clause.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为远程接口的成员，`executeTask`方法是一个远程方法。因此，该方法必须被定义为能够抛出`java.rmi.RemoteException`的方法。这个异常是由RMI系统从远程方法调用中抛出的，用于指示通信失败或协议错误。`RemoteException`是一个受检异常，因此任何调用远程方法的代码都需要通过捕获它或在其`throws`子句中声明来处理这个异常。
+- en: 'The second interface needed for the compute engine is the `Task` interface,
+    which is the type of the parameter to the `executeTask` method in the `Compute`
+    interface. The [``compute.Task``](examples/compute/Task.java) interface defines
+    the interface between the compute engine and the work that it needs to do, providing
+    the way to start the work. Here is the source code for the `Task` interface:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 计算引擎所需的第二个接口是`Task`接口，它是`Compute`接口中`executeTask`方法的参数类型。[``compute.Task``](examples/compute/Task.java)接口定义了计算引擎和需要执行的工作之间的接口，提供了开始工作的方式。这里是`Task`接口的源代码：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `Task` interface defines a single method, `execute`, which has no parameters
+    and throws no exceptions. Because the interface does not extend `Remote`, the
+    method in this interface doesn't need to list `java.rmi.RemoteException` in its
+    `throws` clause.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Task`接口定义了一个方法`execute`，该方法没有参数，也不会抛出异常。因为该接口没有扩展`Remote`，所以在该接口中的方法不需要在`throws`子句中列出`java.rmi.RemoteException`。'
+- en: The `Task` interface has a type parameter, `T`, which represents the result
+    type of the task's computation. This interface's `execute` method returns the
+    result of the computation and thus its return type is `T`.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Task`接口有一个类型参数`T`，代表任务计算的结果类型。该接口的`execute`方法返回计算的结果，因此其返回类型是`T`。'
+- en: The `Compute` interface's `executeTask` method, in turn, returns the result
+    of the execution of the `Task` instance passed to it. Thus, the `executeTask`
+    method has its own type parameter, `T`, that associates its own return type with
+    the result type of the passed `Task` instance.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Compute`接口的`executeTask`方法反过来返回传递给它的`Task`实例的执行结果。因此，`executeTask`方法有自己的类型参数`T`，将其自己的返回类型与传递的`Task`实例的结果类型关联起来。'
+- en: RMI uses the Java object serialization mechanism to transport objects by value
+    between Java virtual machines. For an object to be considered serializable, its
+    class must implement the `java.io.Serializable` marker interface. Therefore, classes
+    that implement the `Task` interface must also implement `Serializable`, as must
+    the classes of objects used for task results.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: RMI使用Java对象序列化机制在Java虚拟机之间按值传输对象。要使对象被视为可序列化，其类必须实现`java.io.Serializable`标记接口。因此，实现`Task`接口的类必须也实现`Serializable`，任务结果所使用的对象的类也必须实现。
+- en: Different kinds of tasks can be run by a `Compute` object as long as they are
+    implementations of the `Task` type. The classes that implement this interface
+    can contain any data needed for the computation of the task and any other methods
+    needed for the computation.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只要它们是`Task`类型的实现，不同类型的任务可以由`Compute`对象运行。实现这个接口的类可以包含任务计算所需的任何数据以及计算所需的任何其他方法。
+- en: Here is how RMI makes this simple compute engine possible. Because RMI can assume
+    that the `Task` objects are written in the Java programming language, implementations
+    of the `Task` object that were previously unknown to the compute engine are downloaded
+    by RMI into the compute engine's Java virtual machine as needed. This capability
+    enables clients of the compute engine to define new kinds of tasks to be run on
+    the server machine without needing the code to be explicitly installed on that
+    machine.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这就是RMI如何使这个简单的计算引擎成为可能。因为RMI可以假定`Task`对象是用Java编程语言编写的，之前未知于计算引擎的`Task`对象的实现会根据需要通过RMI下载到计算引擎的Java虚拟机中。这种能力使得计算引擎的客户端能够定义新的任务类型，而无需将代码明确安装在该机器上。
+- en: The compute engine, implemented by the `ComputeEngine` class, implements the
+    `Compute` interface, enabling different tasks to be submitted to it by calls to
+    its `executeTask` method. These tasks are run using the task's implementation
+    of the `execute` method and the results, are returned to the remote client.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由`ComputeEngine`类实现的计算引擎实现了`Compute`接口，通过调用其`executeTask`方法，使不同的任务可以提交给它。这些任务使用任务的`execute`方法的实现来运行，并将结果返回给远程客户端。

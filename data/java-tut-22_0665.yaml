@@ -1,0 +1,92 @@
+- en: Using Print Setup Dialogs
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用打印设置对话框
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/printing/dialog.html](https://docs.oracle.com/javase/tutorial/2d/printing/dialog.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/printing/dialog.html](https://docs.oracle.com/javase/tutorial/2d/printing/dialog.html)
+- en: Traditionally, the user wants to see the page setup and print dialog boxes.
+    From the print dialog you can select a printer, specify pages to print, and set
+    the number of copies.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传统上，用户希望看到页面设置和打印对话框。从打印对话框中，您可以选择打印机，指定要打印的页面，并设置副本数量。
+- en: '![This figures represents a print dialog](../Images/64fb052492b8cd43daa32f9847a88825.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![这个图表示一个打印对话框](../Images/64fb052492b8cd43daa32f9847a88825.png)'
+- en: 'An application displays a print dialog when the user presses a button related
+    to the print command, or chooses an item from the print menu. To display this
+    dialog, call the [`printDialog`](https://docs.oracle.com/javase/8/docs/api/java/awt/print/PrinterJob.html#printDialog--)
+    method of the [`PrinterJob`](https://docs.oracle.com/javase/8/docs/api/java/awt/print/PrinterJob.html)
+    class:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户按下与打印命令相关的按钮或从打印菜单中选择项目时，应用程序会显示打印对话框。要显示此对话框，请调用[`PrinterJob`](https://docs.oracle.com/javase/8/docs/api/java/awt/print/PrinterJob.html)类的`printDialog`方法：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This method returns `true` if the user clicked OK to leave the dialog, and `false`
+    otherwise. The user's choices in the dialog are constrained based on the number
+    and format of the pages that have been set to the `PrinterJob`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果用户点击确定按钮离开对话框，则此方法返回`true`，否则返回`false`。对话框中用户的选择受限于已设置到`PrinterJob`的页面的数量和格式。
+- en: The `printDialog` method in the above code snippet opens a native print dialog.
+    The [`PrintDialogExample.java`](examples/PrintDialogExample.java) code example
+    shows how to display a cross-platform print dialog.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 上述代码片段中的`printDialog`方法打开一个本机打印对话框。[`PrintDialogExample.java`](examples/PrintDialogExample.java)代码示例展示了如何显示跨平台打印对话框。
+- en: You can change the page setup information contained in the [`PageFormat`](https://docs.oracle.com/javase/8/docs/api/java/awt/print/PageFormat.html)
+    object by using the page setup dialog.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以通过使用页面设置对话框来更改包含在[`PageFormat`](https://docs.oracle.com/javase/8/docs/api/java/awt/print/PageFormat.html)对象中的页面设置信息。
+- en: '![This figure represents a page setup dialog window ](../Images/8d390a7e6f91e46c3141b73b5d777aa9.png)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_IMG
+  zh: '![这个图表示一个页面设置对话框窗口](../Images/8d390a7e6f91e46c3141b73b5d777aa9.png)'
+- en: To display the page setup dialog, call the `pageDialog` method of the `PrinterJob`
+    class.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要显示页面设置对话框，请调用`PrinterJob`类的`pageDialog`方法。
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The page setup dialog is initialized using the parameter passed to `pageDialog`.
+    If the user clicks the OK button in the dialog, the `PageFormat` instance will
+    be created in accordance with the user�s selections, and then returned. If the
+    user cancels the dialog, `pageDialog` returns the original unchanged PageFormat.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 页面设置对话框使用传递给`pageDialog`的参数进行初始化。如果用户在对话框中点击确定按钮，则将根据用户的选择创建`PageFormat`实例，然后返回。如果用户取消对话框，则`pageDialog`将返回原始未更改的`PageFormat`。
+- en: Usually the Java 2D Printing API requires an application to display a print
+    dialog, but in sometimes it's possible to print without showing any dialog at
+    all. This type of printing is called *silent printing*. It may be useful in specific
+    cases, such as, when you need to print a particular database weekly report. In
+    the other cases it is always recommended to inform the user when a print process
+    is starting.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，Java 2D打印API要求应用程序显示打印对话框，但有时可能可以在不显示任何对话框的情况下打印。这种类型的打印称为*静默打印*。在特定情况下可能会很有用，例如，当您需要打印特定数据库每周报告时。在其他情况下，始终建议在打印过程开始时通知用户。

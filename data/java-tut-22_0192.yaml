@@ -1,0 +1,173 @@
+- en: Other Useful Methods
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 其他有用的方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/misc.html](https://docs.oracle.com/javase/tutorial/essential/io/misc.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/misc.html](https://docs.oracle.com/javase/tutorial/essential/io/misc.html)
+- en: 'A few useful methods did not fit elsewhere in this lesson and are covered here.
+    This section covers the following:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程中未涵盖的一些有用方法在此处介绍。本节涵盖以下内容：
+- en: '[Determining MIME Type](#mime)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[确定MIME类型](#mime)'
+- en: '[Default File System](#default)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[默认文件系统](#default)'
+- en: '[Path String Separator](#separator)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[路径字符串分隔符](#separator)'
+- en: '[File System''s File Stores](#stores)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[文件系统的文件存储器](#stores)'
+- en: Determining MIME Type
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 确定MIME类型
+- en: 'To determine the MIME type of a file, you might find the [`probeContentType(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#probeContentType-java.nio.file.Path-)
+    method useful. For example:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要确定文件的MIME类型，您可能会发现[`probeContentType(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#probeContentType-java.nio.file.Path-)方法很有用。例如：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Note that `probeContentType` returns null if the content type cannot be determined.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，如果无法确定内容类型，`probeContentType`会返回null。
+- en: The implementation of this method is highly platform specific and is not infallible.
+    The content type is determined by the platform's default file type detector. For
+    example, if the detector determines a file's content type to be `application/x-java`
+    based on the `.class` extension, it might be fooled.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此方法的实现高度依赖于平台，并不是绝对可靠的。内容类型由平台的默认文件类型检测器确定。例如，如果检测器根据`.class`扩展名确定文件的内容类型为`application/x-java`，可能会被欺骗。
+- en: You can provide a custom [`FileTypeDetector`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/spi/FileTypeDetector.html)
+    if the default is not sufficient for your needs.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果默认的方法不符合您的需求，您可以提供自定义的[`FileTypeDetector`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/spi/FileTypeDetector.html)。
+- en: The [``Email``](examples/Email.java) example uses the `probeContentType` method.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``电子邮件``](examples/Email.java)示例使用`probeContentType`方法。'
+- en: Default File System
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 默认文件系统
+- en: 'To retrieve the default file system, use the [`getDefault`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystems.html#getDefault--)
+    method. Typically, this `FileSystems` method (note the plural) is chained to one
+    of the `FileSystem` methods (note the singular), as follows:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要检索默认文件系统，请使用[`getDefault`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystems.html#getDefault--)方法。通常，此`FileSystems`方法（注意是复数形式）链接到`FileSystem`方法之一（注意是单数形式），如下所示：
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Path String Separator
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 路径字符串分隔符
+- en: 'The path separator for POSIX file systems is the forward slash, `/`, and for
+    Microsoft Windows is the backslash, `\`. Other file systems might use other delimiters.
+    To retrieve the `Path` separator for the default file system, you can use one
+    of the following approaches:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: POSIX文件系统的路径分隔符是正斜杠`/`，Microsoft Windows的路径分隔符是反斜杠`\`。其他文件系统可能使用其他分隔符。要检索默认文件系统的`Path`分隔符，可以使用以下方法之一：
+- en: '[PRE2]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The [`getSeparator`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#getSeparator--)
+    method is also used to retrieve the path separator for any available file system.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`getSeparator`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#getSeparator--)方法也用于检索任何可用文件系统的路径分隔符。'
+- en: File System's File Stores
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文件系统的文件存储器
+- en: 'A file system has one or more file stores to hold its files and directories.
+    The *file store* represents the underlying storage device. In UNIX operating systems,
+    each mounted file system is represented by a file store. In Microsoft Windows,
+    each volume is represented by a file store: `C:`, `D:`, and so on.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件系统有一个或多个文件存储器来保存其文件和目录。*文件存储器*代表底层存储设备。在UNIX操作系统中，每个挂载的文件系统都由一个文件存储器表示。在Microsoft
+    Windows中，每个卷都由一个文件存储器表示：`C:`、`D:`等等。
+- en: To retrieve a list of all the file stores for the file system, you can use the
+    [`getFileStores`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#getFileStores--)
+    method. This method returns an `Iterable`, which allows you to use the [enhanced
+    for](../../java/nutsandbolts/for.html) statement to iterate over all the root
+    directories.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要检索文件系统的所有文件存储器列表，可以使用[`getFileStores`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#getFileStores--)方法。此方法返回一个`Iterable`，允许您使用增强的for语句遍历所有根目录。
+- en: '[PRE3]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'If you want to retrieve the file store where a particular file is located,
+    use the [`getFileStore`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#getFileStore-java.nio.file.Path-)
+    method in the `Files` class, as follows:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果要检索特定文件所在的文件存储器，请使用`Files`类中的`getFileStore`方法，如下所示：
+- en: '[PRE4]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The [`DiskUsage`](examples/DiskUsage.java) example uses the `getFileStores`
+    method.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`DiskUsage`](examples/DiskUsage.java)示例使用`getFileStores`方法。'

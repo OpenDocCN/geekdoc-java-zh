@@ -1,0 +1,55 @@
+- en: Writing Diagnostics to Standard Output and Error Streams
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 将诊断信息写入标准输出和错误流
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/stdout.html](https://docs.oracle.com/javase/tutorial/deployment/applet/stdout.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/stdout.html](https://docs.oracle.com/javase/tutorial/deployment/applet/stdout.html)
+- en: A Java applet can write messages to the standard output and standard error streams.
+    Writing diagnostics to standard output can be an invaluable tool when you are
+    debugging a Java applet.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个Java小程序可以将消息写入标准输出和标准错误流。在调试Java小程序时，将诊断信息写入标准输出可以是一个非常有价值的工具。
+- en: The following code snippet writes messages to the standard output stream and
+    the standard error stream.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段将消息写入标准输出流和标准错误流。
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Check the Java Console log for messages written to the standard output stream
+    or standard error stream. To store messages in a log file, enable logging in the
+    Java Control Panel. Messages will be written to a log file in the user's home
+    directory (for example, on Windows, the log file might be in `C:\Documents and
+    Settings\someuser\Application Data\Sun\Java\Deployment\log`).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查Java控制台日志，查看写入标准输出流或标准错误流的消息。要将消息存储在日志文件中，请在Java控制面板中启用日志记录。消息将被写入用户主目录中的日志文件（例如，在Windows上，日志文件可能位于`C:\Documents
+    and Settings\someuser\Application Data\Sun\Java\Deployment\log`）。
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Be sure to disable all debugging output before you release your applet.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 在发布小程序之前，请务必禁用所有调试输出。'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

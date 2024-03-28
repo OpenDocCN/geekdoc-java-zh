@@ -1,0 +1,61 @@
+- en: Verify the JAR File Signature
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 验证JAR文件签名。
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolfilex/rstep2.html](https://docs.oracle.com/javase/tutorial/security/toolfilex/rstep2.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: '[https://docs.oracle.com/javase/tutorial/security/toolfilex/rstep2.html](https://docs.oracle.com/javase/tutorial/security/toolfilex/rstep2.html)'
+- en: Acting as Ruth, you have now imported Stan's public key certificate into the
+    `exampleruthstore` keystore as a "trusted certificate." You can now use the `jarsigner`
+    tool to verify the authenticity of the JAR file signature.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为Ruth，您现在已将Stan的公钥证书导入到`exampleruthstore`密钥库中作为“受信任的证书”。您现在可以使用`jarsigner`工具来验证JAR文件签名的真实性。
+- en: 'When you verify a signed JAR file, you verify that the signature is valid and
+    that the JAR file has not been tampered with. You can do this for the `sContract.jar`
+    file via the following command:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您验证已签名的JAR文件时，您验证签名是否有效，以及JAR文件是否未被篡改。您可以通过以下命令对`sContract.jar`文件进行此操作：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'You should see something like the following:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您应该看到类似以下内容：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Be sure to run the command with the `-verbose` option to get enough information
+    to ensure the following:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请务必使用`-verbose`选项运行命令，以获取足够的信息以确保以下内容：
+- en: the contract file is among the files in the JAR file that were signed and its
+    signature was verified (that's what the `s` signifies)
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 合同文件是JAR文件中的文件之一，已签名并验证其签名（这就是`s`的意思）。
+- en: the public key used to verify the signature is in the specified keystore and
+    thus trusted by you (that's what the `k` signifies).
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 用于验证签名的公钥位于指定的密钥库中，因此您信任它（这就是`k`的意思）。

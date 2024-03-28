@@ -1,0 +1,39 @@
+- en: Solving Common Data Transfer Problems
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 解决常见数据传输问题
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/problems.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/problems.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/problems.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/problems.html)
+- en: This section discusses problems that you might encounter when using data transfer.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用数据传输时，可能会遇到一些问题。
+- en: '**Problem:** My drag gesture recognizer is not working properly with table/list/tree/text.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我的拖动手势识别器在与表格/列表/树/文本一起使用时无法正常工作。'
+- en: Do not use your own drag gesture recognizers with these components. Use `setDragEnabled(true)`
+    and a `TransferHandler`.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不要在这些组件上使用自己的拖动手势识别器。使用`setDragEnabled(true)`和`TransferHandler`。
+- en: '**Problem:** I am unable to drop data onto my empty `JTable`.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我无法将数据放置到我的空`JTable`中。'
+- en: You need to call `setFillsViewportHeight(true)` on the table. See [Empty Table
+    Drop](emptytable.html) for more information.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你需要在表格上调用`setFillsViewportHeight(true)`。查看[空表格拖放](emptytable.html)获取更多信息。

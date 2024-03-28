@@ -1,0 +1,75 @@
+- en: Creating a Package
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建一个包
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/package/createpkgs.html](https://docs.oracle.com/javase/tutorial/java/package/createpkgs.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/package/createpkgs.html](https://docs.oracle.com/javase/tutorial/java/package/createpkgs.html)
+- en: To create a package, you choose a name for the package (naming conventions are
+    discussed in the next section) and put a `package` statement with that name at
+    the top of *every source file* that contains the types (classes, interfaces, enumerations,
+    and annotation types) that you want to include in the package.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建一个包，你需要为包选择一个名称（命名约定将在下一节讨论），并在包含你想要放入包中的类型（类、接口、枚举和注解类型）的*每个源文件*的顶部放置一个带有该名称的`package`语句。
+- en: The package statement (for example, `package graphics;`) must be the first line
+    in the source file. There can be only one package statement in each source file,
+    and it applies to all types in the file.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 包语句（例如，`package graphics;`）必须是源文件中的第一行。每个源文件中只能有一个包语句，并且它适用于文件中的所有类型。
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** If you put multiple types in a single source file, only one can be
+    `public`, and it must have the same name as the source file. For example, you
+    can define `public class Circle` in the file `Circle.java`, define `public interface
+    Draggable` in the file `Draggable.java`, define `public enum Day` in the file
+    `Day.java`, and so forth.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**如果你在单个源文件中放入多个类型，只能有一个是`public`的，并且它必须与源文件同名。例如，你可以在文件`Circle.java`中定义`public
+    class Circle`，在文件`Draggable.java`中定义`public interface Draggable`，在文件`Day.java`中定义`public
+    enum Day`，等等。'
+- en: You can include non-public types in the same file as a public type (this is
+    strongly discouraged, unless the non-public types are small and closely related
+    to the public type), but only the public type will be accessible from outside
+    of the package. All the top-level, non-public types will be *package private*.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在同一个文件中包含非公共类型和一个公共类型（这是强烈不推荐的，除非非公共类型很小并且与公共类型密切相关），但只有公共类型可以从包外访问。所有顶级的非公共类型将是*包私有*的。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'If you put the graphics interface and classes listed in the preceding section
+    in a package called `graphics`, you would need six source files, like this:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你将前面部分列出的图形接口和类放在一个名为`graphics`的包中，你将需要六个源文件，如下所示：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If you do not use a `package` statement, your type ends up in an unnamed package.
+    Generally speaking, an unnamed package is only for small or temporary applications
+    or when you are just beginning the development process. Otherwise, classes and
+    interfaces belong in named packages.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你不使用`package`语句，你的类型将会进入一个无名包。一般来说，无名包只适用于小型或临时应用程序，或者当你刚开始开发过程时。否则，类和接口应该放在命名包中。

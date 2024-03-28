@@ -1,0 +1,266 @@
+- en: 'Lesson: Basic I/O'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：基本 I/O
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/index.html](https://docs.oracle.com/javase/tutorial/essential/io/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/index.html](https://docs.oracle.com/javase/tutorial/essential/io/index.html)
+- en: This lesson covers the Java platform classes used for basic I/O. It first focuses
+    on *I/O Streams*, a powerful concept that greatly simplifies I/O operations. The
+    lesson also looks at serialization, which lets a program write whole objects out
+    to streams and read them back again. Then the lesson looks at file I/O and file
+    system operations, including random access files.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程涵盖了用于基本 I/O 的 Java 平台类。它首先关注* I/O 流*，这是一个极大简化 I/O 操作的强大概念。该课程还涉及序列化，它允许程序将整个对象写入流并再次读取它们。然后课程将查看文件
+    I/O 和文件系统操作，包括随机访问文件。
+- en: Most of the classes covered in the `I/O Streams` section are in the `java.io`
+    package. Most of the classes covered in the `File I/O` section are in the `java.nio.file`
+    package.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数在“ I/O 流”部分涵盖的类位于`java.io`包中。大多数在“文件 I/O”部分涵盖的类位于`java.nio.file`包中。
+- en: '[I/O Streams](streams.html)'
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[I/O 流](streams.html)'
+- en: '[Byte Streams](bytestreams.html) handle I/O of raw binary data.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[字节流](bytestreams.html)处理原始二进制数据的 I/O。'
+- en: '[Character Streams](charstreams.html) handle I/O of character data, automatically
+    handling translation to and from the local character set.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[字符流](charstreams.html)处理字符数据的 I/O，自动处理与本地字符集之间的转换。'
+- en: '[Buffered Streams](buffers.html) optimize input and output by reducing the
+    number of calls to the native API.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[缓冲流](buffers.html)通过减少对本机 API 的调用次数来优化输入和输出。'
+- en: '[Scanning and Formatting](scanfor.html) allows a program to read and write
+    formatted text.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[扫描和格式化](scanfor.html)允许程序读取和写入格式化文本。'
+- en: '[I/O from the Command Line](cl.html) describes the Standard Streams and the
+    Console object.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[从命令行进行 I/O](cl.html)描述了标准流和控制台对象。'
+- en: '[Data Streams](datastreams.html) handle binary I/O of primitive data type and
+    `String` values.'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[数据流](datastreams.html)处理基本数据类型和`String`值的二进制 I/O。'
+- en: '[Object Streams](objectstreams.html) handle binary I/O of objects.'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[对象流](objectstreams.html)处理对象的二进制 I/O。'
+- en: '[File I/O (Featuring NIO.2)](fileio.html)'
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[文件 I/O（使用 NIO.2）](fileio.html)'
+- en: '[What is a Path?](path.html) examines the concept of a path on a file system.'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[什么是路径？](path.html)探讨了文件系统上路径的概念。'
+- en: '[The Path Class](pathClass.html) introduces the cornerstone class of the `java.nio.file`
+    package.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Path 类](pathClass.html)介绍了`java.nio.file`包的基石类。'
+- en: '[Path Operations](pathOps.html) looks at methods in the `Path` class that deal
+    with syntactic operations.'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[路径操作](pathOps.html)查看了`Path`类中处理语法操作的方法。'
+- en: '[File Operations](fileOps.html) introduces concepts common to many of the file
+    I/O methods.'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[文件操作](fileOps.html)介绍了许多文件 I/O 方法共有的概念。'
+- en: '[Checking a File or Directory](check.html) shows how to check a file''s existence
+    and its level of accessibility.'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检查文件或目录](check.html)展示了如何检查文件的存在性和可访问性级别。'
+- en: '[Deleting a File or Directory](delete.html).'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[删除文件或目录](delete.html)。'
+- en: '[Copying a File or Directory](copy.html).'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[复制文件或目录](copy.html)。'
+- en: '[Moving a File or Directory](move.html).'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[移动文件或目录](move.html)。'
+- en: '[Managing Metadata](fileAttr.html) explains how to read and set file attributes.'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[管理元数据](fileAttr.html)解释了如何读取和设置文件属性。'
+- en: '[Reading, Writing and Creating Files](file.html) shows the stream and channel
+    methods for reading and writing files.'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[读取、写入和创建文件](file.html)展示了读取和写入文件的流和通道方法。'
+- en: '[Random Access Files](rafs.html) shows how to read or write files in a non-sequentially
+    manner.'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[随机访问文件](rafs.html)展示了如何以非顺序方式读取或写入文件。'
+- en: '[Creating and Reading Directories](dirs.html) covers API specific to directories,
+    such as how to list a directory''s contents.'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建和读取目录](dirs.html)涵盖了特定于目录的 API，例如如何列出目录的内容。'
+- en: '[Links, Symbolic or Otherwise](links.html) covers issues specific to symbolic
+    and hard links.'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[链接，符号或其他](links.html)涵盖了与符号链接和硬链接相关的特定问题。'
+- en: '[Walking the File Tree](walk.html) demonstrates how to recursively visit each
+    file and directory in a file tree.'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[遍历文件树](walk.html)演示了如何递归访问文件树中的每个文件和目录。'
+- en: '[Finding Files](find.html) shows how to search for files using pattern matching.'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[查找文件](find.html)展示了如何使用模式匹配搜索文件。'
+- en: '[Watching a Directory for Changes](notification.html) shows how to use the
+    watch service to detect files that are added, removed or updated in one or more
+    directories.'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[监视目录变化](notification.html)展示了如何使用监视服务检测一个或多个目录中添加、删除或更新的文件。'
+- en: '[Other Useful Methods](misc.html) covers important API that didn''t fit elsewhere
+    in the lesson.'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[其他有用的方法](misc.html)涵盖了在本课程中其他地方无法涵盖的重要API。'
+- en: '[Legacy File I/O Code](legacy.html) shows how to leverage `Path` functionality
+    if you have older code using the `java.io.File` class. A table mapping `java.io.File`
+    API to `java.nio.file` API is provided.'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[旧版文件I/O代码](legacy.html)展示了如何利用`Path`功能，如果你的旧代码使用了`java.io.File`类。提供了一个将`java.io.File`
+    API映射到`java.nio.file` API的表格。'
+- en: '[Summary](summary.html)'
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[总结](summary.html)'
+- en: A summary of the key points covered in this trail.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程涵盖的关键要点总结。
+- en: '[Questions and Exercises](QandE/questions.html)'
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[问题和练习](QandE/questions.html)'
+- en: Test what you've learned in this trail by trying these questions and exercises.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过尝试这些问题和练习来测试你在本教程中学到的知识。
+- en: The I/O Classes in Action
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: I/O类的实际运用
+- en: Many of the examples in the next trail, [Custom Networking](../../networking/index.html)
+    use the I/O streams described in this lesson to read from and write to network
+    connections.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个教程中的许多示例，[自定义网络](../../networking/index.html)，使用了本课程中描述的I/O流来从网络连接读取和写入。
+- en: '* * *'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Security consideration:** Some I/O operations are subject to approval by
+    the current security manager. The example programs contained in these lessons
+    are standalone applications, which by default have no security manager. To work
+    in an applet, most of these examples would have to be modified. See [What Applets
+    Can and Cannot Do](../../deployment/applet/security.html) for information about
+    the security restrictions placed on applets.'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**安全注意事项：** 一些I/O操作需要当前安全管理器的批准。这些教程中包含的示例程序是独立应用程序，默认情况下没有安全管理器。要在小程序中运行，大多数这些示例都需要进行修改。查看[小程序的能力和限制](../../deployment/applet/security.html)以获取有关小程序所受的安全限制的信息。'
+- en: '* * *'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

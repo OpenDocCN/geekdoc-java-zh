@@ -1,0 +1,217 @@
+- en: Customizing Resource Bundle Loading
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 自定义资源包加载
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/resbundle/control.html](https://docs.oracle.com/javase/tutorial/i18n/resbundle/control.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/resbundle/control.html](https://docs.oracle.com/javase/tutorial/i18n/resbundle/control.html)
+- en: Earlier in this lesson you have learned how to create and access objects of
+    the `ResourceBundle` class. This section extents your knowledge and explains how
+    to take an advantage from the [`ResourceBundle.Control`](https://docs.oracle.com/javase/8/docs/api/java/util/ResourceBundle.Control.html)
+    class capabilities.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本课程的前面，您已经学会了如何创建和访问`ResourceBundle`类的对象。本节扩展了您的知识，并解释了如何利用[`ResourceBundle.Control`](https://docs.oracle.com/javase/8/docs/api/java/util/ResourceBundle.Control.html)类的功能。
+- en: The `ResourceBundle.Control` was created to specify how to locate and instantiate
+    resource bundles. It defines a set of callback methods that are invoked by the
+    [`ResourceBundle.getBundle`](https://docs.oracle.com/javase/8/docs/api/java/util/ResourceBundle.html#getBundle-java.lang.String-java.util.Locale-java.util.ResourceBundle.Control-)
+    factory methods during the bundle loading process.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ResourceBundle.Control`被创建用于指定如何定位和实例化资源包。它定义了一组回调方法，这些方法在`ResourceBundle.getBundle`工厂方法在加载资源包过程中调用。'
+- en: Unlike a [`ResourceBundle.getBundle`](https://docs.oracle.com/javase/8/docs/api/java/util/ResourceBundle.html#getBundle-java.lang.String-java.util.Locale-)
+    method described earlier, this `ResourceBundle.getBundle` method defines a resource
+    bundle using the specified base name, the default locale and the specified control.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与之前描述的`ResourceBundle.getBundle`方法不同，此`ResourceBundle.getBundle`方法使用指定的基本名称、默认区域设置和指定的控制定义资源包。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The specified control provide information for the resource bundle loading process.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定的控制提供了资源包加载过程的信息。
+- en: The following sample program called [`RBControl.java`](examples/RBControl.java)
+    illustrates how to define your own search paths for Chinese locales.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的示例程序[`RBControl.java`](examples/RBControl.java)说明了如何为中文区域定义自己的搜索路径。
+- en: 1\. Create the `properties` Files.
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 1\. 创建`properties`文件。
+- en: 'As it was described before you can load your resources either from classes
+    or from `properties` files. These files contain descriptions for the following
+    locales:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如之前所述，您可以从类或`properties`文件中加载资源。这些文件包含以下区域的描述：
+- en: "`[`RBControl.properties`](examples/RBControl.properties)` \x96 Global"
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`[`RBControl.properties`](examples/RBControl.properties)` \x96 全局"
+- en: "`[`RBControl_zh.properties`](examples/RBControl_zh.properties)` \x96 Language\
+    \ only: Simplified Chinese"
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`[`RBControl_zh.properties`](examples/RBControl_zh.properties)` \x96 仅语言：简体中文"
+- en: "`[`RBControl_zh_cn.properties`](examples/RBControl_zh_CN.properties)` \x96\
+    \ Region only: China"
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`[`RBControl_zh_cn.properties`](examples/RBControl_zh_CN.properties)` \x96\
+    \ 仅区域：中国"
+- en: "`[`RBControl_zh_hk.properties`](examples/RBControl_zh_HK.properties)` \x96\
+    \ Region only: Hong Kong"
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`[`RBControl_zh_hk.properties`](examples/RBControl_zh_HK.properties)` \x96\
+    \ 仅区域：香港"
+- en: "`[`RBControl_zh_tw.properties`](examples/RBControl_zh_TW.properties)` \x96\
+    \ Taiwan"
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`[`RBControl_zh_tw.properties`](examples/RBControl_zh_TW.properties)` \x96\
+    \ 台湾"
+- en: In this example an application creates a new locale for the Hong Kong region.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此示例中，应用程序为香港地区创建了一个新的区域设置。
+- en: 2\. Create a `ResourceBundle` instance.
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 2\. 创建一个`ResourceBundle`实例。
+- en: 'As in the example in the previous section, this application creates a `ResourceBundle`
+    instance by invoking the `getBundle` method:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与上一节中的示例一样，此应用程序通过调用`getBundle`方法创建了一个`ResourceBundle`实例：
+- en: '[PRE1]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `getBundle` method searches for `properties` files with the RBControl prefix.
+    However, this method contains a `Control` parameter, which drives the process
+    of searching the Chinese locales.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getBundle`方法搜索具有RBControl前缀的`properties`文件。然而，此方法包含一个`Control`参数，用于驱动搜索中文区域的过程。'
+- en: 3\. Invoke the `getCandidateLocales` method
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 3\. 调用`getCandidateLocales`方法
+- en: The `getCandidateLocales` method returns a list of the `Locales` objects as
+    candidate locales for the base name and locale.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getCandidateLocales`方法返回一个候选区域的`Locales`对象列表，用于基本名称和区域设置。'
+- en: '[PRE2]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The default implementation returns a list of the `Locale` objects as follows:
+    Locale(language, country).'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认实现返回以下`Locale`对象的列表：Locale(语言, 国家)。
+- en: 'However, this method is overridden to implement the following specific behavior:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，此方法被覆盖以实现以下特定行为：
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Note, that the last element of the sequence of candidate locales must be a root
+    locale.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，候选区域序列的最后一个元素必须是根区域。
+- en: 4\. Call the `test` class
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 4\. 调用`test`类
+- en: 'Call the `test` class for the following four different locales:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为以下四种不同的区域设置调用`test`类：
+- en: '[PRE4]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 5\. Run the Sample Program
+  id: totrans-30
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 5\. 运行示例程序
+- en: 'You will see the program output as follows:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你将看到程序的输出如下：
+- en: '[PRE5]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Note that the newly created was assigned the Hong Kong region, because it was
+    specified in an appropriate `properties` file. Traditional Chinese was assigned
+    as the language for the Taiwan locale.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，新创建的区域被分配为香港地区，因为在适当的`properties`文件中指定了。繁体中文被分配为台湾区域的语言。
+- en: Two other interesting methods of the `ResourceBundle.Control` class were not
+    used in the `RBControl` example, but they deserved to be mentioned. The `getTimeToLive`
+    method is used to determine how long the resource bundle can exist in the cache.
+    If the time limit for a resource bundle in the cache has expired, the `needsReload`
+    method is invoked to determine whether the resource bundle needs to be reloaded.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ResourceBundle.Control`类的另外两个有趣的方法没有在`RBControl`示例中使用，但值得一提。`getTimeToLive`方法用于确定资源包在缓存中可以存在多长时间。如果缓存中资源包的时间限制已过期，则调用`needsReload`方法来确定是否需要重新加载资源包。'

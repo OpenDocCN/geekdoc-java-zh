@@ -1,0 +1,72 @@
+- en: 'Lesson: Writing JavaBeans Components'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 'Lesson: 编写 JavaBeans 组件'
+- en: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/writing/index.html](https://docs.oracle.com/javase/tutorial/javabeans/writing/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/writing/index.html](https://docs.oracle.com/javase/tutorial/javabeans/writing/index.html)
+- en: Writing JavaBeans components is surprisingly easy. You don't need a special
+    tool and you don't have to implement any interfaces. Writing beans is simply a
+    matter of following certain coding conventions. All you have to do is make your
+    class *look* like a bean — tools that *use* beans will be able to recognize and
+    use your bean.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编写 JavaBeans 组件非常容易。你不需要特殊的工具，也不必实现任何接口。编写 bean 只是遵循某些编码约定的问题。你所需要做的就是让你的类*看起来*像一个
+    bean —— 使用 bean 的工具将能够识别和使用你的 bean。
+- en: However, NetBeans provides some features that make it easier to write beans.
+    In addition, the Java SE API includes some support classes to help implement common
+    tasks.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，NetBeans 提供了一些功能，使编写 bean 更容易。此外，Java SE API 包括一些支持类来帮助实现常见任务。
+- en: The code examples in this lesson are based on a simple graphic component called
+    `FaceBean`.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程中的代码示例基于一个简单的图形组件称为`FaceBean`。
+- en: 'FaceBean source code only:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: FaceBean 源代码仅包括：
+- en: '[`FaceBean.java`](examples/FaceBean/src/facebean/FaceBean.java)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`FaceBean.java`](examples/FaceBean/src/facebean/FaceBean.java)'
+- en: 'Entire NetBeans project including FaceBean source code:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 包括 FaceBean 源代码的整个 NetBeans 项目：
+- en: '[`FaceBean.zip`](examples/zipfiles/FaceBean.zip)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`FaceBean.zip`](examples/zipfiles/FaceBean.zip)'
+- en: A bean is a Java class with method names that follow the JavaBeans guidelines.
+    A bean builder tool uses *introspection* to examine the bean class. Based on this
+    inspection, the bean builder tool can figure out the bean's properties, methods,
+    and events.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个 bean 是一个遵循 JavaBeans 指南的方法名的 Java 类。一个 bean 构建工具使用*内省*来检查 bean 类。基于这种检查，bean
+    构建工具可以找出 bean 的属性、方法和事件。
+- en: The following sections describe the JavaBeans guidelines for [properties](properties.html),
+    [methods](methods.html), and [events](events.html). Finally, a section on [`BeanInfo`](beaninfo.html)
+    shows how you can customize the developer's experience with your bean.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下各节描述了 JavaBeans 指南中关于[属性](properties.html)、[方法](methods.html)和[事件](events.html)的内容。最后，一个关于[`BeanInfo`](beaninfo.html)的部分展示了如何定制开发者与你的
+    bean 的体验。

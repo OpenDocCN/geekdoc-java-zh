@@ -1,0 +1,128 @@
+- en: Double Buffering and Page Flipping
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 双缓冲和页面翻转
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/fullscreen/doublebuf.html](https://docs.oracle.com/javase/tutorial/extra/fullscreen/doublebuf.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/extra/fullscreen/doublebuf.html](https://docs.oracle.com/javase/tutorial/extra/fullscreen/doublebuf.html)
+- en: Suppose you had to draw an entire picture on the screen, pixel by pixel or line
+    by line. If you were to draw such a thing directly to the screen (using, say,
+    `Graphics.drawLine`), you would probably notice with much disappointment that
+    it takes a bit of time. You will probably even notice visible artifacts of how
+    your picture is drawn. Rather than watching things being drawn in this fashion
+    and at this pace, most programmers use a technique called *double-buffering*.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您必须逐像素或逐行在屏幕上绘制整个图片。如果您直接将这样的东西绘制到屏幕上（使用`Graphics.drawLine`），您可能会发现需要一些时间。您甚至可能会注意到您的图片是如何绘制的可见痕迹。与观看以这种方式和速度绘制事物不同，大多数程序员使用一种称为*双缓冲*的技术。
+- en: 'The traditional notion of double-buffering in Java applications is fairly straightforward:
+    create an off-screen image, draw to that image using the image''s graphics object,
+    then, in one step, call `drawImage` using the target window''s graphics object
+    and the off-screen image. You may have already noticed that Swing uses this technique
+    in many of its components, usually enabled by default, using the `setDoubleBuffered`
+    method.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java应用程序中，双缓冲的传统概念相当简单：创建一个屏幕外图像，使用图像的图形对象绘制到该图像，然后，在一步中，使用目标窗口的图形对象和屏幕外图像调用`drawImage`。您可能已经注意到，Swing在其许多组件中使用了这种技术，通常默认启用，使用`setDoubleBuffered`方法。
+- en: The screen surface is commonly referred to as the *primary surface*, and the
+    off-screen image used for double-buffering is commonly referred to as the *back
+    buffer*. The act of copying the contents from one surface to another is frequently
+    referred to as a block line transfer, or *blitting* (blt is typically pronounced
+    "blit" and shouldn't be confused with a BLT sandwich).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 屏幕表面通常被称为*主表面*，用于双缓冲的屏幕外图像通常被称为*后备缓冲区*。将内容从一个表面复制到另一个表面的行为通常被称为块线传输，或*blitting*（blt通常发音为"blit"，不应与BLT三明治混淆）。
+- en: '![Double Buffering](../Images/ddeccaf14af9089a806dc732df92ae26.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![双缓冲](../Images/ddeccaf14af9089a806dc732df92ae26.png)'
+- en: The primary surface is usually manipulated through the graphics object of any
+    showing component; when in full-screen mode, any operation using the graphics
+    of the full-screen window is a direct manipulation of screen memory. For this
+    reason, you can take advantage of other capabilities in full-screen exclusive
+    mode that may otherwise be unavailable due to the overhead of the windowing system.
+    One such technique that is only available in full-screen exclusive mode is a form
+    of double-buffering called *page-flipping*.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 主表面通常通过任何显示组件的图形对象进行操作；在全屏模式下，使用全屏窗口的图形进行任何操作是对屏幕内存的直接操作。因此，您可以利用全屏独占模式中可能由于窗口系统的开销而无法使用的其他功能。在全屏独占模式中仅可用的一种技术是一种称为*页面翻转*的双缓冲形式。
+- en: Page Flipping
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 页面翻转
+- en: Many graphics cards have the notion of a *video pointer*, which is simply an
+    address in video memory. This pointer tells the graphics card where to look for
+    the contents of the video to be displayed during the next refresh cycle. In some
+    graphics cards and on some operating systems, this pointer can even be manipulated
+    programmatically. Suppose you created a back buffer (in video memory) of the exact
+    width, height, and bit depth of the screen, then drew to that buffer the same
+    way as you would using double-buffering. Now imagine what would happen if, instead
+    of blitting your image to the screen as in double-buffering, you simply changed
+    the video pointer to your back buffer. During the next refresh, the graphics card
+    would now use your image to display. This switch is called page-flipping, and
+    the performance gain over blt-based double-buffering is that only a single pointer
+    needs to be moved in memory as opposed to copying the entire contents from one
+    buffer to another.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多显卡都有*视频指针*的概念，它只是视频内存中的一个地址。这个指针告诉显卡在下一个刷新周期期间要显示的视频内容在哪里。在一些显卡和一些操作系统中，这个指针甚至可以通过编程方式进行操作。假设你在视频内存中创建了一个与屏幕精确宽度、高度和位深度相同的后备缓冲区，然后像使用双缓冲区一样向该缓冲区绘制。现在想象一下，如果不像双缓冲区那样将图像传输到屏幕上，而是简单地将视频指针更改为你的后备缓冲区，那会发生什么。在下一次刷新期间，显卡现在将使用你的图像来显示。这种切换称为翻页，与基于blt的双缓冲区相比，性能提升在于只需要在内存中移动一个指针，而不是将整个内容从一个缓冲区复制到另一个缓冲区。
+- en: When a page flip occurs, the pointer to the old back buffer now points to the
+    primary surface and the pointer to the old primary surface now points to the back
+    buffer memory. This sets you up automatically for the next draw operation.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当发生页面翻转时，旧后备缓冲区的指针现在指向主表面，旧主表面的指针现在指向后备缓冲区内存。这会自动为下一个绘制操作做好准备。
+- en: '![Page Flipping](../Images/1f58918f340f41c66f3ded5c44f80e05.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_IMG
+  zh: '![翻页](../Images/1f58918f340f41c66f3ded5c44f80e05.png)'
+- en: Sometimes it is advantageous to set up multiple back buffers in a *flip chain*.
+    This is particularly useful when the amount of time spent drawing is greater than
+    the monitor's refresh rate. A flip chain is simply two or more back buffers (sometimes
+    called *intermediary buffers*) plus the primary surface (this is sometimes called
+    triple-buffering, quadruple-buffering, etc.). In a flip chain, the next available
+    back buffer becomes the primary surface, etc., all the way down to the rearmost
+    back buffer that is used for drawing.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时在*翻页链*中设置多个后备缓冲区是有利的。当绘制所花费的时间大于显示器的刷新率时，这是特别有用的。翻页链简单地是两个或更多后备缓冲区（有时称为*中间缓冲区*）加上主表面（有时称为三重缓冲、四重缓冲等）。在翻页链中，下一个可用的后备缓冲区变为主表面，依此类推，一直到用于绘制的最后一个后备缓冲区。
+- en: Benefits of Double-Buffering and Page-Flipping
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 双缓冲和翻页的好处
+- en: If your performance metric is simply the speed at which double-buffering or
+    page-flipping occurs versus direct rendering, you may be disappointed. You may
+    find that your numbers for direct rendering far exceed those for double-buffering
+    and that those numbers far exceed those for page-flipping. Each of these techniques
+    is for used for improving *perceived performance*, which is much more important
+    in graphical applications than *numerical performance*.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你的性能指标只是双缓冲或翻页发生的速度与直接渲染相比，你可能会感到失望。你可能会发现，直接渲染的数字远远超过双缓冲的数字，而双缓冲的数字远远超过翻页的数字。这些技术都是用于改善*感知性能*，在图形应用程序中比*数值性能*更重要。
+- en: Double-buffering is used primarily to eliminate visible draws which can make
+    an application look amateurish, sluggish, or appear to flicker. Page-flipping
+    is used primarily to also eliminate *tearing*, a splitting effect that occurs
+    when drawing to the screen happens faster than the monitor's refresh rate. Smoother
+    drawing means better perceived performance and a much better user experience.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 双缓冲主要用于消除可见的绘制，这可以使应用程序看起来业余、迟缓或闪烁。翻页主要用于消除*撕裂*，这是一种在绘制到屏幕上比显示器的刷新率更快时发生的分裂效果。更平滑的绘制意味着更好的感知性能和更好的用户体验。

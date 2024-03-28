@@ -1,0 +1,68 @@
+- en: Moving a File or Directory
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 移动文件或目录
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/move.html](https://docs.oracle.com/javase/tutorial/essential/io/move.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/move.html](https://docs.oracle.com/javase/tutorial/essential/io/move.html)
+- en: You can move a file or directory by using the [`move(Path, Path, CopyOption...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#move-java.nio.file.Path-java.nio.file.Path-java.nio.file.CopyOption...-)
+    method. The move fails if the target file exists, unless the `REPLACE_EXISTING`
+    option is specified.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用[`move(Path, Path, CopyOption...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#move-java.nio.file.Path-java.nio.file.Path-java.nio.file.CopyOption...-)方法移动文件或目录。如果目标文件存在，则移动失败，除非指定了`REPLACE_EXISTING`选项。
+- en: Empty directories can be moved. If the directory is not empty, the move is allowed
+    when the directory can be moved without moving the contents of that directory.
+    On UNIX systems, moving a directory within the same partition generally consists
+    of renaming the directory. In that situation, this method works even when the
+    directory contains files.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 空目录可以被移动。如果目录不为空，只有当可以移动目录而不移动该目录的内容时才允许移动。在 UNIX 系统上，将目录移动到同一分区通常是重命名目录。在这种情况下，即使目录包含文件，此方法也有效。
+- en: 'This method takes a varargs argument – the following `StandardCopyOption` enums
+    are supported:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此方法接受可变参数 – 支持以下`StandardCopyOption`枚举：
+- en: '`REPLACE_EXISTING` – Performs the move even when the target file already exists.
+    If the target is a symbolic link, the symbolic link is replaced but what it points
+    to is not affected.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`REPLACE_EXISTING` – 即使目标文件已经存在，也执行移动操作。如果目标是一个符号链接，符号链接会被替换，但它指向的内容不受影响。'
+- en: '`ATOMIC_MOVE` – Performs the move as an atomic file operation. If the file
+    system does not support an atomic move, an exception is thrown. With an `ATOMIC_MOVE`
+    you can move a file into a directory and be guaranteed that any process watching
+    the directory accesses a complete file.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ATOMIC_MOVE` – 将移动操作作为原子文件操作执行。如果文件系统不支持原子移动，则会抛出异常。使用`ATOMIC_MOVE`，您可以将文件移动到目录中，并确保任何监视目录的进程访问完整文件。'
+- en: 'The following shows how to use the `move` method:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下展示了如何使用`move`方法：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Though you can implement the `move` method on a single directory as shown, the
+    method is most often used with the file tree recursion mechanism. For more information,
+    see [Walking the File Tree](walk.html).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管可以像所示在单个目录上实现`move`方法，但该方法通常与文件树递归机制一起使用。有关更多信息，请参见[遍历文件树](walk.html)。

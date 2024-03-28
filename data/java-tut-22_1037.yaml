@@ -1,0 +1,37 @@
+- en: Enabling the SDP Protocol
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 启用SDP协议
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/enable.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/enable.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/enable.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/enable.html)
+- en: 'SDP support is disabled by default. To enable SDP support, set the `com.sun.sdp.conf`
+    system property by providing the location of the configuration file. The following
+    example starts an application using a configuration file named `sdp.conf`:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SDP支持默认情况下是禁用的。要启用SDP支持，请设置`com.sun.sdp.conf`系统属性，提供配置文件的位置。以下示例启动一个使用名为`sdp.conf`的配置文件的应用程序：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '*ExampleApplication* refers to the client application that is attempting to
+    connect to the IB adaptor.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*ExampleApplication*指的是试图连接到IB适配器的客户端应用程序。'
+- en: Note that this example specifies another system property, `java.net.preferIPv4Stack`.
+    See the [Issues](issues.html) section for more information about why this property
+    is used.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，此示例指定另一个系统属性`java.net.preferIPv4Stack`。有关为什么使用此属性的更多信息，请参见[Issues](issues.html)部分。

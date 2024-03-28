@@ -1,0 +1,76 @@
+- en: Compile and Run the Program
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 编译并运行程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/vstep5.html](https://docs.oracle.com/javase/tutorial/security/apisign/vstep5.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/vstep5.html](https://docs.oracle.com/javase/tutorial/security/apisign/vstep5.html)
+- en: '[`Here`](examples/VerSig.java) is the complete source code for the `VerSig.java`
+    program, with some comments added.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`这里`](examples/VerSig.java)是`VerSig.java`程序的完整源代码，附加了一些注释。'
+- en: 'Compile and run the program. Remember, you need to specify three arguments
+    on the command line:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编译并运行程序。请记住，您需要在命令行上指定三个参数：
+- en: The name of the file containing the encoded public key bytes
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 包含编码的公钥字节的文件的名称
+- en: The name of the file containing the signature bytes
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 包含签名字节的文件的名称
+- en: The name of the data file (the one for which the signature was generated)
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 数据文件的名称（生成签名的文件）
+- en: Since you will be testing the output of the `GenSig` program, the file names
+    you should use are
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于您将测试`GenSig`程序的输出，您应该使用的文件名是
+- en: '`suepk`'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`suepk`'
+- en: '`sig`'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`sig`'
+- en: '`data`'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`data`'
+- en: Here's a sample run; the bold indicates what you type.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个示例运行；**粗体**表示您需要键入的内容。
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'

@@ -1,0 +1,151 @@
+- en: Full-Screen Exclusive Mode
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 全屏独占模式
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/fullscreen/exclusivemode.html](https://docs.oracle.com/javase/tutorial/extra/fullscreen/exclusivemode.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/extra/fullscreen/exclusivemode.html](https://docs.oracle.com/javase/tutorial/extra/fullscreen/exclusivemode.html)
+- en: Programmers who use Microsoft's DirectX API may already be familiar with full-screen
+    exclusive mode. Other programmers may be somewhat new to the concept. In either
+    case, full-screen exclusive mode is a powerful feature of J2SE™ version 1.4 that
+    allows the programmer to suspend the windowing system so that drawing can be done
+    directly to the screen.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用微软的DirectX API的程序员可能已经熟悉全屏独占模式。其他程序员可能对这个概念有些陌生。无论哪种情况，全屏独占模式是J2SE™ 1.4版本的一个强大功能，允许程序员暂停窗口系统，以便直接向屏幕绘制。
+- en: This is a slight paradigm shift from the usual kind of GUI program in many ways.
+    In traditional Java GUI programs, the AWT is responsible for propagating *paint
+    events* from the operating system, through the *event dispatch thread*, and by
+    calling AWT's `Component.paint` method when appropriate. In full-screen exclusive
+    applications, painting is usually done actively by the program itself. Additionally,
+    a traditional GUI application is limited to the bit depth and size of the screen
+    chosen by the user. In a full-screen exclusive application, the program can control
+    the bit depth and size (*display mode*) of the screen. Finally, many more advanced
+    techniques, such as *page flipping* (discussed below) and stereo buffering (utilizing
+    systems which use a separate set of frames for each eye) require, on some platforms,
+    that an application first be in full-screen exclusive mode.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是与许多传统GUI程序有些微的范式转变。在传统的Java GUI程序中，AWT负责从操作系统通过*事件分发线程*传播*绘制事件*，并在适当时调用AWT的`Component.paint`方法。在全屏独占应用程序中，绘制通常由程序自身主动完成。此外，传统的GUI应用程序受限于用户选择的屏幕位深和大小。在全屏独占应用程序中，程序可以控制屏幕的位深和大小（*显示模式*）。最后，许多更高级的技术，如*翻页*（下文讨论）和立体缓冲（利用为每只眼睛使用单独一组帧的系统）在某些平台上要求应用程序首先处于全屏独占模式。
+- en: Hardware-Accelerated Image Basics
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 硬件加速图像基础知识
+- en: To understand the full-screen exclusive mode API, you need to understand some
+    basic principles of hardware-accelerated images. The `VolatileImage` interface
+    encapsulates a surface which may or may not take advantage of hardware acceleration.
+    Such surfaces may lose their hardware acceleration or their memory at the behest
+    of the operating system (hence, the name 'volatile'). See the `VolatileImage`
+    *Tutorial* (coming soon) for more information on volatile images.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要理解全屏独占模式API，您需要了解一些关于硬件加速图像的基本原理。`VolatileImage`接口封装了一个表面，该表面可能会或可能不会利用硬件加速。这些表面可能会因操作系统的要求而失去其硬件加速或内存（因此称为“易失性”）。有关易失性图像的更多信息，请参阅`VolatileImage`
+    *教程*（即将推出）。
+- en: Full-screen exclusive mode is handled through a `java.awt.GraphicsDevice` object.
+    For a list of all available screen graphics devices (in single or multi-monitor
+    systems), you can call the method `getScreenDevices` on the local `java.awt.GraphicsEnvironment`;
+    for the default (primary) screen (the only screen on a single-monitor system),
+    you can call the method `getDefaultScreenDevice`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 全屏独占模式通过`java.awt.GraphicsDevice`对象处理。要获取所有可用屏幕图形设备的列表（在单个或多监视器系统中），可以在本地`java.awt.GraphicsEnvironment`上调用`getScreenDevices`方法；对于默认（主要）屏幕（在单监视器系统中唯一的屏幕），可以调用`getDefaultScreenDevice`方法。
+- en: 'Once you have the graphics device, you can call one of the following methods:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦获得了图形设备，可以调用以下方法之一：
+- en: '`public boolean isFullScreenSupported()`'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public boolean isFullScreenSupported()`'
+- en: This method returns whether or not full-screen exclusive mode is available.
+    On systems where full-screen exclusive mode is not available, it is probably better
+    to run an application in windowed mode with a fixed size rather than setting a
+    full-screen window.
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此方法返回全屏独占模式是否可用。在不支持全屏独占模式的系统上，最好在固定大小的窗口模式下运行应用程序，而不是设置全屏窗口。
+- en: '`public void setFullScreenWindow(Window w)`'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public void setFullScreenWindow(Window w)`'
+- en: Given a window, this method enters full-screen exclusive mode using that window.
+    If full-screen exclusive mode is not available, the window is positioned at (0,0)
+    and resized to fit the screen. Use this method with a `null` parameter to exit
+    full-screen exclusive mode.
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 给定一个窗口，该方法使用该窗口进入全屏独占模式。如果全屏独占模式不可用，则窗口将定位在(0,0)并调整大小以适应屏幕。使用带有`null`参数的方法退出全屏独占模式。
+- en: Programming Tips
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编程提示
+- en: 'Here are some tips about programming using full-screen exclusive mode:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是关于使用全屏独占模式进行编程的一些建议：
+- en: Check for `isFullScreenSupported` before entering full-screen exclusive mode.
+    If it isn't supported, performance may be degraded.
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在进入全屏独占模式之前检查`isFullScreenSupported`。如果不支持，性能可能会降低。
+- en: 'Entering and exiting full-screen mode is more robust when using a `try...finally`
+    clause. This is not only good coding practice, but it also prevents your program
+    from staying in full-screen exclusive mode longer than it should:'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 进入和退出全屏模式时，使用`try...finally`子句更加健壮。这不仅是良好的编码实践，还可以防止程序停留在全屏独占模式中的时间超过应有的时间：
+- en: '[PRE0]'
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Most full-screen exclusive applications are better suited to use undecorated
+    windows. Turn off decorations in a frame or dialog using the `setUndecorated`
+    method.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 大多数全屏独占应用程序更适合使用无装饰窗口。使用`setUndecorated`方法在框架或对话框中关闭装饰。
+- en: Full-screen exclusive applications should not be resizeable, since resizing
+    a full-screen application can cause unpredictable (or possibly dangerous) behavior.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 全屏独占应用程序不应该是可调整大小的，因为调整全屏应用程序的大小可能会导致不可预测的（或可能危险的）行为。
+- en: For security reasons, the user must grant `fullScreenExclusive` permission when
+    using full-screen exclusive mode in an applet.
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 出于安全原因，在应用程序中使用全屏独占模式时，用户必须授予`fullScreenExclusive`权限。

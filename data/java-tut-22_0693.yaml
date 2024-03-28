@@ -1,0 +1,396 @@
+- en: Providing MIDI Services
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 提供 MIDI 服务
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sound/SPI-providing-MIDI.html](https://docs.oracle.com/javase/tutorial/sound/SPI-providing-MIDI.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sound/SPI-providing-MIDI.html](https://docs.oracle.com/javase/tutorial/sound/SPI-providing-MIDI.html)
+- en: '[Introduction to the Service Provider Interfaces](SPI-intro.html) explained
+    that the `javax.sound.sampled.spi` and `javax.sound.midi.spi` packages define
+    abstract classes to be used by developers of sound services. By implementing a
+    subclass of one of these abstract classes, a service provider can create a new
+    service that extends the functionality of the runtime system. The previous section
+    covered the use of the `javax.sound.sampled.spi` package. This section discusses
+    how to use the `javax.sound.midi.spi` package to provide new services for handling
+    MIDI devices and files.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[服务提供者接口简介](SPI-intro.html) 解释了`javax.sound.sampled.spi`和`javax.sound.midi.spi`包定义了供声音服务开发人员使用的抽象类。通过实现这些抽象类的子类，服务提供者可以创建一个扩展运行时系统功能的新服务。前一节介绍了如何使用`javax.sound.sampled.spi`包。本节讨论如何使用`javax.sound.midi.spi`包为处理
+    MIDI 设备和文件提供新服务。'
+- en: 'There are four abstract classes in the `javax.sound.midi.spi` package, which
+    represent four different types of services that you can provide for the MIDI system:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`javax.sound.midi.spi` 包中有四个抽象类，代表着你可以为 MIDI 系统提供的四种不同类型的服务：'
+- en: '[`MidiFileWriter`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/MidiFileWriter.html)
+    provides MIDI file-writing services. These services make it possible for an application
+    program to save, to a MIDI file, a MIDI `Sequence` that it has generated or processed.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`MidiFileWriter`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/MidiFileWriter.html)
+    提供了 MIDI 文件写入服务。这些服务使应用程序能够将其生成或处理的 MIDI `Sequence` 保存到 MIDI 文件中。'
+- en: '[`MidiFileReader`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/MidiFileReader.html)
+    provides file-reading services that return a MIDI `Sequence` from a MIDI file
+    for use in an application program.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`MidiFileReader`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/MidiFileReader.html)
+    提供了从 MIDI 文件中返回 MIDI `Sequence` 供应用程序使用的文件读取服务。'
+- en: '[`MidiDeviceProvider`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/MidiDeviceProvider.html)
+    supplies instances of one or more specific types of MIDI device, possibly including
+    hardware devices.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`MidiDeviceProvider`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/MidiDeviceProvider.html)
+    提供了一个或多个特定类型的 MIDI 设备实例，可能包括硬件设备。'
+- en: '[`SoundbankReader`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/SoundbankReader.html)
+    supplies soundbank file-reading services. Concrete subclasses of `SoundbankReader`
+    parse a given soundbank file, producing a `Soundbank` object that can be loaded
+    into a `Synthesizer`.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`SoundbankReader`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/SoundbankReader.html)
+    提供了声音库文件读取服务。`SoundbankReader`的具体子类解析给定的声音库文件，生成一个可以加载到`Synthesizer`中的`Soundbank`对象。'
+- en: An application program will not directly create an instance of a service object—whether
+    a provider object, such as a `MidiDeviceProvider`, or an object, such as a `Synthesizer`,
+    that is supplied by the provider object. Nor will the program directly refer to
+    the SPI classes. Instead, the application program makes requests to the `MidiSystem`
+    object in the `javax.sound.midi` package, and `MidiSystem` in turn uses concrete
+    subclasses of the `javax.sound.midi.spi` classes to process these requests.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序不会直接创建服务对象的实例，无论是提供者对象，比如`MidiDeviceProvider`，还是由提供者对象提供的对象，比如`Synthesizer`。程序也不会直接引用
+    SPI 类。相反，应用程序会向`javax.sound.midi`包中的`MidiSystem`对象发出请求，而`MidiSystem`又会使用`javax.sound.midi.spi`类的具体子类来处理这些请求。
+- en: Providing MIDI File-Writing Services
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 提供 MIDI 文件写入服务
+- en: 'There are three standard MIDI file formats, all of which an implementation
+    of the Java Sound API can support: Type 0, Type 1, and Type 2\. These file formats
+    differ in their internal representation of the MIDI sequence data in the file,
+    and are appropriate for different kinds of sequences. If an implementation doesn''t
+    itself support all three types, a service provider can supply the support for
+    the unimplemented ones. There are also variants of the standard MIDI file formats,
+    some of them proprietary, which similarly could be supported by a third-party
+    vendor.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有三种标准的MIDI文件格式，Java Sound API的实现都可以支持：Type 0、Type 1和Type 2。这些文件格式在文件中的MIDI序列数据的内部表示上有所不同，并且适用于不同类型的序列。如果一个实现本身不支持所有三种类型，服务提供者可以为未实现的类型提供支持。还有标准MIDI文件格式的变体，其中一些是专有的，同样可以由第三方供应商支持。
+- en: 'The ability to write MIDI files is provided by concrete subclasses of `MidiFileWriter`.
+    This abstract class is directly analogous to `javax.sampled.spi.AudioFileWriter`.
+    Again, the methods are grouped into query methods for learning what types of files
+    can be written, and methods for actually writing a file. As with `AudioFileWriter`,
+    two of the query methods are concrete:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 写入MIDI文件的能力由`MidiFileWriter`的具体子类提供。这个抽象类直接类比于`javax.sampled.spi.AudioFileWriter`。同样，方法被分组为查询方法，用于了解可以写入哪些类型的文件，以及用于实际写入文件的方法。与`AudioFileWriter`一样，其中两个查询方法是具体的：
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The first of these provides general information about whether the file writer
+    can ever write the specified type of MIDI file type. The second method is more
+    specific: it asks whether a particular Sequence can be written to the specified
+    type of MIDI file. Generally, you don''t need to override either of these two
+    concrete methods. In the default implementation, each invokes one of two other
+    corresponding query methods and iterates over the results returned. Being abstract,
+    these other two query methods need to be implemented in the subclass:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中第一个提供关于文件写入器是否可以写入指定类型的MIDI文件类型的一般信息。第二个方法更具体：它询问特定Sequence是否可以写入指定类型的MIDI文件。通常情况下，您不需要覆盖这两个具体方法中的任何一个。在默认实现中，每个方法调用另外两个相应的查询方法之一，并遍历返回的结果。作为抽象方法，这另外两个查询方法需要在子类中实现：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The first of these returns an array of all the file types that are supported
+    in general. A typical implementation might initialize the array in the file writer's
+    constructor and return the array from this method. From that set of file types,
+    the second method finds the subset to which the file writer can write the given
+    Sequence. In accordance with the MIDI specification, not all types of sequences
+    can be written to all types of MIDI files.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中第一个返回一个数组，其中包含一般支持的所有文件类型。一个典型的实现可能会在文件写入器的构造函数中初始化数组，并从这个方法返回数组。从文件类型集中，第二个方法找到文件写入器可以写入给定Sequence的子集。根据MIDI规范，不是所有类型的序列都可以写入所有类型的MIDI文件。
+- en: 'The `write` methods of a `MidiFileWriter` subclass perform the encoding of
+    the data in a given `Sequence` into the correct data format for the requested
+    type of MIDI file, writing the coded stream to either a file or an output stream:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MidiFileWriter`子类的`write`方法执行将给定`Sequence`中的数据编码为请求的MIDI文件类型的正确数据格式，将编码流写入文件或输出流的操作：'
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: To do this, the `write` method must parse the `Sequence` by iterating over its
+    tracks, construct an appropriate file header, and write the header and tracks
+    to the output. The MIDI file's header format is, of course, defined by the MIDI
+    specification. It includes such information as a "magic number" identifying this
+    as a MIDI file, the header's length, the number of tracks, and the sequence's
+    timing information (division type and resolution). The rest of the MIDI file consists
+    of the track data, in the format defined by the MIDI specification.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了实现这一点，`write`方法必须通过迭代`Sequence`的轨道来解析`Sequence`，构建适当的文件头，并将头部和轨道写入输出。当然，MIDI文件的头部格式由MIDI规范定义。它包括诸如标识这是MIDI文件的“魔数”，头部长度，轨道数以及序列的定时信息（分频类型和分辨率）等信息。MIDI文件的其余部分由轨道数据组成，格式由MIDI规范定义。
+- en: Let's briefly look at how the application program, MIDI system, and service
+    provider cooperate in writing a MIDI file. In a typical situation, an application
+    program has a particular MIDI `Sequence` to save to a file. The program queries
+    the `MidiSystem` object to see what MIDI file formats, if any, are supported for
+    the particular `Sequence` at hand, before attempting to write the file. The `MidiSystem.getMidiFileTypes(Sequence)`
+    method returns an array of all the MIDI file types to which the system can write
+    a particular sequence. It does this by invoking the corresponding `getMidiFileTypes`
+    method for each of the installed `MidiFileWriter` services, and collecting and
+    returning the results in an array of integers that can be thought of as a master
+    list of all file types compatible with the given `Sequence`. When it comes to
+    writing the `Sequence` to a file, the call to `MidiSystem.write` is passed an
+    integer representing a file type, along with the `Sequence` to be written and
+    the output file; `MidiSystem` uses the supplied type to decide which installed
+    `MidiFileWriter` should handle the write request, and dispatches a corresponding
+    `write` to the appropriate `MidiFileWriter`.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们简要地看一下应用程序、MIDI系统和服务提供者如何合作编写MIDI文件。在典型情况下，一个应用程序有一个特定的MIDI `Sequence`要保存到文件中。程序查询`MidiSystem`对象，看看对于手头的特定`Sequence`支持哪些MIDI文件格式（如果有的话），然后尝试写入文件。`MidiSystem.getMidiFileTypes(Sequence)`方法返回系统可以写入特定序列的所有MIDI文件类型的数组。它通过调用每个已安装的`MidiFileWriter`服务的相应`getMidiFileTypes`方法来实现这一点，并将结果收集并以整数数组的形式返回，这可以被视为与给定`Sequence`兼容的所有文件类型的主列表。在写入`Sequence`到文件时，调用`MidiSystem.write`传递一个表示文件类型的整数，以及要写入的`Sequence`和输出文件；`MidiSystem`使用提供的类型来决定哪个已安装的`MidiFileWriter`应处理写入请求，并将相应的写入分派给适当的`MidiFileWriter`。
+- en: Providing MIDI File-Reading Services
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 提供MIDI文件读取服务
+- en: 'The `MidiFileReader` abstract class is directly analogous to `javax.sampled.spi.AudioFileReader`
+    class. Both consist of two overloaded methods, each of which can take a `File`,
+    `URL`, or `InputStream` argument. The first of the overloaded methods returns
+    the file format of a specified file. In the case of `MidiFileReader`, the API
+    is:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MidiFileReader`抽象类直接类似于`javax.sampled.spi.AudioFileReader`类。两者都包括两个重载的方法，每个方法都可以接受`File`、`URL`或`InputStream`参数。重载方法中的第一个返回指定文件的文件格式。对于`MidiFileReader`，API为：'
+- en: '[PRE3]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Concrete subclasses must implement these methods to return a filled-out `MidiFileFormat`
+    object describing the format of the specified MIDI file (or stream or URL), assuming
+    that the file is of a type supported by the file reader and that it contains valid
+    header information. Otherwise, an `InvalidMidiDataException` should be thrown.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 具体的子类必须实现这些方法来返回一个填充的`MidiFileFormat`对象，描述指定MIDI文件（或流或URL）的格式，假设该文件是文件读取器支持的类型，并且包含有效的头信息。否则，应抛出`InvalidMidiDataException`。
+- en: 'The other overloaded method returns a MIDI `Sequence` from a given file, stream,
+    or URL :'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个重载的方法从给定的文件、流或URL返回一个MIDI `Sequence`：
+- en: '[PRE4]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The `getSequence` method performs the actual work of parsing the bytes in the
+    MIDI input file and constructing a corresponding `Sequence` object. This is essentially
+    the inverse of the process used by `MidiFileWriter.write`. Because there is a
+    one-to-one correspondence between the contents of a MIDI file as defined by the
+    MIDI specification and a `Sequence` object as defined by the Java Sound API, the
+    details of the parsing are straightforward. If the file passed to `getSequence`
+    contains data that the file reader can't parse (for example, because the file
+    has been corrupted or doesn't conform to the MIDI specification), an `InvalidMidiDataException`
+    should be thrown.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getSequence`方法执行解析MIDI输入文件中的字节并构造相应`Sequence`对象的实际工作。这基本上是`MidiFileWriter.write`使用的过程的反向。由于MIDI文件的内容（由MIDI规范定义）与Java
+    Sound API定义的`Sequence`对象之间存在一对一的对应关系，因此解析的细节是直接的。如果传递给`getSequence`的文件包含文件读取器无法解析的数据（例如，因为文件已损坏或不符合MIDI规范），则应抛出`InvalidMidiDataException`。'
+- en: Providing Particular MIDI Devices
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 提供特定的MIDI设备
+- en: A `MidiDeviceProvider` can be considered a factory that supplies one or more
+    particular types of MIDI device. The class consists of a method that returns an
+    instance of a MIDI device, as well as query methods to learn what kinds of devices
+    this provider can supply.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`MidiDeviceProvider`可以被视为提供一种或多种特定类型的MIDI设备的工厂。该类包括一个返回MIDI设备实例的方法，以及查询方法来了解该提供者可以提供哪些类型的设备。
+- en: As with the other `javax.sound.midi.spi` services, application developers get
+    indirect access to a `MidiDeviceProvider` service through a call to `MidiSystem`
+    methods, in this case `MidiSystem.getMidiDevice` and `MidiSystem.getMidiDeviceInfo`.
+    The purpose of subclassing `MidiDeviceProvider` is to supply a new kind of device,
+    so the service developer must also create an accompanying class for the device
+    being returned—just as we saw with `MixerProvider` in the `javax.sound.sampled.spi`
+    package. There, the returned device's class implemented the `javax.sound.sampled.Mixer`
+    interface; here it implements the `javax.sound.midi.MidiDevice` interface. It
+    might also implement a subinterface of `MidiDevice`, such as `Synthesizer` or
+    `Sequencer`.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与其他 `javax.sound.midi.spi` 服务一样，应用程序开发人员通过调用 `MidiSystem` 方法间接访问 `MidiDeviceProvider`
+    服务，本例中是 `MidiSystem.getMidiDevice` 和 `MidiSystem.getMidiDeviceInfo`。子类化 `MidiDeviceProvider`
+    的目的是提供一种新类型的设备，因此服务开发人员还必须为返回的设备创建一个相应的类，就像我们在 `javax.sound.sampled.spi` 包中看到的
+    `MixerProvider` 一样。在那里，返回的设备类实现了 `javax.sound.sampled.Mixer` 接口；这里实现了 `javax.sound.midi.MidiDevice`
+    接口。它还可以实现 `MidiDevice` 的子接口，如 `Synthesizer` 或 `Sequencer`。
+- en: 'Because a single subclass of `MidiDeviceProvider` can provide more than one
+    type of `MidiDevice`, the `getDeviceInfo` method of the class returns an array
+    of `MidiDevice.Info` objects enumerating the different `MidiDevices` available:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为 `MidiDeviceProvider` 的单个子类可以提供多种类型的 `MidiDevice`，所以该类的 `getDeviceInfo` 方法返回一个枚举不同可用
+    `MidiDevices` 的 `MidiDevice.Info` 对象数组：
+- en: '[PRE5]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The returned array can contain a single element, of course. A typical implementation
+    of the provider might initialize an array in its constructor and return it here.
+    This allows `MidiSystem` to iterate over all installed `MidiDeviceProviders` to
+    construct a list of all installed devices. `MidiSystem` can then return this list
+    (`MidiDevice.Info[]` array) to an application program.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回的数组当然可以只包含一个元素。提供者的典型实现可能会在其构造函数中初始化一个数组，并在此处返回它。这使得 `MidiSystem` 可以遍历所有已安装的
+    `MidiDeviceProviders` 来构建所有已安装设备的列表。然后，`MidiSystem` 可以将这个列表（`MidiDevice.Info[]`
+    数组）返回给应用程序。
+- en: '`MidiDeviceProvider` also includes a concrete query method:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MidiDeviceProvider` 还包括一个具体的查询方法：'
+- en: '[PRE6]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: This method permits the system to query the provider about a specific kind of
+    device. Generally, you don't need to override this convenience method. The default
+    implementation iterates over the array returned by getDeviceInfo and compares
+    the argument to each element.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个方法允许系统查询提供者关于特定类型设备的信息。通常情况下，你不需要重写这个便利方法。默认实现会遍历由 `getDeviceInfo` 返回的数组，并将参数与每个元素进行比较。
+- en: 'The third and final `MidiDeviceProvider` method returns the requested device:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第三个也是最后一个 `MidiDeviceProvider` 方法返回请求的设备：
+- en: '[PRE7]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: This method should first test the argument to make sure it describes a device
+    that this provider can supply. If it doesn't, it should throw an `IllegalArgumentException`.
+    Otherwise, it returns the device.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个方法应该首先测试参数，确保它描述的是该提供者可以提供的设备。如果不是，它应该抛出一个 `IllegalArgumentException`。否则，它会返回该设备。
+- en: Providing Soundbank File-Reading Services
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 提供声音库文件读取服务
+- en: A `SoundBank` is a set of `Instruments` that can be loaded into a `Synthesizer`.
+    An `Instrument` is an implementation of a sound-synthesis algorithm that produces
+    a particular sort of sound, and includes accompanying name and information strings.
+    A `SoundBank` roughly corresponds to a bank in the MIDI specification, but it's
+    a more extensive and addressable collection; it can perhaps better be thought
+    of as a collection of MIDI banks.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SoundBank` 是一组可以加载到 `Synthesizer` 中的 `Instruments`。`Instrument` 是一个实现声音合成算法的对象，产生特定类型的声音，并包含相关的名称和信息字符串。`SoundBank`
+    大致对应于 MIDI 规范中的一个银行，但它是一个更广泛和可寻址的集合；可以更好地将其视为 MIDI 银行的集合。'
+- en: '`SoundbankReader` consists of a single overloaded method, which the system
+    invokes to read a `Soundbank` object from a soundbank file:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SoundbankReader` 由一个重载的方法组成，系统调用该方法从声音库文件中读取一个 `Soundbank` 对象：'
+- en: '[PRE8]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Concrete subclasses of `SoundbankReader` will work in tandem with particular
+    provider-defined implementations of `SoundBank`, `Instrument`, and `Synthesizer`
+    to allow the system to load a `SoundBank` from a file into an instance of a particular
+    `Synthesizer` class. Synthesis techniques may differ wildly from one `Synthesizer`
+    to another, and, as a consequence, the data stored in an `Instrument` or `SoundBank`
+    providing control or specification data for the synthesis process of a `Synthesizer`
+    can take a variety of forms. One synthesis technique may require only a few bytes
+    of parameter data; another may be based on extensive sound samples. The resources
+    present in a `SoundBank` will depend upon the nature of the `Synthesizer` into
+    which they get loaded, and therefore the implementation of the `getSoundbank`
+    method of a `SoundbankReader` subclass has access to knowledge of a particular
+    kind of `SoundBank`. In addition, a particular subclass of `SoundbankReader` understands
+    a particular file format for storing the `SoundBank` data. That file format may
+    be vendor-specific and proprietary.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SoundbankReader` 的具体子类将与特定提供者定义的 `SoundBank`、`Instrument` 和 `Synthesizer`
+    实现配合工作，以允许系统从文件中加载 `SoundBank` 到特定 `Synthesizer` 类的实例中。合成技术可能在一个 `Synthesizer`
+    到另一个 `Synthesizer` 之间有很大差异，因此，存储在 `Instrument` 或 `SoundBank` 中为 `Synthesizer`
+    合成过程提供控制或规范数据的数据可以采用各种形式。一种合成技术可能只需要少量字节的参数数据；另一种可能基于广泛的声音样本。`SoundBank` 中存在的资源将取决于它们加载到的
+    `Synthesizer` 的性质，因此 `SoundbankReader` 子类的 `getSoundbank` 方法的实现可以访问特定类型 `SoundBank`
+    的知识。此外，`SoundbankReader` 的特定子类了解用于存储 `SoundBank` 数据的特定文件格式。该文件格式可能是供应商特定和专有的。'
+- en: '`SoundBank` is just an interface, with only weak constraints on the contents
+    of a `SoundBank` object. The methods an object must support to implement this
+    interface (`getResources`, `getInstruments`, `getVendor`, `getName`, etc.) impose
+    loose requirements on the data that the object contains. For example, `getResources`
+    and `getInstruments` can return empty arrays. The actual contents of a subclassed
+    `SoundBank` object, in particular its instruments and its non-instrument resources,
+    are defined by the service provider. Thus, the mechanism of parsing a soundbank
+    file depends entirely on the specification of that particular kind of soundbank
+    file.'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SoundBank` 只是一个接口，对 `SoundBank` 对象的内容只有弱约束。要实现这个接口，对象必须支持的方法（`getResources`、`getInstruments`、`getVendor`、`getName`
+    等）对对象包含的数据有宽松的要求。例如，`getResources` 和 `getInstruments` 可以返回空数组。子类化的 `SoundBank`
+    对象的实际内容，特别是它的乐器和非乐器资源，由服务提供者定义。因此，解析声音库文件的机制完全取决于该特定类型声音库文件的规范。'
+- en: Soundbank files are created outside the Java Sound API, typically by the vendor
+    of the synthesizer that can load that kind of soundbank. Some vendors might supply
+    end-user tools for creating such files.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 声音库文件是在 Java Sound API 之外创建的，通常由可以加载该类型声音库的合成器的供应商创建。一些供应商可能会提供用于创建此类文件的最终用户工具。

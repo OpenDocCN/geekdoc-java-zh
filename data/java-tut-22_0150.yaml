@@ -1,0 +1,69 @@
+- en: Catching and Handling Exceptions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 捕获和处理异常
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/handling.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/handling.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/handling.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/handling.html)
+- en: "This section describes how to use the three exception handler components \x97\
+    \ the `try`, `catch`, and `finally` blocks \x97 to write an exception handler.\
+    \ Then, the `try-`with-resources statement, introduced in Java SE 7, is explained.\
+    \ The `try-`with-resources statement is particularly suited to situations that\
+    \ use `Closeable` resources, such as streams."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了如何使用三个异常处理组件——`try`、`catch`和`finally`块——编写异常处理程序。然后，解释了在Java SE 7中引入的`try-`with-resources语句。`try-`with-resources语句特别适用于使用`Closeable`资源的情况，比如流。
+- en: The last part of this section walks through an example and analyzes what occurs
+    during various scenarios.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的最后部分通过一个示例演示并分析了各种情况下的发生情况。
+- en: The following example defines and implements a class named `ListOfNumbers`.
+    When constructed, `ListOfNumbers` creates an `ArrayList` that contains 10 `Integer`
+    elements with sequential values 0 through 9\. The `ListOfNumbers` class also defines
+    a method named `writeList`, which writes the list of numbers into a text file
+    called `OutFile.txt`. This example uses output classes defined in `java.io`, which
+    are covered in [Basic I/O](../io/index.html).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例定义并实现了一个名为`ListOfNumbers`的类。在构造时，`ListOfNumbers`创建一个包含10个顺序值为0到9的`Integer`元素的`ArrayList`。`ListOfNumbers`类还定义了一个名为`writeList`的方法，该方法将数字列表写入名为`OutFile.txt`的文本文件。此示例使用了`java.io`中定义的输出类，这些类在[基本I/O](../io/index.html)中有介绍。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The first line in boldface is a call to a constructor. The constructor initializes
+    an output stream on a file. If the file cannot be opened, the constructor throws
+    an `IOException`. The second boldface line is a call to the `ArrayList` class's
+    `get` method, which throws an `IndexOutOfBoundsException` if the value of its
+    argument is too small (less than 0) or too large (more than the number of elements
+    currently contained by the `ArrayList`).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 粗体的第一行是对构造函数的调用。构造函数在文件上初始化一个输出流。如果文件无法打开，构造函数会抛出一个`IOException`异常。第二行粗体是对`ArrayList`类的`get`方法的调用，如果其参数的值太小（小于0）或太大（大于`ArrayList`当前包含的元素数量），则会抛出`IndexOutOfBoundsException`异常。
+- en: If you try to compile the [``ListOfNumbers``](examples/ListOfNumbers.java) class,
+    the compiler prints an error message about the exception thrown by the `FileWriter`
+    constructor. However, it does not display an error message about the exception
+    thrown by `get`. The reason is that the exception thrown by the constructor, `IOException`,
+    is a checked exception, and the one thrown by the `get` method, `IndexOutOfBoundsException`,
+    is an unchecked exception.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果尝试编译[``ListOfNumbers``](examples/ListOfNumbers.java)类，编译器会打印有关`FileWriter`构造函数抛出的异常的错误消息。但是，它不会显示有关`get`方法抛出的异常的错误消息。原因是构造函数抛出的异常`IOException`是一个已检查异常，而`get`方法抛出的异常`IndexOutOfBoundsException`是一个未检查异常。
+- en: Now that you're familiar with the `ListOfNumbers` class and where the exceptions
+    can be thrown within it, you're ready to write exception handlers to catch and
+    handle those exceptions.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您熟悉了`ListOfNumbers`类以及其中可能抛出异常的位置，您可以编写异常处理程序来捕获和处理这些异常了。

@@ -1,0 +1,71 @@
+- en: Save the Signature and the Public Key in Files
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 将签名和公钥保存在文件中
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/step4.html](https://docs.oracle.com/javase/tutorial/security/apisign/step4.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/step4.html](https://docs.oracle.com/javase/tutorial/security/apisign/step4.html)
+- en: Now that you have generated a signature for some data, you need to save the
+    signature bytes in one file and the public key bytes in another so you can send
+    (via modem, floppy, mail, and so on) someone else
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您已经为某些数据生成了签名，您需要将签名字节保存在一个文件中，将公钥字节保存在另一个文件中，这样您就可以通过调制解调器、软盘、邮件等方式将其发送给其他人。
+- en: the data for which the signature was generated,
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 生成签名的数据，
+- en: the signature, and
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 签名，
+- en: the public key
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 公钥
+- en: The receiver can verify that the data came from you and was not modified in
+    transit by running the `VerSig` program you will generate in the upcoming [Verifying
+    a Digital Signature](versig.html) steps. That program uses the public key to verify
+    that the signature received is the true signature for the data received.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接收方可以通过运行您将在接下来的[验证数字签名](versig.html)步骤中生成的`VerSig`程序来验证数据是否来自您，并且在传输过程中没有被修改。该程序使用公钥来验证接收到的签名是否是接收到的数据的真实签名。
+- en: Recall that the signature was placed in a byte array named `realSig`. You can
+    save the signature bytes in a file named `sig` via the following.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 回想一下，签名是放在一个名为`realSig`的字节数组中的。您可以通过以下方式将签名字节保存在名为`sig`的文件中。
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Recall from the [Generate Public and Private Keys](step2.html) step that the
+    public key was placed in a PublicKey object named `pub`. You can get the encoded
+    key bytes by calling the `getEncoded` method and then store the encoded bytes
+    in a file. You can name the file whatever you want. If, for example, your name
+    is Susan, you might name it something like `suepk` (for "Sue''s public key"),
+    as in the following:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从[生成公钥和私钥](step2.html)步骤中回想一下，公钥是放在一个名为`pub`的PublicKey对象中的。您可以通过调用`getEncoded`方法获取编码后的密钥字节，然后将编码后的字节存储在一个文件中。您可以随意命名文件。例如，如果您的名字是Susan，您可以将其命名为`suepk`（代表"Sue的公钥"），如下所示：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

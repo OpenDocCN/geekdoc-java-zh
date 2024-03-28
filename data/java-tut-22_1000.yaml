@@ -1,0 +1,107 @@
+- en: JNDI as an LDAP API
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: JNDI作为LDAP API
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/jndi.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/jndi.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/jndi.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/jndi.html)
+- en: Both the JNDI and LDAP models define a hierarchical namespace in which you name
+    objects. Each object in the namespace may have attributes that can be used to
+    search for the object. At this high level, the two models are similar, so it is
+    not surprising that the JNDI maps well to the LDAP.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JNDI和LDAP模型都定义了一个层次化的命名空间，您可以在其中命名对象。命名空间中的每个对象都可以具有用于搜索该对象的属性。在这个高层次上，这两个模型是相似的，因此不足为奇JNDI很好地映射到LDAP。
+- en: Models
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 模型
+- en: You can think of an LDAP entry as a JNDI [`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html).
+    Each LDAP entry contains a name and a set of attributes, as well as an optional
+    set of child entries. For example, the LDAP entry `"o=JNDITutorial"` may have
+    as its attributes `"objectclass"` and `"o"`, and it may have as its children `"ou=Groups"`
+    and `"ou=People"`.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以将LDAP条目视为JNDI [`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html)。每个LDAP条目包含一个名称和一组属性，以及一个可选的子条目集。例如，LDAP条目`"o=JNDITutorial"`可能具有其属性`"objectclass"`和`"o"`，并且可能具有其子条目`"ou=Groups"`和`"ou=People"`。
+- en: 'In the JNDI, the LDAP entry `"o=JNDITutorial"` is represented as a context
+    with the name `"o=JNDITutorial"` that has two subcontexts, named: `"ou=Groups"`
+    and `"ou=People"`. An LDAP entry''s attributes are represented by the [`Attributes`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/Attributes.html)
+    interface, whereas individual attributes are represented by the [`Attribute`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/Attribute.html)
+    interface.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在JNDI中，LDAP条目`"o=JNDITutorial"`被表示为一个具有名称`"o=JNDITutorial"`的上下文，其具有两个子上下文，分别命名为`"ou=Groups"`和`"ou=People"`。LDAP条目的属性由[`Attributes`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/Attributes.html)接口表示，而单个属性由[`Attribute`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/Attribute.html)接口表示。
+- en: '![A representation of LDAP and JNDI](../Images/293d0bf5482a248c7903ede6fe43f71f.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![LDAP和JNDI的表示](../Images/293d0bf5482a248c7903ede6fe43f71f.png)'
+- en: See [the next part of this lesson](operations.html) for details on how the LDAP
+    operations are accessed through the JNDI.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请查看[本课程的下一部分](operations.html)以了解如何通过JNDI访问LDAP操作的详细信息。
+- en: Names
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 名称
+- en: As a result of federation, the names that you supply to the JNDI's context methods
+    can span multiple namespaces. These are called composite names. When using the
+    JNDI to access an LDAP service, you should be aware that the forward slash character
+    ("/") in a string name has special meaning to the JNDI. If the LDAP entry's name
+    contains this character, then you need to escape it (using the backslash character
+    ("\")). For example, an LDAP entry with the name `"cn=O/R"` must be presented
+    as the string `"cn=O\\/R"` to the JNDI context methods. For more information about
+    Names check out the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/beyond/names/index.html).
+    The [LdapName](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html)
+    and [Rdn](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html)
+    classes simplify creation and manipulation of LDAP names.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于联邦制度的结果，您提供给JNDI上下文方法的名称可以跨越多个命名空间。这些被称为复合名称。当使用JNDI访问LDAP服务时，您应该意识到字符串名称中的斜杠字符("/")对JNDI具有特殊含义。如果LDAP条目的名称包含此字符，则需要对其进行转义（使用反斜杠字符"\"）。例如，具有名称`"cn=O/R"`的LDAP条目必须呈现为字符串`"cn=O\\/R"`以供JNDI上下文方法使用。有关名称的更多信息，请查看[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/beyond/names/index.html)。[LdapName](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html)和[Rdn](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html)类简化了LDAP名称的创建和操作。
+- en: LDAP names as they are used in the protocol are always fully qualified names
+    that identify entries that start from the root of the LDAP namespace (as defined
+    by the server). Following are some examples of fully qualified LDAP names.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在协议中使用的LDAP名称始终是完全限定的名称，用于标识从LDAP命名空间的根（由服务器定义）开始的条目。以下是一些完全限定的LDAP名称的示例。
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: In the JNDI, however, names are always *relative*; that is, you always name
+    an object relative to a context. For example, you can name the entry `"cn=Vinnie
+    Ryan"` relative to the context named `"ou=People, o=JNDITutorial"`. Or you can
+    name the entry `"cn=Vinnie Ryan, ou=People"` relative to the context named `"o=JNDITutorial"`.
+    Or, you can create an initial context that points at the root of the LDAP server's
+    namespace and name the entry `"cn=Vinnie Ryan, ou=People, o=JNDITutorial"`.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在JNDI中，然而，名称始终是*相对的*；也就是说，你总是相对于上下文命名一个对象。例如，你可以将条目`"cn=Vinnie Ryan"`命名为相对于名为`"ou=People,
+    o=JNDITutorial"`的上下文。或者你可以将条目`"cn=Vinnie Ryan, ou=People"`命名为相对于名为`"o=JNDITutorial"`的上下文。或者，你可以创建一个指向LDAP服务器命名空间根的初始上下文，并将条目命名为`"cn=Vinnie
+    Ryan, ou=People, o=JNDITutorial"`。
+- en: In the JNDI, you can also use LDAP URLs to name LDAP entries. See the LDAP URL
+    discussion in the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/url.html).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在JNDI中，你还可以使用LDAP URL来命名LDAP条目。请参阅[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/url.html)中关于LDAP
+    URL的讨论。

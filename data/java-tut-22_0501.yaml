@@ -1,0 +1,189 @@
+- en: How to Write a Tree Expansion Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写树展开监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/treeexpansionlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/treeexpansionlistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/treeexpansionlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/treeexpansionlistener.html)
+- en: Sometimes when using a [tree](../components/tree.html), you might need to react
+    when a branch becomes expanded or collapsed. For example, you might need to load
+    or save data.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时在使用[树](../components/tree.html)时，您可能需要在分支展开或折叠时做出反应。例如，您可能需要加载或保存数据。
+- en: 'Two kinds of listeners report expansion and collapse occurrences: *tree expansion*
+    listeners and *tree-will-expand* listeners. This page discusses *tree expansion*
+    listeners. See [How to Write a Tree-Will-Expand Listener](treewillexpandlistener.html)
+    for a description of Tree-Will-Expand listeners.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两种监听器报告展开和折叠事件：*树展开*监听器和*树将展开*监听器。本页讨论*树展开*监听器。有关树将展开监听器的描述，请参阅[如何编写树将展开监听器](treewillexpandlistener.html)。
+- en: A tree expansion listener detects when an expansion or collapse has already
+    occurred. In general, you should implement a tree expansion listener unless you
+    need to prevent an expansion or collapse from occurring .
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 树展开监听器会检测展开或折叠是否已经发生。一般来说，除非需要阻止展开或折叠发生，否则应该实现树展开监听器。
+- en: This example demonstrates a simple tree expansion listener. The text area at
+    the bottom of the window displays a message every time a tree expansion event
+    occurs. It's a straightforward, simple demo. To see a more interesting version
+    that can veto expansions, see [How to Write a Tree-Will-Expand Listener](treewillexpandlistener.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本示例演示了一个简单的树展开监听器。窗口底部的文本区域在每次发生树展开事件时显示一条消息。这是一个直接简单的演示。要查看一个更有趣的版本，可以否决展开，请参阅[如何编写树将展开监听器](treewillexpandlistener.html)。
+- en: '![TreeExpandEventDemo.html](../Images/ebc933bc563a1bde9acb11d08d83f5ca.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TreeExpandEventDemo.html](../Images/ebc933bc563a1bde9acb11d08d83f5ca.png)'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run TreeExpandEventDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/events/index.html#TreeExpandEventDemo).[![Launches
+    the TreeExpandEventDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TreeExpandEventDemoProject/TreeExpandEventDemo.jnlp)
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TreeExpandEventDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/events/index.html#TreeExpandEventDemo)。[![启动TreeExpandEventDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TreeExpandEventDemoProject/TreeExpandEventDemo.jnlp)
+- en: Expand a node. A tree-expanded event is fired.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 展开一个节点。将触发树展开事件。
+- en: Collapse the node. A tree-collapsed event is fired.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 折叠节点。将触发树折叠事件。
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The following code shows how the program handles expansion events. You can find
+    the source code for this example in [`TreeExpandEventDemo.java`](../examples/events/TreeExpandEventDemoProject/src/events/TreeExpandEventDemo.java).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码显示了程序如何处理展开事件。您可以在[`TreeExpandEventDemo.java`](../examples/events/TreeExpandEventDemoProject/src/events/TreeExpandEventDemo.java)中找到此示例的源代码。
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The Tree Expansion Listener API
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 树展开监听器 API
+- en: The TreeExpansionListener Interface
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: TreeExpansionListener 接口
+- en: '*`TreeExpansionListener` has no adapter class.*'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*`TreeExpansionListener`没有适配器类。*'
+- en: '| Method | Purpose |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [treeCollapsed(TreeExpansionEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeExpansionListener.html#treeCollapsed-javax.swing.event.TreeExpansionEvent-)
+    | Called just after a tree node collapses. |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| [treeCollapsed(TreeExpansionEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeExpansionListener.html#treeCollapsed-javax.swing.event.TreeExpansionEvent-)
+    | 在树节点折叠后调用。 |'
+- en: '| [treeExpanded(TreeExpansionEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeExpansionListener.html#treeExpanded-javax.swing.event.TreeExpansionEvent-)
+    | Called just after a tree node expands. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| [treeExpanded(TreeExpansionEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeExpansionListener.html#treeExpanded-javax.swing.event.TreeExpansionEvent-)
+    | 在树节点展开后调用。 |'
+- en: The TreeExpansionEvent API
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: TreeExpansionEvent API
+- en: '| Method | Purpose |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    | Return the object that fired the event. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    | 返回触发事件的对象。 |'
+- en: '| [TreePath getPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeExpansionEvent.html#getPath--)
+    | Returns a [`TreePath`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreePath.html)
+    object that identifies each node from the root of the tree to the collapsed/expanded
+    node, inclusive. |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreePath getPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeExpansionEvent.html#getPath--)
+    | 返回一个[`TreePath`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreePath.html)对象，该对象标识从树的根节点到折叠/展开节点的每个节点，包括它们自身。
+    |'
+- en: Examples that Use Tree Expansion Listeners
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用树展开监听器的示例
+- en: The following table lists the examples that use tree expansion listeners.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了使用树展开监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`TreeExpandEventDemo`](../examples/events/index.html#TreeExpandEventDemo)
+    | This section | Displays a message whenever a tree expansion event occurs. |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TreeExpandEventDemo`](../examples/events/index.html#TreeExpandEventDemo)
+    | 本节 | 每当发生树展开事件时显示一条消息。 |'
+- en: '| [`TreeExpandEventDemo2`](../examples/events/index.html#TreeExpandEventDemo2)
+    | [How to Write a Tree-Will-Expand Listener](treewillexpandlistener.html) | Adds
+    a tree-will-expand listener to `TreeExpandEventDemo`. |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TreeExpandEventDemo2`](../examples/events/index.html#TreeExpandEventDemo2)
+    | [如何编写树展开监听器](treewillexpandlistener.html) | 为`TreeExpandEventDemo`添加了一个树展开监听器。
+    |'

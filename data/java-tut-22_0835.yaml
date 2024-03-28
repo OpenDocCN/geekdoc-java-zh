@@ -1,0 +1,55 @@
+- en: Sign the JAR File
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 签署JAR文件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/step4.html](https://docs.oracle.com/javase/tutorial/security/toolsign/step4.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/step4.html](https://docs.oracle.com/javase/tutorial/security/toolsign/step4.html)
+- en: 'Now you are ready to sign the JAR file. Type the following in your command
+    window to sign the JAR file `Count.jar`, using the private key in the keystore
+    entry aliased by `signFiles`, and to name the resulting signed JAR file `sCount.jar`:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，您可以准备签署JAR文件。在命令窗口中键入以下内容，以使用密钥库条目中别名为`signFiles`的私钥签署JAR文件`Count.jar`，并将生成的签名JAR文件命名为`sCount.jar`：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: You will be prompted for the store password and the private key password.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您将被要求输入存储密码和私钥密码。
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The `jarsigner` tool extracts the certificate from the keystore entry
+    whose alias is `signFiles` and attaches it to the generated signature of the signed
+    JAR file.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** `jarsigner`工具从别名为`signFiles`的密钥库条目中提取证书，并将其附加到已签名JAR文件的生成签名中。'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Time stamping the signature is recommended, and a warning is shown if the signature
+    is not time stamped. The time stamp is used to verify that the certificate used
+    to sign the JAR file was valid at the time of signing. See [Signing JAR Files](../../deployment/jar/signing.html)
+    for information on the `jarsigner` options for including a time stamp with the
+    signature.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 建议为签名加上时间戳，如果签名未加时间戳，则会显示警告。时间戳用于验证用于签署JAR文件的证书在签署时是否有效。有关使用`jarsigner`选项在签名中包含时间戳的信息，请参阅[签署JAR文件](../../deployment/jar/signing.html)。

@@ -1,0 +1,56 @@
+- en: Understanding the Default Manifest
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 理解默认清单
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/defman.html](https://docs.oracle.com/javase/tutorial/deployment/jar/defman.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/defman.html](https://docs.oracle.com/javase/tutorial/deployment/jar/defman.html)
+- en: When you create a JAR file, it automatically receives a default manifest file.
+    There can be only one manifest file in an archive, and it always has the pathname
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您创建一个JAR文件时，它会自动获得一个默认清单文件。存档中只能有一个清单文件，并且它始终具有路径名
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'When you create a JAR file, the default manifest file simply contains the following:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您创建一个JAR文件时，默认清单文件只包含以下内容：
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'These lines show that a manifest''s entries take the form of "header: value"
+    pairs. The name of a header is separated from its value by a colon. The default
+    manifest conforms to version 1.0 of the manifest specification and was created
+    by the 1.7.0_06 version of the JDK.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '这些行显示清单条目采用“头部: 值”对的形式。头部的名称与其值之间用冒号分隔。默认清单符合清单规范的1.0版本，并由JDK的1.7.0_06版本创建。'
+- en: The manifest can also contain information about the other files that are packaged
+    in the archive. Exactly what file information should be recorded in the manifest
+    depends on how you intend to use the JAR file. The default manifest makes no assumptions
+    about what information it should record about other files.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 清单还可以包含有关打包在存档中的其他文件的信息。清单中应记录哪些文件信息取决于您打算如何使用JAR文件。默认清单不假设应记录有关其他文件的哪些信息。
+- en: Digest information is not included in the default manifest. To learn more about
+    digests and signing, see the [Signing and Verifying JAR Files](signindex.html)
+    lesson.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 信息摘要不包含在默认清单中。要了解有关摘要和签名的更多信息，请参阅[签署和验证JAR文件](signindex.html)课程。

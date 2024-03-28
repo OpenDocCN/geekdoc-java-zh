@@ -1,0 +1,176 @@
+- en: Directory Concepts
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 目录概念
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/concepts/directory.html](https://docs.oracle.com/javase/tutorial/jndi/concepts/directory.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/concepts/directory.html](https://docs.oracle.com/javase/tutorial/jndi/concepts/directory.html)
+- en: Many naming services are extended with a *directory service*. A directory service
+    associates names with objects and also associates such objects with *attributes*.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多命名服务都扩展了*目录服务*。目录服务将名称与对象关联，并将这些对象与*属性*关联起来。
+- en: directory service = naming service + objects containing attributes
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 目录服务 = 命名服务 + 包含属性的对象
+- en: You not only can look up an object by its name but also get the object's attributes
+    or *search* for the object based on its attributes.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你不仅可以通过名称查找对象，还可以获取对象的属性或*根据其属性搜索*对象。
+- en: '![Diagram showing a directory system: a name references a directory object
+    which contains attributes.](../Images/480449295664eab3c0e4c32119131329.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![显示目录系统的图表：名称引用包含属性的目录对象。](../Images/480449295664eab3c0e4c32119131329.png)'
+- en: An example is the telephone company's directory service. It maps a subscriber's
+    name to his address and phone number. A computer's directory service is very much
+    like a telephone company's directory service in that both can be used to store
+    information such as telephone numbers and addresses. The computer's directory
+    service is much more powerful, however, because it is available online and can
+    be used to store a variety of information that can be utilized by users, programs,
+    and even the computer itself and other computers.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个例子是电话公司的目录服务。它将订户的姓名映射到他的地址和电话号码。计算机的目录服务非常类似于电话公司的目录服务，因为两者都可以用来存储诸如电话号码和地址之类的信息。然而，计算机的目录服务更加强大，因为它可以在线使用，并且可以用来存储各种信息，这些信息可以被用户、程序甚至计算机本身和其他计算机利用。
+- en: A *directory object* represents an object in a computing environment. A directory
+    object can be used, for example, to represent a printer, a person, a computer,
+    or a network. A directory object contains *attributes* that describe the object
+    that it represents.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*目录对象*表示计算环境中的一个对象。例如，目录对象可以用来表示打印机、人员、计算机或网络。目录对象包含描述其所代表对象的*属性*。'
+- en: Attributes
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 属性
+- en: A directory object can have *attributes*. For example, a printer might be represented
+    by a directory object that has as attributes its speed, resolution, and color.
+    A user might be represented by a directory object that has as attributes the user's
+    e-mail address, various telephone numbers, postal mail address, and computer account
+    information.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 目录对象可以具有*属性*。例如，打印机可以由具有其速度、分辨率和颜色等属性的目录对象表示。用户可以由具有用户的电子邮件地址、各种电话号码、邮寄地址和计算机帐户信息等属性的目录对象表示。
+- en: 'An attribute has an *attribute identifier* and a set of *attribute values*.
+    An attribute identifier is a token that identifies an attribute independent of
+    its values. For example, two different computer accounts might have a `"mail"`
+    attribute; `"mail"` is the attribute identifier. An attribute value is the contents
+    of the attribute. The email address, for example, might have:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性具有*属性标识符*和一组*属性值*。属性标识符是一个标记，独立于其值标识属性。例如，两个不同的计算机帐户可能具有一个`"mail"`属性；`"mail"`是属性标识符。属性值是属性的内容。例如，电子邮件地址可能有：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Directories and Directory Services
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 目录和目录服务
+- en: A *directory* is a connected set of directory objects. A *directory service*
+    is a service that provides operations for creating, adding, removing, and modifying
+    the attributes associated with objects in a directory. The service is accessed
+    through its own interface.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*目录*是一组连接的目录对象。*目录服务*是提供用于在目录中创建、添加、删除和修改与对象关联的属性的操作的服务。该服务通过其自己的接口访问。'
+- en: Many examples of directory services are possible.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可能有许多目录服务的示例。
+- en: Network Information Service (NIS)
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 网络信息服务（NIS）
+- en: NIS is a directory service available on the UNIX operating system for storing
+    system-related information, such as that relating to machines, networks, printers,
+    and users.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: NIS是UNIX操作系统上可用的目录服务，用于存储与机器、网络、打印机和用户相关的系统信息。
+- en: '[Oracle Directory Server](http://www.oracle.com/technetwork/testcontent/index-085178.html)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Oracle目录服务器](http://www.oracle.com/technetwork/testcontent/index-085178.html)'
+- en: The Oracle Directory Server is a general-purpose directory service based on
+    the Internet standard [LDAP](http://www.ietf.org/rfc/rfc2251.txt).
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Oracle目录服务器是一个基于互联网标准[LDAP](http://www.ietf.org/rfc/rfc2251.txt)的通用目录服务。
+- en: Search Service
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 搜索服务
+- en: You can look up a directory object by supplying its name to the directory service.
+    Alternatively, many directories, such as those based on the LDAP, support the
+    notion of *searches*. When you search, you can supply not a name but a *query*
+    consisting of a logical expression in which you specify the attributes that the
+    object or objects must have. The query is called a *search filter*. This style
+    of searching is sometimes called *reverse lookup* or *content-based searching*.
+    The directory service searches for and returns the objects that satisfy the search
+    filter.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以通过向目录服务提供其名称来查找目录对象。另外，许多目录，比如基于LDAP的目录，支持*搜索*的概念。当你搜索时，你可以提供一个*查询*，其中包含一个逻辑表达式，你可以在其中指定对象必须具有的属性。这个查询被称为*搜索过滤器*。这种搜索方式有时被称为*反向查找*或*基于内容的搜索*。目录服务会搜索并返回满足搜索过滤器的对象。
+- en: 'For example, you can query the directory service to find:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，你可以查询目录服务以查找：
+- en: all users that have the attribute `"age"` greater than 40 years.
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有具有属性`"age"`大于40岁的用户。
+- en: all machines whose IP address starts with "192.113.50".
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有IP地址以"192.113.50"开头的机器。
+- en: Combining Naming and Directory Services
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 结合命名和目录服务
+- en: Directories often arrange their objects in a hierarchy. For example, the LDAP
+    arranges all directory objects in a tree, called a *directory information tree
+    (DIT)*. Within the DIT, an organization object, for example, might contain group
+    objects that might in turn contain person objects. When directory objects are
+    arranged in this way, they play the role of naming contexts in addition to that
+    of containers of attributes.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 目录通常将它们的对象按层次结构排列。例如，LDAP将所有目录对象排列在一棵树中，称为*目录信息树（DIT）*。在DIT中，一个组织对象，例如，可能包含可能又包含人员对象的组对象。当目录对象以这种方式排列时，它们除了作为属性容器外还扮演了命名上下文的角色。

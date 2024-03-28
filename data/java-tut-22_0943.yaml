@@ -1,0 +1,73 @@
+- en: Network Interface Parameters
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 网络接口参数
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/nifs/parameters.html](https://docs.oracle.com/javase/tutorial/networking/nifs/parameters.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/nifs/parameters.html](https://docs.oracle.com/javase/tutorial/networking/nifs/parameters.html)
+- en: You can access network parameters about a network interface beyond the name
+    and IP addresses assigned to it
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以访问有关网络接口的网络参数，除了分配给它的名称和IP地址之外。
+- en: 'You can discover if a network interface is “up” (that is, running) with the
+    `isUP()` method. The following methods indicate the network interface type:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用`isUP()`方法来发现网络接口是否处于“up”（即运行）状态。以下方法指示网络接口类型：
+- en: '`isLoopback()` indicates if the network interface is a loopback interface.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`isLoopback()`指示网络接口是否为环回接口。'
+- en: '`isPointToPoint()` indicates if the interface is a point-to-point interface.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`isPointToPoint()`指示接口是否为点对点接口。'
+- en: '`isVirtual()` indicates if the interface is a virtual interface.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`isVirtual()`指示接口是否为虚拟接口。'
+- en: The `supportsMulticast()` method indicates whether the network interface supports
+    multicasting. The `getHardwareAddress()` method returns the network interface's
+    physical hardware address, usually called MAC address, when it is available. The
+    `getMTU()` method returns the Maximum Transmission Unit (MTU), which is the largest
+    packet size.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`supportsMulticast()`方法指示网络接口是否支持多播。`getHardwareAddress()`方法在可用时返回网络接口的物理硬件地址，通常称为MAC地址。`getMTU()`方法返回最大传输单元（MTU），即最大数据包大小。'
+- en: 'The following example expands on the example in [Listing Network Interface
+    Addresses](listing.html) by adding the additional network parameters described
+    on this page:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例在[列出网络接口地址](listing.html)的基础上，通过添加本页描述的额外网络参数进行了扩展：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following is sample output from the example program:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是示例程序的输出样本：
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

@@ -1,0 +1,111 @@
+- en: Temporal Adjuster
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 时间调整器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/adjusters.html](https://docs.oracle.com/javase/tutorial/datetime/iso/adjusters.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/adjusters.html](https://docs.oracle.com/javase/tutorial/datetime/iso/adjusters.html)
+- en: The [`TemporalAdjuster`](https://docs.oracle.com/javase/8/docs/api/java/time/temporal/TemporalAdjuster.html)
+    interface, in the `java.time.temporal` package, provides methods that take a `Temporal`
+    value and return an adjusted value. The adjusters can be used with any of the
+    temporal-based types.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`TemporalAdjuster`](https://docs.oracle.com/javase/8/docs/api/java/time/temporal/TemporalAdjuster.html)接口，位于`java.time.temporal`包中，提供了接受`Temporal`值并返回调整后值的方法。这些调整器可以与任何基于时间的类型一起使用。'
+- en: If an adjuster is used with a `ZonedDateTime`, then a new date is computed that
+    preserves the original time and time zone values.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果将调整器与`ZonedDateTime`一起使用，则会计算出一个新日期，保留原始的时间和时区值。
+- en: Predefined Adjusters
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 预定义调整器
+- en: The [`TemporalAdjusters`](https://docs.oracle.com/javase/8/docs/api/java/time/temporal/TemporalAdjusters.html)
+    class (note the plural) provides a set of predefined adjusters for finding the
+    first or last day of the month, the first or last day of the year, the last Wednesday
+    of the month, or the first Tuesday after a specific date, to name a few examples.
+    The predefined adjusters are defined as static methods and are designed to be
+    used with the [static import](../../java/package/usepkgs.html#staticimport) statement.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`TemporalAdjusters`](https://docs.oracle.com/javase/8/docs/api/java/time/temporal/TemporalAdjusters.html)
+    类（注意复数形式）提供了一组预定义的调整器，用于查找月份的第一天或最后一天，年份的第一天或最后一天，月份的最后一个星期三，或特定日期后的第一个星期二等等。这些预定义的调整器被定义为静态方法，并设计用于与[静态导入](../../java/package/usepkgs.html#staticimport)语句一起使用。'
+- en: 'The following example uses several `TemporalAdjusters` methods, in conjunction
+    with the `with` method defined in the temporal-based classes, to compute new dates
+    based on the original date of 15 October 2000:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例结合了几个`TemporalAdjusters`方法，与基于时间的类中定义的`with`方法一起，根据2000年10月15日的原始日期计算新日期：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This produces the following output:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将产生以下输出：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Custom Adjusters
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 自定义调整器
+- en: 'You can also create your own custom adjuster. To do this, you create a class
+    that implements the `TemporalAdjuster` interface with a [`adjustInto(Temporal)`](https://docs.oracle.com/javase/8/docs/api/java/time/temporal/TemporalAdjuster.html#adjustInto-java.time.temporal.Temporal-)
+    method. The [``PaydayAdjuster``](examples/PaydayAdjuster.java) class from the
+    [``NextPayday``](examples/NextPayday.java) example is a custom adjuster. The `PaydayAdjuster`
+    evaluates the passed-in date and returns the next payday, assuming that payday
+    occurs twice a month: on the 15th, and again on the last day of the month. If
+    the computed date occurs on a weekend, then the previous Friday is used. The current
+    calendar year is assumed.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以创建自定义调整器。为此，您需要创建一个实现了`TemporalAdjuster`接口并带有[`adjustInto(Temporal)`](https://docs.oracle.com/javase/8/docs/api/java/time/temporal/TemporalAdjuster.html#adjustInto-java.time.temporal.Temporal-)方法的类。来自[``NextPayday``](examples/NextPayday.java)示例的[`PaydayAdjuster`](examples/PaydayAdjuster.java)类是一个自定义调整器。`PaydayAdjuster`评估传入的日期并返回下一个发薪日，假设发薪日每月发生两次：在每月的15日和最后一天。如果计算出的日期落在周末，则使用前一个星期五。假定当前日历年。
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The adjuster is invoked in the same manner as a predefined adjuster, using
+    the `with` method. The following line of code is from the `NextPayday` example:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调整器的调用方式与预定义调整器相同，使用`with`方法。以下代码行来自`NextPayday`示例：
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'In 2013, both June 15 and June 30 occur on the weekend. Running the `NextPayday`
+    example with the respective dates of June 3 and June 18 (in 2013), gives the following
+    results:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在2013年，6月15日和6月30日都落在周末。使用2013年6月3日和6月18日的相应日期运行`NextPayday`示例，得到以下结果：
+- en: '[PRE4]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'

@@ -1,0 +1,160 @@
+- en: How to Write a Caret Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写插入符监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/caretlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/caretlistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/caretlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/caretlistener.html)
+- en: Caret events occur when the *caret* — the cursor indicating the insertion point
+    — in a text component moves or when the selection in a text component changes.
+    The text component's document can initiate caret events when it inserts or removes
+    text, for example. You can attach a caret listener to an instance of any `JTextComponent`
+    subclass with the `addCaretListener` method.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 插入符事件发生在文本组件中的插入符（指示插入点的光标）移动或文本组件中的选择更改时。例如，当文本组件插入或删除文本时，文本组件的文档可以启动插入符事件。您可以使用`addCaretListener`方法将插入符监听器附加到任何`JTextComponent`子类的实例上。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** An alternate way of detecting caret changes is to attach a listener
+    directly to the caret object itself rather than to the text component that manages
+    the caret. A caret fires change events (*not* caret events), so you would need
+    to write a [change listener](changelistener.html) rather than a caret listener.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**检测插入符更改的另一种方法是直接将监听器附加到插入符对象本身，而不是附加到管理插入符的文本组件。插入符会触发更改事件（*而不是*插入符事件），因此您需要编写一个[更改监听器](changelistener.html)而不是插入符监听器。'
+- en: 'Here is the caret event handling code from an application called `TextComponentDemo`:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个名为`TextComponentDemo`的应用程序中的插入符事件处理代码：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The `caretUpdate` method is not guaranteed to be called in the event-dispatching
+    thread. To use any methods inside of `caretUpdate` that update the GUI special
+    handling is required to ensure they are executed on the event-dispatching thread.
+    You can do this by wrapping the code inside a `Runnable` and calling `SwingUtilities.invokeLater`
+    on that `Runnable`.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**`caretUpdate`方法不能保证在事件分派线程中调用。要在`caretUpdate`中使用更新 GUI 的任何方法，需要特殊处理以确保它们在事件分派线程上执行。您可以通过将代码包装在`Runnable`中并在该`Runnable`上调用`SwingUtilities.invokeLater`来实现这一点。'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: You can find a link to the source file for `TextComponentDemo` in the [example
+    index for using Swing Components](../examples/components/index.html#TextComponentDemo).
+    For a discussion about the caret listener aspect of the program see [Listening
+    for Caret and Selection Changes](../components/generaltext.html#caret) in [Text
+    Component Features](../components/generaltext.html).
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在[使用 Swing 组件示例索引](../examples/components/index.html#TextComponentDemo)中找到`TextComponentDemo`的源文件链接。有关程序的插入符监听器方面的讨论，请参阅[监听插入符和选择更改](../components/generaltext.html#caret)中的[文本组件功能](../components/generaltext.html)。
+- en: The Caret Listener API
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 插入符监听器 API
+- en: The CaretListener Interface
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 插入符监听器接口
+- en: '*Because `CaretListener` has only one method, it has no corresponding adapter
+    class.*'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*因为`CaretListener`只有一个方法，所以它没有相应的适配器类。*'
+- en: '| Method | Purpose |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [caretUpdate(CaretEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/CaretListener.html#caretUpdate-javax.swing.event.CaretEvent-)
+    | Called when the caret in the listened-to component moves or when the selection
+    in the listened-to component changes. |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| [caretUpdate(CaretEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/CaretListener.html#caretUpdate-javax.swing.event.CaretEvent-)
+    | 当监听组件中的插入符移动或监听组件中的选择更改时调用。'
+- en: The CaretEvent Class
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 插入符事件类
+- en: '| Method | Purpose |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [int getDot()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/CaretEvent.html#getDot--)
+    | Returns the current location of the caret. If text is selected, the caret marks
+    one end of the selection. |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getDot()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/CaretEvent.html#getDot--)
+    | 返回插入符的当前位置。如果选择了文本，则插入符标记选择的一端。'
+- en: '| [int getMark()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/CaretEvent.html#getMark--)
+    | Returns the other end of the selection. If nothing is selected, the value returned
+    by this method is equal to the value returned by `getDot`. Note that the dot is
+    not guaranteed to be less than the mark. |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getMark()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/CaretEvent.html#getMark--)
+    | 返回选择的另一端。如果没有选择任何内容，则此方法返回的值等于`getDot`返回的值。请注意，插入符不一定小于标记。'
+- en: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*in `java.util.EventObject`*) | Returns the object that fired the event. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)（*在`java.util.EventObject`中*）
+    | 返回触发事件的对象。'
+- en: Examples that Use Caret Listeners
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用插入符监听器的示例
+- en: The following table lists the examples that use caret listeners.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了使用插入符监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`TextComponentDemo`](../examples/components/index.html#TextComponentDemo)
+    | [Listening for Caret and Selection Changes](../components/generaltext.html#caret)
+    | Uses a listener label to display caret and selection status. |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextComponentDemo`](../examples/components/index.html#TextComponentDemo)
+    | [监听插入符和选择更改](../components/generaltext.html#caret) | 使用监听器标签显示插入符和选择状态。 |'

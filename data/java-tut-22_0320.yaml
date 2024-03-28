@@ -1,0 +1,305 @@
+- en: Converting an Existing Application
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 转换现有应用程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/converting.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/converting.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/converting.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/converting.html)
+- en: Any standalone Java application or Java Web Start application can be packaged
+    as a self-contained application. If you have a Java applet, see [Re-writing a
+    Java Applet as a Java Web Start Application](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/applet_dev_guide.html#JSDPG1036)
+    for information on converting the applet to a Java Web Start application, which
+    can then be packaged as a self-contained application.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何独立的Java应用程序或Java Web Start应用程序都可以打包为自包含应用程序。如果您有一个Java小程序，请参阅[将Java小程序重写为Java
+    Web Start应用程序](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/applet_dev_guide.html#JSDPG1036)以获取有关将小程序转换为Java
+    Web Start应用程序的信息，然后可以将其打包为自包含应用程序。
+- en: Before converting an application, make sure that you have the required pre-requisites
+    installed for your platform. See [Pre-Requisites for Packaging Self-Contained
+    Applications](../selfContainedApps/prereqs.html) for information.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在转换应用程序之前，请确保您的平台上已安装所需的先决条件。有关信息，请参阅[打包自包含应用程序的先决条件](../selfContainedApps/prereqs.html)。
+- en: This section converts the Dynamic Tree Demo from [Deploying a Java Web Start
+    Application](../webstart/deploying.html) to a self-contained application. You
+    can download the source files for this demo from [Self-Contained Application Examples](../selfContainedApps/examplesIndex.html).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节将Dynamic Tree Demo从[部署Java Web Start应用程序](../webstart/deploying.html)转换为自包含应用程序。您可以从[自包含应用程序示例](../selfContainedApps/examplesIndex.html)下载此演示的源文件。
+- en: Setting Up the Directories
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置目录
+- en: Identify and organize the files that are needed by your application. A simple
+    application might require only a JAR file. A more complex application might also
+    require additional libraries or resources. Custom resources such as icons or configuration
+    files can also be used by self-contained applications.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 确定并组织应用程序所需的文件。一个简单的应用程序可能只需要一个JAR文件。一个更复杂的应用程序可能还需要额外的库或资源。自定义资源，如图标或配置文件，也可以被自包含应用程序使用。
+- en: The Dynamic Tree Demo requires only the `DynamicTreeDemo.jar` file, which is
+    in the `/dist` directory of the project. The HTML and JNLP files that were needed
+    for the Java Web Start version of the application are not needed and are ignored
+    by the bundlers for self-contained applications.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Dynamic Tree Demo只需要`DynamicTreeDemo.jar`文件，该文件位于项目的`/dist`目录中。用于Java Web Start版本的应用程序所需的HTML和JNLP文件不再需要，并且被自包含应用程序的打包工具忽略。
+- en: 'To provide a custom icon for the Dynamic Tree Demo, which represents the application
+    when it is installed on a user''s desktop, an icon is provided for each platform
+    supported. These icons are placed in the `/src/package/`platform`` directories.
+    The icon is provided in a different format for each supported platform: `.ico`
+    format for Windows, `.png` format for Linux, and `.icns` format for OS X.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为Dynamic Tree Demo提供自定义图标，代表应用程序在用户桌面上安装时的图标，为每个支持的平台提供一个图标。这些图标放置在`/src/package/`platform``目录中。为每个支持的平台提供不同格式的图标：Windows使用`.ico`格式，Linux使用`.png`格式，OS
+    X使用`.icns`格式。
+- en: 'The following example shows the directory structure for the Dynamic Tree Demo
+    project before the self-contained bundles are created:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的示例显示了在创建自包含捆绑包之前Dynamic Tree Demo项目的目录结构：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Setting Up the Build File
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置构建文件
+- en: Set up the Ant tasks for the packaging tasks that are needed. These tasks can
+    be added to the `build.xml` file for the project, or placed in a separate file
+    that is imported by the `build.xml` file.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置所需的打包任务的Ant任务。这些任务可以添加到项目的`build.xml`文件中，或放在一个被`build.xml`文件导入的单独文件中。
+- en: 'For the Dynamic Tree Demo, the `packager.xml` file in the root directory of
+    the project contains the Ant tasks for generating the self-contained application
+    bundles. The source for the `packager.xml` file is shown in the following example:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于Dynamic Tree Demo，项目的根目录中的`packager.xml`文件包含了用于生成自包含应用程序包的Ant任务。`packager.xml`文件的源代码如下所示：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Use the following information to set up the Ant tasks:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用以下信息设置Ant任务：
+- en: Use `xmlns:fx="javafx:com.sun.javafx.tools.ant` for the namespace.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 为命名空间使用`xmlns:fx="javafx:com.sun.javafx.tools.ant`。
+- en: The `taskdef` task must be executed before the `fx:deploy` task. The `classpath`
+    attribute contains the location of the `ant-javafx.jar` file from the JDK and
+    the directory that contains the custom resources. For the Dynamic Tree Demo, the
+    `classpath` attribute includes the `/src` directory, which contains the custom
+    icons.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 必须在`fx:deploy`任务之前执行`taskdef`任务。`classpath`属性包含来自JDK的`ant-javafx.jar`文件的位置和包含自定义资源的目录。对于动态树演示，`classpath`属性包括包含自定义图标的`/src`目录。
+- en: Place the `fx:deploy` task inside the desired target. Specify the output directory
+    where the native binaries are placed, and specify the native binaries that you
+    want to produce.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将`fx:deploy`任务放在所需的目标内。指定本机二进制文件放置的输出目录，并指定要生成的本机二进制文件。
+- en: If `all` is specified for the native binaries, all possible binaries for the
+    platform on which you execute this task file are generated, including the disk
+    image. Valid values for all platforms are `all`; `image`, which generates the
+    file directory on Windows and Linux and the `.app` file on OSX; and `installer`,
+    which generates only installable bundles for the platform, not the disk image.
+    Valid values for platform-specific binaries are `exe` and `msi` for Windows; `deb`
+    and `rpm` for Linux; `deb`, `pkg`, and `mac.appStore` for OS X. You must have
+    the required tools installed to build the binary of your choice.
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如果为本机二进制文件指定了`all`，则将为您在执行此任务文件的平台上生成所有可能的二进制文件，包括磁盘映像。所有平台的有效值为`all`；`image`，在Windows和Linux上生成文件目录，在OSX上生成`.app`文件；以及`installer`，仅为平台生成可安装的捆绑包，而不生成磁盘映像。特定于平台的二进制文件的有效值为Windows的`exe`和`msi`；Linux的`deb`和`rpm`；OS
+    X的`deb`、`pkg`和`mac.appStore`。您必须安装所需的工具以构建您选择的二进制文件。
+- en: For the Dynamic Tree Demo, the `outdir` attribute is set to `${basedir}/build/packager`.
+    `basedir` is defined in the `project` element, in this case it is set to the current
+    directory. The `nativeBundles` attribute is set to `all` so all formats for the
+    platform on which the packaging task is run are built.
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 对于动态树演示，`outdir`属性设置为`${basedir}/build/packager`。`basedir`在`project`元素中定义，在本例中设置为当前目录。`nativeBundles`属性设置为`all`，因此将构建在运行打包任务的平台上的所有格式。
+- en: The `verbose` attribute is optional. Use this attribute to provide diagnostic
+    information.
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`verbose`属性是可选的。使用此属性提供诊断信息。'
+- en: Provide information about the application. Set the name of the application in
+    the `name` attribute of the `fx:application` element and the `title` attribute
+    of the `fx:info` element. Set the version of the application in the `version`
+    attribute of the `fx:application` element. Use the `fx:info` element to provide
+    a description of the application, the name of the vendor, license information,
+    and other metadata.
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 提供有关应用程序的信息。在`fx:application`元素的`name`属性和`fx:info`元素的`title`属性中设置应用程序的名称。在`fx:application`元素的`version`属性中设置应用程序的版本。使用`fx:info`元素提供应用程序的描述、供应商名称、许可信息和其他元数据。
+- en: Information about the JAR file and other resources is set in the `fx:resources`
+    element.
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 关于JAR文件和其他资源的信息设置在`fx:resources`元素中。
+- en: Launch information is set in the `mainclass` attribute of the `fx:application`
+    element.
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 启动信息设置在`fx:application`元素的`mainclass`属性中。
+- en: For the Dynamic Tree Demo, a simple single launcher is used, `webstartComponentArch.DynamicTreeApplication`,
+    which is the main class for the application.
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 对于动态树演示，使用简单的单个启动器`webstartComponentArch.DynamicTreeApplication`，这是应用程序的主类。
+- en: Other platform-specific customizations are provided in the `fx:bundleArgument`
+    elements. Arguments that are not recognized by a bundler are ignored, so one build
+    file can contain the packaging information for all platforms.
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 其他平台特定的自定义设置在`fx:bundleArgument`元素中提供。未被打包程序识别的参数将被忽略，因此一个构建文件可以包含所有平台的打包信息。
+- en: 'For the Dynamic Tree Demo, the following customizations are applied:'
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 对于动态树演示，应用了以下自定义设置：
+- en: The bundle name for Linux is set to `dynamic-tree-demo`.
+  id: totrans-28
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Linux的捆绑包名称设置为`dynamic-tree-demo`。
+- en: An email address is provided.
+  id: totrans-29
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 提供了一个电子邮件地址。
+- en: The name that appears in the menu bar for OS X is set to `Java Tree Demo`.
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在OS X菜单栏中显示的名称设置为`Java Tree Demo`。
+- en: The name of the menu group in which the application is stored for Windows is
+    set to `Java Demos`.
+  id: totrans-31
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在Windows中存储应用程序的菜单组名称设置为`Java Demos`。
+- en: Generating the Bundles
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 生成捆绑包
+- en: Run the packaging tasks that you created on the platform for which you want
+    to build the bundle for your self-contained application.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行您在要为自包含应用程序构建捆绑包的平台上创建的打包任务。
+- en: 'For the Dynamic Tree Demo, run the following command from the root folder for
+    the project:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于动态树演示，请从项目的根目录运行以下命令：
+- en: '[PRE2]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: When the packaging task completes, the `build/packager/bundles` directory in
+    the application project contains the native binaries that were produced.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当打包任务完成时，应用项目中的`build/packager/bundles`目录包含生成的本机二进制文件。
+- en: 'The following example shows the directory structure for the Dynamic Tree Demo
+    project after the self-contained bundles are generated for Windows:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例显示了在为Windows生成自包含捆绑包后，动态树演示项目的目录结构：
+- en: '[PRE3]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Note that in addition to the self-contained bundles, the packaging tool always
+    generates the JAR, JNLP, and HTML files for an application. These files provide
+    other options for distributing your application.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，除了自包含捆绑包之外，打包工具始终会为应用程序生成JAR、JNLP和HTML文件。这些文件提供了分发应用程序的其他选项。
+- en: Additional References
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 其他参考资料
+- en: For more information about self-contained applications, see [Self-Contained
+    Application Packaging](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html).
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 欲了解更多关于自包含应用程序的信息，请参阅[自包含应用程序打包](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html)。
+- en: For more information about the Ant tasks for the Java packaging tools, see <macroinline>[JavaFX
+    Ant Tasks](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_tasks.html),
+    which are used for Java and JavaFX applications.</macroinline>
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 欲了解有关Java打包工具的Ant任务的更多信息，请参阅<macroinline>[JavaFX Ant Tasks](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_tasks.html)，这些任务用于Java和JavaFX应用程序。</macroinline>

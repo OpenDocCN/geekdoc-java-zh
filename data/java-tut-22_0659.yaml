@@ -1,0 +1,130 @@
+- en: Reading/Loading an Image
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 读取/加载图像
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/images/loadimage.html](https://docs.oracle.com/javase/tutorial/2d/images/loadimage.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/images/loadimage.html](https://docs.oracle.com/javase/tutorial/2d/images/loadimage.html)
+- en: When you think of digital images, you probably think of sampled image formats
+    such as the JPEG image format used in digital photography, or GIF images commonly
+    used on web pages. All programs that can use these images must first convert them
+    from that external format into an internal format.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你想到数字图像时，你可能会想到采样图像格式，比如数字摄影中使用的 JPEG 图像格式，或者网页常用的 GIF 图像。所有可以使用这些图像的程序都必须首先将它们从外部格式转换为内部格式。
+- en: Java 2D supports loading these external image formats into its `BufferedImage`
+    format using its Image I/O API which is in the `javax.imageio` package. Image
+    I/O has built-in support for GIF, PNG, JPEG, BMP, and WBMP. Image I/O is also
+    extensible so that developers or administrators can "plug-in" support for additional
+    formats. For example, plug-ins for TIFF and JPEG 2000 are separately available.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D 支持使用其 Image I/O API 将这些外部图像格式加载到其 `BufferedImage` 格式中，该 API 位于 `javax.imageio`
+    包中。Image I/O 内置支持 GIF、PNG、JPEG、BMP 和 WBMP。Image I/O 也是可扩展的，因此开发人员或管理员可以为其他格式“插入”支持。例如，TIFF
+    和 JPEG 2000 的插件是单独可用的。
+- en: 'To load an image from a specific file use the following code, which is from
+    [`LoadImageApp.java`](examples/LoadImageApp.java):'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要从特定文件加载图像，请使用以下代码，这段代码来自 [`LoadImageApp.java`](examples/LoadImageApp.java)：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Image I/O recognises the contents of the file as a JPEG format image, and decodes
+    it into a `BufferedImage` which can be directly used by Java 2D.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Image I/O 将文件的内容识别为 JPEG 格式图像，并将其解码为可以被 Java 2D 直接使用的 `BufferedImage`。
+- en: '`LoadImageApp.java` shows how to display this image.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`LoadImageApp.java` 展示了如何显示这个图像。'
+- en: 'If the code is running in an applet, then its just as easy to obtain the image
+    from the applet codebase. The following excerpt is from [`LoadImageApplet.java`](examples/LoadImageApplet.java):'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果代码在小程序中运行，那么从小程序代码库获取图像就像轻而易举一样。以下摘录来自 [`LoadImageApplet.java`](examples/LoadImageApplet.java)：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `getCodeBase` method used in this example returns the URL of the directory
+    containing this applet when the applet is deployed on a web server. If the applet
+    is deployed locally, `getCodeBase` returns null and the applet will not run.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例中使用的 `getCodeBase` 方法返回部署在 Web 服务器上时包含这个小程序的目录的 URL。如果小程序是本地部署的，`getCodeBase`
+    返回 null，小程序将无法运行。
+- en: The following example shows how to use the `getCodeBase` method to load the
+    `strawberry.jpg` file.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例展示了如何使用 `getCodeBase` 方法加载 `strawberry.jpg` 文件。
+- en: <applet code="LoadImageApplet" archive="examples/lib/LoadImageApplet.jar" width="200"
+    height="200" alt="LoadImageApplet example"><param name="permissions" value="sandbox"></applet>
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="LoadImageApplet" archive="examples/lib/LoadImageApplet.jar" width="200"
+    height="200" alt="LoadImageApplet example"><param name="permissions" value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果你看不到小程序运行，你需要至少安装 [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    版本。'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[`LoadImageApplet.java`](examples/LoadImageApplet.java) contains the complete
+    code for this example and this applet requires the [`strawberry.jpg`](examples/strawberry.jpg)
+    image file.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`LoadImageApplet.java`](examples/LoadImageApplet.java) 包含了这个示例的完整代码，这个小程序需要
+    [`strawberry.jpg`](examples/strawberry.jpg) 图像文件。'
+- en: In addition to reading from files or URLS, Image I/O can read from other sources,
+    such as an `InputStream`. `ImageIO.read()` is the most straightforward convenience
+    API for most applications, but the `javax.imageio.ImageIO` class provides many
+    more static methods for more advanced usages of the Image I/O API. The collection
+    of methods on this class represent just a subset of the rich set of APIs for discovering
+    information about the images and for controlling the image decoding (reading)
+    process.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了从文件或 URLS 读取外，Image I/O 还可以从其他来源读取，比如 `InputStream`。`ImageIO.read()` 对于大多数应用程序来说是最直接的便利
+    API，但 `javax.imageio.ImageIO` 类提供了更多静态方法，用于更高级的 Image I/O API 的用法。这个类上的方法集仅代表了用于发现关于图像信息和控制图像解码（读取）过程的丰富
+    API 集合的一部分。
+- en: We will explore some of the other capabilities of Image I/O later in the [Writing/Saving
+    an Image](saveimage.html) section.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将在 [写入/保存图像](saveimage.html) 部分��进一步探讨 Image I/O 的其他功能。

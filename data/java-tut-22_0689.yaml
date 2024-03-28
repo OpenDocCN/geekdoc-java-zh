@@ -1,0 +1,388 @@
+- en: Using Advanced Sequencer Features
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用高级音序器功能
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-adv.html](https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-adv.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 译文：[https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-adv.html](https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-adv.html)
+- en: So far, we've focused on simple playback and recording of MIDI data. This section
+    will briefly describe some of the more advanced features available through methods
+    of the `Sequencer` interface and the `Sequence` class.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们专注于简单的MIDI数据播放和录制。本节将简要描述通过`Sequencer`接口和`Sequence`类的方法可用的一些更高级功能。
+- en: Moving to an Arbitrary Position in the Sequence
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 移动到序列中的任意位置
+- en: 'There are two `Sequencer` methods that obtain the sequencer''s current position
+    in the sequence. The first of these:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两个`Sequencer`方法可以获取序列中音序器的当前位置。其中的第一个：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'returns the position measured in MIDI ticks from the beginning of the sequence.
+    The second method:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回从序列开始测量的MIDI滴答位置。第二种方法：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: returns the current position in microseconds. This method assumes that the sequence
+    is being played at the default rate as stored in the MIDI file or in the `Sequence`.
+    It does *not* return a different value if you've changed the playback speed as
+    described below.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回当前位置的微秒数。此方法假定序列以存储在MIDI文件或`Sequence`中的默认速率播放。如果您按照下面描述的方式更改了播放速度，则它不会返回不同的值。
+- en: 'You can similarly set the sequencer''s current position according to one unit
+    or the other:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您也可以根据一个单位或另一个单位设置音序器的当前位置：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: or
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或
+- en: '[PRE3]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Changing the Playback Speed
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更改播放速度
+- en: 'As indicated earlier, a sequence''s speed is indicated by its tempo, which
+    can vary over the course of the sequence. A sequence can contain events that encapsulate
+    standard MIDI tempo-change messages. When the sequencer processes such an event,
+    it changes the speed of playback to reflect the indicated tempo. In addition,
+    you can programmatically change the tempo by invoking any of these `Sequencer`
+    methods:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，序列的速度由其速度确定，可以在序列的过程中变化。序列可以包含封装标准MIDI速度变化消息的事件。当音序器处理此类事件时，它会根据指定的速度更改播放速度。此外，您可以通过调用任何这些`Sequencer`方法来以编程方式更改速度：
+- en: '[PRE4]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The first two of these methods set the tempo in beats per minute or microseconds
+    per quarter note, respectively. The tempo will stay at the specified value until
+    one of these methods is invoked again, or until a tempo-change event is encountered
+    in the sequence, at which point the current tempo is overridden by the newly specified
+    one.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些方法中的前两种分别设置每分钟的节拍数或每个四分音符的微秒数的速度。速度将保持在指定值，直到再次调用其中一种方法，或者在序列中遇到速度变化事件，此时当前速度将被新指定的速度覆盖。
+- en: The third method, `setTempoFactor`, is different in nature. It scales whatever
+    tempo is set for the sequencer (whether by tempo-change events or by one of the
+    first two methods above). The default scalar is 1.0 (no change). Although this
+    method causes the playback or recording to be faster or slower than the nominal
+    tempo (unless the factor is 1.0), it doesn't alter the nominal tempo. In other
+    words, the tempo values returned by `getTempoInBPM` and `getTempoInMPQ` are unaffected
+    by the tempo factor, even though the tempo factor does affect the actual rate
+    of playback or recording. Also, if the tempo is changed by a tempo-change event
+    or by one of the first two methods, it still gets scaled by whatever tempo factor
+    was last set. If you load a new sequence, however, the tempo factor is reset to
+    1.0.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第三种方法，`setTempoFactor`，性质不同。它会按比例缩放音序器设置的任何速度（无论是通过速度变化事件还是通过上述前两种方法之一）。默认比例为1.0（无变化）。尽管此方法会导致播放或录制速度比标称速度快或慢（除非因子为1.0），但不会改变标称速度。换句话说，`getTempoInBPM`和`getTempoInMPQ`返回的速度值不受速度因子影响，尽管速度因子会影响实际播放或录制速率。此外，如果速度通过速度变化事件或前两种方法之一更改，它仍会按上次设置的速度因子进行缩放。但是，如果加载新序列，则速度因子将重置为1.0。
+- en: Note that all these tempo-change directives are ineffectual when the sequence's
+    division type is one of the SMPTE types, instead of PPQ.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，当序列的分割类型为SMPTE类型之一而不是PPQ时，所有这些速度变化指令都无效。
+- en: Muting or Soloing Individual Tracks in the Sequence
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 静音或独奏序列中的单独轨道
+- en: 'It''s often convenient for users of sequencers to be able to turn off certain
+    tracks, to hear more clearly exactly what is happening in the music. A full-featured
+    sequencer program lets the user choose which tracks should sound during playback.
+    (Speaking more precisely, since sequencers don''t actually create sound themselves,
+    the user chooses which tracks will contribute to the stream of MIDI messages that
+    the sequencer produces.) Typically, there are two types of graphical controls
+    on each track: a *mute* button and a *solo* button. If the mute button is activated,
+    that track will not sound under any circumstances, until the mute button is deactivated.
+    Soloing is a less well-known feature. It''s roughly the opposite of muting. If
+    the solo button on any track is activated, only tracks whose solo buttons are
+    activated will sound. This feature lets the user quickly audition a small number
+    of tracks without having to mute all the other tracks. The mute button typically
+    takes priority over the solo button: if both are activated, the track doesn''t
+    sound.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于音序器的用户来说，通常可以方便地关闭某些轨道，以更清楚地听到音乐中发生的情况。一个功能齐全的音序器程序允许用户在播放过程中选择哪些轨道应该发声。（更准确地说，由于音序器实际上不会自己发声，用户选择哪些轨道将为音序器产生的MIDI消息流做出贡献。）通常，每个轨道上都有两种类型的图形控件：一个*静音*按钮和一个*独奏*按钮。如果激活了静音按钮，那个轨道在任何情况下都不会发声，直到静音按钮被停用。独奏是一个不太为人知的功能。它大致相当于静音的反义词。如果任何轨道上的独奏按钮被激活，只有那些独奏按钮被激活的轨道才会发声。这个功能让用户可以快速试听少量轨道，而无需将所有其他轨道静音。静音按钮通常优先于独奏按钮：如果两者都被激活，那个轨道不会发声。
+- en: 'Using `Sequencer` methods, muting or soloing tracks (as well as querying a
+    track''s current mute or solo state) is easily accomplished. Let''s assume we
+    have obtained the default `Sequencer` and that we''ve loaded sequence data into
+    it. Muting the fifth track in the sequence would be accomplished as follows:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`Sequencer`方法，静音或独奏轨道（以及查询轨道当前的静音或独奏状态）是很容易实现的。假设我们已经获得了默认的`Sequencer`并且已经将序列数据加载到其中。要静音序列中的第五个轨道，可以按照以下步骤进行：
+- en: '[PRE5]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: There are a couple of things to note about the above code snippet. First, tracks
+    of a sequence are numbered starting with 0 and ending with the total number of
+    tracks minus 1\. Also, the second argument to `setTrackMute` is a boolean. If
+    it's true, the request is to mute the track; otherwise the request is to unmute
+    the specified track. Lastly, in order to test that the muting took effect, we
+    invoke the `Sequencer getTrackMute` method, passing it the track number we're
+    querying. If it returns `true`, as we'd expect in this case, then the mute request
+    worked. If it returns `false`, then it failed.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有几点需要注意上面的代码片段。首先，序列的轨道编号从0开始，以总轨道数减1结束。此外，`setTrackMute`的第二个参数是一个布尔值。如果为true，则请求是将轨道静音；否则请求是取消静音指定的轨道。最后，为了测试静音是否生效，我们调用`Sequencer
+    getTrackMute`方法，将要查询的轨道号传递给它。如果它返回`true`，正如我们在这种情况下所期望的那样，那么静音请求成功。如���返回`false`，则请求失败。
+- en: Mute requests may fail for various reasons. For example, the track number specified
+    in the `setTrackMute` call might exceed the total number of tracks, or the sequencer
+    might not support muting. By calling `getTrackMute`, we can determine if our request
+    succeeded or failed.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 静音请求可能因各种原因而失败。例如，`setTrackMute`调用中指定的轨道号可能超过了总轨道数，或者音序器可能不支持静音。通过调用`getTrackMute`，我们可以确定我们的请求是成功还是失败。
+- en: As an aside, the boolean that's returned by `getTrackMute` can, indeed, tell
+    us if a failure occurred, but it can't tell us why it occurred. We could test
+    to see if a failure was caused by passing an invalid track number to the `setTrackMute`
+    method. To do this, we would call the `getTracks` method of `Sequence`, which
+    returns an array containing all of the tracks in the sequence. If the track number
+    specified in the `setTrackMute` call exceeds the length of this array, then we
+    know we specified an invalid track number.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 顺便说一句，`getTrackMute`返回的布尔值确实可以告诉我们是否发生了失败，但它无法告诉我们失败的原因。我们可以测试看看失败是否是由于将无效的轨道号传递给`setTrackMute`方法引起的。为此，我们可以调用`Sequence`的`getTracks`方法，该方法返回一个包含序列中所有轨道的数组。如果在`setTrackMute`调用中指定的轨道号超过了此数组的长度，则我们知道我们指定了一个无效的轨道号。
+- en: If the mute request succeeded, then in our example, the fifth track will not
+    sound when the sequence is playing, nor will any other tracks that are currently
+    muted.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果静音请求成功，那么在我们的示例中，当序列播放时第五个轨道将不会发声，当前静音的任何其他轨道也不会发声。
+- en: The method and techniques for soloing a track are very similar to those for
+    muting. To solo a track, invoke the `setTrackSolo` method of `Sequence:`
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 独奏轨道的方法和技巧与静音非常相似。要独奏一个轨道，调用`Sequence`的`setTrackSolo`方法：
+- en: '[PRE6]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: As in `setTrackMute`, the first argument specifies the zero-based track number,
+    and the second argument, if `true`, specifies that the track should be in solo
+    mode; otherwise the track should not be soloed.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`setTrackMute`相同，第一个参数指定基于零的轨道编号，第二个参数如果为`true`，则指定该轨道应处于独奏模式；否则该轨道不应处于独奏状态。
+- en: By default, a track is neither muted nor soloed.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，轨道既不静音也不独奏。
+- en: Synchronizing with Other MIDI Devices
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 与其他 MIDI 设备同步
+- en: '`Sequencer` has an inner class called `Sequencer.SyncMode`. A `SyncMode` object
+    represents one of the ways in which a MIDI sequencer''s notion of time can be
+    synchronized with a master or slave device. If the sequencer is being synchronized
+    to a master, the sequencer revises its current time in response to certain MIDI
+    messages from the master. If the sequencer has a slave, the sequencer similarly
+    sends MIDI messages to control the slave''s timing.'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Sequencer`有一个名为`Sequencer.SyncMode`的内部类。`SyncMode`对象代表 MIDI 序列器的时间概念如何与主设备或从设备同步的一种方式。如果序列器正在与主设备同步，序列器会根据来自主设备的某些
+    MIDI 消息调整其当前时间。如果序列器有一个从设备，序列器同样会发送 MIDI 消息来控制从设备的定时。'
+- en: 'There are three predefined modes that specify possible masters for a sequencer:
+    `INTERNAL_CLOCK`, `MIDI_SYNC`, and `MIDI_TIME_CODE`. The latter two work if the
+    sequencer receives MIDI messages from another device. In these two modes, the
+    sequencer''s time gets reset based on system real-time timing clock messages or
+    MIDI time code (MTC) messages, respectively. (See the MIDI specification for more
+    information about these types of message.) These two modes can also be used as
+    slave modes, in which case the sequencer sends the corresponding types of MIDI
+    messages to its receiver. A fourth mode, `NO_SYNC`, is used to indicate that the
+    sequencer should not send timing information to its receivers.'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有三种预定义模式指定了序列器可能的主设备：`INTERNAL_CLOCK`、`MIDI_SYNC`和`MIDI_TIME_CODE`。后两种模式在序列器接收来自另一设备的
+    MIDI 消息时起作用。在这两种模式下，序列器的时间会根据系统实时定时时钟消息或 MIDI 时间码（MTC）消息进行重置。 （有关这些消息类型的更多信息，请参阅
+    MIDI 规范。）这两种模式也可以用作从模式，此时序列器会向其接收器发送相应类型的 MIDI 消息。第四种模式`NO_SYNC`用于指示序列器不应向其接收器发送定时信息。
+- en: By calling the `setMasterSyncMode` method with a supported `SyncMode` object
+    as the argument, you can specify how the sequencer's timing is controlled. Likewise,
+    the `setSlaveSyncMode` method determines what timing information the sequencer
+    will send to its receivers. This information controls the timing of devices that
+    use the sequencer as a master timing source.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过调用带有支持的`SyncMode`对象作为参数的`setMasterSyncMode`方法，您可以指定序列器的定时如何受控。同样，`setSlaveSyncMode`方法确定序列器将向其接收器发送哪些定时信息。这些信息控制使用序列器作为主定时源的设备的定时。
+- en: Specifying Special Event Listeners
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定特殊事件监听器
+- en: Each track of a sequence can contain many different kinds of `MidiEvents`. Such
+    events include Note On and Note Off messages, program changes, control changes,
+    and meta events. The Java Sound API specifies "listener" interfaces for the last
+    two of these event types (control change events and meta events). You can use
+    these interfaces to receive notifications when such events occur during playback
+    of a sequence.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 序列的每个轨道可以包含许多不同类型的`MidiEvents`。这些事件包括音符开和音符关消息、程序更改、控制更改和元事件。Java Sound API为最后两种事件类型（控制更改事件和元事件）指定了“监听器”接口。您可以使用这些接口在播放序列时接收这些事件发生时的通知。
+- en: Objects that support the `ControllerEventListener` interface can receive notification
+    when a `Sequencer` processes particular control-change messages. A control-change
+    message is a standard type of MIDI message that represents a change in the value
+    of a MIDI controller, such as a pitch-bend wheel or a data slider. (See the MIDI
+    specification for the complete list of control-change messages.) When such a message
+    is processed during playback of a sequence, the message instructs any device (probably
+    a synthesizer) that's receiving the data from the sequencer to update the value
+    of some parameter. The parameter usually controls some aspect of sound synthesis,
+    such as the pitch of the currently sounding notes if the controller was the pitch-bend
+    wheel. When a sequence is being recorded, the control-change message means that
+    a controller on the external physical device that created the message has been
+    moved, or that such a move has been simulated in software.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 支持`ControllerEventListener`接口的对象可以在`Sequencer`处理特定控制变化消息时接收通知。控制变化消息是一种标准的MIDI消息类型，代表了MIDI控制器值的变化，比如音高弯曲轮或数据滑块。
+    （请参阅MIDI规范获取控制变化消息的完整列表。）当在序列播放过程中处理这样的消息时，消息指示任何设备（可能是合成器）从序列器接收数据以更新某些参数的值。该参数通常控制声音合成的某些方面，比如如果控制器是音高弯曲轮，则控制当前发声音符的音高。当录制序列时，控制变化消息意味着在创建消息的外部物理设备上移动了一个控制器，或者在软件中模拟了这样的移动。
+- en: 'Here''s how the `ControllerEventListener` interface is used. Let''s assume
+    that you''ve developed a class that implements the `ControllerEventListener` interface,
+    meaning that your class contains the following method:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是`ControllerEventListener`接口的使用方法。假设你已经开发了一个实现`ControllerEventListener`接口的类，意味着你的类包含以下方法：
+- en: '[PRE7]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Let''s also assume that you''ve created an instance of your class and assigned
+    it to a variable called `myListener`. If you include the following statements
+    somewhere within your program:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你已经创建了一个类的实例，并将其赋给一个名为`myListener`的变量。如果你在程序的某个地方包含以下语句：
+- en: '[PRE8]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: then your class's `controlChange` method will be invoked every time the sequencer
+    processes a control-change message for MIDI controller numbers 1, 2, or 4\. In
+    other words, when the `Sequencer` processes a request to set the value of any
+    of the registered controllers, the `Sequencer` will invoke your class's `controlChange`
+    method. (Note that the assignments of MIDI controller numbers to specific control
+    devices is detailed in the MIDI 1.0 Specification.)
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么你的类的`controlChange`方法将在`Sequencer`处理MIDI控制器编号为1、2或4的控制变化消息时被调用。换句话说，当`Sequencer`处理设置任何已注册控制器的值的请求时，`Sequencer`将调用你的类的`controlChange`方法。（请注意，将MIDI控制器编号分配给特定控制设备的详细信息在MIDI
+    1.0规范中有详细说明。）
+- en: The `controlChange` method is passed a `ShortMessage` containing the controller
+    number affected, and the new value to which the controller was set. You can obtain
+    the controller number using the `ShortMessage.getData1` method, and the new setting
+    of the controller's value using the `ShortMessage.getData2` method.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`controlChange`方法接收一个包含受影响的控制器编号和控制器设置的新值的`ShortMessage`。你可以使用`ShortMessage.getData1`方法获取控制器编号，并使用`ShortMessage.getData2`方法获取控制器值的新设置。'
+- en: The other kind of special event listener is defined by the `MetaEventListener`
+    interface. Meta messages, according to the Standard MIDI Files 1.0 specification,
+    are messages that are not present in MIDI wire protocol but that can be embedded
+    in a MIDI file. They are not meaningful to a synthesizer, but can be interpreted
+    by a sequencer. Meta messages include instructions (such as tempo change commands),
+    lyrics or other text, and other indicators (such as end-of-track).
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种特殊事件监听器的类型由`MetaEventListener`接口定义。根据标准MIDI文件1.0规范，元消息是不在MIDI线协议中存在但可以嵌入到MIDI文件中的消息。它们对合成器没有意义，但可以被序列器解释。元消息包括指令（如变速命令）、歌词或其他文本以及其他指示（如音轨结束）。
+- en: 'The `MetaEventListener` mechanism is analogous to `ControllerEventListener`.
+    Implement the `MetaEventListener` interface in any class whose instances need
+    to be notified when a `MetaMessage` is processed by the sequencer. This involves
+    adding the following method to the class:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MetaEventListener`机制类似于`ControllerEventListener`。在任何需要在`Sequencer`处理`MetaMessage`时收到通知的类中实现`MetaEventListener`接口。这涉及向类中添加以下方法：'
+- en: '[PRE9]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'You register an instance of this class by passing it as the argument to the
+    `Sequencer addMetaEventListener` method:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过将此类的实例作为参数传递给`Sequencer addMetaEventListener`方法来注册该类的实例：
+- en: '[PRE10]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: This is slightly different from the approach taken by the `ControllerEventListener`
+    interface, because you have to register to receive all `MetaMessages,` not just
+    selected ones of interest. If the sequencer encounters a `MetaMessage` in its
+    sequence, it will invoke `myMetaListener.meta`, passing it the `MetaMessage` encountered.
+    The `meta` method can invoke `getType` on its `MetaMessage` argument to obtain
+    an integer from 0 to 127 that indicates the message type, as defined by the Standard
+    MIDI Files 1.0 specification.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这与`ControllerEventListener`接口所采取的方法略有不同，因为您必须注册以接收所有`MetaMessages`，而不仅仅是感兴趣的部分。如果顺序器在其序列中遇到`MetaMessage`，它将调用`myMetaListener.meta`，并将遇到的`MetaMessage`传递给它。`meta`方法可以调用其`MetaMessage`参数上的`getType`，以获取一个从0到127的整数，该整数表示消息类型，如标准MIDI文件1.0规范所定义。

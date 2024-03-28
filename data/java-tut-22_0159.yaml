@@ -1,0 +1,145 @@
+- en: Creating Exception Classes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建异常类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/creating.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/creating.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/creating.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/creating.html)
+- en: "When faced with choosing the type of exception to throw, you can either use\
+    \ one written by someone else \x97 the Java platform provides a lot of exception\
+    \ classes you can use \x97 or you can write one of your own. You should write\
+    \ your own exception classes if you answer yes to any of the following questions;\
+    \ otherwise, you can probably use someone else's."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "在选择要抛出的异常类型时，你可以使用其他人编写的异常 \x97 Java平台提供了许多可以使用的异常类 \x97 或者你可以编写自己的异常。如果对以下任何问题回答是肯定的，那么你应该编写自己的异常类；否则，你可能可以使用别人的。"
+- en: Do you need an exception type that isn't represented by those in the Java platform?
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 是否需要一个Java平台中没有的异常类型？
+- en: Would it help users if they could differentiate your exceptions from those thrown
+    by classes written by other vendors?
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果用户能够区分你的异常和其他供应商编写的异常，这是否有助于用户？
+- en: Does your code throw more than one related exception?
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你的代码是否抛出了多个相关的异常？
+- en: If you use someone else's exceptions, will users have access to those exceptions?
+    A similar question is, should your package be independent and self-contained?
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果使用别人的异常，用户是否能够访问这些异常？一个类似的问题是，你的包是否独立且自包含？
+- en: An Example
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例
+- en: 'Suppose you are writing a linked list class. The class supports the following
+    methods, among others:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你正在编写一个链表类。该类支持以下方法，以及其他方法：
+- en: "**`objectAt(int n)`** \x97 Returns the object in the `n`th position in the\
+    \ list. Throws an exception if the argument is less than 0 or more than the number\
+    \ of objects currently in the list."
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "**`objectAt(int n)`** \x97 返回列表中第`n`个位置的对象。如果参数小于0或大于当前列表中对象的数量，则抛出异常。"
+- en: "**`firstObject()`** \x97 Returns the first object in the list. Throws an exception\
+    \ if the list contains no objects."
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "**`firstObject()`** \x97 返回列表中的第一个对象。如果列表不包含对象，则抛出异常。"
+- en: "**`indexOf(Object o)`** \x97 Searches the list for the specified `Object` and\
+    \ returns its position in the list. Throws an exception if the object passed into\
+    \ the method is not in the list."
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "**`indexOf(Object o)`** \x97 搜索列表中指定的`Object`并返回其在列表中的位置。如果传入方法的对象不在列表中，则抛出异常。"
+- en: The linked list class can throw multiple exceptions, and it would be convenient
+    to be able to catch all exceptions thrown by the linked list with one exception
+    handler. Also, if you plan to distribute your linked list in a package, all related
+    code should be packaged together. Thus, the linked list should provide its own
+    set of exception classes.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 链表类可以抛出多个异常，能够使用一个异常处理程序捕获链表抛出的所有异常将会很方便。此外，如果计划在一个包中分发你的链表，所有相关代码应该打包在一起。因此，链表应该提供自己的一组异常类。
+- en: The next figure illustrates one possible class hierarchy for the exceptions
+    thrown by the linked list.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下图展示了链表抛出的异常可能的类层次结构。
+- en: '![A possible class hierarchy for the exceptions thrown by a linked list.](../Images/456171234b3743034ff16d6f886d47e6.png)'
+  id: totrans-14
+  prefs: []
+  type: TYPE_IMG
+  zh: '![链表抛出的异常可能的类层次结构。](../Images/456171234b3743034ff16d6f886d47e6.png)'
+- en: Example exception class hierarchy.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例异常类层次结构。
+- en: Choosing a Superclass
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 选择一个超类
+- en: Any `Exception` subclass can be used as the parent class of `LinkedListException`.
+    However, a quick perusal of those subclasses shows that they are inappropriate
+    because they are either too specialized or completely unrelated to `LinkedListException`.
+    Therefore, the parent class of `LinkedListException` should be `Exception`.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何`Exception`子类都可以用作`LinkedListException`的父类。然而，快速浏览这些子类显示它们不合适，因为它们要么过于专业化，要么与`LinkedListException`完全无关。因此，`LinkedListException`的父类应该是`Exception`。
+- en: Most applets and applications you write will throw objects that are `Exception`s.
+    `Error`s are normally used for serious, hard errors in the system, such as those
+    that prevent the JVM from running.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你编写的大多数小程序和应用程序将抛出`Exception`对象。`Error`通常用于系统中的严重、严重错误，例如阻止JVM运行的错误。
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** For readable code, it''s good practice to append the string `Exception`
+    to the names of all classes that inherit (directly or indirectly) from the `Exception`
+    class.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 为了编写可读性强的代码，将`Exception`字符串附加到所有直接或间接继承自`Exception`类的类名后是一个好习惯。'
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

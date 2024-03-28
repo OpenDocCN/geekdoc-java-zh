@@ -1,0 +1,272 @@
+- en: Handling SQLExceptions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 处理SQLException
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html)
+- en: 'This page covers the following topics:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页涵盖以下主题：
+- en: '[Overview of SQLException](#overview_sqlexception)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[SQLException概述](#overview_sqlexception)'
+- en: '[Retrieving Exceptions](#retrieving_exceptions)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检索异常](#retrieving_exceptions)'
+- en: '[Retrieving Warnings](#retrieving_warnings)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检索警告](#retrieving_warnings)'
+- en: '[Categorized SQLExceptions](#categorized_sqlexceptions)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[分类的SQLException](#categorized_sqlexceptions)'
+- en: '[Other Subclasses of SQLException](#subclasses_sqlexception)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[SQLException的其他子类](#subclasses_sqlexception)'
+- en: Overview of SQLException
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: SQLException概述
+- en: 'When JDBC encounters an error during an interaction with a data source, it
+    throws an instance of `SQLException` as opposed to `Exception`. (A data source
+    in this context represents the database to which a `Connection` object is connected.)
+    The `SQLException` instance contains the following information that can help you
+    determine the cause of the error:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当JDBC在与数据源交互过程中遇到错误时，会抛出一个`SQLException`实例，而不是`Exception`。（在这种情况下，数据源代表`Connection`对象连接的数据库。）`SQLException`实例包含以下信息，可以帮助您确定错误的原因：
+- en: A description of the error. Retrieve the `String` object that contains this
+    description by calling the method `SQLException.getMessage`.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 错误描述。通过调用方法`SQLException.getMessage`检索包含此描述的`String`对象。
+- en: A SQLState code. These codes and their respective meanings have been standardized
+    by ISO/ANSI and Open Group (X/Open), although some codes have been reserved for
+    database vendors to define for themselves. This `String` object consists of five
+    alphanumeric characters. Retrieve this code by calling the method `SQLException.getSQLState`.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: SQLState代码。这些代码及其相应的含义已经由ISO/ANSI和Open Group（X/Open）标准化，尽管一些代码已保留供数据库供应商自行定义。这个`String`对象由五个字母数字字符组成。通过调用方法`SQLException.getSQLState`检索此代码。
+- en: An error code. This is an integer value identifying the error that caused the
+    `SQLException` instance to be thrown. Its value and meaning are implementation-specific
+    and might be the actual error code returned by the underlying data source. Retrieve
+    the error by calling the method `SQLException.getErrorCode`.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 错误代码。这是一个整数值，标识导致抛出`SQLException`实例的错误。其值和含义是特定于实现的，可能是底层数据源返回的实际错误代码。通过调用方法`SQLException.getErrorCode`检索错误。
+- en: A cause. A `SQLException` instance might have a causal relationship, which consists
+    of one or more `Throwable` objects that caused the `SQLException` instance to
+    be thrown. To navigate this chain of causes, recursively call the method `SQLException.getCause`
+    until a `null` value is returned.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个原因。`SQLException`实例可能具有因果关系，由导致抛出`SQLException`实例的一个或多个`Throwable`对象组成。要浏览这些原因链，递归调用方法`SQLException.getCause`，直到返回一个`null`值。
+- en: A reference to any *chained* exceptions. If more than one error occurs, the
+    exceptions are referenced through this chain. Retrieve these exceptions by calling
+    the method `SQLException.getNextException` on the exception that was thrown.
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 任何*链接*异常的引用。如果发生多个错误，这些异常通过此链引用。通过在抛出异常上调用方法`SQLException.getNextException`检索这些异常。
+- en: Retrieving Exceptions
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检索异常
+- en: 'The following method, [`JDBCTutorialUtilities.printSQLException`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JDBCTutorialUtilities.java),
+    outputs the SQLState, error code, error description, and cause (if there is one)
+    contained in the `SQLException` as well as any other exception chained to it:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的方法，[`JDBCTutorialUtilities.printSQLException`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JDBCTutorialUtilities.java)，输出了`SQLException`中包含的SQLState、错误代码、错误描述以及原因（如果有的话），以及与之链接的任何其他异常：
+- en: '[PRE0]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'For example, if you call the method `CoffeesTable.dropTable` with Java DB as
+    your DBMS, the table `COFFEES` does not exist, *and* you remove the call to `JDBCTutorialUtilities.ignoreSQLException`,
+    the output will be similar to the following:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，如果您使用Java DB调用方法`CoffeesTable.dropTable`，表`COFFEES`不存在，*并且*您删除对`JDBCTutorialUtilities.ignoreSQLException`的调用，输出将类似于以下内容：
+- en: '[PRE1]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Instead of printing `SQLException` information, you could instead first retrieve
+    the `SQLState` then process the `SQLException` accordingly. For example, the method
+    `JDBCTutorialUtilities.ignoreSQLException` returns `true` if the `SQLState` is
+    equal to code `42Y55` (and you are using Java DB as your DBMS), which causes `JDBCTutorialUtilities.printSQLException`
+    to ignore the `SQLException`:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以先检索 `SQLState`，然后相应地处理 `SQLException`，而不是打印 `SQLException` 信息。例如，如果 `SQLState`
+    等于代码 `42Y55`（并且您正在使用 Java DB 作为您的 DBMS），则方法 `JDBCTutorialUtilities.ignoreSQLException`
+    返回 `true`，导致 `JDBCTutorialUtilities.printSQLException` 忽略 `SQLException`：
+- en: '[PRE2]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Retrieving Warnings
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检索警告
+- en: '`SQLWarning` objects are a subclass of `SQLException` that deal with database
+    access warnings. Warnings do not stop the execution of an application, as exceptions
+    do; they simply alert the user that something did not happen as planned. For example,
+    a warning might let you know that a privilege you attempted to revoke was not
+    revoked. Or a warning might tell you that an error occurred during a requested
+    disconnection.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SQLWarning` 对象是处理数据库访问警告的 `SQLException` 子类。警告不会像异常那样停止应用程序的执行；它们只是提醒用户某些事情未按计划发生。例如，警告可能会告诉您尝试撤销的权限未被撤销。或者警告可能会告诉您在请求的断开连接期间发生了错误。'
+- en: A warning can be reported on a `Connection` object, a `Statement` object (including
+    `PreparedStatement` and `CallableStatement` objects), or a `ResultSet` object.
+    Each of these classes has a `getWarnings` method, which you must invoke in order
+    to see the first warning reported on the calling object. If `getWarnings` returns
+    a warning, you can call the `SQLWarning` method `getNextWarning` on it to get
+    any additional warnings. Executing a statement automatically clears the warnings
+    from a previous statement, so they do not build up. This means, however, that
+    if you want to retrieve warnings reported on a statement, you must do so before
+    you execute another statement.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以在 `Connection` 对象、`Statement` 对象（包括 `PreparedStatement` 和 `CallableStatement`
+    对象）或 `ResultSet` 对象上报告警告。这些类中的每一个都有一个 `getWarnings` 方法，您必须调用它以查看调用对象上报的第一个警告。如果
+    `getWarnings` 返回一个警告，您可以调用它的 `getNextWarning` 方法来获取任何额外的警告。执行语句会自动清除先前语句的警告，因此它们不会累积。然而，这意味着如果您想要检索在语句上报告的警告，您必须在执行另一个语句之前这样做。
+- en: 'The following methods from [`JDBCTutorialUtilities.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JDBCTutorialUtilities.java)
+    illustrate how to get complete information about any warnings reported on `Statement`
+    or `ResultSet` objects:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`JDBCTutorialUtilities.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JDBCTutorialUtilities.java)
+    中的以下方法演示了如何获取关于 `Statement` 或 `ResultSet` 对象上报的任何警告的完整信息：'
+- en: '[PRE3]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The most common warning is a `DataTruncation` warning, a subclass of `SQLWarning`.
+    All `DataTruncation` objects have a SQLState of `01004`, indicating that there
+    was a problem with reading or writing data. `DataTruncation` methods let you find
+    out in which column or parameter data was truncated, whether the truncation was
+    on a read or write operation, how many bytes should have been transferred, and
+    how many bytes were actually transferred.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最常见的警告是 `DataTruncation` 警告，是 `SQLWarning` 的子类。所有 `DataTruncation` 对象的 SQLState
+    都是 `01004`，表示读取或写入数据时出现问题。`DataTruncation` 方法让您找出数据在哪一列或参数被截断，截断是在读取还是写入操作中发生的，应该传输多少字节，实际传输了多少字节。
+- en: Categorized SQLExceptions
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 分类的 SQLExceptions
+- en: 'Your JDBC driver might throw a subclass of `SQLException` that corresponds
+    to a common SQLState or a common error state that is not associated with a specific
+    SQLState class value. This enables you to write more portable error-handling code.
+    These exceptions are subclasses of one of the following classes:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您的 JDBC 驱动程序可能会抛出与常见 SQLState 或与特定 SQLState 类值不相关的常见错误状态对应的 `SQLException` 子类。这使您能够编写更具可移植性的错误处理代码。这些异常是以下类的子类之一：
+- en: '`SQLNonTransientException`'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SQLNonTransientException`'
+- en: '`SQLTransientException`'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SQLTransientException`'
+- en: '`SQLRecoverableException`'
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SQLRecoverableException`'
+- en: See the latest Javadoc of the `java.sql` package or the documentation of your
+    JDBC driver for more information about these subclasses.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看 `java.sql` 包的最新 Javadoc 或您的 JDBC 驱动程序的文档，以获取有关这些子类的更多信息。
+- en: Other Subclasses of SQLException
+  id: totrans-34
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 其他 SQLException 的子类
+- en: 'The following subclasses of `SQLException` can also be thrown:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下 `SQLException` 的子类也可能被抛出：
+- en: '`BatchUpdateException` is thrown when an error occurs during a batch update
+    operation. In addition to the information provided by `SQLException`, `BatchUpdateException`
+    provides the update counts for all statements that were executed before the error
+    occurred.'
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`BatchUpdateException` 在批量更新操作期间发生错误时抛出。除了`SQLException`提供的信息外，`BatchUpdateException`还提供了在错误发生之前执行的所有语句的更新计数。'
+- en: '`SQLClientInfoException` is thrown when one or more client information properties
+    could not be set on a Connection. In addition to the information provided by `SQLException`,
+    `SQLClientInfoException` provides a list of client information properties that
+    were not set.'
+  id: totrans-37
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SQLClientInfoException` 在连接上无法设置一个或多个客户端信息属性时抛出。除了`SQLException`提供的信息外，`SQLClientInfoException`还提供了未设置的客户端信息属性列表。'

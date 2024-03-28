@@ -1,0 +1,141 @@
+- en: Initializing Fields
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 初始化字段
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html](https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html](https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html)
+- en: 'As you have seen, you can often provide an initial value for a field in its
+    declaration:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你所见，你通常可以在声明中为字段提供初始值：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This works well when the initialization value is available and the initialization
+    can be put on one line. However, this form of initialization has limitations because
+    of its simplicity. If initialization requires some logic (for example, error handling
+    or a `for` loop to fill a complex array), simple assignment is inadequate. Instance
+    variables can be initialized in constructors, where error handling or other logic
+    can be used. To provide the same capability for class variables, the Java programming
+    language includes *static initialization blocks*.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当初始化值可用且初始化可以放在一行时，这种方式效果很好。然而，这种初始化方式由于其简单性而有一些限制。如果初始化需要一些逻辑（例如，错误处理或使用`for`循环填充复杂数组），简单赋值是不够的。实例变量可以在构造函数中初始化，可以在那里使用错误处理或其他逻辑。为了为类变量提供相同的功能，Java编程语言包括*静态初始化块*。
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** It is not necessary to declare fields at the beginning of the class
+    definition, although this is the most common practice. It is only necessary that
+    they be declared and initialized before they are used.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**在类定义的开头声明字段并不是必需的，尽管这是最常见的做法。只需要在使用之前声明和初始化它们即可。'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Static Initialization Blocks
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 静态初始化块
+- en: 'A *static initialization block* is a normal block of code enclosed in braces,
+    `{ }`, and preceded by the `static` keyword. Here is an example:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*静态初始化块*是一个普通的代码块，用大括号`{ }`括起来，并在`static`关键字之前。这里是一个示例：'
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: A class can have any number of static initialization blocks, and they can appear
+    anywhere in the class body. The runtime system guarantees that static initialization
+    blocks are called in the order that they appear in the source code.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个类可以有任意数量的静态初始化块，并且它们可以出现在类体的任何位置。运行时系统保证静态初始化块按照它们在源代码中出现的顺序调用。
+- en: "There is an alternative to static blocks \x97 you can write a private static\
+    \ method:"
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "还有一种替代静态块的方法 \x97 你可以编写一个私有静态方法："
+- en: '[PRE2]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The advantage of private static methods is that they can be reused later if
+    you need to reinitialize the class variable.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 私有静态方法的优势在于，如果需要重新初始化类变量，它们可以在以后被重用。
+- en: Initializing Instance Members
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 初始化实例成员
+- en: 'Normally, you would put code to initialize an instance variable in a constructor.
+    There are two alternatives to using a constructor to initialize instance variables:
+    initializer blocks and final methods.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，你会将代码放在构造函数中初始化实例变量。有两种替代方法可以用来初始化实例变量：初始化块和final方法。
+- en: 'Initializer blocks for instance variables look just like static initializer
+    blocks, but without the `static` keyword:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实例变量的初始化块看起来就像静态初始化块，但没有`static`关键字：
+- en: '[PRE3]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The Java compiler copies initializer blocks into every constructor. Therefore,
+    this approach can be used to share a block of code between multiple constructors.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编译器将初始化块复制到每个构造函数中。因此，这种方法可以用于在多个构造函数之间共享一段代码。
+- en: 'A *final method* cannot be overridden in a subclass. This is discussed in the
+    lesson on interfaces and inheritance. Here is an example of using a final method
+    for initializing an instance variable:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*final方法*不能在子类中被重写。这在接口和继承的课程中有讨论。这里是使用final方法初始化实例变量的示例：'
+- en: '[PRE4]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: This is especially useful if subclasses might want to reuse the initialization
+    method. The method is final because calling non-final methods during instance
+    initialization can cause problems.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果子类可能希望重用初始化方法，则这是特别有用的。该方法是final的，因为在实例初始化期间调用非final方法可能会导致问题。

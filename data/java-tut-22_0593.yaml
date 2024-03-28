@@ -1,0 +1,147 @@
+- en: Using a ListResourceBundle
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用 ListResourceBundle
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/resbundle/list.html](https://docs.oracle.com/javase/tutorial/i18n/resbundle/list.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/resbundle/list.html](https://docs.oracle.com/javase/tutorial/i18n/resbundle/list.html)
+- en: This section illustrates the use of a `ListResourceBundle` object with a sample
+    program called [``ListDemo``](examples/ListDemo.java). The text that follows explains
+    each step involved in creating the `ListDemo` program, along with the `ListResourceBundle`
+    subclasses that support it.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节演示了使用 `ListResourceBundle` 对象的示例程序 [``ListDemo``](examples/ListDemo.java)。接下来的文本解释了创建
+    `ListDemo` 程序所涉及的每个步骤，以及支持它的 `ListResourceBundle` 子类。
+- en: 1\. Create the ListResourceBundle Subclasses
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 1\. 创建 ListResourceBundle 子类
+- en: 'A `ListResourceBundle` is backed up by a class file. Therefore the first step
+    is to create a class file for every supported `Locale`. In the `ListDemo` program
+    the base name of the `ListResourceBundle` is `StatsBundle`. Since `ListDemo` supports
+    three `Locale` objects, it requires the following three class files:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ListResourceBundle` 由类文件支持。因此，第一步是为每个支持的 `Locale` 创建一个类文件。在 `ListDemo` 程序中，`ListResourceBundle`
+    的基本名称是 `StatsBundle`。由于 `ListDemo` 支持三个 `Locale` 对象，因此需要以下三个类文件：'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The `StatsBundle` class for Japan is defined in the source code that follows.
+    Note that the class name is constructed by appending the language and country
+    codes to the base name of the `ListResourceBundle`. Inside the class the two-dimensional
+    `contents` array is initialized with the key-value pairs. The keys are the first
+    element in each pair: `GDP`, `Population`, and `Literacy`. The keys must be `String`
+    objects and they must be the same in every class in the `StatsBundle` set. The
+    values can be any type of object. In this example the values are two `Integer`
+    objects and a `Double` object.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为日本定义的 `StatsBundle` 类在接下来的源代码中定义。请注意，类名是通过将语言和国家代码附加到 `ListResourceBundle`
+    的基本名称构建的。在类内部，二维 `contents` 数组使用键值对进行初始化。键是每对中的第一个元素：`GDP`、`Population` 和 `Literacy`。键必须是
+    `String` 对象，并且在 `StatsBundle` 集合中的每个类中必须相同。值可以是任何类型的对象。在此示例中，值是两个 `Integer` 对象和一个
+    `Double` 对象。
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 2\. Specify the Locale
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 2\. 指定 Locale
+- en: 'The `ListDemo` program defines the `Locale` objects as follows:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ListDemo` 程序如下定义 `Locale` 对象：'
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Each `Locale` object corresponds to one of the `StatsBundle` classes. For example,
+    the Japanese `Locale`, which was defined with the `ja` and `JP` codes, matches
+    `StatsBundle_ja_JP.class`.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个 `Locale` 对象对应于一个 `StatsBundle` 类。例如，用 `ja` 和 `JP` 代码定义的日语 `Locale` 与 `StatsBundle_ja_JP.class`
+    匹配。
+- en: 3\. Create the ResourceBundle
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 3\. 创建 ResourceBundle
+- en: 'To create the `ListResourceBundle`, invoke the `getBundle` method. The following
+    line of code specifies the base name of the class (`StatsBundle`) and the `Locale`:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建 `ListResourceBundle`，请调用 `getBundle` 方法。以下代码行指定了类的基本名称（`StatsBundle`）和 `Locale`：
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The `getBundle` method searches for a class whose name begins with `StatsBundle`
+    and is followed by the language and country codes of the specified `Locale`. If
+    the `currentLocale` is created with the `ja` and `JP` codes, `getBundle` returns
+    a `ListResourceBundle` corresponding to the class `StatsBundle_ja_JP`, for example.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getBundle` 方法搜索以 `StatsBundle` 开头，后跟指定 `Locale` 的语言和国家代码的类。如果 `currentLocale`
+    是用 `ja` 和 `JP` 代码创建的，`getBundle` 将返回与类 `StatsBundle_ja_JP` 对应的 `ListResourceBundle`，例如。'
+- en: 4\. Fetch the Localized Objects
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 4\. 获取本地化对象
+- en: 'Now that the program has a `ListResourceBundle` for the appropriate `Locale`,
+    it can fetch the localized objects by their keys. The following line of code retrieves
+    the literacy rate by invoking `getObject` with the `Literacy` key parameter. Since
+    `getObject` returns an object, cast it to a `Double`:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在程序有了适当 `Locale` 的 `ListResourceBundle`，它可以通过其键获取本地化对象。以下代码行通过使用 `Literacy`
+    键参数调用 `getObject` 来检索识字率。由于 `getObject` 返回一个对象，请将其转换为 `Double`：
+- en: '[PRE4]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 5\. Run the Demo Program
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 5\. 运行演示程序
+- en: '`ListDemo` program prints the data it fetched with the `getBundle` method:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ListDemo` 程序打印了使用 `getBundle` 方法获取的数据：'
+- en: '[PRE5]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'

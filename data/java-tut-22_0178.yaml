@@ -1,0 +1,548 @@
+- en: Path Operations
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Path操作
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/pathOps.html](https://docs.oracle.com/javase/tutorial/essential/io/pathOps.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/pathOps.html](https://docs.oracle.com/javase/tutorial/essential/io/pathOps.html)
+- en: The [`Path`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html)
+    class includes various methods that can be used to obtain information about the
+    path, access elements of the path, convert the path to other forms, or extract
+    portions of a path. There are also methods for matching the path string and methods
+    for removing redundancies in a path. This lesson addresses these `Path` methods,
+    sometimes called *syntactic* operations, because they operate on the path itself
+    and don't access the file system.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Path`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html)类包括各种方法，可用于获取有关路径的信息，访问路径的元素，将路径转换为其他形式或提取路径的部分。还有用于匹配路径字符串的方法以及用于删除路径中冗余的方法。本课程介绍了这些`Path`方法，有时称为*语法*操作，因为它们作用于路径本身，而不访问文件系统。'
+- en: 'This section covers the following:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下内容：
+- en: '[Creating a Path](#create)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建一个Path](#create)'
+- en: '[Retrieving Information About a Path](#info)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检索有关Path的信息](#info)'
+- en: '[Removing Redundancies from a Path](#normal)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[从Path中删除冗余](#normal)'
+- en: '[Converting a Path](#convert)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[转换Path](#convert)'
+- en: '[Joining Two Paths](#resolve)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[连接两个路径](#resolve)'
+- en: '[Creating a Path Between Two Paths](#relativize)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在两个路径之间创建路径](#relativize)'
+- en: '[Comparing Two Paths](#compare)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[比较两个路径](#compare)'
+- en: Creating a Path
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建一个Path
+- en: A `Path` instance contains the information used to specify the location of a
+    file or directory. At the time it is defined, a `Path` is provided with a series
+    of one or more names. A root element or a file name might be included, but neither
+    are required. A `Path` might consist of just a single directory or file name.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`Path`实例包含用于指定文件或目录位置的信息。在定义时，`Path`会提供一系列一个或多个名称。可能包括根元素或文件名，但都不是必需的。`Path`可能仅包含单个目录或文件名。
+- en: 'You can easily create a `Path` object by using one of the following `get` methods
+    from the [`Paths`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Paths.html)
+    (note the plural) helper class:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过使用[`Paths`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Paths.html)（注意复数形式）辅助类中的以下`get`方法之一轻松创建`Path`对象：
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The `Paths.get` method is shorthand for the following code:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Paths.get`方法是以下代码的简写：'
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The following example creates `/u/joe/logs/foo.log` assuming your home directory
+    is `/u/joe`, or `C:\joe\logs\foo.log` if you are on Windows.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例假定您的主目录是`/u/joe`，则创建`/u/joe/logs/foo.log`，或者如果您在Windows上，则为`C:\joe\logs\foo.log`。
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Retrieving Information about a Path
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检索有关路径的信息
+- en: You can think of the `Path` as storing these name elements as a sequence. The
+    highest element in the directory structure would be located at index 0\. The lowest
+    element in the directory structure would be located at index `[n-1]`, where `n`
+    is the number of name elements in the `Path`. Methods are available for retrieving
+    individual elements or a subsequence of the `Path` using these indexes.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以将`Path`看作将这些名称元素存储为序列。目录结构中最高的元素位于索引0。目录结构中最低的元素位于索引`[n-1]`，其中`n`是`Path`中名称元素的数量。可用于使用这些索引检索单个元素或`Path`的子序列的方法。
+- en: The examples in this lesson use the following directory structure.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程中的示例使用以下目录结构。
+- en: '![Sample directory structure](../Images/b97c412825f946c5ba10ec251357ac38.png)Sample
+    Directory Structure'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![示例目录结构](../Images/b97c412825f946c5ba10ec251357ac38.png)示例目录结构'
+- en: 'The following code snippet defines a `Path` instance and then invokes several
+    methods to obtain information about the path:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段定义了一个`Path`实例，然后调用了几种方法以获取有关路径的信息：
+- en: '[PRE3]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Here is the output for both Windows and the Solaris OS:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是Windows和Solaris OS的输出：
+- en: '| Method Invoked | Returns in the Solaris OS | Returns in Microsoft Windows
+    | Comment |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| 调用的方法 | Solaris OS中的返回 | Microsoft Windows中的返回 | 注释 |'
+- en: '| `toString` | `/home/joe/foo` | `C:\home\joe\foo` | Returns the string representation
+    of the `Path`. If the path was created using `Filesystems.getDefault().getPath(String)`
+    or `Paths.get` (the latter is a convenience method for `getPath`), the method
+    performs minor syntactic cleanup. For example, in a UNIX operating system, it
+    will correct the input string `//home/joe/foo` to `/home/joe/foo`. |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| `toString` | `/home/joe/foo` | `C:\home\joe\foo` | 返回`Path`的字符串表示。如果路径是使用`Filesystems.getDefault().getPath(String)`或`Paths.get`（后者是`getPath`的便利方法）创建的，则该方法会执行轻微的语法清理。例如，在UNIX操作系统中，它将修正输入字符串`//home/joe/foo`为`/home/joe/foo`。'
+- en: '| `getFileName` | `foo` | `foo` | Returns the file name or the last element
+    of the sequence of name elements. |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| `getFileName` | `foo` | `foo` | 返回文件名或名称元素序列的最后一个元素。 |'
+- en: '| `getName(0)` | `home` | `home` | Returns the path element corresponding to
+    the specified index. The 0th element is the path element closest to the root.
+    |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| `getName(0)` | `home` | `home` | 返回与指定索引对应的路径元素。第0个元素是最靠近根的路径元素。 |'
+- en: '| `getNameCount` | `3` | `3` | Returns the number of elements in the path.
+    |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| `getNameCount` | `3` | `3` | 返回路径中的元素数量。 |'
+- en: '| `subpath(0,2)` | `home/joe` | `home\joe` | Returns the subsequence of the
+    `Path` (not including a root element) as specified by the beginning and ending
+    indexes. |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| `subpath(0,2)` | `home/joe` | `home\joe` | 返回`Path`的子序列（不包括根元素），由开始和结束索引指定。
+    |'
+- en: '| `getParent` | `/home/joe` | `\home\joe` | Returns the path of the parent
+    directory. |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| `getParent` | `/home/joe` | `\home\joe` | 返回父目录的路径。 |'
+- en: '| `getRoot` | `/` | `C:\` | Returns the root of the path. |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| `getRoot` | `/` | `C:\` | 返回路径的根。 |'
+- en: 'The previous example shows the output for an absolute path. In the following
+    example, a relative path is specified:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的示例显示了绝对路径的输出。在以下示例中，指定了相对路径：
+- en: '[PRE4]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Here is the output for Windows and the Solaris OS:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是Windows和Solaris OS的输出：
+- en: '| Method Invoked | Returns in the Solaris OS | Returns in Microsoft Windows
+    |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| 调用的方法 | Solaris OS中返回 | Microsoft Windows中返回 |'
+- en: '| `toString` | `sally/bar` | `sally\bar` |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| `toString` | `sally/bar` | `sally\bar` |'
+- en: '| `getFileName` | `bar` | `bar` |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| `getFileName` | `bar` | `bar` |'
+- en: '| `getName(0)` | `sally` | `sally` |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| `getName(0)` | `sally` | `sally` |'
+- en: '| `getNameCount` | `2` | `2` |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| `getNameCount` | `2` | `2` |'
+- en: '| `subpath(0,1)` | `sally` | `sally` |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| `subpath(0,1)` | `sally` | `sally` |'
+- en: '| `getParent` | `sally` | `sally` |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| `getParent` | `sally` | `sally` |'
+- en: '| `getRoot` | `null` | `null` |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| `getRoot` | `null` | `null` |'
+- en: Removing Redundancies From a Path
+  id: totrans-45
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 从路径中删除冗余
+- en: Many file systems use "." notation to denote the current directory and ".."
+    to denote the parent directory. You might have a situation where a `Path` contains
+    redundant directory information. Perhaps a server is configured to save its log
+    files in the "`/dir/logs/.`" directory, and you want to delete the trailing "`/.`"
+    notation from the path.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多文件系统使用“.”符号表示当前目录，“..”表示父目录。您可能会遇到路径包含冗余目录信息的情况。也许服务器配置为将其日志文件保存在“`/dir/logs/.`”目录中，您希望从路径中删除末尾的“/.`”符号。
+- en: 'The following examples both include redundancies:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例都包含冗余：
+- en: '[PRE5]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The `normalize` method removes any redundant elements, which includes any "`.`"
+    or "`*directory*/..`" occurrences. Both of the preceding examples normalize to
+    `/home/joe/foo`.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`normalize`方法会删除任何冗余元素，包括任何“.`”或“`*directory*/..`”出现。前面两个示例都会规范化为`/home/joe/foo`。'
+- en: It is important to note that `normalize` doesn't check at the file system when
+    it cleans up a path. It is a purely syntactic operation. In the second example,
+    if `sally` were a symbolic link, removing `sally/..` might result in a `Path`
+    that no longer locates the intended file.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值得注意的是，`normalize`在清理路径时不会检查文件系统。这是一个纯语法操作。在第二个示例中，如果`sally`是一个符号链接，删除`sally/..`可能导致`Path`不再定位到预期的文件。
+- en: To clean up a path while ensuring that the result locates the correct file,
+    you can use the `toRealPath` method. This method is described in the next section,
+    [Converting a Path](#convert).
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了清理路径并确保结果定位到正确的文件，您可以使用`toRealPath`方法。该方法在下一节[转换路径](#convert)中描述。
+- en: Converting a Path
+  id: totrans-52
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 转换路径
+- en: 'You can use three methods to convert the `Path`. If you need to convert the
+    path to a string that can be opened from a browser, you can use [`toUri`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#toUri--).
+    For example:'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用三种方法来转换`Path`。如果需要将路径转换为可以从浏览器打开的字符串，可以使用[`toUri`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#toUri--)。例如：
+- en: '[PRE6]'
+  id: totrans-54
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The [`toAbsolutePath`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#toAbsolutePath--)
+    method converts a path to an absolute path. If the passed-in path is already absolute,
+    it returns the same `Path` object. The `toAbsolutePath` method can be very helpful
+    when processing user-entered file names. For example:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`toAbsolutePath`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#toAbsolutePath--)方法将路径转换为绝对路径。如果传入的路径已经是绝对路径，则返回相同的`Path`对象。在处理用户输入的文件名时，`toAbsolutePath`方法非常有帮助。例如：'
+- en: '[PRE7]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The `toAbsolutePath` method converts the user input and returns a `Path` that
+    returns useful values when queried. The file does not need to exist for this method
+    to work.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`toAbsolutePath`方法转换用户输入并返回一个`Path`，在查询时返回有用的值。此方法不需要文件存在即可工作。'
+- en: 'The [`toRealPath`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#toRealPath-java.nio.file.LinkOption...-)
+    method returns the *real* path of an existing file. This method performs several
+    operations in one:'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`toRealPath`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#toRealPath-java.nio.file.LinkOption...-)方法返回现有文件的*真实*路径。该方法一次执行多个操作：'
+- en: If `true` is passed to this method and the file system supports symbolic links,
+    this method resolves any symbolic links in the path.
+  id: totrans-59
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果向该方法传递`true`，并且文件系统支持符号链接，则该方法会解析路径中的任何符号链接。
+- en: If the `Path` is relative, it returns an absolute path.
+  id: totrans-60
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果`Path`是相对路径，则返回绝对路径。
+- en: If the `Path` contains any redundant elements, it returns a path with those
+    elements removed.
+  id: totrans-61
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果`Path`包含任何多余的元素，则返回一个删除了这些元素的路径。
+- en: 'This method throws an exception if the file does not exist or cannot be accessed.
+    You can catch the exception when you want to handle any of these cases. For example:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果文件不存在或无法访问，则此方法会抛出异常。您可以在需要处理这些情况时捕获异常。例如：
+- en: '[PRE8]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Joining Two Paths
+  id: totrans-64
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 连接两个路径
+- en: You can combine paths by using the `resolve` method. You pass in a *partial
+    path* , which is a path that does not include a root element, and that partial
+    path is appended to the original path.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用`resolve`方法组合路径。您传入一个*部分路径*，即不包括根元素的路径，并将该部分路径附加到原始路径。
+- en: 'For example, consider the following code snippet:'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，考虑以下代码片段：
+- en: '[PRE9]'
+  id: totrans-67
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'Passing an absolute path to the `resolve` method returns the passed-in path:'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将绝对路径传递给`resolve`方法会返回传入的路径：
+- en: '[PRE10]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: Creating a Path Between Two Paths
+  id: totrans-70
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建两个路径之间的路径
+- en: A common requirement when you are writing file I/O code is the capability to
+    construct a path from one location in the file system to another location. You
+    can meet this using the `relativize` method. This method constructs a path originating
+    from the original path and ending at the location specified by the passed-in path.
+    The new path is *relative* to the original path.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在编写文件I/O代码时，通常需要能够构造从文件系统中的一个位置到另一个位置的路径。您可以使用`relativize`方法来实现这一点。该方法构造一个源自原始路径并以传入路径指定的位置结束的路径。新路径是*相对*于原始路径的。
+- en: 'For example, consider two relative paths defined as `joe` and `sally`:'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，考虑两个定义为`joe`和`sally`的相对路径：
+- en: '[PRE11]'
+  id: totrans-73
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'In the absence of any other information, it is assumed that `joe` and `sally`
+    are siblings, meaning nodes that reside at the same level in the tree structure.
+    To navigate from `joe` to `sally`, you would expect to first navigate one level
+    up to the parent node and then down to `sally`:'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在没有其他信息的情况下，假定`joe`和`sally`是兄弟姐妹，即在树结构中处于同一级别的节点。要从`joe`导航到`sally`，你需要先向上导航一级到父节点，然后再向下导航到`sally`：
+- en: '[PRE12]'
+  id: totrans-75
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'Consider a slightly more complicated example:'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑一个稍微复杂的例子：
+- en: '[PRE13]'
+  id: totrans-77
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: In this example, the two paths share the same node, `home`. To navigate from
+    `home` to `bar`, you first navigate one level down to `sally` and then one more
+    level down to `bar`. Navigating from `bar` to `home` requires moving up two levels.
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，这两个路径共享相同的节点`home`。要从`home`导航到`bar`，你首先向下导航一级到`sally`，然后再向下导航一级到`bar`。从`bar`到`home`的导航需要向上移动两级。
+- en: A relative path cannot be constructed if only one of the paths includes a root
+    element. If both paths include a root element, the capability to construct a relative
+    path is system dependent.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果只有一个路径包含根元素，则无法构造相对路径。如果两个路径都包含根元素，则构造相对路径的能力取决于系统。
+- en: The recursive [``Copy``](examples/Copy.java) example uses the `relativize` and
+    `resolve` methods.
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 递归[`Copy`](examples/Copy.java)示例使用`relativize`和`resolve`方法。
+- en: Comparing Two Paths
+  id: totrans-81
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 比较两个路径
+- en: 'The `Path` class supports [`equals`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#equals-java.lang.Object-),
+    enabling you to test two paths for equality. The [`startsWith`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#startsWith-java.nio.file.Path-)
+    and [`endsWith`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#endsWith-java.nio.file.Path-)
+    methods enable you to test whether a path begins or ends with a particular string.
+    These methods are easy to use. For example:'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Path`类支持[`equals`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#equals-java.lang.Object-)，使您能够测试两个路径是否相等。[`startsWith`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#startsWith-java.nio.file.Path-)和[`endsWith`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#endsWith-java.nio.file.Path-)方法使您能够测试路径是否以特定字符串开头或结尾。这些方法易于使用。例如：'
+- en: '[PRE14]'
+  id: totrans-83
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: 'The `Path` class implements the [`Iterable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html)
+    interface. The [`iterator`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#iterator--)
+    method returns an object that enables you to iterate over the name elements in
+    the path. The first element returned is that closest to the root in the directory
+    tree. The following code snippet iterates over a path, printing each name element:'
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Path`类实现了[`Iterable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html)接口。[`iterator`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#iterator--)方法返回一个对象，使你能够遍历路径中的名称元素。返回的第一个元素是在目录树中最接近根的元素。以下代码片段遍历一个路径，打印每个名称元素：'
+- en: '[PRE15]'
+  id: totrans-85
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: The `Path` class also implements the [`Comparable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html)
+    interface. You can compare `Path` objects by using `compareTo` which is useful
+    for sorting.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Path`类还实现了[`Comparable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html)接口。你可以使用`compareTo`比较`Path`对象，这对于排序很有用。'
+- en: You can also put `Path` objects into a `Collection`. See the [Collections](../../collections/index.html)
+    trail for more information about this powerful feature.
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你也可以将`Path`对象放入`Collection`中。查看[Collections](../../collections/index.html) trail，了解更多关于这一强大功能的信息。
+- en: When you want to verify that two `Path` objects locate the same file, you can
+    use the `isSameFile` method, as described in [Checking Whether Two Paths Locate
+    the Same File](check.html#same).
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你想要验证两个`Path`对象是否定位到同一文件时，可以使用`isSameFile`方法，如[Checking Whether Two Paths Locate
+    the Same File](check.html#same)中所述。

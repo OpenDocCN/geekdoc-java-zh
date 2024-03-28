@@ -1,0 +1,103 @@
+- en: Import the Certificate as a Trusted Certificate
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 将证书导入为受信任的证书
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/rstep2.html](https://docs.oracle.com/javase/tutorial/security/toolsign/rstep2.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/rstep2.html](https://docs.oracle.com/javase/tutorial/security/toolsign/rstep2.html)
+- en: Before you can grant the signed code permission to read a specified file, you
+    need to import Susan's certificate as a trusted certificate in your keystore.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在授予已签署代码读取指定文件的权限之前，您需要将Susan的证书作为受信任的证书导入到您的密钥库中。
+- en: Suppose that you have received from Susan
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您已经从Susan那里收到了
+- en: the signed JAR file `sCount.jar`, which contains the `Count.class` file, and
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 已签署的JAR文件`sCount.jar`，其中包含`Count.class`文件，以及
+- en: the file `Example.cer`, which contains the public key certificate for the public
+    key corresponding to the private key used to sign the JAR file.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 包含与用于签署JAR文件的私钥对应的公钥证书的`Example.cer`文件。
+- en: Even though you created these files and they haven't actually been transported
+    anywhere, you can simulate being someone other than the creator and sender, Susan.
+    Pretend that you are now Ray. Acting as Ray, you will create a keystore named
+    `exampleraystore` and will use it to import the certificate into an entry with
+    an alias of `susan`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使您创建了这些文件并且它们实际上还没有被传输到任何地方，您也可以模拟成不是创建者和发送者Susan的其他人。假装您现在是Ray。作为Ray，您将创建一个名为`exampleraystore`的密钥库，并将其用于将证书导入到具有别名`susan`的条目中。
+- en: A keystore is created whenever you use a `keytool` command specifying a keystore
+    that doesn't yet exist. Thus we can create the `exampleraystore` and import the
+    certificate via a single `keytool` command. Do the following in your command window.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当您使用指定尚不存在的密钥库的`keytool`命令时，都会创建一个密钥库。因此，我们可以通过单个`keytool`命令创建`exampleraystore`并导入证书。在命令窗口中执行以下操作。
+- en: Go to the directory containing the public key certificate file `Example.cer`.
+    (You should actually already be there, since this lesson assumes that you stay
+    in a single directory throughout.)
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 转到包含公钥证书文件`Example.cer`的目录。（实际上，您应该已经在那里，因为本课程假设您在整个过程中都保持在一个目录中。）
+- en: 'Type the following command on one line:'
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在一行上输入以下命令：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Since the keystore doesn't yet exist, it will be created, and you will be prompted
+    for a keystore password; type whatever password you want.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于密钥库尚不存在，将会创建它，并提示您输入密钥库密码；输入任何您想要的密码。
+- en: The `keytool` command will print out the certificate information and ask you
+    to verify it, for example, by comparing the displayed certificate fingerprints
+    with those obtained from another (trusted) source of information. (Each fingerprint
+    is a relatively short number that uniquely and reliably identifies the certificate.)
+    For example, in the real world you might call up Susan and ask her what the fingerprints
+    should be. She can get the fingerprints of the `Example.cer` file she created
+    by executing the command
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`keytool`命令将打印出证书信息，并要求您验证它，例如，通过将显示的证书指纹与从另一个（受信任的）信息源获得的指纹进行比较。 （每个指纹是一个相对较短的数字，可以唯一且可靠地识别证书。）例如，在现实世界中，您可能会打电话给Susan，并询问她应该是什么指纹。她可以通过执行以下命令获取她创建的`Example.cer`文件的指纹'
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: If the fingerprints she sees are the same as the ones reported to you by `keytool`,
+    the certificate has not been modified in transit. In that case you let `keytool`
+    proceed with placing a trusted certificate entry in the keystore. The entry contains
+    the public key certificate data from the file `Example.cer` and is assigned the
+    alias `susan`.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果她看到的指纹与`keytool`向您报告的指纹相同，则证书在传输过程中未被修改。在这种情况下，您可以让`keytool`继续将受信任的证书条目放入密钥库中。该条目包含来自文件`Example.cer`的公钥证书数据，并被分配别名`susan`。

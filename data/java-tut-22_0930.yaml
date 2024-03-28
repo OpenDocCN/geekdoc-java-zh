@@ -1,0 +1,265 @@
+- en: Reading from and Writing to a URLConnection
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 从URLConnection读取和写入
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/readingWriting.html](https://docs.oracle.com/javase/tutorial/networking/urls/readingWriting.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/readingWriting.html](https://docs.oracle.com/javase/tutorial/networking/urls/readingWriting.html)
+- en: The `URLConnection` class contains many methods that let you communicate with
+    the URL over the network. `URLConnection` is an HTTP-centric class; that is, many
+    of its methods are useful only when you are working with HTTP URLs. However, most
+    URL protocols allow you to read from and write to the connection. This section
+    describes both functions.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`URLConnection`类包含许多方法，让您可以通过网络与URL通信。`URLConnection`是一个以HTTP为中心的类；也就是说，当您使用HTTP
+    URL时，其中许多方法才有用。然而，大多数URL协议允许您从连接中读取和写入。本节描述了这两个功能。'
+- en: Reading from a URLConnection
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 从URLConnection读取
+- en: The following program performs the same function as the `URLReader` program
+    shown in [Reading Directly from a URL](readingURL.html).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序执行与[直接从URL读取](readingURL.html)中显示的`URLReader`程序相同的功能。
+- en: 'However, rather than getting an input stream directly from the URL, this program
+    explicitly retrieves a `URLConnection` object and gets an input stream from the
+    connection. The connection is opened implicitly by calling `getInputStream`. Then,
+    like `URLReader`, this program creates a `BufferedReader` on the input stream
+    and reads from it. The bold statements highlight the differences between this
+    example and the previous:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，与直接从URL获取输入流不同，此程序显式检索`URLConnection`对象并从连接获取输入流。通过调用`getInputStream`隐式打开连接。然后，像`URLReader`一样，此程序在输入流上创建一个`BufferedReader`并从中读取。粗体语句突出了此示例与先前示例之间的区别：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The output from this program is identical to the output from the program that
+    opens a stream directly from the URL. You can use either way to read from a URL.
+    However, reading from a `URLConnection` instead of reading directly from a URL
+    might be more useful. This is because you can use the `URLConnection` object for
+    other tasks (like writing to the URL) at the same time.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序的输出与直接从URL打开流的程序的输出相同。您可以使用任一方式从URL读取。但是，与直接从URL读取不同，从`URLConnection`读取可能更有用。这是因为您可以同时将`URLConnection`对象用于其他任务（如向URL写入）。
+- en: Again, if the program hangs or you see an error message, you may have to set
+    the proxy host so that the program can find the Oracle server.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次，如果程序挂起或出现错误消息，您可能需要设置代理主机，以便程序可以找到Oracle服务器。
+- en: Writing to a URLConnection
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 向URLConnection写入
+- en: Many HTML pages contain *forms* — text fields and other GUI objects that let
+    you enter data to send to the server. After you type in the required information
+    and initiate the query by clicking a button, your Web browser writes the data
+    to the URL over the network. At the other end the server receives the data, processes
+    it, and then sends you a response, usually in the form of a new HTML page.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多HTML页面包含*表单*——文本字段和其他GUI对象，让您输入要发送到服务器的数据。在输入所需信息并通过单击按钮启动查询后，您的Web浏览器通过网络将数据写入URL。在另一端，服务器接收数据，处理数据，然后向您发送响应，通常以新的HTML页面形式。
+- en: Many of these HTML forms use the HTTP POST METHOD to send data to the server.
+    Thus writing to a URL is often called *posting to a URL*. The server recognizes
+    the POST request and reads the data sent from the client.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些HTML表单中的许多使用HTTP POST方法将数据发送到服务器。因此，向URL写入通常称为*向URL发布*。服务器识别POST请求并读取从客户端发送的数据。
+- en: 'For a Java program to interact with a server-side process it simply must be
+    able to write to a URL, thus providing data to the server. It can do this by following
+    these steps:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使Java程序与服务器端进程交互，它只需能够写入URL，从而向服务器提供数据。它可以通过以下步骤实现：
+- en: Create a `URL`.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个`URL`。
+- en: Retrieve the `URLConnection` object.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 检索`URLConnection`对象。
+- en: Set output capability on the `URLConnection`.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在`URLConnection`上设置输出功能。
+- en: Open a connection to the resource.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 打开到资源的连接。
+- en: Get an output stream from the connection.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从连接获取输出流。
+- en: Write to the output stream.
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 写入输出流。
+- en: Close the output stream.
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 关闭输出流。
+- en: Here is a small `servlet` named [`ReverseServlet`](examples/ReverseServlet.java)
+    (or if you prefer a [cgi-bin](examples/backwards) script). You can use this servlet
+    to test the following example program.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个名为[`ReverseServlet`](examples/ReverseServlet.java)的小`servlet`（或者如果你更喜欢一个[cgi-bin](examples/backwards)脚本）。您可以使用这个servlet来测试以下示例程序。
+- en: The servlet running in a container reads from its InputStream, reverses the
+    string, and writes it to its OutputStream. The servlet requires input of the form
+    `string=string_to_reverse`, where `string_to_reverse` is the string whose characters
+    you want displayed in reverse order.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行在容器中的servlet从其InputStream读取，反转字符串，并将其写入其OutputStream。servlet需要形式为`string=string_to_reverse`的输入，其中`string_to_reverse`是您想要以相反顺序显示其字符的字符串。
+- en: 'Here''s an example program that runs the `ReverseServlet` over the network
+    through a `URLConnection`:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个通过`URLConnection`在网络上运行`ReverseServlet`的示例程序：
+- en: '[PRE1]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Let''s examine the program and see how it works. First, the program processes
+    its command-line arguments:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们来检查程序，看看它是如何工作的。首先，程序处理其命令行参数：
+- en: '[PRE2]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: These statements ensure that the user provides two and only two command-line
+    arguments to the program. The command-line arguments are the location of the `ReverseServlet`
+    and the string that will be reversed. It may contain spaces or other non-alphanumeric
+    characters. These characters must be encoded because the string is processed on
+    its way to the server. The `URLEncoder` class methods encode the characters.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些语句确保用户向程序提供两个且仅有两个命令行参数。命令行参数是`ReverseServlet`的位置和将被反转的字符串。它可能包含空格或其他非字母数字字符。这些字符必须进行编码，因为字符串在传输到服务器时会被处理。`URLEncoder`类的方法对字符进行编码。
+- en: 'Next, the program creates the `URL` object, and sets the connection so that
+    it can write to it:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，程序创建`URL`对象，并设置连接以便可以向其写入：
+- en: '[PRE3]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The program then creates an output stream on the connection and opens an `OutputStreamWriter`
+    on it:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 程序然后在连接上创建一个输出流，并在其上打开一个`OutputStreamWriter`：
+- en: '[PRE4]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: If the URL does not support output, `getOutputStream` method throws an `UnknownServiceException`.
+    If the URL does support output, then this method returns an output stream that
+    is connected to the input stream of the URL on the server side — the client's
+    output is the server's input.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果URL不支持输出，`getOutputStream`方法会抛出`UnknownServiceException`。如果URL支持输出，则此方法返回一个连接到服务器端URL的输入流的输出流
+    —— 客户端的输出是服务器的输入。
+- en: 'Next, the program writes the required information to the output stream and
+    closes the stream:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，程序向输出流写入所需的信息并关闭流：
+- en: '[PRE5]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: This code writes to the output stream using the `write` method. So you can see
+    that writing data to a URL is as easy as writing data to a stream. The data written
+    to the output stream on the client side is the input for the servlet on the server
+    side. The `Reverse` program constructs the input in the form required by the script
+    by prepending `string=` to the encoded string to be reversed.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这段代码使用`write`方法向输出流写入数据。因此你可以看到，向URL写入数据就像向流写入数据一样简单。客户端输出流中写入的数据是服务器端servlet的输入。`Reverse`程序通过在要反转的编码字符串前添加`string=`来构造脚本所需的输入形式。
+- en: 'The servlet reads the information you write, performs a reverse operation on
+    the string value, and then sends this back to you. You now need to read the string
+    the server has sent back. The `Reverse` program does it like this:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: servlet读取您写入的信息，对字符串值执行反转操作，然后将其发送回给您。现在您需要读取服务器发送回的字符串。`Reverse`程序这样做：
+- en: '[PRE6]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: If your `ReverseServlet` is located at `http://example.com/servlet/ReverseServlet`,
+    then when you run the `Reverse` program using
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您的`ReverseServlet`位于`http://example.com/servlet/ReverseServlet`，那么当您使用`Reverse`程序运行时
+- en: '[PRE7]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'as the argument (including the double quote marks), you should see this output:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为参数（包括双引号），你应该看到这个输出：
+- en: '[PRE8]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'

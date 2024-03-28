@@ -1,0 +1,546 @@
+- en: The List Interface
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 列表接口
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/list.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/list.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/list.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/list.html)
+- en: 'A [`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html) is
+    an ordered [`Collection`](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html)
+    (sometimes called a *sequence*). Lists may contain duplicate elements. In addition
+    to the operations inherited from `Collection`, the `List` interface includes operations
+    for the following:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个[`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html)是一个有序的[`Collection`](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html)（有时称为*序列*）。列表可以包含重复元素。除了从`Collection`继承的操作外，`List`接口还包括以下操作：
+- en: "`Positional access` \x97 manipulates elements based on their numerical position\
+    \ in the list. This includes methods such as `get`, `set`, `add`, `addAll`, and\
+    \ `remove`."
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Positional access` \x97 根据列表中元素的数字位置来操作元素。这包括诸如`get`、`set`、`add`、`addAll`和`remove`等方法。"
+- en: "`Search` \x97 searches for a specified object in the list and returns its numerical\
+    \ position. Search methods include `indexOf` and `lastIndexOf`."
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Search` \x97 在列表中搜索指定对象并返回其数字位置。搜索方法包括`indexOf`和`lastIndexOf`。"
+- en: "`Iteration` \x97 extends `Iterator` semantics to take advantage of the list's\
+    \ sequential nature. The `listIterator` methods provide this behavior."
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Iteration` \x97 扩展`Iterator`语义以利用列表的顺序性质。`listIterator`方法提供了这种行为。"
+- en: "`Range-view` \x97 The `sublist` method performs arbitrary *range operations*\
+    \ on the list."
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Range-view` \x97 `sublist`方法在列表上执行任意*范围操作*。"
+- en: The Java platform contains two general-purpose `List` implementations. [`ArrayList`](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html),
+    which is usually the better-performing implementation, and [`LinkedList`](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html)
+    which offers better performance under certain circumstances.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台包含两个通用的`List`实现。[`ArrayList`](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html)，通常是性能更好的实现，以及[`LinkedList`](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html)，在某些情况下提供更好的性能。
+- en: Collection Operations
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 集合操作
+- en: The operations inherited from `Collection` all do about what you'd expect them
+    to do, assuming you're already familiar with them. If you're not familiar with
+    them from `Collection`, now would be a good time to read [The Collection Interface](collection.html)
+    section. The `remove` operation always removes *the first* occurrence of the specified
+    element from the list. The `add` and `addAll` operations always append the new
+    element(s) to the *end* of the list. Thus, the following idiom concatenates one
+    list to another.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从`Collection`继承的操作都会做你期望的事情，假设你已经熟悉它们。如果你对`Collection`中的操作不熟悉，现在是阅读[集合接口](collection.html)部分的好时机。`remove`操作总是从列表中移除*第一个*指定元素的出现。`add`和`addAll`操作总是将新元素追加到列表的*末尾*。因此，以下习语将一个列表连接到另一个列表。
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Here's a nondestructive form of this idiom, which produces a third `List` consisting
+    of the second list appended to the first.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是这个习语的非破坏性形式，它产生一个由第二个列表附加到第一个列表的第三个`List`。
+- en: '[PRE1]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Note that the idiom, in its nondestructive form, takes advantage of `ArrayList`'s
+    standard conversion constructor.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，这个习语在其非破坏性形式中利用了`ArrayList`的标准转换构造函数。
+- en: 'And here''s an example (JDK 8 and later) that aggregates some names into a
+    `List`:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个示例（JDK 8及更高版本），将一些名称聚合到一个`List`中：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Like the [`Set`](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html)
+    interface, `List` strengthens the requirements on the `equals` and `hashCode`
+    methods so that two `List` objects can be compared for logical equality without
+    regard to their implementation classes. Two `List` objects are equal if they contain
+    the same elements in the same order.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 像[`Set`](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html)接口一样，`List`加强了对`equals`和`hashCode`方法的要求，以便可以比较两个`List`对象的逻辑相等性，而不考虑它们的实现类。如果两个`List`对象包含相同顺序的相同元素，则它们相等。
+- en: Positional Access and Search Operations
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 位置访问和搜索操作
+- en: The basic `positional access` operations are `get`, `set`, `add` and `remove`.
+    (The `set` and `remove` operations return the old value that is being overwritten
+    or removed.) Other operations (`indexOf` and `lastIndexOf`) return the first or
+    last index of the specified element in the list.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基本的`positional access`操作是`get`、`set`、`add`和`remove`。（`set`和`remove`操作返回被覆盖或移除的旧值。）其他操作（`indexOf`和`lastIndexOf`）返回列表中指定元素的第一个或最后一个索引。
+- en: The `addAll` operation inserts all the elements of the specified `Collection`
+    starting at the specified position. The elements are inserted in the order they
+    are returned by the specified `Collection`'s iterator. This call is the positional
+    access analog of `Collection`'s `addAll` operation.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`addAll`操作在指定位置插入指定`Collection`的所有元素。元素按照指定`Collection`的迭代器返回的顺序插入。这个调用是`Collection`的`addAll`操作的位置访问模拟。'
+- en: Here's a little method to swap two indexed values in a `List`.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个在`List`中交换两个索引值的小方法。
+- en: '[PRE3]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Of course, there''s one big difference. This is a polymorphic algorithm: It
+    swaps two elements in any `List`, regardless of its implementation type. Here''s
+    another polymorphic algorithm that uses the preceding `swap` method.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当然，有一个很大的区别。这是一个多态算法：它在任何`List`中交换两个元素，而不管其实现类型如何。这是另一个使用前面`swap`方法的多态算法。
+- en: '[PRE4]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'This algorithm, which is included in the Java platform''s [`Collections`](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html)
+    class, randomly permutes the specified list using the specified source of randomness.
+    It''s a bit subtle: It runs up the list from the bottom, repeatedly swapping a
+    randomly selected element into the current position. Unlike most naive attempts
+    at shuffling, it''s *fair* (all permutations occur with equal likelihood, assuming
+    an unbiased source of randomness) and *fast* (requiring exactly `list.size()-1`
+    swaps). The following program uses this algorithm to print the words in its argument
+    list in random order.'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个算法包含在Java平台的[`Collections`](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html)类中，使用指定的随机源随机排列指定的列表。这有点微妙：它从底部向上运行列表，重复地将随机选择的元素交换到当前位置。与大多数天真的洗牌尝试不同，它是*公平*的（假设随机源是无偏的，所有排列发生的概率相等），并且*快速*（只需要`list.size()-1`次交换）。以下程序使用这个算法以随机顺序打印其参数列表中的单词。
+- en: '[PRE5]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'In fact, this program can be made even shorter and faster. The [`Arrays`](https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html)
+    class has a static factory method called `asList`, which allows an array to be
+    viewed as a `List`. This method does not copy the array. Changes in the `List`
+    write through to the array and vice versa. The resulting List is not a general-purpose
+    `List` implementation, because it doesn''t implement the (optional) `add` and
+    `remove` operations: Arrays are not resizable. Taking advantage of `Arrays.asList`
+    and calling the library version of `shuffle`, which uses a default source of randomness,
+    you get the following [`tiny program`](examples/Shuffle.java) whose behavior is
+    identical to the previous program.'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际上，这个程序甚至可以变得更短更快。[`Arrays`](https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html)类有一个名为`asList`的静态工厂方法，允许将数组视为`List`。这个方法不会复制数组。对`List`的更改会写入数组，反之亦然。由于结果列表不是通用的`List`实现，因为它不实现（可选的）`add`和`remove`操作：数组不可调整大小。利用`Arrays.asList`并调用库版本的`shuffle`，它使用默认的随机源，你会得到以下[`小程序`](examples/Shuffle.java)，其行为与之前的程序相同。
+- en: '[PRE6]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Iterators
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 迭代器
+- en: As you'd expect, the `Iterator` returned by `List`'s `iterator` operation returns
+    the elements of the list in proper sequence. `List` also provides a richer iterator,
+    called a `ListIterator`, which allows you to traverse the list in either direction,
+    modify the list during iteration, and obtain the current position of the iterator.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你所期望的，由`List`的`iterator`操作返回的`Iterator`以正确的顺序返回列表的元素。`List`还提供了一个更丰富的迭代器，称为`ListIterator`，允许你在任一方向遍历列表，在迭代期间修改列表，并获取迭代器的当前位置。
+- en: The three methods that `ListIterator` inherits from `Iterator` (`hasNext`, `next`,
+    and `remove`) do exactly the same thing in both interfaces. The `hasPrevious`
+    and the `previous` operations are exact analogues of `hasNext` and `next`. The
+    former operations refer to the element before the (implicit) cursor, whereas the
+    latter refer to the element after the cursor. The `previous` operation moves the
+    cursor backward, whereas `next` moves it forward.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ListIterator`从`Iterator`继承的三个方法（`hasNext`、`next`和`remove`）在两个接口中完全相同。`hasPrevious`和`previous`操作是`hasNext`和`next`的确切类比。前者操作指的是（隐式）光标之前的元素，而后者指的是光标之后的元素。`previous`操作将光标向后移动，而`next`将其向前移动。'
+- en: Here's the standard idiom for iterating backward through a list.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是通过列表向后迭代的标准习语。
+- en: '[PRE7]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Note the argument to `listIterator` in the preceding idiom. The `List` interface
+    has two forms of the `listIterator` method. The form with no arguments returns
+    a `ListIterator` positioned at the beginning of the list; the form with an `int`
+    argument returns a `ListIterator` positioned at the specified index. The index
+    refers to the element that would be returned by an initial call to `next`. An
+    initial call to `previous` would return the element whose index was `index-1`.
+    In a list of length `n`, there are `n+1` valid values for `index`, from `0` to
+    `n`, inclusive.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意前面习语中`listIterator`的参数。`List`接口有两种形式的`listIterator`方法。没有参数的形式返回一个位于列表开头的`ListIterator`；带有一个`int`参数的形式返回一个位于指定索引处的`ListIterator`。索引指的是初始调用`next`时将返回的元素。初始调用`previous`将返回索引为`index-1`的元素。在长度为`n`的列表中，`index`有`n+1`个有效值，从`0`到`n`，包括`0`。
+- en: "Intuitively speaking, the cursor is always between two elements \x97 the one\
+    \ that would be returned by a call to `previous` and the one that would be returned\
+    \ by a call to `next`. The `n+1` valid `index` values correspond to the `n+1`\
+    \ gaps between elements, from the gap before the first element to the gap after\
+    \ the last one. The following figure shows the five possible cursor positions\
+    \ in a list containing four elements."
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "直观地说，光标始终位于两个元素之间 \x97 一个是调用`previous`返回的元素，另一个是调用`next`返回的元素。`n+1`个有效的`index`值对应于`n+1`个元素之间的间隙，从第一个元素之前的间隙到最后一个元素之后的间隙。以下图显示了包含四个元素的列表中的五个可能的光标位置。"
+- en: '![Five arrows representing five cursor positions, from 0 to 4, with four elements,
+    one between each arrow.](../Images/f7b88bd0a9491d7a605ea7c612526c1e.png)'
+  id: totrans-35
+  prefs: []
+  type: TYPE_IMG
+  zh: '![五个箭头代表五个光标位置，从0到4，有四个元素，每个箭头之间有一个元素。](../Images/f7b88bd0a9491d7a605ea7c612526c1e.png)'
+- en: The five possible cursor positions.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 五个可能的光标位置。
+- en: Calls to `next` and `previous` can be intermixed, but you have to be a bit careful.
+    The first call to `previous` returns the same element as the last call to `next`.
+    Similarly, the first call to `next` after a sequence of calls to `previous` returns
+    the same element as the last call to `previous`.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以交替调用`next`和`previous`，但你必须小心。第一次调用`previous`返回的元素与最后一次调用`next`返回的元素相同。类似地，一系列调用`previous`后第一次调用`next`返回的元素与最后一次调用`previous`返回的元素相同。
+- en: It should come as no surprise that the `nextIndex` method returns the index
+    of the element that would be returned by a subsequent call to `next`, and `previousIndex`
+    returns the index of the element that would be returned by a subsequent call to
+    `previous`. These calls are typically used either to report the position where
+    something was found or to record the position of the `ListIterator` so that another
+    `ListIterator` with identical position can be created.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`nextIndex`方法返回的是下一次调用`next`时将返回的元素的索引，而`previousIndex`返回的是下一次调用`previous`时将返回的元素的索引。这些调用通常用于报告找到某物的位置或记录`ListIterator`的位置，以便可以创建另一个具有相同位置的`ListIterator`。'
+- en: 'It should also come as no surprise that the number returned by `nextIndex`
+    is always one greater than the number returned by `previousIndex`. This implies
+    the behavior of the two boundary cases: (1) a call to `previousIndex` when the
+    cursor is before the initial element returns `-1` and (2) a call to `nextIndex`
+    when the cursor is after the final element returns `list.size()`. To make all
+    this concrete, the following is a possible implementation of `List.indexOf`.'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`nextIndex`返回的数字始终比`previousIndex`返回的数字大`1`，这意味着两个边界情况的行为：(1) 当光标位于初始元素之前时，调用`previousIndex`返回`-1`，(2)
+    当光标位于最后一个元素之后时，调用`nextIndex`返回`list.size()`。为了使所有这些具体化，以下是`List.indexOf`的可能实现。'
+- en: '[PRE8]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Note that the `indexOf` method returns `it.previousIndex()` even though it is
+    traversing the list in the forward direction. The reason is that `it.nextIndex()`
+    would return the index of the element we are about to examine, and we want to
+    return the index of the element we just examined.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，尽管`indexOf`方法在正向遍历列表，但返回`it.previousIndex()`。原因是`it.nextIndex()`将返回我们即将检查的元素的索引，而我们想返回我们刚刚检查的元素的索引。
+- en: "The `Iterator` interface provides the `remove` operation to remove the last\
+    \ element returned by `next` from the `Collection`. For `ListIterator`, this operation\
+    \ removes the last element returned by `next` or `previous`. The `ListIterator`\
+    \ interface provides two additional operations to modify the list \x97 `set` and\
+    \ `add`. The `set` method overwrites the last element returned by `next` or `previous`\
+    \ with the specified element. The following polymorphic algorithm uses `set` to\
+    \ replace all occurrences of one specified value with another."
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "`Iterator` 接口提供了 `remove` 操作，用于从 `Collection` 中移除 `next` 返回的最后一个元素。对于 `ListIterator`，此操作会移除\
+    \ `next` 或 `previous` 返回的最后一个元素。`ListIterator` 接口提供了两个额外的操作来修改列表 \x97 `set` 和\
+    \ `add`。`set` 方法用指定的元素覆盖 `next` 或 `previous` 返回的最后一个元素。以下多态算法使用 `set` 来替换所有指定值的出现。"
+- en: '[PRE9]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: The only bit of trickiness in this example is the equality test between `val`
+    and `it.next`. You need to special-case a `val` value of `null` to prevent a `NullPointerException`.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例中唯一棘手的部分是 `val` 和 `it.next` 之间的相等测试。你需要特殊处理 `val` 值为 `null`，以防止 `NullPointerException`。
+- en: The `add` method inserts a new element into the list immediately before the
+    current cursor position. This method is illustrated in the following polymorphic
+    algorithm to replace all occurrences of a specified value with the sequence of
+    values contained in the specified list.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`add` 方法在当前光标位置之前立即插入一个新元素到列表中。以下多态算法示例演示了用指定列表中包含的值序列替换所有指定值的出现。'
+- en: '[PRE10]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: Range-View Operation
+  id: totrans-47
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 范围视图操作
+- en: The `range-view` operation, `subList(int fromIndex, int toIndex)`, returns a
+    `List` view of the portion of this list whose indices range from `fromIndex`,
+    inclusive, to `toIndex`, exclusive. This *half-open range* mirrors the typical
+    `for` loop.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`range-view` 操作，`subList(int fromIndex, int toIndex)`，返回一个 `List` 视图，其索引范围从
+    `fromIndex`（包括）到 `toIndex`（不包括）。这个 *半开区间* 与典型的 `for` 循环相似。'
+- en: '[PRE11]'
+  id: totrans-49
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: As the term *view* implies, the returned `List` is backed up by the `List` on
+    which `subList` was called, so changes in the former are reflected in the latter.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如术语 *view* 所示，返回的 `List` 是由调用 `subList` 的 `List` 支持的，因此前者的更改会反映在后者中。
+- en: This method eliminates the need for explicit range operations (of the sort that
+    commonly exist for arrays). Any operation that expects a `List` can be used as
+    a range operation by passing a `subList` view instead of a whole `List`. For example,
+    the following idiom removes a range of elements from a `List`.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个方法消除了显式范围操作的需要（通常对数组存在）。任何期望一个 `List` 的操作都可以通过传递一个 `subList` 视图而不是整个 `List`
+    来作为范围操作。例如，以下习语从一个 `List` 中移除一系列元素。
+- en: '[PRE12]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: Similar idioms can be constructed to search for an element in a range.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以构建类似的习语来在一个范围内搜索元素。
+- en: '[PRE13]'
+  id: totrans-54
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Note that the preceding idioms return the index of the found element in the
+    `subList`, not the index in the backing `List`.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，前述习语返回的是在 `subList` 中找到元素的索引，而不是在支持的 `List` 中的索引。
+- en: Any polymorphic algorithm that operates on a `List`, such as the `replace` and
+    `shuffle` examples, works with the `List` returned by `subList`.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何在 `List` 上操作的多态算法，比如 `replace` 和 `shuffle` 示例，都适用于 `subList` 返回的 `List`。
+- en: Here's a polymorphic algorithm whose implementation uses `subList` to deal a
+    hand from a deck. That is, it returns a new `List` (the "hand") containing the
+    specified number of elements taken from the end of the specified `List` (the "deck").
+    The elements returned in the hand are removed from the deck.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个多态算法，其实现使用 `subList` 从一副牌中发牌。也就是说，它返回一个包含指定数量元素的新 `List`（"手牌"），这些元素取自指定
+    `List`（"牌堆"）的末尾。手牌中返回的元素会从牌堆中移除。
+- en: '[PRE14]'
+  id: totrans-58
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: Note that this algorithm removes the hand from the *end* of the deck. For many
+    common `List` implementations, such as `ArrayList`, the performance of removing
+    elements from the end of the list is substantially better than that of removing
+    elements from the beginning.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，该算法从牌堆的 *末尾* 移除手牌。对于许多常见的 `List` 实现，比如 `ArrayList`，从列表末尾移除元素的性能要比从列表开头移除元素的性能好得多。
+- en: 'The following is [`a program`](examples/Deal.java) that uses the `dealHand`
+    method in combination with `Collections.shuffle` to generate hands from a normal
+    52-card deck. The program takes two command-line arguments: (1) the number of
+    hands to deal and (2) the number of cards in each hand.'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是一个使用 `dealHand` 方法结合 `Collections.shuffle` 从一副普通的 52 张牌的牌堆中生成手牌的 [`程序`](examples/Deal.java)。该程序接受两个命令行参数：（1）要发的手牌数和（2）每手牌的牌数。
+- en: '[PRE15]'
+  id: totrans-61
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: Running the program produces output like the following.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行该程序会产生如下输出。
+- en: '[PRE16]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: "Although the `subList` operation is extremely powerful, some care must be exercised\
+    \ when using it. The semantics of the `List` returned by `subList` become undefined\
+    \ if elements are added to or removed from the backing `List` in any way other\
+    \ than via the returned `List`. Thus, it's highly recommended that you use the\
+    \ `List` returned by `subList` only as a transient object \x97 to perform one\
+    \ or a sequence of range operations on the backing `List`. The longer you use\
+    \ the `subList` instance, the greater the probability that you'll compromise it\
+    \ by modifying the backing `List` directly or through another `subList` object.\
+    \ Note that it is legal to modify a sublist of a sublist and to continue using\
+    \ the original sublist (though not concurrently)."
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然`subList`操作非常强大，但在使用时必须小心。如果在任何方式上除了通过返回的`List`之外对支持`List`进行添加或删除元素，那么`subList`返回的`List`的语义将变得不确定。因此，强烈建议您仅将`subList`返回的`List`用作临时对象，用于在支持`List`上执行一个或一系列范围操作。您使用`subList`实例的时间越长，您通过直接修改支持`List`或通过另一个`subList`对象来破坏它的可能性就越大。请注意，修改子列表的子列表并继续使用原始子列表（尽管不是同时）是合法的。
+- en: List Algorithms
+  id: totrans-65
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 列表算法
+- en: Most polymorphic algorithms in the `Collections` class apply specifically to
+    `List`. Having all these algorithms at your disposal makes it very easy to manipulate
+    lists. Here's a summary of these algorithms, which are described in more detail
+    in the [Algorithms](../algorithms/index.html) section.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Collections`类中的大多数多态算法专门适用于`List`。拥有所有这些算法使得操作列表变得非常容易。以下是这些算法的摘要，在[Algorithms](../algorithms/index.html)部分中有更详细的描述。'
+- en: "`sort` \x97 sorts a `List` using a merge sort algorithm, which provides a fast,\
+    \ stable sort. (A *stable sort* is one that does not reorder equal elements.)"
+  id: totrans-67
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`sort` \x97 使用归并排序算法对`List`进行排序，这提供了一种快速、稳定的排序。（*稳定排序*是指不重新排列相等元素的排序。）"
+- en: "`shuffle` \x97 randomly permutes the elements in a `List`."
+  id: totrans-68
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`shuffle` \x97 随机排列`List`中的元素。"
+- en: "`reverse` \x97 reverses the order of the elements in a `List`."
+  id: totrans-69
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`reverse` \x97 颠倒`List`中元素的顺序。"
+- en: "`rotate` \x97 rotates all the elements in a `List` by a specified distance."
+  id: totrans-70
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`rotate` \x97 将`List`中的所有元素按指定距离旋转。"
+- en: "`swap` \x97 swaps the elements at specified positions in a `List`."
+  id: totrans-71
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`swap` \x97 交换`List`中指定位置的元素。"
+- en: "`replaceAll` \x97 replaces all occurrences of one specified value with another."
+  id: totrans-72
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`replaceAll` \x97 用另一个指定值替换所有出现的值。"
+- en: "`fill` \x97 overwrites every element in a `List` with the specified value."
+  id: totrans-73
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`fill` \x97 用指定值覆盖`List`中的每个元素。"
+- en: "`copy` \x97 copies the source `List` into the destination `List`."
+  id: totrans-74
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`copy` \x97 将源`List`复制到目标`List`中。"
+- en: "`binarySearch` \x97 searches for an element in an ordered `List` using the\
+    \ binary search algorithm."
+  id: totrans-75
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`binarySearch` \x97 使用二分搜索算法在有序`List`中搜索元素。"
+- en: "`indexOfSubList` \x97 returns the index of the first sublist of one `List`\
+    \ that is equal to another."
+  id: totrans-76
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`indexOfSubList` \x97 返回一个`List`中与另一个相等的第一个子列表的索引。"
+- en: "`lastIndexOfSubList` \x97 returns the index of the last sublist of one `List`\
+    \ that is equal to another."
+  id: totrans-77
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`lastIndexOfSubList` \x97 返回一个`List`中与另一个相等的最后一个子列表的索引。"

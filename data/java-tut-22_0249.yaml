@@ -1,0 +1,136 @@
+- en: Boundary Matchers
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 边界匹配器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/bounds.html](https://docs.oracle.com/javase/tutorial/essential/regex/bounds.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/bounds.html](https://docs.oracle.com/javase/tutorial/essential/regex/bounds.html)
+- en: Until now, we've only been interested in whether or not a match is found *at
+    some location* within a particular input string. We never cared about *where*
+    in the string the match was taking place.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们只关心匹配是否在特定输入字符串的*某个位置*发现。我们从不关心匹配发生在字符串的*哪个位置*。
+- en: You can make your pattern matches more precise by specifying such information
+    with *boundary matchers*. For example, maybe you're interested in finding a particular
+    word, but only if it appears at the beginning or end of a line. Or maybe you want
+    to know if the match is taking place on a word boundary, or at the end of the
+    previous match.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过使用*边界匹配器*，您可以使模式匹配更加精确。例如，也许您对查找特定单词感兴趣，但只有在它出现在行首或行尾时才匹配。或者您想知道匹配是否发生在单词边界上，或者在前一个匹配的末尾。
+- en: The following table lists and explains all the boundary matchers.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出并解释了所有的边界匹配器。
+- en: '| Boundary Construct | Description |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| 边界构造 | 描述 |'
+- en: '| `^` | The beginning of a line |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| `^` | 一行的开头 |'
+- en: '| `$` | The end of a line |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| `$` | 一行的结尾 |'
+- en: '| `\b` | A word boundary |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\b` | 单词边界 |'
+- en: '| `\B` | A non-word boundary |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\B` | 非单词边界 |'
+- en: '| `\A` | The beginning of the input |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\A` | 输入的开头 |'
+- en: '| `\G` | The end of the previous match |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\G` | 前一个匹配的结尾 |'
+- en: '| `\Z` | The end of the input but for the final terminator, if any |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\Z` | 输入的结尾，但不包括最终终止符（如果有） |'
+- en: '| `\z` | The end of the input |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\z` | 输入的结尾 |'
+- en: The following examples demonstrate the use of boundary matchers `^` and `$`.
+    As noted above, `^` matches the beginning of a line, and `$` matches the end.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例演示了边界匹配器`^`和`$`的使用。如上所述，`^`匹配行的开头，`$`匹配行的结尾。
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The first example is successful because the pattern occupies the entire input
+    string. The second example fails because the input string contains extra whitespace
+    at the beginning. The third example specifies an expression that allows for unlimited
+    white space, followed by "dog" on the end of the line. The fourth example requires
+    "dog" to be present at the beginning of a line followed by an unlimited number
+    of word characters.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个示例成功，因为模式占据了整个输入字符串。第二个示例失败，因为输入字符串开头包含额外的空格。第三个示例指定了一个允许无限空格，然后在行尾跟着"dog"的表达式。第四个示例要求"dog"必须出现在一行的开头，后面跟着无限数量的单词字符。
+- en: To check if a pattern begins and ends on a word boundary (as opposed to a substring
+    within a longer string), just use `\b` on either side; for example, `\bdog\b`
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要检查模式是否从单词边界开始和结束（而不是在更长字符串中的子字符串），只需在两侧使用`\b`；例如，`\bdog\b`
+- en: '[PRE1]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'To match the expression on a non-word boundary, use `\B` instead:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在非单词边界上匹配表达式，请使用`\B`：
+- en: '[PRE2]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'To require the match to occur only at the end of the previous match, use `\G`:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要求匹配仅发生在前一个匹配的末尾，请使用`\G`：
+- en: '[PRE3]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Here the second example finds only one match, because the second occurrence
+    of "dog" does not start at the end of the previous match.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里第二个示例只找到一个匹配，因为第二次出现的"dog"不是从前一个匹配的末尾开始的。

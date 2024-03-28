@@ -1,0 +1,96 @@
+- en: Upper Bounded Wildcards
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 上界通配符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/upperBounded.html](https://docs.oracle.com/javase/tutorial/java/generics/upperBounded.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/upperBounded.html](https://docs.oracle.com/javase/tutorial/java/generics/upperBounded.html)
+- en: You can use an upper bounded wildcard to relax the restrictions on a variable.
+    For example, say you want to write a method that works on `List<Integer>`, `List<Double>`,
+    *and* `List<Number>`; you can achieve this by using an upper bounded wildcard.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用上界通配符来放宽对变量的限制。例如，假设您想编写一个适用于`List<Integer>`、`List<Double>`和`List<Number>`的方法；您可以通过使用上界通配符来实现这一点。
+- en: To declare an upper-bounded wildcard, use the wildcard character ('`?`'), followed
+    by the `extends` keyword, followed by its *upper bound*. Note that, in this context,
+    `extends` is used in a general sense to mean either "extends" (as in classes)
+    or "implements" (as in interfaces).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要声明上界通配符，请使用通配符字符（'`?`'），后跟`extends`关键字，再跟其*上界*。请注意，在此上下文中，`extends`的含义是广义上的，既可以表示"extends"（如类）也可以表示"implements"（如接口）。
+- en: To write the method that works on lists of `Number` and the subtypes of `Number`,
+    such as `Integer`, `Double`, and `Float`, you would specify `List<? extends Number>`.
+    The term `List<Number>` is more restrictive than `List<? extends Number>` because
+    the former matches a list of type `Number` only, whereas the latter matches a
+    list of type `Number` or any of its subclasses.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编写适用于`Number`及其子类型（如`Integer`、`Double`和`Float`）的列表的方法，您应指定`List<? extends Number>`。术语`List<Number>`比`List<?
+    extends Number>`更为严格，因为前者仅匹配类型为`Number`的列表，而后者匹配类型为`Number`或其任何子类的列表。
+- en: 'Consider the following `process` method:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑以下`process`方法：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The upper bounded wildcard, `<? extends Foo>`, where `Foo` is any type, matches
+    `Foo` and any subtype of `Foo`. The `process` method can access the list elements
+    as type `Foo`:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 上界通配符`<? extends Foo>`，其中`Foo`是任何类型，匹配`Foo`和`Foo`的任何子类型。`process`方法可以将列表元素作为类型`Foo`访问：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: In the `foreach` clause, the `elem` variable iterates over each element in the
+    list. Any method defined in the `Foo` class can now be used on `elem`.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`foreach`子句中，`elem`变量遍历列表中的每个元素。现在可以在`elem`上使用`Foo`类中定义的任何方法。
+- en: 'The `sumOfList` method returns the sum of the numbers in a list:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`sumOfList`方法返回列表中数字的总和：'
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The following code, using a list of `Integer` objects, prints `sum = 6.0`:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`Integer`对象列表的以下代码打印`sum = 6.0`：
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'A list of `Double` values can use the same `sumOfList` method. The following
+    code prints `sum = 7.0`:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一组`Double`值可以使用相同的`sumOfList`方法。以下代码打印`sum = 7.0`：
+- en: '[PRE4]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'

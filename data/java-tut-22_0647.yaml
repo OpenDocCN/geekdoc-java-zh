@@ -1,0 +1,216 @@
+- en: Stroking and Filling Graphics Primitives
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 描边和填充图形原语
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/geometry/strokeandfill.html](https://docs.oracle.com/javase/tutorial/2d/geometry/strokeandfill.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/geometry/strokeandfill.html](https://docs.oracle.com/javase/tutorial/2d/geometry/strokeandfill.html)
+- en: 'You already know how to create different geometric primitives and more complicated
+    shapes. This lesson teaches how to add some color and fancy outlines to your graphics
+    and represents filling and stroking:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您已经知道如何创建不同的几何原语和更复杂的形状。本课程教授如何为图形添加一些颜色和花哨的轮廓，并表示填充和描边：
+- en: '*Filling* – is a process of painting the shape’s interior with solid color
+    or a color gradient, or a texture pattern'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*填充* - 是用纯色、颜色渐变或纹理图案绘制形状内部的过程'
+- en: '*Stroking* – is a process of drawing a shape’s outline applying stroke width,
+    line style, and color attribute'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*描边* - 是绘制形状轮廓的过程，应用描边宽度、线条样式和颜色属性'
+- en: To apply fancy line styles and fill patterns to geometric primitives change
+    the stroke and paint attributes in the [`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)
+    context before rendering. For example, draw a dashed line by creating an appropriate
+    [`Stroke`](https://docs.oracle.com/javase/8/docs/api/java/awt/Stroke.html) object.
+    To add this stroke to the `Graphics2D` context before you render the line call
+    the `setStroke` method. Similarly, you apply a gradient fill to a `Shape` object
+    by creating a `GradientPaint` object and adding it to the `Graphics2D` context.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将花哨的线条样式和填充图案应用于几何原语，需在呈现之前更改[`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)上下文中的描边和绘制属性。例如，通过创建适当的[`Stroke`](https://docs.oracle.com/javase/8/docs/api/java/awt/Stroke.html)对象来绘制虚线。在呈现线条之前，将此描边添加到`Graphics2D`上下文中，调用`setStroke`方法。同样，通过创建`GradientPaint`对象并将其添加到`Graphics2D`上下文中，可以将渐变填充应用于`Shape`对象。
+- en: 'The following code lines enrich geometric primitives with filling and stroking
+    context:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码行丰富了几何原语的填充和描边上下文：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '![Dashed rounded rectangle](../Images/4ad6995d4cd9a952f1607f9eead72907.png)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_IMG
+  zh: '![虚线圆角矩形](../Images/4ad6995d4cd9a952f1607f9eead72907.png)'
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '![Polygon filled with gradient color](../Images/48798a19dd87ecb122bfdf7e494e65d1.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_IMG
+  zh: '![填充渐变颜色的多边形](../Images/48798a19dd87ecb122bfdf7e494e65d1.png)'
+- en: The [`ShapesDemo2D.java`](examples/ShapesDemo2D.java) code example represents
+    additional implementations of stoking and filling.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`ShapesDemo2D.java`](examples/ShapesDemo2D.java)代码示例代表了描边和填充的额外实现。'
+- en: Defining Fancy Line Styles and Fill Patterns
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定义花哨的线条样式和填充图案
+- en: Using the Java 2D `Stroke` and `Paint` classes, you can define fancy line styles
+    and fill patterns.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用Java 2D的`Stroke`和`Paint`类，可以定义花哨的线条样式和填充图案。
+- en: Line Styles
+  id: totrans-14
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 线条样式
+- en: Line styles are defined by the stroke attribute in the `Graphics2D` rendering
+    context. To set the stroke attribute, you create a `BasicStroke` object and pass
+    it into the `Graphics2D` `setStroke` method.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 线条样式由`Graphics2D`呈现上下文中的描边属性定义。要设置描边属性，需创建一个`BasicStroke`对象并将其传递给`Graphics2D`的`setStroke`方法。
+- en: A `BasicStroke` object holds information about the line width, join style, end-cap
+    style, and dash style. This information is used when a `Shape` is rendered with
+    the `draw` method.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`BasicStroke`对象保存有关线宽、连接样式、端点样式和虚线样式的信息。当使用`draw`方法呈现`Shape`时，将使用此信息。
+- en: The *line width* is the thickness of the line measured perpendicular to its
+    trajectory. The line width is specified as a `float` value in user coordinate
+    units, which are roughly equivalent to 1/72 of an inch when the default transform
+    is used.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*线宽*是线条垂直于其轨迹的厚度。线宽以用户坐标单位的`float`值指定，当使用默认变换时，这些单位大致相当于1/72英寸。'
+- en: 'The *join style* is the decoration that is applied where two line segments
+    meet. `BasicStroke` supports the following three join styles:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*连接样式*是应用在两条线段相遇处的装饰。`BasicStroke`支持以下三种连接样式：'
+- en: '![Join bevel stroke style](../Images/00820c62bd27f5624c9cae9551ac10e8.png)`JOIN_BEVEL`'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![连接斜角笔触样式](../Images/00820c62bd27f5624c9cae9551ac10e8.png) `JOIN_BEVEL`'
+- en: '![Join miter stroke style](../Images/7088cb288a873ab5a0aa575fc13f9f47.png)`JOIN_MITER`'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![连接斜角笔触样式](../Images/7088cb288a873ab5a0aa575fc13f9f47.png) `JOIN_MITER`'
+- en: '![Join round stroke style](../Images/2b3970c32cd6fc4a898699e974832927.png)
+    `JOIN_ROUND`'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![连接圆形笔触样式](../Images/2b3970c32cd6fc4a898699e974832927.png) `JOIN_ROUND`'
+- en: 'The *end-cap style* is the decoration that is applied where a line segment
+    ends. `BasicStroke` supports the following three end-cap styles:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*端点样式*是应用在线段结束处的装饰。`BasicStroke`支持以下三种端点样式：'
+- en: '![Butt end-cap style](../Images/eee5947182e6d5b02b6f449fcd61ae01.png) `CAP_BUTT`'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![平头端点样式](../Images/eee5947182e6d5b02b6f449fcd61ae01.png) `CAP_BUTT`'
+- en: '![Round end-cap style](../Images/88c0e509cfe1c912bfd1bb6380e5df06.png) `CAP_ROUND`'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![圆形端点样式](../Images/88c0e509cfe1c912bfd1bb6380e5df06.png) `CAP_ROUND`'
+- en: '![Square end-cap style](../Images/6277f8f7f82c72f4eb2e5e2ae4eca22b.png) `CAP_SQUARE`'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![方形端点样式](../Images/6277f8f7f82c72f4eb2e5e2ae4eca22b.png) `CAP_SQUARE`'
+- en: The *dash style* defines the pattern of opaque and transparent sections applied
+    along the length of the line. The dash style is defined by a dash array and a
+    dash phase. The *dash array* defines the dash pattern. Alternating elements in
+    the array represent the dash length and the length of the space between dashes
+    in user coordinate units. Element 0 represents the first dash, element 1 the first
+    space, and so on. The *dash phase* is an offset into the dash pattern, also specified
+    in user coordinate units. The dash phase indicates what part of the dash pattern
+    is applied to the beginning of the line.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*虚线样式*定义了沿着线长度应用的不透明和透明部分的模式。虚线样式由一个虚线数组和一个虚线相位定义。*虚线数组*定义了虚线模式。数组中的交替元素表示用户坐标单位中的虚线长度和虚线之间的空间长度。元素0表示第一个虚线，元素1表示第一个空格，依此类推。*虚线相位*是虚线模式中的偏移量，也以用户坐标单位指定。虚线相位指示应用于线的开头的虚线模式的哪个部分。'
+- en: Fill Patterns
+  id: totrans-27
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 填充图案
+- en: Fill patterns are defined by the paint attribute in the `Graphics2D` rendering
+    context. To set the paint attribute, you create an instance of an object that
+    implements the `Paint` interface and pass it into the `Graphics2D` `setPaint`
+    method.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 填充图案由`Graphics2D`渲染上下文中的`paint`属性定义。要设置`paint`属性，您需要创建一个实现`Paint`接口的对象实例，并将其传递给`Graphics2D`的`setPaint`方法。
+- en: 'The following three classes implement the `Paint` interface: `Color`, `GradientPaint`,
+    and `TexturePaint`.'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下三个类实现了`Paint`接口：`Color`、`GradientPaint`和`TexturePaint`。
+- en: 'To create a `GradientPaint`, you specify a beginning position and color and
+    an ending position and color. The gradient changes proportionally from one color
+    to the other color along the line connecting the two positions. For example:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建一个`GradientPaint`，您需要指定起始位置和颜色以及结束位置和颜色。渐变沿着连接两个位置的线从一种颜色变化到另一种颜色。例如：
+- en: '![Gradient filling](../Images/156e27ca8b2f2d9ed9730e41e548101c.png)'
+  id: totrans-31
+  prefs: []
+  type: TYPE_IMG
+  zh: '![渐变填充](../Images/156e27ca8b2f2d9ed9730e41e548101c.png)'
+- en: 'The pattern for a `TexturePaint` class is defined by a `BufferedImage` class.
+    To create a `TexturePaint` object, you specify the image that contains the pattern
+    and a rectangle that is used to replicate and anchor the pattern. The following
+    image represents this feature:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TexturePaint`类的图案由`BufferedImage`类定义。要创建一个`TexturePaint`对象，您需要指定包含图案的图像和用于复制和锚定图案的矩形。以下图像表示了这个特性：'
+- en: '![Using a texture to fill a rectangle](../Images/ff586462372ec8b435991f61edf9b928.png)'
+  id: totrans-33
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用纹理填充矩形](../Images/ff586462372ec8b435991f61edf9b928.png)'

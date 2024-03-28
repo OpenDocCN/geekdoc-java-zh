@@ -1,0 +1,117 @@
+- en: Character and Byte Streams
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 字符流和字节流
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/stream.html](https://docs.oracle.com/javase/tutorial/i18n/text/stream.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/stream.html](https://docs.oracle.com/javase/tutorial/i18n/text/stream.html)
+- en: 'The `java.io` package provides classes that allow you to convert between Unicode
+    character streams and byte streams of non-Unicode text. With the [`InputStreamReader`](https://docs.oracle.com/javase/8/docs/api/java/io/InputStreamReader.html)
+    class, you can convert byte streams to character streams. You use the [`OutputStreamWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/OutputStreamWriter.html)
+    class to translate character streams into byte streams. The following figure illustrates
+    the conversion process:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.io`包提供了允许您在Unicode字符流和非Unicode文本的字节流之间进行转换的类。使用[`InputStreamReader`](https://docs.oracle.com/javase/8/docs/api/java/io/InputStreamReader.html)类，您可以将字节流转换为字符流。您可以使用[`OutputStreamWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/OutputStreamWriter.html)类将字符流转换为字节流。以下图示说明了转换过程：'
+- en: '![This figure represents the conversion process](../Images/33c102f8a405f1856fcfa8f989e079bd.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![此图表示转换过程](../Images/33c102f8a405f1856fcfa8f989e079bd.png)'
+- en: 'When you create `InputStreamReader` and `OutputStreamWriter` objects, you specify
+    the byte encoding that you want to convert. For example, to translate a text file
+    in the UTF-8 encoding into Unicode, you create an `InputStreamReader` as follows:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您创建`InputStreamReader`和`OutputStreamWriter`对象时，您需要指定要转换的字节编码。例如，要将UTF-8编码的文本文件转换为Unicode，您可以创建一个`InputStreamReader`如下：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'If you omit the encoding identifier, `InputStreamReader` and `OutputStreamWriter`
+    rely on the default encoding. You can determine which encoding an `InputStreamReader`
+    or `OutputStreamWriter` uses by invoking the `getEncoding` method, as follows:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果省略编码标识符，`InputStreamReader`和`OutputStreamWriter`将依赖于默认编码。您可以通过调用`getEncoding`方法来确定`InputStreamReader`或`OutputStreamWriter`使用的编码，如下所示：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The example that follows shows you how to perform character-set conversions
+    with the `InputStreamReader` and `OutputStreamWriter` classes. The full source
+    code for this example is in [`StreamConverter.java`](examples/StreamConverter.java).
+    This program displays Japanese characters. Before trying it out, verify that the
+    appropriate fonts have been installed on your system. If you are using the JDK
+    software that is compatible with version 1.1, make a copy of the `font.properties`
+    file and then replace it with the `font.properties.ja` file.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的示例向您展示如何使用`InputStreamReader`和`OutputStreamWriter`类执行字符集转换。此示例的完整源代码在[`StreamConverter.java`](examples/StreamConverter.java)中。此程序显示日文字符。在尝试之前，请验证系统上是否已安装适当的字体。如果您使用与版本1.1兼容的JDK软件，请复制`font.properties`文件，然后用`font.properties.ja`文件替换它。
+- en: 'The `StreamConverter` program converts a sequence of Unicode characters from
+    a `String` object into a `FileOutputStream` of bytes encoded in UTF-8\. The method
+    that performs the conversion is called `writeOutput`:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`StreamConverter`程序将`String`对象中的一系列Unicode字符转换为以UTF-8编码的字节的`FileOutputStream`。执行转换的方法称为`writeOutput`：'
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The `readInput` method reads the bytes encoded in UTF-8 from the file created
+    by the `writeOutput` method. An `InputStreamReader` object converts the bytes
+    from UTF-8 into Unicode and returns the result in a `String`. The `readInput`
+    method is as follows:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`readInput`方法从由`writeOutput`方法创建的文件中读取以UTF-8编码的字节。`InputStreamReader`对象将UTF-8编码的字节转换为Unicode，并以`String`形式返回结果。`readInput`方法如下：'
+- en: '[PRE3]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The `main` method of the `StreamConverter` program invokes the `writeOutput`
+    method to create a file of bytes encoded in UTF-8\. The `readInput` method reads
+    the same file, converting the bytes back into Unicode. Here is the source code
+    for the `main` method:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`StreamConverter`程序的`main`方法调用`writeOutput`方法创建一个以UTF-8编码的字节文件。`readInput`方法读取相同的文件，将字节转换回Unicode。以下是`main`方法的源代码：'
+- en: '[PRE4]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The original string (`jaString`) should be identical to the newly created string
+    (`inputString`). To show that the two strings are the same, the program concatenates
+    them and displays them with a `ShowString` object. The `ShowString` class displays
+    a string with the `Graphics.drawString` method. The source code for this class
+    is in [`ShowString.java`](examples/ShowString.java). When the `StreamConverter`
+    program instantiates `ShowString`, the following window appears. The repetition
+    of the characters displayed verifies that the two strings are identical:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 原始字符串（`jaString`）应与新创建的字符串（`inputString`）完全相同。为了显示这两个字符串相同，程序将它们连接起来，并使用 `ShowString`
+    对象显示它们。`ShowString` 类使用 `Graphics.drawString` 方法显示字符串。此类的源代码在 [`ShowString.java`](examples/ShowString.java)
+    中。当 `StreamConverter` 程序实例化 `ShowString` 时，会出现以下窗口。显示的字符重复验证了这两个字符串是相同的：
+- en: '![This is a screens hot of the StreamConverter program](../Images/6bed01d5c44a9c8dc3fce2bda11a9cc0.png)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_IMG
+  zh: '![这是 StreamConverter 程序的屏幕截图](../Images/6bed01d5c44a9c8dc3fce2bda11a9cc0.png)'

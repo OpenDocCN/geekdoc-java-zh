@@ -1,0 +1,76 @@
+- en: Solaris and Linux Support
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Solaris 和 Linux 支持
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/support.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/support.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/support.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/support.html)
+- en: Solaris 10
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Solaris 10
+- en: 'To test that SDP is enabled use the `sdpadm`(1M) command:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要测试 SDP 是否已启用，请使用`sdpadm`(1M)命令：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: You can use the grep command to search the `/etc/path_to_inst` file for the
+    string "ibd" to view a list of IB adaptors that are supported on your network.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用 grep 命令在`/etc/path_to_inst`文件中搜索字符串"ibd"，以查看网络上支持的 IB 适配器列表。
+- en: Other commands you might find useful are `ib`(7D), `ibd`(7D), and `sdp`(7D).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其他你可能会发现有用的命令包括`ib`(7D)、`ibd`(7D)和`sdp`(7D)。
+- en: Solaris 11
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Solaris 11
+- en: 'You can use the following command to obtain the InfiniBand partition link information:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用以下命令获取 InfiniBand 分区链接信息：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Other commands you might find useful are `ib`(7D), `ibd`(7D), and `sdp`(7D).
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其他你可能会发现有用的命令包括`ib`(7D)、`ibd`(7D)和`sdp`(7D)。
+- en: Linux
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Linux
+- en: 'You can use the following command to obtain the list of InfiniBand adapters:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用以下命令获取 InfiniBand 适配器的列表：
+- en: '[PRE2]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'

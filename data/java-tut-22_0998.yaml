@@ -1,0 +1,83 @@
+- en: 'Lesson: Advanced Topics for LDAP Users'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：LDAP用户的高级主题
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/index.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/index.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/index.html)
+- en: The lessons in the **LDAP** trail provide details on the mapping between the
+    LDAP and the JNDI. They also give hints and tips for accessing the LDAP service
+    through the JNDI.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**LDAP**教程中的课程提供了LDAP和JNDI之间的映射细节。它们还提供了通过JNDI访问LDAP服务的提示和技巧。'
+- en: LDAP
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: LDAP
+- en: X.500, is a CCITT standard for directory services that is part of the OSI suite
+    of services. X.500 standard defines a protocol (among others) for a client application
+    to access the X.500 directory called the *Directory Access Protocol* (DAP). It
+    is layered on top of the Open Systems Interconnection (OSI) protocol stack.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: X.500是CCITT关于目录服务的标准，是OSI服务套件的一部分。X.500标准定义了一个协议（其中之一）用于客户端应用程序访问X.500目录，称为*目录访问协议*（DAP）。它建立在开放系统互连（OSI）协议栈之上。
+- en: The Internet community, recognizing the need for an X.500-like service but faced
+    with different underlying network infrastructure (TCP/IP instead of OSI), designed
+    a new protocol based on the X.500 DAP protocol, called *Lightweight* DAP, or LDAP.
+    [RFC 2251](http://www.ietf.org/rfc/rfc2251.txt) defines what is now called *version
+    3* of the LDAP (or LDAP v3), an improved version of its predecessor LDAP v2 specified
+    in [RFC 1777](http://www.ietf.org/rfc/rfc1777.txt).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因特网社区意识到需要类似X.500的服务，但面临不同的底层网络基础设施（TCP/IP而不是OSI），设计了一种基于X.500 DAP协议的新协议，称为*轻量级*
+    DAP，或LDAP。[RFC 2251](http://www.ietf.org/rfc/rfc2251.txt)定义了现在称为*版本3*的LDAP（或LDAP
+    v3），这是其前身LDAP v2的改进版本，其规范在[RFC 1777](http://www.ietf.org/rfc/rfc1777.txt)中指定。
+- en: The goal of the LDAP was a protocol that could be easily implemented, with special
+    focus on being able to build small and simple clients. One way that it attempted
+    to achieve simplification was to use a lot of strings and to minimize wherever
+    possible the use of structures. DNs, for example, are represented in the protocol
+    as strings, as are attribute type names and many attribute values.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP的目标是设计一种易于实现的协议，特别关注能够构建小型和简单的客户端。它试图通过大量使用字符串和尽可能减少结构的使用来实现简化。例如，DN在协议中表示为字符串，属性类型名称和许多属性值也是如此。
+- en: The protocol consists of the client's sending requests to the server, to which
+    the server responds, though not necessarily in the same order in which the requests
+    were sent. Each request is tagged with an ID so that requests and responses can
+    be matched. The protocol works over either TCP or UDP, although the TCP version
+    is most commonly used.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该协议由客户端向服务器发送请求，服务器做出响应，尽管不一定按照请求发送的顺序。每个请求都带有一个ID标记，以便匹配��求和响应。该协议可以在TCP或UDP上运行，尽管TCP版本最常用。
+- en: Because of the focus on clients, the LDAP community also defined standards for
+    the string representation of DNs ( [RFC 2553](http://www.ietf.org/rfc/rfc2553.txt)),
+    search filters ( [RFC 1960](http://www.ietf.org/rfc/rfc1960.txt)), and attribute
+    syntaxes ( [RFC 1778](http://www.ietf.org/rfc/rfc1778.txt)), for a C language
+    based API ( [RFC 1823](http://www.ietf.org/rfc/rfc1823.txt)), and for the format
+    of URLs for accessing LDAP services ( [RFC 1959](http://www.ietf.org/rfc/rfc1959.txt)).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于对客户端的关注，LDAP社区还定义了有关DN的字符串表示（[RFC 2553](http://www.ietf.org/rfc/rfc2553.txt)）、搜索过滤器（[RFC
+    1960](http://www.ietf.org/rfc/rfc1960.txt)）和属性语法（[RFC 1778](http://www.ietf.org/rfc/rfc1778.txt)）的标准，以及基于C语言的API（[RFC
+    1823](http://www.ietf.org/rfc/rfc1823.txt)），以及用于访问LDAP服务的URL格式（[RFC 1959](http://www.ietf.org/rfc/rfc1959.txt)）。
+- en: LDAP v3 supports internationalization, various authentication mechanisms, referrals,
+    and a generic deployment mechanism. It allows new features to be added to the
+    protocol without also requiring changes to the protocol by using *extensions*
+    and *controls*.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP v3支持国际化、各种认证机制、引荐和通用部署机制。它允许通过使用*扩展*和*控制*向协议添加新功能，而无需对协议进行更改。

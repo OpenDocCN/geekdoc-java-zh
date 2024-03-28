@@ -1,0 +1,158 @@
+- en: How to Use the ButtonGroup Component
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用ButtonGroup组件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/buttongroup.html](https://docs.oracle.com/javase/tutorial/uiswing/components/buttongroup.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/buttongroup.html](https://docs.oracle.com/javase/tutorial/uiswing/components/buttongroup.html)
+- en: The `ButtonGroup` component manages the selected/unselected state for a set
+    of buttons. For the group, the `ButtonGroup` instance guarantees that only one
+    button can be selected at a time.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ButtonGroup`组件管理一组按钮的选中/未选中状态。对于该组，`ButtonGroup`实例保证一次只能选择一个按钮。'
+- en: Initially, all buttons managed by a `ButtonGroup` instance are unselected.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最初，由`ButtonGroup`实例管理的所有按钮都未被选中。
+- en: How to Use ButtonGroup Features
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 如何使用ButtonGroup功能
+- en: You can use `ButtonGroup` with any set of objects that inherit from `AbstractButton`.
+    Typically a button group contains instances of `JRadioButton, JRadioButtonMenuItem`,
+    or `JToggleButton`. It would not make sense to put an instance of `JButton` or
+    `JMenuItem` in a button group because `JButton` and `JMenuItem` do not implement
+    the select/deselect button state.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以将`ButtonGroup`与任何继承自`AbstractButton`的对象一起使用。通常，按钮组包含`JRadioButton, JRadioButtonMenuItem`或`JToggleButton`的实例。将`JButton`或`JMenuItem`的实例放入按钮组中是没有意义的，因为`JButton`和`JMenuItem`没有实现选择/取消选择按钮状态。
+- en: In general, you will typically follow these steps to write code that uses a
+    `ButtonGroup` component.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，编写使用`ButtonGroup`组件的代码时，通常会遵循以下步骤。
+- en: Subclass `JFrame`
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 子类化`JFrame`
+- en: Call `ContextPane` together with a layout manager
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 与布局管理器一起调用`ContextPane`
+- en: Declare and configure a set of radio buttons or toggle buttons
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 声明和配置一组单选按钮或切换按钮
+- en: Instantiate a `ButtonGroup` object
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 实例化一个`ButtonGroup`对象
+- en: Call the `add` method on that buttongroup object in order to add each button
+    to the group.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调用该buttongroup对象上的`add`方法，以便将每个按钮添加到组中。
+- en: For details and a code example, see [How to Use Radio Buttons](button.html#radiobutton).
+    It shows how to use a `ButtonGroup` component to group a set of RadioButtons set
+    into a JPanel.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关详细信息和代码示例，请参阅[如何使用单选按钮](button.html#radiobutton)。它展示了如何使用`ButtonGroup`组件将一组单选按钮设置到一个JPanel中。
+- en: The ButtonGroup API
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ButtonGroup API
+- en: Commonly Used Button Group Constructors/Methods
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 常用的Button Group构造函数/方法
+- en: '| Constructor or Method | Purpose |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数或方法 | 目的 |'
+- en: '| [ButtonGroup()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ButtonGroup.html#ButtonGroup--)
+    | Create a `ButtonGroup` instance. |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| [ButtonGroup()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ButtonGroup.html#ButtonGroup--)
+    | 创建一个`ButtonGroup`实例。 |'
+- en: '| [void add(AbstractButton)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ButtonGroup.html#add-javax.swing.AbstractButton-)
+    [void remove(AbstractButton)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ButtonGroup.html#remove-javax.swing.AbstractButton-)
+    | Add a button to the group, or remove a button from the group. |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void add(AbstractButton)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ButtonGroup.html#add-javax.swing.AbstractButton-)
+    [void remove(AbstractButton)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ButtonGroup.html#remove-javax.swing.AbstractButton-)
+    | 将按钮添加到组中，或从组中移除按钮。 |'
+- en: '| [public ButtonGroup getGroup()](https://docs.oracle.com/javase/8/docs/api/javax/swing/DefaultButtonModel.html#getGroup--)
+    *(in `DefaultButtonModel`)* | Get the `ButtonGroup`, if any, that controls a button.
+    For example: `ButtonGroup group = ((DefaultButtonModel)button.getModel()).getGroup();`
+    |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| [public ButtonGroup getGroup()](https://docs.oracle.com/javase/8/docs/api/javax/swing/DefaultButtonModel.html#getGroup--)
+    *(在`DefaultButtonModel`中)* | 获取控制按钮的`ButtonGroup`（如果有）。例如：`ButtonGroup group =
+    ((DefaultButtonModel)button.getModel()).getGroup();` |'
+- en: '| [public ButtonGroup clearSelection()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ButtonGroup.html#ButtonGroup--)
+    | Clears the state of selected buttons in the ButtonGroup. None of the buttons
+    in the ButtonGroup are selected . |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| [public ButtonGroup clearSelection()](https://docs.oracle.com/javase/8/docs/api/javax/swing/ButtonGroup.html#ButtonGroup--)
+    | 清除ButtonGroup中选定按钮的状态。ButtonGroup中的按钮都未被选中。 |'
+- en: ButtonGroup Examples
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ButtonGroup 示例
+- en: The following demonstration application uses the ButtonGroup component to group
+    radio buttons displaying on a Window.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下演示应用程序使用ButtonGroup组件将单选按钮分组显示在窗口上。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注意事项 |'
+- en: '| [`RadioButtonDemo`](../examples/components/index.html#RadioButtonDemo) |
+    [How to Use Radio Buttons](button.html#radiobutton) | Uses radio buttons to determine
+    which of five images it should display. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`RadioButtonDemo`](../examples/components/index.html#RadioButtonDemo) |
+    [如何使用单选按钮](button.html#radiobutton) | 使用单选按钮确定应显示哪五幅图像。 |'

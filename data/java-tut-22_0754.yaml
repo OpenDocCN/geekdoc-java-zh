@@ -1,0 +1,94 @@
+- en: Overview of the Packages
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 包概述
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/intro/package.html](https://docs.oracle.com/javase/tutorial/jaxp/intro/package.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/intro/package.html](https://docs.oracle.com/javase/tutorial/jaxp/intro/package.html)
+- en: 'The SAX and DOM APIs are defined by the XML-DEV group and by the W3C, respectively.
+    The libraries that define those APIs are as follows:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SAX和DOM API分别由XML-DEV组和W3C定义。定义这些API的库如下：
+- en: '`javax.xml.parsers`: The JAXP APIs, which provide a common interface for different
+    vendors'' SAX and DOM parsers.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.xml.parsers`：JAXP API提供了不同供应商的SAX和DOM解析器的通用接口。'
+- en: '`org.w3c.dom`: Defines the `Document` class (a DOM) as well as classes for
+    all the components of a DOM.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`org.w3c.dom`：定义了`Document`类（DOM）以及DOM的所有组件的类。'
+- en: '`org.xml.sax`: Defines the basic SAX APIs.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`org.xml.sax`：定义了基本的SAX API。'
+- en: '`javax.xml.transform`: Defines the XSLT APIs that let you transform XML into
+    other forms.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.xml.transform`：定义了XSLT API，让您可以将XML转换为其他形式。'
+- en: '`javax.xml.stream`: Provides StAX-specific transformation APIs.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.xml.stream`：提供了特定于StAX的转换API。'
+- en: The Simple API for XML (SAX) is the event-driven, serial-access mechanism that
+    does element-by-element processing. The API for this level reads and writes XML
+    to a data repository or the web. For server-side and high-performance applications,
+    you will want to fully understand this level. But for many applications, a minimal
+    understanding will suffice.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 简单XML API（SAX）是一种事件驱动、串行访问机制，逐个元素进行处理。该级别的API读取和写入XML到数据存储库或网络。对于服务器端和高性能应用程序，您需要充分了解这个级别。但对于许多应用程序，了解最基本的内容就足够了。
+- en: The DOM API is generally an easier API to use. It provides a familiar tree structure
+    of objects. You can use the DOM API to manipulate the hierarchy of application
+    objects it encapsulates. The DOM API is ideal for interactive applications because
+    the entire object model is present in memory, where it can be accessed and manipulated
+    by the user.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: DOM API通常是一个更容易使用的API。它提供了熟悉的对象树结构。您可以使用DOM API来操作封装的应用程序对象的层次结构。DOM API非常适合交互式应用程序，因为整个对象模型都存在于内存中，用户可以访问和操作它。
+- en: On the other hand, constructing the DOM requires reading the entire XML structure
+    and holding the object tree in memory, so it is much more CPU- and memory-intensive.
+    For that reason, the SAX API tends to be preferred for server-side applications
+    and data filters that do not require an in-memory representation of the data.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，构建DOM需要读取整个XML结构并将对象树保存在内存中，因此它需要更多的CPU和内存资源。因此，SAX API往往更受服务器端应用程序和不需要数据的内存表示的数据过滤器的青睐。
+- en: The XSLT APIs defined in `javax.xml.transform` let you write XML data to a file
+    or convert it into other forms. As shown in the XSLT section of this tutorial,
+    you can even use it in conjunction with the SAX APIs to convert legacy data to
+    XML.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`javax.xml.transform`中定义的XSLT API允许您将XML数据写入文件或将其转换为其他形式。正如本教程的XSLT部分所示，您甚至可以与SAX
+    API一起使用它来将传统数据转换为XML。
+- en: Finally, the StAX APIs defined in `javax.xml.stream` provide a streaming Java
+    technology-based, event-driven, pull-parsing API for reading and writing XML documents.
+    StAX offers a simpler programming model than SAX and more efficient memory management
+    than DOM.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，在`javax.xml.stream`中定义的StAX API提供了基于Java技术的流式、事件驱动、拉取解析的API，用于读取和写入XML文档。StAX提供了比SAX更简单的编程模型，比DOM更高效的内存管理。

@@ -1,0 +1,132 @@
+- en: Doing Without a Layout Manager (Absolute Positioning)
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 不使用布局管理器（绝对定位）
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/none.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/none.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/none.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/none.html)
+- en: Although it is possible to do without a layout manager, you should use a layout
+    manager if at all possible. A layout manager makes it easier to adjust to look-and-feel-dependent
+    component appearances, to different font sizes, to a container's changing size,
+    and to different locales. Layout managers also can be reused easily by other containers,
+    as well as other programs.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管可以不使用布局管理器，但尽可能使用布局管理器。布局管理器使得更容易调整外观和感觉依赖的组件外观，不同的字体大小，容器的大小变化以及不同的语言环境。布局管理器也可以轻松地被其他容器以及其他程序重复使用。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**本课程涵盖了手动编写布局代码，这可能具有挑战性。如果您不想学习布局管理的所有细节，您可能更喜欢使用`GroupLayout`布局管理器结合构建工具来布局您的GUI。其中一个构建工具是[NetBeans
+    IDE](../learn/index.html)。否则，如果您想手动编码而不想使用`GroupLayout`，那么推荐使用`GridBagLayout`作为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有兴趣使用JavaFX创建GUI，请参阅[在JavaFX中使用布局](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: If a container holds components whose size is not affected by the container's
+    size or by font, look-and-feel, or language changes, then absolute positioning
+    might make sense. Desktop panes, which contain [internal frames](../components/internalframe.html),
+    are in this category. The size and position of internal frames does not depend
+    directly on the desktop pane's size. The programmer determines the initial size
+    and placement of internal frames within the desktop pane, and then the user can
+    move or resize the frames. A layout manager is unnecessary in this situation.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个容器包含的组件的大小不受容器的大小、字体、外观和语言更改的影响，那么绝对定位可能是合理的。包含[内部框架](../components/internalframe.html)的桌面窗格属于这一类别。内部框架的大小和位置不直接取决于桌面窗格的大小。程序员确定内部框架在桌面窗格内的初始大小和位置，然后用户可以移动或调整框架的大小。在这种情况下，布局管理器是不必要的。
+- en: Another situation in which absolute positioning might make sense is that of
+    a custom container that performs size and position calculations that are particular
+    to the container, and perhaps require knowledge of the container's specialized
+    state. This is the situation with [split panes](../components/splitpane.html).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种适合使用绝对定位的情况是自定义容器，该容器执行特定于容器的大小和位置计算，并且可能需要了解容器的专门状态。这是[分割窗格](../components/splitpane.html)的情况。
+- en: Creating a container without a layout manager involves the following steps.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建一个没有布局管理器的容器涉及以下步骤。
+- en: Set the container's layout manager to null by calling `setLayout(null)`.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将容器的布局管理器设置为null，调用`setLayout(null)`。
+- en: Call the `Component` class's `setbounds` method for each of the container's
+    children.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对容器的每个子元素调用`Component`类的`setbounds`方法。
+- en: Call the `Component` class's `repaint` method.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调用`Component`类的`repaint`方法。
+- en: However, creating containers with absolutely positioned containers can cause
+    problems if the window containing the container is resized.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，使用绝对定位创建容器可能会在包含容器的窗口调整大小时出现问题。
+- en: Here is a snapshot of a frame whose content pane uses absolute positioning.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个内容窗格使用绝对定位的框架的快照。
+- en: '![A snapshot of AbsoluteLayoutDemo](../Images/643a1facdbb21dcd4739a132a45c8e1b.png)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_IMG
+  zh: '![AbsoluteLayoutDemo的快照](../Images/643a1facdbb21dcd4739a132a45c8e1b.png)'
+- en: Click the Launch button to run AbsoluteLayoutDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/layout/index.html#AbsoluteLayoutDemo).
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行AbsoluteLayoutDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/layout/index.html#AbsoluteLayoutDemo)。
+- en: '[![Launches the AbsoluteLayoutDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/AbsoluteLayoutDemoProject/AbsoluteLayoutDemo.jnlp)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动AbsoluteLayoutDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/AbsoluteLayoutDemoProject/AbsoluteLayoutDemo.jnlp)'
+- en: Its code is in [`AbsoluteLayoutDemo.java`](../examples/layout/AbsoluteLayoutDemoProject/src/layout/AbsoluteLayoutDemo.java).
+    The following code snippet shows how the components in the content pane are created
+    and laid out.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其代码位于[`AbsoluteLayoutDemo.java`](../examples/layout/AbsoluteLayoutDemoProject/src/layout/AbsoluteLayoutDemo.java)中。以下代码片段显示了如何在内容窗格中创建和布局组件。
+- en: '[PRE0]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'

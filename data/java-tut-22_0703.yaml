@@ -1,0 +1,47 @@
+- en: Events
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 事件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/writing/events.html](https://docs.oracle.com/javase/tutorial/javabeans/writing/events.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/writing/events.html](https://docs.oracle.com/javase/tutorial/javabeans/writing/events.html)
+- en: A bean class can fire off any type of event, including custom events. As with
+    properties, events are identified by a specific pattern of method names.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个bean类可以触发任何类型的事件，包括自定义事件。与属性一样，事件通过特定模式的方法名称来识别。
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The listener type must be a descendant of `java.util.EventListener`.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 监听器类型必须是`java.util.EventListener`的子类。
+- en: 'For example, a Swing `JButton` is a bean that fires `action` events when the
+    user clicks on it. `JButton` includes the following methods (actually inherited
+    from `AbstractButton`), which are the bean pattern for an event:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，Swing的`JButton`是一个bean，当用户点击它时会触发`action`事件。`JButton`包括以下方法（实际上是从`AbstractButton`继承而来），这些方法是事件的bean模式：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Bean events are recognized by builder tools and can be used in wiring components
+    together. For example, you can wire a button's `action` event to make something
+    happen, like invoking another bean's method.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Bean事件被构建工具识别，并可用于将组件进行连线。例如，您可以将按钮的`action`事件连接起来，以触发某些操作，比如调用另一个bean的方法。

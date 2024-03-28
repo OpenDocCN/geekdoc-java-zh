@@ -1,0 +1,113 @@
+- en: 'Lesson: Learning Swing with the NetBeans IDE'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：使用NetBeans IDE学习Swing
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html](https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html](https://docs.oracle.com/javase/tutorial/uiswing/learn/index.html)
+- en: '[Examples Index](../examples/learn/index.html)'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[示例索引](../examples/learn/index.html)'
+- en: This lesson provides an introduction to Graphical User Interface (GUI) programming
+    with Swing and the NetBeans IDE. As you learned in the ["Hello World!"](../../getStarted/cupojava/netbeans.html)
+    lesson, the NetBeans IDE is a free, open-source, cross-platform integrated development
+    environment with built-in support for the Java programming language. It offers
+    many advantages over coding with a text editor; we recommend its use whenever
+    possible. If you have not yet read the above lesson, please take a moment to do
+    so now. It provides valuable information about downloading and installing the
+    JDK and NetBeans IDE.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程介绍了使用Swing和NetBeans IDE进行图形用户界面（GUI）编程。正如您在["Hello World!"](../../getStarted/cupojava/netbeans.html)课程中学到的，NetBeans
+    IDE是一个免费的、开源的、跨平台的集成开发环境，内置支持Java编程语言。与使用文本编辑器编码相比，它提供了许多优势；我们建议尽可能使用它。如果您还没有阅读上述课程，请立即花点时间阅读。它提供了有关下载和安装JDK和NetBeans
+    IDE的宝贵信息。
+- en: The goal of this lesson is to introduce the Swing API by designing a simple
+    application that converts temperature from Celsius to Fahrenheit. Its GUI will
+    be basic, focusing on only a subset of the available Swing components. We will
+    use the NetBeans IDE GUI builder, which makes user interface creation a simple
+    matter of drag and drop. Its automatic code generation feature simplifies the
+    GUI development process, letting you focus on the application logic instead of
+    the underlying infrastructure.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程的目标是通过设计一个简单的应用程序，将温度从摄氏度转换为华氏度来介绍Swing API。其GUI将是基本的，只关注可用的Swing组件的子集。我们将使用NetBeans
+    IDE GUI构建器，它使用户界面的创建变得简单易行，只需拖放即可。其自动生成代码功能简化了GUI开发过程，让您可以专注于应用程序逻辑，而不是底层基础设施。
+- en: Because this lesson is a step-by-step checklist of specific actions to take,
+    we recommend that you run the NetBeans IDE and perform each step as you read along.
+    This will be the quickest and easiest way to begin programming with Swing. If
+    you are unable to do so, simply reading along should still be useful, since each
+    step is illustrated with screenshots.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为这节课是一个逐步检查特定操作的清单，我们建议您运行NetBeans IDE，并在阅读过程中执行每个步骤。这将是开始使用Swing进行编程的最快最简单的方法。如果您无法这样做，仅仅阅读也应该是有用的，因为每个步骤都有截图说明。
+- en: If you prefer the traditional approach of programming each component manually
+    (without the assistance of an IDE), think of this lesson as an entry point into
+    the lower-level discussions already provided elsewhere in the tutorial. Hyperlinks
+    in each discussion will take you to related lessons, should you wish to learn
+    such lower-level details.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您更喜欢传统的手动编程每个组件的方法（不使用IDE的帮助），请将这节课视为进入已经在教程其他地方提供的低级讨论的入口点。每个讨论中的超链接将带您前往相关课程，如果您希望学习这些低级细节。
+- en: 'The finished GUI for this application will look as follows:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该应用程序的完成GUI将如下所示：
+- en: '![Figure showing the completed CelsiusConverter application.](../Images/2d01c0acac030a25b56d3fb6ee089725.png)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_IMG
+  zh: '![显示完成的CelsiusConverter应用程序的图例。](../Images/2d01c0acac030a25b56d3fb6ee089725.png)'
+- en: The CelsiusConverter Application.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CelsiusConverter应用程序。
+- en: Click the Launch button to run CelsiusConverter using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/learn/index.html#CelsiusConverter).
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行CelsiusConverter（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/learn/index.html#CelsiusConverter)。
+- en: '[![Launches the CelsiusConverter example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/CelsiusConverterProject/CelsiusConverter.jnlp)'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动CelsiusConverter示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/CelsiusConverterProject/CelsiusConverter.jnlp)'
+- en: 'From an end-user''s perspective, usage is simple: enter a temperature (in Celsius)
+    into the text box, click the "Convert" button, and watch the converted temperature
+    (in Fahrenheit) appear on screen. The minimize, maximize, and close buttons will
+    behave as expected, and the application will also have a title that appears along
+    the top of the window.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从最终用户的角度来看，使用方法很简单：在文本框中输入温度（摄氏度），点击“转换”按钮，然后观看转换后的温度（华氏度）显示在屏幕上。最小化、最大化和关闭按钮将按预期运行，并且应用程序还将在窗口顶部显示一个标题。
+- en: From a programmer's perspective, we will write the application in two main stages.
+    First, we will populate the GUI with the various Swing components and arrange
+    them as shown above. Then, we will add the application logic, so that the program
+    actually performs a conversion when the user presses the "Convert" button.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从程序员的角度来看，我们将应用程序分为两个主要阶段。首先，我们将用各种Swing组件填充GUI并按照上面显示的方式排列它们。然后，我们将添加应用程序逻辑，以便当用户按下“转换”按钮时，程序实际执行转换操作。
+- en: If you are interested in using JavaFX to create your GUI, see the [JavaFX Documentation](https://docs.oracle.com/javase/8/javase-clienttechnologies.htm)
+    and [JavaFX - NetBeans Wiki](http://wiki.netbeans.org/JavaFX) .
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你有兴趣使用JavaFX来创建你的GUI，请查看[JavaFX文档](https://docs.oracle.com/javase/8/javase-clienttechnologies.htm)和[JavaFX
+    - NetBeans Wiki](http://wiki.netbeans.org/JavaFX)。

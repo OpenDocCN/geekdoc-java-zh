@@ -1,0 +1,170 @@
+- en: Questions and Exercises
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/QandE/questions.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/QandE/questions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/QandE/questions.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/QandE/questions.html)
+- en: Questions
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 问题
+- en: Is the following code legal?
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 以下代码是否合法？
+- en: '[PRE0]'
+  id: totrans-4
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: What exception types can be caught by the following handler?
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 以下处理程序可以捕获哪些异常类型？
+- en: '[PRE1]'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: What is wrong with using this type of exception handler?
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 使用这种类型的异常处理程序有什么问题？
+- en: Is there anything wrong with the following exception handler as written? Will
+    this code compile?
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 以下异常处理程序的写法有什么问题？这段代码能编译吗？
+- en: '[PRE2]'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Match each situation in the first list with an item in the second list.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将第一个列表中的每种情况与第二个列表中的一项进行匹配。
+- en: '`int[] A;'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`int[] A;'
+- en: A[0] = 0;`
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: A[0] = 0;`
+- en: The JVM starts running your program, but the JVM can't find the Java platform
+    classes. (The Java platform classes reside in `classes.zip` or `rt.jar`.)
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: JVM开始运行您的程序，但JVM找不到Java平台类。（Java平台类位于`classes.zip`或`rt.jar`中。）
+- en: A program is reading a stream and reaches the `end of stream` marker.
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 一个程序正在读取流并达到`流结束`标记。
+- en: Before closing the stream and after reaching the `end of stream` marker, a program
+    tries to read the stream again.
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在关闭流之前和达到`流结束`标记之后，一个程序尝试再次读取流。
+- en: __error
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: __错误
+- en: __checked exception
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: __已检查异常
+- en: __compile error
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: __编译错误
+- en: __no exception
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: __无例外
+- en: Exercises
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 练习
+- en: Add a `readList` method to [``ListOfNumbers.java``](../examples/ListOfNumbers.java).
+    This method should read in `int` values from a file, print each value, and append
+    them to the end of the vector. You should catch all appropriate errors. You will
+    also need a text file containing numbers to read in.
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在[``ListOfNumbers.java``](../examples/ListOfNumbers.java)中添加一个`readList`方法。该方法应从文件中读取`int`值，打印每个值，并将它们附加到向量的末尾。您应该捕获所有适当的错误。您还需要一个包含要读取的数字的文本文件。
+- en: Modify the following `cat` method so that it will compile.
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 修改以下`cat`方法以便能够编译。
+- en: '[PRE3]'
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '[Check your answers.](answers.html)'
+  id: totrans-24
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '[检查您的答案。](answers.html)'

@@ -1,0 +1,466 @@
+- en: Transmitting and Receiving MIDI Messages
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 传输和接收MIDI消息
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sound/MIDI-messages.html](https://docs.oracle.com/javase/tutorial/sound/MIDI-messages.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sound/MIDI-messages.html](https://docs.oracle.com/javase/tutorial/sound/MIDI-messages.html)
+- en: Understanding Devices, Transmitters, and Receivers
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 理解设备、发射器和接收器
+- en: 'The Java Sound API specifies a message-routing architecture for MIDI data that''s
+    flexible and easy to use, once you understand how it works. The system is based
+    on a module-connection design: distinct modules, each of which performs a specific
+    task, can be interconnected (networked), enabling data to flow from one module
+    to another.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API为MIDI数据指定了一种灵活且易于使用的消息路由架构，一旦理解其工作原理，就会变得灵活且易于使用。该系统基于模块连接设计：不同的模块，每个模块执行特定任务，可以相互连接（组网），使数据能够从一个模块流向另一个模块。
+- en: The base module in the Java Sound API's messaging system is the [`MidiDevice`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiDevice.html)
+    interface. `MidiDevices` include sequencers (which record, play, load, and edit
+    sequences of time-stamped MIDI messages), synthesizers (which generate sounds
+    when triggered by MIDI messages), and MIDI input and output ports, through which
+    data comes from and goes to external MIDI devices. The functionality typically
+    required of MIDI ports is described by the base `MidiDevice` interface. The [`Sequencer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Sequencer.html)
+    and [`Synthesizer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Synthesizer.html)
+    interfaces extend the `MidiDevice` interface to describe the additional functionality
+    characteristic of MIDI sequencers and synthesizers, respectively. Concrete classes
+    that function as sequencers or synthesizers should implement these interfaces.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API的消息系统中的基本模块是[`MidiDevice`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiDevice.html)接口。`MidiDevices`包括序列器（记录、播放、加载和编辑时间戳MIDI消息序列）、合成器（触发MIDI消息时生成声音）以及MIDI输入和输出端口，通过这些端口数据来自外部MIDI设备并传输到外部MIDI设备。通常所需的MIDI端口功能由基本的`MidiDevice`接口描述。[`Sequencer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Sequencer.html)和[`Synthesizer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Synthesizer.html)接口扩展了`MidiDevice`接口，分别描述了MIDI序列器和合成器的附加功能。作为序列器或合成器的具体类应实现这些接口。
+- en: A `MidiDevice` typically owns one or more ancillary objects that implement the
+    `Receiver` or `Transmitter` interfaces. These interfaces represent the "plugs"
+    or "portals" that connect devices together, permitting data to flow into and out
+    of them. By connecting a `Transmitter` of one `MidiDevice` to a `Receiver` of
+    another, you can create a network of modules in which data flows from one to another.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`MidiDevice`通常拥有一个或多个实现`Receiver`或`Transmitter`接口的辅助对象。这些接口代表连接设备的“插头”或“门户”，允许数据流入和流出。通过将一个`MidiDevice`的`Transmitter`连接到另一个`MidiDevice`的`Receiver`，可以创建一个模块网络，其中数据从一个模块流向另一个模块。
+- en: The `MidiDevice` interface includes methods for determining how many transmitter
+    and receiver objects the device can support concurrently, and other methods for
+    accessing those objects. A MIDI output port normally has at least one `Receiver`
+    through which the outgoing messages may be received; similarly, a synthesizer
+    normally responds to messages sent to its `Receiver` or `Receivers`. A MIDI input
+    port normally has at least one `Transmitter`, which propagates the incoming messages.
+    A full-featured sequencer supports both `Receivers`, which receive messages during
+    recording, and `Transmitters`, which send messages during playback.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MidiDevice`接口包括用于确定设备可以同时支持多少个发射器和接收器对象的方法，以及用于访问这些对象的其他方法。MIDI输出端口通常至少有一个`Receiver`，通过该接收器可以接收传出消息；同样，合成器通常会响应发送到其`Receiver`或`Receivers`的消息。MIDI输入端口通常至少有一个`Transmitter`，用于传播传入消息。功能齐全的序列器支持在录制过程中接收消息的`Receivers`和在播放过程中发送消息的`Transmitters`。'
+- en: The `Transmitter` interface includes methods for setting and querying the receivers
+    to which the transmitter sends its `MidiMessages`. Setting the receiver establishes
+    the connection between the two. The `Receiver` interface contains a method that
+    sends a `MidiMessage` to the receiver. Typically, this method is invoked by a
+    `Transmitter`. Both the `Transmitter` and `Receiver` interfaces include a `close`
+    method that frees up a previously connected transmitter or receiver, making it
+    available for a different connection.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Transmitter`接口包括用于设置和查询发射器发送其`MidiMessages`的接收器的方法。设置接收器建立了两者之间的连接。`Receiver`接口包含一个将`MidiMessage`发送到接收器的方法。通常，此方法由`Transmitter`调用。`Transmitter`和`Receiver`接口都包括一个`close`方法，用于释放先前连接的发射器或接收器，使其可用于不同的连接。'
+- en: We'll now examine how to use transmitters and receivers. Before getting to the
+    typical case of connecting two devices (such as hooking a sequencer to a synthesizer),
+    we'll examine the simpler case where you send a MIDI message directly from your
+    application program to a device. Studying this simple scenario should make it
+    easier to understand how the Java Sound API arranges for sending MIDI messages
+    between two devices.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们将讨论如何使用发射器和接收器。在涉及连接两个设备的典型情况之前（例如将一个音序器连接到合成器），我们将研究一个更简单的情况，即直接从应用程序向设备发送MIDI消息。研究这种简单的情况应该会更容易理解Java
+    Sound API如何安排在两个设备之间发送MIDI消息。
+- en: Sending a Message to a Receiver without Using a Transmitter
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 发送消息到接收器而不使用发射器
+- en: 'Let''s say you want to create a MIDI message from scratch and then send it
+    to some receiver. You can create a new, blank `ShortMessage` and then fill it
+    with MIDI data using the following `ShortMessage` method:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想从头开始创建一个MIDI消息，然后将其发送到某个接收器。你可以创建一个新的空白`ShortMessage`，然后使用以下`ShortMessage`方法填充它的MIDI数据：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Once you have a message ready to send, you can send it to a `Receiver` object,
+    using this `Receiver` method:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦您准备好发送消息，您可以使用这个`Receiver`方法将其发送到一个`Receiver`对象：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The time-stamp argument will be explained momentarily. For now, we'll just mention
+    that its value can be set to -1 if you don't care about specifying a precise time.
+    In this case, the device receiving the message will try to respond to the message
+    as soon as possible.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 时间戳参数将在稍后解释。现在，我们只会提到，如果您不关心指定精确时间，则其值可以设置为-1。在这种情况下，接收消息的设备将尽快响应消息。
+- en: An application program can obtain a receiver for a `MidiDevice` by invoking
+    the device's `getReceiver` method. If the device can't provide a receiver to the
+    program (typically because all the device's receivers are already in use), a `MidiUnavailableException`
+    is thrown. Otherwise, the receiver returned from this method is available for
+    immediate use by the program. When the program has finished using the receiver,
+    it should call the receiver's `close` method. If the program attempts to invoke
+    methods on a receiver after calling `close`, an `IllegalStateException` may be
+    thrown.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序可以通过调用设备的`getReceiver`方法来获取`MidiDevice`的接收器。如果设备无法向程序提供接收器（通常是因为设备的所有接收器已经在使用中），则会抛出`MidiUnavailableException`。否则，此方法返回的接收器可立即供程序使用。当程序使用完接收器后，应调用接收器的`close`方法。如果程序在调用`close`后尝试在接收器上调用方法，则可能会抛出`IllegalStateException`。
+- en: 'As a concrete simple example of sending a message without using a transmitter,
+    let''s send a Note On message to the default receiver, which is typically associated
+    with a device such as the MIDI output port or a synthesizer. We do this by creating
+    a suitable `ShortMessage` and passing it as an argument to `Receiver''s` `send`
+    method:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为一个发送消息而不使用发射器的具体简单示例，让我们向默认接收器发送一个Note On消息，通常与设备（如MIDI输出端口或合成器）相关联。我们通过创建一个合适的`ShortMessage`并将其作为参数传递给`Receiver`的`send`方法来实现这一点：
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: This code uses a static integer field of `ShortMessage`, namely, `NOTE_ON`,
+    for use as the MIDI message's status byte. The other parts of the MIDI message
+    are given explicit numeric values as arguments to the `setMessage` method. The
+    zero indicates that the note is to be played using MIDI channel number 1; the
+    60 indicates the note Middle C; and the 93 is an arbitrary key-down velocity value,
+    which typically indicates that the synthesizer that eventually plays the note
+    should play it somewhat loudly. (The MIDI specification leaves the exact interpretation
+    of velocity up to the synthesizer's implementation of its current instrument.)
+    This MIDI message is then sent to the receiver with a time stamp of -1\. We now
+    need to examine exactly what the time stamp parameter means, which is the subject
+    of the next section.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码使用`ShortMessage`的静态整数字段，即`NOTE_ON`，用作 MIDI 消息的状态字节。 MIDI 消息的其他部分作为参数给出了`setMessage`方法的显式数值。零表示音符将使用
+    MIDI 通道号 1 播放；60 表示中央 C 音符；93 是一个任意的按键按下速度值，通常表示最终播放音符的合成器应该以相当大的音量播放它。（MIDI 规范将速度的确切解释留给合成器对其当前乐器的实现。）然后将此
+    MIDI 消息以时间戳 -1 发送到接收器。现在我们需要仔细研究时间戳参数的确切含义，这是下一节的主题。
+- en: Understanding Time Stamps
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 理解时间戳
+- en: As you already know, the MIDI specification has different parts. One part describes
+    MIDI "wire" protocol (messages sent between devices in real time), and another
+    part describes Standard MIDI Files (messages stored as events in "sequences").
+    In the latter part of the specification, each event stored in a standard MIDI
+    file is tagged with a timing value that indicates when that event should be played.
+    By contrast, messages in MIDI wire protocol are always supposed to be processed
+    immediately, as soon as they're received by a device, so they have no accompanying
+    timing values.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您已经知道的，MIDI 规范有不同的部分。一部分描述了 MIDI "线"协议（实时设备之间发送的消息），另一部分描述了标准 MIDI 文件（作为"序列"中事件存储的消息）。在规范的后半部分，存储在标准
+    MIDI 文件中的每个事件都标记有指示何时播放该事件的时间值。相比之下，MIDI 传输协议中的消息总是应立即处理，一旦被设备接收，因此它们没有附带的时间值。
+- en: The Java Sound API adds an additional twist. It comes as no surprise that timing
+    values are present in the `MidiEvent` objects that are stored in sequences (as
+    might be read from a MIDI file), just as in the Standard MIDI Files specification.
+    But in the Java Sound API, even the messages sent between devices—in other words,
+    the messages that correspond to MIDI wire protocol—can be given timing values,
+    known as *time stamps*. It is these time stamps that concern us here.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API 添加了一个额外的变化。毫不奇怪，`MidiEvent` 对象中存在时间值，这些对象存储在序列中（可能是从 MIDI 文件中读取的），就像标准
+    MIDI 文件规范中一样。但是在 Java Sound API 中，甚至在设备之间发送的消息——换句话说，对应 MIDI 传输协议的消息——也可以被赋予时间值，称为*时间戳*。我们关心的是这些时间戳。
+- en: Time Stamps on Messages Sent to Devices
+  id: totrans-22
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 发送到设备的消息上的时间戳
+- en: The time stamp that can optionally accompany messages sent between devices in
+    the Java Sound API is quite different from the timing values in a standard MIDI
+    file. The timing values in a MIDI file are often based on musical concepts such
+    as beats and tempo, and each event's timing measures the time elapsed since the
+    previous event. In contrast, the time stamp on a message sent to a device's `Receiver`
+    object always measures absolute time in microseconds. Specifically, it measures
+    the number of microseconds elapsed since the device that owns the receiver was
+    opened.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API 中在设备之间发送的消息上可选附带的时间戳与标准 MIDI 文件中的时间值有很大不同。 MIDI 文件中的时间值通常基于音乐概念，如拍子和速度，每个事件的时间度量了自上一个事件以来经过的时间。相比之下，发送到设备的`Receiver`对象的消息上的时间戳始终以微秒为单位测量绝对时间。具体来说，它测量了自拥有接收器的设备打开以来经过的微秒数。
+- en: This kind of time stamp is designed to help compensate for latencies introduced
+    by the operating system or by the application program. It's important to realize
+    that these time stamps are used for minor adjustments to timing, not to implement
+    complex queues that can schedule events at completely arbitrary times (as `MidiEvent`
+    timing values do).
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种时间戳旨在帮助补偿操作系统或应用程序引入的延迟。重要的是要意识到，这些时间戳用于对时间进行微小调整，而不是实现可以在完全任意时间安排事件的复杂队列（就像`MidiEvent`的时间值那样）。
+- en: The time stamp on a message sent to a device (through a `Receiver`) can provide
+    precise timing information to the device. The device might use this information
+    when it processes the message. For example, it might adjust the event's timing
+    by a few milliseconds to match the information in the time stamp. On the other
+    hand, not all devices support time stamps, so the device might completely ignore
+    the message's time stamp.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 发送到设备（通过`Receiver`）的消息上的时间戳可以为设备提供精确的时间信息。设备在处理消息时可能会使用这些信息。例如，它可能通过几毫秒来调整事件的时间以匹配时间戳中的信息。另一方面，并非所有设备都支持时间戳，因此设备可能会完全忽略消息的时间戳。
+- en: Even if a device supports time stamps, it might not schedule the event for exactly
+    the time that you requested. You can't expect to send a message whose time stamp
+    is very far in the future and have the device handle it as you intended, and you
+    certainly can't expect a device to correctly schedule a message whose time stamp
+    is in the past! It's up to the device to decide how to handle time stamps that
+    are too far off in the future or are in the past. The sender doesn't know what
+    the device considers to be too far off, or whether the device had any problem
+    with the time stamp. This ignorance mimics the behavior of external MIDI hardware
+    devices, which send messages without ever knowing whether they were received correctly.
+    (MIDI wire protocol is unidirectional.)
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使设备支持时间戳，也可能不会按照您请求的时间安排事件。您不能期望发送一个时间戳在未来很远处的消息，并让设备按照您的意图处理它，当然也不能期望设备正确安排一个时间戳在过去的消息！设备决定如何处理时间戳偏离太远或在过去的消息。发送方不知道设备认为什么是太远，或者设备是否对时间戳有任何问题。这种无知模仿了外部MIDI硬件设备的行为，它们发送消息而从不知道是否被正确接收。（MIDI线协议是单向的。）
+- en: Some devices send time-stamped messages (via a `Transmitter`). For example,
+    the messages sent by a MIDI input port might be stamped with the time the incoming
+    message arrived at the port. On some systems, the event-handling mechanisms cause
+    a certain amount of timing precision to be lost during subsequent processing of
+    the message. The message's time stamp allows the original timing information to
+    be preserved.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些设备通过`Transmitter`发送带有时间戳的消息。例如，MIDI输入端口发送的消息可能会标记上消息到达端口的时间。在某些系统中，事件处理机制会导致在对消息进行后续处理过程中丢失一定量的时间精度。消息的时间戳允许保留原始的时间信息。
+- en: 'To learn whether a device supports time stamps, invoke the following method
+    of `MidiDevice`:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解设备是否支持时间戳，请调用`MidiDevice`的以下方法：
+- en: '[PRE3]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: This method returns -1 if the device ignores time stamps. Otherwise, it returns
+    the device's current notion of time, which you as the sender can use as an offset
+    when determining the time stamps for messages you subsequently send. For example,
+    if you want to send a message with a time stamp for five milliseconds in the future,
+    you can get the device's current position in microseconds, add 5000 microseconds,
+    and use that as the time stamp. Keep in mind that the `MidiDevice's` notion of
+    time always places time zero at the time the device was opened.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果设备忽略时间戳，则此方法返回-1。否则，它将返回设备当前的时间概念，您作为发送方可以在确定随后发送的消息的时间戳时使用它作为偏移量。例如，如果您想发送一个时间戳为未来五毫秒的消息，您可以获取设备当前的微秒位置，加上5000微秒，并将其用作时间戳。请记住，`MidiDevice`对时间的概念总是将时间零放在设备打开时的时间。
+- en: 'Now, with all that explanation of time stamps as a background, let''s return
+    to the `send` method of `Receiver`:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，有了时间戳的背景解释，让我们回到`Receiver`的`send`方法：
+- en: '[PRE4]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The `timeStamp` argument is expressed in microseconds, according to the receiving
+    device's notion of time. If the device doesn't support time stamps, it simply
+    ignores the `timeStamp` argument. You aren't required to time-stamp the messages
+    you send to a receiver. You can use -1 for the `timeStamp` argument to indicate
+    that you don't care about adjusting the exact timing; you're just leaving it up
+    to the receiving device to process the message as soon as it can. However, it's
+    not advisable to send -1 with some messages and explicit time stamps with other
+    messages sent to the same receiver. Doing so is likely to cause irregularities
+    in the resultant timing.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`timeStamp` 参数以微秒为单位表示，根据接收设备对时间的概念。如果设备不支持时间戳，它会简单地忽略 `timeStamp` 参数。您不需要为发送给接收器的消息加时间戳。您可以使用
+    `-1` 作为 `timeStamp` 参数，表示您不关心调整确切的时间；您只是让接收设备尽快处理消息。然而，不建议在发送给同一接收器的某些消息中使用 `-1`，而在其他消息中使用显式时间戳。这样做可能会导致结果时间的不规则性。'
+- en: Connecting Transmitters to Receivers
+  id: totrans-34
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 连接发射器到接收器
+- en: We've seen how you can send a MIDI message directly to a receiver, without using
+    a transmitter. Now let's look at the more common case, where you aren't creating
+    MIDI messages from scratch, but are simply connecting devices together so that
+    one of them can send MIDI messages to the other.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们已经看到您可以直接向接收器发送 MIDI 消息，而不使用发射器。现在让我们看看更常见的情况，即您不是从头开始创建 MIDI 消息，而是简单地连接设备在一起，以便其中一个可以向另一个发送
+    MIDI 消息。
+- en: Connecting to a Single Device
+  id: totrans-36
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 连接到单个设备
+- en: The specific case we'll take as our first example is connecting a sequencer
+    to a synthesizer. After this connection is made, starting the sequencer running
+    will cause the synthesizer to generate audio from the events in the sequencer's
+    current sequence. For now, we'll ignore the process of loading a sequence from
+    a MIDI file into the sequencer. Also, we won't go into the mechanism of playing
+    the sequence. Loading and playing sequences is discussed in detail in [Playing,
+    Recording, and Editing MIDI Sequences](MIDI-seq-intro.html). Loading instruments
+    into the synthesizer is discussed in [Synthesizing Sound](MIDI-synth.html). For
+    now, all we're interested in is how to make the connection between the sequencer
+    and the synthesizer. This will serve as an illustration of the more general process
+    of connecting one device's transmitter to another device's receiver.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将以连接序列器到合成器作为我们的第一个示例。一旦建立了这种连接，启动序列器将导致合成器从序列器当前序列中的事件生成音频。现在，我们将忽略将序列从 MIDI
+    文件加载到序列器中的过程。此外，我们不会涉及播放序列的机制。加载和播放序列在[播放、录制和编辑 MIDI 序列](MIDI-seq-intro.html)中有详细讨论。加载乐器到合成器在[合成声音](MIDI-synth.html)中有讨论。现在，我们只关心如何连接序列器和合成器。这将作为连接一个设备的发射器到另一个设备的接收器的更一般过程的示例。
+- en: For simplicity, we'll use the default sequencer and the default synthesizer.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为简单起见，我们将使用默认的序列器和默认的合成器。
+- en: '[PRE5]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'An implementation might actually have a single object that serves as both the
+    default sequencer and the default synthesizer. In other words, the implementation
+    might use a class that implements both the `Sequencer` interface and the `Synthesizer`
+    interface. In that case, it probably wouldn''t be necessary to make the explicit
+    connection that we did in the code above. For portability, though, it''s safer
+    not to assume such a configuration. If desired, you can test for this condition,
+    of course:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个实现实际上可能有一个既是默认序列器又是默认合成器的单个对象。换句话说，实现可能使用一个同时实现 `Sequencer` 接口和 `Synthesizer`
+    接口的类。在这种情况下，可能不需要像上面的代码中所做的显式连接。但出于可移植性考虑，最好不要假设这样的配置。如果需要，当然可以测试这种情况：
+- en: '[PRE6]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: although the explicit connection above should work in any case.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管上面的显式连接应该在任何情况下都能工作。
+- en: Connecting to More than One Device
+  id: totrans-43
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 连接到多个设备
+- en: 'The previous code example illustrated a one-to-one connection between a transmitter
+    and a receiver. But, what if you need to send the same MIDI message to multiple
+    receivers? For example, suppose you want to capture MIDI data from an external
+    device to drive the internal synthesizer while simultaneously recording the data
+    to a sequence. This form of connection, sometimes referred to as "fan out" or
+    as a "splitter," is straightforward. The following statements show how to create
+    a fan-out connection, through which the MIDI messages arriving at the MIDI input
+    port are sent to both a `Synthesizer` object and a `Sequencer` object. We assume
+    you''ve already obtained and opened the three devices: the input port, sequencer,
+    and synthesizer. (To obtain the input port, you''ll need to iterate over all the
+    items returned by `MidiSystem.getMidiDeviceInfo`.)'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的代码示例说明了发射器和接收器之间的一对一连接。但是，如果您需要将相同的MIDI消息发送到多个接收器怎么办？例如，假设您希望从外部设备捕获MIDI数据以驱动内部合成器，同时将数据录制到序列中。这种连接形式有时被称为“分流”或“分配器”，很简单。以下语句显示了如何创建一个分流连接，通过该连接，到达MIDI输入端口的MIDI消息被发送到一个`Synthesizer`对象和一个`Sequencer`对象。我们假设您已经获取并打开了三个设备：输入端口、序列器和合成器。（要获取输入端口，您需要遍历`MidiSystem.getMidiDeviceInfo`返回的所有项目。）
+- en: '[PRE7]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: This code introduces a dual invocation of the `MidiDevice.getTransmitter` method,
+    assigning the results to `inPortTrans1` and `inPortTrans2`. As mentioned earlier,
+    a device can own multiple transmitters and receivers. Each time `MidiDevice.getTransmitter()`
+    is invoked for a given device, another transmitter is returned, until no more
+    are available, at which time an exception will be thrown.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码介绍了`MidiDevice.getTransmitter`方法的双重调用，将结果分配给`inPortTrans1`和`inPortTrans2`。如前所述，设备可以拥有多个发射器和接收器。每次为给定设备调用`MidiDevice.getTransmitter()`时，都会返回另一个发射器，直到没有更多可用为止，此时将抛出异常。
+- en: 'To learn how many transmitters and receivers a device supports, you can use
+    the following `MidiDevice` method:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解设备支持多少个发射器和接收器，您可以使用以下`MidiDevice`方法：
+- en: '[PRE8]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: These methods return the total number owned by the device, not the number currently
+    available.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些方法返回设备拥有的总数，而不是当前可用的数量。
+- en: A transmitter can transmit MIDI messages to only one receiver at a time. (Every
+    time you call `Transmitter's setReceiver` method, the existing `Receiver`, if
+    any, is replaced by the newly specified one. You can tell whether the transmitter
+    currently has a receiver by invoking `Transmitter.getReceiver`.) However, if a
+    device has multiple transmitters, it can send data to more than one device at
+    a time, by connecting each transmitter to a different receiver, as we saw in the
+    case of the input port above.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 发射器一次只能向一个接收器传输MIDI消息。（每次调用`Transmitter`的`setReceiver`方法时，如果存在现有的`Receiver`，则会被新指定的替换。您可以通过调用`Transmitter.getReceiver`来判断发射器当前是否有接收器。）但是，如果设备有多个发射器，它可以同时向多个设备发送数据，通过将每个发射器连接到不同的接收器，就像我们在上面的输入端口的情况中看到的那样。
+- en: Similarly, a device can use its multiple receivers to receive from more than
+    one device at a time. The multiple-receiver code that's required is straightforward,
+    being directly analogous to the multiple-transmitter code above. It's also possible
+    for a single receiver to receive messages from more than one transmitter at a
+    time.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，设备可以使用其多个接收器同时从多个设备接收。所需的多接收器代码很简单，直接类似于上面的多发射器代码。一个单一接收器也可以同时从多个发射器接收消息。
+- en: Closing Connections
+  id: totrans-52
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 关闭连接
+- en: Once you're done with a connection, you can free up its resources by invoking
+    the `close` method for each transmitter and receiver that you've obtained. The
+    `Transmitter` and `Receiver` interfaces each have a `close` method. Note that
+    invoking `Transmitter.setReceiver` doesn't close the transmitter's current receiver.
+    The receiver is left open, and it can still receive messages from any other transmitter
+    that's connected to it.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦完成连接，您可以通过调用每个已获取的发射器和接收器的`close`方法来释放其资源。`Transmitter`和`Receiver`接口各自都有一个`close`方法。请注意，调用`Transmitter.setReceiver`不会关闭发射器当前的接收器。接收器保持打开状态，仍然可以接收来自任何连接到它的其他发射器的消息。
+- en: If you're also done with the devices, you can similarly make them available
+    to other application programs by invoking `MidiDevice.close()`. Closing a device
+    automatically closes all its transmitters and receivers.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您也完成了设备的使用，可以通过调用`MidiDevice.close()`将它们提供给其他应用程序。关闭设备会自动关闭其所有发射器和接收器。

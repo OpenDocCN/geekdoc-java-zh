@@ -1,0 +1,207 @@
+- en: Characters
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 字符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/data/characters.html](https://docs.oracle.com/javase/tutorial/java/data/characters.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/data/characters.html](https://docs.oracle.com/javase/tutorial/java/data/characters.html)
+- en: 'Most of the time, if you are using a single character value, you will use the
+    primitive `char` type. For example:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数情况下，如果您使用单个字符值，您将使用原始的`char`类型。例如：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: "There are times, however, when you need to use a char as an object\x97for example,\
+    \ as a method argument where an object is expected. The Java programming language\
+    \ provides a *wrapper* class that \"wraps\" the `char` in a `Character` object\
+    \ for this purpose. An object of type `Character` contains a single field, whose\
+    \ type is `char`. This [Character](https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html)\
+    \ class also offers a number of useful class (that is, static) methods for manipulating\
+    \ characters."
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "然而，有时您需要将char用作对象\x97例如，作为期望对象的方法参数。Java编程语言提供了一个*包装器*类，用于将`char`包装在`Character`对象中。`Character`类型的对象包含一个单一字段，其类型为`char`。这个[Character](https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html)类还提供了许多有用的类（即静态）方法来操作字符。"
+- en: 'You can create a `Character` object with the `Character` constructor:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用`Character`构造函数创建一个`Character`对象：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: "The Java compiler will also create a `Character` object for you under some\
+    \ circumstances. For example, if you pass a primitive `char` into a method that\
+    \ expects an object, the compiler automatically converts the `char` to a `Character`\
+    \ for you. This feature is called *autoboxing*\x97or *unboxing*, if the conversion\
+    \ goes the other way. For more information on autoboxing and unboxing, see [Autoboxing\
+    \ and Unboxing](autoboxing.html)."
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "Java编译器在某些情况下也会为您创建一个`Character`对象。例如，如果您将一个原始的`char`传递给一个期望对象的方法，编译器会自动为您将`char`转换为`Character`。这个特性被称为*自动装箱*\x97\
+    或者*拆箱*，如果转换是另一种方式的话。有关自动装箱和拆箱的更多信息，请参阅[自动装箱和拆箱](autoboxing.html)。"
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The `Character` class is immutable, so that once it is created, a
+    `Character` object cannot be changed.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** `Character`类是不可变的，一旦创建，`Character`对象就无法更改。'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The following table lists some of the most useful methods in the `Character`
+    class, but is not exhaustive. For a complete listing of all methods in this class
+    (there are more than 50), refer to the [java.lang.Character](https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html)
+    API specification.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表列出了`Character`类中一些最有用的方法，但并非详尽无遗。要查看此类中所有方法的完整列表（超过50个），请参考[java.lang.Character](https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html)
+    API规范。
+- en: Useful Methods in the `Character` Class
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Character`类中的有用方法'
+- en: '| Method | Description |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `boolean isLetter(char ch) boolean isDigit(char ch)` | Determines whether
+    the specified char value is a letter or a digit, respectively. |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| `boolean isLetter(char ch) boolean isDigit(char ch)` | 确定指定的char值是字母还是数字。
+    |'
+- en: '| `boolean isWhitespace(char ch)` | Determines whether the specified char value
+    is white space. |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| `boolean isWhitespace(char ch)` | 确定指定的char值是否为空格。 |'
+- en: '| `boolean isUpperCase(char ch) boolean isLowerCase(char ch)` | Determines
+    whether the specified char value is uppercase or lowercase, respectively. |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| `boolean isUpperCase(char ch) boolean isLowerCase(char ch)` | 确定指定的char值是大写还是小写。
+    |'
+- en: '| `char toUpperCase(char ch) char toLowerCase(char ch)` | Returns the uppercase
+    or lowercase form of the specified char value. |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| `char toUpperCase(char ch) char toLowerCase(char ch)` | 返回指定char值的大写或小写形式。
+    |'
+- en: "| `toString(char ch)` | Returns a `String` object representing the specified\
+    \ character value \x97 that is, a one-character string. |"
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: "| `toString(char ch)` | 返回表示指定字符值的`String`对象 \x97 也就是一个字符的字符串。 |"
+- en: Escape Sequences
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 转义序列
+- en: 'A character preceded by a backslash (\) is an *escape sequence* and has special
+    meaning to the compiler. The following table shows the Java escape sequences:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个由反斜杠（\）引导的字符是一个*转义序列*，对编译器具有特殊含义。下表显示了Java转义序列：
+- en: Escape Sequences
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 转义序列
+- en: '| Escape Sequence | Description |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| 转义序列 | 描述 |'
+- en: '| `\t` | Insert a tab in the text at this point. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\t` | 在文本中插入一个制表符。 |'
+- en: '| `\b` | Insert a backspace in the text at this point. |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\b` | 在文本中插入一个退格符。 |'
+- en: '| `\n` | Insert a newline in the text at this point. |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\n` | 在文本中插入一个换行符。 |'
+- en: '| `\r` | Insert a carriage return in the text at this point. |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\r` | 在文本中插入一个回车符。 |'
+- en: '| `\f` | Insert a form feed in the text at this point. |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\f` | 在文本中插入一个换页符。 |'
+- en: '| `\''` | Insert a single quote character in the text at this point. |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\''` | 在文本中插入一个单引号字符。 |'
+- en: '| `\"` | Insert a double quote character in the text at this point. |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\"` | 在文本中插入一个双引号字符。 |'
+- en: '| `\\` | Insert a backslash character in the text at this point. |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\\` | 在文本中插入一个反斜杠字符。 |'
+- en: When an escape sequence is encountered in a print statement, the compiler interprets
+    it accordingly. For example, if you want to put quotes within quotes you must
+    use the escape sequence, \", on the interior quotes. To print the sentence
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当在打印语句中遇到转义序列时，编译器会相应地解释它。例如，如果你想在引号内放置引号，你必须使用转义序列 `\"` 来处理内部引号。要打印这个句子
+- en: '[PRE2]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: you would write
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你需要写
+- en: '[PRE3]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

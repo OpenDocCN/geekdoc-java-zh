@@ -1,0 +1,127 @@
+- en: Nimbus Look and Feel
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Nimbus外观
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/nimbus.html](https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/nimbus.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/nimbus.html](https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/nimbus.html)
+- en: Nimbus is a polished cross-platform look and feel introduced in the Java SE
+    6 Update 10 (6u10) release. The following screen capture, from SwingSet3 shows
+    the Nimbus look and feel.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Nimbus是在Java SE 6更新10（6u10）发布中引入的一个精心设计的跨平台外观。以下来自SwingSet3的屏幕截图展示了Nimbus外观。
+- en: '![SwingSet3 Screen capture Using Nimbus Look and Feel](../Images/8a0c28221480da23c18b1c7012fbc03c.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![SwingSet3使用Nimbus外观的屏幕截图](../Images/8a0c28221480da23c18b1c7012fbc03c.png)'
+- en: Nimbus uses Java 2D vector graphics to draw the user interface (UI), rather
+    than static bitmaps, so the UI can be crisply rendered at any resolution.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Nimbus使用Java 2D矢量图形来绘制用户界面（UI），而不是静态位图，因此UI可以在任何分辨率下清晰呈现。
+- en: Nimbus is highly customizable. You can use the Nimbus look and feel as is, or
+    you can *skin* (customize) the look with your own brand.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Nimbus是高度可定制的。您可以直接使用Nimbus外观，或者可以使用您自己的品牌*定制*外观。
+- en: Enabling the Nimbus Look and Feel
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 启用Nimbus外观
+- en: 'For backwards compatibility, Metal is still the default Swing look and feel,
+    but you can change to Nimbus in one of three ways:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了向后兼容，Metal仍然是默认的Swing外观，但您可以通过以下三种方式之一切换到Nimbus：
+- en: 'Add the following code to the event-dispatching thread before creating the
+    graphical user interface (GUI):'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在创建图形用户界面（GUI）之前，在事件分派线程中添加以下代码：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The first line of code retrieves the list of all installed look and feel implementations
+    for the platform and then iterates through the list to determine if Nimbus is
+    available. If so, Nimbus is set as the look and feel.
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 第一行代码检索平台上安装的所有外观实现的列表，然后遍历列表以确定Nimbus是否可用。如果是，则将Nimbus设置为外观。
+- en: '* * *'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Version Note:** Do not set the Nimbus look and feel explicitly by invoking
+    the `UIManager.setLookAndFeel` method because not all versions or implementations
+    of Java SE 6 support Nimbus. Additionally, the location of the Nimbus package
+    changed between the JDK 6 Update 10 and JDK 7 releases. Iterating through all
+    installed look and feel implementations is a more robust approach because if Nimbus
+    is not available, the default look and feel is used. For the JDK 6 Update 10 release,
+    the Nimbus package is located at `com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel`.'
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '**版本说明：** 不要通过调用`UIManager.setLookAndFeel`方法显式设置Nimbus外观，因为并非所有版本或实现的Java SE
+    6都支持Nimbus。此外，在JDK 6更新10和JDK 7发布之间，Nimbus包的位置发生了变化。遍历所有安装的外观实现是一种更健壮的方法，因为如果Nimbus不可用，则使用默认外观。对于JDK
+    6更新10版本，Nimbus包位于`com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel`。'
+- en: '* * *'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Specify Nimbus as the default look and feel for a particular application at
+    the command line, as follows:'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在命令行中为特定应用程序指定Nimbus作为默认外观，如下所示：
+- en: '[PRE1]'
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Permanently set the default look and feel to Nimbus by adding the following
+    line to the `<*JAVA_HOME*>/lib/swing.properties` file:'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过将以下行添加到`<*JAVA_HOME*>/lib/swing.properties`文件中，将默认外观永久设置为Nimbus：
+- en: '[PRE2]'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: If the `swing.properties` file does not yet exist, you need to create it.
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如果`swing.properties`文件尚不存在，则需要创建它。

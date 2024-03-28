@@ -1,0 +1,130 @@
+- en: Drawing Arbitrary Shapes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 绘制任意形状
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/geometry/arbitrary.html](https://docs.oracle.com/javase/tutorial/2d/geometry/arbitrary.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/geometry/arbitrary.html](https://docs.oracle.com/javase/tutorial/2d/geometry/arbitrary.html)
+- en: You have already learned how to draw most of shapes represented in the `java.awt.geom`
+    package. To create more complicated geometry, such as polygons, polylines, or
+    stars you use another class from this package, `GeneralPath`.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您已经学会了如何绘制`java.awt.geom`包中表示的大多数形状。要创建更复杂的几何图形，如多边形、折线或星形，您可以使用此包中的另一个类`GeneralPath`。
+- en: This class implements the [`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)
+    interface and represents a geometric path constructed from lines, and quadratic
+    and cubic curves. The three constructors in this class can create the [`GeneralPath`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/GeneralPath.html)
+    object with the default winding rule (`WIND_NON_ZERO`), the given winding rule
+    (`WIND_NON_ZERO` or `WIND_EVEN_ODD`), or the specified initial coordinate capacity.
+    The winding rule specifies how the interior of a path is determined.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此类实现了[`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)接口，表示由线段、二次曲线和三次曲线构成的几何路径。此类中的三个构造函数可以使用默认绕组规则(`WIND_NON_ZERO`)、给定的绕组规则(`WIND_NON_ZERO`或`WIND_EVEN_ODD`)或指定的初始坐标容量创建[`GeneralPath`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/GeneralPath.html)对象。绕组规则指定了如何确定路径的内部。
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To create an empty `GeneralPath` instance call `new GeneralPath()` and then
+    add segments to the shape by using the following methods:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建一个空的`GeneralPath`实例，请调用`new GeneralPath()`，然后使用以下方法向形状添加线段：
+- en: '`moveTo(float x, float y)` – Moves the current point of the path to the given
+    point'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`moveTo(float x, float y)` – 将路径的当前点移动到给定点'
+- en: '`lineTo(float x, float y)` – Adds a line segment to the current path'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`lineTo(float x, float y)` – 向当前路径添加一个直线段'
+- en: '`quadTo(float ctrlx, float ctrly, float x2, floaty2)` – Adds a quadratic curve
+    segment to the current path'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`quadTo(float ctrlx, float ctrly, float x2, floaty2)` – 向当前路径添加一个二次曲线段'
+- en: '`curveTo(float ctrlx1, float ctrly1, float ctrlx2, float ctrly2, float x3,
+    floaty3)` – Adds a cubic curve segment to the current path'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`curveTo(float ctrlx1, float ctrly1, float ctrlx2, float ctrly2, float x3,
+    floaty3)` – 向当前路径添加一个三次曲线段'
+- en: '`closePath()` – Closes the current path'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`closePath()` – 关闭当前路径'
+- en: 'The following example illustrates how to draw a polyline by using `GeneralPath`:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例说明了如何使用`GeneralPath`绘制折线：
+- en: '|'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '| ![This image represents a polyline](../Images/0c885c3c17fd91f856c2e044c666b3a6.png)
+    |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![此图表示一个折线](../Images/0c885c3c17fd91f856c2e044c666b3a6.png) |'
+- en: 'This example illustrates how to draw a polygon by using `GeneralPath`:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例说明了如何使用`GeneralPath`绘制多边形：
+- en: '|'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '| ![This image represents a polygon](../Images/e60b731b638c46fdb3d0106b28b0749a.png)
+    |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![此图表示一个多边形](../Images/e60b731b638c46fdb3d0106b28b0749a.png) |'
+- en: Note that the only difference between two last code examples is the `closePath()`
+    method. This method makes a polygon from a polyline by drawing a straight line
+    back to the coordinates of the last `moveTo`.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，最后两个代码示例之间唯一的区别是`closePath()`方法。此方法通过向上一次`moveTo`的坐标绘制一条直线，从而将折线变成多边形。
+- en: To add a specific path to the end of your `GeneralPath` object you use one of
+    the `append()` methods. The [``ShapesDemo2D.java``](examples/ShapesDemo2D.java)
+    code example contains additional implementations of arbitrary shapes.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将特定路径添加到您的`GeneralPath`对象的末尾，您可以使用`append()`方法之一。[`ShapesDemo2D.java`](examples/ShapesDemo2D.java)代码示例包含了任意形状的额外实现。

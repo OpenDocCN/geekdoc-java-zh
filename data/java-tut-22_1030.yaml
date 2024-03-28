@@ -1,0 +1,422 @@
+- en: Manipulating LdapName (Distinguished Name)
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 操作LdapName（专有名称）
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/ldapname.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/ldapname.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/ldapname.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/ldapname.html)
+- en: 'The Distinguished Name (DN) is used by LDAP in its string representation. The
+    string format used to represent a DN is specified in [RFC 2253](http://www.ietf.org/rfc/rfc2253.txt).
+    The DN is made up of components called the Relative Distinguished Names (RDN).
+    Below is an example of a DN:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Distinguished Name（DN）在LDAP中以字符串表示形式使用。用于表示DN的字符串格式在[RFC 2253](http://www.ietf.org/rfc/rfc2253.txt)中指定。DN由称为相对专有名称（RDN）的组件组成。以下是DN的示例：
+- en: '"CN=John Smith, O=Isode Limited, C=GB"'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '"CN=John Smith, O=Isode Limited, C=GB"'
+- en: 'It consist of the following RDNs:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 它由以下RDN组成：
+- en: CN=John Smith
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: CN=John Smith
+- en: O=Isode Limited
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: O=Isode Limited
+- en: C=GB
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: C=GB
+- en: The classes below represent the DN and RDN respectively.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的类分别表示DN和RDN。
+- en: '[`javax.naming.ldap.LdapName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.ldap.LdapName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html)'
+- en: '[`javax.naming.ldap.Rdn`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.ldap.Rdn`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html)'
+- en: The LdapName class implements the [`javax.naming.Name`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Name.html)
+    interface similar to the [`javax.naming.CompoundName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Name.html)
+    and [`javax.naming.CompositeName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/CompositeName.html)
+    classes.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LdapName类实现了[`javax.naming.Name`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Name.html)接口，类似于[`javax.naming.CompoundName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Name.html)和[`javax.naming.CompositeName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/CompositeName.html)类。
+- en: LdapName and Rdn classes allow easy manipulation of DNs and RDNs. Using these
+    APIs it's easy to construct an RDN by pairing up names and values. A DN can be
+    constructed with a list of RDNs. Similarly the individual components of DN and
+    RDN can be retrieved from their string representation.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LdapName和Rdn类允许轻松操作DN和RDN。使用这些API，通过将名称和值配对，轻松构造RDN。可以使用RDN列表构造DN。同样，可以从它们的字符串表示中检索DN和RDN的各个组件。
+- en: LdapName
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: LdapName
+- en: An LdapName can be created with its string representation as defined in [RFC
+    2253](http://www.ietf.org/rfc/rfc2253.txt) or with a list of Rdns. When the former
+    way is used, the specified string is parsed as per the rules defined in RFC2253\.
+    An [`InvalidNameException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/InvalidNameException.html)
+    is thrown if the string is not a valid DN. Here's an example that uses the constructor
+    to parse an LDAP name and print its components.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以使用其在[RFC 2253](http://www.ietf.org/rfc/rfc2253.txt)中定义的字符串表示形式或使用Rdns列表创建LdapName。当使用前一种方式时，指定的字符串将根据RFC2253中定义的规则进行解析。如果字符串不是有效的DN，则会抛出[`InvalidNameException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/InvalidNameException.html)。以下是使用构造函数解析LDAP名称并打印其组件的示例。
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Running this example with an input of `"cn=Mango,ou=Fruits,o=Food"` produces
+    the following results:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用输入“cn=Mango,ou=Fruits,o=Food”运行此示例会产生以下结果：
+- en: '[PRE1]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The LdapName class contains methods to access its components as RDNs and strings,
+    to modify an LdapName, to compare two LdapNames for equality, and to get a string
+    representation of the name.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LdapName类包含方法，用于将其组件作为RDN和字符串访问，修改LdapName，比较两个LdapName是否相等，并获取名称的字符串表示形式。
+- en: 'Accessing the name components of an LDAP name:'
+  id: totrans-19
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 访问LDAP名称的名称组件：
+- en: 'Here are the methods that you can use to access the name components as RDNs
+    and strings:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是您可以使用的方法来访问名称组件作为RDN和字符串：
+- en: '[`getRdn(int posn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getRdn-int-)'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`getRdn(int posn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getRdn-int-)'
+- en: '[`get(int posn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#get-int-)'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`get(int posn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#get-int-)'
+- en: '[`getRdns()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getRdns--)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`getRdns()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getRdns--)'
+- en: '[`getAll()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getAll--)'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`getAll()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getAll--)'
+- en: '[`getPrefix(int posn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getPrefix-intposn-)'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`getPrefix(int posn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getPrefix-intposn-)'
+- en: '[`getSuffix(int posn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getSuffix-intposn-)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`getSuffix(int posn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getSuffix-intposn-)'
+- en: '[`clone()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#clone--)'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`clone()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#clone--)'
+- en: To retrieve the component at a particular position within an LdapName, you use
+    getRdn() or get(). The previous constructor example shows an example of its use.
+    [`getRdns()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getRdns--)
+    returns a list of all the RDNs and [`getAll()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getAll--)
+    returns all of the components of an LdapName as an enumeration.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要检索LdapName中特定位置的组件，您可以使用getRdn()或get()。前面的构造函数示例展示了其用法的示例。[`getRdns()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getRdns--)返回所有RDN的列表，[`getAll()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getAll--)将LdapName的所有组件作为枚举返回。
+- en: 'The right most RDN is at index 0, and the left most RDN is at index n-1\. For
+    example, the distinguished name: `"cn=Mango, ou=Fruits, o=Food"` is numbered in
+    the following sequence ranging from 0 to 2: `{o=Food, ou=Fruits, cn=Mango}`'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最右边的RDN位于索引0，最左边的RDN位于索引n-1。例如，专有名称："cn=Mango, ou=Fruits, o=Food"按以下顺序编号，范围从0到2：{o=Food,
+    ou=Fruits, cn=Mango}
+- en: You can also get a LdapNames's suffix or prefix as a LdapName instance. Here's
+    an [`example`](examples/LdapNameSuffixPrefix.java) that gets the suffix and prefix
+    of an LDAP name.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以将LdapName的后缀或前缀作为LdapName实例获取。这里有一个[`示例`](examples/LdapNameSuffixPrefix.java)，展示了如何获取LDAP名称的后缀和前缀。
+- en: '[PRE2]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'When you run this program, it generates the following output:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行此程序时，它会生成以下输出：
+- en: '[PRE3]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: To make a copy of an LdapName, you use clone().
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要复制LdapName，您可以使用clone()。
+- en: Modifying an LDAP name
+  id: totrans-35
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 修改LDAP名称
+- en: 'Following are the methods that you can use to modify an LDAP name:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是您可以使用的方法来修改LDAP名称：
+- en: '[`add(Rdn rdn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#add-Rdn-)'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`add(Rdn rdn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#add-Rdn-)'
+- en: '[`add(String comp)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#add-String-)'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`add(String comp)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#add-String-)'
+- en: '[`add(int posn, String comp)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#add-int-String-)'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`add(int posn, String comp)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#add-int-String-)'
+- en: '[`addAll(List suffixRdns)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#addAll-List-)'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`addAll(List suffixRdns)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#addAll-List-)'
+- en: '[`addAll(Name suffix)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#addAll-Namesuffix-)'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`addAll(Name suffix)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#addAll-Namesuffix-)'
+- en: '[`addAll(int posn, List suffixRdns)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#addAll-int-List-)'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`addAll(int posn, List suffixRdns)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#addAll-int-List-)'
+- en: '[`addAll(int posn, Name suffix)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#addAll-int-Name-)'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`addAll(int posn, Name suffix)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#addAll-int-Name-)'
+- en: '[`remove(int posn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#remove-int-)'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`remove(int posn)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#remove-int-)'
+- en: After creating an LdapName instance, you can add and remove components from
+    it. Here's an [`example`](examples/ModifyLdapName.java) that appends an LdapName
+    to an existing LdapName, adds components to the front and the end, and removes
+    the second component.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建LdapName实例后，您可以向其添加和删除组件。这里有一个[`示例`](examples/ModifyLdapName.java)，演示了如何将一个LdapName附加到现有LdapName中，在开头和结尾添加组件，以及删除第二个组件。
+- en: '[PRE4]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Comparing an LDAP name
+  id: totrans-47
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 比较LDAP名称
+- en: 'Following are the methods that you can use to compare two LDAP names:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是您可以使用的方法来比较两个LDAP名称：
+- en: '[`compareTo(Object name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#compareTo-Object-)'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`compareTo(Object name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#compareTo-Object-)'
+- en: '[`equals(Object name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#equals-Object-)'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`equals(Object name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#equals-Object-)'
+- en: '[`endsWith(List)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#endsWith-List-)'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`endsWith(List)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#endsWith-List-)'
+- en: '[`endWith(Name name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#endsWith-Name-)'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`endWith(Name name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#endsWith-Name-)'
+- en: '[`startsWith(List rdns)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#startsWith-iList-)'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`startsWith(List rdns)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#startsWith-iList-)'
+- en: '[`startsWith(Name name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#startsWith-Name-)'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`startsWith(Name name)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#startsWith-Name-)'
+- en: '[`isEmpty()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#isEmpty--)'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`isEmpty()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#isEmpty--)'
+- en: You can use `compareTo()` to sort a list of LdapName instances. The `equals()`
+    method lets you determine whether two LdapNames are syntactically equal. Two LdapNames
+    are equal if they both have the same (case-exact matched) components in the same
+    order.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用`compareTo()`对 LdapName 实例列表进行排序。`equals()`方法可让您确定两个 LdapNames 是否在语法上相等。如果两个
+    LdapNames 在相同顺序中具有相同（大小写匹配）的组件，则它们是相等的。
+- en: With `startsWith()` and `endsWith()`, you can learn whether an LdapName starts
+    or ends with another LdapName; that is, whether an LdapName is a suffix or prefix
+    of another LdapName.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`startsWith()`和`endsWith()`，您可以了解一个 LdapName 是否以另一个 LdapName 开头或结尾；也就是说，一个
+    LdapName 是否是另一个 LdapName 的后缀或前缀。
+- en: The convenience method `isEmpty()` enables you to determine whether an LdapName
+    has zero components. You can also use the expression `size() == 0` to perform
+    the same check.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 便利方法`isEmpty()`使您能够确定 LdapName 是否具有零个组件。您还可以使用表达式`size() == 0`执行相同的检查。
+- en: Here is an example, [`CompareLdapNames`](examples/CompareLdapNames.java), that
+    uses some of these comparison methods.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个示例，[`CompareLdapNames`](examples/CompareLdapNames.java)，使用了其中一些比较方法。
+- en: '[PRE5]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Getting the String Representation
+  id: totrans-61
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 获取字符串表示
+- en: 'The method below gets you the string representation of an LDAP name formatted
+    according to the syntax specified in RFC 2253:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的方法可以让您获取根据 RFC 2253 中指定的语法格式化的 LDAP 名称的字符串表示：
+- en: '[`toString()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#toString--)'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`toString()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#toString--)'
+- en: 'When you use the LdapName constructor, you supply the string representation
+    of an LDAP name and get back an LdapName instance. To do the reverse, that is,
+    to get the string representation of an LdapName instance, you use `toString()`.
+    The result of `toString()` can be fed back to the constructor to produce a LdapName
+    instance that is equal to the original LdapName instance. Here''s an example,
+    [`LdapNametoString`](examples/LdapNametoString.java) :'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您使用 LdapName 构造函数时，您提供 LDAP 名称的字符串表示，并获得一个 LdapName 实例。要执行相反操作，即获取 LdapName
+    实例的字符串表示，您可以使用`toString()`。`toString()`的结果可以再次传递给构造函数，以生成与原始 LdapName 实例相等的 LdapName
+    实例。这里有一个示例，[`LdapNametoString`](examples/LdapNametoString.java)：
+- en: '[PRE6]'
+  id: totrans-65
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: LdapName as an Argument to Context Methods
+  id: totrans-66
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 作为上下文方法的参数的 LdapName
+- en: 'The Context method require either a composite or a compound name passed as
+    argument to its methods. Hence an LdapName can be directly passed to a context
+    method as shown in [`LookupLdapName`](examples/LookupLdapName.java):'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Context 方法要求将复合名称或复合名称作为参数传递给其方法。因此，可以直接将 LdapName 传递给上下文方法，如示例中所示，[`LookupLdapName`](examples/LookupLdapName.java)：
+- en: '[PRE7]'
+  id: totrans-68
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Similarly, when the Context methods return results from list(), listBindings(),
+    or search() operations, the DN can be retrieved by calling [`getNameInNamespace()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getNameInNamepspace--).
+    The LdapName can be constructed directly from the DN as shown in the example,
+    [`RetrievingLdapName`](examples/RetrievingLdapName.java):'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，当上下文方法从 list()、listBindings() 或 search() 操作返回结果时，可以通过调用[`getNameInNamespace()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html#getNameInNamepspace--)检索
+    DN。可以直接从 DN 构造 LdapName，如示例中所示，[`RetrievingLdapName`](examples/RetrievingLdapName.java)：
+- en: '[PRE8]'
+  id: totrans-70
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'

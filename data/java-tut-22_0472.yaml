@@ -1,0 +1,158 @@
+- en: Top-Level Drop
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 顶层拖放
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/toplevel.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/toplevel.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/toplevel.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/toplevel.html)
+- en: Up until now, we have primarily focused on attaching a `TransferHandler` to
+    one of the `JComponent` subclasses. But you can also set a `TransferHandler` directly
+    on a top-level container, such as `JFrame` and `JDialog`.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们主要关注将`TransferHandler`附加到`JComponent`子类之一。但是您也可以直接在顶层容器上设置`TransferHandler`，例如`JFrame`和`JDialog`。
+- en: This is particularly useful for applications that import files, such as editors,
+    IDEs, image manipulation programs, CD burning programs. Such an application generally
+    includes a menu, a toolbar, an area for editing documents, and probably a list
+    or mechanism for switching between open documents.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这对于导入文件的应用程序特别有用，例如编辑器、IDE、图像处理程序、CD刻录程序。这样的应用程序通常包括一个菜单、一个工具栏、一个用于编辑文档的区域，以及可能包括一个用于在打开文档之间切换的列表或机制。
+- en: We have such an example but because this demo reads files, we do not provide
+    a Java Web Start version — you will have to download and compile the demo yourself.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们有这样一个示例，但由于此演示读取文件，我们不提供Java Web Start版本——您将不得不自行下载和编译演示。
+- en: As you can see in the screen shot below, `TopLevelTransferHandlerDemo` has a
+    menu (empty, except for the Demo submenu), a (non-functional) toolbar, an area
+    (on the left) that displays a list of open documents, and a area (to the right)
+    that displays the content of each open document. At startup the blue document
+    area has been assigned a transfer handler that supports file imports — so is the
+    only place that can accept a drop.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如下面的屏幕截图所示，`TopLevelTransferHandlerDemo`有一个菜单（空的，除了Demo子菜单），一个（非功能性的）工具栏，一个（左侧的）显示打开文档列表的区域，以及一个（右侧的）显示每个打开文档内容的区域。在启动时，蓝色文档区域已分配了一个支持文件导入的传输处理程序——因此是唯一可以接受拖放的地方。
+- en: '![A snapshot of the TopLevelTransferHandlerDemo demo.](../Images/a65f2abf141191b7371fed7ce5a184a2.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TopLevelTransferHandlerDemo演示的快照。](../Images/a65f2abf141191b7371fed7ce5a184a2.png)'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Compile and run the [``TopLevelTransferHandlerDemo``](../examples/dnd/TopLevelTransferHandlerDemoProject/src/dnd/TopLevelTransferHandlerDemo.java)
+    example, consult the [example index](../examples/dnd/index.html#TopLevelTransferHandlerDemo)
+    if you would like to download a zip file structured for NetBeans.
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编译并运行[``TopLevelTransferHandlerDemo``](../examples/dnd/TopLevelTransferHandlerDemoProject/src/dnd/TopLevelTransferHandlerDemo.java)示例，如果您想下载一个为NetBeans结构化的zip文件，请参考[示例索引](../examples/dnd/index.html#TopLevelTransferHandlerDemo)。
+- en: Drag a file from your native desktop or file system and drop it on the blue
+    document area to the right. The file is opened and a frame filled with its contents
+    will appear. The document area, a `JDesktopPane`, contains a transfer handler
+    that supports import of `javaFileListFlavor`.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从您的本机桌面或文件系统中拖动文件并将其放置在右侧的蓝色文档区域。文件将被打开，并填充其内容的框架将出现。文档区域，一个`JDesktopPane`，包含支持导入`javaFileListFlavor`的传输处理程序。
+- en: Drag another file and attempt to drop it on the document area. You will find
+    that you cannot drop it on top of the frame displaying the last file. You also
+    cannot drop it on the list, the menu, or the toolbar. The only place you can drop
+    is the blue portion of the document area or on the menu bar of a previously opened
+    frame. Inside each content frame there is a text component's transfer handler
+    that doesn't understand a file drop — you can drop text into that area, but not
+    a file.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 拖动另一个文件并尝试将其放置在文档区域。您会发现无法将其放置在显示最后一个文件的框架上。您也无法将其放置在列表、菜单或工具栏上。您唯一可以放置的地方是文档区域的蓝色部分或先前打开的框架的菜单栏。在每个内容框架内都有一个文本组件的传输处理程序，它不理解文件拖放——您可以将文本拖放到该区域，但不能拖放文件。
+- en: From the menu, choose Demo->Use Top-Level TransferHandler to install the transfer
+    handler on the top-level container — a `JFrame`.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从菜单中选择Demo->Use Top-Level TransferHandler来在顶层容器——一个`JFrame`上安装传输处理程序。
+- en: Try dragging over the demo again. The number of areas that accept drops has
+    increased. You can now drop most anywhere on the application including the menu
+    bar, toolbar, the frame's title bar, except for the list (on the left) or the
+    content area of a previously opened file. Neither the `JList`'s nor the text area's
+    transfer handlers know how to import files.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次尝试拖动演示。接受拖放的区域数量已增加。现在您可以将其放置在应用程序的几乎任何位置，包括菜单栏、工具栏、框架的标��栏，但不能放置在列表（左侧）或先前打开文件的内容区域。`JList`和文本区域的传输处理程序都不知道如何导入文件。
+- en: Disable the transfer handlers on those remaining components by choosing Demo->Remove
+    TransferHandler from List and Text from the menu.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 通过选择Demo->从菜单中的列表和文本中删除TransferHandler来禁用剩余组件上的传输处理程序。
+- en: Drag over the demo again. You can now drop a file *anywhere* on the application!
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次拖动演示。现在您可以在应用程序的*任何位置*放置文件！
+- en: From the menu, choose Demo->Use COPY Action.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从菜单中选择Demo->使用COPY操作。
+- en: Drag over the demo again. Note that the mouse cursor now shows the COPY cursor
+    — this provides more accurate feedback because a successful drop does not remove
+    the file from the source. The target can be programmed to select from the available
+    drop actions as described in [Choosing the Drop Action](dropaction.html).
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次拖动演示。请注意，鼠标光标现在显示为COPY光标 — 这提供了更准确的反馈，因为成功拖放不会从源文件中删除文件。目标可以根据[选择拖放操作](dropaction.html)中描述的可用拖放操作进行选择。
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Note one undesirable side effect of disabling the default transfer handler
+    on the text component: You can no longer drag and drop (or cut/copy/paste) text
+    within the editing area. To fix this, you will need to implement a custom transfer
+    handler for the text component that accepts file drops and also re-implements
+    the missing support for text transfers. You might want to watch [RFE 4830695](http://bugs.java.com/bugdatabase/view_bug.do?bug_id=4830695)
+    which would allow adding data import on top of an existing `TransferHandler`.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意在文本组件上禁用默认传输处理程序的一个不良副作用：您无法在编辑区域内再拖放（或剪切/复制/粘贴）文本。要解决此问题，您需要为文本组件实现一个自定义传输处理程序，该处理程序接受文件拖放，并重新实现缺失的文本传输支持。您可能想要查看[RFE
+    4830695](http://bugs.java.com/bugdatabase/view_bug.do?bug_id=4830695)，该请求允许在现有的`TransferHandler`上添加数据导入。
+- en: 'Here is the source code for [`TopLevelTransferHandlerDemo.java`](../examples/dnd/TopLevelTransferHandlerDemoProject/src/dnd/TopLevelTransferHandlerDemo.java):'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是[`TopLevelTransferHandlerDemo.java`](../examples/dnd/TopLevelTransferHandlerDemoProject/src/dnd/TopLevelTransferHandlerDemo.java)的源代码：
+- en: '[PRE0]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'

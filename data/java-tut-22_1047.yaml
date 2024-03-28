@@ -1,0 +1,315 @@
+- en: Binding XML Schemas
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 绑定XML模式
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/bind.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/bind.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/bind.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/bind.html)
+- en: This section describes the default XML-to-Java bindings used by JAXB. All of
+    these bindings can be overridden globally or case-by-case by using a custom binding
+    declaration. See the [JAXB Specification](http://jaxb.java.net) for complete information
+    about the default JAXB bindings.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了JAXB使用的默认XML到Java绑定。所有这些绑定都可以通过使用自定义绑定声明全局或逐案例地进行覆盖。有关默认JAXB绑定的完整信息，请参阅[JAXB规范](http://jaxb.java.net)。
+- en: Simple Type Definitions
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 简单类型定义
+- en: 'A schema component using a simple type definition typically binds to a Java
+    property. Because there are different kinds of schema components, the following
+    Java property attributes (common to the schema components) include:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用简单类型定义的模式组件通常绑定到Java属性。由于有不同类型的模式组件，以下Java属性属性（对于模式组件通用）包括：
+- en: Base type
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 基本类型
+- en: Collection type, if any
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 集合类型，如果有的话
+- en: Predicate
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 谓词
+- en: The rest of the Java property attributes are specified in the schema component
+    using the `simple` type definition.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其余的Java属性属性在使用`simple`类型定义的模式组件中指定。
+- en: Default Data Type Bindings
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 默认数据类型绑定
+- en: The following sections explain the default schema-to-Java, `JAXBElement`, and
+    Java-to-schema data type bindings.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下部分解释了默认模式到Java、`JAXBElement`和Java到模式数据类型绑定。
+- en: Schema-to-Java Mapping
+  id: totrans-11
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 模式到Java的映射
+- en: The Java language provides a richer set of data types than the XML schema. The
+    following table provides a mapping of XML data types to Java data types in JAXB.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java语言提供了比XML模式更丰富的数据类型。以下表格提供了JAXB中XML数据类型到Java数据类型的映射。
+- en: Table: JAXB Mapping of XML Schema Built-in Data Types
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表：XML模式内置数据类型的JAXB映射
+- en: '| XML Schema Type | Java Data Type |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| XML模式类型 | Java数据类型 |'
+- en: '| `xsd:string` | `java.lang.String` |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:string` | `java.lang.String` |'
+- en: '| `xsd:integer` | `java.math.BigInteger` |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:integer` | `java.math.BigInteger` |'
+- en: '| `xsd:int` | `int` |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:int` | `int` |'
+- en: '| `xsd.long` | `long` |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd.long` | `long` |'
+- en: '| `xsd:short` | `short` |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:short` | `short` |'
+- en: '| `xsd:decimal` | `java.math.BigDecimal` |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:decimal` | `java.math.BigDecimal` |'
+- en: '| `xsd:float` | `float` |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:float` | `float` |'
+- en: '| `xsd:double` | `double` |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:double` | `double` |'
+- en: '| `xsd:boolean` | `boolean` |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:boolean` | `boolean` |'
+- en: '| `xsd:byte` | `byte` |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:byte` | `byte` |'
+- en: '| `xsd:QName` | `javax.xml.namespace.QName` |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:QName` | `javax.xml.namespace.QName` |'
+- en: '| `xsd:dateTime` | `javax.xml.datatype.XMLGregorianCalendar` |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:dateTime` | `javax.xml.datatype.XMLGregorianCalendar` |'
+- en: '| `xsd:base64Binary` | `byte[]` |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:base64Binary` | `byte[]` |'
+- en: '| `xsd:hexBinary` | `byte[]` |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:hexBinary` | `byte[]` |'
+- en: '| `xsd:unsignedInt` | `long` |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:unsignedInt` | `long` |'
+- en: '| `xsd:unsignedShort` | `int` |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:unsignedShort` | `int` |'
+- en: '| `xsd:unsignedByte` | `short` |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:unsignedByte` | `short` |'
+- en: '| `xsd:time` | `javax.xml.datatype.XMLGregorianCalendar` |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:time` | `javax.xml.datatype.XMLGregorianCalendar` |'
+- en: '| `xsd:date` | `javax.xml.datatype.XMLGregorianCalendar` |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:date` | `javax.xml.datatype.XMLGregorianCalendar` |'
+- en: '| `xsd:g` | `javax.xml.datatype.XMLGregorianCalendar` |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:g` | `javax.xml.datatype.XMLGregorianCalendar` |'
+- en: '| `xsd:anySimpleType` | `java.lang.Object` |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:anySimpleType` | `java.lang.Object` |'
+- en: '| `xsd:anySimpleType` | `java.lang.String` |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:anySimpleType` | `java.lang.String` |'
+- en: '| `xsd:duration` | `javax.xml.datatype.Duration` |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:duration` | `javax.xml.datatype.Duration` |'
+- en: '| `xsd:NOTATION` | `javax.xml.namespace.QName` |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| `xsd:NOTATION` | `javax.xml.namespace.QName` |'
+- en: '`JAXBElement` Object'
+  id: totrans-39
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: '`JAXBElement` 对象'
+- en: When XML element information cannot be inferred by the derived Java representation
+    of the XML content, a `JAXBElement` object is provided. This object has methods
+    to get and set the object name and object value.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当无法通过XML内容的派生Java表示来推断XML元素信息时，会提供一个`JAXBElement`对象。该对象具有获取和设置对象名称和对象值的方法。
+- en: Java-to-Schema Mapping
+  id: totrans-41
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: Java到模式的映射
+- en: The following table shows the default mapping of Java classes to XML data types.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格显示了Java类到XML数据类型的默认映射。
+- en: Table: JAXB Mapping of XML Data Types to Java Classes
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表：XML数据类型到Java类的JAXB映射
+- en: '| Java Class | XML Data Type |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| Java类 | XML数据类型 |'
+- en: '| `java.lang.String` | `xs:string` |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.lang.String` | `xs:string` |'
+- en: '| `java.math.BigInteger` | `xs:integer` |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.math.BigInteger` | `xs:integer` |'
+- en: '| `java.math.BigDecimal` | `xs:decimal` |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.math.BigDecimal` | `xs:decimal` |'
+- en: '| `java.util.Calendar` | `xs:dateTime` |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.util.Calendar` | `xs:dateTime` |'
+- en: '| `java.util.Date` | `xs:dateTime` |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.util.Date` | `xs:dateTime` |'
+- en: '| `javax.xml.namespace.QName` | `xs:QName` |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.xml.namespace.QName` | `xs:QName` |'
+- en: '| `java.net.URI` | `xs:string` |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.net.URI` | `xs:string` |'
+- en: '| `javax.xml.datatype.XMLGregorianCalendar` | `xs:anySimpleType` |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.xml.datatype.XMLGregorianCalendar` | `xs:anySimpleType` |'
+- en: '| `javax.xml.datatype.Duration` | `xs:duration` |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.xml.datatype.Duration` | `xs:duration` |'
+- en: '| `java.lang.Object` | `xs:anyType` |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.lang.Object` | `xs:anyType` |'
+- en: '| `java.awt.Image` | `xs:base64Binary` |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.awt.Image` | `xs:base64Binary` |'
+- en: '| `javax.activation.DataHandler` | `xs:base64Binary` |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.activation.DataHandler` | `xs:base64Binary` |'
+- en: '| `javax.xml.transform.Source` | `xs:base64Binary` |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.xml.transform.Source` | `xs:base64Binary` |'
+- en: '| `java.util.UUID` | `xs:string` |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.util.UUID` | `xs:string` |'

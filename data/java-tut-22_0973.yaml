@@ -1,0 +1,128 @@
+- en: 'Lesson: Overview of JNDI'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：JNDI 概述
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/overview/index.html](https://docs.oracle.com/javase/tutorial/jndi/overview/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/overview/index.html](https://docs.oracle.com/javase/tutorial/jndi/overview/index.html)
+- en: The Java Naming and Directory Interface™ (JNDI) is an application programming
+    interface (API) that provides [naming](naming.html) and [directory](dir.html)
+    functionality to applications written using the Java™ programming language. It
+    is defined to be independent of any specific directory service implementation.
+    Thus a variety of directories -new, emerging, and already deployed can be accessed
+    in a common way.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 命名和目录接口（JNDI）是一个提供[命名](naming.html)和[目录](dir.html)功能的应用程序编程接口（API），用于使用
+    Java™ 编程语言编写的应用程序。它被定义为独立于任何特定目录服务实现。因此，各种目录 - 新的、新兴的和已部署的都可以以一种通用的方式访问。
+- en: Architecture
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 架构
+- en: 'The JNDI architecture consists of an API and a service provider interface (SPI).
+    Java applications use the JNDI API to access a variety of naming and directory
+    services. The SPI enables a variety of naming and directory services to be plugged
+    in transparently, thereby allowing the Java application using the JNDI API to
+    access their services. See the following figure:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JNDI 架构包括 API 和服务提供者接口（SPI）。Java 应用程序使用 JNDI API 访问各种命名和目录服务。SPI 使各种命名和目录服务能够透明地插入，从而允许使用
+    JNDI API 的 Java 应用程序访问它们的服务。请参见下图：
+- en: '![JNDI Architecture](../Images/a23ba8d9953f53ae437cc28f0b75192e.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![JNDI 架构](../Images/a23ba8d9953f53ae437cc28f0b75192e.png)'
+- en: Packaging
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 打包
+- en: 'JNDI is included in the Java SE Platform. To use the JNDI, you must have the
+    JNDI classes and one or more service providers. The JDK includes service providers
+    for the following naming/directory services:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JNDI 包含在 Java SE 平台中。要使用 JNDI，您必须具有 JNDI 类和一个或多个服务提供者。JDK 包含以下命名/目录服务的服务提供者：
+- en: Lightweight Directory Access Protocol (LDAP)
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 轻量级目录访问协议（LDAP）
+- en: Common Object Request Broker Architecture (CORBA) Common Object Services (COS)
+    name service
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 公共对象请求代理体系结构（CORBA）公共对象服务（COS）名称服务
+- en: Java Remote Method Invocation (RMI) Registry
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Java 远程方法调用（RMI）注册表
+- en: Domain Name Service (DNS)
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 域名服务（DNS）
+- en: Other service providers can be downloaded from the [JNDI page](http://www.oracle.com/technetwork/java/jndi/index.html)
+    or obtained from other vendors.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其他服务提供者可以从[JNDI 页面](http://www.oracle.com/technetwork/java/jndi/index.html)下载或从其他供应商获取。
+- en: 'The JNDI is divided into five packages:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JNDI 分为五个包：
+- en: '[javax.naming](naming.html)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[javax.naming](naming.html)'
+- en: '[javax.naming.directory](dir.html)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[javax.naming.directory](dir.html)'
+- en: '[javax.naming.ldap](dir.html)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[javax.naming.ldap](dir.html)'
+- en: '[javax.naming.event](event.html)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[javax.naming.event](event.html)'
+- en: '[javax.naming.spi](event.html)'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[javax.naming.spi](event.html)'
+- en: The next part of the lesson has a brief description of the JNDI packages.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 课程的下一部分简要描述了 JNDI 包。

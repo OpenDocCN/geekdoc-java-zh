@@ -1,0 +1,528 @@
+- en: How to Use Borders
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用边框
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/border.html](https://docs.oracle.com/javase/tutorial/uiswing/components/border.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/border.html](https://docs.oracle.com/javase/tutorial/uiswing/components/border.html)
+- en: Every `JComponent` can have one or more borders. Borders are incredibly useful
+    objects that, while not themselves components, know how to draw the edges of Swing
+    components. Borders are useful not only for drawing lines and fancy edges, but
+    also for providing titles and empty space around components.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个`JComponent`可以有一个或多个边框。边框是非常有用的对象，虽然它们本身不是组件，但知道如何绘制Swing组件的边缘。边框不仅用于绘制线条和花哨的边缘，还用于为组件提供标题和周围的空白空间。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: Our examples set borders on `JPanel`s, `JLabel`s, and custom subclasses of `JComponent`.
+    Although technically you can set the border on any object that inherits from `JComponent`,
+    the look and feel implementation of many standard Swing components doesn't work
+    well with user-set borders. In general, when you want to set a border on a standard
+    Swing component other than `JPanel` or `JLabel`, we recommend that you put the
+    component in a `JPanel` and set the border on the `JPanel`.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们的示例在`JPanel`、`JLabel`和`JComponent`的自定义子类上设置了边框。尽管从技术上讲，您可以在任何继承自`JComponent`的对象上设置边框，但许多标准Swing组件的外观和感觉实现与用户设置的边框不兼容。通常情况下，当您想在除了`JPanel`或`JLabel`之外的标准Swing组件上设置边框时，我们建议将组件放在`JPanel`中，并在`JPanel`上设置边框。
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: "To put a border around a `JComponent`, you use its `setBorder` method. You\
+    \ can use the [`BorderFactory`](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html)\
+    \ class to create most of the borders that Swing provides. If you need a reference\
+    \ to a border \x97 say, because you want to use it in multiple components \x97\
+    \ you can save it in a variable of type [`Border`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/Border.html).\
+    \ Here is an example of code that creates a bordered container:"
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在`JComponent`周围放置边框，可以使用其`setBorder`方法。您可以使用[`BorderFactory`](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html)类来创建Swing提供的大多数边框。如果您需要引用边框，比如因为您想在多个组件中使用它，可以将其保存在[`Border`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/Border.html)类型的变量中。以下是创建带边框容器的代码示例：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Here's a picture of the container, which contains a label component. The black
+    line drawn by the border marks the edge of the container.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个包含标签组件的容器的图片。边框绘制的黑线标记了容器的边缘。
+- en: '![A line border](../Images/1b0e398c6adf114d0e92a6728944b3de.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一条边框](../Images/1b0e398c6adf114d0e92a6728944b3de.png)'
+- en: 'The rest of this page discusses the following topics:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页的其余部分讨论以下主题：
+- en: '[The BorderDemo Example](#demo)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[BorderDemo示例](#demo)'
+- en: '[Using the Borders Provided by Swing](#code)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用Swing提供的边框](#code)'
+- en: '[Creating Custom Borders](#custom)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建自定义边框](#custom)'
+- en: '[The Border API](#api)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[边框API](#api)'
+- en: '[Examples of Using Borders](#eg)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用边框的示例](#eg)'
+- en: The BorderDemo Example
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: BorderDemo示例
+- en: The following pictures show an application called `BorderDemo` that displays
+    the borders Swing provides. We show the code for creating these borders a little
+    later, in [Using the Borders Provided by Swing](#code).
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图片展示了一个名为`BorderDemo`的应用程序，显示了Swing提供的边框。稍后我们会展示创建这些边框的代码，在[使用Swing提供的边框](#code)中。
+- en: Click the Launch button to run the BorderDemo example using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#BorderDemo).
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行BorderDemo示例（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#BorderDemo)。
+- en: '[![Launches the BorderDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BorderDemoProject/BorderDemo.jnlp)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动BorderDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BorderDemoProject/BorderDemo.jnlp)'
+- en: '![BorderDemo: Simple Borders](../Images/4edfa662adc0d7c9005b67b3b9d81619.png)'
+  id: totrans-21
+  prefs: []
+  type: TYPE_IMG
+  zh: '![BorderDemo：简单边框](../Images/4edfa662adc0d7c9005b67b3b9d81619.png)'
+- en: The next picture shows some matte borders. When creating a matte border, you
+    specify how many pixels it occupies at the top, left, bottom, and right of a component.
+    You then specify either a color or an icon for the matte border to draw. You need
+    to be careful when choosing the icon and determining your component's size; otherwise,
+    the icon might get chopped off or have mismatch at the component's corners.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一张图片展示了一些**镜面边框**。创建镜面边框时，您需要指定组件顶部、左侧、底部和右侧各占据多少像素。然后，您需要指定镜面边框要绘制的颜色或图标。在选择图标和确定组件大小时需要小心；否则，图标可能会被截断或在组件的角落处不匹配。
+- en: '![BorderDemo: Matte Borders](../Images/9b6fd99fa4d5a6b5e933ab45a2c44592.png)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_IMG
+  zh: '![BorderDemo: 镜面边框](../Images/9b6fd99fa4d5a6b5e933ab45a2c44592.png)'
+- en: The next picture shows titled borders. Using a titled border, you can convert
+    any border into one that displays a text description. If you don't specify a border,
+    a look-and-feel-specific border is used. For example, the default titled border
+    in the Java look and feel uses a gray line, and the default titled border in the
+    Windows look and feel uses an etched border. By default, the title straddles the
+    upper left of the border, as shown at the top of the following figure.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一张图片展示了**带标题的边框**。使用带标题的边框，您可以将任何边框转换为显示文本描述的边框。如果不指定边框，将使用特定外观的边框。例如，在Java外观中，默认的带标题边框使用灰色线条，在Windows外观中默认的带标题边框使用浮雕边框。默认情况下，标题横跨边框的左上角，如下图顶部所示。
+- en: '![BorderDemo: Titled Borders](../Images/1a9b95fc09f74beb06aa5685e65ed908.png)'
+  id: totrans-25
+  prefs: []
+  type: TYPE_IMG
+  zh: '![BorderDemo: 带标题的边框](../Images/1a9b95fc09f74beb06aa5685e65ed908.png)'
+- en: The next picture shows compound borders. With compound borders, you can combine
+    any two borders, which can themselves be compound borders.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一张图片展示了**复合边框**。使用复合边框，您可以组合任意两个边框，这些边框本身可以是复合边框。
+- en: '![BorderDemo: Compound Borders](../Images/a7735bac367581c945460cca24502967.png)'
+  id: totrans-27
+  prefs: []
+  type: TYPE_IMG
+  zh: '![BorderDemo: 复合边框](../Images/a7735bac367581c945460cca24502967.png)'
+- en: Using the Borders Provided by Swing
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用Swing提供的边框
+- en: The code that follows shows how to create and set the borders you saw in the
+    preceding figures. You can find the program's code in [`BorderDemo.java`](../examples/components/BorderDemoProject/src/components/BorderDemo.java).
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的代码展示了如何创建和设置前面图中看到的边框。您可以在[`BorderDemo.java`](../examples/components/BorderDemoProject/src/components/BorderDemo.java)中找到程序的代码。
+- en: '[PRE1]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: As you probably noticed, the code uses the `BorderFactory` class to create each
+    border. The `BorderFactory` class, which is in the `javax.swing` package, returns
+    objects that implement the [`Border`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/Border.html)
+    interface.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您可能注意到的，代码使用`BorderFactory`类来创建每个边框。`BorderFactory`类位于`javax.swing`包中，返回实现[`Border`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/Border.html)接口的对象。
+- en: The `Border` interface, as well as its Swing-provided implementations, is in
+    the [`javax.swing.border`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/package-summary.html)
+    package. You often don't need to directly use anything in the border package,
+    except when specifying constants that are specific to a particular border class
+    or when referring to the `Border` type.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Border`接口及其Swing提供的实现位于[`javax.swing.border`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/package-summary.html)包中。通常情况下，您不需要直接使用边框包中的任何内容，除非在指定特定边框类的常量或引用`Border`类型时。'
+- en: Creating Custom Borders
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建自定义边框
+- en: 'If `BorderFactory` doesn''t offer you enough control over a border''s form,
+    then you might need to directly use the API in the border package — or even define
+    your own border. In addition to containing the `Border` interface, the border
+    package contains the classes that implement the borders you''ve already seen:
+    [`LineBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/LineBorder.html),
+    [`EtchedBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/EtchedBorder.html),
+    [`BevelBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/BevelBorder.html),
+    [`EmptyBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/EmptyBorder.html),
+    [`MatteBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/MatteBorder.html),
+    [`TitledBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/TitledBorder.html),
+    and [`CompoundBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/CompoundBorder.html).
+    The border package also contains a class named [`SoftBevelBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/SoftBevelBorder.html),
+    which produces a result similar to `BevelBorder`, but with softer edges.'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`BorderFactory`不能提供足够的控制来定义边框的形式，那么您可能需要直接使用边框包中的 API — 或者甚至定义自己的边框。除了包含`Border`接口外，边框包还包含实现您已经看到的边框的类：[`LineBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/LineBorder.html)、[`EtchedBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/EtchedBorder.html)、[`BevelBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/BevelBorder.html)、[`EmptyBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/EmptyBorder.html)、[`MatteBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/MatteBorder.html)、[`TitledBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/TitledBorder.html)和[`CompoundBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/CompoundBorder.html)。边框包还包含一个名为[`SoftBevelBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/SoftBevelBorder.html)的类，它产生类似于`BevelBorder`但边缘更柔和的效果。
+- en: 'If none of the Swing borders is suitable, you can implement your own border.
+    Generally, you do this by creating a subclass of the [`AbstractBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/AbstractBorder.html)
+    class. In your subclass, you must implement at least one constructor and the following
+    two methods:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果没有适合的 Swing 边框，您可以实现自己的边框。通常，您可以通过创建[`AbstractBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/AbstractBorder.html)类的子类来实现这一点。在您的子类中，您必须实现至少一个构造函数和以下两个方法：
+- en: '`paintBorder`, which contains the drawing code that a `JComponent` executes
+    to draw the border.'
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`paintBorder`，其中包含绘制代码，`JComponent`执行以绘制边框。'
+- en: '`getBorderInsets`, which specifies the amount of space the border needs to
+    draw itself.'
+  id: totrans-37
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getBorderInsets`，指定边框需要绘制自身所需的空间量。'
+- en: If a custom border has insets (and they typically have insets) you need to override
+    both [`AbstractBorder.getBorderInsets(Component c)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/AbstractBorder.html#getBorderInsets-java.awt.Component-)
+    and [`AbstractBorder.getBorderInsets(Component c, Insets insets)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/AbstractBorder.html#getBorderInsets-java.awt.Component-java.awt.Insets-)
+    to provide the correct insets.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果自定义边框有插入（通常会有插入），您需要重写[`AbstractBorder.getBorderInsets(Component c)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/AbstractBorder.html#getBorderInsets-java.awt.Component-)和[`AbstractBorder.getBorderInsets(Component
+    c, Insets insets)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/AbstractBorder.html#getBorderInsets-java.awt.Component-java.awt.Insets-)来提供正确的插入。
+- en: For examples of implementing borders, see the source code for the classes in
+    the `javax.swing.border` package.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关实现边框的示例，请参阅`javax.swing.border`包中类的源代码。
+- en: The Border API
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 边框 API
+- en: 'The following tables list the commonly used border methods. The API for using
+    borders falls into two categories:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的边框方法。使用边框的 API 分为两类：
+- en: '[Creating a Border with BorderFactory](#createapi)'
+  id: totrans-42
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 BorderFactory 创建边框](#createapi)'
+- en: '[Setting or Getting a Component''s Border](#setgetapi)'
+  id: totrans-43
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置或获取组件的边框](#setgetapi)'
+- en: Creating a Border with BorderFactory
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 BorderFactory 创建边框
+- en: '| Method | Purpose |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Border createLineBorder(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createLineBorder-java.awt.Color-)
+    [Border createLineBorder(Color, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createLineBorder-java.awt.Color-int-)
+    | Create a line border. The first argument is a `java.awt.Color` object that specifies
+    the color of the line. The optional second argument specifies the width in pixels
+    of the line. |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| [创建线边框(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createLineBorder-java.awt.Color-)
+    [创建线边框(Color, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createLineBorder-java.awt.Color-int-)
+    | 创建一个线边框。第一个参数是一个`java.awt.Color`对象，指定线的颜色。可选的第二个参数指定线的宽度（以像素为单位）。'
+- en: '| [Border createEtchedBorder()](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEtchedBorder--)
+    [Border createEtchedBorder(Color, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEtchedBorder-java.awt.Color-java.awt.Color-)'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [创建浮雕边框()](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEtchedBorder--)
+    [创建浮雕边框(Color, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEtchedBorder-java.awt.Color-java.awt.Color-)'
+- en: '[Border createEtchedBorder(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEtchedBorder-int-)'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[创建浮雕边框(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEtchedBorder-int-)'
+- en: '[Border createEtchedBorder(int, Color, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEtchedBorder-int-java.awt.Color-java.awt.Color-)
+    | Create an etched border. The optional `Color` arguments specify the highlight
+    and shadow colors to be used. The methods with `int` arguments allow the border
+    methods to be specified as either `EtchedBorder.RAISED` or `EtchedBorder.LOWERED`.
+    The methods without the `int` arguments create a lowered etched border. |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[创建浮雕边框(int, Color, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEtchedBorder-int-java.awt.Color-java.awt.Color-)
+    | 创建一个浮雕边框。可选的`Color`参数指定要使用的高亮和阴影颜色。带有`int`参数的方法允许将边框方法指定为`EtchedBorder.RAISED`或`EtchedBorder.LOWERED`。没有`int`参数的方法创建一个降低的浮雕边框。'
+- en: '| [Border createLoweredBevelBorder()](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createLoweredBevelBorder--)
+    | Create a border that gives the illusion of the component being lower than the
+    surrounding area. |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| [创建降低斜角边框()](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createLoweredBevelBorder--)
+    | 创建一个边框，使组件看起来比周围区域更低。'
+- en: '| [Border createRaisedBevelBorder()](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createRaisedBevelBorder--)
+    | Create a border that gives the illusion of the component being higher than the
+    surrounding area. |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| [创建凸起斜角边框()](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createRaisedBevelBorder--)
+    | 创建一个边框，使组件看起来比周围区域更高。'
+- en: '|  [Border createBevelBorder(int, Color, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createBevelBorder-int-java.awt.Color-java.awt.Color-)'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|  [创建斜角边框(int, Color, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createBevelBorder-int-java.awt.Color-java.awt.Color-)'
+- en: '[Border createBevelBorder(int, Color, Color, Color, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createBevelBorder-int-java.awt.Color-java.awt.Color-java.awt.Color-java.awt.Color-)
+    | Create a raised or lowered beveled border, specifying the colors to use. The
+    integer argument can be either `BevelBorder.RAISED` or `BevelBorder.LOWERED`.
+    With the three-argument constructor, you specify the highlight and shadow colors.
+    With the five-argument constructor, you specify the outer highlight, inner highlight,
+    outer shadow, and inner shadow colors, in that order. |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[创建斜角边框(int, Color, Color, Color, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createBevelBorder-int-java.awt.Color-java.awt.Color-java.awt.Color-java.awt.Color-)
+    | 创建一个凸起或凹陷的斜角边框，指定要使用的颜色。整数参数可以是`BevelBorder.RAISED`或`BevelBorder.LOWERED`。使用三个参数的构造函数，您可以指定高亮和阴影颜色。使用五个参数的构造函数，您按顺序指定外部高亮，内部高亮，外部阴影和内部阴影颜色。'
+- en: '| [Border createEmptyBorder()](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEmptyBorder--)
+    [Border createEmptyBorder(int, int, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEmptyBorder-int-int-int-int-)
+    | Create an invisible border. If you specify no arguments, then the border takes
+    no space, which is useful when creating a titled border with no visible boundary.
+    The optional arguments specify the number of pixels that the border occupies at
+    the top, left, bottom, and right (in that order) of whatever component uses it.
+    This method is useful for putting empty space around your components. |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Border createEmptyBorder()](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEmptyBorder--)
+    [Border createEmptyBorder(int, int, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createEmptyBorder-int-int-int-int-)
+    | 创建一个不可见的边框。如果不指定参数，则边框不占用空间，这在创建没有可见边界的标题边框时很有用。可选参数指定边框在组件顶部、左侧、底部和右侧（按顺序）占用的像素数。此方法可用于在组件周围放置空白空间。'
+- en: '| [MatteBorder createMatteBorder(int, int, int, int, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createMatteBorder-int-int-int-int-java.awt.Color-)
+    [MatteBorder createMatteBorder(int, int, int, int, Icon)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createMatteBorder-int-int-int-int-javax.swing.Icon-)
+    | Create a matte border. The integer arguments specify the number of pixels that
+    the border occupies at the top, left, bottom, and right (in that order) of whatever
+    component uses it. The color argument specifies the color which with the border
+    should fill its area. The icon argument specifies the icon which with the border
+    should tile its area. |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| [MatteBorder createMatteBorder(int, int, int, int, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createMatteBorder-int-int-int-int-java.awt.Color-)
+    [MatteBorder createMatteBorder(int, int, int, int, Icon)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createMatteBorder-int-int-int-int-javax.swing.Icon-)
+    | 创建一个亚光边框。整数参数指定边框在组件顶部、左侧、底部和右侧（按顺序）占用的像素数。颜色参数指定边框应填充其区域的颜色。图标参数指定边框应平铺其区域的图标。'
+- en: '| [TitledBorder createTitledBorder(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-java.lang.String-)
+    [TitledBorder createTitledBorder(Border)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-javax.swing.border.Border-)'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [TitledBorder createTitledBorder(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-java.lang.String-)
+    [TitledBorder createTitledBorder(Border)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-javax.swing.border.Border-)'
+- en: '[TitledBorder createTitledBorder(Border, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-javax.swing.border.Border-java.lang.String-)'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[TitledBorder createTitledBorder(Border, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-javax.swing.border.Border-java.lang.String-)'
+- en: '[TitledBorder createTitledBorder(Border, String, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-javax.swing.border.Border-java.lang.String-int-int-)'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[TitledBorder createTitledBorder(Border, String, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-javax.swing.border.Border-java.lang.String-int-int-)'
+- en: '[TitledBorder createTitledBorder(Border, String, int, int, Font)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-javax.swing.border.Border-java.lang.String-int-int-java.awt.Font-)'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[TitledBorder createTitledBorder(Border, String, int, int, Font)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-javax.swing.border.Border-java.lang.String-int-int-java.awt.Font-)'
+- en: '[TitledBorder createTitledBorder(Border, String, int, int, Font, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-javax.swing.border.Border-java.lang.String-int-int-java.awt.Font-java.awt.Color-)
+    | Create a titled border. The string argument specifies the title to be displayed.
+    The optional font and color arguments specify the font and color to be used for
+    the title''s text. The border argument specifies the border that should be displayed
+    along with the title. If no border is specified, then a look-and-feel-specific
+    default border is used.By default, the title straddles the top of its companion
+    border and is left-justified. The optional integer arguments specify the title''s
+    position and justification, in that order. [`TitledBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/TitledBorder.html)
+    defines these possible positions: `ABOVE_TOP`, `TOP` (the default), `BELOW_TOP`,
+    `ABOVE_BOTTOM`, `BOTTOM`, and `BELOW_BOTTOM`. You can specify the justification
+    as `LEADING` (the default), `CENTER`, or `TRAILING`. In locales with Western alphabets
+    `LEADING` is equivalent to `LEFT` and `TRAILING` is equivalent to `RIGHT`. |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[TitledBorder createTitledBorder(Border, String, int, int, Font, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createTitledBorder-javax.swing.border.Border-java.lang.String-int-int-java.awt.Font-java.awt.Color-)
+    | 创建一个带标题的边框。字符串参数指定要显示的标题。可选的字体和颜色参数指定标题文本要使用的字体和颜色。边框参数指定应显示的边框以及标题。如果未指定边框，则使用特定于外观的默认边框。默认情况下，标题跨越其伴侣边框的顶部，并且左对齐。可选的整数参数按顺序指定标题的位置和对齐方式。[`TitledBorder`](https://docs.oracle.com/javase/8/docs/api/javax/swing/border/TitledBorder.html)定义了这些可能的位置：`ABOVE_TOP`，`TOP`（默认），`BELOW_TOP`，`ABOVE_BOTTOM`，`BOTTOM`和`BELOW_BOTTOM`。您可以将对齐方式指定为`LEADING`（默认），`CENTER`或`TRAILING`。在具有西方字母表的语言环境中，`LEADING`等同于`LEFT`，`TRAILING`等同于`RIGHT`。
+    |'
+- en: '|  [CompoundBorder createCompoundBorder(Border, Border)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createCompoundBorder-javax.swing.border.Border-javax.swing.border.Border-)
+    | Combine two borders into one. The first argument specifies the outer border;
+    the second, the inner border. |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '|  [CompoundBorder createCompoundBorder(Border, Border)](https://docs.oracle.com/javase/8/docs/api/javax/swing/BorderFactory.html#createCompoundBorder-javax.swing.border.Border-javax.swing.border.Border-)
+    | 将两个边框合并为一个。第一个参数指定外边框；第二个参数指定内边框。 |'
+- en: Setting or Getting a Component's Border
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置或获取组件的边框
+- en: '| Method | Purpose |'
+  id: totrans-63
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setBorder(Border)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#setBorder-javax.swing.border.Border-)
+    [Border getBorder()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getBorder--)
+    | Set or get the border of the receiving `JComponent`. |'
+  id: totrans-64
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setBorder(Border)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#setBorder-javax.swing.border.Border-)
+    [Border getBorder()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getBorder--)
+    | 设置或获取接收`JComponent`的边框。 |'
+- en: '| [void setBorderPainted(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractButton.html#setBorderPainted-boolean-)
+    [boolean isBorderPainted()](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractButton.html#isBorderPainted--)'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setBorderPainted(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractButton.html#setBorderPainted-boolean-)
+    [boolean isBorderPainted()](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractButton.html#isBorderPainted--) '
+- en: (in `AbstractButton`, `JMenuBar`, `JPopupMenu`, `JProgressBar`, and `JToolBar`)
+    | Set or get whether the border of the component should be displayed. |
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: （在`AbstractButton`，`JMenuBar`，`JPopupMenu`，`JProgressBar`和`JToolBar`中） | 设置或获取组件的边框是否应显示。
+    |
+- en: Examples that Use Borders
+  id: totrans-67
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用边框的示例
+- en: Many examples in this lesson use borders. The following table lists a few interesting
+    cases.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程中的许多示例使用边框。以下表格列出了一些有趣的案例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-69
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`BorderDemo`](../examples/components/index.html#BorderDemo) | This section
+    | Shows an example of each type of border that `BorderFactory` can create. Also
+    uses an empty border to add breathing space between each pane and its contents.
+    |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`BorderDemo`](../examples/components/index.html#BorderDemo) | 本节 | 展示`BorderFactory`可以创建的每种边框类型的示例。还使用空边框在每个窗格及其内容之间添加间距。
+    |'
+- en: '| [`BoxAlignmentDemo`](../examples/layout/index.html#BoxAlignmentDemo) | [How
+    to Use BoxLayout](../layout/box.html) | Uses titled borders. |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`BoxAlignmentDemo`](../examples/layout/index.html#BoxAlignmentDemo) | [如何使用BoxLayout](../layout/box.html)
+    | 使用带标题的边框。 |'
+- en: '| [`BoxLayoutDemo`](../examples/layout/index.html#BoxLayoutDemo) | [How to
+    Use BoxLayout](../layout/box.html) | Uses a red line to show where the edge of
+    a container is, so that you can see how the extra space in a box layout is distributed.
+    |'
+  id: totrans-72
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`BoxLayoutDemo`](../examples/layout/index.html#BoxLayoutDemo) | [如何使用BoxLayout](../layout/box.html)
+    | 使用红线显示容器的边缘位置，以便您可以看到BoxLayout中额外空间是如何分配的。 |'
+- en: '| [`ComboBoxDemo2`](../examples/components/index.html#ComboBoxDemo2) | [How
+    to Use Combo Boxes](../components/combobox.html) | Uses a compound border to combine
+    a line border with an empty border. The empty border provides space between the
+    line and the component''s innards. |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ComboBoxDemo2`](../examples/components/index.html#ComboBoxDemo2) | [如何使用组合框](../components/combobox.html)
+    | 使用复合边框将线边框与空边框结合在一起。空边框在线和组件内部之间提供空间。 |'

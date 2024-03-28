@@ -1,0 +1,173 @@
+- en: Wrapper Implementations
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 包装器实现
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/implementations/wrapper.html](https://docs.oracle.com/javase/tutorial/collections/implementations/wrapper.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/implementations/wrapper.html](https://docs.oracle.com/javase/tutorial/collections/implementations/wrapper.html)
+- en: Wrapper implementations delegate all their real work to a specified collection
+    but add extra functionality on top of what this collection offers. For design
+    pattern fans, this is an example of the *decorator* pattern. Although it may seem
+    a bit exotic, it's really pretty straightforward.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 包装器实现将所有真正的工作委托给指定的集合，但在该集合提供的功能之上添加额外的功能。对于设计模式爱好者，这是*装饰者*模式的一个例子。虽然这可能看起来有点奇特，但实际上非常简单。
+- en: These implementations are anonymous; rather than providing a public class, the
+    library provides a static factory method. All these implementations are found
+    in the [`Collections`](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html)
+    class, which consists solely of static methods.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些实现是匿名的；而不是提供一个公共类，库提供了一个静态工厂方法。所有这些实现都在 [`Collections`](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html)
+    类中，该类仅包含静态方法。
+- en: Synchronization Wrappers
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 同步包装器
+- en: "The synchronization wrappers add automatic synchronization (thread-safety)\
+    \ to an arbitrary collection. Each of the six core collection interfaces \x97\
+    \ [`Collection`](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html),\
+    \ [`Set`](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html), [`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html),\
+    \ [`Map`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html), [`SortedSet`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedSet.html),\
+    \ and [`SortedMap`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html)\
+    \ \x97 has one static factory method."
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "同步包装器为任意集合添加了自动同步（线程安全）。六个核心集合接口 \x97 [`Collection`](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html),\
+    \ [`Set`](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html), [`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html),\
+    \ [`Map`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html), [`SortedSet`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedSet.html),\
+    \ 和 [`SortedMap`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html)\
+    \ \x97 都有一个静态工厂方法。"
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Each of these methods returns a synchronized (thread-safe) `Collection` backed
+    up by the specified collection. To guarantee serial access, *all* access to the
+    backing collection must be accomplished through the returned collection. The easy
+    way to guarantee this is not to keep a reference to the backing collection. Create
+    the synchronized collection with the following trick.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些方法中的每一个都返回由指定集合支持的同步（线程安全）`Collection`。为了保证串行访问，*所有*对支持集合的访问必须通过返回的集合完成。确保这一点的简单方法是不保留对支持集合的引用。使用以下技巧创建同步集合。
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: A collection created in this fashion is every bit as thread-safe as a normally
+    synchronized collection, such as a [`Vector`](https://docs.oracle.com/javase/8/docs/api/java/util/Vector.html).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以这种方式创建的集合与通常同步的集合（如 [`Vector`](https://docs.oracle.com/javase/8/docs/api/java/util/Vector.html)）一样线程安全。
+- en: In the face of concurrent access, it is imperative that the user manually synchronize
+    on the returned collection when iterating over it. The reason is that iteration
+    is accomplished via multiple calls into the collection, which must be composed
+    into a single atomic operation. The following is the idiom to iterate over a wrapper-synchronized
+    collection.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 面对并发访问时，在迭代时，用户必须手动对返回的集合进行同步。原因是迭代是通过对集合的多次调用完成的，这些调用必须组合成单个原子操作。以下是迭代包装同步集合的惯用法。
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: If an explicit iterator is used, the `iterator` method must be called from within
+    the `synchronized` block. Failure to follow this advice may result in nondeterministic
+    behavior. The idiom for iterating over a `Collection` view of a synchronized `Map`
+    is similar. It is imperative that the user synchronize on the synchronized `Map`
+    when iterating over any of its `Collection` views rather than synchronizing on
+    the `Collection` view itself, as shown in the following example.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果使用显式迭代器，则必须在 `synchronized` 块内调用 `iterator` 方法。不遵循此建议可能导致不确定的行为。在同步 `Map`
+    的 `Collection` 视图上进行迭代的惯用法类似。在迭代任何 `Collection` 视图时，用户必须同步在同步的 `Map` 上，而不是在 `Collection`
+    视图本身上进行同步，如下例所示。
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: One minor downside of using wrapper implementations is that you do not have
+    the ability to execute any *noninterface* operations of a wrapped implementation.
+    So, for instance, in the preceding `List` example, you cannot call `ArrayList`'s
+    [`ensureCapacity`](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html#ensureCapacity-int-)
+    operation on the wrapped `ArrayList`.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用包装器实现的一个小缺点是，您无法执行包装实现的任何*非接口*操作。因此，在前面的`List`示例中，您无法在包装的`ArrayList`上调用`ArrayList`的[`ensureCapacity`](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html#ensureCapacity-int-)操作。
+- en: Unmodifiable Wrappers
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 不可修改的包装器
+- en: 'Unlike synchronization wrappers, which add functionality to the wrapped collection,
+    the unmodifiable wrappers take functionality away. In particular, they take away
+    the ability to modify the collection by intercepting all the operations that would
+    modify the collection and throwing an `UnsupportedOperationException`. Unmodifiable
+    wrappers have two main uses, as follows:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与添加功能到包装集合的同步包装器不同，不可修改的包装器会剥夺功能。特别是，它们剥夺了通过拦截所有可能修改集合的操作并抛出`UnsupportedOperationException`来修改集合的能力。不可修改的包装器有两个主要用途，如下所示：
+- en: To make a collection immutable once it has been built. In this case, it's good
+    practice not to maintain a reference to the backing collection. This absolutely
+    guarantees immutability.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使集合在构建后变为不可变。在这种情况下，最好不要保留对支持集合的引用。这绝对保证了不可变性。
+- en: To allow certain clients read-only access to your data structures. You keep
+    a reference to the backing collection but hand out a reference to the wrapper.
+    In this way, clients can look but not modify, while you maintain full access.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 允许某些客户端对您的数据结构进行只读访问。您保留对支持集合的引用，但分发对包装器的引用。这样，客户端可以查看但不能修改，而您保持完全访问权限。
+- en: Like synchronization wrappers, each of the six core `Collection` interfaces
+    has one static factory method.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与同步包装器一样，每个六个核心`Collection`接口都有一个静态工厂方法。
+- en: '[PRE4]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Checked Interface Wrappers
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检查接口包装器
+- en: The `Collections.checked` *interface* wrappers are provided for use with generic
+    collections. These implementations return a *dynamically* type-safe view of the
+    specified collection, which throws a `ClassCastException` if a client attempts
+    to add an element of the wrong type. The generics mechanism in the language provides
+    compile-time (static) type-checking, but it is possible to defeat this mechanism.
+    Dynamically type-safe views eliminate this possibility entirely.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Collections.checked` *接口*包装器用于与泛型集合一起使用。这些实现返回指定集合的*动态*类型安全视图，如果客户端尝试添加错误类型的元素，则会抛出`ClassCastException`。语言中的泛型机制提供了编译时（静态）类型检查，但有可能击败此机制。动态类型安全视图完全消除了这种可能性。'

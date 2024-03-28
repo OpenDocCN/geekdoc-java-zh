@@ -1,0 +1,94 @@
+- en: Unbounded Wildcards
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 无界通配符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/unboundedWildcards.html](https://docs.oracle.com/javase/tutorial/java/generics/unboundedWildcards.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/unboundedWildcards.html](https://docs.oracle.com/javase/tutorial/java/generics/unboundedWildcards.html)
+- en: 'The unbounded wildcard type is specified using the wildcard character (`?`),
+    for example, `List<?>`. This is called a *list of unknown type*. There are two
+    scenarios where an unbounded wildcard is a useful approach:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 未限定通配符类型是使用通配符字符（`?`）指定的，例如，`List<?>`。这被称为*未知类型的列表*。有两种情况下未限定通配符是一个有用的方法：
+- en: If you are writing a method that can be implemented using functionality provided
+    in the `Object` class.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果你正在编写一个可以使用`Object`类提供的功能来实现的方法。
+- en: When the code is using methods in the generic class that don't depend on the
+    type parameter. For example, `List.size` or `List.clear`. In fact, `Class<?>`
+    is so often used because most of the methods in `Class<T>` do not depend on `T`.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当代码使用泛型类中不依赖于类型参数的方法时。例如，`List.size`或`List.clear`。事实上，`Class<?>`经常被使用，因为`Class<T>`中的大多数方法不依赖于`T`。
+- en: 'Consider the following method, `printList`:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑以下方法，`printList`：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The goal of `printList` is to print a list of any type, but it fails to achieve
+    that goal — it prints only a list of `Object` instances; it cannot print `List<Integer>`,
+    `List<String>`, `List<Double>`, and so on, because they are not subtypes of `List<Object>`.
+    To write a generic `printList` method, use `List<?>`:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`printList`的目标是打印任何类型的列表，但它未能实现这个目标 — 它只打印`Object`实例的列表；它无法打印`List<Integer>`、`List<String>`、`List<Double>`等，因为它们不是`List<Object>`的子类型。要编写一个通用的`printList`方法，使用`List<?>`：'
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Because for any concrete type `A`, `List<A>` is a subtype of `List<?>`, you
+    can use `printList` to print a list of any type:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为对于任何具体类型`A`，`List<A>`是`List<?>`的子类型，所以你可以使用`printList`来打印任何类型的列表：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The [`Arrays.asList`](https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html#asList-T...-)
+    method is used in examples throughout this lesson. This static factory method
+    converts the specified array and returns a fixed-size list.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 在本课程的示例中使用了[`Arrays.asList`](https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html#asList-T...-)方法。这个静态工厂方法将指定的数组转换并返回一个固定大小的列表。'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: It's important to note that `List<Object>` and `List<?>` are not the same. You
+    can insert an `Object`, or any subtype of `Object`, into a `List<Object>`. But
+    you can only insert `null` into a `List<?>`. The [Guidelines for Wildcard Use](wildcardGuidelines.html)
+    section has more information on how to determine what kind of wildcard, if any,
+    should be used in a given situation.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 需要注意的是，`List<Object>`和`List<?>`并不相同。你可以将`Object`或`Object`的任何子类型插入`List<Object>`中。但你只能将`null`插入`List<?>`中。[通配符使用指南](wildcardGuidelines.html)部分有关于如何确定在特定情况下应该使用什么类型的通配符的更多信息。

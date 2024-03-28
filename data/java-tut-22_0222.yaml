@@ -1,0 +1,189 @@
+- en: Fork/Join
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 分叉/合并
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/forkjoin.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/forkjoin.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/forkjoin.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/forkjoin.html)
+- en: The fork/join framework is an implementation of the `ExecutorService` interface
+    that helps you take advantage of multiple processors. It is designed for work
+    that can be broken into smaller pieces recursively. The goal is to use all the
+    available processing power to enhance the performance of your application.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分叉/合并框架是`ExecutorService`接口的一种实现，可以帮助你充分利用多个处理器。它专为可以递归地分解为较小片段的工作而设计。目标是利用所有可用的处理能力来提高应用程序的性能。
+- en: As with any `ExecutorService` implementation, the fork/join framework distributes
+    tasks to worker threads in a thread pool. The fork/join framework is distinct
+    because it uses a *work-stealing* algorithm. Worker threads that run out of things
+    to do can steal tasks from other threads that are still busy.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与任何`ExecutorService`实现一样，分叉/合并框架将任务分配给线程池中的工作线程。分叉/合并框架的独特之处在于它使用*工作窃取*算法。工作线程如果没有任务可执行，可以从其他仍在忙碌的线程中窃取任务。
+- en: The center of the fork/join framework is the [`ForkJoinPool`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html)
+    class, an extension of the `AbstractExecutorService` class. `ForkJoinPool` implements
+    the core work-stealing algorithm and can execute [`ForkJoinTask`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinTask.html)
+    processes.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分叉/合并框架的核心是[`ForkJoinPool`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html)类，它是`AbstractExecutorService`类的扩展。`ForkJoinPool`实现了核心的工作窃取算法，并可以执行[`ForkJoinTask`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinTask.html)进程。
+- en: Basic Use
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 基本用法
+- en: 'The first step for using the fork/join framework is to write code that performs
+    a segment of the work. Your code should look similar to the following pseudocode:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用分叉/合并框架的第一步是编写执行一部分工作的代码。你的代码应该类似于以下伪代码：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Wrap this code in a `ForkJoinTask` subclass, typically using one of its more
+    specialized types, either [`RecursiveTask`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/RecursiveTask.html)
+    (which can return a result) or [`RecursiveAction`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/RecursiveAction.html).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将这段代码封装在一个`ForkJoinTask`子类中，通常使用其中的一个更专门的类型，要么是[`RecursiveTask`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/RecursiveTask.html)（可以返回结果），要么是[`RecursiveAction`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/RecursiveAction.html)。
+- en: After your `ForkJoinTask` subclass is ready, create the object that represents
+    all the work to be done and pass it to the `invoke()` method of a `ForkJoinPool`
+    instance.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你的`ForkJoinTask`子类准备就绪后，创建代表所有要完成工作的对象，并将其传递给`ForkJoinPool`实例的`invoke()`方法。
+- en: Blurring for Clarity
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 清晰的模糊
+- en: To help you understand how the fork/join framework works, consider the following
+    example. Suppose that you want to blur an image. The original *source* image is
+    represented by an array of integers, where each integer contains the color values
+    for a single pixel. The blurred *destination* image is also represented by an
+    integer array with the same size as the source.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了帮助你理解分叉/合并框架的工作原理，请考虑以下示例。假设你想要对图像进行模糊处理。原始*源*图像由一个整数数组表示，其中每个整数包含单个像素的颜色值。模糊后的*目标*图像也由一个与源图像大小相同的整数数组表示。
+- en: 'Performing the blur is accomplished by working through the source array one
+    pixel at a time. Each pixel is averaged with its surrounding pixels (the red,
+    green, and blue components are averaged), and the result is placed in the destination
+    array. Since an image is a large array, this process can take a long time. You
+    can take advantage of concurrent processing on multiprocessor systems by implementing
+    the algorithm using the fork/join framework. Here is one possible implementation:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 执行模糊操作是通过逐个像素地处理源数组来完成的。每个��素与其周围像素（红色、绿色和蓝色分量取平均值）进行平均，结果放入目标数组中。由于图像是一个大数组，这个过程可能需要很长时间。你可以利用多处理器系统上的并发处理，使用分叉/合并框架来实现算法。以下是一个可能的实现：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Now you implement the abstract `compute()` method, which either performs the
+    blur directly or splits it into two smaller tasks. A simple array length threshold
+    helps determine whether the work is performed or split.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你要实现抽象的`compute()`方法，该方法可以直接执行模糊操作，也可以将其拆分为两个较小的任务。一个简单的数组长度阈值有助于确定是执行工作还是拆分任务。
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'If the previous methods are in a subclass of the `RecursiveAction` class, then
+    setting up the task to run in a `ForkJoinPool` is straightforward, and involves
+    the following steps:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果前面的方法在`RecursiveAction`类的子类中，那么设置任务在`ForkJoinPool`中运行就很简单，包括以下步骤：
+- en: Create a task that represents all of the work to be done.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个代表所有要完成工作的任务。
+- en: '[PRE3]'
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Create the `ForkJoinPool` that will run the task.
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建将运行任务的`ForkJoinPool`。
+- en: '[PRE4]'
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Run the task.
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 运行任务。
+- en: '[PRE5]'
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: For the full source code, including some extra code that creates the destination
+    image file, see the [``ForkBlur``](examples/ForkBlur.java) example.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要查看完整的源代码，包括一些额外的代码来创建目标图像文件，请参见[``ForkBlur``](examples/ForkBlur.java)示例。
+- en: Standard Implementations
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 标准实现
+- en: Besides using the fork/join framework to implement custom algorithms for tasks
+    to be performed concurrently on a multiprocessor system (such as the `ForkBlur.java`
+    example in the previous section), there are some generally useful features in
+    Java SE which are already implemented using the fork/join framework. One such
+    implementation, introduced in Java SE 8, is used by the [`java.util.Arrays`](https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html)
+    class for its `parallelSort()` methods. These methods are similar to `sort()`,
+    but leverage concurrency via the fork/join framework. Parallel sorting of large
+    arrays is faster than sequential sorting when run on multiprocessor systems. However,
+    how exactly the fork/join framework is leveraged by these methods is outside the
+    scope of the Java Tutorials. For this information, see the Java API documentation.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了在多处理器系统上并行执行任务的自定义算法（例如前一节中的`ForkBlur.java`示例）中使用分支/合并框架之外，Java SE中还有一些通用功能已经使用分支/合并框架实现。其中一种实现是在Java
+    SE 8中引入的，被[`java.util.Arrays`](https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html)类用于其`parallelSort()`方法。这些方法类似于`sort()`，但通过分支/合并框架利用并发性能。在多处理器系统上运行时，大型数组的并行排序比顺序排序更快。然而，这些方法如何利用分支/合并框架超出了Java教程的范围。有关此信息，请参阅Java
+    API文档。
+- en: Another implementation of the fork/join framework is used by methods in the
+    `java.util.streams` package, which is part of [Project Lambda](http://openjdk.java.net/projects/lambda/)
+    scheduled for the Java SE 8 release. For more information, see the [Lambda Expressions](../../java/javaOO/lambdaexpressions.html)
+    section.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个实现分支/合并框架的方法是使用`java.util.streams`包中的方法，该包是[Project Lambda](http://openjdk.java.net/projects/lambda/)的一部分，计划在Java
+    SE 8发布中使用。更多信息，请参阅[Lambda表达式](../../java/javaOO/lambdaexpressions.html)部分。

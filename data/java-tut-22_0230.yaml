@@ -1,0 +1,436 @@
+- en: Properties
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 属性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/environment/properties.html](https://docs.oracle.com/javase/tutorial/essential/environment/properties.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/environment/properties.html](https://docs.oracle.com/javase/tutorial/essential/environment/properties.html)
+- en: '*Properties* are configuration values managed as *key/value pairs*. In each
+    pair, the key and value are both [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+    values. The key identifies, and is used to retrieve, the value, much as a variable
+    name is used to retrieve the variable''s value. For example, an application capable
+    of downloading files might use a property named "download.lastDirectory" to keep
+    track of the directory used for the last download.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*属性*是作为*键/值对*管理的配置值。在每对中，键和值都是[`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)值。键标识并用于检索值，就像使用变量名检索变量的值一样。例如，一个能够下载文件的应用程序可能使用名为“download.lastDirectory”的属性来跟踪用于最后下载的目录。'
+- en: 'To manage properties, create instances of [`java.util.Properties`](https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html).
+    This class provides methods for the following:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要管理属性，请创建[`java.util.Properties`](https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html)的实例。此类提供以下方法：
+- en: loading key/value pairs into a `Properties` object from a stream,
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 从流中加载键/值对到`Properties`对象中，
+- en: retrieving a value from its key,
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过其键检索值，
+- en: listing the keys and their values,
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 列出键及其值，
+- en: enumerating over the keys, and
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 枚举键，
+- en: saving the properties to a stream.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将属性保存到流中。
+- en: For an introduction to streams, refer to the section [I/O Streams](../../essential/io/streams.html)
+    in the [Basic I/O](../../essential/io/index.html) lesson.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关流的介绍，请参阅[输入/输出流](../../essential/io/streams.html)中的[基本 I/O](../../essential/io/index.html)课程。
+- en: '`Properties` extends [`java.util.Hashtable`](https://docs.oracle.com/javase/8/docs/api/java/util/Hashtable.html).
+    Some of the methods inherited from `Hashtable` support the following actions:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Properties`扩展了[`java.util.Hashtable`](https://docs.oracle.com/javase/8/docs/api/java/util/Hashtable.html)。从`Hashtable`继承的一些方法支持以下操作：'
+- en: testing to see if a particular key or value is in the `Properties` object,
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 测试特定键或值是否在`Properties`对象中，
+- en: getting the current number of key/value pairs,
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取当前键/值对的数量，
+- en: removing a key and its value,
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 删除键及其值，
+- en: adding a key/value pair to the `Properties` list,
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 向`Properties`列表添加键/值对，
+- en: enumerating over the values or the keys,
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 枚举值或键，
+- en: retrieving a value by its key, and
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过键检索值，
+- en: finding out if the `Properties` object is empty.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 查看`Properties`对象是否为空。
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Security Considerations:** Access to properties is subject to approval by
+    the current security manager. The example code segments in this section are assumed
+    to be in standalone applications, which, by default, have no security manager.
+    The same code in an applet may not work depending on the browser in which it is
+    running. See [What Applets Can and Cannot Do](../../deployment/applet/security.html)
+    in the [Java Applets](../../deployment/applet/index.html) lesson for information
+    about security restrictions on applets.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**安全注意事项：** 访问属性需经当前安全管理器批准。本节中的示例代码段假定为独立应用程序，这些应用程序默认没有安全管理器。同样的代码在 applet
+    中可能无法正常工作，具体取决于运行的浏览器。请参阅[Applet 的功能和限制](../../deployment/applet/security.html)中的[Java
+    Applets](../../deployment/applet/index.html)课程，了解 applet 的安全限制信息。'
+- en: '* * *'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The `System` class maintains a `Properties` object that defines the configuration
+    of the current working environment. For more about these properties, see [System
+    Properties](sysprop.html). The remainder of this section explains how to use properties
+    to manage application configuration.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`System`类维护一个定义当前工作环境配置的`Properties`对象。有关这些属性的更多信息，请参阅[系统属性](sysprop.html)。本节的其余部分将解释如何使用属性来管理应用程序配置。'
+- en: Properties in the Application Life Cycle
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 应用程序生命周期中的属性
+- en: The following figure illustrates how a typical application might manage its
+    configuration data with a `Properties` object over the course of its execution.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图示说明了典型应用程序如何在执行过程中使用`Properties`对象管理其配置数据。
+- en: '![Possible lifecycle of a Properties object](../Images/22f18b5607448e44a6e1933d08c2268e.png)'
+  id: totrans-24
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Properties对象的可能生命周期](../Images/22f18b5607448e44a6e1933d08c2268e.png)'
+- en: '`Starting Up`'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`启动中`'
+- en: The actions given in the first three boxes occur when the application is starting
+    up. First, the application loads the default properties from a well-known location
+    into a `Properties` object. Normally, the default properties are stored in a file
+    on disk along with the `.class` and other resource files for the application.
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 第一个三个框中给出的操作发生在应用程序启动时。首先，应用程序将默认属性从一个众所周知的位置加载到`Properties`对象中。通常，默认属性存储在磁盘上的文件中，与应用程序的`.class`和其他资源文件一起。
+- en: Next, the application creates another `Properties` object and loads the properties
+    that were saved from the last time the application was run. Many applications
+    store properties on a per-user basis, so the properties loaded in this step are
+    usually in a specific file in a particular directory maintained by this application
+    in the user's home directory. Finally, the application uses the default and remembered
+    properties to initialize itself.
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 接下来，应用程序创建另一个`Properties`对象，并加载上次运行应用程序时保存的属性。许多应用程序按用户为单位存储属性，因此此步骤中加载的属性通常位于应用程序在用户主目录中维护的特定目录中的特定文件中。最后，应用程序使用默认和记忆的属性来初始化自身。
+- en: The key here is consistency. The application must always load and save properties
+    to the same location so that it can find them the next time it's executed.
+  id: totrans-28
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 关键在于一致性。应用程序必须始终将属性加载和保存到相同位置，以便下次执行时能够找到它们。
+- en: '`Running`'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`运行中`'
+- en: During the execution of the application, the user may change some settings,
+    perhaps in a Preferences window, and the `Properties` object is updated to reflect
+    these changes. If the users changes are to be remembered in future sessions, they
+    must be saved.
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在应用程序执行期间，用户可能会更改一些设置，也许在首选项窗口中，并且`Properties`对象将更新以反映这些更改。如果要记住用户更改以供将来的会话使用，则必须保存这些更改。
+- en: '`Exiting`'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`退出`'
+- en: Upon exiting, the application saves the properties to its well-known location,
+    to be loaded again when the application is next started up.
+  id: totrans-32
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 退出时，应用程序将属性保存到其众所周知的位置，以便在下次启动应用程序时再次加载。
+- en: Setting Up the Properties Object
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置`Properties`对象
+- en: 'The following Java code performs the first two steps described in the previous
+    section: loading the default properties and loading the remembered properties:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下Java代码执行了前一节描述的前两个步骤：加载默认属性和加载记住的属性：
+- en: '[PRE0]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: First, the application sets up a default `Properties` object. This object contains
+    the set of properties to use if values are not explicitly set elsewhere. Then
+    the load method reads the default values from a file on disk named `defaultProperties`.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，应用程序设置一个默认的`Properties`对象。该对象包含一组属性，如果在其他地方没有明确设置值，则使用这些属性。然后，load方法从名为`defaultProperties`的磁盘上的文件中读取默认值。
+- en: Next, the application uses a different constructor to create a second `Properties`
+    object, `applicationProps`, whose default values are contained in `defaultProps`.
+    The defaults come into play when a property is being retrieved. If the property
+    can't be found in `applicationProps`, then its default list is searched.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，应用程序使用不同的构造函数创建第二个`Properties`对象`applicationProps`，其默认值包含在`defaultProps`中。当检索属性时，默认值起作用。如果在`applicationProps`中找不到属性，则会搜索其默认列表。
+- en: Finally, the code loads a set of properties into `applicationProps` from a file
+    named `appProperties`. The properties in this file are those that were saved from
+    the application the last time it was invoked, as explained in the next section.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，代码从名为`appProperties`的文件中将一组属性加载到`applicationProps`中。该文件中的属性是上次调用应用程序时保存的属性，如下一节所述。
+- en: Saving Properties
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 保存属性
+- en: The following example writes out the application properties from the previous
+    example using `Properties.store`. The default properties don't need to be saved
+    each time because they never change.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用`Properties.store`从前一个示例中写出应用程序属性。默认属性不需要每次保存，因为它们永远不会更改。
+- en: '[PRE1]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `store` method needs a stream to write to, as well as a string that it uses
+    as a comment at the top of the output.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`store`方法需要一个要写入的流，以及一个字符串，该字符串用作输出顶部的注释。'
+- en: Getting Property Information
+  id: totrans-43
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 获取属性信息
+- en: 'Once the application has set up its `Properties` object, the application can
+    query the object for information about various keys and values that it contains.
+    An application gets information from a `Properties` object after start up so that
+    it can initialize itself based on choices made by the user. The `Properties` class
+    has several methods for getting property information:'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦应用程序设置了其`Properties`对象，应用程序可以查询该对象以获取有关其包含的各种键和值的信息。应用程序在启动后从`Properties`对象获取信息，以便根据用户的选择初始化自身。`Properties`类有几种获取属性信息的方法：
+- en: '`contains(Object value)` and `containsKey(Object key)`'
+  id: totrans-45
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`contains(Object value)`和`containsKey(Object key)`'
+- en: Returns `true` if the value or the key is in the `Properties` object. `Properties`
+    inherits these methods from `Hashtable`. Thus they accept `Object` arguments,
+    but only `String` values should be used.
+  id: totrans-46
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如果值或键在`Properties`对象中，则返回`true`。`Properties`从`Hashtable`继承这些方法。因此，它们接受`Object`参数，但只应使用`String`值。
+- en: '`getProperty(String key)` and `getProperty(String key, String default)`'
+  id: totrans-47
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getProperty(String key)`和`getProperty(String key, String default)`'
+- en: Returns the value for the specified property. The second version provides for
+    a default value. If the key is not found, the default is returned.
+  id: totrans-48
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 返回指定属性的值。第二个版本提供默认值。如果找不到键，则返回默认值。
+- en: '`list(PrintStream s)` and `list(PrintWriter w)`'
+  id: totrans-49
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`list(PrintStream s)`和`list(PrintWriter w)`'
+- en: Writes all of the properties to the specified stream or writer. This is useful
+    for debugging.
+  id: totrans-50
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 将所有属性写入指定的流或写入器。这对于调试很有用。
+- en: '`elements()`, `keys()`, and `propertyNames()`'
+  id: totrans-51
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`elements()`，`keys()`和`propertyNames()`'
+- en: Returns an `Enumeration` containing the keys or values (as indicated by the
+    method name) contained in the `Properties` object. The `keys` method only returns
+    the keys for the object itself; the `propertyNames` method returns the keys for
+    default properties as well.
+  id: totrans-52
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 返回一个包含`Properties`对象中包含的键或值（如方法名所示）的枚举。`keys`方法仅返回对象本身的键；`propertyNames`方法还返回默认属性的键。
+- en: '`stringPropertyNames()`'
+  id: totrans-53
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`stringPropertyNames()`'
+- en: Like `propertyNames`, but returns a `Set<String>`, and only returns names of
+    properties where both key and value are strings. Note that the `Set` object is
+    not backed by the `Properties` object, so changes in one do not affect the other.
+  id: totrans-54
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 类似于`propertyNames`，但返回一个`Set<String>`，并且仅返回键和值都是字符串的属性名称。请注意，`Set`对象不由`Properties`对象支持，因此对其中一个对象的更改不会影响另一个对象。
+- en: '`size()`'
+  id: totrans-55
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`size()`'
+- en: Returns the current number of key/value pairs.
+  id: totrans-56
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 返回当前键/值对的数量。
+- en: Setting Properties
+  id: totrans-57
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置属性
+- en: 'A user''s interaction with an application during its execution may impact property
+    settings. These changes should be reflected in the `Properties` object so that
+    they are saved when the application exits (and calls the `store` method). The
+    following methods change the properties in a `Properties` object:'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户在应用程序执行期间与应用程序的交互可能会影响属性设置。这些更改应该反映在`Properties`对象中，以便在应用程序退出时（并调用`store`方法时）保存这些更改。以下方法更改`Properties`对象中的属性：
+- en: '`setProperty(String key, String value)`'
+  id: totrans-59
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setProperty(String key, String value)`'
+- en: Puts the key/value pair in the `Properties` object.
+  id: totrans-60
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 将键/值对放入`Properties`对象中。
+- en: '`remove(Object key)`'
+  id: totrans-61
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`remove(Object key)`'
+- en: Removes the key/value pair associated with key.
+  id: totrans-62
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 删除与键关联的键/值对。
+- en: '* * *'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Some of the methods described above are defined in `Hashtable`, and
+    thus accept key and value argument types other than `String`. Always use `String`s
+    for keys and values, even if the method allows other types. Also do not invoke
+    `Hashtable.set` or `Hastable.setAll` on `Properties` objects; always use `Properties.setProperty`.'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 上述描述的一些方法在`Hashtable`中定义，因此接受除`String`之外的键和值参数类型。始终使用`String`作为键和值，即使该方法允许其他类型。同时不要在`Properties`对象上调用`Hashtable.set`或`Hastable.setAll`；始终使用`Properties.setProperty`。'
+- en: '* * *'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

@@ -1,0 +1,303 @@
+- en: Creating a URL
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建 URL
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/creatingUrls.html](https://docs.oracle.com/javase/tutorial/networking/urls/creatingUrls.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/creatingUrls.html](https://docs.oracle.com/javase/tutorial/networking/urls/creatingUrls.html)
+- en: 'The easiest way to create a `URL` object is from a `String` that represents
+    the human-readable form of the URL address. This is typically the form that another
+    person will use for a URL. In your Java program, you can use a `String` containing
+    this text to create a `URL` object:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建 `URL` 对象的最简单方法是从表示 URL 地址的人类可读形式的 `String` 创建。这通常是另一个人将用于 URL 的形式。在您的 Java
+    程序中，您可以使用包含此文本的 `String` 来创建 `URL` 对象：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `URL` object created above represents an *absolute URL*. An absolute URL
+    contains all of the information necessary to reach the resource in question. You
+    can also create `URL` objects from a *relative URL* address.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 上面创建的 `URL` 对象表示一个*绝对 URL*。绝对 URL 包含到达所需资源的所有必要信息。您还可以从*相对 URL*地址创建 `URL` 对象。
+- en: Creating a URL Relative to Another
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建相对于另一个的 URL
+- en: A relative URL contains only enough information to reach the resource relative
+    to (or in the context of) another URL.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相对 URL 只包含足够的信息，以便相对于（或在另一个 URL 的上下文中）到达资源。
+- en: 'Relative URL specifications are often used within HTML files. For example,
+    suppose you write an HTML file called `JoesHomePage.html`. Within this page, are
+    links to other pages, `PicturesOfMe.html` and `MyKids.html`, that are on the same
+    machine and in the same directory as `JoesHomePage.html`. The links to `PicturesOfMe.html`
+    and `MyKids.html` from `JoesHomePage.html` could be specified just as file names,
+    like this:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相对 URL 规范通常在 HTML 文件中使用。例如，假设您编写了一个名为 `JoesHomePage.html` 的 HTML 文件。在此页面中，有指向其他页面
+    `PicturesOfMe.html` 和 `MyKids.html` 的链接，这些页面位于与 `JoesHomePage.html` 相同的机器和目录中。从
+    `JoesHomePage.html` 到 `PicturesOfMe.html` 和 `MyKids.html` 的链接可以像文件名一样指定，如下所示：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: These URL addresses are *relative URLs*. That is, the URLs are specified relative
+    to the file in which they are contained — `JoesHomePage.html`.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些 URL 地址是*相对 URL*。也就是说，这些 URL 是相对于包含它们的文件——`JoesHomePage.html`来指定的。
+- en: 'In your Java programs, you can create a `URL` object from a relative URL specification.
+    For example, suppose you know two URLs at the site `example.com`:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在您的 Java 程序中，您可以从相对 URL 规范创建一个 `URL` 对象。例如，假设您在站点 `example.com` 知道两个 URL：
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'You can create `URL` objects for these pages relative to their common base
+    URL: `http://example.com/pages/` like this:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以相对于它们的共同基本 URL `http://example.com/pages/` 创建这些页面的 `URL` 对象，如下所示：
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'This code snippet uses the `URL` constructor that lets you create a `URL` object
+    from another `URL` object (the base) and a relative URL specification. The general
+    form of this constructor is:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码片段使用了一个 `URL` 构造函数，让您可以从另一个 `URL` 对象（基础）和相对 URL 规范创建一个 `URL` 对象。此构造函数的一般形式是：
+- en: '[PRE4]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The first argument is a `URL` object that specifies the base of the new `URL`.
+    The second argument is a `String` that specifies the rest of the resource name
+    relative to the base. If `baseURL` is null, then this constructor treats `relativeURL`
+    like an absolute URL specification. Conversely, if `relativeURL` is an absolute
+    URL specification, then the constructor ignores `baseURL`.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个参数是指定新 `URL` 的基础的 `URL` 对象。第二个参数是指定相对于基础的资源名称的其余部分的 `String`。如果 `baseURL`
+    为 null，则此构造函数将 `relativeURL` 视为绝对 URL 规范。相反，如果 `relativeURL` 是绝对 URL 规范，则构造函数将忽略
+    `baseURL`。
+- en: 'This constructor is also useful for creating `URL` objects for named anchors
+    (also called references) within a file. For example, suppose the `page1.html`
+    file has a named anchor called `BOTTOM` at the bottom of the file. You can use
+    the relative URL constructor to create a `URL` object for it like this:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个构造函数也适用于为文件中的命名锚点（也称为引用）创建 `URL` 对象。例如，假设 `page1.html` 文件在文件底部有一个名为 `BOTTOM`
+    的命名锚点。您可以使用相对 URL 构造函数为其创建一个 `URL` 对象，如下所示：
+- en: '[PRE5]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Other URL Constructors
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 其他 URL 构造函数
+- en: The `URL` class provides two additional constructors for creating a `URL` object.
+    These constructors are useful when you are working with URLs, such as HTTP URLs,
+    that have host name, filename, port number, and reference components in the resource
+    name portion of the URL. These two constructors are useful when you do not have
+    a String containing the complete URL specification, but you do know various components
+    of the URL.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`URL` 类提供了另外两个用于创建 `URL` 对象的构造函数。当您使用具有主机名、文件名、端口号和 URL 资源名称部分中的引用组件的 URL（如
+    HTTP URL）时，这些构造函数很有用。当您没有包含完整 URL 规范的 String，但您知道 URL 的各个组件时，这两个构造函数很有用。'
+- en: 'For example, suppose you design a network browsing panel similar to a file
+    browsing panel that allows users to choose the protocol, host name, port number,
+    and filename. You can construct a `URL` from the panel''s components. The first
+    constructor creates a `URL` object from a protocol, host name, and filename. The
+    following code snippet creates a `URL` to the `page1.html` file at the `example.com`
+    site:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设您设计一个类似文件浏览面板的网络浏览面板，允许用户选择协议、主机名、端口号和文件名。您可以从面板的组件构造一个`URL`。第一个构造函数从协议、主机名和文件名创建一个`URL`对象。以下代码片段创建一个`URL`到`example.com`站点的`page1.html`文件：
+- en: '[PRE6]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: This is equivalent to
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这等同于
+- en: '[PRE7]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The first argument is the protocol, the second is the host name, and the last
+    is the pathname of the file. Note that the filename contains a forward slash at
+    the beginning. This indicates that the filename is specified from the root of
+    the host.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个参数是协议，第二个是主机名，最后一个是文件的路径名。请注意，文件名包含一个斜杠在开头。这表示文件名是从主机的根目录指定的。
+- en: 'The final `URL` constructor adds the port number to the list of arguments used
+    in the previous constructor:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最终的`URL`构造函数将端口号添加到前一个构造函数中使用的参数列表中：
+- en: '[PRE8]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'This creates a `URL` object for the following URL:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将为以下URL创建一个`URL`对象：
+- en: '[PRE9]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: If you construct a `URL` object using one of these constructors, you can get
+    a `String` containing the complete URL address by using the `URL` object's `toString`
+    method or the equivalent `toExternalForm` method.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果使用这些构造函数之一构造`URL`对象，您可以通过使用`URL`对象的`toString`方法或等效的`toExternalForm`方法获得包含完整URL地址的`String`。
+- en: URL addresses with Special characters
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 具有特殊字符的URL地址
+- en: 'Some URL addresses contain special characters, for example the space character.
+    Like this:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些URL地址包含特殊字符，例如空格字符。就像这样：
+- en: '[PRE10]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: To make these characters legal they need to be encoded before passing them to
+    the URL constructor.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在将这些字符传递给URL构造函数之前，它们需要进行编码以使其合法。
+- en: '[PRE11]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: Encoding the special character(s) in this example is easy as there is only one
+    character that needs encoding, but for URL addresses that have several of these
+    characters or if you are unsure when writing your code what URL addresses you
+    will need to access, you can use the multi-argument constructors of the [`java.net.URI`](https://docs.oracle.com/javase/8/docs/api/java/net/URI.html)
+    class to automatically take care of the encoding for you.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中编码特殊字符很容易，因为只有一个字符需要编码，但是对于具有多个这些字符的URL地址，或者在编写代码时不确定需要访问哪些URL地址时，您可以使用[`java.net.URI`](https://docs.oracle.com/javase/8/docs/api/java/net/URI.html)类的多参数构造函数来自动处理编码。
+- en: '[PRE12]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: And then convert the URI to a URL.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后将URI转换为URL。
+- en: '[PRE13]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: MalformedURLException
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: MalformedURLException
+- en: 'Each of the four `URL` constructors throws a `MalformedURLException` if the
+    arguments to the constructor refer to a `null` or unknown protocol. Typically,
+    you want to catch and handle this exception by embedding your URL constructor
+    statements in a `try`/`catch` pair, like this:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 四个`URL`构造函数中的每一个如果构造函数的参数引用`null`或未知协议，则会抛出`MalformedURLException`。通常，您希望通过将URL构造函数语句嵌入到`try`/`catch`对中来捕获和处理此异常，就像这样：
+- en: '[PRE14]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: See [Exceptions](../../essential/exceptions/index.html) for information about
+    handling exceptions.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关处理异常的信息，请参阅[异常](../../essential/exceptions/index.html)。
+- en: '* * *'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: '`URL`s are "write-once" objects. Once you''ve created a `URL` object, you cannot
+    change any of its attributes (protocol, host name, filename, or port number).'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`URL`是“一次写入”对象。一旦创建了`URL`对象，就无法更改其任何属性（协议、主机名、文件名或端口号）。'
+- en: '* * *'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

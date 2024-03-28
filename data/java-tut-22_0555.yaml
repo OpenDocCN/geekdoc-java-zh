@@ -1,0 +1,78 @@
+- en: The Date-Time Packages
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 日期时间包
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/overview/packages.html](https://docs.oracle.com/javase/tutorial/datetime/overview/packages.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/overview/packages.html](https://docs.oracle.com/javase/tutorial/datetime/overview/packages.html)
+- en: 'The Date-Time API consists of the primary package, `java.time`, and four subpackages:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间 API 由主要包`java.time`和四个子包组成：
+- en: '`java.time`'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.time`'
+- en: The core of the API for representing date and time. It includes classes for
+    date, time, date and time combined, time zones, instants, duration, and clocks.
+    These classes are based on the calendar system defined in ISO-8601, and are immutable
+    and thread-safe.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该 API 的核心用于表示日期和时间。它包括了日期、时间、日期和时间的组合、时区、瞬间、持续时间和时钟的类。这些类基于 ISO-8601 中定义的日历系统，是不可变的和线程安全的。
+- en: '`java.time.chrono`'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.time.chrono`'
+- en: The API for representing calendar systems other than the default ISO-8601\.
+    You can also define your own calendar system. This tutorial does not cover this
+    package in any detail.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于表示除默认 ISO-8601 之外的日历系统的 API。您也可以定义自己的日历系统。本教程不会详细介绍这个包。
+- en: '`java.time.format`'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.time.format`'
+- en: Classes for formatting and parsing dates and times.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于格式化和解析日期和时间的类。
+- en: '`java.time.temporal`'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.time.temporal`'
+- en: Extended API, primarily for framework and library writers, allowing interoperations
+    between the date and time classes, querying, and adjustment. Fields (`TemporalField`
+    and `ChronoField`) and units (`TemporalUnit` and `ChronoUnit`) are defined in
+    this package.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 扩展 API，主要用于框架和库的编写者，允许日期和时间类之间的互操作，查询和调整。在这个包中定义了字段（`TemporalField` 和 `ChronoField`）和单位（`TemporalUnit`
+    和 `ChronoUnit`）。
+- en: '`java.time.zone`'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.time.zone`'
+- en: Classes that support time zones, offsets from time zones, and time zone rules.
+    If working with time zones, most developers will need to use only `ZonedDateTime`,
+    and `ZoneId` or `ZoneOffset`.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 支持时区、时区偏移和时区规则的类。如果涉及时区，大多数开发人员只需要使用`ZonedDateTime`、`ZoneId`或`ZoneOffset`。

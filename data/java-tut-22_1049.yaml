@@ -1,0 +1,1272 @@
+- en: JAXB Examples
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: JAXB示例
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/examples.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/examples.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/examples.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/examples.html)
+- en: The following sections describe how to use the sample applications that are
+    included in the JAXB RI bundle. The JAXB RI bundle is available from [http://jaxb.java.net](http://jaxb.java.net).
+    Download and install the JAXB RI bundle. The examples are located in the *jaxb-ri-install*`/samples/`
+    directory. These examples demonstrate and build upon key JAXB features and concepts.
+    Follow these procedures in the order presented.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下部分描述如何使用包含在JAXB RI捆绑包中的示例应用程序。JAXB RI捆绑包可从[http://jaxb.java.net](http://jaxb.java.net)获取。下载并安装JAXB
+    RI捆绑包。示例位于*jaxb-ri-install*`/samples/`目录中。这些示例演示并构建了关键的JAXB功能和概念。请按照呈现的顺序执行这些步骤。
+- en: 'After reading this section, you should feel comfortable enough with JAXB that
+    you can:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 阅读完本节后，您应该对JAXB感到足够自信，可以：
+- en: Generate JAXB Java classes from an XML schema
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 从XML模式生成JAXB Java类
+- en: Use schema-derived JAXB classes to unmarshal and marshal XML content in a Java
+    application
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在Java应用程序中使用基于模式的JAXB类解组和组合XML内容
+- en: Create a Java content tree using schema-derived JAXB classes
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用基于模式的JAXB类创建Java内容树
+- en: Validate XML content during unmarshalling and at runtime
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在解组期间和运行时验证XML内容
+- en: Customize JAXB schema-to-Java bindings
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 自定义JAXB模式到Java绑定
+- en: 'This document describes three sets of examples:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本文描述了三组示例：
+- en: The basic examples (Modify Marshal, Unmarshal Validate) demonstrate basic JAXB
+    concepts such as unmarshalling, marshalling, and validating XML content using
+    default settings and bindings.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 基本示例（修改Marshal、Unmarshal Validate）演示了基本的JAXB概念，如使用默认设置和绑定来解组、组合和验证XML内容。
+- en: The customize examples (Customize Inline, Datatype Converter, External Customize)
+    demonstrate various ways of customizing the default binding of XML schemas to
+    Java objects.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 自定义示例（Customize Inline、Datatype Converter、External Customize）演示了将XML模式默认绑定到Java对象的各种自定义方式。
+- en: The java-to-schema examples show how to use annotations to map Java classes
+    to an XML schema.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: java-to-schema示例展示了如何使用注解将Java类映射到XML模式。
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The basic and customize examples are based on a Purchase Order scenario.
+    Each uses an XML document, `po.xml`, written against an XML schema, `po.xsd`.
+    These documents are derived from the [W3C XML Schema Part 0: Primer](http://www.w3.org/TR/xmlschema-0/),
+    edited by David C. Fallside.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**基本和自定义示例基于采购订单场景。每个示例使用一个XML文档`po.xml`，根据一个XML模式`po.xsd`编写。这些文档源自由David
+    C. Fallside编辑的[W3C XML Schema Part 0: Primer](http://www.w3.org/TR/xmlschema-0/)。'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The basic and customize example directories contain several base files:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基本和自定义示例目录包含几个基本文件：
+- en: '`po.xsd` is the XML schema that is used as input to the JAXB binding compiler,
+    and from which schema-derived JAXB Java classes will be generated. For the Customize
+    Inline and Datatype Converter examples, this file contains inline binding customizations.'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`po.xsd`是作为JAXB绑定编译器输入的XML模式，将从中生成基于模式的JAXB Java类。对于自定义内联和数据类型转换器示例，此文件包含内联绑定自定义。'
+- en: '`po.xml` is the Purchase Order XML file containing sample XML content, and
+    it is the file unmarshalled into a Java content tree in each example. This file
+    is almost the same in each example; there are minor content differences to highlight
+    different JAXB concepts.'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`po.xml`是包含示例XML内容的采购订单XML文件，在每个示例中解组为Java内容树。这个文件在每个示例中几乎相同；为了突出不同的JAXB概念，存在轻微的内容差异。'
+- en: '`Main.java` is the main Java class for each example.'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Main.java`是每个示例的主要Java类。'
+- en: '`build.xml` is an Ant project file provided for your convenience. Use the Ant
+    tool to generate, compile, and run the schema-derived JAXB classes automatically.
+    The `build.xml` file varies across the examples.'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`build.xml`是一个Ant项目文件，为您提供方便。使用Ant工具自动生成、编译和运行基于模式的JAXB类。`build.xml`文件在示例之间有所不同。'
+- en: '`MyDatatypeConverter.java` in the `inline-customize` example is a Java class
+    used to provide custom data type conversions.'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`inline-customize`示例中的`MyDatatypeConverter.java`是一个Java类，用于提供自定义数据类型转换。'
+- en: '`binding.xjb` in the External Customize example is an external binding declarations
+    file that is passed to the JAXB binding compiler to customize the default JAXB
+    bindings.'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: External Customize示例中的`binding.xjb`是一个外部绑定声明文件，传递给JAXB绑定编译器以自定义默认的JAXB绑定。
+- en: The following tables briefly describe the basic, customize, and java-to-schema
+    JAXB examples.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表简要描述了基本、定制和Java到模式JAXB示例。
+- en: Table: Basic JAXB Examples
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表：基本JAXB示例
+- en: '| Example Name | Description |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例名称 | 描述 |'
+- en: '| [Modify Marshal](basic.html#bnbaz) | Demonstrates how to modify a Java content
+    tree. |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Modify Marshal](basic.html#bnbaz) | 演示如何修改Java内容树。'
+- en: '| [Unmarshal Validate](basic.html#bnbbc) | Demonstrates how to enable validation
+    during unmarshalling. |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Unmarshal Validate](basic.html#bnbbc) | 演示如何在解组期间启用验证。'
+- en: Table:  Customize JAXB Examples
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表：定制JAXB示例
+- en: '| Example Name | Description |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例名称 | 描述 |'
+- en: '| [Customize Inline](custom.html#bnbbz) | Demonstrates how to customize the
+    default JAXB bindings by using inline annotations in an XML schema. |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Customize Inline](custom.html#bnbbz) | 演示如何通过在XML模式中使用内联注解来定制默认的JAXB绑定。'
+- en: '| [Datatype Converter](custom.html#bnbci) | Illustrates alternate, more terse
+    bindings of XML `simpleType` definitions to Java data types, and is similar to
+    Customize Inline example. |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Datatype Converter](custom.html#bnbci) | 演示了将XML `simpleType`定义绑定到Java数据类型的替代、更简洁的绑定方法，类似于内联定制示例。'
+- en: '| [External Customize](custom.html#bnbcs) | Illustrates how to use an external
+    binding declarations file to pass binding customizations for a read-only schema
+    to the JAXB binding compiler. |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| [External Customize](custom.html#bnbcs) | 演示如何使用外部绑定声明文件来传递对JAXB绑定编译器的只读模式进行绑定自定义。'
+- en: Table:  Java-to-Schema JAXB Examples
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表：Java到模式JAXB示例
+- en: '| Example Name | Description |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例名称 | 描述 |'
+- en: '| [Create Marshal](j2schema.html#bnbcw) | Demonstrates how to use the ObjectFactory
+    class to create a Java content tree and marshal it to XML data. It also demonstrates
+    how to add content to a JAXB List property. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Create Marshal](j2schema.html#bnbcw) | 演示如何使用ObjectFactory类创建Java内容树并将其编组为XML数据。还演示了如何向JAXB列表属性添加内容。'
+- en: '| [XmlAccessorOrder](j2schema.html#bnbcz) | Illustrates how to use the `@XmlAccessorOrder`
+    and `@XmlType.propOrder` mapping annotations in Java classes to control the order
+    in which XML content is marshalled or unmarshalled by a Java type. |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| [XmlAccessorOrder](j2schema.html#bnbcz) | 演示如何在Java类中使用`@XmlAccessorOrder`和`@XmlType.propOrder`映射注解来控制Java类型在编组或解组XML内容时的顺序。'
+- en: '| [XmlAdapter](j2schema.html#bnbdf) | Illustrates how to use the interface
+    `XmlAdapter` and the annotation `@XmlJavaTypeAdapter` to provide a custom mapping
+    of XML content into and out of a `HashMap` (field) that uses an integer (`int`)
+    as the key and a string (`String`) as the value. |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| [XmlAdapter](j2schema.html#bnbdf) | 演示如何使用接口`XmlAdapter`和注解`@XmlJavaTypeAdapter`为使用整数（`int`）作为键和字符串（`String`）作为值的`HashMap`（字段）提供自定义映射XML内容的方法。'
+- en: '| [XmlAttribute](j2schema.html#bnbdi) | Illustrates how to use the annotation
+    `@XmlAttribute` to define a property or field to be handled as an XML attribute.
+    |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| [XmlAttribute](j2schema.html#bnbdi) | 演示如何使用注解`@XmlAttribute`来定义一个属性或字段作为XML属性处理。'
+- en: '| [XmlRootElement](j2schema.html#bnbdl) | Illustrates how to use the annotation
+    `@XmlRootElement` to define an XML element name for the XML schema type of the
+    corresponding class. |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| [XmlRootElement](j2schema.html#bnbdl) | 演示如何使用注解`@XmlRootElement`为相应类的XML模式类型定义XML元素名称。'
+- en: '| [XmlSchemaType Class](j2schema.html#bnbdo) | Illustrates how to use the annotation
+    `@XmlSchemaType` to customize the mapping of a property or field to an XML built-in
+    type. |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| [XmlSchemaType Class](j2schema.html#bnbdo) | 演示如何使用注解`@XmlSchemaType`来自定义属性或字段与XML内置类型的映射。'
+- en: '| [XmlType](j2schema.html#bnbdr) | Illustrates how to use the annotation `@XmlType`
+    to map a class or `enum` type to an XML schema type. |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| [XmlType](j2schema.html#bnbdr) | 演示如何使用注解`@XmlType`将一个类或`enum`类型映射到XML模式类型。'
+- en: JAXB Compiler Options
+  id: totrans-42
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: JAXB编译器选项
+- en: 'The JAXB XJC schema binding compiler transforms, or binds, a source XML schema
+    to a set of JAXB content classes in the Java programming language. The compiler
+    class, `xjc`, is provided as: `xjc.sh` on Solaris/Linux and `xjc.bat` on Windows
+    in the JAXB RI bundle. The `xjc` class is included in the JDK class library (in
+    tools.jar).'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAXB XJC模式绑定编译器将源XML模式转换或绑定到Java编程语言中的一组JAXB内容类。编译器类`xjc`提供为：在Solaris/Linux上为`xjc.sh`，在Windows上为`xjc.bat`在JAXB
+    RI捆绑包中。`xjc`类包含在JDK类库中（在tools.jar中）。
+- en: 'Both `xjc.sh` and `xjc.bat` take the same command-line options. You can display
+    quick usage instructions by invoking the scripts without any options, or with
+    the `-help` switch. The syntax is as follows:'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`xjc.sh`和`xjc.bat`都接受相同的命令行选项。您可以通过在没有任何选项或使用`-help`开关的情况下调用脚本来显示快速使用说明。语法如下：'
+- en: '[PRE0]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If `dir` is specified, all schema files in the directory will be compiled. If
+    `jar` is specified, /META-INF/sun-jaxb.episode binding file will be compiled.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果指定了`dir`，则将编译目录中的所有模式文件。如果指定了`jar`，将编译/META-INF/sun-jaxb.episode绑定文件。
+- en: 'The `xjc` command-line options are as follows:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`xjc`命令行选项如下：'
+- en: '`-nv`'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-nv`'
+- en: Do not perform strict validation of the input schema or schemas. By default,
+    `xjc` performs strict validation of the source schema before processing. Note
+    that this does not mean the binding compiler will not perform any validation;
+    it will just perform a less-strict validation.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不执行输入模式或模式的严格验证。默认情况下，`xjc` 在处理之前会对源模式进行严格验证。请注意，这并不意味着绑定编译器不会执行任何验证；它只会执行较少严格的验证。
+- en: '`-extension`'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-extension`'
+- en: By default, the XJC binding compiler strictly enforces the rules outlined in
+    the Compatibility chapter of the JAXB Specification. In the default (strict) mode,
+    you are also limited to using only the binding customizations defined in the specification.
+    By using the `-extension` switch, you are allowed to use the JAXB Vendor Extensions.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，XJC绑定编译器严格执行JAXB规范的兼容性章节中概述的规则。在默认（严格）模式下，您也只能使用规范中定义的绑定自定义。通过使用`-extension`开关，您可以使用JAXB供应商扩展。
+- en: '`-b` *file*'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-b` *file*'
+- en: Specify one or more external binding files to process. (Each binding file must
+    have its own `-b` switch.) The syntax of the external binding files is flexible.
+    You may have a single binding file that contains customizations for multiple schemas
+    or you can break the customizations into multiple bindings files. In addition,
+    the ordering of the schema files and binding files on the command-line does not
+    matter.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定一个或多个要处理的外部绑定文件。（每个绑定文件必须有自己的`-b`开关。）外部绑定文件的语法是灵活的。您可以有一个包含多个模式的自定义的单个绑定文件，或者您可以将自定义拆分为多个绑定文件。此外，命令行中模式文件和绑定文件的顺序无关紧要。
+- en: '`-d` *dir*'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-d` *dir*'
+- en: By default, the XJC binding compiler generates Java content classes in the current
+    directory. Use this option to specify an alternate output directory. The directory
+    must already exist; the XJC binding compiler does not create one for you.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，XJC绑定编译器在当前目录中生成Java内容类。使用此选项指定替代输出目录。目录必须已经存在；XJC绑定编译器不会为您创建一个。
+- en: '`-p` *package*'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-p` *package*'
+- en: Specify an alternate output directory. By default, the XJC binding compiler
+    will generate the Java content classes in the current directory. The output directory
+    must already exist; the XJC binding compiler does not create one for you.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定替代输出目录。默认情况下，XJC绑定编译器将在当前目录中生成Java内容类。输出目录必须已经存在；XJC绑定编译器不会为您创建一个。
+- en: '`-httpproxy` *proxy*'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-httpproxy` *proxy*'
+- en: Specify the HTTP/HTTPS proxy. The format is `[``*user*``[:``*password*``]@]``*proxyHost*``[:``*proxyPort*``]`.
+    The old `-host` and `-port` options are still supported by the Reference Implementation
+    for backward compatibility, but they have been deprecated.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定HTTP/HTTPS代理。格式为`[``*user*``[:``*password*``]@]``*proxyHost*``[:``*proxyPort*``]`。旧的`-host`和`-port`选项仍受参考实现支持以保持向后兼容性，但它们已被弃用。
+- en: '`-httpproxyfile` *f*'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-httpproxyfile` *f*'
+- en: Works like the `-httpproxy` option but takes the argument in a file to protect
+    password.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似于`-httpproxy`选项，但将参数放在文件中以保护密码。
+- en: '`-classpath` *arg*'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-classpath` *arg*'
+- en: Specify where to find client application class files used by the `<jxb:javaType>`
+    and `<xjc:superClass>` customizations.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定用于`<jxb:javaType>`和`<xjc:superClass>`自定义的客户端应用程序类文件的位置。
+- en: '`-catalog` *file*'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-catalog` *file*'
+- en: Specify catalog files to resolve external entity references. Supports TR9401,
+    XCatalog, and OASIS XML Catalog format. For more information, see the XML Entity
+    and URI Resolvers document or examine the catalog-resolver sample application.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定目录文件以解析外部实体引用。支持TR9401、XCatalog和OASIS XML Catalog格式。有关更多信息，请参阅XML实体和URI解析器文档或检查catalog-resolver示例应用程序。
+- en: '`-readOnly`'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-readOnly`'
+- en: Force the XJC binding compiler to mark the generated Java sources as read-only.
+    By default, the XJC binding compiler does not write-protect the Java source files
+    it generates.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 强制XJC绑定编译器将生成的Java源文件标记为只读。默认情况下，XJC绑定编译器不会写保护生成的Java源文件。
+- en: '`-npa`'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-npa`'
+- en: Suppress the generation of package level annotations into `**/package-info.java`.
+    Using this switch causes the generated code to internalize those annotations into
+    the other generated classes.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 抑制将包级别注释生成到`**/package-info.java`中。使用此开关会导致生成的代码将这些注释内部化到其他生成的类中。
+- en: '`-no-header`'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-no-header`'
+- en: Suppress generation of a file header with timestamp.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 抑制生成带有时间戳的文件头。
+- en: '`-target (2.0|2.1)`'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-target (2.0|2.1)`'
+- en: Behave like XJC 2.0 or 2.1 and generate code that doesnt use any XJC 2.2 features.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 行为类似于XJC 2.0或2.1，并生成不使用任何XJC 2.2功能的代码。
+- en: '`-enableIntrospection`'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-enableIntrospection`'
+- en: Enable correct generation of Boolean getters/setters to enable Bean Introspection
+    apis.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 启用正确生成布尔值getter/setter以启用Bean Introspection api。
+- en: '`-contentForWildcard`'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-contentForWildcard`'
+- en: Generates content property for types with multiple xs:any derived elements.
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为具有多个xs:any派生元素的类型生成内容属性。
+- en: '`-xmlschema`'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-xmlschema`'
+- en: Treat input schemas as W3C XML Schema (default). If you do not specify this
+    switch, your input schemas are treated as W3C XML Schema.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将输入模式视为W3C XML模式（默认）。 如果不指定此开关，则将处理输入模式为W3C XML模式。
+- en: '`-verbose`'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-verbose`'
+- en: Be extra verbose in compiler output.
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在编译器输出中更加详细。
+- en: '`-quiet`'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-quiet`'
+- en: Suppress compiler output, such as progress information and warnings.
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 抑制编译器输出，如进度信息和警告。
+- en: '`-help`'
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-help`'
+- en: Display a brief summary of the compiler switches.
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 显示编译器开关的简要摘要。
+- en: '`-version`'
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-version`'
+- en: Display the compiler version information.
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 显示编译器版本信息。
+- en: '`-fullversion`'
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-fullversion`'
+- en: Display the compiler full version information.
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 显示编译器的完整版本信息。
+- en: '`-Xinject-code`'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-Xinject-code`'
+- en: Inject specified Java code fragments into the generated code.
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将指定的Java代码片段注入生成的代码中。
+- en: '`-Xlocator`'
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-Xlocator`'
+- en: Enable source location support for generated code.
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 启用生成代码的源位置支持。
+- en: '`-Xsync-methods`'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-Xsync-methods`'
+- en: Generate accessor methods with the `synchronized` keyword.
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 生成带有`synchronized`关键字的访问器方法。
+- en: '`-mark-generated`'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-mark-generated`'
+- en: Mark the generated code with the `-@javax.annotation.` Generated annotation.
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`-@javax.annotation.`生成的注释标记生成的代码。
+- en: '`-episode *FILE*`'
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-episode *FILE*`'
+- en: Generate the episode file for separate compilation.
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为单独编译生成剧集文件。
+- en: JAXB Schema Generator Option
+  id: totrans-100
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: JAXB模式生成器选项
+- en: The JAXB Schema Generator, `schemagen`, creates a schema file for each namespace
+    referenced in your Java classes. The schema generator can be started by using
+    the appropriate `schemagen` shell script in the `bin` directory for your platform.
+    The schema generator processes Java source files only. If your Java sources reference
+    other classes, those sources must be accessible from your system CLASSPATH environment
+    variable; otherwise errors will occur when the schema is generated. There is no
+    way to control the name of the generated schema files.
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAXB模式生成器`schemagen`为您的Java类中引用的每个命名空间创建一个模式文件。 模式生成器可以通过使用适用于您平台的`bin`目录中的适当`schemagen`
+    shell脚本启动。 模式生成器仅处理Java源文件。 如果您的Java源引用其他类，则这些源必须从系统的CLASSPATH环境变量中访问； 否则，在生成模式时将出现错误。
+    无法控制生成的模式文件的名称。
+- en: 'You can display quick usage instructions by invoking the scripts without any
+    options or by using the `-help` option. The syntax is as follows:'
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过调用脚本而不使用任何选项或使用`-help`选项，您可以显示快速使用说明。 语法如下：
+- en: '[PRE1]'
+  id: totrans-103
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `-d` *path* option specifies the location of the processor-generated and
+    `javac`-generated class files.
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-d` *path* 选项指定了处理器生成和`javac`生成的类文件的位置。'
+- en: About the Schema-to-Java Bindings
+  id: totrans-105
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 关于模式到Java绑定
+- en: When you run the JAXB binding compiler against the `po.xsd` XML schema used
+    in the basic examples (Unmarshal Read, Modify Marshal, Unmarshal Validate), the
+    JAXB binding compiler generates a Java package named `primer.po` containing the
+    classes, described in the following table.
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您针对基本示例中使用的`po.xsd` XML模式运行JAXB绑定编译器（解组读取，修改编组，解组验证）时，JAXB绑定编译器将生成一个名为`primer.po`的Java包，其中包含下表中描述的类。
+- en: Table:  Schema-Derived JAXB Classes in the Basic Examples
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表：基本示例中的基于模式的JAXB类
+- en: '| Class | Description |'
+  id: totrans-108
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类 | 描述 |'
+- en: '| `primer/po/Items.java` | Public interface that binds to the schema `complexType`
+    named `Items`. |'
+  id: totrans-109
+  prefs: []
+  type: TYPE_TB
+  zh: '| `primer/po/Items.java` | 公共接口，绑定到名为`Items`的`complexType`模式。 |'
+- en: '| `primer/po/ObjectFactory.java` | Public class extending `com.sun.xml.bind.DefaultJAXBContextImpl`;
+    used to create instances of specified interfaces. For example, the `ObjectFactory`
+    `createComment()` method instantiates a `Comment` object. |'
+  id: totrans-110
+  prefs: []
+  type: TYPE_TB
+  zh: '| `primer/po/ObjectFactory.java` | 公共类，扩展`com.sun.xml.bind.DefaultJAXBContextImpl`；
+    用于创建指定接口的实例。 例如，`ObjectFactory`的`createComment()`方法实例化`Comment`对象。 |'
+- en: '| `primer/po/PurchaseOrderType.java` | Public interface that binds to the schema
+    `complexType` named `PurchaseOrderType`. |'
+  id: totrans-111
+  prefs: []
+  type: TYPE_TB
+  zh: '| `primer/po/PurchaseOrderType.java` | 公共接口，绑定到名为`PurchaseOrderType`的`complexType`模式。
+    |'
+- en: '| `primer/po/USAddress.java` | Public interface that binds to the schema `complexType`
+    named `USAddress`. |'
+  id: totrans-112
+  prefs: []
+  type: TYPE_TB
+  zh: '| `primer/po/USAddress.java` | 公共接口，绑定到名为`USAddress`的`complexType`模式。 |'
+- en: These classes and their specific bindings to the source XML schema for the basic
+    examples are described in the following table.
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些类及其与基本示例源XML模式的特定绑定在以下表中描述。
+- en: Table: Schema-to-Java Bindings for the Basic Examples
+  id: totrans-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表：基本示例的模式到Java绑定
+- en: '| XML Schema | JAXB Binding |'
+  id: totrans-115
+  prefs: []
+  type: TYPE_TB
+  zh: '| XML Schema | JAXB Binding |'
+- en: '|'
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '[PRE2]'
+  id: totrans-117
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '|   |'
+  id: totrans-118
+  prefs: []
+  type: TYPE_TB
+  zh: '|   |'
+- en: '|'
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '[PRE3]'
+  id: totrans-120
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '| `PurchaseOrderType.java` |'
+  id: totrans-121
+  prefs: []
+  type: TYPE_TB
+  zh: '| `PurchaseOrderType.java` |'
+- en: '|'
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '[PRE4]'
+  id: totrans-123
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '| `USAddress.java` |'
+  id: totrans-124
+  prefs: []
+  type: TYPE_TB
+  zh: '| `USAddress.java` |'
+- en: '|'
+  id: totrans-125
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '[PRE5]'
+  id: totrans-126
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '| `Items.java` |'
+  id: totrans-127
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Items.java` |'
+- en: '|'
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '[PRE6]'
+  id: totrans-129
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '| `Items.ItemType` |'
+  id: totrans-130
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Items.ItemType` |'
+- en: '|'
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '[PRE7]'
+  id: totrans-132
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '|   |'
+  id: totrans-133
+  prefs: []
+  type: TYPE_TB
+  zh: '|   |'
+- en: '|'
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '[PRE8]'
+  id: totrans-135
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: '|   |'
+  id: totrans-136
+  prefs: []
+  type: TYPE_TB
+  zh: '|   |'
+- en: '|'
+  id: totrans-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '[PRE9]'
+  id: totrans-138
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '|   |'
+  id: totrans-139
+  prefs: []
+  type: TYPE_TB
+  zh: '|   |'
+- en: '|'
+  id: totrans-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '[PRE10]'
+  id: totrans-141
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: '|   |'
+  id: totrans-142
+  prefs: []
+  type: TYPE_TB
+  zh: '|   |'
+- en: Schema-Derived JAXB Classes
+  id: totrans-143
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 基于模式的JAXB类
+- en: 'The next sections briefly explain the functions of the following individual
+    classes generated by the JAXB binding compiler for the examples:'
+  id: totrans-144
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的部分简要解释了JAXB绑定编译器为示例生成的以下各个单独类的功能：
+- en: '[`Items` Class](#bnbat)'
+  id: totrans-145
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Items` 类](#bnbat)'
+- en: '[`ObjectFactory` Class](#bnbau)'
+  id: totrans-146
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`ObjectFactory` 类](#bnbau)'
+- en: '[`PurchaseOrderType` Class](#bnbaw)'
+  id: totrans-147
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`PurchaseOrderType` 类](#bnbaw)'
+- en: '[`USAddress` Class](#bnbax)'
+  id: totrans-148
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`USAddress` 类](#bnbax)'
+- en: '`Items` Class'
+  id: totrans-149
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: '`Items` 类'
+- en: 'In `Items.java`:'
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `Items.java` 中：
+- en: The `Items` class is part of the `primer.po` package.
+  id: totrans-151
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Items` 类是 `primer.po` 包的一部分。'
+- en: The class provides public interfaces for `Items` and `ItemType`.
+  id: totrans-152
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 该类为 `Items` 和 `ItemType` 提供了公共接口。
+- en: Content in instantiations of this class binds to the XML ComplexTypes `Items`
+    and its child element `ItemType`.
+  id: totrans-153
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 此类的实例化内容绑定到XML ComplexTypes `Items` 及其子元素 `ItemType`。
+- en: '`Item` provides the `getItem()` method.'
+  id: totrans-154
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Item` 提供了 `getItem()` 方法。'
+- en: '`ItemType` provides methods for:'
+  id: totrans-155
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ItemType` 提供了以下方法：'
+- en: '`getPartNum();`'
+  id: totrans-156
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getPartNum();`'
+- en: '`setPartNum(String value);`'
+  id: totrans-157
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setPartNum(String value);`'
+- en: '`getComment();`'
+  id: totrans-158
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getComment();`'
+- en: '`setComment(java.lang.String value);`'
+  id: totrans-159
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setComment(java.lang.String value);`'
+- en: '`getUSPrice();`'
+  id: totrans-160
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getUSPrice();`'
+- en: '`setUSPrice(java.math.BigDecimal value);`'
+  id: totrans-161
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setUSPrice(java.math.BigDecimal value);`'
+- en: '`getProductName();`'
+  id: totrans-162
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getProductName();`'
+- en: '`setProductName(String value);`'
+  id: totrans-163
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setProductName(String value);`'
+- en: '`getShipDate();`'
+  id: totrans-164
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getShipDate();`'
+- en: '`setShipDate(java.util.Calendar value);`'
+  id: totrans-165
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setShipDate(java.util.Calendar value);`'
+- en: '`getQuantity();`'
+  id: totrans-166
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getQuantity();`'
+- en: '`setQuantity(java.math.BigInteger value);`'
+  id: totrans-167
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setQuantity(java.math.BigInteger value);`'
+- en: '`ObjectFactory` Class'
+  id: totrans-168
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: '`ObjectFactory` 类'
+- en: 'In `ObjectFactory.java`:'
+  id: totrans-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `ObjectFactory.java` 中：
+- en: The `ObjectFactory` class is part of the `primer.po` package.
+  id: totrans-170
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ObjectFactory` 类是 `primer.po` 包的一部分。'
+- en: '`ObjectFactory` provides factory methods for instantiating Java interfaces
+    representing XML content in the Java content tree.'
+  id: totrans-171
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ObjectFactory` 提供了用于在Java内容树中实例化表示XML内容的Java接口的工厂方法。'
+- en: 'Method names are generated by concatenating:'
+  id: totrans-172
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 方法名是通过连接生成的：
+- en: The string constant `create`.
+  id: totrans-173
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 字符串常量 `create`。
+- en: All outer Java class names, if the Java content interface is nested within another
+    interface.
+  id: totrans-174
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有外部Java类名称，如果Java内容接口嵌套在另一个接口中。
+- en: The name of the Java content interface.
+  id: totrans-175
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Java内容接口的名称。
+- en: As an example, in this case, for the Java interface `primer.po.Items.ItemType`,
+    the `ObjectFactory` creates the method `createItemsItemType()`.
+  id: totrans-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，在这种情况下，对于Java接口 `primer.po.Items.ItemType`，`ObjectFactory` 创建了方法 `createItemsItemType()`。
+- en: '`PurchaseOrderType` Class'
+  id: totrans-177
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: '`PurchaseOrderType` 类'
+- en: 'In `PurchaseOrderType.java`:'
+  id: totrans-178
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `PurchaseOrderType.java` 中：
+- en: The `PurchaseOrderType` class is part of the `primer.po` package.
+  id: totrans-179
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`PurchaseOrderType` 类是 `primer.po` 包的一部分。'
+- en: Content in instantiations of this class binds to the XML schema child element
+    named `PurchaseOrderType`.
+  id: totrans-180
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 此类的实例化内容绑定到名为 `PurchaseOrderType` 的XML模式子元素。
+- en: '`PurchaseOrderType` is a public interface that provides the following methods:'
+  id: totrans-181
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`PurchaseOrderType` 是一个公共接口，提供以下方法：'
+- en: '`getItems();`'
+  id: totrans-182
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getItems();`'
+- en: '`setItems(primer.po.Items value);`'
+  id: totrans-183
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setItems(primer.po.Items value);`'
+- en: '`getOrderDate();`'
+  id: totrans-184
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getOrderDate();`'
+- en: '`setOrderDate(java.util.Calendar value);`'
+  id: totrans-185
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setOrderDate(java.util.Calendar value);`'
+- en: '`getComment();`'
+  id: totrans-186
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getComment();`'
+- en: '`setComment(java.lang.String value);`'
+  id: totrans-187
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setComment(java.lang.String value);`'
+- en: '`getBillTo();`'
+  id: totrans-188
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getBillTo();`'
+- en: '`setBillTo(primer.po.USAddress value);`'
+  id: totrans-189
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setBillTo(primer.po.USAddress value);`'
+- en: '`getShipTo();`'
+  id: totrans-190
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getShipTo();`'
+- en: '`setShipTo(primer.po.USAddress value);`'
+  id: totrans-191
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setShipTo(primer.po.USAddress value);`'
+- en: '`USAddress` Class'
+  id: totrans-192
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: '`USAddress` 类'
+- en: 'In `USAddress.java`:'
+  id: totrans-193
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `USAddress.java` 中：
+- en: The `USAddress` class is part of the `primer.po` package.
+  id: totrans-194
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`USAddress` 类是 `primer.po` 包的一部分。'
+- en: Content in instantiations of this class binds to the XML schema element named
+    `USAddress`.
+  id: totrans-195
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 此类的实例化内容绑定到名为 `USAddress` 的XML模式元素。
+- en: '`USAddress` is a public interface that provides the following methods:'
+  id: totrans-196
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`USAddress` 是一个公共接口，提供以下方法：'
+- en: '`getState();`'
+  id: totrans-197
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getState();`'
+- en: '`setState(String value);`'
+  id: totrans-198
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setState(String value);`'
+- en: '`getZip();`'
+  id: totrans-199
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getZip();`'
+- en: '`setZip(java.math.BigDecimal value);`'
+  id: totrans-200
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setZip(java.math.BigDecimal value);`'
+- en: '`getCountry();`'
+  id: totrans-201
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getCountry();`'
+- en: '`setCountry(String value);`'
+  id: totrans-202
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setCountry(String value);`'
+- en: '`getCity();`'
+  id: totrans-203
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getCity();`'
+- en: '`setCity(String value);`'
+  id: totrans-204
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setCity(String value);`'
+- en: '`getStreet();`'
+  id: totrans-205
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getStreet();`'
+- en: '`setStreet(String value);`'
+  id: totrans-206
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setStreet(String value);`'
+- en: '`getName();`'
+  id: totrans-207
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getName();`'
+- en: '`setName(String value);`'
+  id: totrans-208
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setName(String value);`'

@@ -1,0 +1,344 @@
+- en: Nested Classes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 嵌套类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html](https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html](https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html)
+- en: 'The Java programming language allows you to define a class within another class.
+    Such a class is called a *nested class* and is illustrated here:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编程语言允许您在另一个类中定义一个类。这样的类称为*嵌套类*，如下所示：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Terminology:** Nested classes are divided into two categories: non-static
+    and static. Non-static nested classes are called *inner classes*. Nested classes
+    that are declared `static` are called *static nested classes*.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**术语：** 嵌套类分为两类：非静态和静态。非静态嵌套类称为*内部类*。声明为`static`的嵌套类称为*静态嵌套类*。'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: A nested class is a member of its enclosing class. Non-static nested classes
+    (inner classes) have access to other members of the enclosing class, even if they
+    are declared private. Static nested classes do not have access to other members
+    of the enclosing class. As a member of the `OuterClass`, a nested class can be
+    declared `private`, `public`, `protected`, or *package private*. (Recall that
+    outer classes can only be declared `public` or *package private*.)
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 嵌套类是其封闭类的成员。非静态嵌套类（内部类）可以访问封闭类的其他成员，即使它们被声明为private。静态嵌套类无法访问封闭类的其他成员。作为`OuterClass`的成员，嵌套类可以声明为`private`、`public`、`protected`或*包私有*。（请记住，外部类只能声明为`public`或*包私有*。）
+- en: Why Use Nested Classes?
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为什么使用嵌套类？
+- en: 'Compelling reasons for using nested classes include the following:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用嵌套类的引人注目的原因包括以下内容：
+- en: '**It is a way of logically grouping classes that are only used in one place**:
+    If a class is useful to only one other class, then it is logical to embed it in
+    that class and keep the two together. Nesting such "helper classes" makes their
+    package more streamlined.'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**它是一种逻辑上将仅在一个地方使用的类分组的方法**：如果一个类仅对另一个类有用，则将其嵌入该类并将两者保持在一起是合乎逻辑的。嵌套这样的“辅助类”使其包更加简洁。'
+- en: '**It increases encapsulation**: Consider two top-level classes, A and B, where
+    B needs access to members of A that would otherwise be declared `private`. By
+    hiding class B within class A, A''s members can be declared private and B can
+    access them. In addition, B itself can be hidden from the outside world.'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**它增加了封装性**：考虑两个顶层类A和B，其中B需要访问A的成员，否则这些成员将被声明为`private`。通过将类B隐藏在类A中，A的成员可以被声明为private，并且B可以访问它们。此外，B本身可以对外部世界隐藏。'
+- en: '**It can lead to more readable and maintainable code**: Nesting small classes
+    within top-level classes places the code closer to where it is used.'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**它可以导致更易读和易维护的代码**：将小类嵌套在顶层类中可以使代码更接近其使用位置。'
+- en: Inner Classes
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 内部类
+- en: As with instance methods and variables, an inner class is associated with an
+    instance of its enclosing class and has direct access to that object's methods
+    and fields. Also, because an inner class is associated with an instance, it cannot
+    define any static members itself.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与实例方法和变量一样，内部类与其封闭类的实例相关联，并且可以直接访问该对象的方法和字段。此外，因为内部类与实例相关联，它本身不能定义任何静态成员。
+- en: 'Objects that are instances of an inner class exist *within* an instance of
+    the outer class. Consider the following classes:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为内部类的实例存在于外部类的实例*内部*。考虑以下类：
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: An instance of `InnerClass` can exist only within an instance of `OuterClass`
+    and has direct access to the methods and fields of its enclosing instance.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`InnerClass`的实例只能存在于`OuterClass`的实例中，并且可以直接访问其封闭实例的方法和字段。'
+- en: 'To instantiate an inner class, you must first instantiate the outer class.
+    Then, create the inner object within the outer object with this syntax:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要实例化内部类，必须首先实例化外部类。然后，使用以下语法在外部对象中创建内部对象：
+- en: '[PRE3]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'There are two special kinds of inner classes: [local classes](localclasses.html)
+    and [anonymous classes](anonymousclasses.html).'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两种特殊类型的内部类：[局部类](localclasses.html)和[匿名类](anonymousclasses.html)。
+- en: Static Nested Classes
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 静态嵌套类
+- en: 'As with class methods and variables, a static nested class is associated with
+    its outer class. And like static class methods, a static nested class cannot refer
+    directly to instance variables or methods defined in its enclosing class: it can
+    use them only through an object reference. [Inner Class and Nested Static Class
+    Example](#inner-class-and-nested-static-class-example) demonstrates this.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与类方法和变量一样，静态嵌套类与其外部类相关联。并且像静态类方法一样，静态嵌套类不能直接引用其封闭类中定义的实例变量或方法：它只能通过对象引用使用它们。[内部类和嵌套静态类示例](#inner-class-and-nested-static-class-example)演示了这一点。
+- en: '* * *'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** A static nested class interacts with the instance members of its
+    outer class (and other classes) just like any other top-level class. In effect,
+    a static nested class is behaviorally a top-level class that has been nested in
+    another top-level class for packaging convenience. [Inner Class and Nested Static
+    Class Example](#inner-class-and-nested-static-class-example) also demonstrates
+    this.'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 静态嵌套类与其外部类（以及其他类）的实例成员交互方式与任何其他顶层类相同。实际上，静态嵌套类在行为上就像是为了包装方便而嵌套在另一个顶层类中的顶层类。[内部类和嵌套静态类示例](#inner-class-and-nested-static-class-example)也演示了这一点。'
+- en: '* * *'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'You instantiate a static nested class the same way as a top-level class:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以像实例化顶层类一样实例化静态嵌套类：
+- en: '[PRE4]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Inner Class and Nested Static Class Example
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 内部类和嵌套静态类示例
+- en: 'The following example, [`OuterClass`](examples/OuterClass.java), along with
+    [`TopLevelClass`](examples/TopLevelClass.java), demonstrates which class members
+    of `OuterClass` an inner class (`InnerClass`), a nested static class (`StaticNestedClass`),
+    and a top-level class (`TopLevelClass`) can access:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例，[`OuterClass`](examples/OuterClass.java)，以及[`TopLevelClass`](examples/TopLevelClass.java)，演示了内部类(`InnerClass`)、嵌套静态类(`StaticNestedClass`)和顶层类(`TopLevelClass`)可以访问`OuterClass`的哪些类成员：
+- en: OuterClass.java
+  id: totrans-31
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: OuterClass.java
+- en: '[PRE5]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: TopLevelClass.java
+  id: totrans-33
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: TopLevelClass.java
+- en: '[PRE6]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'This example prints the following output:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例打印以下输出：
+- en: '[PRE7]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Note that a static nested class interacts with the instance members of its
+    outer class just like any other top-level class. The static nested class `StaticNestedClass`
+    can''t directly access `outerField` because it''s an instance variable of the
+    enclosing class, `OuterClass`. The Java compiler generates an error at the highlighted
+    statement:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，静态嵌套类与其外部类的实例成员交互方式与任何其他顶层类相同。静态嵌套类`StaticNestedClass`无法直接访问`outerField`，因为它是封闭类`OuterClass`的实例变量。Java编译器会在突出显示的语句处生成错误：
+- en: '[PRE8]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'To fix this error, access `outerField` through an object reference:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要修复此错误，请通过对象引用访问`outerField`：
+- en: '[PRE9]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Similarly, the top-level class `TopLevelClass` can't directly access `outerField`
+    either.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，顶层类`TopLevelClass`也无法直接访问`outerField`。
+- en: Shadowing
+  id: totrans-42
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 遮蔽
+- en: 'If a declaration of a type (such as a member variable or a parameter name)
+    in a particular scope (such as an inner class or a method definition) has the
+    same name as another declaration in the enclosing scope, then the declaration
+    *shadows* the declaration of the enclosing scope. You cannot refer to a shadowed
+    declaration by its name alone. The following example, [`ShadowTest`](examples/ShadowTest.java),
+    demonstrates this:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果特定范围（如内部类或方法定义）中的类型声明（如成员变量或参数名）与封闭范围中的另一个声明具有相同的名称，则声明会*遮蔽*封闭范围的声明。您不能仅通过名称引用被遮蔽的声明。以下示例，[`ShadowTest`](examples/ShadowTest.java)，演示了这一点：
+- en: '[PRE10]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'The following is the output of this example:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是此示例的输出：
+- en: '[PRE11]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'This example defines three variables named `x`: the member variable of the
+    class `ShadowTest`, the member variable of the inner class `FirstLevel`, and the
+    parameter in the method `methodInFirstLevel`. The variable `x` defined as a parameter
+    of the method `methodInFirstLevel` shadows the variable of the inner class `FirstLevel`.
+    Consequently, when you use the variable `x` in the method `methodInFirstLevel`,
+    it refers to the method parameter. To refer to the member variable of the inner
+    class `FirstLevel`, use the keyword `this` to represent the enclosing scope:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例定义了三个名为`x`的变量：类`ShadowTest`的成员变量，内部类`FirstLevel`的成员变量以及方法`methodInFirstLevel`中的参数。方法`methodInFirstLevel`中定义的变量`x`会遮蔽内部类`FirstLevel`的变量。因此，当您在方法`methodInFirstLevel`中使用变量`x`时，它指的是方法参数。要引用内部类`FirstLevel`的成员变量，请使用关键字`this`表示封闭范围：
+- en: '[PRE12]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'Refer to member variables that enclose larger scopes by the class name to which
+    they belong. For example, the following statement accesses the member variable
+    of the class `ShadowTest` from the method `methodInFirstLevel`:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过类名引用封装更大范围的成员变量。例如，以下语句从方法`methodInFirstLevel`中访问类`ShadowTest`的成员变量：
+- en: '[PRE13]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Serialization
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 序列化
+- en: '[Serialization](../../jndi/objects/serial.html) of inner classes, including
+    [local](localclasses.html) and [anonymous](anonymousclasses.html) classes, is
+    strongly discouraged. When the Java compiler compiles certain constructs, such
+    as inner classes, it creates *synthetic constructs*; these are classes, methods,
+    fields, and other constructs that do not have a corresponding construct in the
+    source code. Synthetic constructs enable Java compilers to implement new Java
+    language features without changes to the JVM. However, synthetic constructs can
+    vary among different Java compiler implementations, which means that `.class`
+    files can vary among different implementations as well. Consequently, you may
+    have compatibility issues if you serialize an inner class and then deserialize
+    it with a different JRE implementation. See the section [Implicit and Synthetic
+    Parameters](../../reflect/member/methodparameterreflection.html#implcit_and_synthetic)
+    in the section [Obtaining Names of Method Parameters](../../reflect/member/methodparameterreflection.html)
+    for more information about the synthetic constructs generated when an inner class
+    is compiled.'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内部类的[序列化](../../jndi/objects/serial.html)，包括[局部](localclasses.html)和[匿名](anonymousclasses.html)类，是强烈不建议的。当Java编译器编译某些结构（如内部类）时，它会创建*合成结构*；这些是在源代码中没有对应构造的类、方法、字段和其他结构。合成结构使Java编译器能够实现新的Java语言特性，而无需更改JVM。然而，合成结构在不同的Java编译器实现之间可能会有所不同，这意味着`.class`文件在不同的实现之间也可能会有所不同。因此，如果您序列化一个内部类，然后在不同的JRE实现中反序列化它，可能会出现兼容性问题。有关在编译内部类时生成的合成结构的更多信息，请参见[隐式和合成参数](../../reflect/member/methodparameterreflection.html#implcit_and_synthetic)部分中的[获取方法参数名称](../../reflect/member/methodparameterreflection.html)部分。

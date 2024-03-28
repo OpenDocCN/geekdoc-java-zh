@@ -1,0 +1,966 @@
+- en: Example Code
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 示例代码
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/stax/example.html](https://docs.oracle.com/javase/tutorial/jaxp/stax/example.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/stax/example.html](https://docs.oracle.com/javase/tutorial/jaxp/stax/example.html)
+- en: This section steps through the example StAX code included in the JAXP reference
+    implementation bundle. All example directories used in this section are located
+    in the *INSTALL_DIR*`/jaxp-`*version*`/samples/stax` directory.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节逐步介绍了JAXP参考实现包中包含的示例StAX代码。本节中使用的所有示例目录均位于*INSTALL_DIR*`/jaxp-`*version*`/samples/stax`目录中。
+- en: 'The topics covered in this section are as follows:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖的主题如下：
+- en: '[Example Code Organization](#bnbfm)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[示例代码组织](#bnbfm)'
+- en: '[Example XML Document](#bnbfn)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[示例XML文档](#bnbfn)'
+- en: '[Cursor Example](#bnbfo)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[游标示例](#bnbfo)'
+- en: '[Cursor-to-Event Example](#bnbft)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[游标到事件示例](#bnbft)'
+- en: '[Event Example](#bnbfz)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[事件示例](#bnbfz)'
+- en: '[Filter Example](#bnbgh)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[过滤器示例](#bnbgh)'
+- en: '[Read-and-Write Example](#bnbgq)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[读写示例](#bnbgq)'
+- en: '[Writer Example](#bnbgx)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[写入示例](#bnbgx)'
+- en: Example Code Organization
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例代码组织
+- en: 'The *INSTALL_DIR*`/jaxp-`*version*`/samples/stax` directory contains the six
+    StAX example directories:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*INSTALL_DIR*`/jaxp-`*version*`/samples/stax`目录包含六个StAX示例目录：'
+- en: '**Cursor example**: The `cursor` directory contains `CursorParse.java`, which
+    illustrates how to use the `XMLStreamReader` (cursor) API to read an XML file.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**游标示例**：`cursor`目录包含`CursorParse.java`，演示如何使用`XMLStreamReader`（游标）API读取XML文件。'
+- en: '**Cursor-to-Event example**: The `cursor2event` directory contains `CursorApproachEventObject.java`,
+    which illustrates how an application can get information as an `XMLEvent` object
+    when using the cursor API.'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**游标到事件示例**：`cursor2event`目录包含`CursorApproachEventObject.java`，演示应用程序如何在使用游标API时将信息作为`XMLEvent`对象获取。'
+- en: '**Event example**: The `event` directory contains `EventParse.java`, which
+    illustrates how to use the `XMLEventReader` (event iterator) API to read an XML
+    file.'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**事件示例**：`event`目录包含`EventParse.java`，演示如何使用`XMLEventReader`（事件迭代器）API读取XML文件。'
+- en: '**Filter example**: The `filter` directory contains `MyStreamFilter.java`,
+    which illustrates how to use the StAX Stream Filter APIs. In this example, the
+    filter accepts only `StartElement` and `EndElement` events, and filters out the
+    remainder of the events.'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**过滤器示例**：`filter`目录包含`MyStreamFilter.java`，演示如何使用StAX流过滤器API。在此示例中，过滤器仅接受`StartElement`和`EndElement`事件，并过滤掉其余事件。'
+- en: '**Read-and-Write example**: The `readnwrite` directory contains `EventProducerConsumer.java`,
+    which illustrates how the StAX producer/consumer mechanism can be used to simultaneously
+    read and write XML streams.'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**读写示例**：`readnwrite`目录包含`EventProducerConsumer.java`，演示了如何使用StAX生产者/消费者机制同时读取和写入XML流。'
+- en: '**Writer example**: The `writer` directory contains `CursorWriter.java`, which
+    illustrates how to use `XMLStreamWriter` to write an XML file programmatically.'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**写入示例**：`writer`目录包含`CursorWriter.java`，演示如何使用`XMLStreamWriter`以编程方式编写XML文件。'
+- en: All the StAX examples except for the Writer example use an example XML document,
+    `BookCatalog.xml`.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了写入示例外，本节中的所有StAX示例均使用示例XML文档`BookCatalog.xml`。
+- en: Example XML Document
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例XML文档
+- en: 'The example XML document, `BookCatalog.xml`, used by most of the StAX example
+    classes, is a simple book catalog based on the common `BookCatalogue` namespace.
+    The contents of `BookCatalog.xml` are listed below:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数StAX示例类使用的示例XML文档`BookCatalog.xml`是一个基于常见`BookCatalogue`命名空间的简单图书目录。`BookCatalog.xml`的内容如下：
+- en: '[PRE0]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Cursor Example
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 游标示例
+- en: Located in the *INSTALL_DIR*`/jaxp-`*version*`/samples/stax/cursor/` directory,
+    `CursorParse.java` demonstrates using the StAX cursor API to read an XML document.
+    In the Cursor example, the application instructs the parser to read the next event
+    in the XML input stream by calling `next()`.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 位于*INSTALL_DIR*`/jaxp-`*version*`/samples/stax/cursor/`目录中，`CursorParse.java`演示了如何使用StAX游标API读取XML文档。在游标示例中，应用程序通过调用`next()`指示解析器读取XML输入流中的下一个事件。
+- en: Note that `next()` just returns an integer constant corresponding to an underlying
+    event where the parser is positioned. The application needs to call the relevant
+    function to get more information related to the underlying event.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`next()`只返回与解析器所处位置对应的整数常量。应用程序需要调用相关函数以获取与底层事件相关的更多信息。
+- en: You can imagine this approach as a virtual cursor moving across the XML input
+    stream. There are various accessor methods which can be called when that virtual
+    cursor is at a particular event.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以将这种方法想象成虚拟游标在XML输入流中移动。当虚拟游标位于特定事件时，可以调用各种访问器方法。
+- en: Stepping through Events
+  id: totrans-28
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 逐个事件地进行步进
+- en: 'In this example, the client application pulls the next event in the XML stream
+    by calling the `next` method on the parser; for example:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个示例中，客户端应用程序通过在解析器上调用`next`方法来拉取XML流中的下一个事件；例如：
+- en: '[PRE1]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Note that `next` just returns an integer constant corresponding to the event
+    underlying the current cursor location. The application calls the relevant function
+    to get more information related to the underlying event. There are various accessor
+    methods which can be called when the cursor is at a particular event.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`next`只是返回与当前游标位置下的事件对应的整数常量。应用程序调用相关函数以获取与底层事件相关的更多信息。当游标位于特定事件时，可以调用各种访问器方法。
+- en: Returning String Representations
+  id: totrans-32
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 返回字符串表示形式
+- en: 'Because the `next` method only returns integers corresponding to underlying
+    event types, you typically need to map these integers to string representations
+    of the events; for example:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`next`方法只返回与底层事件类型对应的整数，通常需要将这些整数映射到事件的字符串表示形式；例如：
+- en: '[PRE2]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: To Run the Cursor Example
+  id: totrans-35
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行游标示例
+- en: '**To compile and run the cursor example, in a terminal window, go to the *INSTALL_DIR*`/jaxp-`*version*`/samples/`
+    directory and type the following:**'
+  id: totrans-36
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**要编译和运行游标示例，在终端窗口中，转到*INSTALL_DIR*`/jaxp-`*version*`/samples/`目录，并输入以下内容：**'
+- en: '[PRE3]'
+  id: totrans-37
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '**Run the `CursorParse` sample on the `BookCatalogue.xml` file, with the following
+    command.**'
+  id: totrans-38
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**在`BookCatalogue.xml`文件上运行`CursorParse`示例，使用以下命令。**'
+- en: '`CursorParse` will print out each element of the `BookCatalogue.xml` file.'
+  id: totrans-39
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`CursorParse`将打印出`BookCatalogue.xml`文件的每个元素。'
+- en: '[PRE4]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Cursor-to-Event Example
+  id: totrans-41
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 游标到事件示例
+- en: Located in the *tut-install*`/javaeetutorial5/examples/stax/cursor2event/` directory,
+    `CursorApproachEventObject.java` demonstrates how to get information returned
+    by an `XMLEvent` object even when using the cursor API.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 位于*tut-install*`/javaeetutorial5/examples/stax/cursor2event/`目录中，`CursorApproachEventObject.java`演示了如何在使用游标API时获取`XMLEvent`对象返回的信息。
+- en: The idea here is that the cursor API’s `XMLStreamReader` returns integer constants
+    corresponding to particular events, while the event iterator API’s `XMLEventReader`
+    returns immutable and persistent event objects. `XMLStreamReader` is more efficient,
+    but `XMLEventReader` is easier to use, because all the information related to
+    a particular event is encapsulated in a returned `XMLEvent` object. However, the
+    disadvantage of the event approach is the extra overhead of creating objects for
+    every event, which consumes both time and memory.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里的想法是，游标API的`XMLStreamReader`返回与特定事件对应的整数常量，而事件迭代器API的`XMLEventReader`返回不可变且持久的事件对象。
+    `XMLStreamReader`更有效率，但`XMLEventReader`更易于使用，因为与特定事件相关的所有信息都封装在返回的`XMLEvent`对象中。然而，事件方法的缺点是为每个事件创建对象的额外开销，这既消耗时间又消耗内存。
+- en: With this mind, `XMLEventAllocator` can be used to get event information as
+    an `XMLEvent` object, even when using the cursor API.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有了这个想法，即使使用游标API，也可以使用`XMLEventAllocator`来获取事件信息作为`XMLEvent`对象。
+- en: Instantiating an XMLEventAllocator
+  id: totrans-45
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 实例化一个XMLEventAllocator
+- en: 'The first step is to create a new `XMLInputFactory` and instantiate an `XMLEventAllocator`:'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一步是创建一个新的`XMLInputFactory`并实例化一个`XMLEventAllocator`：
+- en: '[PRE5]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Creating an Event Iterator
+  id: totrans-48
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个事件迭代器
+- en: 'The next step is to create an event iterator:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一步是创建一个事件迭代器：
+- en: '[PRE6]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Creating the Allocator Method
+  id: totrans-51
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建分配器方法
+- en: 'The final step is to create the `XMLEventAllocator` method:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一步是创建`XMLEventAllocator`方法：
+- en: '[PRE7]'
+  id: totrans-53
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: To Run the Cursor-to-Event Example
+  id: totrans-54
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行游标到事件示例
+- en: '**To compile and run the cursor—to—event example, in a terminal window, go
+    to the *INSTALL_DIR*`/jaxp-`*version*`/samples/` directory and type the following:**'
+  id: totrans-55
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**要编译和运行游标到事件示例，在终端窗口中，转到*INSTALL_DIR*`/jaxp-`*version*`/samples/`目录，并输入以下内容：**'
+- en: '[PRE8]'
+  id: totrans-56
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: '**Run the `CursorApproachEventObject` sample on the `BookCatalogue.xml` file,
+    with the following command.**'
+  id: totrans-57
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**在`BookCatalogue.xml`文件上运行`CursorApproachEventObject`示例，使用以下命令。**'
+- en: '[PRE9]'
+  id: totrans-58
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '`CursorApproachEventObject` will print out the list of events defined by the
+    `BookCatalogue.xml` file.'
+  id: totrans-59
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`CursorApproachEventObject`将打印出`BookCatalogue.xml`文件中定义的事件列表。'
+- en: Event Example
+  id: totrans-60
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 事件示例
+- en: Located in the *INSTALL_DIR*`/jaxp-`*version*`/samples/stax/event/` directory,
+    `EventParse.java` demonstrates how to use the StAX event API to read an XML document.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 位于*INSTALL_DIR*`/jaxp-`*version*`/samples/stax/event/`目录中，`EventParse.java`演示了如何使用StAX事件API读取XML文档。
+- en: Creating an Input Factory
+  id: totrans-62
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个输入工厂
+- en: 'The first step is to create a new instance of `XMLInputFactory`:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一步是创建一个新的`XMLInputFactory`实例：
+- en: '[PRE10]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: Creating an Event Reader
+  id: totrans-65
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个事件读取器
+- en: 'The next step is to create an instance of `XMLEventReader`:'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一步是创建一个 `XMLEventReader` 实例：
+- en: '[PRE11]'
+  id: totrans-67
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: Creating an Event Iterator
+  id: totrans-68
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个事件迭代器
+- en: 'The third step is to create an event iterator:'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第三步是创建一个事件迭代器：
+- en: '[PRE12]'
+  id: totrans-70
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: Getting the Event Stream
+  id: totrans-71
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 获取事件流
+- en: 'The final step is to get the underlying event stream:'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一步是获取底层事件流：
+- en: '[PRE13]'
+  id: totrans-73
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Returning the Output
+  id: totrans-74
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 返回输出
+- en: 'When you run the Event example, the `EventParse` class is compiled, and the
+    XML stream is parsed as events and returned to `STDOUT`. For example, an instance
+    of the `Author` element is returned as:'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你运行事件示例时，`EventParse` 类被编译，XML 流被解析为事件并返回到 `STDOUT`。例如，`Author` 元素的一个实例被返回为：
+- en: '[PRE14]'
+  id: totrans-76
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: Note in this example that the event comprises an opening and closing tag, both
+    of which include the namespace. The content of the element is returned as a string
+    within the tags.
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，在这个示例中，事件包括一个包含命名空间的开标签和闭标签，两者都包含元素的内容作为字符串返回在标签内。
+- en: 'Similarly, an instance of the `Cost` element is returned as:'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，一个 `Cost` 元素的一个实例被返回如下：
+- en: '[PRE15]'
+  id: totrans-79
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: In this case, the `currency` attribute and value are returned in the opening
+    tag for the event.
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，`currency` 属性和值在事件的开标签中返回。
+- en: To Run the Event Example
+  id: totrans-81
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行事件示例
+- en: '**To compile and run the event example, in a terminal window, go to the *INSTALL_DIR*`/jaxp-`*version*`/samples/`
+    directory and type the following:**'
+  id: totrans-82
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**要编译和运行事件示例，在终端窗口中，转到 *INSTALL_DIR*`/jaxp-`*version*`/samples/` 目录并输入以下内容：**'
+- en: '[PRE16]'
+  id: totrans-83
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: '**Run the `EventParse` sample on the `BookCatalogue.xml` file, with the following
+    command.**'
+  id: totrans-84
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**对 `BookCatalogue.xml` 文件运行 `EventParse` 示例，使用以下命令。**'
+- en: '[PRE17]'
+  id: totrans-85
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: '`EventParse` will print out the data from all the elements defined by the `BookCatalogue.xml`
+    file.'
+  id: totrans-86
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`EventParse` 将打印出由 `BookCatalogue.xml` 文件定义的所有元素的数据。'
+- en: Filter Example
+  id: totrans-87
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 过滤器示例
+- en: Located in the *INSTALL_DIR*`/jaxp-`*version*`/samples/stax/filter/` directory,
+    `MyStreamFilter.java` demonstrates how to use the StAX stream filter API to filter
+    out events not needed by your application. In this example, the parser filters
+    out all events except `StartElement` and `EndElement`.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 位于 *INSTALL_DIR*`/jaxp-`*version*`/samples/stax/filter/` 目录中，`MyStreamFilter.java`
+    演示了如何使用 StAX 流过滤器 API 过滤应用程序不需要的事件。在这个示例中，解析器过滤掉除了 `StartElement` 和 `EndElement`
+    之外的所有事件。
+- en: Implementing the StreamFilter Class
+  id: totrans-89
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 实现 StreamFilter 类
+- en: 'The `MyStreamFilter` class implements `javax.xml.stream.StreamFilter`:'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MyStreamFilter` 类实现了 `javax.xml.stream.StreamFilter`：'
+- en: '[PRE18]'
+  id: totrans-91
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: Creating an Input Factory
+  id: totrans-92
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个输入工厂
+- en: 'The next step is to create an instance of `XMLInputFactory`. In this case,
+    various properties are also set on the factory:'
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一步是创建一个 `XMLInputFactory` 实例。在这种情况下，还在工厂上设置了各种属性：
+- en: '[PRE19]'
+  id: totrans-94
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: Creating the Filter
+  id: totrans-95
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建过滤器
+- en: 'The next step is to instantiate a file input stream and create the stream filter:'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一步是实例化一个文件输入流并创建流过滤器：
+- en: '[PRE20]'
+  id: totrans-97
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: Capturing the Event Stream
+  id: totrans-98
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 捕获事件流
+- en: The next step is to capture the event stream. This is done in basically the
+    same way as in the Event example.
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一步是捕获事件流。这与事件示例中的方式基本相同。
+- en: Filtering the Stream
+  id: totrans-100
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 过滤流
+- en: 'The final step is to filter the stream:'
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一步是过滤流：
+- en: '[PRE21]'
+  id: totrans-102
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: Returning the Output
+  id: totrans-103
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 返回输出
+- en: 'When you run the Filter example, the `MyStreamFilter` class is compiled, and
+    the XML stream is parsed as events and returned to `STDOUT`. For example, an `Author`
+    event is returned as follows:'
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你运行过滤器示例时，`MyStreamFilter` 类被编译，XML 流被解析为事件并返回到 `STDOUT`。例如，一个 `Author` 事件被返回如下：
+- en: '[PRE22]'
+  id: totrans-105
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: 'Similarly, a `Cost` event is returned as follows:'
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，一个 `Cost` 事件被返回如下：
+- en: '[PRE23]'
+  id: totrans-107
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: See [Iterator API](api.html#bnbee) and [Reading XML Streams](using.html#bnbew)
+    for a more detailed discussion of StAX event parsing.
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看 [迭代器 API](api.html#bnbee) 和 [读取 XML 流](using.html#bnbew) 以获取更详细的 StAX 事件解析讨论。
+- en: To Run the Filter Example
+  id: totrans-109
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行过滤器示例
+- en: '**To compile and run the Filter example, in a terminal window, go to the *INSTALL_DIR*`/jaxp-`*version*`/samples/`
+    directory and type the following:**'
+  id: totrans-110
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**要编译和运行过滤器示例，在终端窗口中，转到 *INSTALL_DIR*`/jaxp-`*version*`/samples/` 目录并输入以下内容：**'
+- en: '[PRE24]'
+  id: totrans-111
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: '**Run the `MyStreamFilter` sample on the `BookCatalogue.xml` file, with the
+    following command. This example requires the `java.endorsed.dirs` system property
+    to be set, to point to the `samples/lib` directory.**'
+  id: totrans-112
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**在 `java.endorsed.dirs` 系统属性设置为指向 `samples/lib` 目录的情况下，对 `BookCatalogue.xml`
+    文件运行 `MyStreamFilter` 示例，使用以下命令。**'
+- en: '[PRE25]'
+  id: totrans-113
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: '`MyStreamFilter` will print out the events defined by the `BookCatalogue.xml`
+    file as an XML stream.'
+  id: totrans-114
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`MyStreamFilter` 将打印出由 `BookCatalogue.xml` 文件定义的事件作为 XML 流。'
+- en: Read-and-Write Example
+  id: totrans-115
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 读写示例
+- en: Located in the *INSTALL_DIR*`/jaxp-`*version*`/samples/stax/readnwrite/` directory,
+    `EventProducerConsumer.java` demonstrates how to use a StAX parser simultaneously
+    as both a producer and a consumer.
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 位于*INSTALL_DIR*`/jaxp-`*version*`/samples/stax/readnwrite/`目录中，`EventProducerConsumer.java`演示了如何同时将StAX解析器用作生产者和消费者。
+- en: The StAX `XMLEventWriter` API extends from the `XMLEventConsumer` interface,
+    and is referred to as an **event consumer**. By contrast, `XMLEventReader` is
+    an **event producer**. StAX supports simultaneous reading and writing, such that
+    it is possible to read from one XML stream sequentially and simultaneously write
+    to another stream.
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX `XMLEventWriter` API扩展自`XMLEventConsumer`接口，并被称为**事件消费者**。相比之下，`XMLEventReader`是一个**事件生产者**。StAX支持同时读取和写入，因此可以顺序地从一个XML流中读取并同时写入到另一个流中。
+- en: The Read-and-Write example shows how the StAX producer/consumer mechanism can
+    be used to read and write simultaneously. This example also shows how a stream
+    can be modified and how new events can be added dynamically and then written to
+    a different stream.
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 读写示例展示了如何使用StAX生产者/消费者机制同时读取和写入。该示例还展示了如何修改流以及如何动态添加新事件，然后写入到不同的流中。
+- en: Creating an Event Producer/Consumer
+  id: totrans-119
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个事件生产者/消费者
+- en: 'The first step is to instantiate an event factory and then create an instance
+    of an event producer/consumer:'
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一步是实例化一个事件工厂，然后创建一个事件生产者/消费者的实例：
+- en: '[PRE26]'
+  id: totrans-121
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: Creating an Iterator
+  id: totrans-122
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个迭代器
+- en: 'The next step is to create an iterator to parse the stream:'
+  id: totrans-123
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一步是创建一个迭代器来解析流：
+- en: '[PRE27]'
+  id: totrans-124
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: Creating a Writer
+  id: totrans-125
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个写入器
+- en: 'The final step is to create a stream writer in the form of a new `Character`
+    event:'
+  id: totrans-126
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一步是创建一个流写入器，形式为一个新的`Character`事件：
+- en: '[PRE28]'
+  id: totrans-127
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: Returning the Output
+  id: totrans-128
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 返回输出
+- en: When you run the Read-and-Write example, the `EventProducerConsumer` class is
+    compiled, and the XML stream is parsed as events and written back to `STDOUT`.
+    The output is the contents of the `BookCatalog.xml` file described in [Example
+    XML Document](#bnbfn).
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行读写示例时，`EventProducerConsumer`类被编译，并且XML流被解析为事件并写回到`STDOUT`。输出是[示例XML文档](#bnbfn)中描述的`BookCatalog.xml`文件的内容。
+- en: To Run the Read-and-Write Example
+  id: totrans-130
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行读写示例
+- en: '**To compile and run the Read—and—Write example, in a terminal window, go to
+    the *INSTALL_DIR*`/jaxp-`*version*`/samples/` directory and type the following:**'
+  id: totrans-131
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**要编译和运行读写示例，在终端窗口中，转到*INSTALL_DIR*`/jaxp-`*version*`/samples/`目录并输入以下内容：**'
+- en: '[PRE29]'
+  id: totrans-132
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: '**Run the `EventProducerConsumer` sample on the `BookCatalogue.xml` file, with
+    the following command.**'
+  id: totrans-133
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**在`BookCatalogue.xml`文件上运行`EventProducerConsumer`示例，使用以下命令。**'
+- en: '[PRE30]'
+  id: totrans-134
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: '`EventProducerConsumer` will print out the content of the `BookCatalogue.xml`
+    file.'
+  id: totrans-135
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`EventProducerConsumer`将打印出`BookCatalogue.xml`文件的内容。'
+- en: Writer Example
+  id: totrans-136
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 写入器示例
+- en: Located in the *INSTALL_DIR*`/jaxp-`*version*`/samples/stax/writer/` directory,
+    `CursorWriter.java` demonstrates how to use the StAX cursor API to write an XML
+    stream.
+  id: totrans-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 位于*INSTALL_DIR*`/jaxp-`*version*`/samples/stax/writer/`目录中，`CursorWriter.java`演示了如何使用StAX游标API编写XML流。
+- en: Creating the Output Factory
+  id: totrans-138
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建输出工厂
+- en: 'The first step is to create an instance of `XMLOutputFactory`:'
+  id: totrans-139
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一步是创建一个`XMLOutputFactory`的实例：
+- en: '[PRE31]'
+  id: totrans-140
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: Creating a Stream Writer
+  id: totrans-141
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个流写入器
+- en: 'The next step is to create an instance of `XMLStreamWriter`:'
+  id: totrans-142
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一步是创建一个`XMLStreamWriter`的实例：
+- en: '[PRE32]'
+  id: totrans-143
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: Writing the Stream
+  id: totrans-144
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 写入流
+- en: 'The final step is to write the XML stream. Note that the stream is flushed
+    and closed after the final `EndDocument` is written:'
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一步是写入XML流。请注意，在写入最终的`EndDocument`后，流会被刷新并关闭：
+- en: '[PRE33]'
+  id: totrans-146
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: Returning the Output
+  id: totrans-147
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 返回输出
+- en: 'When you run the Writer example, the `CursorWriter` class is compiled, and
+    the XML stream is parsed as events and written to a file named `dist/CursorWriter-Output`:'
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行写入器示例时，`CursorWriter`类被编译，并且XML流被解析为事件并写入到名为`dist/CursorWriter-Output`的文件中：
+- en: '[PRE34]'
+  id: totrans-149
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: In the actual `dist/CursorWriter-Output` file, this stream is written without
+    any line breaks; the breaks have been added here to make the listing easier to
+    read. In this example, as with the object stream in the Event example, the namespace
+    prefix is added to both the opening and closing HTML tags. Adding this prefix
+    is not required by the StAX specification, but it is good practice when the final
+    scope of the output stream is not definitively known.
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在实际的`dist/CursorWriter-Output`文件中，该流是连续写入的，没有任何换行符；这里添加了换行符以便更容易阅读清单。在这个示例中，与事件示例中的对象流一样，命名空间前缀被添加到HTML标签的开头和结尾。虽然StAX规范不要求添加这个前缀，但是当输出流的最终范围不明确时，这是一个良好的实践。
+- en: To Run the Writer Example
+  id: totrans-151
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行写入器示例
+- en: '**To compile and run the Writer example, in a terminal window, go to the *INSTALL_DIR*`/jaxp-`*version*`/samples/`
+    directory and type the following:**'
+  id: totrans-152
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**要编译和运行 Writer 示例，在终端窗口中，转到 *INSTALL_DIR*`/jaxp-`*version*`/samples/` 目录，并输入以下内容：**'
+- en: '[PRE35]'
+  id: totrans-153
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: '**Run the `CursorWriter` sample, specifying the name of the file the output
+    should be written to.**'
+  id: totrans-154
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**运行 `CursorWriter` 示例，指定输出应写入的文件名。**'
+- en: '[PRE36]'
+  id: totrans-155
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: '`CursorWriter` will create an output file of the appropriate name, which contains
+    the data shown in [Returning the Output](#bnbhb).'
+  id: totrans-156
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`CursorWriter` 将创建一个包含 [返回输出](#bnbhb) 中显示的数据的相应名称的输出文件。'

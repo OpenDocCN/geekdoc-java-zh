@@ -1,0 +1,36 @@
+- en: Sentence Boundaries
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 句子边界
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/sentence.html](https://docs.oracle.com/javase/tutorial/i18n/text/sentence.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/sentence.html](https://docs.oracle.com/javase/tutorial/i18n/text/sentence.html)
+- en: 'You can use a `BreakIterator` to determine sentence boundaries. You start by
+    creating a `BreakIterator` with the `getSentenceInstance` method:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用`BreakIterator`来确定句子边界。首先通过`getSentenceInstance`方法创建一个`BreakIterator`：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To show the sentence boundaries, the program uses the `markBoundaries` method,
+    which is discussed in the section [Word Boundaries](word.html). The `markBoundaries`
+    method prints carets (^) beneath a string to indicate boundary positions. Here
+    are some examples:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了显示句子边界，程序使用了`markBoundaries`方法，该方法在[单词边界](word.html)一节中有讨论。`markBoundaries`方法在字符串下方打印插入符号(^)来指示边界位置。以下是一些示例：
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

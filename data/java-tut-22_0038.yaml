@@ -1,0 +1,72 @@
+- en: The while and do-while Statements
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: while和do-while语句
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/while.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/while.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/while.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/while.html)
+- en: 'The `while` statement continually executes a block of statements while a particular
+    condition is `true`. Its syntax can be expressed as:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`while`语句在特定条件为`true`时持续执行一组语句。其语法可以表示为：'
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The `while` statement evaluates *expression*, which must return a `boolean`
+    value. If the expression evaluates to `true`, the `while` statement executes the
+    *statement*(s) in the `while` block. The `while` statement continues testing the
+    expression and executing its block until the expression evaluates to `false`.
+    Using the `while` statement to print the values from 1 through 10 can be accomplished
+    as in the following [`WhileDemo`](examples/WhileDemo.java) program:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`while`语句评估*表达式*，该表达式必须返回一个`boolean`值。如果表达式评估为`true`，`while`语句执行`while`块中的*语句*。`while`语句继续测试表达式并执行其块，直到表达式评估为`false`。使用`while`语句打印从1到10的值可以通过以下[`WhileDemo`](examples/WhileDemo.java)程序实现：'
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'You can implement an infinite loop using the `while` statement as follows:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用`while`语句实现无限循环，如下所示：
+- en: '[PRE2]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The Java programming language also provides a `do-while` statement, which can
+    be expressed as follows:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编程语言还提供了`do-while`语句，可以表示如下：
+- en: '[PRE3]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The difference between `do-while` and `while` is that `do-while` evaluates
+    its expression at the bottom of the loop instead of the top. Therefore, the statements
+    within the `do` block are always executed at least once, as shown in the following
+    [`DoWhileDemo`](examples/DoWhileDemo.java) program:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`do-while`和`while`之间的区别在于，`do-while`在循环底部评估其表达式，而不是在顶部。因此，`do`块内的语句始终至少执行一次，如下所示的[`DoWhileDemo`](examples/DoWhileDemo.java)程序中所示：'
+- en: '[PRE4]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'

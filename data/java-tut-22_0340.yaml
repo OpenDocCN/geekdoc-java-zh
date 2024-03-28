@@ -1,0 +1,130 @@
+- en: Sealing Packages within a JAR File
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 在JAR文件中封装包
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/sealman.html](https://docs.oracle.com/javase/tutorial/deployment/jar/sealman.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/sealman.html](https://docs.oracle.com/javase/tutorial/deployment/jar/sealman.html)
+- en: Packages within JAR files can be optionally sealed, which means that all classes
+    defined in that package must be archived in the same JAR file. You might want
+    to seal a package, for example, to ensure version consistency among the classes
+    in your software.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAR文件中的包可以选择性地封装，这意味着该包中定义的所有类必须存档在同一个JAR文件中。例如，您可能希望封装一个包，以确保软件中的类之间的版本一致性。
+- en: 'You seal a package in a JAR file by adding the `Sealed` header in the manifest,
+    which has the general form:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过在MANIFEST.MF中添加`Sealed`头部来封装JAR文件中的包，其一般形式为：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The value `myCompany/myPackage/` is the name of the package to seal.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 值`myCompany/myPackage/`是要封装的包的名称。
+- en: Note that the package name must end with a "/".
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，包名必须以“/”结尾。
+- en: An Example
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例
+- en: We want to seal two packages `firstPackage` and `secondPackage` in the JAR file
+    `MyJar.jar`.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们想要在JAR文件`MyJar.jar`中封装两个包`firstPackage`和`secondPackage`。
+- en: 'We first create a text file named `Manifest.txt` with the following contents:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，我们创建一个名为`Manifest.txt`的文本文件，内容如下：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Warning:** The text file must end with a new line or carriage return. The
+    last line will not be parsed properly if it does not end with a new line or carriage
+    return.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**警告：** 文本文件必须以新行或回车符结束。如果最后一行没有以新行或回车符结束，将无法正确解析最后一行。'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'We then create a JAR file named `MyJar.jar` by entering the following command:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，我们通过输入以下命令创建一个名为`MyJar.jar`的JAR文件：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'This creates the JAR file with a manifest with the following contents:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将创建一个带有以下内容的MANIFEST.MF文件的JAR文件：
+- en: '[PRE3]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Sealing JAR Files
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 封装JAR文件
+- en: If you want to guarantee that all classes in a package come from the same code
+    source, use JAR sealing. A sealed JAR specifies that all packages defined by that
+    JAR are sealed unless overridden on a per-package basis.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果要确保包中的所有类来自同一代码源，请使用JAR封装。封装的JAR指定该JAR定义的所有包都是封装的，除非在每个包的基础上进行覆盖。
+- en: To seal a JAR file, use the `Sealed` manifest header with the value true. For
+    example,
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要封装一个JAR文件，请使用值为true的`Sealed` MANIFEST.MF头部。例如，
+- en: '[PRE4]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: specifies that all packages in this archive are sealed unless explicitly overridden
+    for particular packages with the `Sealed` attribute in a manifest entry.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定此存档中的所有包都是封装的，除非在MANIFEST.MF条目中使用`Sealed`属性明确覆盖特定包。

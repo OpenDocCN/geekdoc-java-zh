@@ -1,0 +1,126 @@
+- en: Preparing to Use a ResourceBundle
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 准备使用ResourceBundle
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/resbundle/prepare.html](https://docs.oracle.com/javase/tutorial/i18n/resbundle/prepare.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/resbundle/prepare.html](https://docs.oracle.com/javase/tutorial/i18n/resbundle/prepare.html)
+- en: Identifying the Locale-Specific Objects
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 识别与地区相关的对象
+- en: 'If your application has a user interface, it contains many locale-specific
+    objects. To get started, you should go through your source code and look for objects
+    that vary with `Locale`. Your list might include objects instantiated from the
+    following classes:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你的应用程序有用户界面，它包含许多与地区相关的对象。要开始，你应该查看源代码，寻找随`Locale`变化的对象。你的列表可能包括从以下类实例化的对象：
+- en: '`String`'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`字符串`'
+- en: '`Image`'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`图像`'
+- en: '`Color`'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`颜色`'
+- en: '`AudioClip`'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`AudioClip`'
+- en: You'll notice that this list doesn't contain objects representing numbers, dates,
+    times, or currencies. The display format of these objects varies with `Locale`,
+    but the objects themselves do not. For example, you format a `Date` according
+    to `Locale`, but you use the same `Date` object regardless of `Locale`. Instead
+    of isolating these objects in a `ResourceBundle`, you format them with special
+    locale-sensitive formatting classes. You'll learn how to do this in the [Dates
+    and Times](../format/dateintro.html) section of the [Formatting](../format/index.html)
+    lesson.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你会注意到这个列表不包含代表数字、日期、时间或货币的对象。这些对象的显示格式随`Locale`变化，但对象本身不会变化。例如，你根据`Locale`格式化一个`Date`，但无论`Locale`如何，你都使用相同的`Date`对象。你不需要将这些对象隔离在`ResourceBundle`中，而是使用特殊的区域敏感格式化类对它们进行格式化。你将在[日期和时间](../format/dateintro.html)部分的[格式化](../format/index.html)课程中学习如何做到这一点。
+- en: In general, the objects stored in a `ResourceBundle` are predefined and ship
+    with the product. These objects are not modified while the program is running.
+    For instance, you should store a `Menu` label in a `ResourceBundle` because it
+    is locale-specific and will not change during the program session. However, you
+    should not isolate in a `ResourceBundle` a `String` object the end user enters
+    in a `TextField`. Data such as this `String` may vary from day to day. It is specific
+    to the program session, not to the `Locale` in which the program runs.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，存储在`ResourceBundle`中的对象是预定义的，并随产品一起提供。这些对象在程序运行时不会被修改。例如，你应该将`Menu`标签存储在`ResourceBundle`中，因为它是与地区相关的，在程序会话期间不会更改。然而，你不应该将用户在`TextField`中输入的`String`对象隔离在`ResourceBundle`中。这样的`String`数据可能每天都会有所变化。它是特定于程序会话的，而不是程序运行的`Locale`。
+- en: Usually most of the objects you need to isolate in a `ResourceBundle` are `String`
+    objects. However, not all `String` objects are locale-specific. For example, if
+    a `String` is a protocol element used by interprocess communication, it doesn't
+    need to be localized, because the end users never see it.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，你需要在`ResourceBundle`中隔离的大多数对象都是`String`对象。然而，并非所有的`String`对象都是与地区相关的。例如，如果一个`String`是进程间通信使用的协议元素，它就不需要本地化，因为最终用户永远不会看到它。
+- en: 'The decision whether to localize some `String` objects is not always clear.
+    Log files are a good example. If a log file is written by one program and read
+    by another, both programs are using the log file as a buffer for communication.
+    Suppose that end users occasionally check the contents of this log file. Shouldn''t
+    the log file be localized? On the other hand, if end users rarely check the log
+    file, the cost of translation may not be worthwhile. Your decision to localize
+    this log file depends on a number of factors: program design, ease of use, cost
+    of translation, and supportability.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是否本地化某些`String`对象的决定并不总是明确的。日志文件是一个很好的例子。如果一个日志文件由一个程序编写并由另一个程序读取，那么两个程序都将使用日志文件作为通信的缓冲区。假设最终用户偶尔检查此日志文件的内容。那么日志文件应该本地化吗？另一方面，如果最终用户很少检查日志文件，则翻译的成本可能不值得。你是否本地化此日志文件的决定取决于许多因素：程序设计、易用性、翻译成本和可支持性。
+- en: Organizing ResourceBundle Objects
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 组织ResourceBundle对象
+- en: 'You can organize your `ResourceBundle` objects according to the category of
+    objects they contain. For example, you might want to load all of the GUI labels
+    for an order entry window into a `ResourceBundle` called `OrderLabelsBundle`.
+    Using multiple `ResourceBundle` objects offers several advantages:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以根据包含的对象的类别组织你的`ResourceBundle`对象。��如，你可能希望将订单输入窗口的所有GUI标签加载到一个名为`OrderLabelsBundle`的`ResourceBundle`中。使用多个`ResourceBundle`对象有几个优点：
+- en: Your code is easier to read and to maintain.
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你的代码更易于阅读和维护。
+- en: You'll avoid huge `ResourceBundle` objects, which may take too long to load
+    into memory.
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你将避免巨大的`ResourceBundle`对象，这可能需要太长时间加载到内存中。
+- en: You can reduce memory usage by loading each `ResourceBundle` only when needed.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当需要时，您可以通过仅加载每个`ResourceBundle`来减少内存使用量。

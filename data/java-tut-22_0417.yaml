@@ -1,0 +1,550 @@
+- en: How to Decorate Components with the JLayer Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用`JLayer`类装饰组件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/jlayer.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/jlayer.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/jlayer.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/jlayer.html)
+- en: The `JLayer` class is a flexible and powerful *decorator* for Swing components.
+    It enables you to draw on components and respond to component events without modifying
+    the underlying component directly.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JLayer`类是Swing组件的灵活而强大的*装饰器*。它使您能够在组件上绘制并响应组件事件，而无需直接修改底层组件。'
+- en: This document describes examples that show the power of the `JLayer` class.
+    Full source code is available.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本文档描述了展示`JLayer`类功能的示例。提供完整的源代码。
+- en: '[Using the `JLayer` Class](#using)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用`JLayer`类](#using)'
+- en: '[Using the `LayerUI` Class](#layerui)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用`LayerUI`类](#layerui)'
+- en: '[Drawing on Components](#drawing)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在组件上绘制](#drawing)'
+- en: '[Responding to Events](#events)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[响应事件](#events)'
+- en: '[Animating a Busy Indicator](#animating)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[动画繁忙指示器](#animating)'
+- en: '[Validating Text Fields](#validation)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[验证文本字段](#validation)'
+- en: For a brief introduction to the material on this page, watch the following video.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解本页面上的材料的简要介绍，请观看以下视频。
+- en: '[http://www.youtube.com/embed/6mQYsWCkx4g](http://www.youtube.com/embed/6mQYsWCkx4g)'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[http://www.youtube.com/embed/6mQYsWCkx4g](http://www.youtube.com/embed/6mQYsWCkx4g)'
+- en: A JavaScript-enabled web browser and an Internet connection are required for
+    the video. If you cannot see the video, try [viewing it at YouTube](http://www.youtube.com/watch?v=6mQYsWCkx4g).
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 视频需要启用JavaScript的网络浏览器和互联网连接。如果无法查看视频，请尝试[在YouTube上观看](http://www.youtube.com/watch?v=6mQYsWCkx4g)。
+- en: Using the `JLayer` Class
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用`JLayer`类
+- en: The `javax.swing.JLayer` class is half of a team. The other half is the `javax.swing.plaf.LayerUI`
+    class. Suppose you want to do some custom drawing atop a `JButton` object (*decorate*
+    the `JButton` object). The component you want to decorate is the *target*.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`javax.swing.JLayer`类是一个团队的一半。另一半是`javax.swing.plaf.LayerUI`类。假设您想在`JButton`对象上方进行一些自定义绘制（*装饰*`JButton`对象）。您想要装饰的组件是*目标*。'
+- en: Create the target component.
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建目标组件。
+- en: Create an instance of a `LayerUI` subclass to do the drawing.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建`LayerUI`子类的实例来进行绘制。
+- en: Create a `JLayer` object that wraps the target and the `LayerUI` object.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建包装目标和`LayerUI`对象的`JLayer`对象。
+- en: Use the `JLayer` object in your user interface just as you would use the target
+    component.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`JLayer`对象在用户界面中就像使用目标组件一样。
+- en: 'For example, to add an instance of a `JPanel` subclass to a `JFrame` object,
+    you would do something similar to this:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，要将`JPanel`子类的实例添加到`JFrame`对象中，可以类似地执行以下操作：
+- en: '[PRE0]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To decorate the `JPanel` object, do something similar to this instead:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要装饰`JPanel`对象，可以类似地执行以下操作：
+- en: '[PRE1]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Use generics to ensure that the `JPanel` object and the `LayerUI` object are
+    for compatible types. In the previous example, both the `JLayer` object and the
+    `LayerUI` object are used with the `JPanel` class.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用泛型确保`JPanel`对象和`LayerUI`对象是兼容的类型。在上一个示例中，`JLayer`对象和`LayerUI`对象都与`JPanel`类一起使用。
+- en: The `JLayer` class is usually generified with the exact type of its view component,
+    while the `LayerUI` class is designed to be used with `JLayer` classes of its
+    generic parameter or any of its ancestors.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JLayer`类通常使用其视图组件的确切类型进行泛型化，而`LayerUI`类设计用于与其泛型参数或任何祖先的`JLayer`类一起使用。'
+- en: For example, a `LayerUI<JComponent>` object can be used with a `JLayer<AbstractButton>`
+    object.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，可以将`LayerUI<JComponent>`对象与`JLayer<AbstractButton>`对象一起使用。
+- en: A `LayerUI` object is responsible for custom decoration and event handling for
+    a `JLayer` object. When you create an instance of a `LayerUI` subclass, your custom
+    behavior can be applicable to every `JLayer` object with an appropriate generic
+    type. That is why the `JLayer` class is `final`; all custom behavior is encapsulated
+    in your `LayerUI` subclass, so there is no need to make a `JLayer` subclass.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`LayerUI`对象负责为`JLayer`对象进行自定义装饰和事件处理。当您创建`LayerUI`子类的实例时，您的自定义行为可以适用于具有适当泛型类型的每个`JLayer`对象。这就是为什么`JLayer`类是`final`的；所有自定义行为都封装在您的`LayerUI`子类中，因此不需要创建`JLayer`子类。'
+- en: Using the `LayerUI` Class
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用`LayerUI`类
+- en: 'The `LayerUI` class inherits most of its behavior from the `ComponentUI` class.
+    Here are the most commonly overridden methods:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`LayerUI`类大部分行为都继承自`ComponentUI`类。以下是最常重写的方法：'
+- en: The `paint(Graphics g, JComponent c)` method is called when the target component
+    needs to be drawn. To render the component in the same way that Swing renders
+    it, call the `super.paint(g, c)` method.
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当目标组件需要绘制时，会调用`paint(Graphics g, JComponent c)`方法。为了以与Swing相同的方式呈现组件，调用`super.paint(g,
+    c)`方法。
+- en: The `installUI(JComponent c)` method is called when an instance of your `LayerUI`
+    subclass is associated with a component. Perform any necessary initializations
+    here. The component that is passed in is the corresponding `JLayer` object. Retrieve
+    the target component with the `JLayer` class' `getView()` method.
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当你的`LayerUI`子类与一个组件关联时，会调用`installUI(JComponent c)`方法。在这里执行任何必要的初始化。传入的组件是相应的`JLayer`对象。使用`JLayer`类的`getView()`方法检索目标组件。
+- en: The `uninstallUI(JComponent c)` method is called when an instance of your `LayerUI`
+    subclass is no longer associated with the given component. Clean up here if necessary.
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当你的`LayerUI`子类不再与给定组件关联时，会调用`uninstallUI(JComponent c)`方法。如果需要，进行清理。
+- en: Drawing on Components
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在组件上绘制
+- en: To use the `JLayer` class, you need a good `LayerUI` subclass. The simplest
+    kinds of `LayerUI` classes change how components are drawn. Here is one, for example,
+    that paints a transparent color gradient on a component.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用`JLayer`类，你需要一个良好的`LayerUI`子类。最简单的`LayerUI`类改变了组件的绘制方式。例如，这里有一个在组件上绘制透明颜色渐变的示例。
+- en: '[PRE2]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The `paint()` method is where the custom drawing takes place. The call to the
+    `super.paint()` method draws the contents of the `JPanel` object. After setting
+    up a 50% transparent composite, the color gradient is drawn.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`paint()`方法是自定义绘制发生的地方。调用`super.paint()`方法会绘制`JPanel`对象的内容。在设置了50%透明度的合成后，绘制颜色渐变。'
+- en: 'After the `LayerUI` subclass is defined, using it is simple. Here is some source
+    code that uses the `WallpaperLayerUI` class:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定义了`LayerUI`子类之后，使用它很简单。这里是一些使用`WallpaperLayerUI`类的源代码：
+- en: '[PRE3]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Here is the result:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是结果：
+- en: '![A panel with a jazzy decoration](../Images/a86ea6d6c129a60c26cc87c6fe9fea8d.png)'
+  id: totrans-39
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个带有花哨装饰的面板](../Images/a86ea6d6c129a60c26cc87c6fe9fea8d.png)'
+- en: 'Source code:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 源代码：
+- en: '[`Wallpaper NetBeans Project`](../examples/zipfiles/misc-WallpaperProject.zip)'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Wallpaper NetBeans 项目`](../examples/zipfiles/misc-WallpaperProject.zip)'
+- en: '[`Wallpaper.java`](../examples/misc/WallpaperProject/src/Wallpaper.java)'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Wallpaper.java`](../examples/misc/WallpaperProject/src/Wallpaper.java)'
+- en: 'Run with [Java Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html):'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[Java Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行：
+- en: '[![Launches the example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/WallpaperProject/Wallpaper.jnlp)'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/WallpaperProject/Wallpaper.jnlp)'
+- en: 'The `LayerUI` class'' `paint()` method gives you complete control over how
+    a component is drawn. Here is another `LayerUI` subclass that shows how the entire
+    contents of a panel can be modified using Java 2D image processing:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`LayerUI`类的`paint()`方法让你完全控制组件的绘制方式。这里是另一个`LayerUI`子类，展示了如何使用Java 2D图像处理修改面板的整个内容：'
+- en: '[PRE4]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: In the `paint()` method, the panel is rendered into an off-screen image. The
+    off-screen image is processed with a convolution operator, then drawn to the screen.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`paint()`方法中，面板被渲染到一个离屏图像中。离屏图像使用卷积运算符进行处理，然后绘制到屏幕上。
+- en: 'The entire user interface is still live, just blurry:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 整个用户界面仍然活跃，只是模糊了：
+- en: '![A graphically inverted user interface](../Images/0376c9c96439c5b233956f5bd43fe1ae.png)'
+  id: totrans-49
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个图形反转的用户界面](../Images/0376c9c96439c5b233956f5bd43fe1ae.png)'
+- en: 'Source code:'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 源代码：
+- en: '[`Myopia NetBeans Project`](../examples/zipfiles/misc-MyopiaProject.zip)'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Myopia NetBeans 项目`](../examples/zipfiles/misc-MyopiaProject.zip)'
+- en: '[`Myopia.java`](../examples/misc/MyopiaProject/src/Myopia.java)'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Myopia.java`](../examples/misc/MyopiaProject/src/Myopia.java)'
+- en: 'Run with [Java Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html):'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[Java Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行：
+- en: '[![Launches the example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/MyopiaProject/Myopia.jnlp)'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/MyopiaProject/Myopia.jnlp)'
+- en: Responding to Events
+  id: totrans-55
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 响应事件
+- en: Your `LayerUI` subclass can also receive all of the events of its corresponding
+    component. However, the `JLayer` instance must register its interest in specific
+    types of events. This happens with the `JLayer` class' `setLayerEventMask()` method.
+    Typically, however, this call is made from initialization performed in the `LayerUI`
+    class' `installUI()` method.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你的`LayerUI`子类也可以接收其对应组件的所有事件。然而，`JLayer`实例必须注册对特定类型事件的兴趣。这是通过`JLayer`类的`setLayerEventMask()`方法实现的。通常情况下，这个调用是在`LayerUI`类的`installUI()`方法中进行初始化时进行的。
+- en: For example, the following excerpt shows a portion of a `LayerUI` subclass that
+    registers to receive mouse and mouse motion events.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，以下摘录显示了一个`LayerUI`子类的部分内容，该子类注册接收鼠标和鼠标移动事件。
+- en: '[PRE5]'
+  id: totrans-58
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'All events going to your `JLayer` subclass get routed to an event handler method
+    whose name matches the event type. For example, you can respond to mouse and mouse
+    motion events by overriding corresponding methods:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有发送到你的`JLayer`子类的事件都会路由到一个事件处理方法，其名称与事件类型匹配。例如，你可以通过重写相应的方法来响应鼠标和鼠标移动事件：
+- en: '[PRE6]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The following is a `LayerUI` subclass that draws a translucent circle wherever
+    the mouse moves inside a panel.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是一个`LayerUI`子类，它在面板内鼠标移动时绘制一个半透明的圆圈。
+- en: '[PRE7]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The `mActive` variable indicates whether or not the mouse is inside the coordinates
+    of the panel. In the `installUI()` method, the `setLayerEventMask()` method is
+    called to indicate the `LayerUI` subclass' interest in receiving mouse and mouse
+    motion events.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`mActive`变量指示鼠标是否在面板坐标内。在`installUI()`方法中，调用`setLayerEventMask()`方法来指示`LayerUI`子类对接收鼠标和鼠标移动事件的兴趣。'
+- en: In the `processMouseEvent()` method, the `mActive` flag is set depending on
+    the position of the mouse. In the `processMouseMotionEvent()` method, the coordinates
+    of the mouse movement are stored in the `mX` and `mY` member variables so that
+    they can be used later in the `paint()` method.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`processMouseEvent()`方法中，根据鼠标位置设置`mActive`标志。在`processMouseMotionEvent()`方法中，鼠标移动的坐标存储在`mX`和`mY`成员变量中，以便稍后在`paint()`方法中使用。
+- en: 'The `paint()` method shows the default appearance of the panel, then overlays
+    a radial gradient for a spotlight effect:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`paint()`方法显示了面板的默认外观，然后叠加了一个径向渐变以实现聚光灯效果：'
+- en: '![A spotlight that follows the mouse](../Images/40ee478709c34ae0067783124c39f243.png)'
+  id: totrans-66
+  prefs: []
+  type: TYPE_IMG
+  zh: '![跟随鼠标移动的聚光灯](../Images/40ee478709c34ae0067783124c39f243.png)'
+- en: 'Source code:'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 源代码：
+- en: '[`Diva NetBeans Project`](../examples/zipfiles/misc-DivaProject.zip)'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Diva NetBeans Project`](../examples/zipfiles/misc-DivaProject.zip)'
+- en: '[`Diva.java`](../examples/misc/DivaProject/src/Diva.java)'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Diva.java`](../examples/misc/DivaProject/src/Diva.java)'
+- en: 'Run with [Java Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html):'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[Java Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行：
+- en: '[![Launches the example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/DivaProject/Diva.jnlp)'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/DivaProject/Diva.jnlp)'
+- en: Animating a Busy Indicator
+  id: totrans-72
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 动画繁忙指示器
+- en: This example is an animated busy indicator. It demonstrates animation in a `LayerUI`
+    subclass and features a fade-in and fade-out. It is more complicated that the
+    previous examples, but it is based on the same principle of defining a `paint()`
+    method for custom drawing.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例是一个动画繁忙指示器。它展示了在`LayerUI`子类中的动画，并具有淡入和淡出效果。它比之前的示例更复杂，但基于相同的原则定义了一个用于自定义绘制的`paint()`方法。
+- en: Click the **Place Order** button to see the busy indicator for 4 seconds. Notice
+    how the panel is grayed out and the indicator spins. The elements of the indicator
+    have varying levels of transparency.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击**下订单**按钮，查看4秒钟的繁忙指示器。注意面板变灰并且指示器旋转。指示器的元素具有不同程度的透明度。
+- en: The `LayerUI` subclass, the `WaitLayerUI` class, shows how to fire property
+    change events to update the component. The `WaitLayerUI` class uses a `Timer`
+    object to update its state 24 times a second. This happens in the timer's target
+    method, the `actionPerformed()` method.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`LayerUI`子类`WaitLayerUI`类展示了如何触发属性更改事件以更新组件。`WaitLayerUI`类使用`Timer`对象以每秒24次的速度更新其状态。这是在计时器的目标方法`actionPerformed()`中完成的。'
+- en: 'The `actionPerformed()` method uses the `firePropertyChange()` method to indicate
+    that the internal state was updated. This triggers a call to the `applyPropertyChange()`
+    method, which repaints the `JLayer` object:'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`actionPerformed()`方法使用`firePropertyChange()`方法指示内部状态已更新。这会触发对`applyPropertyChange()`方法的调用，该方法重新绘制`JLayer`对象：'
+- en: '![A smooth busy indicator](../Images/41562caf8ff2ebcbc298762d1cb8042a.png)'
+  id: totrans-77
+  prefs: []
+  type: TYPE_IMG
+  zh: '![平滑的繁忙指示器](../Images/41562caf8ff2ebcbc298762d1cb8042a.png)'
+- en: 'Source code:'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 源代码：
+- en: '[`TapTapTap NetBeans Project`](../examples/zipfiles/misc-TapTapTapProject.zip)'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`TapTapTap NetBeans 项目`](../examples/zipfiles/misc-TapTapTapProject.zip)'
+- en: '[`TapTapTap.java`](../examples/misc/TapTapTapProject/src/TapTapTap.java)'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`TapTapTap.java`](../examples/misc/TapTapTapProject/src/TapTapTap.java)'
+- en: 'Run with [Java Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html):'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 [Java Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    运行：
+- en: '[![Launches the example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TapTapTapProject/TapTapTap.jnlp)'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TapTapTapProject/TapTapTap.jnlp)'
+- en: Validating Text Fields
+  id: totrans-83
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 验证文本字段
+- en: The final example in this document shows how the `JLayer` class can be used
+    to decorate text fields to show if they contain valid data. While the other examples
+    use the `JLayer` class to wrap panels or general components, this example shows
+    how to wrap a `JFormattedTextField` component specifically. It also demonstrates
+    that a single `LayerUI` subclass implementation can be used for multiple `JLayer`
+    instances.
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本文档中的最后一个示例展示了如何使用 `JLayer` 类装饰文本字段，以显示它们是否包含有效数据。虽然其他示例使用 `JLayer` 类来包装面板或一般组件，但此示例显示了如何专门包装
+    `JFormattedTextField` 组件。它还演示了单个 `LayerUI` 子类实现可以用于多个 `JLayer` 实例。
+- en: 'The `JLayer` class is used to provide a visual indication for fields that have
+    invalid data. When the `ValidationLayerUI` class paints the text field, it draws
+    a red X if the field contents cannot be parsed. Here is an example:'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JLayer` 类用于为具有无效数据的字段提供视觉指示。当 `ValidationLayerUI` 类绘制文本字段时，如果字段内容无法解析，它会绘制一个红色的
+    X。以下是一个示例：'
+- en: '![Immediate feedback for bad input](../Images/84ad660dd4f644681af60e1133b19b28.png)'
+  id: totrans-86
+  prefs: []
+  type: TYPE_IMG
+  zh: '![错误输入的即时反馈](../Images/84ad660dd4f644681af60e1133b19b28.png)'
+- en: 'Source code:'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 源代码：
+- en: '[`FieldValidator NetBeans Project`](../examples/zipfiles/misc-FieldValidatorProject.zip)'
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`FieldValidator NetBeans 项目`](../examples/zipfiles/misc-FieldValidatorProject.zip)'
+- en: '[`FieldValidator.java`](../examples/misc/FieldValidatorProject/src/FieldValidator.java)'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`FieldValidator.java`](../examples/misc/FieldValidatorProject/src/FieldValidator.java)'
+- en: 'Run with [Java Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html):'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 [Java Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    运行：
+- en: '[![Launches the example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/FieldValidatorProject/FieldValidator.jnlp)'
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/FieldValidatorProject/FieldValidator.jnlp)'

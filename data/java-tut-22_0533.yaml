@@ -1,0 +1,257 @@
+- en: 'Lesson: Aggregate Operations'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：聚合操作
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/streams/index.html](https://docs.oracle.com/javase/tutorial/collections/streams/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/streams/index.html](https://docs.oracle.com/javase/tutorial/collections/streams/index.html)
+- en: '**Note**: To better understand the concepts in this section, review the sections
+    [Lambda Expressions](../../java/javaOO/lambdaexpressions.html) and [Method References](../../java/javaOO/methodreferences.html).'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：要更好地理解本节中的概念，请查看[Lambda表达式](../../java/javaOO/lambdaexpressions.html)和[方法引用](../../java/javaOO/methodreferences.html)部分。'
+- en: For what do you use collections? You don't simply store objects in a collection
+    and leave them there. In most cases, you use collections to retrieve items stored
+    in them.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您使用集合做什么？您不仅仅将对象存储在集合中并将其留在那里。在大多数情况下，您使用集合来检索其中存储的项目。
+- en: Consider again the scenario described in the section [Lambda Expressions](../../java/javaOO/lambdaexpressions.html).
+    Suppose that you are creating a social networking application. You want to create
+    a feature that enables an administrator to perform any kind of action, such as
+    sending a message, on members of the social networking application that satisfy
+    certain criteria.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次考虑[Lambda表达式](../../java/javaOO/lambdaexpressions.html)部分中描述的场景。假设您正在创建一个社交网络应用。您希望创建一个功能，使管理员能够对满足某些条件的社交网络应用成员执行任何操作，例如发送消息。
+- en: 'As before, suppose that members of this social networking application are represented
+    by the following [`Person`](examples/Person.java) class:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与之前一样，假设这个社交网络应用的成员由以下[`Person`](examples/Person.java)类表示：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following example prints the name of all members contained in the collection
+    `roster` with a for-each loop:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用for-each循环打印集合`roster`中包含的所有成员的名称：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The following example prints all members contained in the collection `roster`
+    but with the aggregate operation `forEach`:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用聚合操作`forEach`打印出集合`roster`中包含的所有成员：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Although, in this example, the version that uses aggregate operations is longer
+    than the one that uses a for-each loop, you will see that versions that use bulk-data
+    operations will be more concise for more complex tasks.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管在此示例中，使用聚合操作的版本比使用for-each循环的版本更长，但您将看到，对于更复杂的任务，使用批量数据操作的版本将更简洁。
+- en: 'The following topics are covered:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面涵盖了以下主题：
+- en: '[Pipelines and Streams](#pipelines)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[管道和流](#pipelines)'
+- en: '[Differences Between Aggregate Operations and Iterators](#differences)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[聚合操作和迭代器之间的区别](#differences)'
+- en: Find the code excerpts described in this section in the example [`BulkDataOperationsExamples`](examples/BulkDataOperationsExamples.java).
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在示例[`BulkDataOperationsExamples`](examples/BulkDataOperationsExamples.java)中找到本节描述的代码片段。
+- en: Pipelines and Streams
+  id: totrans-16
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 管道和流
+- en: 'A *pipeline* is a sequence of aggregate operations. The following example prints
+    the male members contained in the collection `roster` with a pipeline that consists
+    of the aggregate operations `filter` and `forEach`:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*管道*是一系列聚合操作。以下示例使用由聚合操作`filter`和`forEach`组成的管道打印集合`roster`中包含的男性成员：'
+- en: '[PRE3]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Compare this example to the following that prints the male members contained
+    in the collection `roster` with a for-each loop:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将此示例与使用for-each循环打印集合`roster`中的男性成员的示例进行比较：
+- en: '[PRE4]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'A pipeline contains the following components:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个管道包含以下组件：
+- en: 'A source: This could be a collection, an array, a generator function, or an
+    I/O channel. In this example, the source is the collection `roster`.'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 源：这可以是集合、数组、生成器函数或I/O通道。在此示例中，源是集合`roster`。
+- en: Zero or more *intermediate operations*. An intermediate operation, such as `filter`,
+    produces a new stream.
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 零个或多个*中间操作*。中间操作，如`filter`，会生成一个新流。
+- en: A *stream* is a sequence of elements. Unlike a collection, it is not a data
+    structure that stores elements. Instead, a stream carries values from a source
+    through a pipeline. This example creates a stream from the collection `roster`
+    by invoking the method `stream`.
+  id: totrans-24
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '*流*是元素的序列。与集合不同，它不是存储元素的数据结构。相反，流通过管道从源头传递值。此示例通过调用`stream`方法从集合`roster`创建流。'
+- en: The `filter` operation returns a new stream that contains elements that match
+    its predicate (this operation's parameter). In this example, the predicate is
+    the lambda expression `e -> e.getGender() == Person.Sex.MALE`. It returns the
+    boolean value `true` if the `gender` field of object `e` has the value `Person.Sex.MALE`.
+    Consequently, the `filter` operation in this example returns a stream that contains
+    all male members in the collection `roster`.
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`filter`操作返回一个包含与其谓词（该操作的参数）匹配的元素的新流。在这个示例中，谓词是lambda表达式`e -> e.getGender()
+    == Person.Sex.MALE`。如果对象`e`的`gender`字段的值为`Person.Sex.MALE`，则返回布尔值`true`。因此，在这个示例中，`filter`操作返回一个包含集合`roster`中所有男性成员的流。'
+- en: A *terminal operation*. A terminal operation, such as `forEach`, produces a
+    non-stream result, such as a primitive value (like a double value), a collection,
+    or in the case of `forEach`, no value at all. In this example, the parameter of
+    the `forEach` operation is the lambda expression `e -> System.out.println(e.getName())`,
+    which invokes the method `getName` on the object `e`. (The Java runtime and compiler
+    infer that the type of the object `e` is `Person`.)
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*终端操作*。终端操作，比如`forEach`，产生一个非流结果，比如一个原始值（比如一个双精度值）、一个集合，或者在`forEach`的情况下，根本没有值。在这个示例中，`forEach`操作的参数是lambda表达式`e
+    -> System.out.println(e.getName())`，它在对象`e`上调用`getName`方法。（Java运行时和编译器推断出对象`e`的类型是`Person`。）'
+- en: 'The following example calculates the average age of all male members contained
+    in the collection `roster` with a pipeline that consists of the aggregate operations
+    `filter`, `mapToInt`, and `average`:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例计算了集合`roster`中所有男性成员的平均年龄，使用了由`filter`、`mapToInt`和`average`聚合操作组成的流水线：
+- en: '[PRE5]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The `mapToInt` operation returns a new stream of type `IntStream` (which is
+    a stream that contains only integer values). The operation applies the function
+    specified in its parameter to each element in a particular stream. In this example,
+    the function is `Person::getAge`, which is a method reference that returns the
+    age of the member. (Alternatively, you could use the lambda expression `e -> e.getAge()`.)
+    Consequently, the `mapToInt` operation in this example returns a stream that contains
+    the ages of all male members in the collection `roster`.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`mapToInt`操作返回一个新的`IntStream`类型的流（这是一个只包含整数值的流）。该操作将其参数中指定的函数应用于特定流中的每个元素。在这个示例中，函数是`Person::getAge`，这是一个返回成员年龄的方法引用。（或者，你可以使用lambda表达式`e
+    -> e.getAge()`。）因此，在这个示例中，`mapToInt`操作返回一个包含集合`roster`中所有男性成员年龄的流。'
+- en: The `average` operation calculates the average value of the elements contained
+    in a stream of type `IntStream`. It returns an object of type `OptionalDouble`.
+    If the stream contains no elements, then the `average` operation returns an empty
+    instance of `OptionalDouble`, and invoking the method `getAsDouble` throws a `NoSuchElementException`.
+    The JDK contains many terminal operations such as `average` that return one value
+    by combining the contents of a stream. These operations are called *reduction
+    operations*; see the section [Reduction](../../collections/streams/reduction.html)
+    for more information.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`average`操作计算`IntStream`类型流中包含的元素的平均值。它返回一个`OptionalDouble`类型的对象。如果流不包含任何元素，则`average`操作返回一个空的`OptionalDouble`实例，并调用`getAsDouble`方法会抛出`NoSuchElementException`。JDK包含许多像`average`这样返回通过组合流内容得到的一个值的终端操作。这些操作被称为*归约操作*；更多信息请参见[归约](../../collections/streams/reduction.html)部分。'
+- en: Differences Between Aggregate Operations and Iterators
+  id: totrans-31
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 聚合操作和迭代器之间的区别
+- en: 'Aggregate operations, like `forEach`, appear to be like iterators. However,
+    they have several fundamental differences:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 聚合操作，如`forEach`，看起来像迭代器。然而，它们有几个根本的区别：
+- en: '**They use internal iteration**: Aggregate operations do not contain a method
+    like `next` to instruct them to process the next element of the collection. With
+    *internal delegation*, your application determines *what* collection it iterates,
+    but the JDK determines *how* to iterate the collection. With *external iteration*,
+    your application determines both what collection it iterates and how it iterates
+    it. However, external iteration can only iterate over the elements of a collection
+    sequentially. Internal iteration does not have this limitation. It can more easily
+    take advantage of parallel computing, which involves dividing a problem into subproblems,
+    solving those problems simultaneously, and then combining the results of the solutions
+    to the subproblems. See the section [Parallelism](../../collections/streams/parallelism.html)
+    for more information.'
+  id: totrans-33
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**它们使用内部迭代**：聚合操作不包含像`next`这样的方法来指示它们处理集合的下一个元素。通过*内部委托*，您的应用程序确定*要*迭代的集合，但JDK确定*如何*迭代集合。通过*外部迭代*，您的应用程序确定要迭代的集合以及如何迭代它。然而，外部迭代只能按顺序迭代集合的元素。内部迭代没有这种限制。它可以更容易地利用并行计算，这涉及将问题分解为子问题，同时解决这些问题，然后将子问题的解决方案合并为结果。有关更多信息，请参见[并行性](../../collections/streams/parallelism.html)部分。'
+- en: '**They process elements from a stream**: Aggregate operations process elements
+    from a stream, not directly from a collection. Consequently, they are also called
+    *stream operations*.'
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**它们从流中处理元素**：聚合操作从流中处理元素，而不是直接从集合中处理。因此，它们也被称为*流操作*。'
+- en: '**They support behavior as parameters**: You can specify [lambda expressions](../../java/javaOO/lambdaexpressions.html)
+    as parameters for most aggregate operations. This enables you to customize the
+    behavior of a particular aggregate operation.'
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**它们支持行为作为参数**：您可以为大多数聚合操作指定[lambda表达式](../../java/javaOO/lambdaexpressions.html)作为参数。这使您可以自定义特定聚合操作的行为。'

@@ -1,0 +1,92 @@
+- en: 'Lesson: Making Extensions Secure'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：使扩展安全
+- en: 原文：[https://docs.oracle.com/javase/tutorial/ext/security/index.html](https://docs.oracle.com/javase/tutorial/ext/security/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/ext/security/index.html](https://docs.oracle.com/javase/tutorial/ext/security/index.html)
+- en: Now that you have seen how to use extensions, you may be wondering what security
+    privileges extensions have. If you are developing an extension that does file
+    I/O, for example, you will need to know how your extension is granted the appropriate
+    permissions for reading and writing files. Conversely, if you are thinking about
+    using an extension developed by someone else, you will want to understand clearly
+    what security privileges the extension has and how to change those privileges
+    should you desire to do so.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您已经了解如何使用扩展，您可能想知道扩展具有哪些安全权限。例如，如果您正在开发一个涉及文件 I/O 的扩展，您需要了解如何为读写文件授予适当的权限。相反，如果您考虑使用他人开发的扩展，您将希望清楚地了解扩展具有哪些安全权限，以及如何在需要时更改这些权限。
+- en: This lesson shows you how the Java™ platform's security architecture treats
+    extensions. You will see how to tell what privileges are granted to extension
+    software, and you will learn how to modify extension privileges by following some
+    simple steps. In addition, you will learn how to seal packages within your extensions
+    to restrict access to specified parts of your code.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程向您展示了 Java™ 平台的安全架构如何处理扩展。您将了解到如何查看授予扩展软件的权限，并学会通过一些简单的步骤修改扩展权限。此外，您还将学习如何封装扩展中的包，以限制对代码指定部分的访问。
+- en: 'This lesson has two sections:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程分为两个部分：
+- en: '[Setting Privileges for Extensions](policy.html)'
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[为扩展设置权限](policy.html)'
+- en: This section contains some examples that show you what conditions must be met
+    for extensions to be granted permissions to perform security-sensitive operations.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节包含一些示例，展示了扩展必须满足哪些条件才能被授予权限执行安全敏感操作。
+- en: '[Sealing Packages in Extensions](sealing.html)'
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[封装扩展中的包](sealing.html)'
+- en: You can optionally seal packages in extension JAR files as an additional security
+    measure. If a package is sealed, it means that all classes defined in that package
+    must originate from a single JAR file. This section shows you how to modify an
+    extension's manifest to seal extension packages.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以选择在扩展 JAR 文件中封装包作为额外的安全措施。如果一个包被封装，这意味着该包中定义的所有类必须来自一个单独的 JAR 文件。本节将向您展示如何修改扩展清单以封装扩展包。
+- en: Additional Documentation
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 附加文档
+- en: You will find links and references to relevant security documentation at appropriate
+    places throughout this lesson.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您将在本课程的适当位置找到与安全相关的链接和参考文档。
+- en: 'For complete information on security, you can refer to the following:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要获取有关安全的完整信息，您可以参考以下内容：
+- en: '[Security Features in Java SE](../../security/index.html) trail (in this tutorial)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Java SE 中的安全功能](../../security/index.html)教程（在本教程中）'
+- en: '[Security guide](https://docs.oracle.com/javase/8/docs/technotes/guides/security/)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[安全指南](https://docs.oracle.com/javase/8/docs/technotes/guides/security/)'

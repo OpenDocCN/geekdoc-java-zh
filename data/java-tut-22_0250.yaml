@@ -1,0 +1,408 @@
+- en: Methods of the Pattern Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 模式类的方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/pattern.html](https://docs.oracle.com/javase/tutorial/essential/regex/pattern.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/pattern.html](https://docs.oracle.com/javase/tutorial/essential/regex/pattern.html)
+- en: Until now, we've only used the test harness to create `Pattern` objects in their
+    most basic form. This section explores advanced techniques such as creating patterns
+    with flags and using embedded flag expressions. It also explores some additional
+    useful methods that we haven't yet discussed.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们只使用测试工具来创建`Pattern`对象的最基本形式。本节探讨了一些高级技术，如使用标志创建模式和使用嵌入式标志表达式。它还探讨了一些我们尚未讨论的其他有用方法。
+- en: Creating a Pattern with Flags
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用标志创建模式
+- en: 'The `Pattern` class defines an alternate `compile` method that accepts a set
+    of flags affecting the way the pattern is matched. The flags parameter is a bit
+    mask that may include any of the following public static fields:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Pattern`类定义了一个替代的`compile`方法，接受一组影响模式匹配方式的标志。标志参数是一个位掩码，可以包括以下任何公共静态字段：'
+- en: '[`Pattern.CANON_EQ`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#CANON_EQ)
+    Enables canonical equivalence. When this flag is specified, two characters will
+    be considered to match if, and only if, their full canonical decompositions match.
+    The expression `"a\u030A"`, for example, will match the string `"\u00E5"` when
+    this flag is specified. By default, matching does not take canonical equivalence
+    into account. Specifying this flag may impose a performance penalty.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Pattern.CANON_EQ`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#CANON_EQ)
+    启用规范等价性。当指定此标志时，只有当两个字符的完整规范分解匹配时，它们才被视为匹配。例如，表达式`"a\u030A"`将在指定此标志时匹配字符串`"\u00E5"`。默认情况下，匹配不考虑规范等价性。指定此标志可能会带来性能损失。'
+- en: '[`Pattern.CASE_INSENSITIVE`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#CASE_INSENSITIVE)
+    Enables case-insensitive matching. By default, case-insensitive matching assumes
+    that only characters in the US-ASCII charset are being matched. Unicode-aware
+    case-insensitive matching can be enabled by specifying the UNICODE_CASE flag in
+    conjunction with this flag. Case-insensitive matching can also be enabled via
+    the embedded flag expression `(?i)`. Specifying this flag may impose a slight
+    performance penalty.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Pattern.CASE_INSENSITIVE`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#CASE_INSENSITIVE)
+    启用不区分大小写的匹配。默认情况下，不区分大小写的匹配假定只有在US-ASCII字符集中的字符被匹配。通过与此标志一起指定UNICODE_CASE标志，可以启用Unicode感知的不区分大小写匹配。不区分大小写的匹配也可以通过嵌入式标志表达式`(?i)`启用。指定此标志可能会带来轻微的性能损失。'
+- en: '[`Pattern.COMMENTS`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#COMMENTS)
+    Permits whitespace and comments in the pattern. In this mode, whitespace is ignored,
+    and embedded comments starting with `#` are ignored until the end of a line. Comments
+    mode can also be enabled via the embedded flag expression `(?x)`.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Pattern.COMMENTS`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#COMMENTS)
+    允许在模式中使用空格和注释。在此模式下，空格被忽略，并且以`#`开头的嵌入式注释被忽略直到行尾。注释模式也可以通过嵌入式标志表达式`(?x)`启用。'
+- en: '[`Pattern.DOTALL`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#DOTALL)
+    Enables dotall mode. In dotall mode, the expression `.` matches any character,
+    including a line terminator. By default this expression does not match line terminators.
+    Dotall mode can also be enabled via the embedded flag expression `(?s)`. (The
+    s is a mnemonic for "single-line" mode, which is what this is called in Perl.)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Pattern.DOTALL`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#DOTALL)
+    启用dotall模式。在dotall模式下，表达式`.`匹配任何字符，包括行终止符。默认情况下，此表达式不匹配行终止符。Dotall模式也可以通过嵌入式标志表达式`(?s)`启用。（s是"single-line"模式的缩写，在Perl中称为这种模式。）'
+- en: '[`Pattern.LITERAL`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#LITERAL)
+    Enables literal parsing of the pattern. When this flag is specified then the input
+    string that specifies the pattern is treated as a sequence of literal characters.
+    Metacharacters or escape sequences in the input sequence will be given no special
+    meaning. The flags `CASE_INSENSITIVE` and `UNICODE_CASE` retain their impact on
+    matching when used in conjunction with this flag. The other flags become superfluous.
+    There is no embedded flag character for enabling literal parsing.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Pattern.LITERAL`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#LITERAL)
+    启用模式的字面解析。当指定此标志时，指定模式的输入字符串被视为一系列字面字符。输入序列中的元字符或转义序列将不被赋予特殊含义。当与此标志一起使用时，`CASE_INSENSITIVE`
+    和 `UNICODE_CASE` 标志在匹配时保留其影响。其他标志变得多余。没有嵌入式标志字符用于启用字面解析。'
+- en: '[`Pattern.MULTILINE`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#MULTILINE)
+    Enables multiline mode. In multiline mode the expressions `^` and `$` match just
+    after or just before, respectively, a line terminator or the end of the input
+    sequence. By default these expressions only match at the beginning and the end
+    of the entire input sequence. Multiline mode can also be enabled via the embedded
+    flag expression `(?m)`.'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Pattern.MULTILINE`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#MULTILINE)
+    启用多行模式。在多行模式下，表达式`^`和`$`分别在行终止符之后或之前匹配，或在输入序列的末尾。默认情况下，这些表达式仅在整个输入序列的开头和结尾匹配。多行模式也可以通过嵌入式标志表达式`(?m)`启用。'
+- en: '[`Pattern.UNICODE_CASE`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#UNICODE_CASE)
+    Enables Unicode-aware case folding. When this flag is specified then case-insensitive
+    matching, when enabled by the `CASE_INSENSITIVE` flag, is done in a manner consistent
+    with the Unicode Standard. By default, case-insensitive matching assumes that
+    only characters in the US-ASCII charset are being matched. Unicode-aware case
+    folding can also be enabled via the embedded flag expression `(?u)`. Specifying
+    this flag may impose a performance penalty.'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Pattern.UNICODE_CASE`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#UNICODE_CASE)
+    启用 Unicode 感知大小写折叠。当指定此标志时，大小写不敏感匹配（由`CASE_INSENSITIVE`标志启用）将按照 Unicode 标准一致的方式进行。默认情况下，大小写不敏感匹配假定只匹配
+    US-ASCII 字符集中的字符。Unicode 感知大小写折叠也可以通过嵌入式标志表达式`(?u)`启用。指定此标志可能会带来性能损失。'
+- en: '[`Pattern.UNIX_LINES`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#UNIX_LINES)
+    Enables UNIX lines mode. In this mode, only the `''\n''` line terminator is recognized
+    in the behavior of `.`, `^`, and `$`. UNIX lines mode can also be enabled via
+    the embedded flag expression `(?d)`.'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Pattern.UNIX_LINES`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#UNIX_LINES)
+    启用 UNIX 行模式。在此模式下，只有`''\n''`行终止符在`.`, `^`, 和`$`的行为中被识别。UNIX 行模式也可以通过嵌入式标志表达式`(?d)`启用。'
+- en: In the following steps we will modify the test harness, [`RegexTestHarness.java`](examples/RegexTestHarness.java)
+    to create a pattern with case-insensitive matching.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在以下步骤中，我们将修改测试工具[`RegexTestHarness.java`](examples/RegexTestHarness.java)以创建一个具有大小写不敏感匹配的模式。
+- en: 'First, modify the code to invoke the alternate version of `compile`:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，修改代码以调用`compile`的另一个版本：
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Then compile and run the test harness to get the following results:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后编译并运行测试工具以获得以下结果：
+- en: '[PRE1]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'As you can see, the string literal "dog" matches both occurences, regardless
+    of case. To compile a pattern with multiple flags, separate the flags to be included
+    using the bitwise OR operator "`|`". For clarity, the following code samples hardcode
+    the regular expression instead of reading it from the `Console`:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你所看到的，字符串字面量"dog"匹配两个实例，不考虑大小写。要编译带有多个标志的模式，请使用按位 OR 运算符"`|`"分隔要包含的标志。为了清晰起见，以下代码示例硬编码正则表达式而不是从`Console`中读取：
+- en: '[PRE2]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'You could also specify an `int` variable instead:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你也可以指定一个`int`变量：
+- en: '[PRE3]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Embedded Flag Expressions
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 嵌入式标志表达式
+- en: It's also possible to enable various flags using *embedded flag expressions*.
+    Embedded flag expressions are an alternative to the two-argument version of `compile`,
+    and are specified in the regular expression itself. The following example uses
+    the original test harness, [`RegexTestHarness.java`](examples/RegexTestHarness.java)
+    with the embedded flag expression `(?i)` to enable case-insensitive matching.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也可以使用*嵌入式标志表达式*来启用各种标志。嵌入式标志表达式是`compile`的两参数版本的替代方案，并在正则表达式本身中指定。以下示例使用原始测试工具[`RegexTestHarness.java`](examples/RegexTestHarness.java)与嵌入式标志表达式`(?i)`来启用大小写不敏感匹配。
+- en: '[PRE4]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Once again, all matches succeed regardless of case.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次，不管大小写，所有匹配都成功。
+- en: 'The embedded flag expressions that correspond to `Pattern`''s publicly accessible
+    fields are presented in the following table:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对应于`Pattern`的公共可访问字段的嵌入式标志表达式如下表所示：
+- en: '| Constant | Equivalent Embedded Flag Expression |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| 常量 | 等效的嵌入式标志表达式 |'
+- en: '| `Pattern.CANON_EQ` | None |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Pattern.CANON_EQ` | 无 |'
+- en: '| `Pattern.CASE_INSENSITIVE` | `(?i)` |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Pattern.CASE_INSENSITIVE` | `(?i)` |'
+- en: '| `Pattern.COMMENTS` | `(?x)` |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Pattern.COMMENTS` | `(?x)` |'
+- en: '| `Pattern.MULTILINE` | `(?m)` |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Pattern.MULTILINE` | `(?m)` |'
+- en: '| `Pattern.DOTALL` | `(?s)` |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Pattern.DOTALL` | `(?s)` |'
+- en: '| `Pattern.LITERAL` | None |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Pattern.LITERAL` | 无 |'
+- en: '| `Pattern.UNICODE_CASE` | `(?u)` |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Pattern.UNICODE_CASE` | `(?u)` |'
+- en: '| `Pattern.UNIX_LINES` | `(?d)` |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Pattern.UNIX_LINES` | `(?d)` |'
+- en: Using the `matches(String,CharSequence)` Method
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用`matches(String,CharSequence)`方法
+- en: The `Pattern` class defines a convenient [`matches`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#matches-java.lang.String-java.lang.CharSequence-)
+    method that allows you to quickly check if a pattern is present in a given input
+    string. As with all public static methods, you should invoke `matches` by its
+    class name, such as `Pattern.matches("\\d","1");`. In this example, the method
+    returns `true`, because the digit "1" matches the regular expression `\d`.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Pattern`类定义了一个方便的[`matches`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#matches-java.lang.String-java.lang.CharSequence-)方法，允许您快速检查给定输入字符串中是否存在模式。与所有公共静态方法一样，您应该通过其类名调用`matches`，例如`Pattern.matches("\\d","1");`。在这个例子中，该方法返回`true`，因为数字"1"与正则表达式`\d`匹配。'
+- en: Using the `split(String)` Method
+  id: totrans-38
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用`split(String)`方法
+- en: 'The [`split`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#split-java.lang.CharSequence-)
+    method is a great tool for gathering the text that lies on either side of the
+    pattern that''s been matched. As shown below in [`SplitDemo.java`](examples/SplitDemo.java),
+    the `split` method could extract the words "`one two three four five`" from the
+    string "`one:two:three:four:five`":'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`split`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#split-java.lang.CharSequence-)方法是一个很好的工具，用于收集与已匹配模式两侧的文本。如下所示，在[`SplitDemo.java`](examples/SplitDemo.java)中，`split`方法可以从字符串"`one:two:three:four:five`"中提取单词"`one
+    two three four five`"：'
+- en: '[PRE5]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '[PRE6]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'For simplicity, we''ve matched a string literal, the colon (`:`) instead of
+    a complex regular expression. Since we''re still using `Pattern` and `Matcher`
+    objects, you can use split to get the text that falls on either side of any regular
+    expression. Here''s the same example, [`SplitDemo2.java`](examples/SplitDemo2.java),
+    modified to split on digits instead:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为简单起见，我们匹配了一个字符串字面量，即冒号（`:`），而不是一个复杂的正则表达式。由于我们仍在使用`Pattern`和`Matcher`对象，您可以使用split来获取任何正则表达式两侧的文本。这里是相同的示例，[`SplitDemo2.java`](examples/SplitDemo2.java)，修改为按数字拆分：
+- en: '[PRE7]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '[PRE8]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Other Utility Methods
+  id: totrans-45
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 其他实用方法
+- en: 'You may find the following methods to be of some use as well:'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能也会发现以下方法有些用处：
+- en: '[`public static String quote(String s)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#quote-java.lang.String-)
+    Returns a literal pattern `String` for the specified `String`. This method produces
+    a `String` that can be used to create a `Pattern` that would match `String s`
+    as if it were a literal pattern. Metacharacters or escape sequences in the input
+    sequence will be given no special meaning.'
+  id: totrans-47
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public static String quote(String s)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#quote-java.lang.String-)
+    为指定的`String`返回一个字面模式`String`。此方法生成一个`String`，可用于创建一个`Pattern`，该`Pattern`将匹配`String
+    s`，就好像它是一个字面模式。输入序列中的元字符或转义序列将不被赋予特殊含义。'
+- en: '[`public String toString()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#toString--)
+    Returns the `String` representation of this pattern. This is the regular expression
+    from which this pattern was compiled.'
+  id: totrans-48
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String toString()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#toString--)
+    返回此模式的`String`表示。这是编译此模式的正则表达式。'
+- en: Pattern Method Equivalents in `java.lang.String`
+  id: totrans-49
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`java.lang.String`中的`Pattern`方法等效项'
+- en: Regular expression support also exists in `java.lang.String` through several
+    methods that mimic the behavior of `java.util.regex.Pattern`. For convenience,
+    key excerpts from their API are presented below.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过几种模仿`java.util.regex.Pattern`行为的方法，`java.lang.String`中也存在正则表达式支持。为方便起见，以下是它们API中的关键摘录。
+- en: '[`public boolean matches(String regex)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#matches-java.lang.String-):
+    Tells whether or not this string matches the given regular expression. An invocation
+    of this method of the form `*str*.matches(*regex*)` yields exactly the same result
+    as the expression `Pattern.matches(*regex*, *str*)`.'
+  id: totrans-51
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public boolean matches(String regex)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#matches-java.lang.String-):
+    告诉这个字符串是否与给定的正则表达式匹配。形式为`*str*.matches(*regex*)`的此方法的调用产生与表达式`Pattern.matches(*regex*,
+    *str*)`完全相同的结果。'
+- en: '[`public String[] split(String regex, int limit)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#split-java.lang.String-int-):
+    Splits this string around matches of the given regular expression. An invocation
+    of this method of the form `*str*.split(*regex*, *n*)` yields the same result
+    as the expression `Pattern.compile(*regex*).split(*str*, *n*)`'
+  id: totrans-52
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String[] split(String regex, int limit)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#split-java.lang.String-int-):
+    将此字符串围绕给定正则表达式的匹配项拆分。形式为`*str*.split(*regex*, *n*)`的此方法的调用产生与表达式`Pattern.compile(*regex*).split(*str*,
+    *n*)`相同的结果。'
+- en: '[`public String[] split(String regex)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#split-java.lang.String-):
+    Splits this string around matches of the given regular expression. This method
+    works the same as if you invoked the two-argument split method with the given
+    expression and a limit argument of zero. Trailing empty strings are not included
+    in the resulting array.'
+  id: totrans-53
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String[] split(String regex)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#split-java.lang.String-):
+    将此字符串围绕给定正则表达式的匹配项拆分。此方法的工作方式与使用给定表达式和限制参数为零调用两参数拆分方法相同。结果数组中不包括尾随空字符串。'
+- en: 'There is also a replace method, that replaces one `CharSequence` with another:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有一个替换方法，用另一个`CharSequence`替换一个：
+- en: '[`public String replace(CharSequence target,CharSequence replacement)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#replace-java.lang.CharSequence-java.lang.CharSequence-):
+    Replaces each substring of this string that matches the literal target sequence
+    with the specified literal replacement sequence. The replacement proceeds from
+    the beginning of the string to the end, for example, replacing "aa" with "b" in
+    the string "aaa" will result in "ba" rather than "ab".'
+  id: totrans-55
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String replace(CharSequence target,CharSequence replacement)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#replace-java.lang.CharSequence-java.lang.CharSequence-):
+    用指定的文字替换序列替换此字符串的每个与字面目标序列匹配的子字符串。替换从字符串的开头到结尾进行，例如，在字符串“aaa”中用“b”替换“aa”将导致“ba”而不是“ab”。'

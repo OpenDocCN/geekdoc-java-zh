@@ -1,0 +1,112 @@
+- en: Applet's Execution Environment
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Applet的执行环境
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/appletExecutionEnv.html](https://docs.oracle.com/javase/tutorial/deployment/applet/appletExecutionEnv.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/appletExecutionEnv.html](https://docs.oracle.com/javase/tutorial/deployment/applet/appletExecutionEnv.html)
+- en: A Java applet runs in the context of a browser. The Java Plug-in software in
+    the browser controls the launch and execution of Java applets. The browser also
+    has a JavaScript interpreter, which runs the JavaScript code on a web page. This
+    topic describes the behavior of the Java Plug-in software released in Java Platform,
+    Standard Edition 6 update 10.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java applet在浏览器的上下文中运行。浏览器中的Java插件软件控制Java applet的启动和执行。浏览器还有一个JavaScript解释器，用于运行网页上的JavaScript代码。本主题描述了Java平台标准版6更新10中发布的Java插件软件的行为。
+- en: Java Plug-in
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Java插件
+- en: 'The Java Plug-in software creates a worker thread for every Java applet. It
+    launches an applet in an instance of the Java Runtime Environment (JRE) software.
+    Normally, all applets run in the same instance of the JRE. The Java Plug-in software
+    starts a new instance of the JRE in the following cases:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java插件软件为每个Java applet创建一个工作线程。它在Java Runtime Environment (JRE)软件的一个实例中启动applet。通常，所有applet在同一个JRE实例中运行。Java插件软件在以下情况下启动新的JRE实例：
+- en: When an applet requests to be executed in a specific version of the JRE.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当applet请求在特定版本的JRE中执行时。
+- en: When an applet specifies its own JRE startup parameters, for example, the heap
+    size. A new applet uses an existing JRE if its requirements are a subset of an
+    existing JRE, otherwise, a new JRE instance is started.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当applet指定自己的JRE启动参数时，例如堆大小。如果新applet的要求是现有JRE的子集，则新applet使用现有JRE，否则启动新的JRE实例。
+- en: 'An applet will run in an existing JRE if the following conditions are met:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果满足以下条件，applet将在现有JRE中运行：
+- en: The JRE version required by the applet matches an existing JRE.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: applet所需的JRE版本与现有的JRE匹配。
+- en: The JRE's startup parameters satisfy the applet's requirements.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: JRE的启动参数满足applet的要求。
+- en: The following diagram shows how applets are executed in the JRE.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图表显示了applet在JRE中的执行方式。
+- en: '![This is a picture of the Java Plug-in running applets on different JRE versions.](../Images/6187f0633c5caef78d3410aeb64fad64.png)'
+  id: totrans-11
+  prefs: []
+  type: TYPE_IMG
+  zh: '![这是Java插件在不同JRE版本上运行applet的图片。](../Images/6187f0633c5caef78d3410aeb64fad64.png)'
+- en: Java Plug-in and JavaScript Interpreter Interaction
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Java插件和JavaScript解释器的交互
+- en: Java applets can invoke JavaScript functions present in the web page. JavaScript
+    functions are also allowed to invoke methods of an applet embedded on the same
+    web page. The Java Plug-in software and the JavaScript interpreter orchestrate
+    calls from Java code to JavaScript code and calls from JavaScript code to Java
+    code.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java applet可以调用网页中存在的JavaScript函数。JavaScript函数也允许调用同一网页上嵌入的applet的方法。Java插件软件和JavaScript解释器协调Java代码到JavaScript代码的调用以及JavaScript代码到Java代码的调用。
+- en: 'The Java Plug-in software is multi-threaded, while the JavaScript interpreter
+    runs on a single thread. Hence, to avoid thread-related issues, especially when
+    multiple applets are running simultaneously, keep the calls between Java code
+    and JavaScript code short, and avoid round trips, if possible. See the following
+    topics to find out more about interactions between Java code and JavaScript code:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java插件软件是多线程的，而JavaScript解释器在单个线程上运行。因此，为了避免线程相关问题，特别是当多个applet同时运行时，请保持Java代码和JavaScript代码之间的调用简短，并尽量避免往返。查看以下主题以了解Java代码和JavaScript代码之间的交互更多信息：
+- en: '[Invoking JavaScript Code From an Applet](../applet/invokingJavaScriptFromApplet.html)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[从Applet调用JavaScript代码](../applet/invokingJavaScriptFromApplet.html)'
+- en: '[Invoking Applet Methods From JavaScript Code](../applet/invokingAppletMethodsFromJavaScript.html)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[从JavaScript代码调用Applet方法](../applet/invokingAppletMethodsFromJavaScript.html)'

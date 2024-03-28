@@ -1,0 +1,279 @@
+- en: A Synth Example
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Synth 示例
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/synthExample.html](https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/synthExample.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/synthExample.html](https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/synthExample.html)
+- en: 'In the lesson titled [A GroupLayout Example](../../uiswing/layout/groupExample.html)
+    , `GroupLayout` was used to create a search dialog box called "Find." The program
+    that created the dialog box, `Find.java`, used the cross platform ("Metal") look
+    and feel with the "Ocean" theme:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在标题为 [A GroupLayout Example](../../uiswing/layout/groupExample.html) 的课程中，使用
+    `GroupLayout` 创建了一个名为 "Find" 的搜索对话框。创建对话框的程序 `Find.java` 使用了跨平台（"Metal"）外观和 "Ocean"
+    主题：
+- en: '![Find.](../Images/db1be508be14afcae7ce7be90da36315.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Find.](../Images/db1be508be14afcae7ce7be90da36315.png)'
+- en: This lesson creates the same dialog box with Synth, using an external XML file.
+    Here is the listing of the [``SynthDialog.java``](../examples/lookandfeel/SynthDialogProject/src/lookandfeel/SynthDialog.java)file.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这节课使用 Synth 创建了相同的对话框，使用了外部 XML 文件。这是 [``SynthDialog.java``](../examples/lookandfeel/SynthDialogProject/src/lookandfeel/SynthDialog.java)
+    文件的清单。
+- en: '`SynthDialog.java` is exactly the same as `Find.java` except for the `initLookAndFeel()`
+    method, which has been altered to use the Synth look and feel with an external
+    file called `synthDemo.xml`. Here is the new `initLookAndFeel()` method:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SynthDialog.java` 与 `Find.java` 完全相同，只是 `initLookAndFeel()` 方法已经更改为使用 Synth
+    外观和一个名为 `synthDemo.xml` 的外部文件。这是新的 `initLookAndFeel()` 方法：'
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The XML File
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: XML 文件
+- en: The XML file, `synthDemo.xml`, begins with a style bound to all regions. It
+    is good practice to do this to ensure that regions without a style bound to them
+    will contain something. This style makes all regions paint their background in
+    an opaque color. It also sets a default font and default colors.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: XML 文件 `synthDemo.xml` 以一个绑定到所有区域的样式开始。这样做是一个好习惯，以确保没有绑定样式的区域将包含一些内容。这个样式使所有区域以不透明颜色绘制其背景。它还设置了默认字体和默认颜色。
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Notes:**'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: 1\. The color definitions must be inside a <state> element. This permits changing
+    colors depending on state. The <state> element in `backingStyle` has no attributes
+    and is therefore applied to all regions, irrespective of their state. If a region
+    has other states, the states are merged with precedence given to state definitions
+    that appear later in the file.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. 颜色定义必须在 `<state>` 元素内部。这样可以根据状态改变颜色。`backingStyle` 中的 `<state>` 元素没有属性，因此适用于所有区域，无论它们的状态如何。如果一个区域有其他状态，这些状态将合并，优先考虑文件中后面出现的状态定义。
+- en: 2\. The font definition is not inside a <state> element because the font should
+    *not* change when there is a change of state (many components are sized depending
+    on their font, and a change in font could cause components to change in size unintentionally).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. 字体定义不在 `<state>` 元素内部，因为当状态改变时字体 *不应该* 改变（许多组件的大小取决于它们的字体，字体的改变可能会导致组件意外地改变大小）。
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The next <style> element defined is for the text field, which is painted using
+    an image.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个定义的 `<style>` 元素是用于使用图像绘制的文本字段。
+- en: '[PRE2]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Notes:**'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: 1\. The font and color definitions override the definitions in `backingStyle`.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. 字体和颜色定义覆盖了 `backingStyle` 中的定义。
+- en: 2\. The `insets` and `sourceInsets` are given the same values, which is just
+    a coincidence because they are unrelated to each other.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. `insets` 和 `sourceInsets` 被赋予相同的值，这只是一个巧合，因为它们彼此无关。
+- en: '3\. The BACKGROUND color, #D2DFF2, is a pale blue—the same color as the background
+    in the image, `textfield.png`.'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 3\. 背景颜色，#D2DFF2，是一种淡蓝色，与图像 `textfield.png` 中的背景颜色相同。
+- en: 4\. `paintCenter` is `false` so that you can see the background color.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 4\. `paintCenter` 设置为 `false`，这样你就可以看到背景颜色。
+- en: '* * *'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The next <style> element is for buttons that are painted with different images,
+    depending on the button state. When the mouse passes over the button, its appearance
+    changes. When it is clicked (PRESSED) the image changes again.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个 `<style>` 元素是为使用不同图像绘制的按钮而定义的，取决于按钮的状态。当鼠标经过按钮时，其外观会改变。当点击（按下）按钮时，图像再次更改。
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '* * *'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Notes:**'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: 1\. The font and color definitions inside the <state> element without attributes
+    apply to all button states. This is because the definitions of all states that
+    apply (and the <state> element without attributes is one of these) will merge
+    and there are no other font and color definitions that might take precedence.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. 在没有属性的 `<state>` 元素内部的字体和颜色定义适用于所有按钮状态。这是因为适用的所有状态的定义（而 `<state>` 元素没有属性是其中之一）将合并，没有其他可���优先的字体和颜色定义。
+- en: 2\. The `sourceInsets` values are large enough that the curved corners of the
+    button image will not be stretched.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. `sourceInsets` 的值足够大，使按钮图像的曲线角不会被拉伸。
+- en: 3\. The order of the `PRESSED` and `MOUSE_OVER` states is important. Since the
+    mouse will always be over the button when it is pressed, both states will apply
+    to a pressed button and the first state defined (`PRESSED`) will apply. When the
+    mouse is over the button but it is not pressed, only the `MOUSE_OVER` state applies.
+    If the order of the `PRESSED` and `MOUSE_OVER` states is reversed, the `PRESSED`
+    state image will never be used.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 3\. `PRESSED` 和 `MOUSE_OVER` 状态的顺序很重要。由于鼠标在按下按钮时始终位于按钮上方，因此这两种状态都将应用于按下的按钮，并且将应用第一个定义的状态（`PRESSED`）。当鼠标悬停在按钮上但未按下时，只有
+    `MOUSE_OVER` 状态适用。如果 `PRESSED` 和 `MOUSE_OVER` 状态的顺序颠倒，那么 `PRESSED` 状态的图像将永远不会被使用。
+- en: '* * *'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The next <style> element is for check boxes that are painted with different
+    icons, depending on the check box state.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个 <style> 元素用于根据复选框状态绘制不同图标的复选框。
+- en: '[PRE4]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '* * *'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Notes:**'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注：**'
+- en: 1\. You must use the <imageIcon> element to define any icons to be used.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. 必须使用 <imageIcon> 元素来定义要使用的任何图标。
+- en: 2\. The <insets> element and the `sourceInsets` attribute are not used with
+    icons because they are rendered in their fixed size and are not stretched.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. <insets> 元素和 `sourceInsets` 属性不适用于图标，因为它们以固定大小呈现，不会被拉伸。
+- en: 3\. The icon used to render the check box is the icon named in the `CheckBox.icon`
+    property. (see [`javax/swing/plaf/synth/doc-files/componentProperties.html`](https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/synth/doc-files/componentProperties.html)),
+    which is the icon with id="check_off" unless the check box state is `SELECTED`.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 3\. 用于渲染复选框的图标是在 `CheckBox.icon` 属性中命名的图标（参见 [`javax/swing/plaf/synth/doc-files/componentProperties.html`](https://docs.oracle.com/javase/8/docs/api/javax/swing/plaf/synth/doc-files/componentProperties.html)），这是具有
+    id="check_off" 的图标，除非复选框状态为 `SELECTED`。
+- en: '* * *'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The `synthDemo.xml` file is constructed of the styles presented above, wrapped
+    in <synth></synth> tags. You can open the completed file by clicking [``synthDemo.xml``](../examples/lookandfeel/SynthDialogProject/src/lookandfeel/synthDemo.xml).
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`synthDemo.xml` 文件由上述样式构成，包裹在 <synth></synth> 标签中。您可以通过点击 [``synthDemo.xml``](../examples/lookandfeel/SynthDialogProject/src/lookandfeel/synthDemo.xml)
+    打开完成的文件。'
+- en: '* * *'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run the SynthDialog example using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index</
+    a>.](../examples/lookandfeel/index.html#SynthDialog)
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用 [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    运行 SynthDialog 示例（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考
+    [示例索引</ a>.](../examples/lookandfeel/index.html#SynthDialog)
+- en: '[![Launches the SynthDialog example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SynthDialogProject/SynthDialog.jnlp)'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 SynthDialog 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SynthDialogProject/SynthDialog.jnlp)'
+- en: '* * *'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

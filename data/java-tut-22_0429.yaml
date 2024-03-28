@@ -1,0 +1,166 @@
+- en: 'Lesson: Laying Out Components Within a Container'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：在容器内布置组件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/index.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/index.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/index.html)
+- en: '[Examples Index](../examples/layout/index.html)'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[示例索引](../examples/layout/index.html)'
+- en: This lesson tells you how to use the layout managers provided by the Java platform.
+    It also tells you how to use absolute positioning (no layout manager) and gives
+    an example of writing a custom layout manager. For each layout manager (or lack
+    thereof), this lesson points to an example that you can run using Java™ Web Start.
+    By resizing an example's window, you can see how size changes affect the layout.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程告诉您如何使用Java平台提供的布局管理器。它还告诉您如何使用绝对定位（无布局管理器）并提供编写自定义布局管理器的示例。对于每个布局管理器（或缺乏布局管理器），本课程指向一个您可以使用Java™
+    Web Start运行的示例。通过调整示例窗口的大小，您可以看到大小变化如何影响布局。
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程涵盖了手动编写布局代码，这可能具有挑战性。如果您不想学习布局管理的所有细节，您可能更喜欢使用`GroupLayout`布局管理器结合构建工具来布置您的GUI。其中一种构建工具是[NetBeans
+    IDE](../learn/index.html)。否则，如果您想手动编码并且不想使用`GroupLayout`，那么建议使用`GridBagLayout`作为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有兴趣使用JavaFX创建GUI，请参阅[JavaFX中的布局使用](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: '[A Visual Guide to Layout Managers](visual.html)'
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[布局管理器可视化指南](visual.html)'
+- en: This section shows examples of the standard layout managers and points to the
+    how-to section for each one.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节展示了标准布局管理器的示例，并指向每个布局管理器的操作指南部分。
+- en: '[Using Layout Managers](using.html)'
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用布局管理器](using.html)'
+- en: This section gives general rules on using the standard layout managers. It includes
+    how to set the layout manager, add components to a container, provide size and
+    alignment hints, put space between components, and set the orientation of the
+    container's layout so that it is appropriate for the locale in which the program
+    is running. It also has some tips for choosing the right layout manager.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节提供了使用标准布局管理器的一般规则。它包括如何设置布局管理器，向容器添加组件，提供大小和对齐提示，放置组件之间的空间，并设置容器布局的方向，使其适合程序运行的区域设置。它还提供了一些选择正确布局管理器的提示。
+- en: '[How Layout Management Works](howLayoutWorks.html)'
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[布局管理工作原理](howLayoutWorks.html)'
+- en: This section goes through a typical layout sequence and then describes what
+    happens when a component's size changes.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍了典型布局序列，然后描述了组件大小更改时会发生什么。
+- en: '[How to Use ...](layoutlist.html)'
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[如何使用...](layoutlist.html)'
+- en: This series of sections tells you how to use each of the general-purpose layout
+    managers that the Java platform provides.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一系列部分告诉您如何使用Java平台提供的每个通用布局管理器。
+- en: '[Creating a Custom Layout Manager](custom.html)'
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[创建自定义布局管理器](custom.html)'
+- en: Instead of using one of the Java platform's layout managers, you can write your
+    own.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以编写自己的布局管理器，而不是使用Java平台的布局管理器之一。
+- en: Layout managers must implement the `LayoutManager` interface, which specifies
+    the five methods every layout manager must define. Optionally, layout managers
+    can implement `LayoutManager2`, which is a subinterface of `LayoutManager`.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 布局管理器必须实现`LayoutManager`接口，该接口规定了每个布局管理器必须定义的五个方法。可选地，布局管理器可以实现`LayoutManager2`，这是`LayoutManager`的子接口。
+- en: '[Doing Without a Layout Manager (Absolute Positioning)](none.html)'
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[不使用布局管理器（绝对定位）](none.html)'
+- en: If necessary, you can position components without using a layout manager. Generally,
+    this solution is used to specify absolute sizes and positions for components.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果必要，您可以在不使用布局管理器的情况下定位组件。通常，此解决方案用于为组件指定绝对大小和位置。
+- en: '[Solving Common Layout Problems](problems.html)'
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[解决常见布局问题](problems.html)'
+- en: "Some of the most common layout problems involve components that are displayed\
+    \ too small \x97 or not at all. This section tells you how to fix these and other\
+    \ common layout problems."
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些最常见的布局问题涉及显示过小或根本不显示的组件。本节告诉您如何解决这些和其他常见的布局问题。
+- en: '[Questions and Exercises](../QandE/questions-ch4.html)'
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[问题和练习](../QandE/questions-ch4.html)'
+- en: Try these questions and exercises to test what you have learned in this lesson.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尝试这些问题和练习，测试您在本课程中学到的知识。
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有兴趣使用JavaFX创建您的GUI，请参阅[在JavaFX中使用布局](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。

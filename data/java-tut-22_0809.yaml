@@ -1,0 +1,468 @@
+- en: Implementing a Remote Interface
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 实现远程接口。
+- en: 原文：[https://docs.oracle.com/javase/tutorial/rmi/implementing.html](https://docs.oracle.com/javase/tutorial/rmi/implementing.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/rmi/implementing.html](https://docs.oracle.com/javase/tutorial/rmi/implementing.html)
+- en: 'This section discusses the task of implementing a class for the compute engine.
+    In general, a class that implements a remote interface should at least do the
+    following:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节讨论实现计算引擎类的任务。一般来说，实现远程接口的类至少应该执行以下操作：
+- en: Declare the remote interfaces being implemented
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 声明正在实现的远程接口。
+- en: Define the constructor for each remote object
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 为每个远程对象定义构造函数。
+- en: Provide an implementation for each remote method in the remote interfaces
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 为远程接口中的每个远程方法提供实现。
+- en: 'An RMI server program needs to create the initial remote objects and *export*
+    them to the RMI runtime, which makes them available to receive incoming remote
+    invocations. This setup procedure can be either encapsulated in a method of the
+    remote object implementation class itself or included in another class entirely.
+    The setup procedure should do the following:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: RMI服务器程序需要创建初始远程对象并将其*导出*到RMI运行时，使其可用于接收传入的远程调用。此设置过程可以封装在远程对象实现类本身的方法中，也可以完全包含在另一个类中。设置过程应执行以下操作：
+- en: Create and install a security manager
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建并安装安全管理器
+- en: Create and export one or more remote objects
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建并导出一个或多个远程对象。
+- en: Register at least one remote object with the RMI registry (or with another naming
+    service, such as a service accessible through the Java Naming and Directory Interface)
+    for bootstrapping purposes
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 至少在RMI注册表（或其他命名服务，如通过Java命名和目录接口访问的服务）中注册一个远程对象，用于引导目的。
+- en: 'The complete implementation of the compute engine follows. The [``engine.ComputeEngine``](examples/engine/ComputeEngine.java)
+    class implements the remote interface `Compute` and also includes the `main` method
+    for setting up the compute engine. Here is the source code for the `ComputeEngine`
+    class:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 计算引擎的完整实现如下。[``engine.ComputeEngine``](examples/engine/ComputeEngine.java)类实现了远程接口`Compute`，并包括用于设置计算引擎的`main`方法。以下是`ComputeEngine`类的源代码：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The following sections discuss each component of the compute engine implementation.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下各节讨论计算引擎实现的每个组件。
+- en: Declaring the Remote Interfaces Being Implemented
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 声明正在实现的远程接口。
+- en: 'The implementation class for the compute engine is declared as follows:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 计算引擎的实现类声明如下：
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This declaration states that the class implements the `Compute` remote interface
+    and therefore can be used for a remote object.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此声明说明该类实现了`Compute`远程接口，因此可以用作远程对象。
+- en: The `ComputeEngine` class defines a remote object implementation class that
+    implements a single remote interface and no other interfaces. The `ComputeEngine`
+    class also contains two executable program elements that can only be invoked locally.
+    The first of these elements is a constructor for `ComputeEngine` instances. The
+    second of these elements is a `main` method that is used to create a `ComputeEngine`
+    instance and make it available to clients.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ComputeEngine`类定义了一个远程对象实现类，该类实现了一个单独的远程接口，没有其他接口。`ComputeEngine`类还包含两个仅可在本地调用的可执行程序元素。其中一个元素是用于`ComputeEngine`实例的构造函数。另一个元素是用于创建`ComputeEngine`实例并使其对客户端可用的`main`方法。'
+- en: Defining the Constructor for the Remote Object
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为远程对象定义构造函数。
+- en: 'The `ComputeEngine` class has a single constructor that takes no arguments.
+    The code for the constructor is as follows:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ComputeEngine`类有一个不带参数的构造函数。构造函数的代码如下：'
+- en: '[PRE2]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: This constructor just invokes the superclass constructor, which is the no-argument
+    constructor of the `Object` class. Although the superclass constructor gets invoked
+    even if omitted from the `ComputeEngine` constructor, it is included for clarity.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此构造函数只调用了超类构造函数，即`Object`类的无参数构造函数。尽管即使在`ComputeEngine`构造函数中省略了超类构造函数，超类构造函数也会被调用，但为了清晰起见，还是包含在内。
+- en: Providing Implementations for Each Remote Method
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为每个远程方法提供实现。
+- en: 'The class for a remote object provides implementations for each remote method
+    specified in the remote interfaces. The `Compute` interface contains a single
+    remote method, `executeTask`, which is implemented as follows:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 远程对象的类为远程接口中指定的每个远程方法提供实现。`Compute`接口包含一个单独的远程方法，`executeTask`，其实现如下：
+- en: '[PRE3]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: This method implements the protocol between the `ComputeEngine` remote object
+    and its clients. Each client provides the `ComputeEngine` with a `Task` object
+    that has a particular implementation of the `Task` interface's `execute` method.
+    The `ComputeEngine` executes each client's task and returns the result of the
+    task's `execute` method directly to the client.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此方法实现了`ComputeEngine`远程对象与其客户端之间的协议。每个客户端都向`ComputeEngine`提供一个具有`Task`接口的特定实现的`Task`对象的`execute`方法。`ComputeEngine`执行每个客户端的任务，并将任务的`execute`方法的结果直接返回给客户端。
+- en: Passing Objects in RMI
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在RMI中传递对象
+- en: Arguments to or return values from remote methods can be of almost any type,
+    including local objects, remote objects, and primitive data types. More precisely,
+    any entity of any type can be passed to or from a remote method as long as the
+    entity is an instance of a type that is a primitive data type, a remote object,
+    or a *serializable* object, which means that it implements the interface `java.io.Serializable.`
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 远程方法的参数或返回值几乎可以是任何类型，包括本地对象、远程对象和基本数据类型。更准确地说，只要实体是基本数据类型、远程对象或*可序列化*对象的实例，就可以将任何类型的实体传递给远程方法或从远程方法传递出来，这意味着它实现了接口`java.io.Serializable`。
+- en: Some object types do not meet any of these criteria and thus cannot be passed
+    to or returned from a remote method. Most of these objects, such as threads or
+    file descriptors, encapsulate information that makes sense only within a single
+    address space. Many of the core classes, including the classes in the packages
+    `java.lang` and `java.util`, implement the `Serializable` interface.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些对象类型不符合这些标准，因此无法传递给远程方法或从远程方法返回。其中大多数对象，如线程或文件描述符，封装的信息只在单个地址空间内有意义。许多核心类，包括`java.lang`和`java.util`包中的类，实现了`Serializable`接口。
+- en: 'The rules governing how arguments and return values are passed are as follows:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于如何传递参数和返回值的规则如下：
+- en: Remote objects are essentially passed by reference. A *remote object reference*
+    is a stub, which is a client-side proxy that implements the complete set of remote
+    interfaces that the remote object implements.
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 远程对象本质上是通过引用传递的。*远程对象引用*是一个存根，是一个客户端代理，实现了远程对象实现的完整远程接口集。
+- en: Local objects are passed by copy, using object serialization. By default, all
+    fields are copied except fields that are marked `static` or `transient`. Default
+    serialization behavior can be overridden on a class-by-class basis.
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 本地对象通过对象序列化进行复制传递。默认情况下，除了标记为`static`或`transient`的字段外，所有字段都会被复制。可以按类覆盖默认序列化行为。
+- en: Passing a remote object by reference means that any changes made to the state
+    of the object by remote method invocations are reflected in the original remote
+    object. When a remote object is passed, only those interfaces that are remote
+    interfaces are available to the receiver. Any methods defined in the implementation
+    class or defined in non-remote interfaces implemented by the class are not available
+    to that receiver.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过引用传递远程对象意味着通过远程方法调用对对象状态所做的任何更改都会反映在原始远程对象中。当传递远程对象时，只有接收者可用的是远程接口。在实现类中定义的方法或类实现的非远程接口中定义的任何方法对接收者不可用。
+- en: For example, if you were to pass a reference to an instance of the `ComputeEngine`
+    class, the receiver would have access only to the compute engine's `executeTask`
+    method. That receiver would not see the `ComputeEngine` constructor, its `main`
+    method, or its implementation of any methods of `java.lang.Object`.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，如果您要传递对`ComputeEngine`类实例的引用，则接收方只能访问计算引擎的`executeTask`方法。该接收方将看不到`ComputeEngine`构造函数、其`main`方法或其对`java.lang.Object`的任何方法的实现。
+- en: In the parameters and return values of remote method invocations, objects that
+    are not remote objects are passed by value. Thus, a copy of the object is created
+    in the receiving Java virtual machine. Any changes to the object's state by the
+    receiver are reflected only in the receiver's copy, not in the sender's original
+    instance. Any changes to the object's state by the sender are reflected only in
+    the sender's original instance, not in the receiver's copy.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在远程方法调用的参数和返回值中，不是远程对象的对象是按值传递的。因此，在接收方的Java虚拟机中创建对象的副本。接收方对对象状态的任何更改仅反映在接收方的副本中，而不是发送方的原始实例中。发送方对对象状态的任何更改仅反映在发送方的原始实例中，而不是接收方的副本中。
+- en: Implementing the Server's `main` Method
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 实现服务器的`main`方法
+- en: The most complex method of the `ComputeEngine` implementation is the `main`
+    method. The `main` method is used to start the `ComputeEngine` and therefore needs
+    to do the necessary initialization and housekeeping to prepare the server to accept
+    calls from clients. This method is not a remote method, which means that it cannot
+    be invoked from a different Java virtual machine. Because the `main` method is
+    declared `static`, the method is not associated with an object at all but rather
+    with the class `ComputeEngine`.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ComputeEngine` 实现中最复杂的方法是 `main` 方法。`main` 方法用于启动 `ComputeEngine`，因此需要进行必要的初始化和管理工作，以准备服务器接受来自客户端的调用。这个方法不是一个远程方法，这意味着它不能从不同的
+    Java 虚拟机中调用。由于 `main` 方法声明为 `static`，该方法根本不与对象关联，而是与类 `ComputeEngine` 关联。'
+- en: Creating and Installing a Security Manager
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建和安装安全管理器
+- en: The `main` method's first task is to create and install a security manager,
+    which protects access to system resources from untrusted downloaded code running
+    within the Java virtual machine. A security manager determines whether downloaded
+    code has access to the local file system or can perform any other privileged operations.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`main` 方法的第一个任务是创建和安装安全管理器，以保护来自 Java 虚拟机内运行的不受信任的下载代码对系统资源的访问。安全管理器确定下载的代码是否可以访问本地文件系统或执行任何其他特权操作。'
+- en: If an RMI program does not install a security manager, RMI will not download
+    classes (other than from the local class path) for objects received as arguments
+    or return values of remote method invocations. This restriction ensures that the
+    operations performed by downloaded code are subject to a security policy.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个 RMI 程序没有安装安全管理器，RMI 将不会为作为参数接收的对象或远程方法调用的返回值下载类（除了从本地类路径）。这个限制确保下载代码执行的操作受安全策略约束。
+- en: 'Here''s the code that creates and installs a security manager:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是创建和安装安全管理器的代码：
+- en: '[PRE4]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Making the Remote Object Available to Clients
+  id: totrans-42
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使远程对象对客户端可用
+- en: 'Next, the `main` method creates an instance of `ComputeEngine` and exports
+    it to the RMI runtime with the following statements:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，`main` 方法创建了一个 `ComputeEngine` 实例，并使用以下语句将其导出到 RMI 运行时：
+- en: '[PRE5]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The static `UnicastRemoteObject.exportObject` method exports the supplied remote
+    object so that it can receive invocations of its remote methods from remote clients.
+    The second argument, an `int`, specifies which TCP port to use to listen for incoming
+    remote invocation requests for the object. It is common to use the value zero,
+    which specifies the use of an anonymous port. The actual port will then be chosen
+    at runtime by RMI or the underlying operating system. However, a non-zero value
+    can also be used to specify a specific port to use for listening. Once the `exportObject`
+    invocation has returned successfully, the `ComputeEngine` remote object is ready
+    to process incoming remote invocations.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 静态的 `UnicastRemoteObject.exportObject` 方法导出提供的远程对象，以便它可以接收来自远程客户端的远程方法调用。第二个参数是一个
+    `int`，指定用于监听对象的传入远程调用请求的 TCP 端口。通常使用值零，指定使用匿名端口。实际端口将由 RMI 或底层操作系统在运行时选择。但也可以使用非零值指定用于监听的特定端口。一旦
+    `exportObject` 调用成功返回，`ComputeEngine` 远程对象就准备好处理传入的远程调用。
+- en: The `exportObject` method returns a stub for the exported remote object. Note
+    that the type of the variable `stub` must be `Compute`, not `ComputeEngine`, because
+    the stub for a remote object only implements the remote interfaces that the exported
+    remote object implements.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`exportObject` 方法返回导出的远程对象的存根。请注意，变量 `stub` 的类型必须是 `Compute`，而不是 `ComputeEngine`，因为远程对象的存根只实现导出的远程对象实现的远程接口。'
+- en: The `exportObject` method declares that it can throw a `RemoteException`, which
+    is a checked exception type. The `main` method handles this exception with its
+    `try`/`catch` block. If the exception were not handled in this way, `RemoteException`
+    would have to be declared in the `throws` clause of the `main` method. An attempt
+    to export a remote object can throw a `RemoteException` if the necessary communication
+    resources are not available, such as if the requested port is bound for some other
+    purpose.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`exportObject` 方法声明可以抛出 `RemoteException`，这是一个已检查的异常类型。`main` 方法使用其 `try`/`catch`
+    块处理此异常。如果不以这种方式处理异常，则必须在 `main` 方法的 `throws` 子句中声明 `RemoteException`。如果请求的端口已绑定到其他用途，尝试导出远程对象可能会抛出
+    `RemoteException`，例如，如果必要的通信资源不可用。'
+- en: Before a client can invoke a method on a remote object, it must first obtain
+    a reference to the remote object. Obtaining a reference can be done in the same
+    way that any other object reference is obtained in a program, such as by getting
+    the reference as part of the return value of a method or as part of a data structure
+    that contains such a reference.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在客户端可以调用远程对象的方法之前，必须首先获取对远程对象的引用。获取引用可以通过与程序中获取任何其他对象引用的方式相同完成，例如通过将引用作为方法的返回值的一部分或作为包含这样一个引用的数据结构的一部分。
+- en: The system provides a particular type of remote object, the RMI registry, for
+    finding references to other remote objects. The RMI registry is a simple remote
+    object naming service that enables clients to obtain a reference to a remote object
+    by name. The registry is typically only used to locate the first remote object
+    that an RMI client needs to use. That first remote object might then provide support
+    for finding other objects.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 系统提供了一种特定类型的远程对象，即RMI注册表，用于查找其他远程对象的引用。RMI注册表是一个简单的远程对象命名服务，使客户端能够通过名称获取对远程对象的引用。注册表通常仅用于定位RMI客户端需要使用的第一个远程对象。然后，该第一个远程对象可能提供支持以查找其他对象。
+- en: The `java.rmi.registry.Registry` remote interface is the API for binding (or
+    registering) and looking up remote objects in the registry. The `java.rmi.registry.LocateRegistry`
+    class provides static methods for synthesizing a remote reference to a registry
+    at a particular network address (host and port). These methods create the remote
+    reference object containing the specified network address without performing any
+    remote communication. `LocateRegistry` also provides static methods for creating
+    a new registry in the current Java virtual machine, although this example does
+    not use those methods. Once a remote object is registered with an RMI registry
+    on the local host, clients on any host can look up the remote object by name,
+    obtain its reference, and then invoke remote methods on the object. The registry
+    can be shared by all servers running on a host, or an individual server process
+    can create and use its own registry.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.rmi.registry.Registry`远程接口是在注册表中绑定（或注册）和查找远程对象的API。`java.rmi.registry.LocateRegistry`类提供了用于在特定网络地址（主机和端口）合成远程引用到注册表的静态方法。这些方法创建包含指定网络地址的远程引用对象，而不执行任何远程通信。`LocateRegistry`还提供了用于在当前Java虚拟机中创建新注册表的静态方法，尽管此示例未使用这些方法。一旦远程对象在本地主机上的RMI注册表中注册，任何主机上的客户端都可以按名称查找远程对象，获取其引用，然后调用对象上的远程方法。注册表可以被所有运行在主机上的服务器共享，或者单个服务器进程可以创建和使用自己的注册表。'
+- en: 'The `ComputeEngine` class creates a name for the object with the following
+    statement:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ComputeEngine`类使用以下语句为对象创建名称：'
+- en: '[PRE6]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The code then adds the name to the RMI registry running on the server. This
+    step is done later with the following statements:'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 代码然后将名称添加到运行在服务器上的RMI注册表中。此步骤稍后通过以下语句完成：
+- en: '[PRE7]'
+  id: totrans-54
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: This `rebind` invocation makes a remote call to the RMI registry on the local
+    host. Like any remote call, this call can result in a `RemoteException` being
+    thrown, which is handled by the `catch` block at the end of the `main` method.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此`rebind`调用会对本地主机上的RMI注册表进行远程调用。与任何远程调用一样，此调用可能导致抛出`RemoteException`，该异常由`main`方法末尾的`catch`块处理。
+- en: 'Note the following about the `Registry.rebind` invocation:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意`Registry.rebind`调用的以下内容：
+- en: The no-argument overload of `LocateRegistry.getRegistry` synthesizes a reference
+    to a registry on the local host and on the default registry port, 1099\. You must
+    use an overload that has an `int` parameter if the registry is created on a port
+    other than 1099.
+  id: totrans-57
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LocateRegistry.getRegistry`的无参数重载在本地主机上和默认注册表端口1099上合成对注册表的引用。如果注册表在除1099之外的端口上创建，则必须使用具有`int`参数的重载。'
+- en: When a remote invocation on the registry is made, a stub for the remote object
+    is passed instead of a copy of the remote object itself. Remote implementation
+    objects, such as instances of `ComputeEngine`, never leave the Java virtual machine
+    in which they were created. Thus, when a client performs a lookup in a server's
+    remote object registry, a copy of the stub is returned. Remote objects in such
+    cases are thus effectively passed by (remote) reference rather than by value.
+  id: totrans-58
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当对注册表进行远程调用时，传递的是远程对象的存根而不是远程对象本身的副本。远程实现对象，例如`ComputeEngine`的实例，永远不会离开它们被创建的Java虚拟机。因此，当客户端在服务器的远程对象注册表中执行查找时，会返回存根的副本。在这种情况下，远程对象实际上是通过（远程）引用而不是通过值传递的。
+- en: For security reasons, an application can only `bind`, `unbind`, or `rebind`
+    remote object references with a registry running on the same host. This restriction
+    prevents a remote client from removing or overwriting any of the entries in a
+    server's registry. A `lookup`, however, can be requested from any host, local
+    or remote.
+  id: totrans-59
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 出于安全原因，应用程序只能在运行在同一主机上的注册表上`bind`、`unbind`或`rebind`远程对象引用。这种限制防止远程客户端删除或覆盖服务器注册表中的任何条目。然而，可以从任何主机（本地或远程）请求`lookup`。
+- en: Once the server has registered with the local RMI registry, it prints a message
+    indicating that it is ready to start handling calls. Then, the `main` method completes.
+    It is not necessary to have a thread wait to keep the server alive. As long as
+    there is a reference to the `ComputeEngine` object in another Java virtual machine,
+    local or remote, the `ComputeEngine` object will not be shut down or garbage collected.
+    Because the program binds a reference to the `ComputeEngine` in the registry,
+    it is reachable from a remote client, the registry itself. The RMI system keeps
+    the `ComputeEngine`'s process running. The `ComputeEngine` is available to accept
+    calls and won't be reclaimed until its binding is removed from the registry *and*
+    no remote clients hold a remote reference to the `ComputeEngine` object.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦服务器向本地RMI注册表注册，它会打印一条消息，指示它已准备好开始处理调用。然后，`main`方法完成。不需要有一个线程等待来保持服务器处于活动状态。只要在另一个Java虚拟机中有对`ComputeEngine`对象的引用，无论是本地还是远程，`ComputeEngine`对象都不会被关闭或垃圾回收。因为程序在注册表中绑定了对`ComputeEngine`的引用，所以它可以从远程客户端，即注册表本身，访问。RMI系统保持`ComputeEngine`的进程运行。`ComputeEngine`可用于接受调用，并且在其绑定从注册表中移除*且*没有远程客户端持有对`ComputeEngine`对象的远程引用时才会被回收。
+- en: The final piece of code in the `ComputeEngine.main` method handles any exception
+    that might arise. The only checked exception type that could be thrown in the
+    code is `RemoteException`, either by the `UnicastRemoteObject.exportObject` invocation
+    or by the registry `rebind` invocation. In either case, the program cannot do
+    much more than exit after printing an error message. In some distributed applications,
+    recovering from the failure to make a remote invocation is possible. For example,
+    the application could attempt to retry the operation or choose another server
+    to continue the operation.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`ComputeEngine.main`方法中的最后一段代码处理可能出现的任何异常。代码中可能抛出的唯一已检查异常类型是`RemoteException`，可能是由`UnicastRemoteObject.exportObject`调用或注册表`rebind`调用引起的。在任何情况下，程序在打印错误消息后不能做更多事情，只能退出。在一些分布式应用中，可以从远程调用失败中恢复。例如，应用程序可以尝试重试操作或选择另一个服务器继续操作。

@@ -1,0 +1,92 @@
+- en: Error Handling
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 错误处理
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/limits/error.html](https://docs.oracle.com/javase/tutorial/jaxp/limits/error.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/limits/error.html](https://docs.oracle.com/javase/tutorial/jaxp/limits/error.html)
+- en: 'It is recommended that applications catch the `org.xml.sax.SAXNotRecognizedException`
+    exception when setting one of the new properties so that the applications will
+    work properly on older releases that did not support them. For example, the downloadable
+    [sample code](sample.html) contains the following method, `isNewPropertySupported`,
+    that detects if the sample is run with a version of the JDK that supports the
+    `JDK_GENERAL_ENTITY_SIZE_LIMIT` property:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 建议应用程序在设置新属性时捕获`org.xml.sax.SAXNotRecognizedException`异常，以便应用程序在不支持这些属性的旧版本上正常工作。例如，可下载的[示例代码](sample.html)包含以下方法，`isNewPropertySupported`，用于检测示例是否在支持`JDK_GENERAL_ENTITY_SIZE_LIMIT`属性的JDK版本上运行：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'When the input files contain constructs that cause an over-the-limit exception,
+    applications may check the error code to determine the nature of the failure.
+    The following error codes are defined for the limits:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当输入文件包含导致超出限制异常的结构时，应用程序可以检查错误代码以确定失败的性质。以下错误代码适用于这些限制：
+- en: '`EntityExpansionLimit`: JAXP00010001'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`EntityExpansionLimit`: JAXP00010001'
+- en: '`ElementAttributeLimit`: JAXP00010002'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ElementAttributeLimit`: JAXP00010002'
+- en: '`MaxEntitySizeLimit`: JAXP00010003'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`MaxEntitySizeLimit`: JAXP00010003'
+- en: '`TotalEntitySizeLimit`: JAXP00010004'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`TotalEntitySizeLimit`: JAXP00010004'
+- en: '`MaxXMLNameLimit`: JAXP00010005'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`MaxXMLNameLimit`: JAXP00010005'
+- en: '`maxElementDepth`: JAXP00010006'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`maxElementDepth`: JAXP00010006'
+- en: '`EntityReplacementLimit`: JAXP00010007'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`EntityReplacementLimit`: JAXP00010007'
+- en: 'The error code has the following format:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 错误代码的格式如下：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The code JAXP00010001, therefore, represents the JAXP base parser security limit
+    `EntityExpansionLimit`.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，代码JAXP00010001代表了JAXP基本解析器安全限制`EntityExpansionLimit`。

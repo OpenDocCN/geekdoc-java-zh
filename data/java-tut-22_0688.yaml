@@ -1,0 +1,388 @@
+- en: Using Sequencer Methods
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用`Sequencer`方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-methods.html](https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-methods.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-methods.html](https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-methods.html)
+- en: 'The [`Sequencer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Sequencer.html)
+    interface provides methods in several categories:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Sequencer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Sequencer.html)接口提供了几个类别的方法：'
+- en: Methods to load sequence data from a MIDI file or a `Sequence` object, and to
+    save the currently loaded sequence data to a MIDI file.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 从 MIDI 文件或`Sequence`对象加载序列数据，并将当前加载的序列数据保存到 MIDI 文件。
+- en: Methods analogous to the transport functions of a tape recorder, for stopping
+    and starting playback and recording, enabling and disabling recording on specific
+    tracks, and shuttling the current playback or recording position in a `Sequence`.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 类似于磁带录音机的传输功能的方法，用于停止和开始播放和录制，启用和禁用特定轨道上的录制，并在`Sequence`中快进/快退当前播放或录制位置。
+- en: Advanced methods for querying and setting the synchronization and timing parameters
+    of the object. A `Sequencer` may play at different tempos, with some `Tracks`
+    muted, and in various synchronization states with other objects.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 高级方法用于查询和设置对象的同步和定时参数。`Sequencer`可以以不同的速度播放，一些`Tracks`静音，并且与其他对象处于各种同步状态。
+- en: Advanced methods for registering "listener" objects that are notified when the
+    `Sequencer` processes certain kinds of MIDI events.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 高级方法用于注册“监听器”对象，当`Sequencer`处理某些类型的 MIDI 事件时通知它们。
+- en: Regardless of which `Sequencer` methods you'll invoke, the first step is to
+    obtain a `Sequencer` device from the system and reserve it for your program's
+    use.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 无论您将调用哪些`Sequencer`方法，第一步都是从系统获取`Sequencer`设备并为程序使用保留它。
+- en: Obtaining a Sequencer
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 获取一个`Sequencer`
+- en: 'An application program doesn''t instantiate a `Sequencer`; after all, `Sequencer`
+    is just an interface. Instead, like all devices in the Java Sound API''s MIDI
+    package, a `Sequencer` is accessed through the static `MidiSystem` object. As
+    previously mentioned in [Accessing MIDI System Resources](accessing-MIDI.html),
+    the following `MidiSystem` method can be used to obtain the default `Sequencer`:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序不会实例化`Sequencer`；毕竟，`Sequencer`只是一个接口。相反，像 Java Sound API 的 MIDI 包中的所有设备一样，`Sequencer`通过静态的`MidiSystem`对象访问。如前面在[访问
+    MIDI 系统资源](accessing-MIDI.html)中提到的，可以使用以下`MidiSystem`方法获取默认的`Sequencer`：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following code fragment obtains the default `Sequencer`, acquires any system
+    resources it needs, and makes it operational:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段获取默认的`Sequencer`，获取其所需的任何系统资源，并使其可操作：
+- en: '[PRE1]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The invocation of `open` reserves the sequencer device for your program's use.
+    It doesn't make much sense to imagine sharing a sequencer, because it can play
+    only one sequence at a time. When you're done using the sequencer, you can make
+    it available to other programs by invoking `close`.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调用`open`保留了`Sequencer`设备供程序使用。想象共享一个`Sequencer`并没有太多意义，因为它一次只能播放一个序列。当使用完`Sequencer`后，可以通过调用`close`使其可供其他程序使用。
+- en: Non-default sequencers can be obtained as described in [Accessing MIDI System
+    Resources](accessing-MIDI.html).
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以按照[访问 MIDI 系统资源](accessing-MIDI.html)中描述的方式获取非默认的`Sequencer`。
+- en: Loading a Sequence
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 加载一个序列
+- en: 'Having obtained a sequencer from the system and reserved it, you then need
+    load the data that the sequencer should play. There are three typical ways of
+    accomplishing this:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从系统获取并保留了一个`Sequencer`后，您需要加载`Sequencer`应该播放的数据。有三种典型的方法可以实现这一点：
+- en: Reading the sequence data from a MIDI file
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 从 MIDI 文件中读取序列数据
+- en: Recording it in real time by receiving MIDI messages from another device, such
+    as a MIDI input port
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过从另一个设备（如 MIDI 输入端口）接收 MIDI 消息实时录制
+- en: Building it programmatically "from scratch" by adding tracks to an empty sequence
+    and adding `MidiEvent` objects to those tracks
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过向空序列添加轨道和向这些轨道添加`MidiEvent`对象来以编程方式构建它
+- en: We'll now look at the first of these ways of getting sequence data. (The other
+    two ways are described below under [Recording and Saving Sequences](#124654) and
+    [Editing a Sequence](#124674), respectively.) This first way actually encompasses
+    two slightly different approaches. One approach is to feed MIDI file data to an
+    `InputStream` that you then read directly to the sequencer by means of `Sequencer.setSequence(InputStream)`.
+    With this approach, you don't explicitly create a `Sequence` object. In fact,
+    the `Sequencer` implementation might not even create a `Sequence` behind the scenes,
+    because some sequencers have a built-in mechanism for handling data directly from
+    a file.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们将看一下获取序列数据的这种方式中的第一种。 （其他两种方式分别在[录制和保存序列](#124654)和[编辑序列](#124674)下描述。）这种方式实际上包括两种略有不同的方法。一种方法是将MIDI文件数据提供给`InputStream`，然后通过`Sequencer.setSequence(InputStream)`直接将其读取到`sequencer`中。使用此方法，您不需要显式创建`Sequence`对象。实际上，`Sequencer`实现甚至可能不会在幕后创建`Sequence`，因为一些`sequencers`具有处理直接从文件中处理数据的内置机制。
+- en: 'The other approach is to create a `Sequence` explicitly. You''ll need to use
+    this approach if you''re going to edit the sequence data before playing it. With
+    this approach, you invoke `MidiSystem''s` overloaded method `getSequence`. The
+    method is able to get the sequence from an `InputStream`, a `File`, or a `URL`.
+    The method returns a `Sequence` object that can then be loaded into a `Sequencer`
+    for playback. Expanding on the previous code excerpt, here''s an example of obtaining
+    a `Sequence` object from a `File` and loading it into our `sequencer`:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种方法是显式创建`Sequence`。如果要在播放之前编辑序列数据，则需要使用此方法。使用此方法，您调用`MidiSystem`的重载方法`getSequence`。该方法能够从`InputStream`、`File`或`URL`获取序列。该方法返回一个`Sequence`对象，然后可以将其加载到`Sequencer`中进行播放。在上面的代码摘录中，这是一个从`File`获取`Sequence`对象并将其加载到我们的`sequencer`的示例：
+- en: '[PRE2]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Like `MidiSystem's` `getSequence` method, `setSequence` may throw an `InvalidMidiDataException`—and,
+    in the case of the `InputStream` variant, an `IOException`—if it runs into any
+    trouble.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`MidiSystem`的`getSequence`方法一样，`setSequence`可能会抛出`InvalidMidiDataException`，在`InputStream`变体的情况下，还可能会抛出`IOException`，如果遇到任何问题。
+- en: Playing a Sequence
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 播放一个序列
+- en: 'Starting and stopping a `Sequencer` is accomplished using the following methods:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用以下方法可以启动和停止`Sequencer`：
+- en: '[PRE3]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: and
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 和
+- en: '[PRE4]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The `Sequencer.start` method begins playback of the sequence. Note that playback
+    starts at the current position in a sequence. Loading an existing sequence using
+    the `setSequence` method, described above, initializes the sequencer's current
+    position to the very beginning of the sequence. The `stop` method stops the sequencer,
+    but it does not automatically rewind the current `Sequence`. Starting a stopped
+    `Sequence` without resetting the position simply resumes playback of the sequence
+    from the current position. In this case, the `stop` method has served as a pause
+    operation. However, there are various `Sequencer` methods for setting the current
+    sequence position to an arbitrary value before playback is started. (We'll discuss
+    these methods below.)
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Sequencer.start`方法开始播放序列。请注意，播放从序列中的当前位置开始。使用上面描述的`setSequence`方法加载现有序列会将`sequencer`的当前位置初始化为序列的开头。`stop`方法停止`sequencer`，但不会自动倒带当前`Sequence`。在不重置位置的情况下启动已停止的`Sequence`只是从当前位置恢复播放序列。在这种情况下，`stop`方法充当了暂停操作。但是，在开始播放之前，有各种`Sequencer`方法可将当前序列位置设置为任意值。（我们将在下面讨论这些方法。）'
+- en: As mentioned earlier, a `Sequencer` typically has one or more `Transmitter`
+    objects, through which it sends `MidiMessages` to a `Receiver`. It is through
+    these `Transmitters` that a `Sequencer` plays the `Sequence`, by emitting appropriately
+    timed `MidiMessages` that correspond to the `MidiEvents` contained in the current
+    `Sequence`. Therefore, part of the setup procedure for playing back a `Sequence`
+    is to invoke the `setReceiver` method on the `Sequencer's` `Transmitter` object,
+    in effect wiring its output to the device that will make use of the played-back
+    data. For more details on `Transmitters` and `Receivers`, refer back to [Transmitting
+    and Receiving MIDI Messages](MIDI-messages.html).
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如前面提到的，`Sequencer`通常具有一个或多个`Transmitter`对象，通过这些对象向`Receiver`发送`MidiMessages`。通过这些`Transmitters`，`Sequencer`播放`Sequence`，通过发出与当前`Sequence`中包含的`MidiEvents`相对应的适时`MidiMessages`。因此，播放`Sequence`的设置过程的一部分是在`Sequencer`的`Transmitter`对象上调用`setReceiver`方法，实际上将其输出连接到将使用播放数据的设备。有关`Transmitters`和`Receivers`的更多详细信息，请参考[传输和接收MIDI消息](MIDI-messages.html)。
+- en: Recording and Saving Sequences
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 录制和保存序列
+- en: 'To capture MIDI data to a `Sequence`, and subsequently to a file, you need
+    to perform some additional steps beyond those described above. The following outline
+    shows the steps necessary to set up for recording to a `Track` in a `Sequence`:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将MIDI数据捕获到`Sequence`，然后保存到文件，需要执行一些除上述描述之外的额外步骤。以下概述显示了设置录制到`Sequence`中的`Track`所需的步骤：
+- en: Use `MidiSystem.getSequencer` to get a new sequencer to use for recording, as
+    above.
+  id: totrans-33
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用`MidiSystem.getSequencer`获取一个新的用于录制的序列器，如上所述。
+- en: Set up the "wiring" of the MIDI connections. The object that is transmitting
+    the MIDI data to be recorded should be configured, through its `setReceiver` method,
+    to send data to a `Receiver` associated with the recording `Sequencer`.
+  id: totrans-34
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 设置MIDI连接的“连线”。传输要录制的MIDI数据的对象应通过其`setReceiver`方法配置，以将数据发送到与录制`Sequencer`相关联的`Receiver`。
+- en: 'Create a new `Sequence` object, which will store the recorded data. When you
+    create the `Sequence` object, you must specify the global timing information for
+    the sequence. For example:'
+  id: totrans-35
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个新的`Sequence`对象，用于存储录制的数据。创建`Sequence`对象时，必须为序列指定全局时间信息。例如：
+- en: '[PRE5]'
+  id: totrans-36
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The constructor for `Sequence` takes as arguments a `divisionType` and a timing
+    resolution. The `divisionType` argument specifies the units of the resolution
+    argument. In this case, we've specified that the timing resolution of the `Sequence`
+    we're creating will be 10 pulses per quarter note. An additional optional argument
+    to the `Sequence` constructor is a number of tracks argument, which would cause
+    the initial sequence to begin with the specified number of (initially empty) `Tracks`.
+    Otherwise the `Sequence` will be created with no initial `Tracks`; they can be
+    added later as needed.
+  id: totrans-37
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`Sequence`的构造函数接受`divisionType`和时间分辨率作为参数。`divisionType`参数指定分辨率参数的单位。在这种情况下，我们指定正在创建的`Sequence`的时间分辨率为每四分音符10脉冲。`Sequence`构造函数的另一个可选参数是轨道数参数，这将导致初始序列以指定数量的（最初为空）`Tracks`开始。否则，`Sequence`将创建为没有初始`Tracks`；它们可以根据需要随后添加。'
+- en: Create an empty `Track` in the `Sequence`, with `Sequence.createTrack`. This
+    step is unnecessary if the `Sequence` was created with initial `Tracks`.
+  id: totrans-38
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在`Sequence`中创建一个空的`Track`，使用`Sequence.createTrack`。如果`Sequence`是使用初始`Tracks`创建的，则此步骤是不必要的。
+- en: Using `Sequencer.setSequence`, select our new `Sequence` to receive the recording.
+    The `setSequence` method ties together an existing `Sequence` with the `Sequencer`,
+    which is somewhat analogous to loading a tape onto a tape recorder.
+  id: totrans-39
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用`Sequencer.setSequence`，选择我们的新`Sequence`来接收录制。`setSequence`方法将现有的`Sequence`与`Sequencer`绑定，这在某种程度上类似于将磁带加载到磁带录音机上。
+- en: Invoke `Sequencer.recordEnable` for each `Track` to be recorded. If necessary,
+    get a reference to the available `Tracks` in the `Sequence` by invoking `Sequence.getTracks`.
+  id: totrans-40
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对于每个要录制的`Track`，调用`Sequencer.recordEnable`。如果需要，在`Sequence`中通过调用`Sequence.getTracks`获取可用的`Tracks`的引用。
+- en: Invoke `startRecording` on the `Sequencer`.
+  id: totrans-41
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在`Sequencer`上调用`startRecording`。
+- en: When done recording, invoke `Sequencer.stop` or `Sequencer.stopRecording`.
+  id: totrans-42
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 完成录制后，调用`Sequencer.stop`或`Sequencer.stopRecording`。
+- en: Save the recorded `Sequence` to a MIDI file with `MidiSystem.write`. The `write`
+    method of `MidiSystem` takes a `Sequence` as one of its arguments, and will write
+    that `Sequence` to a stream or file.
+  id: totrans-43
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用`MidiSystem.write`将录制的`Sequence`保存到MIDI文件中。`MidiSystem`的`write`方法将`Sequence`作为其参数之一，并将该`Sequence`写入流或文件。
+- en: Editing a Sequence
+  id: totrans-44
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编辑序列
+- en: Many application programs allow a sequence to be created by loading it from
+    a file, and quite a few also allow a sequence to be created by capturing it from
+    live MIDI input (that is, recording). Some programs, however, will need to create
+    MIDI sequences from scratch, whether programmatically or in response to user input.
+    Full-featured sequencer programs permit the user to manually construct new sequences,
+    as well as to edit existing ones.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多应用程序允许通过从文件加载来创建序列，并且有相当多的应用程序也允许通过从实时MIDI输入（即录制）捕获来创建序列。然而，一些程序将需要从头开始创建MIDI序列，无论是以编程方式还是响应用户输入。功能齐全的序列程序允许用户手动构建新序列，以及编辑现有序列。
+- en: 'These data-editing operations are achieved in the Java Sound API not by `Sequencer`
+    methods, but by methods of the data objects themselves: `Sequence`, `Track`, and
+    `MidiEvent`. You can create an empty sequence using one of the `Sequence` constructors,
+    and then add tracks to it by invoking the following `Sequence` method:'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java Sound API中，这些数据编辑操作不是通过`Sequencer`方法实现的，而是通过数据对象本身的方法实现：`Sequence`、`Track`和`MidiEvent`。你可以使用`Sequence`构造函数之一创建一个空序列，然后通过调用以下`Sequence`方法向其添加轨道：
+- en: '[PRE6]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'If your program allows the user to edit sequences, you''ll need this `Sequence`
+    method to remove tracks:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你的程序允许用户编辑序列，你将需要这个`Sequence`方法来移除轨道：
+- en: '[PRE7]'
+  id: totrans-49
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Once the sequence contains tracks, you can modify the contents of the tracks
+    by invoking methods of the `Track` class. The `MidiEvents` contained in the `Track`
+    are stored as a `java.util.Vector` in the `Track` object, and `Track` provides
+    a set of methods for accessing, adding, and removing the events in the list. The
+    methods `add` and `remove` are fairly self-explanatory, adding or removing a specified
+    `MidiEvent` from a `Track`. A `get` method is provided, which takes an index into
+    the `Track's` event list and returns the `MidiEvent` stored there. In addition,
+    there are `size` and `tick` methods, which respectively return the number of `MidiEvents`
+    in the track, and the track's duration, expressed as a total number of `Ticks`.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦序列包含轨道，你可以通过调用`Track`类的方法来修改轨道的内容。`Track`中包含的`MidiEvents`以`java.util.Vector`的形式存储在`Track`对象中，而`Track`提供了一组方法来访问、添加和移除列表中的事件。`add`和`remove`方法相当直观，用于向`Track`中添加或移除指定的`MidiEvent`。提供了一个`get`方法，它接受一个索引，返回存储在那里的`MidiEvent`。此外，还有`size`和`tick`方法，分别返回轨道中的`MidiEvents`数量和轨道的持续时间，以总`Ticks`数表示。
+- en: To create a new event before adding it to the track, you'll of course use the
+    `MidiEvent` constructor. To specify or modify the MIDI message embedded in the
+    event, you can invoke the `setMessage` method of the appropriate `MidiMessage`
+    subclass (`ShortMessage`, `SysexMessage`, or `MetaMessage`). To modify the time
+    that the event should occur, invoke `MidiEvent.setTick`.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在将事件添加到轨道之前创建新事件时，当然会使用`MidiEvent`构造函数。要指定或修改嵌入在事件中的MIDI消息，可以调用适当的`MidiMessage`子类（`ShortMessage`、`SysexMessage`或`MetaMessage`）的`setMessage`方法。要修改事件应发生的时间，调用`MidiEvent.setTick`。
+- en: In combination, these low-level methods provide the basis for the editing functionality
+    needed by a full-featured sequencer program.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 综合起来，这些低级方法为完整功能的音序器程序所需的编辑功能提供了基础。

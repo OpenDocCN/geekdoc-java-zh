@@ -1,0 +1,299 @@
+- en: Converting Latin Digits to Other Unicode Digits
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 将拉丁数字转换为其他Unicode数字
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/shapedDigits.html](https://docs.oracle.com/javase/tutorial/i18n/text/shapedDigits.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/shapedDigits.html](https://docs.oracle.com/javase/tutorial/i18n/text/shapedDigits.html)
+- en: By default, when text contains numeric values, those values are displayed using
+    Latin (European) digits. When other Unicode digit shapes are preferred, use the
+    [`java.awt.font.NumericShaper`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html)
+    class. The `NumericShaper` API enables you to display a numeric value represented
+    internally as an ASCII value in any Unicode digit shape.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，当文本包含数字值时，这些值将使用拉丁（欧洲）数字显示。如果希望使用其他Unicode数字形状，请使用[`java.awt.font.NumericShaper`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html)类。`NumericShaper`
+    API使您能够以任何Unicode数字形状显示内部表示为ASCII值的数字值。
+- en: The following code snippet, from the [`ArabicDigits`](examples/ArabicDigits.java)
+    example, shows how to use a `NumericShaper` instance to convert Latin digits to
+    Arabic digits. The line that determines the shaping action is bolded.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的代码片段来自[`ArabicDigits`](examples/ArabicDigits.java)示例，展示了如何使用`NumericShaper`实例将拉丁数字转换为阿拉伯数字。确定整形操作的行已加粗。
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `NumericShaper` instance for Arabic digits is fetched and placed into a
+    `HashMap` for the [`TextLayout.NUMERIC_SHAPING`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/TextAttribute.html#NUMERIC_SHAPING)
+    attribute key. The hash map is passed to the `TextLayout` instance. After rendering
+    the text in the `paint` method, the digits are displayed in the desired script.
+    In this example, the Latin digits, 0 through 9, are drawn as Arabic digits.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 获取阿拉伯数字的`NumericShaper`实例，并将其放入`HashMap`中，用于[`TextLayout.NUMERIC_SHAPING`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/TextAttribute.html#NUMERIC_SHAPING)属性键。哈希映射传递给`TextLayout`实例。在`paint`方法中呈现文本后，数字以所需脚本显示。在此示例中，拉丁数字0到9以阿拉伯数字形式显示。
+- en: '![ArabicDigits example output showing Arabic digits from 0 through 9](../Images/c3cf2d3d361545a42d56efc7c73d47d5.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ArabicDigits示例输出显示从0到9的阿拉伯数字](../Images/c3cf2d3d361545a42d56efc7c73d47d5.png)'
+- en: The previous example uses the `NumericShaper.ARABIC` constant to retrieve the
+    desired shaper, but the [`NumericShaper`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#field_summary)
+    class provides constants for many languages. These constants are defined as bit
+    masks and are referred to as the `NumericShaper` *bit mask-based constants*.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的示例使用`NumericShaper.ARABIC`常量来检索所需的整形器，但[`NumericShaper`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#field_summary)类为许多语言提供了常量。这些常量被定义为位掩码，并称为`NumericShaper`
+    *基于位掩码的常量*。
+- en: Enum-Based Range Constants
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 基于枚举的范围常量
+- en: 'An alternative way to specify a particular set of digits is to use the [`NumericShaper.Range`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.Range.html)
+    enumerated type (enum). This enum, introduced in the Java SE 7 release, also provides
+    a set of [constants](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.Range.html#field_summary).
+    Although these constants are defined using different mechanisms, the `NumericShaper.ARABIC`
+    bit mask is functionally equivalent to the `NumericShaper.Range.ARABIC` enum,
+    and there is a corresponding `getShaper` method for each constant type:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定特定数字集的另一种方法是使用[`NumericShaper.Range`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.Range.html)枚举类型（enum）。这个枚举在Java
+    SE 7版本中引入，还提供了一组[常量](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.Range.html#field_summary)。尽管这些常量是使用不同的机制定义的，但`NumericShaper.ARABIC`位掩码在功能上等同于`NumericShaper.Range.ARABIC`枚举，并且每种常量类型都有相应的`getShaper`方法：
+- en: '[`getShaper(int singleRange)`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getShaper-int-)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`getShaper(int singleRange)`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getShaper-int-)'
+- en: '[`getShaper(NumericShaper.Range singleRange)`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getShaper-java.awt.font.NumericShaper.Range-)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`getShaper(NumericShaper.Range singleRange)`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getShaper-java.awt.font.NumericShaper.Range-)'
+- en: 'The [`ArabicDigitsEnum`](examples/ArabicDigitsEnum.java) example is identical
+    to the ArabicDigits example, except it uses the `NumericShaper.Range` enum to
+    specify the language script:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`ArabicDigitsEnum`](examples/ArabicDigitsEnum.java)示例与ArabicDigits示例相同，只是使用`NumericShaper.Range`枚举来指定语言脚本：'
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Both `getShaper` methods accept a `singleRange` parameter. With either constant
+    type, you can specify a range of script-specific digits. The bit mask-based constants
+    can be combined using the `OR` operand, or you can create a set of `NumericShaper.Range`
+    enums. The following shows how to define a range using each constant type:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两个`getShaper`方法都接受`singleRange`参数。使用任一常量类型，你都可以指定一组特定于脚本的数字范围。基于位掩码的常量可以使用`OR`操作符组合，或者你可以创建一组`NumericShaper.Range`枚举。以下显示了如何使用每种常量类型定义范围：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: You can query the `NumericShaper` object to determine which ranges it supports
+    using either the [`getRanges`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getRanges--)
+    method for bit mask-based shapers or the [`getRangeSet`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getRangeSet--)
+    method for enum-based shapers.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以查询`NumericShaper`对象，以确定它支持哪些范围，使用基于位掩码的整形器的`getRanges`方法或基于枚举的整形器的`getRangeSet`方法。
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: 'You can use either the traditional bit masked-based constants or the `Range`
+    enum-based constants. Here are some considerations when deciding which to use:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用传统的基于位掩码的常量或`Range`枚举常量。在决定使用哪种时，有一些考虑因素：
+- en: The `Range` API requires JDK 7 or later.
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Range` API 需要 JDK 7 或更高版本。'
+- en: The `Range` API covers more Unicode ranges than the bit-masked API.
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Range` API 覆盖的 Unicode 范围比位掩码 API 多。'
+- en: The bit-mask API is a bit faster than the `Range` API.
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 位掩码 API 比`Range` API 快一点。
+- en: '* * *'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Rendering Digits According to Language Context
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 根据语言环境渲染数字
+- en: The [`ArabicDigits`](examples/ArabicDigits.java) example was designed to use
+    the shaper for a specific language, but sometimes the digits must be rendered
+    according to the language context. For example, if the text that precedes the
+    digits uses the Thai script, Thai digits are preferred. If the text is displayed
+    in Tibetan, Tibetan digits are preferred.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`ArabicDigits`](examples/ArabicDigits.java) 示例旨在使用特定语言的整形器，但有时必须根据语言环境渲染数字。例如，如果数字之前的文本使用泰语书写，则优先使用泰语数字。如果文本显示为藏文，则优先使用藏文数字。'
+- en: 'You can accomplish this using one of the `getContextualShaper` methods:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用其中一个`getContextualShaper`方法来实现这一点。
+- en: '[getContextualShaper(int ranges)](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getContextualShaper-int-)'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[getContextualShaper(int ranges)](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getContextualShaper-int-)'
+- en: '[getContextualShaper(int ranges, int defaultContext)](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getContextualShaper-int-int-)'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[getContextualShaper(int ranges, int defaultContext)](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getContextualShaper-int-int-)'
+- en: '[getContextualShaper(Set<NumericShaper.Range> ranges)](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getContextualShaper-java.util.Set-)'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[getContextualShaper(Set<NumericShaper.Range> ranges)](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getContextualShaper-java.util.Set-)'
+- en: '[getContextualShaper(Set<NumericShaper.Range> ranges, NumericShaper.Range defaultContext)](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getContextualShaper-java.util.Set-java.awt.font.NumericShaper.Range-)'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[getContextualShaper(Set<NumericShaper.Range> ranges, NumericShaper.Range defaultContext)](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html#getContextualShaper-java.util.Set-java.awt.font.NumericShaper.Range-)'
+- en: The first two methods use the bit-mask constants, and the last two use the enum
+    constants. The methods that accept a `defaultContext` parameter enable you to
+    specify the initial shaper that is used when numeric values are displayed before
+    text. When no default context is defined, any leading digits are displayed using
+    Latin shapes.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前两种方法使用位掩码常量，后两种使用枚举常量。接受`defaultContext`参数的方法允许你指定在数字值显示在文本之前时使用的初始整形器。当没有定义默认上下文时，任何前导数字都将使用拉丁形状显示。
+- en: 'The [`ShapedDigits`](examples/ShapedDigits.java) example shows how shapers
+    work. Five text layouts are displayed:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`ShapedDigits`](examples/ShapedDigits.java) 示例展示了整形器的工作原理。显示了五种文本布局：'
+- en: The first layout uses no shaper; all digits are displayed as Latin.
+  id: totrans-33
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 第一个布局不使用整形器；所有数字都显示为拉丁文。
+- en: The second layout shapes all digits as Arabic digits, regardless of language
+    context.
+  id: totrans-34
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 第二个布局将所有数字形状为阿拉伯数字，不考虑语言环境。
+- en: The third layout employs a contextual shaper that uses Arabic digits. The default
+    context is defined to be Arabic.
+  id: totrans-35
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 第三个布局使用了一个使用阿拉伯数字的上下文整形器。默认上下文被定义为阿拉伯文。
+- en: The fourth layout employs a contextual shaper that uses Arabic digits, but the
+    shaper does not specify a default context.
+  id: totrans-36
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 第四个布局使用了一个使用阿拉伯数字的上下文形状器，但该形状器没有指定默认上下文。
+- en: The fifth layout employs a contextual shaper that uses the `ALL_RANGES` bit
+    mask, but the shaper does not specify a default context.
+  id: totrans-37
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 第五个布局使用了一个使用`ALL_RANGES`位掩码的上下文形状器，但该形状器没有指定默认上下文。
+- en: '![ShapedDigits example output illustrating how contextual shapers work](../Images/8304ff941a25be65111f8e1687528125.png)'
+  id: totrans-38
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ShapedDigits示例输出，展示上下文形状器的工作原理](../Images/8304ff941a25be65111f8e1687528125.png)'
+- en: 'The following lines of code show how the shapers, if used, are defined:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码行展示了如果使用形状器，则如何定义：
+- en: No shaper is used.
+  id: totrans-40
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 没有使用形状器。
+- en: '`NumericShaper arabic = NumericShaper.getShaper(NumericShaper.ARABIC);`'
+  id: totrans-41
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`NumericShaper arabic = NumericShaper.getShaper(NumericShaper.ARABIC);`'
+- en: '`NumericShaper contextualArabic = NumericShaper.getContextualShaper(NumericShaper.ARABIC,
+    NumericShaper.ARABIC);`'
+  id: totrans-42
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`NumericShaper contextualArabic = NumericShaper.getContextualShaper(NumericShaper.ARABIC,
+    NumericShaper.ARABIC);`'
+- en: '`NumericShaper contextualArabicASCII = NumericShaper.getContextualShaper(NumericShaper.ARABIC);`'
+  id: totrans-43
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`NumericShaper contextualArabicASCII = NumericShaper.getContextualShaper(NumericShaper.ARABIC);`'
+- en: '`NumericShaper contextualAll = NumericShaper.getContextualShaper(NumericShaper.ALL_RANGES);`'
+  id: totrans-44
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`NumericShaper contextualAll = NumericShaper.getContextualShaper(NumericShaper.ALL_RANGES);`'
+- en: See the [`ShapedDigits.java`](examples/ShapedDigits.java) example for further
+    implementation details.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[`ShapedDigits.java`](examples/ShapedDigits.java)示例以获取更多实现细节。

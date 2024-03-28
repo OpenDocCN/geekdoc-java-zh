@@ -1,0 +1,39 @@
+- en: Thread Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 线程对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/threads.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/threads.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/threads.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/threads.html)
+- en: Each thread is associated with an instance of the class [`Thread`](https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html).
+    There are two basic strategies for using `Thread` objects to create a concurrent
+    application.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个线程都与类[`Thread`](https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html)的实例相关联。使用`Thread`对象创建并发应用程序有两种基本策略。
+- en: To directly control thread creation and management, simply instantiate `Thread`
+    each time the application needs to initiate an asynchronous task.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 要直接控制线程的创建和管理，只需在应用程序需要启动异步任务时实例化`Thread`即可。
+- en: To abstract thread management from the rest of your application, pass the application's
+    tasks to an *executor*.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 要将线程管理与应用程序的其余部分抽象出来，将应用程序的任务传递给一个*执行器*。
+- en: This section documents the use of `Thread` objects. Executors are discussed
+    with other [high-level concurrency objects](highlevel.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍了`Thread`对象的使用。执行器与其他[高级并发对象](highlevel.html)一起讨论。

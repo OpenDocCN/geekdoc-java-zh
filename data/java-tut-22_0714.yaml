@@ -1,0 +1,1036 @@
+- en: Getting Started
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 入门指南
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/gettingstarted.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/gettingstarted.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/gettingstarted.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/gettingstarted.html)
+- en: The sample code that comes with this tutorial creates a database that is used
+    by a proprietor of a small coffee house called The Coffee Break, where coffee
+    beans are sold by the pound and brewed coffee is sold by the cup.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程附带的示例代码创建了一个数据库，供一家名为The Coffee Break的小咖啡馆的业主使用，该咖啡馆以磅为单位出售咖啡豆，以杯为单位出售冲泡咖啡。
+- en: 'The following steps configure a JDBC development environment with which you
+    can compile and run the tutorial samples:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下步骤配置了一个JDBC开发环境，您可以在其中编译和运行教程示例：
+- en: '[Install the latest version of the Java SE SDK on your computer](#step1)'
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[在您的计算机上安装最新版本的Java SE SDK](#step1)'
+- en: '[Install your database management system (DBMS) if needed](#step2)'
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[如果需要，安装您的数据库管理系统（DBMS）](#step2)'
+- en: '[Install a JDBC driver from the vendor of your database](#step3)'
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[从您的数据库供应商处安装一个JDBC驱动程序](#step3)'
+- en: '[Install Apache Ant](#step4)'
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[安装Apache Ant](#step4)'
+- en: '[Install Apache Xalan](#step5)'
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[安装Apache Xalan](#step5)'
+- en: '[Download the sample code](#step6)'
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[下载示例代码](#step6)'
+- en: '[Modify the `build.xml` file](#step7)'
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[修改`build.xml`文件](#step7)'
+- en: '[Modify the tutorial properties file](#step8)'
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[修改教程属性文件](#step8)'
+- en: '[Compile and package the samples](#step9)'
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[编译和打包示例](#step9)'
+- en: '[Create databases, tables, and populate tables](#step10)'
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[创建数据库、表和填充表](#step10)'
+- en: '[Run the samples](#step11)'
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[运行示例](#step11)'
+- en: Install the latest version of the Java SE SDK on your computer
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在您的计算机上安装最新版本的Java SE SDK
+- en: Install the latest version of the Java SE SDK on your computer.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在您的计算机上安装最新版本的Java SE SDK。
+- en: Ensure that the full directory path of the Java SE SDK `bin` directory is in
+    your `PATH` environment variable so that you can run the Java compiler and the
+    Java application launcher from any directory.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 确保Java SE SDK `bin`目录的完整路径在您的`PATH`环境变量中，以便您可以从任何目录运行Java编译器和Java应用程序启动器。
+- en: Install your database management system (DBMS) if needed
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 如果需要，请安装您的数据库管理系统（DBMS）
+- en: 'This tutorial has been tested for the following DBMS:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程已在以下数据库管理系统上进行测试：
+- en: '[Java DB](https://www.oracle.com/java/technologies/javadb.html)'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Java DB](https://www.oracle.com/java/technologies/javadb.html)'
+- en: '**Note**: Java DB is no longer included in recent versions of the JDK. Java
+    DB was a rebranding of Apache Derby. If you would like to use Java DB, then download
+    the latest version from [The Apache DB Project](https://db.apache.org/derby/).'
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '**注意**：Java DB不再包含在最新版本的JDK中。Java DB是Apache Derby的一个重新命名。如果您想使用Java DB，请从[Apache
+    DB项目](https://db.apache.org/derby/)下载最新版本。'
+- en: '[MySQL](https://www.mysql.com/)'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[MySQL](https://www.mysql.com/)'
+- en: Note that if you are using another DBMS, you might have to alter the code of
+    the tutorial samples.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，如果您使用其他DBMS，可能需要修改教程示例的代码。
+- en: Install a JDBC driver from the vendor of your database
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 从您的数据库供应商处安装一个JDBC驱动程序
+- en: If you are using Java DB, it already comes with a JDBC driver. If you are using
+    MySQL, install the latest version of the JDBC driver for MySQL, [Connector/J](https://dev.mysql.com/downloads/connector/j/).
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您使用Java DB，则已经带有一个JDBC驱动程序。如果您使用MySQL，请安装最新版本的MySQL JDBC驱动程序[Connector/J](https://dev.mysql.com/downloads/connector/j/)。
+- en: Contact the vendor of your database to obtain a JDBC driver for your DBMS.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 联系您的数据库供应商，获取适用于您的DBMS的JDBC驱动程序。
+- en: 'There are many possible implementations of JDBC drivers. These implementations
+    are categorized as follows:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JDBC驱动程序有许多可能的实��。这些实现按以下方式分类：
+- en: '**Type 1**: Drivers that implement the JDBC API as a mapping to another data
+    access API, such as ODBC (Open Database Connectivity). Drivers of this type are
+    generally dependent on a native library, which limits their portability. The JDBC-ODBC
+    Bridge is an example of a Type 1 driver.'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**类型1**：将JDBC API实现为另一个数据访问API的映射的驱动程序，例如ODBC（开放数据库连接）。这种类型的驱动程序通常依赖于本地库，这限制了它们的可移植性。JDBC-ODBC桥就是类型1驱动程序的一个例子。'
+- en: '**Note**: The JDBC-ODBC Bridge should be considered a transitional solution.
+    It is not supported by Oracle. Consider using this only if your DBMS does not
+    offer a Java-only JDBC driver.'
+  id: totrans-29
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '**注意**：JDBC-ODBC桥应被视为一个过渡解决方案。Oracle不支持它。只有在您的数据库管理系统没有提供仅支持Java的JDBC驱动程序时才考虑使用它。'
+- en: '**Type 2**: Drivers that are written partly in the Java programming language
+    and partly in native code. These drivers use a native client library specific
+    to the data source to which they connect. Again, because of the native code, their
+    portability is limited. Oracle''s OCI (Oracle Call Interface) client-side driver
+    is an example of a Type 2 driver.'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**Type 2**: 部分用 Java 编程语言编写，部分用本机代码编写的驱动程序。这些驱动程序使用特定于它们连接的数据源的本机客���端库。由于本机代码的存在，它们的可移植性受到限制。Oracle
+    的 OCI（Oracle Call Interface）客户端驱动程序是 Type 2 驱动程序的一个示例。'
+- en: '**Type 3**: Drivers that use a pure Java client and communicate with a middleware
+    server using a database-independent protocol. The middleware server then communicates
+    the client''s requests to the data source.'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**Type 3**: 使用纯 Java 客户端并使用数据库独立协议与中间件服务器通信的驱动程序。然后中间件服务器将客户端的请求传达给数据源。'
+- en: '**Type 4**: Drivers that are pure Java and implement the network protocol for
+    a specific data source. The client connects directly to the data source.'
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**Type 4**: 纯 Java 驱动程序，实现特定数据源的网络协议。客户端直接连接到数据源。'
+- en: Check which driver types comes with your DBMS. Java DB comes with two Type 4
+    drivers, an Embedded driver and a Network Client Driver. MySQL Connector/J is
+    a Type 4 driver.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查你的数据库管理系统中带有哪些驱动程序类型。Java DB 带有两种 Type 4 驱动程序，一个是嵌入式驱动程序，另一个是网络客户端驱动程序。MySQL
+    Connector/J 是一种 Type 4 驱动程序。
+- en: Installing a JDBC driver generally consists of copying the driver to your computer,
+    then adding the location of it to your class path. In addition, many JDBC drivers
+    other than Type 4 drivers require you to install a client-side API. No other special
+    configuration is usually needed.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 安装 JDBC 驱动程序通常包括将驱动程序复制到计算机上，然后将其位置添加到类路径中。此外，除了 Type 4 驱动程序之外的许多 JDBC 驱动程序需要你安装客户端
+    API。通常不需要其他特殊配置。
+- en: Install Apache Ant
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 安装 Apache Ant
+- en: 'These steps use Apache Ant, a Java-based tool, to build, compile, and run the
+    JDBC tutorial samples. Go to the following link to download Apache Ant:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些步骤使用 Apache Ant，一个基于 Java 的工具，来构建、编译和运行 JDBC 教程示例。前往以下链接下载 Apache Ant：
+- en: '`[https://ant.apache.org/](https://ant.apache.org/)`'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`[https://ant.apache.org/](https://ant.apache.org/)`'
+- en: Ensure that the Apache Ant executable file is in your `PATH` environment variable
+    so that you can run it from any directory.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 确保 Apache Ant 可执行文件在你的`PATH`环境变量中，这样你就可以在任何目录中运行它。
+- en: Install Apache Xalan
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 安装 Apache Xalan
+- en: 'The sample `RSSFeedsTable.java`, which is described in [Using SQLXML Objects](sqlxml.html),
+    requires Apache Xalan if your DBMS is Java DB. The sample uses Apache Xalan-Java.
+    Go to the following link to download it:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例`RSSFeedsTable.java`，在[使用 SQLXML 对象](sqlxml.html)中有描述，如果你的数据库管理系统是 Java DB，则需要
+    Apache Xalan。该示例使用 Apache Xalan-Java。前往以下链接下载：
+- en: '`[https://xml.apache.org/xalan-j/](https://xml.apache.org/xalan-j/)`'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`[https://xml.apache.org/xalan-j/](https://xml.apache.org/xalan-j/)`'
+- en: Download the sample code
+  id: totrans-42
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 下载示例代码
+- en: 'The sample code, `[JDBCTutorial.zip](examples/zipfiles/JDBCTutorial.zip)`,
+    consists of the following files:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例代码`[JDBCTutorial.zip](examples/zipfiles/JDBCTutorial.zip)`包括以下文件：
+- en: '`properties`'
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`properties`'
+- en: '`javadb-build-properties.xml`'
+  id: totrans-45
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javadb-build-properties.xml`'
+- en: '`javadb-sample-properties.xml`'
+  id: totrans-46
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javadb-sample-properties.xml`'
+- en: '`mysql-build-properties.xml`'
+  id: totrans-47
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`mysql-build-properties.xml`'
+- en: '`mysql-sample-properties.xml`'
+  id: totrans-48
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`mysql-sample-properties.xml`'
+- en: '`sql`'
+  id: totrans-49
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`sql`'
+- en: '`javadb`'
+  id: totrans-50
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javadb`'
+- en: '`create-procedures.sql`'
+  id: totrans-51
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`create-procedures.sql`'
+- en: '`create-tables.sql`'
+  id: totrans-52
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`create-tables.sql`'
+- en: '`drop-tables.sql`'
+  id: totrans-53
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`drop-tables.sql`'
+- en: '`populate-tables.sql`'
+  id: totrans-54
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`populate-tables.sql`'
+- en: '`mysql`'
+  id: totrans-55
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`mysql`'
+- en: '`create-procedures.sql`'
+  id: totrans-56
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`create-procedures.sql`'
+- en: '`create-tables.sql`'
+  id: totrans-57
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`create-tables.sql`'
+- en: '`drop-tables.sql`'
+  id: totrans-58
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`drop-tables.sql`'
+- en: '`populate-tables.sql`'
+  id: totrans-59
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`populate-tables.sql`'
+- en: '`src/com/oracle/tutorial/jdbc`'
+  id: totrans-60
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`src/com/oracle/tutorial/jdbc`'
+- en: '`CachedRowSetSample.java`'
+  id: totrans-61
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CachedRowSetSample.java`'
+- en: '`CityFilter.java`'
+  id: totrans-62
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CityFilter.java`'
+- en: '`ClobSample.java`'
+  id: totrans-63
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ClobSample.java`'
+- en: '`CoffeesFrame.java`'
+  id: totrans-64
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CoffeesFrame.java`'
+- en: '`CoffeesTable.java`'
+  id: totrans-65
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CoffeesTable.java`'
+- en: '`CoffeesTableModel.java`'
+  id: totrans-66
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CoffeesTableModel.java`'
+- en: '`DatalinkSample.java`'
+  id: totrans-67
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DatalinkSample.java`'
+- en: '`ExampleRowSetListener.java`'
+  id: totrans-68
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ExampleRowSetListener.java`'
+- en: '`FilteredRowSetSample.java`'
+  id: totrans-69
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`FilteredRowSetSample.java`'
+- en: '`JdbcRowSetSample.java`'
+  id: totrans-70
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JdbcRowSetSample.java`'
+- en: '`JDBCTutorialUtilities.java`'
+  id: totrans-71
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JDBCTutorialUtilities.java`'
+- en: '`JoinSample.java`'
+  id: totrans-72
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JoinSample.java`'
+- en: '`ProductInformationTable.java`'
+  id: totrans-73
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ProductInformationTable.java`'
+- en: '`RSSFeedsTable.java`'
+  id: totrans-74
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`RSSFeedsTable.java`'
+- en: '`StateFilter.java`'
+  id: totrans-75
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`StateFilter.java`'
+- en: '`StoredProcedureJavaDBSample.java`'
+  id: totrans-76
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`StoredProcedureJavaDBSample.java`'
+- en: '`StoredProcedureMySQLSample.java`'
+  id: totrans-77
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`StoredProcedureMySQLSample.java`'
+- en: '`SuppliersTable.java`'
+  id: totrans-78
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SuppliersTable.java`'
+- en: '`WebRowSetSample.java`'
+  id: totrans-79
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`WebRowSetSample.java`'
+- en: '`txt`'
+  id: totrans-80
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`txt`'
+- en: '`colombian-description.txt`'
+  id: totrans-81
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`colombian-description.txt`'
+- en: '`xml`'
+  id: totrans-82
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`xml`'
+- en: '`rss-coffee-industry-news.xml`'
+  id: totrans-83
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`rss-coffee-industry-news.xml`'
+- en: '`rss-the-coffee-break-blog.xml`'
+  id: totrans-84
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`rss-the-coffee-break-blog.xml`'
+- en: '`build.xml`'
+  id: totrans-85
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`build.xml`'
+- en: Create a directory to contain all the files of the sample. These steps refer
+    to this directory as `*<JDBC tutorial directory>*`. Unzip the contents of `[JDBCTutorial.zip](examples/zipfiles/JDBCTutorial.zip)`
+    into `*<JDBC tutorial directory>*`.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建一个目录来包含示例的所有文件。这些步骤将此目录称为 `*<JDBC 教程目录>*`。将 `[JDBCTutorial.zip](examples/zipfiles/JDBCTutorial.zip)`
+    的内容解压缩到 `*<JDBC 教程目录>*` 中。
+- en: Modify the build.xml file
+  id: totrans-87
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 修改 build.xml 文件
+- en: The `build.xml` file is the build file that Apache Ant uses to compile and execute
+    the JDBC samples. The files `properties/javadb-build-properties.xml` and `properties/mysql-build-properties.xml`
+    contain additional Apache Ant properties required for Java DB and MySQL, respectively.
+    The files `properties/javadb-sample-properties.xml` and `properties/mysql-sample-properties.xml`
+    contain properties required by the sample.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`build.xml` 文件是 Apache Ant 用于编译和执行 JDBC 示例的构建文件。文件 `properties/javadb-build-properties.xml`
+    和 `properties/mysql-build-properties.xml` 包含 Java DB 和 MySQL 需要的额外 Apache Ant
+    属性。文件 `properties/javadb-sample-properties.xml` 和 `properties/mysql-sample-properties.xml`
+    包含示例所需的属性。'
+- en: 'Modify these XML files as follows:'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 修改这些 XML 文件如下：
+- en: Modify build.xml
+  id: totrans-90
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 修改 build.xml
+- en: 'In the `build.xml` file, modify the property `ANTPROPERTIES` to refer to either
+    `properties/javadb-build-properties.xml` or `properties/mysql-build-properties.xml`,
+    depending on your DBMS. For example, if you are using Java DB, your `build.xml`
+    file would contain this:'
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `build.xml` 文件中，修改属性 `ANTPROPERTIES`，指向 `properties/javadb-build-properties.xml`
+    或 `properties/mysql-build-properties.xml`，取决于您的 DBMS。例如，如果您正在使用 Java DB，则您的 `build.xml`
+    文件将包含以下内容：
+- en: '[PRE0]'
+  id: totrans-92
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Similarly, if you are using MySQL, your `build.xml` file would contain this:'
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，如果您正在使用 MySQL，您的 `build.xml` 文件将包含以下内容：
+- en: '[PRE1]'
+  id: totrans-94
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Modify database-specific properties file
+  id: totrans-95
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 修改特定于数据库的属性文件
+- en: 'In the `properties/javadb-build-properties.xml` or `properties/mysql-build-properties.xml`
+    file (depending on your DBMS), modify the following properties, as described in
+    the following table:'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `properties/javadb-build-properties.xml` 或 `properties/mysql-build-properties.xml`
+    文件（取决于您的 DBMS），根据以下表格中的描述修改以下属性：
+- en: '| Property | Description |'
+  id: totrans-97
+  prefs: []
+  type: TYPE_TB
+  zh: 属性 | 描述 |
+- en: '| `JAVAC` | The full path name of your Java compiler, `javac` |'
+  id: totrans-98
+  prefs: []
+  type: TYPE_TB
+  zh: '| `JAVAC` | 您的 Java 编译器 `javac` 的完整路径名。'
+- en: '| `JAVA` | The full path name of your Java runtime executable, `java` |'
+  id: totrans-99
+  prefs: []
+  type: TYPE_TB
+  zh: '| `JAVA` | 您的 Java 运行时可执行文件 `java` 的完整路径名。'
+- en: '| `PROPERTIESFILE` | The name of the properties file, either `properties/javadb-sample-properties.xml`
+    or `properties/mysql-sample-properties.xml` |'
+  id: totrans-100
+  prefs: []
+  type: TYPE_TB
+  zh: '| `PROPERTIESFILE` | 属性文件的名称，可以是 `properties/javadb-sample-properties.xml`
+    或 `properties/mysql-sample-properties.xml`。'
+- en: '| `MYSQLDRIVER` | The full path name of your MySQL driver. For Connector/J,
+    this is typically `*<Connector/J installation directory>*/mysql-connector-java-*version-number*.jar`.
+    |'
+  id: totrans-101
+  prefs: []
+  type: TYPE_TB
+  zh: '| `MYSQLDRIVER` | 你的 MySQL 驱动程序的完整路径名。对于 Connector/J，通常是 `*<Connector/J 安装目录>*/mysql-connector-java-*版本号*.jar`。'
+- en: '| `JAVADBDRIVER` | The full path name of your Java DB driver. This is typically
+    `*<Java DB installation directory>*/lib/derby.jar`. |'
+  id: totrans-102
+  prefs: []
+  type: TYPE_TB
+  zh: '| `JAVADBDRIVER` | 您的 Java DB 驱动程序的完整路径名。通常是 `*<Java DB 安装目录>*/lib/derby.jar`。'
+- en: '| `XALANDIRECTORY` | The full path name of the directory that contains Apache
+    Xalan. |'
+  id: totrans-103
+  prefs: []
+  type: TYPE_TB
+  zh: '| `XALANDIRECTORY` | 包含 Apache Xalan 的目录的完整路径名。'
+- en: '| `CLASSPATH` | The class path that the JDBC tutorial uses. *You do not need
+    to change this value.* |'
+  id: totrans-104
+  prefs: []
+  type: TYPE_TB
+  zh: '| `CLASSPATH` | JDBC 教程使用的类路径。*您无需更改此值*。'
+- en: '| `XALAN` | The full path name of the file `xalan.jar`. |'
+  id: totrans-105
+  prefs: []
+  type: TYPE_TB
+  zh: '| `XALAN` | 文件 `xalan.jar` ��完整路径名。'
+- en: '| `DB.VENDOR` | A value of either `derby` or `mysql` depending on whether you
+    are using Java DB or MySQL, respectively. The tutorial uses this value to construct
+    the URL required to connect to the DBMS and identify DBMS-specific code and SQL
+    statements. |'
+  id: totrans-106
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DB.VENDOR` | 一个值，可以是 `derby` 或 `mysql`，取决于您是使用 Java DB 还是 MySQL。教程使用此值来构建连接到
+    DBMS 和识别特定于 DBMS 的代码和 SQL 语句所需的 URL。'
+- en: '| `DB.DRIVER` | The fully qualified class name of the JDBC driver. For Java
+    DB, this is `org.apache.derby.jdbc.EmbeddedDriver`. For MySQL, this is `com.mysql.cj.jdbc.Driver`.
+    |'
+  id: totrans-107
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DB.DRIVER` | JDBC 驱动程序的完全限定类名。对于 Java DB，这是 `org.apache.derby.jdbc.EmbeddedDriver`。对于
+    MySQL，这是 `com.mysql.cj.jdbc.Driver`。'
+- en: '| `DB.HOST` | The host name of the computer hosting your DBMS. |'
+  id: totrans-108
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DB.HOST` | 托管您的 DBMS 的计算机的主机名。'
+- en: '| `DB.PORT` | The port number of the computer hosting your DBMS. |'
+  id: totrans-109
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DB.PORT` | 托管您的 DBMS 的计算机的端口号。'
+- en: '| `DB.SID` | The name of the database the tutorial creates and uses. |'
+  id: totrans-110
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DB.SID` | 教程创建和使用的数据库名称。'
+- en: '| `DB.URL.NEWDATABASE` | The connection URL used to connect to your DBMS when
+    creating a new database. *You do not need to change this value.* |'
+  id: totrans-111
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DB.URL.NEWDATABASE` | 创建新数据库时用于连接到您的 DBMS 的连接 URL。*您无需更改此值*。'
+- en: '| `DB.URL` | The connection URL used to connect to your DBMS. *You do not need
+    to change this value.* |'
+  id: totrans-112
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DB.URL` | 用于连接到您的DBMS的连接URL。*您无需更改此值*。'
+- en: '| `DB.USER` | The name of the user that has access to create databases in the
+    DBMS. |'
+  id: totrans-113
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DB.USER` | 具有在DBMS中创建数据库权限的用户的名称。'
+- en: '| `DB.PASSWORD` | The password of the user specified in `DB.USER`. |'
+  id: totrans-114
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DB.PASSWORD` | 指定在`DB.USER`中的用户的密码。'
+- en: '| `DB.DELIMITER` | The character used to separate SQL statements. *Do not change
+    this value.* It should be the semicolon character (`;`). |'
+  id: totrans-115
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DB.DELIMITER` | 用于分隔SQL语句的字符。*不要更改此值*。它应该是分号字符（`;`）。'
+- en: Modify the tutorial properties file
+  id: totrans-116
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 修改教程属性文件
+- en: 'The tutorial samples use the values in either the `properties/javadb-sample-properties.xml`
+    file or `properties/mysql-sample-properties.xml` file (depending on your DBMS)
+    to connect to the DBMS and initialize databases and tables, as described in the
+    following table:'
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 教程示例使用`properties/javadb-sample-properties.xml`文件或`properties/mysql-sample-properties.xml`文件中的值（取决于您的DBMS）来连接到DBMS并初始化数据库和表，如下表所述：
+- en: '| Property | Description |'
+  id: totrans-118
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性 | 描述 |'
+- en: '| `dbms` | A value of either `derby` or `mysql` depending on whether you are
+    using Java DB or MySQL, respectively. The tutorial uses this value to construct
+    the URL required to connect to the DBMS and identify DBMS-specific code and SQL
+    statements. |'
+  id: totrans-119
+  prefs: []
+  type: TYPE_TB
+  zh: '| `dbms` | 取值为`derby`或`mysql`，取决于您是使用Java DB还是MySQL。本教程使用此值来构建连接到DBMS所需的URL，并识别DBMS特定的代码和SQL语句。'
+- en: '| `jar_file` | The full path name of the JAR file that contains all the class
+    files of this tutorial. |'
+  id: totrans-120
+  prefs: []
+  type: TYPE_TB
+  zh: '| `jar_file` | 包含本教程所有类文件的JAR文件的完整路径名。'
+- en: '| `driver` | The fully qualified class name of the JDBC driver. For Java DB,
+    this is `org.apache.derby.jdbc.EmbeddedDriver`. For MySQL, this is `com.mysql.cj.jdbc.Driver`.
+    |'
+  id: totrans-121
+  prefs: []
+  type: TYPE_TB
+  zh: '| `driver` | JDBC驱动程序的完全限定类名。对于Java DB，这是`org.apache.derby.jdbc.EmbeddedDriver`。对于MySQL，这是`com.mysql.cj.jdbc.Driver`。'
+- en: '| `database_name` | The name of the database the tutorial creates and uses.
+    |'
+  id: totrans-122
+  prefs: []
+  type: TYPE_TB
+  zh: '| `database_name` | 教程创建和使用的数据库名称。'
+- en: '| `user_name` | The name of the user that has access to create databases in
+    the DBMS. |'
+  id: totrans-123
+  prefs: []
+  type: TYPE_TB
+  zh: '| `user_name` | 具有在DBMS中创建数据库权限的用户的名称。'
+- en: '| `password` | The password of the user specified in `user_name`. |'
+  id: totrans-124
+  prefs: []
+  type: TYPE_TB
+  zh: '| `password` | 指定在`user_name`中的用户的密码。'
+- en: '| `server_name` | The host name of the computer hosting your DBMS. |'
+  id: totrans-125
+  prefs: []
+  type: TYPE_TB
+  zh: '| `server_name` | 托管您的DBMS的计算机的主机名。'
+- en: '| `port_number` | The port number of the computer hosting your DBMS. |'
+  id: totrans-126
+  prefs: []
+  type: TYPE_TB
+  zh: '| `port_number` | 托管您的DBMS的计算机的端口号。'
+- en: '**Note**: For simplicity in demonstrating the JDBC API, the JDBC tutorial sample
+    code does not perform the password management techniques that a deployed system
+    normally uses. In a production environment, you can follow the Oracle Database
+    password management guidelines and disable any sample accounts. See the section
+    [Securing Passwords in Application Design](https://docs.oracle.com/en/database/oracle/oracle-database/20/dbseg/managing-security-for-application-developers.html#GUID-DE90CA6F-F37B-4337-B331-4FA0F7C7599A)
+    in *Oracle Database Security Guide* for password management guidelines and other
+    security recommendations.'
+  id: totrans-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：为了简化演示JDBC API，JDBC教程示例代码不执行部署系统通常使用的密码管理技术。在生产环境中，您可以遵循Oracle数据库密码管理指南并禁用任何示例帐户。请参阅*Oracle数据库安全指南*中的[应用程序设计中的密码保护](https://docs.oracle.com/en/database/oracle/oracle-database/20/dbseg/managing-security-for-application-developers.html#GUID-DE90CA6F-F37B-4337-B331-4FA0F7C7599A)部分，了解密码管理指南和其他安全建议。'
+- en: Compile and package the samples
+  id: totrans-128
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编译并打包示例
+- en: 'At a command prompt, change the current directory to `*<JDBC tutorial directory>*`.
+    From this directory, run the following command to compile the samples and package
+    them in a jar file:'
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在命令提示符下，将当前目录更改为`*<JDBC教程目录>*`。从该目录运行以下命令编译示例并将其打包到一个jar文件中：
+- en: '[PRE2]'
+  id: totrans-130
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Create databases, tables, and populate tables
+  id: totrans-131
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建数据库、表格，并填充表格
+- en: 'If you are using MySQL, then run the following command to create a database:'
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您使用的是MySQL，则运行以下命令来创建数据库：
+- en: '[PRE3]'
+  id: totrans-133
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '**Note**: No corresponding Ant target exists in the `build.xml` file that creates
+    a database for Java DB. The database URL for Java DB, which is used to establish
+    a database connection, includes the option to create the database (if it does
+    not already exist). See [Establishing a Connection](connecting.html) for more
+    information.'
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：`build.xml`文件中不存在用于为Java DB创建数据库的相应Ant目标。用于建立数据库连接的Java DB数据库URL包括创建数据库的选项（如果尚不存在）。有关更多信息，请参阅[建立连接](connecting.html)。'
+- en: 'If you are using either Java DB or MySQL, then from the same directory, run
+    the following command to delete existing sample database tables, recreate the
+    tables, and populate them. For Java DB, this command also creates the database
+    if it does not already exist:'
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在使用Java DB或MySQL，则可以从同一目录运行以下命令来删除现有的示例数据库表，重新创建表并填充它们。对于Java DB，此命令还会在数据库不存在时创建数据库：
+- en: '[PRE4]'
+  id: totrans-136
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '**Note**: You should run the command `ant setup` every time before you run
+    one of the Java classes in the sample. Many of these samples expect specific data
+    in the contents of the sample''s database tables.'
+  id: totrans-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：在运行示例中的Java类之前，您应该每次运行`ant setup`命令。这些示例中的许多示例都期望示例数据库表的内容中有特定的数据。'
+- en: Run the samples
+  id: totrans-138
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行示例
+- en: 'Each target in the `build.xml` file corresponds to a Java class or SQL script
+    in the JDBC samples. The following table lists the targets in the `build.xml`
+    file, which class or script each target executes, and other classes or files each
+    target requires:'
+  id: totrans-139
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`build.xml`文件中的每个目标对应于JDBC示例中的一个Java类或SQL脚本。以下表列出了`build.xml`文件中的目标，每个目标执行的类或脚本，以及每个目标需要的其他类或文件：'
+- en: '| Ant Target | Class or SQL Script | Other Required Classes or Files |'
+  id: totrans-140
+  prefs: []
+  type: TYPE_TB
+  zh: '| Ant目标 | 类或SQL脚本 | 其他必需类或文件 |'
+- en: '| `javadb-create-procedure` | `javadb/create-procedures.sql`; see the `build.xml`
+    file to view other SQL statements that are run | No other required files |'
+  id: totrans-141
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javadb-create-procedure` | `javadb/create-procedures.sql`；查看`build.xml`文件以查看运行的其他SQL语句
+    | 无其他必需文件 |'
+- en: '| `mysql-create-procedure` | `mysql/create-procedures.sql`. | No other required
+    files |'
+  id: totrans-142
+  prefs: []
+  type: TYPE_TB
+  zh: '| `mysql-create-procedure` | `mysql/create-procedures.sql` | 无其他必需文件 |'
+- en: '| `run` | `JDBCTutorialUtilities` | No other required classes |'
+  id: totrans-143
+  prefs: []
+  type: TYPE_TB
+  zh: '| `run` | `JDBCTutorialUtilities` | 无其他必需类 |'
+- en: '| `runct` | `CoffeesTable` | `JDBCTutorialUtilities` |'
+  id: totrans-144
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runct` | `CoffeesTable` | `JDBCTutorialUtilities` |'
+- en: '| `runst` | `SuppliersTable` | `JDBCTutorialUtilities` |'
+  id: totrans-145
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runst` | `SuppliersTable` | `JDBCTutorialUtilities` |'
+- en: '| `runjrs` | `JdbcRowSetSample` | `JDBCTutorialUtilities` |'
+  id: totrans-146
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runjrs` | `JdbcRowSetSample` | `JDBCTutorialUtilities` |'
+- en: '| `runcrs` | `CachedRowSetSample`, `ExampleRowSetListener` | `JDBCTutorialUtilities`
+    |'
+  id: totrans-147
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runcrs` | `CachedRowSetSample`，`ExampleRowSetListener` | `JDBCTutorialUtilities`
+    |'
+- en: '| `runjoin` | `JoinSample` | `JDBCTutorialUtilities` |'
+  id: totrans-148
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runjoin` | `JoinSample` | `JDBCTutorialUtilities` |'
+- en: '| `runfrs` | `FilteredRowSetSample` | `JDBCTutorialUtilities`, `CityFilter`,
+    `StateFilter` |'
+  id: totrans-149
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runfrs` | `FilteredRowSetSample` | `JDBCTutorialUtilities`，`CityFilter`，`StateFilter`
+    |'
+- en: '| `runwrs` | `WebRowSetSample` | `JDBCTutorialUtilities` |'
+  id: totrans-150
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runwrs` | `WebRowSetSample` | `JDBCTutorialUtilities` |'
+- en: '| `runclob` | `ClobSample` | `JDBCTutorialUtilities`, `txt/colombian-description.txt`
+    |'
+  id: totrans-151
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runclob` | `ClobSample` | `JDBCTutorialUtilities`，`txt/colombian-description.txt`
+    |'
+- en: '| `runrss` | `RSSFeedsTable` | `JDBCTutorialUtilities`, the XML files contained
+    in the `xml` directory |'
+  id: totrans-152
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runrss` | `RSSFeedsTable` | `JDBCTutorialUtilities`，`xml`目录中包含的XML文件 |'
+- en: '| `rundl` | `DatalinkSample` | `JDBCTutorialUtilities` |'
+  id: totrans-153
+  prefs: []
+  type: TYPE_TB
+  zh: '| `rundl` | `DatalinkSample` | `JDBCTutorialUtilities` |'
+- en: '| `runspjavadb` | `StoredProcedureJavaDBSample` | `JDBCTutorialUtilities`,
+    `SuppliersTable`, `CoffeesTable` |'
+  id: totrans-154
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runspjavadb` | `StoredProcedureJavaDBSample` | `JDBCTutorialUtilities`，`SuppliersTable`，`CoffeesTable`
+    |'
+- en: '| `runspmysql` | `StoredProcedureMySQLSample` | `JDBCTutorialUtilities`, `SuppliersTable`,
+    `CoffeesTable` |'
+  id: totrans-155
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runspmysql` | `StoredProcedureMySQLSample` | `JDBCTutorialUtilities`，`SuppliersTable`，`CoffeesTable`
+    |'
+- en: '| `runframe` | `CoffeesFrame` | `JDBCTutorialUtilities`, `CoffeesTableModel`
+    |'
+  id: totrans-156
+  prefs: []
+  type: TYPE_TB
+  zh: '| `runframe` | `CoffeesFrame` | `JDBCTutorialUtilities`，`CoffeesTableModel`
+    |'
+- en: 'For example, to run the class `CoffeesTable`, change the current directory
+    to `*<JDBC tutorial directory>*`, and from this directory, run the following command:'
+  id: totrans-157
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，要运行`CoffeesTable`类，请将当前目录更改为`*<JDBC教程目录>*`，然后从该目录运行以下命令：
+- en: '[PRE5]'
+  id: totrans-158
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'

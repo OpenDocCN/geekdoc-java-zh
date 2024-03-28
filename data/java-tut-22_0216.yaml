@@ -1,0 +1,110 @@
+- en: A Strategy for Defining Immutable Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 定义不可变对象的策略
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/imstrat.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/imstrat.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/imstrat.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/imstrat.html)
+- en: "The following rules define a simple strategy for creating immutable objects.\
+    \ Not all classes documented as \"immutable\" follow these rules. This does not\
+    \ necessarily mean the creators of these classes were sloppy \x97 they may have\
+    \ good reason for believing that instances of their classes never change after\
+    \ construction. However, such strategies require sophisticated analysis and are\
+    \ not for beginners."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "以下规则定义了创建不可变对象的简单策略。并非所有被记录为“不可变”的类都遵循这些规则。这并不一定意味着这些类的创建者粗心大意 \x97 他们可能有充分的理由相信他们的类的实例在构造后永远不会改变。然而，这种策略需要复杂的分析，不适合初学者。"
+- en: "Don't provide \"setter\" methods \x97 methods that modify fields or objects\
+    \ referred to by fields."
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: "不提供“setter”方法 \x97 修改字段或字段引用的对象的方法。"
+- en: Make all fields `final` and `private`.
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使所有字段都是`final`和`private`。
+- en: Don't allow subclasses to override methods. The simplest way to do this is to
+    declare the class as `final`. A more sophisticated approach is to make the constructor
+    `private` and construct instances in factory methods.
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 不允许子类重写方法。这样做的最简单方法是将类声明为`final`。更复杂的方法是将构造函数设为`private`，并在工厂方法中构造实例。
+- en: 'If the instance fields include references to mutable objects, don''t allow
+    those objects to be changed:'
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果实例字段包括对可变对象的引用，请不要允许更改这些对象：
+- en: Don't provide methods that modify the mutable objects.
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 不要提供修改可变对象的方法。
+- en: Don't share references to the mutable objects. Never store references to external,
+    mutable objects passed to the constructor; if necessary, create copies, and store
+    references to the copies. Similarly, create copies of your internal mutable objects
+    when necessary to avoid returning the originals in your methods.
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 不共享对可变对象的引用。永远不要存储传递给构造函数的外部可变对象的引用；如果必要，创建副本，并存储对副本的引用。类似地，在必要时创建内部可变对象的副本，以避免在方法中返回原始对象。
+- en: 'Applying this strategy to `SynchronizedRGB` results in the following steps:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将这种策略应用于`SynchronizedRGB`会产生以下步骤：
+- en: There are two setter methods in this class. The first one, `set`, arbitrarily
+    transforms the object, and has no place in an immutable version of the class.
+    The second one, `invert`, can be adapted by having it create a new object instead
+    of modifying the existing one.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 这个类中有两个setter方法。第一个`set`方法任意地转换对象，并且在类的不可变版本中没有位置。第二个`invert`方法可以通过创建一个新对象来适应，而不是修改现有对象。
+- en: All fields are already `private`; they are further qualified as `final`.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 所有字段已经是`private`；它们进一步被标记为`final`。
+- en: The class itself is declared `final`.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 类本身被声明为`final`。
+- en: Only one field refers to an object, and that object is itself immutable. Therefore,
+    no safeguards against changing the state of "contained" mutable objects are necessary.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 只有一个字段引用一个对象，而该对象本身是不可变的。因此，不需要防止改变“包含”可变对象状态的保护措施。
+- en: 'After these changes, we have [``ImmutableRGB``](examples/ImmutableRGB.java):'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这些更改之后，我们有了[``ImmutableRGB``](examples/ImmutableRGB.java)：
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'

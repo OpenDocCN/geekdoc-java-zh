@@ -1,0 +1,216 @@
+- en: Using JoinRowSet Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用 JoinRowSet 对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/joinrowset.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/joinrowset.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/joinrowset.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/joinrowset.html)
+- en: A `JoinRowSet` implementation lets you create a SQL `JOIN` between `RowSet`
+    objects when they are not connected to a data source. This is important because
+    it saves the overhead of having to create one or more connections.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JoinRowSet`实现允许您在`RowSet`对象之间创建SQL `JOIN`，当它们未连接到数据源时。这很重要，因为它节省了必须创建一个或多个连接的开销。'
+- en: 'The following topics are covered:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面涵盖的主题有：
+- en: '[Creating JoinRowSet Objects](#creating-joinrowset-object)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建 JoinRowSet 对象](#creating-joinrowset-object)'
+- en: '[Adding RowSet Objects](#adding-rowset-objects)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[添加 RowSet 对象](#adding-rowset-objects)'
+- en: '[Managing Match Columns](#managing-match-columns)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[管理匹配列](#managing-match-columns)'
+- en: The `JoinRowSet` interface is a subinterface of the `CachedRowSet` interface
+    and thereby inherits the capabilities of a `CachedRowSet` object. This means that
+    a `JoinRowSet` object is a disconnected `RowSet` object and can operate without
+    always being connected to a data source.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JoinRowSet`接口是`CachedRowSet`接口的子接口，因此继承了`CachedRowSet`对象的功能。这意味着`JoinRowSet`对象是一个断开连接的`RowSet`对象，可以在不始终连接到数据源的情况下运行。'
+- en: Creating JoinRowSet Objects
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建 JoinRowSet 对象
+- en: 'A `JoinRowSet` object serves as the holder of a SQL `JOIN`. The following example
+    from [`JoinSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JoinSample.java)
+    shows how to create a `JoinRowSet` object:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JoinRowSet`对象充当SQL `JOIN`的持有者。来自[`JoinSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JoinSample.java)的以下示例显示了如何创建`JoinRowSet`对象：'
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The variable `jrs` holds nothing until `RowSet` objects are added to it.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 变量`jrs`在添加`RowSet`对象之前不包含任何内容。
+- en: Adding RowSet Objects
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 添加 RowSet 对象
+- en: Any `RowSet` object can be added to a `JoinRowSet` object as long as it can
+    be part of a SQL `JOIN`. A `JdbcRowSet` object, which is always connected to its
+    data source, can be added, but typically it forms part of a `JOIN` by operating
+    with the data source directly instead of becoming part of a `JOIN` by being added
+    to a `JoinRowSet` object. The point of providing a `JoinRowSet` implementation
+    is to make it possible for disconnected `RowSet` objects to become part of a `JOIN`
+    relationship.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何`RowSet`对象都可以添加到`JoinRowSet`对象中，只要它可以成为SQL `JOIN`的一部分。`JdbcRowSet`对象始终连接到其数据源，可以添加，但通常通过直接与数据源操作而不是通过添加到`JoinRowSet`对象来成为`JOIN`的一部分。提供`JoinRowSet`实现的目的是使断开连接的`RowSet`对象能够成为`JOIN`关系的一部分。
+- en: 'The owner of The Coffee Break chain of coffee houses wants to get a list of
+    the coffees he buys from Acme, Inc. In order to do this, the owner will have to
+    get information from two tables, `COFFEES` and `SUPPLIERS`. In the database world
+    before `RowSet` technology, programmers would send the following query to the
+    database:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 'The owner of The Coffee Break chain of coffee houses wants to get a list of
+    the coffees he buys from Acme, Inc. In order to do this, the owner will have to
+    get information from two tables, `COFFEES` and `SUPPLIERS`. In the database world
+    before `RowSet` technology, programmers would send the following query to the
+    database:'
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: In the world of `RowSet` technology, you can accomplish the same result without
+    having to send a query to the data source. You can add `RowSet` objects containing
+    the data in the two tables to a `JoinRowSet` object. Then, because all the pertinent
+    data is in the `JoinRowSet` object, you can perform a query on it to get the desired
+    data.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`RowSet`技术的世界中，您可以在不向数据源发送查询的情况下实现相同的结果。您可以将包含两个表中数据的`RowSet`对象添加到`JoinRowSet`对象中。然后，因为所有相关数据都在`JoinRowSet`对象中，您可以对其执行查询以获取所需数据。
+- en: The following code fragment from [`JoinSample.testJoinRowSet`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JoinSample.java)
+    creates two `CachedRowSet` objects, `coffees` populated with the data from the
+    table `COFFEES`, and `suppliers` populated with the data from the table `SUPPLIERS`.
+    The `coffees` and `suppliers` objects have to make a connection to the database
+    to execute their commands and get populated with data, but after that is done,
+    they do not have to reconnect again in order to form a `JOIN`.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 来自[`JoinSample.testJoinRowSet`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JoinSample.java)的以下代码片段创建了两个`CachedRowSet`对象，`coffees`中包含来自表`COFFEES`的数据，`suppliers`中包含来自表`SUPPLIERS`的数据。`coffees`和`suppliers`对象必须连接到数据库以执行其命令并获取数据，但完成后，它们不必重新连接以形成`JOIN`。
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Managing Match Columns
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 管理匹配列
+- en: Looking at the `SUPPLIERS` table, you can see that Acme, Inc. has an identification
+    number of 101\. The coffees in the table `COFFEES` with the supplier identification
+    number of 101 are Colombian and Colombian_Decaf. The joining of information from
+    both tables is possible because the two tables have the column `SUP_ID in common`.
+    In JDBC `RowSet` technology, `SUP_ID`, the column on which the `JOIN` is based,
+    is called the *match column*.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看`SUPPLIERS`表，您会发现Acme, Inc. 的标识号为101。在`COFFEES`表中，供应商标识号为101的咖啡有哥伦比亚咖啡和哥伦比亚无咖啡因。这两个表的信息可以进行连接，因为两个表都有一个名为`SUP_ID`的列。在JDBC的`RowSet`技术中，`JOIN`所基于的列`SUP_ID`被称为*匹配列*。
+- en: 'Each `RowSet` object added to a `JoinRowSet` object must have a match column,
+    the column on which the `JOIN` is based. There are two ways to set the match column
+    for a `RowSet` object. The first way is to pass the match column to the `JoinRowSet`
+    method `addRowSet`, as shown in the following line of code:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 添加到`JoinRowSet`对象中的每个`RowSet`对象必须具有匹配列，即`JOIN`所基于的列。有两种方法可以为`RowSet`对象设置匹配列。第一种方法是将匹配列传递给`JoinRowSet`方法`addRowSet`，如下面的代码所示：
+- en: '[PRE3]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: This line of code adds the `coffees` `CachedRowSet` to the `jrs` object and
+    sets the `SUP_ID` column of `coffees` as the match column.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此行代码将`coffees`的`CachedRowSet`添加到`jrs`对象中，并将`coffees`的`SUP_ID`列设置为匹配列。
+- en: At this point, `jrs` has only `coffees` in it. The next `RowSet` object added
+    to `jrs` will have to be able to form a `JOIN` with `coffees`, which is true of
+    `suppliers` because both tables have the column SUP_ID. The following line of
+    code adds `suppliers` to `jrs` and sets the column `SUP_ID` as the match column.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此时，`jrs`中只有`coffees`。下一个添加到`jrs`中的`RowSet`对象必须能够与`coffees`进行`JOIN`，这对于`suppliers`是成立的，因为两个表都有`SUP_ID`列。下面的代码将`suppliers`添加到`jrs`中，并将`SUP_ID`列设置为匹配列。
+- en: '[PRE4]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Now `jrs` contains a `JOIN` between `coffees` and `suppliers` from which the
+    owner can get the names of the coffees supplied by Acme, Inc. Because the code
+    did not set the type of `JOIN`, `jrs` holds an inner JOIN, which is the default.
+    In other words, a row in `jrs` combines a row in `coffees` and a row in `suppliers`.
+    It holds the columns in `coffees` plus the columns in `suppliers` for rows in
+    which the value in the `COFFEES.SUP_ID` column matches the value in `SUPPLIERS.SUP_ID`.
+    The following code prints out the names of coffees supplied by Acme, Inc., where
+    the `String` `supplierName` is equal to `Acme, Inc.` Note that this is possible
+    because the column `SUP_NAME`, which is from `suppliers`, and `COF_NAME`, which
+    is from `coffees`, are now both included in the `JoinRowSet` object `jrs`.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在`jrs`包含了`coffees`和`suppliers`之间的`JOIN`，所有者可以从中获取Acme, Inc.供应的咖啡的名称。因为代码没有设置`JOIN`的类型，`jrs`保持内部JOIN，这是默认值。换句话说，`jrs`中的一行组合了`coffees`中的一行和`suppliers`中的一行。它包含了`coffees`中的列以及`suppliers`中的列，对于`COFFEES.SUP_ID`列的值与`SUPPLIERS.SUP_ID`列的值匹配的行。以下代码打印出由Acme,
+    Inc.供应的咖啡的名称，其中`String` `supplierName`等于`Acme, Inc.`请注意，这是可能的，因为`JoinRowSet`对象`jrs`中现在包括了来自`suppliers`的`SUP_NAME`列和来自`coffees`的`COF_NAME`列。
+- en: '[PRE5]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'This will produce output similar to the following:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将产生类似以下的输出：
+- en: '[PRE6]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The `JoinRowSet` interface provides constants for setting the type of `JOIN`
+    that will be formed, but currently the only type that is implemented is `JoinRowSet.INNER_JOIN`.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JoinRowSet`接口提供了用于设置将形成的`JOIN`类型的常量，但目前实现的唯一类型是`JoinRowSet.INNER_JOIN`。'

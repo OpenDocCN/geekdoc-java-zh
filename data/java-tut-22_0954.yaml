@@ -1,0 +1,199 @@
+- en: Wildcards
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 通配符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/wildcards.html](https://docs.oracle.com/javase/tutorial/extra/generics/wildcards.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/wildcards.html](https://docs.oracle.com/javase/tutorial/extra/generics/wildcards.html)
+- en: 'Consider the problem of writing a routine that prints out all the elements
+    in a collection. Here''s how you might write it in an older version of the language
+    (that is, a pre-5.0 release):'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑编写一个打印集合中所有元素的例程的问题。以下是你可能在语言的旧版本（即5.0版本之前）中编写的方式：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'And here is a naive attempt at writing it using generics (and the new `for`
+    loop syntax):'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个使用泛型（和新的`for`循环语法）编写的天真尝试：
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The problem is that this new version is much less useful than the old one. Whereas
+    the old code could be called with any kind of collection as a parameter, the new
+    code only takes `Collection<Object>`, which, as we've just demonstrated, is **not**
+    a supertype of all kinds of collections!
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 问题在于这个新版本比旧版本要不实用得多。而旧代码可以使用任何类型的集合作为参数调用，新代码只接受`Collection<Object>`，正如我们刚刚证明的，这**不是**所有种类集合的超类型！
+- en: 'So what **is** the supertype of all kinds of collections? It''s written `Collection<?>`
+    (pronounced "collection of unknown"), that is, a collection whose element type
+    matches anything. It''s called a **wildcard type** for obvious reasons. We can
+    write:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么所有种类的集合的**超类型**是什么呢？它被写作`Collection<?>`（读作"未知类型的集合"），即元素类型匹配任何内容的集合。它被称为**通配符类型**，原因显而易见。我们可以这样写：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'and now, we can call it with any type of collection. Notice that inside `printCollection()`,
+    we can still read elements from `c` and give them type `Object`. This is always
+    safe, since whatever the actual type of the collection, it does contain objects.
+    It isn''t safe to add arbitrary objects to it however:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，我们可以使用任何类型的集合调用它。请注意，在`printCollection()`内部，我们仍然可以从`c`中读取元素并将它们赋予类型`Object`。这总是安全的，因为无论集合的实际类型是什么，它都包含对象。但是向其中添加任意对象是不安全的：
+- en: '[PRE3]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Since we don't know what the element type of `c` stands for, we cannot add objects
+    to it. The `add()` method takes arguments of type `E`, the element type of the
+    collection. When the actual type parameter is `?`, it stands for some unknown
+    type. Any parameter we pass to `add` would have to be a subtype of this unknown
+    type. Since we don't know what type that is, we cannot pass anything in. The sole
+    exception is `null`, which is a member of every type.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于我们不知道`c`的元素类型代表什么，我们无法向其添加对象。`add()`方法接受类型为`E`的参数，即集合的元素类型。当实际类型参数为`?`时，它代表某种未知类型。我们传递给`add`的任何参数都必须是这种未知类型的子类型。由于我们不知道那种类型是什么，我们无法传递任何内容。唯一的例外是`null`，它是每种类型的成员。
+- en: On the other hand, given a `List<?>`, we **can** call `get()` and make use of
+    the result. The result type is an unknown type, but we always know that it is
+    an object. It is therefore safe to assign the result of `get()` to a variable
+    of type `Object` or pass it as a parameter where the type `Object` is expected.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，对于给定的`List<?>`，我们**可以**调用`get()`并利用结果。结果类型是一个未知类型，但我们始终知道它是一个对象。因此，将`get()`的结果分配给类型为`Object`的变量或将其作为期望类型为`Object`的参数传递是安全的。
+- en: Bounded Wildcards
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 有界通配符
+- en: 'Consider a simple drawing application that can draw shapes such as rectangles
+    and circles. To represent these shapes within the program, you could define a
+    class hierarchy such as this:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑一个简单的绘图应用程序，可以绘制矩形和圆形等形状。为了在程序中表示这些形状，你可以定义一个类层次结构，如下所示：
+- en: '[PRE4]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'These classes can be drawn on a canvas:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些类可以在画布上绘制：
+- en: '[PRE5]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'Any drawing will typically contain a number of shapes. Assuming that they are
+    represented as a list, it would be convenient to have a method in `Canvas` that
+    draws them all:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何绘图通常会包含许多形状。假设它们被表示为一个列表，那么在`Canvas`中有一个绘制它们所有的方法会很方便：
+- en: '[PRE6]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'Now, the type rules say that `drawAll()` can only be called on lists of exactly
+    `Shape`: it cannot, for instance, be called on a `List<Circle>`. That is unfortunate,
+    since all the method does is read shapes from the list, so it could just as well
+    be called on a `List<Circle>`. What we really want is for the method to accept
+    a list of **any** kind of shape:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，类型规则表明`drawAll()`只能在`Shape`的列表上调用：例如，不能在`List<Circle>`上调用。这很不幸，因为该方法所做的只是从列表中读取形状，所以它同样可以在`List<Circle>`上调用。我们真正想要的是该方法接受**任何**种类的形状列表：
+- en: '[PRE7]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'There is a small but very important difference here: we have replaced the type
+    `List<Shape>` with `List<? **extends** Shape>`. Now `drawAll()` will accept lists
+    of any subclass of `Shape`, so we can now call it on a `List<Circle>` if we want.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个很小但非常重要的区别：我们用`List<? **extends** Shape>`替换了类型`List<Shape>`。现在`drawAll()`将接受任何`Shape`的子类列表，因此我们现在可以在`List<Circle>`上调用它。
+- en: '`List<? **extends** Shape>` is an example of a *bounded wildcard*. The `?`
+    stands for an unknown type, just like the wildcards we saw earlier. However, in
+    this case, we know that this unknown type is in fact a subtype of `Shape`. (Note:
+    It could be `Shape` itself, or some subclass; it need not literally extend `Shape`.)
+    We say that `Shape` is the *upper bound* of the wildcard.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`List<? **extends** Shape>`是*有界通配符*的一个例子。`?`代表一个未知类型，就像我们之前看到的通配符一样。然而，在这种情况下，我们知道这个未知类型实际上是`Shape`的子类型。（注意：它可以是`Shape`本身，或者某个子类；它不一定要直接扩展`Shape`。）我们说`Shape`是通配符的*上界*。'
+- en: 'There is, as usual, a price to be paid for the flexibility of using wildcards.
+    That price is that it is now illegal to write into `shapes` in the body of the
+    method. For instance, this is not allowed:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用通配符灵活性的代价通常是很高的。这个代价是在方法体中写入`shapes`现在是非法的。例如，下面的写法是不允许的：
+- en: '[PRE8]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: You should be able to figure out why the code above is disallowed. The type
+    of the second parameter to `shapes.add()` is `? **extends** Shape`-- an unknown
+    subtype of `Shape`. Since we don't know what type it is, we don't know if it is
+    a supertype of `Rectangle`; it might or might not be such a supertype, so it isn't
+    safe to pass a `Rectangle` there.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你应该能够弄清楚为什么上面的代码是不允许的。`shapes.add()`的第二个参数的类型是`? **extends** Shape`-- 一个未知的`Shape`子类型。由于我们不知道它的类型，我们也不知道它是否是`Rectangle`的超类型；它可能是也可能不是这样的超类型，因此在这里传递`Rectangle`是不安全的。
+- en: Bounded wildcards are just what one needs to handle the example of the DMV passing
+    its data to the census bureau. Our example assumes that the data is represented
+    by mapping from names (represented as strings) to people (represented by reference
+    types such as `Person` or its subtypes, such as `Driver`). `Map<K,V>` is an example
+    of a generic type that takes two type arguments, representing the keys and values
+    of the map.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有界通配符正是处理DMV将其数据传递给人口普查局的例子所需的。我们的例子假设数据由从名称（表示为字符串）到人员（由`Person`或其子类型，如`Driver`表示的引用类型）的映射表示。`Map<K,V>`是一个接受两个类型参数的泛型类型的例子，表示映射的键和值。
+- en: Again, note the naming convention for formal type parameters--`K` for keys and
+    `V` for values.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次注意正式类型参数的命名约定--`K`代表键，`V`代表值。
+- en: '[PRE9]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'

@@ -1,0 +1,97 @@
+- en: Finding and Loading Data Files
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 查找和加载数据文件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/data.html](https://docs.oracle.com/javase/tutorial/deployment/applet/data.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/data.html](https://docs.oracle.com/javase/tutorial/deployment/applet/data.html)
+- en: Whenever a Java applet needs to load data from a file that is specified with
+    a relative URL (a URL that doesn't completely specify the file's location), the
+    applet usually uses either the code base or the document base to form the complete
+    URL.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当 Java applet 需要从指定了相对 URL 的文件加载数据（指定了文件位置但不完全指定的 URL），applet 通常使用代码库或文档库来形成完整的
+    URL。
+- en: The code base, returned by the `JApplet` `getCodeBase` method, is a URL that
+    specifies the directory from which the applet's classes were loaded. For locally
+    deployed applets, the `getCodeBase` method returns null.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由 `JApplet` 的 `getCodeBase` 方法返回的代码库是一个 URL，指定了 applet 的类加载的目录。对于本地部署的 applet，`getCodeBase`
+    方法返回 null。
+- en: The document base, returned by the `JApplet` `getDocumentBase` method, specifies
+    the directory of the HTML page that contains the applet. For locally deployed
+    applets, the `getDocumentBase` method returns null.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由 `JApplet` 的 `getDocumentBase` 方法返回的文档库指定包含 applet 的 HTML 页面的目录。对于本地部署的 applet，`getDocumentBase`
+    方法返回 null。
+- en: Unless the `<applet>` tag specifies a code base, both the code base and document
+    base refer to the same directory on the same server.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除非 `<applet>` 标签指定了代码库，否则代码库和文档库都指向同一服务器上的同一目录。
+- en: Data that the applet might need, or needs to rely on as a backup, is usually
+    specified relative to the code base. Data that the applet developer specifies,
+    often by using parameters, is usually specified relative to the document base.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: applet 可能需要的数据，或者需要依赖的备份数据，通常相对于代码库指定。通常由 applet 开发人员指定的数据，通常通过使用参数指定，通常相对于文档库指定。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** For security reasons, browsers limit the URLs from which untrusted
+    applets can read. For example, most browsers don''t allow untrusted applets to
+    use ".." to access directories above the code base or document base. Also, because
+    untrusted applets cannot read files except for those files on the applet''s originating
+    host, the document base is generally not useful if the document and the untrusted
+    applet reside on different servers.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**出于安全原因，浏览器限制了不受信任的 applet 可以读取的 URL。例如，大多数浏览器不允许不受信任的 applet 使用 ".."
+    访问代码库或文档库上面的目录。此外，由于不受信任的 applet 不能读取除了位于 applet 源主机上的文件之外的文件，因此如果文档和不受信任的 applet
+    位于不同的服务器上，则文档库通常是无用的。'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The `JApplet` class defines convenient forms of image-loading and sound-loading
+    methods that enable you to specify images and sounds relative to a base URL. For
+    example, assume an applet is set up with one of the directory structures shown
+    in the following figure.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JApplet` 类定义了方便的图像加载和声音加载方法，使您能够相对于基本 URL 指定图像和声音。例如，假设 applet 设置为以下图中显示的其中一个目录结构。'
+- en: '![Two directory structures showing the image files and class files in separate
+    locations, with different structures.](../Images/7a03d531735cacad696278016027fdc7.png)'
+  id: totrans-11
+  prefs: []
+  type: TYPE_IMG
+  zh: '![显示图像文件和类文件位于不同位置的两个目录结构，具有不同的结构。](../Images/7a03d531735cacad696278016027fdc7.png)'
+- en: 'To create an `Image` object that uses the `a.gif` image file under `imgDir`,
+    the applet can use the following code:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建一个使用 `imgDir` 下的 `a.gif` 图像文件的 `Image` 对象，applet 可以使用以下代码：
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'

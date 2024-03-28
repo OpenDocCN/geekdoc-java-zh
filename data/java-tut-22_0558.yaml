@@ -1,0 +1,224 @@
+- en: Overview
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 概述
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/overview.html](https://docs.oracle.com/javase/tutorial/datetime/iso/overview.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/overview.html](https://docs.oracle.com/javase/tutorial/datetime/iso/overview.html)
+- en: There are two basic ways to represent time. One way represents time in human
+    terms, referred to as *human time*, such as year, month, day, hour, minute and
+    second. The other way, *machine time*, measures time continuously along a timeline
+    from an origin, called the *epoch*, in nanosecond resolution. The Date-Time package
+    provides a rich array of classes for representing date and time. Some classes
+    in the Date-Time API are intended to represent machine time, and others are more
+    suited to representing human time.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两种基本表示时间的方式。一种方式以人类术语表示时间，称为*人类时间*，例如年、月、日、小时、分钟和秒。另一种方式，*机器时间*，连续测量时间沿着时间线从一个起点，称为*纪元*，以纳秒分辨率。日期时间包提供了丰富的类来表示日期和时间。日期时间
+    API 中的一些类旨在表示机器时间，而另一些更适合表示人类时间。
+- en: First determine what aspects of date and time you require, and then select the
+    class, or classes, that fulfill those needs. When choosing a temporal-based class,
+    you first decide whether you need to represent human time or machine time. You
+    then identify what aspects of time you need to represent. Do you need a time zone?
+    Date *and* time? Date only? If you need a date, do you need month, day, *and*
+    year, or a subset?
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先确定您需要日期和时间的哪些方面，然后选择满足这些需求的类或类。在选择基于时间的类时，首先确定您需要表示人类时间还是机器时间。然后确定您需要表示时间的哪些方面。您需要时区吗？日期*和*时间？仅日期？如果您需要日期，您需要月、日、*和*年，还是一个子集？
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Terminology:** The classes in the Date-Time API that capture and work with
+    date or time values, such as `Instant`, `LocalDateTime`, and `ZonedDateTime`,
+    are referred to as *temporal-based* classes (or types) throughout this tutorial.
+    Supporting types, such as the `TemporalAdjuster` interface or the `DayOfWeek`
+    enum, are not included in this definition.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**术语：** 在日期时间 API 中捕获和处理日期或时间值的类，如`Instant`、`LocalDateTime`和`ZonedDateTime`，在本教程中统称为*基于时间的*类（或类型）。不包括支持类型，如`TemporalAdjuster`接口或`DayOfWeek`枚举。'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: For example, you might use a `LocalDate` object to represent a birth date, because
+    most people observe their birthday on the same day, whether they are in their
+    birth city or across the globe on the other side of the international date line.
+    If you are tracking astrological time, then you might want to use a `LocalDateTime`
+    object to represent the date and time of birth, or a `ZonedDateTime`, which also
+    includes the time zone. If you are creating a time-stamp, then you will most likely
+    want to use an `Instant`, which allows you to compare one instantaneous point
+    on the timeline to another.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，您可能会使用`LocalDate`对象来表示出生日期，因为大多数人都在同一天庆祝生日，无论他们是在出生城市还是在国际日期变更线的另一边的地球上。如果您正在跟踪占星时间，那么您可能希望使用`LocalDateTime`对象来表示出生日期和时间，或者`ZonedDateTime`，它还包括时区。如果您正在创建时间戳，那么您很可能会使用`Instant`，它允许您比较时间线上的一个瞬时点和另一个。
+- en: The following table summarizes the temporal-based classes in the `java.time`
+    package that store date and/or time information, or that can be used to measure
+    an amount of time. A check mark in a column indicates that the class uses that
+    particular type of data and the **toString Output** column shows an instance printed
+    using the `toString` method. The **Where Discussed** column links you to the relevant
+    page in the tutorial.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格总结了`java.time`包中存储日期和/或时间信息的基于时间的类，或者可用于测量时间量的类。列中的勾号表示该类使用该特定类型的数据，**toString
+    输出**列显示使用`toString`方法打印的实例。**讨论位置**列链接到教程中相关页面。
+- en: '| Class or Enum | Year | Month | Day | Hours | Minutes | Seconds* | Zone Offset
+    | Zone ID | toString Output | Where Discussed |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类或枚举 | 年 | 月 | 日 | 小时 | 分钟 | 秒* | 时区偏移 | 时区 ID | toString 输出 | 讨论位置 |'
+- en: '| `Instant` |   |   |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   | `2013-08-20T15:16:26.355Z` | [Instant Class](instant.html) |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Instant` |   |   |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   | `2013-08-20T15:16:26.355Z` | [Instant 类](instant.html) |'
+- en: '| `LocalDate` | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   | `2013-08-20` | [Date Classes](date.html) |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| `LocalDate` | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   |   |   |
+    `2013-08-20` | [日期类](date.html) |'
+- en: '| `LocalDateTime` | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   | `2013-08-20T08:16:26.937`
+    | [Date and Time Classes](datetime.html) |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `LocalDateTime` | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   | `2013-08-20T08:16:26.937`
+    | [日期和时间类](datetime.html) |'
+- en: '| `ZonedDateTime` | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | `2013-08-21T00:16:26.941+09:00[Asia/Tokyo]`
+    | [Time Zone and Offset Classes](timezones.html) |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| `ZonedDateTime` | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | `2013-08-21T00:16:26.941+09:00[亚洲/东京]`
+    | [时区和偏移类](timezones.html) |'
+- en: '| `LocalTime` |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   | `08:16:26.943` | [Date and Time Classes](datetime.html) |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| `LocalTime` |   |   |   | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   | `08:16:26.943` | [日期和时间类](datetime.html) |'
+- en: '| `MonthDay` |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   |   |
+      | `--08-20` | [Date Classes](date.html) |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| `MonthDay` |   | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) |
+    ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   |   |   | `--08-20`
+    | [日期类](date.html) |'
+- en: '| `Year` | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |
+      |   |   |   |   |   | `2013` | [Date Classes](date.html) |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Year` | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |
+      |   |   |   |   | `2013` | [日期类](date.html) |'
+- en: '| `YearMonth` | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   |   |
+      |   | `2013-08` | [Date Classes](date.html) |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| `YearMonth` | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |   | `2013-08` | [日期类](date.html) |'
+- en: '| `Month` |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   |   |   |   |   | `AUGUST` | [DayOfWeek and Month Enums](enum.html) |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Month` |   | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) |  
+    |   |   |   |   |   | `八月` | [星期几和月份枚举](enum.html) |'
+- en: '| `OffsetDateTime` | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | `2013-08-20T08:16:26.954-07:00` | [Time Zone and Offset Classes](timezones.html)
+    |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| `OffsetDateTime` | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![已选中](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   | `2013-08-20T08:16:26.954-07:00` | [时区和偏移类](timezones.html) |'
+- en: '| `OffsetTime` |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | `08:16:26.957-07:00`
+    | [Time Zone and Offset Classes](timezones.html) |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| `OffsetTime` |   |   |   | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   | `08:16:26.957-07:00`
+    | [时区和偏移类](timezones.html) |'
+- en: '| `Duration` |   |   | ** | ** | ** | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   | `PT20H` (20 hours) | [Period and Duration](period.html) |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Duration` |   |   | ** | ** | ** | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    |   |   | `PT20H` (20 小时) | [周期和持续时间](period.html) |'
+- en: '| `Period` | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   | ***
+    | *** | `P10D` (10 days) | [Period and Duration](period.html) |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Period` | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png)
+    | ![checked](../Images/12bd475494acc0d71eb308e2275a6457.png) |   |   |   | ***
+    | *** | `P10D` (10 天) | [周期和持续时间](period.html) |'
+- en: '| * | Seconds are captured to nanosecond precision. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| * | 秒被捕捉到纳秒精度。 |'
+- en: '| ** | This class does not store this information, but has methods to provide
+    time in these units. |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| ** | 这个类不存储这些信息，但有方法提供这些单位的时间。 |'
+- en: '| *** | When a `Period` is added to a `ZonedDateTime`, daylight saving time
+    or other local time differences are observed. |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| *** | 当`Period`添加到`ZonedDateTime`时，会考虑夏令时或其他本地时间差异。 |'

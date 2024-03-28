@@ -1,0 +1,684 @@
+- en: How to Set the Look and Feel
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何设置外观和感觉
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html](https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html](https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html)
+- en: The architecture of Swing is designed so that you may change the "look and feel"
+    (L&F) of your application's GUI (see [A Swing Architecture Overview](http://www.oracle.com/technetwork/java/architecture-142923.html)).
+    "Look" refers to the appearance of GUI widgets (more formally, `JComponents`)
+    and "feel" refers to the way the widgets behave.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing的架构设计使您可以更改应用程序GUI的“外观和感觉”（L&F）（请参阅[A Swing Architecture Overview](http://www.oracle.com/technetwork/java/architecture-142923.html)）。“外观”指的是GUI小部件的外观（更正式地说，`JComponents`），而“感觉”指的是小部件的行为方式。
+- en: 'Swing''s architecture enables multiple L&Fs by separating every component into
+    two distinct classes: a `JComponent` subclass and a corresponding `ComponentUI`
+    subclass. For example, every `JList` instance has a concrete implementation of
+    `ListUI` (`ListUI` extends `ComponentUI`). The `ComponentUI` subclass is referred
+    to by various names in Swing''s documentation—"the UI," "component UI," "UI delegate,"
+    and "look and feel delegate" are all used to identify the `ComponentUI` subclass.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing的架构通过将每个组件分为两个不同的类来实现多个L&Fs的功能：一个`JComponent`子类和一个对应的`ComponentUI`子类。例如，每个`JList`实例都有一个`ListUI`的具体实现（`ListUI`扩展自`ComponentUI`）。在Swing的文档中，`ComponentUI`子类被称为各种名称——“UI”，“组件UI”，“UI代理”和“外观和感觉代理”都用来标识`ComponentUI`子类。
+- en: Most developers never need to interact with the UI delegate directly. For the
+    most part, the UI delegate is used internally by the `JComponent` subclass for
+    crucial functionality, with cover methods provided by the `JComponent` subclass
+    for all access to the UI delegate. For example, all painting in `JComponent` subclasses
+    is delegated to the UI delegate. By delegating painting, the 'look' can vary depending
+    upon the L&F.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数开发人员几乎不需要直接与UI代理交互。在大多数情况下，UI代理由`JComponent`子类内部用于关键功能，`JComponent`子类提供了所有对UI代理的访问的覆盖方法。例如，`JComponent`子类中的所有绘图都委托给UI代理。通过委托绘图，外观可以根据L&F的不同而变化。
+- en: It is the responsibility of each L&F to provide a concrete implementation for
+    each of the `ComponentUI` subclasses defined by Swing. For example, the Java Look
+    and Feel creates an instance of `MetalTabbedPaneUI` to provide the L&F for `JTabbedPane`.
+    The actual creation of the UI delegate is handled by Swing for you—for the most
+    part you never need to interact directly with the UI delegate.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个L&F都有责任为Swing定义的每个`ComponentUI`子类提供具体实现。例如，Java外观和感觉创建一个`MetalTabbedPaneUI`实例来为`JTabbedPane`提供L&F。UI代理的实际创建由Swing为您处理——在大多数情况下，您几乎不需要直接与UI代理交互。
+- en: 'The rest of this section discusses the following subjects:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的其余部分讨论以下主题：
+- en: '[Available Look and Feels](#available)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[可用的外观和感觉](#available)'
+- en: '[Programmatically Setting the Look and Feel](#programmatic)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[以编程方式设置外观和感觉](#programmatic)'
+- en: '[Specifying the Look and Feel: Command Line](#commandLine)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[指定外观和感觉：命令行](#commandLine)'
+- en: '[Specifying the Look and Feel: swing.properties](#properties)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[指定外观和感觉：swing.properties](#properties)'
+- en: '[How the UI Manager Chooses the Look and Feel](#steps)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[UI管理器如何选择外观和感觉](#steps)'
+- en: '[Changing the Look and Feel After Startup](#dynamic)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[启动后更改外观和感觉](#dynamic)'
+- en: '[An Example](#example)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[一个示例](#example)'
+- en: '[Themes](#themes)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[主题](#themes)'
+- en: '[The SwingSet2 Demonstration Program](#swingset2)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[SwingSet2演示程序](#swingset2)'
+- en: Available Look and Feels
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 可用的外观和感觉
+- en: 'Sun''s JRE provides the following L&Fs:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Sun的JRE提供以下L&Fs：
+- en: '`CrossPlatformLookAndFeel`—this is the "Java L&F" (also called "Metal") that
+    looks the same on all platforms. It is part of the Java API (`javax.swing.plaf.metal`)
+    and is the default that will be used if you do nothing in your code to set a different
+    L&F.'
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`CrossPlatformLookAndFeel`—这是在所有平台上看起来相同的“Java L&F”（也称为“Metal”）。它是Java API的一部分（`javax.swing.plaf.metal`），如果您在代码中不做任何设置，则将使用默认值。'
+- en: '`SystemLookAndFeel`—here, the application uses the L&F that is native to the
+    system it is running on. The System L&F is determined at runtime, where the application
+    asks the system to return the name of the appropriate L&F.'
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`SystemLookAndFeel`—在这里，应用程序使用与其运行的系统相对应的L&F。系统L&F在运行时确定，应用程序会询问系统返回适当L&F的名称。'
+- en: Synth—the basis for creating your own look and feel with an XML file.
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: Synth——用XML文件创建自己的外观和感觉的基础。
+- en: Multiplexing— a way to have the UI methods delegate to a number of different
+    look and feel implementations at the same time.
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 多路复用—一种让 UI 方法同时委托给多个不同外观实现的方式。
+- en: For Linux and Solaris, the System L&Fs are "GTK+" if GTK+ 2.2 or later is installed,
+    "Motif" otherwise. For Windows, the System L&F is "Windows," which mimics the
+    L&F of the particular Windows OS that is running—classic Windows, XP, or Vista.
+    The GTK+, Motif, and Windows L&Fs are provided by Sun and shipped with the Java
+    SDK and JRE, although they are not part of the Java API.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于 Linux 和 Solaris，如果安装了 GTK+ 2.2 或更高版本，则系统 L&Fs 是“GTK+”，否则是“Motif”。对于 Windows，系统
+    L&F 是“Windows”，模仿正在运行的特定 Windows OS 的 L&F—经典 Windows、XP 或 Vista。GTK+、Motif 和 Windows
+    L&Fs 由 Sun 提供，并随 Java SDK 和 JRE 一起提供，尽管它们不是 Java API 的一部分。
+- en: Apple provides its own JVM which includes their proprietary L&F.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 苹果提供了自己的 JVM，其中包含他们专有的 L&F。
+- en: 'In summary, when you use the `SystemLookAndFeel`, this is what you will see:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 总之，当您使用 `SystemLookAndFeel` 时，您将看到以下内容：
+- en: '| Platform | Look and Feel |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| 平台 | 外观和感觉 |'
+- en: '| Solaris, Linux with GTK+ 2.2 or later | GTK+ |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| Solaris、安装了 GTK+ 2.2 或更高版本的 Linux | GTK+ |'
+- en: '| Other Solaris, Linux | Motif |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| 其他 Solaris、Linux | Motif |'
+- en: '| IBM UNIX | IBM* |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| IBM UNIX | IBM* |'
+- en: '| HP UX | HP* |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| HP UX | HP* |'
+- en: '| Classic Windows | Windows |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| 经典 Windows | Windows |'
+- en: '| Windows XP | Windows XP |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| Windows XP | Windows XP |'
+- en: '| Windows Vista | Windows Vista |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| Windows Vista | Windows Vista |'
+- en: '| Macintosh | Macintosh* |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| Macintosh | Macintosh* |'
+- en: '* Supplied by the system vendor.'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* 由系统供应商提供。'
+- en: 'You don''t see the System L&F in the API. The GTK+, Motif, and Windows packages
+    that it requires are shipped with the Java SDK as:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 API 中看不到系统 L&F。它需要的 GTK+、Motif 和 Windows 包已随 Java SDK 一起提供：
+- en: '[PRE0]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Note that the path includes `java`, and not `javax`.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意路径包括 `java`，而不是 `javax`。
+- en: '* * *'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The GTK+ L&F will only run on UNIX or Linux systems with GTK+ 2.2
+    or later installed, while the Windows L&F runs only on Windows systems. Like the
+    Java (Metal) L&F, the Motif L&F will run on any platform.'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** GTK+ L&F 只能在安装了 GTK+ 2.2 或更高版本的 UNIX 或 Linux 系统上运行，而 Windows L&F 只能在
+    Windows 系统上运行。与 Java（Metal）L&F 一样，Motif L&F 可在任何平台上运行。'
+- en: '* * *'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: All of Sun's L&Fs have a great deal of commonality. This commonality is defined
+    in the `Basic` look and feel in the API (`javax.swing.plaf.basic`). The Motif
+    and Windows L&Fs are each built by extending the UI delegate classes in `javax.swing.plaf.basic`
+    (a custom L&F can be built by doing the same thing). The "Basic" L&F is not used
+    without being extended.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有 Sun 的 L&Fs 都有很多共同点。这种共同点在 API 中的 `Basic` 外观和感觉中定义（`javax.swing.plaf.basic`）。Motif
+    和 Windows L&Fs 分别通过扩展 `javax.swing.plaf.basic` 中的 UI 代理类构建（可以通过相同的方式构建自定义 L&F）。"Basic"
+    L&F 不会在不被扩展的情况下使用。
+- en: 'In the API you will see four L&F packages:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 API 中，您将看到四个 L&F 包：
+- en: '`javax.swing.plaf.basic`—basic UI Delegates to be extended when creating a
+    custom L&F'
+  id: totrans-43
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.swing.plaf.basic`—在创建自定义 L&F 时要扩展的基本 UI 代理'
+- en: '`javax.swing.plaf.metal`—the Java L&F, also known as the CrossPlatform L&F
+    ("Metal" was the Sun project name for this L&F) The current default "theme" (discussed
+    below) for this L&F is "Ocean, so this is often referred to as the Ocean L&F.'
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.swing.plaf.metal`—Java L&F，也被称为跨平台 L&F（"Metal" 是这个 L&F 的 Sun 项目名称）。这个
+    L&F 的当前默认“主题”（下面讨论）是“Ocean”，因此通常被称为 Ocean L&F。'
+- en: '`javax.swing.plaf.multi`—a multiplexing look and feel that allows the UI methods
+    to delegate to a number of look and feel implementations at the same time. It
+    can be used to augment the behavior of a particular look and feel, for example
+    with a L&F that provides audio cues on top of the Windows look and feel. This
+    is a way of creating a handicapped-accessible look and feel.'
+  id: totrans-45
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.swing.plaf.multi`—一个多路复用外观，允许 UI 方法同时委托给多个外观实现。它可以用于增强特定外观的行为，例如在 Windows
+    外观之上提供音频提示的外观。这是创建残障人士可访问的外观的一种方式。'
+- en: '`javax.swing.plaf.synth`—an easily configured L&F using XML files (discussed
+    in the next section of this lesson)'
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.swing.plaf.synth`—使用 XML 文件轻松配置的 L&F（在本课程的下一部分讨论）'
+- en: 'You aren''t limited to the L&Fs supplied with the Java platform. You can use
+    any L&F that is in your program''s class path. External L&Fs are usually provided
+    in one or more JAR files that you add to your program''s class path at runtime.
+    For example:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您不限于使用 Java 平台提供的 L&Fs。您可以使用程序类路径中的任何 L&F。外部 L&Fs 通常以一个或多个 JAR 文件的形式提供，您可以在运行时将其添加到程序的类路径中。例如：
+- en: '[PRE1]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Once an external L&F is in your program's class path, your program can use it
+    just like any of the L&Fs shipped with the Java platform.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦外部 L&F 在程序的类路径中，程序就可以像使用 Java 平台提供的任何 L&Fs 一样使用它。
+- en: Programmatically Setting the Look and Feel
+  id: totrans-50
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 以编程方式设置外观和感觉
+- en: '* * *'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** If you are going to set the L&F, you should do it as the very first
+    step in your application. Otherwise you run the risk of initializing the Java
+    L&F regardless of what L&F you''ve requested. This can happen inadvertently when
+    a static field references a Swing class, which causes the L&F to be loaded. If
+    no L&F has yet been specified, the default L&F for the JRE is loaded. For Sun''s
+    JRE the default is the Java L&F, for Apple''s JRE the Apple L&F, and so forth.'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果要设置外观和感觉，应该在应用程序中的第一步就这样做。否则，你可能会在请求的外观和感觉之外初始化Java外观和感觉。当静态字段引用Swing类时，可能会无意中发生这种情况，导致加载外观和感觉。如果尚未指定外观和感觉，则加载JRE的默认外观和感觉。对于Sun的JRE，默认是Java外观和感觉，对于Apple的JRE是Apple外观和感觉，依此类推。'
+- en: '* * *'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The L&F that Swing components use is specified by way of the `UIManager` class
+    in the `javax.swing` package. Whenever a Swing component is created,the component
+    asks the UI manager for the UI delegate that implements the component's L&F. For
+    example, each `JLabel` constructor queries the UI manager for the UI delegate
+    object appropriate for the label. It then uses that UI delegate object to implement
+    all of its drawing and event handling.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing组件使用的外观和感觉是通过`javax.swing`包中的`UIManager`类指定的。每当创建一个Swing组件时，该组件都会向UI管理器请求实现组件外观和感觉的UI委托。例如，每个`JLabel`构造函数都会查询UI管理器以获取适用于标签的UI委托对象。然后使用该UI委托对象来实现所有的绘制和事件处理。
+- en: 'To programmatically specify a L&F, use the `UIManager.setLookAndFeel()` method
+    with the fully qualified name of the appropriate subclass of `LookAndFeel` as
+    its argument. For example, the bold code in the following snippet makes the program
+    use the cross-platform Java L&F:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要以编程方式指定外观和感觉，可以使用`UIManager.setLookAndFeel()`方法，并将适当的`LookAndFeel`子类的完全限定名称作为参数。例如，以下代码中的粗体代码使程序使用跨平台的Java外观和感觉：
+- en: '[PRE2]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Alternatively, this code makes the program use the System L&F:'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，这段代码使程序使用系统外观和感觉：
+- en: '[PRE3]'
+  id: totrans-58
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: You can also use the actual class name of a Look and Feel as the argument to
+    `UIManager.setLookAndFeel()`. For example,
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你也可以将外观和感觉的实际类名作为`UIManager.setLookAndFeel()`的参数。例如，
+- en: '[PRE4]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: or
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或
+- en: '[PRE5]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: You aren't limited to the preceding arguments. You can specify the name for
+    any L&F that is in your program's class path.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你不限于前面的参数。你可以为程序类路径中的任何外观和感觉指定名称。
+- en: 'Specifying the Look and Feel: Command Line'
+  id: totrans-64
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定外观和感觉：命令行
+- en: 'You can specify the L&F at the command line by using the `-D` flag to set the
+    `swing.defaultlaf` property. For example:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以通过使用`-D`标志设置`swing.defaultlaf`属性在命令行中指定外观和感觉。例如：
+- en: '[PRE6]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'Specifying the Look and Feel: swing.properties File'
+  id: totrans-67
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定外观和感觉：swing.properties文件
+- en: 'Yet another way to specify the current L&F is to use the `swing.properties`
+    file to set the `swing.defaultlaf` property. This file, which you may need to
+    create, is located in the `lib` directory of Sun''s Java release (other vendors
+    of Java may use a different location). For example, if you''re using the Java
+    interpreter in `*javaHomeDirectory*\bin`, then the `swing.properties` file (if
+    it exists) is in `*javaHomeDirectory*\lib`. Here is an example of the contents
+    of a [`swing.properties`](swing.properties) file:'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种指定当前外观和感觉的方法是使用`swing.properties`文件来设置`swing.defaultlaf`属性。这个文件可能需要你自己创建，在Sun的Java发布版本的`lib`目录中（其他Java供应商可能使用不同的位置）。例如，如果你在`*javaHomeDirectory*\bin`中使用Java解释器，那么`swing.properties`文件（如果存在）就在`*javaHomeDirectory*\lib`中。以下是[`swing.properties`](swing.properties)文件的示例内容：
+- en: '[PRE7]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: How the UI Manager Chooses the Look and Feel
+  id: totrans-70
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: UI管理器如何选择外观和感觉
+- en: 'Here are the look-and-feel determination steps that occur when the UI manager
+    needs to set a L&F:'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当UI管理器需要设置外观和感觉时，以下是外观和感觉确定步骤：
+- en: If the program sets the L&F before a look and feel is needed, the UI manager
+    tries to create an instance of the specified look-and-feel class. If successful,
+    all components use that L&F.
+  id: totrans-72
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果程序在需要外观和感觉之前设置了外观和感觉，UI管理器会尝试创建指定外观和感觉类的实例。如果成功，所有组件都将使用该外观和感觉。
+- en: If the program hasn't successfully specified a L&F, then the UI manager uses
+    the L&F specified by the `swing.defaultlaf` property. If the property is specified
+    in both the `swing.properties` file *and* on the command line, the command-line
+    definition takes precedence.
+  id: totrans-73
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果程序没有成功指定外观和感觉，那么UI管理器将使用`swing.defaultlaf`属性指定的外观和感觉。如果`swing.properties`文件和命令行中都指定了该属性，则以命令行定义为准。
+- en: If none of these steps has resulted in a valid L&F, Sun's JRE uses the Java
+    L&F. Other vendors, such as Apple, will use their default L&F.
+  id: totrans-74
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果这些步骤都没有导致有效的外观和感觉，Sun的JRE将使用Java外观和感觉。其他供应商，如苹果，将使用其默认外观和感觉。
+- en: Changing the Look and Feel After Startup
+  id: totrans-75
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 启动后更改外观和感觉
+- en: 'You can change the L&F with `setLookAndFeel` even after the program''s GUI
+    is visible. To make existing components reflect the new L&F, invoke the `SwingUtilities`
+    `updateComponentTreeUI` method once per top-level container. Then you might wish
+    to resize each top-level container to reflect the new sizes of its contained components.
+    For example:'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使程序的GUI可见，您也可以使用`setLookAndFeel`更改外观和感觉。为了使现有组件反映新的外观和感觉，每个顶级容器调用一次`SwingUtilities`的`updateComponentTreeUI`方法。然后，您可能希望调整每个顶级容器的大小以反映其包含组件的新大小。例如：
+- en: '[PRE8]'
+  id: totrans-77
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: An Example
+  id: totrans-78
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例
+- en: In the following example, `LookAndFeelDemo.java`, you can experiment with different
+    Look and Feels. The program creates a simple GUI with a button and a label. Every
+    time you click the button, the label increments.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在以下示例中，`LookAndFeelDemo.java`，您可以尝试不同的外观和感觉。该程序创建了一个简单的GUI，带有一个按钮和一个标签。每次单击按钮时，标签会递增。
+- en: 'You can change the L&F by changing the `LOOKANDFEEL` constant on line 18\.
+    The comments on the preceding lines tell you what values are acceptable:'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过更改第18行的`LOOKANDFEEL`常量来更改外观和感觉。前几行的注释告诉您哪些值是可接受的：
+- en: '[PRE9]'
+  id: totrans-81
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Here the constant is set to "Motif", which is a L&F that will run on any platform
+    (as will the default, "Metal"). "GTK+" will not run on Windows, and "Windows"
+    will run only on Windows. If you choose a L&F that will not run, you will get
+    the Java, or Metal, L&F.
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里将常量设置为"Motif"，这是一个可以在任何平台上运行的外观和感觉（默认为"Metal"）。"GTK+"不会在Windows上运行，而"Windows"只会在Windows上运行。如果选择无法运行的外观和感觉，您将获得Java或Metal外观和感觉。
+- en: 'In the section of the code where the L&F is actually set, you will see several
+    different ways to set it, as discussed above:'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在实际设置外观和感觉的代码部分，您将看到几种不同的设置方式，如上所述：
+- en: '[PRE10]'
+  id: totrans-84
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: You can verify that both arguments work by commenting/un-commenting the two
+    alternatives.
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过注释/取消注释两个替代方案来验证这两个参数是否有效。
+- en: 'Here is a listing of the [`LookAndFeelDemo`](../examples/lookandfeel/LookAndFeelDemoProject/src/lookandfeel/LookAndFeelDemo.java)
+    source file:'
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是[`LookAndFeelDemo`](../examples/lookandfeel/LookAndFeelDemoProject/src/lookandfeel/LookAndFeelDemo.java)源文件的列表：
+- en: '[PRE11]'
+  id: totrans-87
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: Themes
+  id: totrans-88
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 主题
+- en: 'Themes were introduced as a way of easily changing the colors and fonts of
+    the cross-platform Java (Metal) Look and Feel. In the sample program, `LookAndfeelDemo.java`,
+    listed above, you can change the theme of the Metal L&F by setting the `THEME`
+    constant on line 23 to one of three values:'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 主题被引入作为轻松更改跨平台Java（Metal）外观和感觉的颜色和字体的一种方式。在上面列出的示例程序`LookAndfeelDemo.java`中，您可以通过将第23行的`THEME`常量设置为三个值之一来更改金属外观和感觉的主题。
+- en: '`DefaultMetal`'
+  id: totrans-90
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DefaultMetal`'
+- en: '`Ocean`'
+  id: totrans-91
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Ocean`'
+- en: '`Test`'
+  id: totrans-92
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Test`'
+- en: '`Ocean`, which is a bit softer than the pure Metal look, has been the default
+    theme for the Metal (Java) L&F since Java SE 5\. Despite its name, `DefaultMetal`
+    is not the default theme for Metal (it was before Java SE 5, which explains its
+    name). The `Test` theme is a theme defined in [``TestTheme.java``](../examples/lookandfeel/LookAndFeelDemoProject/src/lookandfeel/TestTheme.java),
+    which you must compile with `LookAndfeelDemo.java`. As it is written, `TestTheme.java`
+    sets the three primary colors (with somewhat bizarre results). You can modify
+    `TestTheme.java` to test any colors you like.'
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Ocean`，比纯金属外观稍柔和，自Java SE 5以来一直是金属（Java）外观的默认主题。尽管它的名字是`DefaultMetal`，但它不是金属的默认主题（在Java
+    SE 5之前是，这解释了它的名字）。`Test`主题是在[``TestTheme.java``](../examples/lookandfeel/LookAndFeelDemoProject/src/lookandfeel/TestTheme.java)中定义的主题，您必须使用`LookAndfeelDemo.java`编译。正如所写，`TestTheme.java`设置了三种主要颜色（结果有些奇怪）。您可以修改`TestTheme.java`以测试任何您喜欢的颜色。'
+- en: The section of code where the theme is set is found beginning on line 92 of
+    `LookAndfeelDemo.java`. Note that you must be using the Metal L&F to set a theme.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置主题的代码部分从`LookAndfeelDemo.java`的第92行开始。请注意，您必须使用金属外观和感觉来设置主题。
+- en: '[PRE12]'
+  id: totrans-95
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: The SwingSet2 Demonstration Program
+  id: totrans-96
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: SwingSet2演示程序
+- en: When you download the [JDK and JavaFX Demos and Samples](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    bundle and open it up, there is a `demo\jfc` folder that contains a demonstration
+    program called `SwingSet2`. This program has a graphically rich GUI and allows
+    you to change the Look and Feel from the menu. Further, if you are using the Java
+    (Metal) Look and Feel, you can choose a variety of different themes. The files
+    for the various themes (for example, `RubyTheme.java`) are found in the `SwingSet2\src`
+    folder.
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您下载[JDK和JavaFX演示和示例](http://www.oracle.com/technetwork/java/javase/downloads/index.html)捆绑包并打开它时，会看到一个包含名为`SwingSet2`的演示程序的`demo\jfc`文件夹。该程序具有丰富的图形用户界面，并允许您从菜单中更改外观。此外，如果您正在使用Java（Metal）外观，您可以选择各种不同的主题。各种主题的文件（例如，`RubyTheme.java`）位于`SwingSet2\src`文件夹中。
+- en: 'This is the "Ocean" theme, which is the default for the cross-platform Java
+    (Metal) Look and Feel:'
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是“Ocean”主题，是跨平台Java（Metal）外观的默认主题：
+- en: '![](../Images/38a8bf71ede9759787954c09ba8bbf18.png)'
+  id: totrans-99
+  prefs: []
+  type: TYPE_IMG
+  zh: '![](../Images/38a8bf71ede9759787954c09ba8bbf18.png)'
+- en: 'This is the "Steel" theme, which was the original theme for the cross-platform
+    Java (Metal) Look and Feel:'
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是“Steel”主题，是跨平台Java（Metal）外观的原始主题：
+- en: '![](../Images/7309e77d4ae15b4bb871b4db5f3174c9.png)'
+  id: totrans-101
+  prefs: []
+  type: TYPE_IMG
+  zh: '![](../Images/7309e77d4ae15b4bb871b4db5f3174c9.png)'
+- en: 'To run the `SwingSet2` demo program on a system that has the JDK installed,
+    use this command:'
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在已安装JDK的系统上运行`SwingSet2`演示程序，请使用以下命令：
+- en: '[PRE13]'
+  id: totrans-103
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: This will give you the default theme of Ocean.
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将为您提供Ocean的默认主题。
+- en: 'To get the metal L&F, run this:'
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要获得金属L&F，请运行以下命令：
+- en: '[PRE14]'
+  id: totrans-106
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'

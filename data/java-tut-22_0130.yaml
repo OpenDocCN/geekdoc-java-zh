@@ -1,0 +1,170 @@
+- en: Guidelines for Wildcard Use
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 通配符使用准则
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/wildcardGuidelines.html](https://docs.oracle.com/javase/tutorial/java/generics/wildcardGuidelines.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/wildcardGuidelines.html](https://docs.oracle.com/javase/tutorial/java/generics/wildcardGuidelines.html)
+- en: One of the more confusing aspects when learning to program with generics is
+    determining when to use an upper bounded wildcard and when to use a lower bounded
+    wildcard. This page provides some guidelines to follow when designing your code.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在学习如何使用泛型编程时，确定何时使用上界通配符和何时使用下界通配符是更令人困惑的方面之一。本页面提供了一些在设计代码时遵循的准则。
+- en: 'For purposes of this discussion, it is helpful to think of variables as providing
+    one of two functions:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本讨论中，将变量视为提供两种功能之一是有帮助的：
+- en: '**An "In" Variable**'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**一个“In”变量**'
+- en: 'An "in" variable serves up data to the code. Imagine a copy method with two
+    arguments: `copy(src, dest)`. The `src` argument provides the data to be copied,
+    so it is the "in" parameter.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个“in”变量向代码提供数据。想象一个带有两个参数的复制方法：`copy(src, dest)`。`src`参数提供要复制的数据，因此它是“in”参数。
+- en: '**An "Out" Variable**'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**一个“Out”变量**'
+- en: An "out" variable holds data for use elsewhere. In the copy example, `copy(src,
+    dest)`, the `dest` argument accepts data, so it is the "out" parameter.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个“out”变量保存数据以供其他地方使用。在复制示例中，`copy(src, dest)`，`dest`参数接受数据，因此它是“out”参数。
+- en: Of course, some variables are used both for "in" and "out" purposes — this scenario
+    is also addressed in the guidelines.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当然，有些变量既用于“in”又用于“out” —— 这种情况也在准则中有所涉及。
+- en: 'You can use the "in" and "out" principle when deciding whether to use a wildcard
+    and what type of wildcard is appropriate. The following list provides the guidelines
+    to follow:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在决定是否使用通配符以及何种类型的通配符适合时，可以使用“in”和“out”原则。以下列表提供了要遵循的准则：
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Wildcard Guidelines:**'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**通配符准则：**'
+- en: An "in" variable is defined with an upper bounded wildcard, using the `extends`
+    keyword.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`extends`关键字定义具有上界通配符的“in”变量。
+- en: An "out" variable is defined with a lower bounded wildcard, using the `super`
+    keyword.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`super`关键字定义具有下界通配符的“out”变量。
+- en: In the case where the "in" variable can be accessed using methods defined in
+    the `Object` class, use an unbounded wildcard.
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在“in”变量可以使用在`Object`类中定义的方法访问的情况下，使用无界通配符。
+- en: In the case where the code needs to access the variable as both an "in" and
+    an "out" variable, do not use a wildcard.
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在代码需要将变量作为“in”和“out”变量访问的情况下，不要使用通配符。
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: These guidelines do not apply to a method's return type. Using a wildcard as
+    a return type should be avoided because it forces programmers using the code to
+    deal with wildcards.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些准则不适用于方法的返回类型。应避免将通配符用作返回类型，因为这会强迫使用代码的程序员处理通配符。
+- en: 'A list defined by `List<? extends ...>` can be informally thought of as read-only,
+    but that is not a strict guarantee. Suppose you have the following two classes:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由`List<? extends ...>`定义的列表可以非正式地被视为只读的，但这并不是一个严格的保证。假设你有以下两个类：
+- en: '[PRE0]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Consider the following code:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑以下代码：
+- en: '[PRE1]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Because `List<EvenNumber>` is a subtype of `List<? extends NaturalNumber>`,
+    you can assign `le` to `ln`. But you cannot use `ln` to add a natural number to
+    a list of even numbers. The following operations on the list are possible:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`List<EvenNumber>`是`List<? extends NaturalNumber>`的子类型，所以你可以将`le`赋给`ln`。但你不能使用`ln`向偶数列表添加自然数。列表上的以下操作是可能的：
+- en: You can add `null`.
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以添加`null`。
+- en: You can invoke `clear`.
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以调用`clear`。
+- en: You can get the iterator and invoke `remove`.
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以获取迭代器并调用`remove`。
+- en: You can capture the wildcard and write elements that you've read from the list.
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以捕获通配符并写入你从列表中读取的元素。
+- en: You can see that the list defined by `List<? extends NaturalNumber>` is not
+    read-only in the strictest sense of the word, but you might think of it that way
+    because you cannot store a new element or change an existing element in the list.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以看到由`List<? extends NaturalNumber>`定义的列表在严格意义上并不是只读的，但你可能会这样认为，因为你不能在列表中存储新元素或更改现有元素。

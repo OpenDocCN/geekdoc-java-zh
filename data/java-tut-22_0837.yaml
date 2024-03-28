@@ -1,0 +1,54 @@
+- en: Steps for the Code Receiver
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 代码接收者的步骤
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/receiver.html](https://docs.oracle.com/javase/tutorial/security/toolsign/receiver.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/receiver.html](https://docs.oracle.com/javase/tutorial/security/toolsign/receiver.html)
+- en: In this lesson, you will act as the receiver of the signed jar file containing
+    the `count.class` file. It requests access to your system resources on your system
+    that it normally would not have permission to access.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这节课中，你将扮演接收者的角色，接收包含`count.class`文件的已签名的jar文件。它请求访问你系统资源的权限，这是它通常没有权限访问的。
+- en: This procedure requires you to perform the following steps listed below.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个过程需要你执行下面列出的步骤。
+- en: '[Observe the Restricted Application](rstep1.html). This application will not
+    be able to access your system resources until you import Susan''s certificate
+    and create a policy file.'
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[观察受限应用程序](rstep1.html)。在导入Susan的证书并创建策略文件之前，该应用程序将无法访问你的系统资源。'
+- en: '[Import Susan''s certificate as a trusted certificate](rstep2.html) using the
+    `keytool -import` command, and give it the alias `susan`.'
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用`keytool -import`命令将Susan的证书导入为受信任的证书，并将其别名设置为`susan`。
+- en: '[Set up a policy file to grant permission](rstep3.html) for the `count` application
+    signed by `susan` to read the specified file on your system.'
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[设置策略文件以授予权限](rstep3.html)给由`susan`签名的`count`应用程序读取你系统上指定的文件。'
+- en: '[Test your reconfigured `count` application](rstep4.html) to verify that with
+    a trusted certificate and access to your new policy file that grants it permission
+    to read files on your system, `count` can now read your `data` file.'
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[测试你重新配置的`count`应用程序](rstep4.html)，以验证具有受信任证书和访问你新策略文件的权限后，`count`现在可以读取你的`data`文件。'

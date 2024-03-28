@@ -1,0 +1,460 @@
+- en: Playing Back Audio
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 播放音频
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sound/playing.html](https://docs.oracle.com/javase/tutorial/sound/playing.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sound/playing.html](https://docs.oracle.com/javase/tutorial/sound/playing.html)
+- en: Playback is sometimes referred to as *presentation* or *rendering*. These are
+    general terms that are applicable to other kinds of media besides sound. The essential
+    feature is that a sequence of data is delivered somewhere for eventual perception
+    by a user. If the data is time-based, as sound is, it must be delivered at the
+    correct rate. With sound even more than video, it's important that the rate of
+    data flow be maintained, because interruptions to sound playback often produce
+    loud clicks or irritating distortion. The Java Sound API is designed to help application
+    programs play sounds smoothly and continuously, even very long sounds.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 播放有时被称为*演示*或*渲染*。这些是适用于声音以外的其他媒体的通用术语。其关键特征是一系列数据被传送到某个地方，最终由用户感知。如果数据是基于时间的，如声音，它必须以正确的速率传送。与视频相比，对于声音来说，数据流速率的维持更为重要，因为声音播放中断通常会产生响亮的点击声或刺耳的失真。Java
+    Sound API旨在帮助应用程序平稳连续地播放声音，即使是非常长的声音。
+- en: Earlier you saw how to obtain a line from the audio system or from a mixer.
+    Here you will learn how to play sound through a line.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 之前您已经看到如何从音频系统或混音器中获取线路。在这里，您将学习如何通过线路播放声音。
+- en: 'As you know, there are two kinds of line that you can use for playing sound:
+    a [`Clip`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/Clip.html)
+    and a [`SourceDataLine`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/SourceDataLine.html).
+    The primary difference between the two is that with a `Clip` you specify all the
+    sound data at one time, before playback, whereas with a `SourceDataLine` you keep
+    writing new buffers of data continuously during playback. Although there are many
+    situations in which you could use either a `Clip` or a `SourceDataLine`, the following
+    criteria help identify which kind of line is better suited for a particular situation:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所知，有两种可以用于播放声音的线路：[`Clip`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/Clip.html)和[`SourceDataLine`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/SourceDataLine.html)。两者之间的主要区别在于，使用`Clip`时，您在播放之前一次性指定所有声音数据，而使用`SourceDataLine`时，在播放过程中持续写入新的数据缓冲区。虽然有许多情况可以使用`Clip`或`SourceDataLine`，但以下标准有助于确定哪种线路更适合特定情况：
+- en: Use a `Clip` when you have non-real-time sound data that can be preloaded into
+    memory.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当您有非实时声音数据可以预加载到内存中时，请使用`Clip`。
+- en: For example, you might read a short sound file into a clip. If you want the
+    sound to play back more than once, a `Clip` is more convenient than a `SourceDataLine`,
+    especially if you want the playback to loop (cycle repeatedly through all or part
+    of the sound). If you need to start the playback at an arbitrary position in the
+    sound, the `Clip` interface provides a method to do that easily. Finally, playback
+    from a `Clip` generally has less latency than buffered playback from a `SourceDataLine`.
+    In other words, because the sound is preloaded into a clip, playback can start
+    immediately instead of having to wait for the buffer to be filled.
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 例如，您可以将短声音文件读入剪辑中。如果您希望声音重复播放多次，则`Clip`比`SourceDataLine`更方便，特别是如果您希望播放循环（重复通过声音的全部或部分）。如果您需要在声音中的任意位置开始播放，`Clip`接口提供了一种轻松实现的方法。最后，与从`SourceDataLine`缓冲播放相比，从`Clip`播放通常具有更少的延迟。换句话说，因为声音已经预加载到剪辑中，播放可以立即开始，而不必等待缓冲区填充。
+- en: Use a `SourceDataLine` for streaming data, such as a long sound file that won't
+    all fit in memory at once, or a sound whose data can't be known in advance of
+    playback.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`SourceDataLine`来流式传输数据，比如无法一次性全部放入内存的长声音文件，或者在播放之前无法预先知道数据的声音。
+- en: As an example of the latter case, suppose you're monitoring sound input—that
+    is, playing sound back as it's being captured. If you don't have a mixer that
+    can send input audio right back out an output port, your application program will
+    have to take the captured data and send it to an audio-output mixer. In this case,
+    a `SourceDataLine` is more appropriate than a `Clip`. Another example of sound
+    that can't be known in advance occurs when you synthesize or manipulate the sound
+    data interactively in response to the user's input. For example, imagine a game
+    that gives aural feedback by "morphing" from one sound to another as the user
+    moves the mouse. The dynamic nature of the sound transformation requires the application
+    program to update the sound data continuously during playback, instead of supplying
+    it all before playback starts.
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 作为后一种情况的示例，假设您正在监视声音输入，即在捕获声音时播放声音。如果您没有一个可以将输入音频发送回输出端口的混音器，您的应用程序将不得不获取捕获的数据并将其发送到音频输出混音器。在这种情况下，使用`SourceDataLine`比使用`Clip`更合适。另一个无法事先知道的声音示例是当您根据用户的输入合成或操作声音数据时。例如，想象一个游戏通过在用户移动鼠标时从一个声音“变形”到另一个声音来提供听觉反馈。声音转换的动态性要求应用程序在播放过程中持续更新声音数据，而不是在播放开始之前提供所有数据。
+- en: Using a Clip
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用Clip
+- en: You obtain a `Clip` as described earlier under [Getting a Line of a Desired
+    Type](accessing.html#113154); Construct a `DataLine.Info` object with `Clip.class`
+    for the first argument, and pass this `DataLine.Info` as an argument to the `getLine`
+    method of `AudioSystem` or `Mixer`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，在[获取所需类型的行](accessing.html#113154)下获取一个`Clip`；用`Clip.class`作为第一个参数构造一个`DataLine.Info`对象，并将此`DataLine.Info`作为参数传递给`AudioSystem`或`Mixer`的`getLine`方法。
+- en: 'Obtaining a line just means you''ve gotten a way to refer to it; `getLine`
+    doesn''t actually reserve the line for you. Because a mixer might have a limited
+    number of lines of the desired type available, it can happen that after you invoke
+    `getLine` to obtain the clip, another application program jumps in and grabs the
+    clip before you''re ready to start playback. To actually use the clip, you need
+    to reserve it for your program''s exclusive use by invoking one of the following
+    `Clip` methods:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 获取一条线只是意味着您已经找到了一个引用它的方法；`getLine`实际上并没有为您保留该线路。因为混音器可能只有有限数量的所需类型的线路可用，所以在您调用`getLine`获取剪辑后，可能会发生另一个应用程序在您准备开始播放之前抢走剪辑的情况。要实际使用剪辑，您需要通过调用以下`Clip`方法之一来为您的程序独占地保留它：
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Despite the `bufferSize` argument in the second `open` method above, `Clip`
+    (unlike `SourceDataLine`) includes no methods for writing new data to the buffer.
+    The `bufferSize` argument here just specifies how much of the byte array to load
+    into the clip. It's not a buffer into which you can subsequently load more data,
+    as you can with a `SourceDataLine's` buffer.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管上述第二个`open`方法中有`bufferSize`参数，但`Clip`（不像`SourceDataLine`）不包括用于向缓冲区写入新数据的方法。这里的`bufferSize`参数只指定要加载到剪辑中的字节数组的大小。它不是一个可以随后加载更多数据的缓冲区，就像您可以使用`SourceDataLine`的缓冲区一样。
+- en: After opening the clip, you can specify at what point in the data it should
+    start playback, using `Clip's` `setFramePosition` or `setMicroSecondPosition`
+    methods. Otherwise, it will start at the beginning. You can also configure the
+    playback to cycle repeatedly, using the `setLoopPoints` method.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 打开剪辑后，您可以使用`Clip`的`setFramePosition`或`setMicroSecondPosition`方法指定数据中应开始播放的位置。否则，它将从开头开始。您还可以使用`setLoopPoints`方法配置循环播放。
+- en: When you're ready to start playback, simply invoke the `start` method. To stop
+    or pause the clip, invoke the `stop` method, and to resume playback, invoke `start`
+    again. The clip remembers the media position where it stopped playback, so there's
+    no need for explicit pause and resume methods. If you don't want it to resume
+    where it left off, you can "rewind" the clip to the beginning (or to any other
+    position, for that matter) using the frame- or microsecond-positioning methods
+    mentioned above.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您准备开始播放时，只需调用`start`方法。要停止或暂停剪辑，请调用`stop`方法，要恢复播放，请再次调用`start`。剪辑会记住停止播放的媒体位置，因此不需要显式的暂停和恢复方法。如果您不希望它在停止播放的位置继续播放，可以使用上述提到的帧或微秒定位方法将剪辑“倒带”到开头（或任何其他位置）。
+- en: A `Clip's` volume level and activity status (active versus inactive) can be
+    monitored by invoking the `DataLine` methods `getLevel` and `isActive`, respectively.
+    An active `Clip` is one that is currently playing sound.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以通过调用`DataLine`方法`getLevel`和`isActive`来监视`Clip`的音量级别和活动状态（活动与非活动）。活动的`Clip`是当前正在播放声音的`Clip`。
+- en: Using a SourceDataLine
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用SourceDataLine
+- en: 'Obtaining a `SourceDataLine` is similar to obtaining a `Clip`. Opening the
+    `SourceDataLine` is also similar to opening a `Clip`, in that the purpose is once
+    again to reserve the line. However, you use a different method, inherited from
+    `DataLine`:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 获取`SourceDataLine`类似于获取`Clip`。打开`SourceDataLine`也类似于打开`Clip`，因为目的再次是为了保留该线路。但是，您使用从`DataLine`继承的不同方法：
+- en: '[PRE1]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Notice that when you open a `SourceDataLine`, you don't associate any sound
+    data with the line yet, unlike opening a `Clip`. Instead, you just specify the
+    format of the audio data you want to play. The system chooses a default buffer
+    length.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，当您打开`SourceDataLine`时，尚未将任何声音数据与该线路关联，与打开`Clip`不同。相反，您只需指定要播放的音频数据的格式。系统会选择默认的缓冲区长度。
+- en: 'You can also stipulate a certain buffer length in bytes, using this variant:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以使用以下变体指定特定的字节缓冲区长度：
+- en: '[PRE2]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: For consistency with similar methods, the `bufferSize` argument is expressed
+    in bytes, but it must correspond to an integral number of frames.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了与类似方法保持一致，`bufferSize`参数以字节表示，但必须对应于整数帧数。
+- en: Instead of using the open method described above, it's also possible to open
+    a `SourceDataLine` using `Line's` `open()` method, without arguments. In this
+    case, the line is opened with its default audio format and buffer size. However,
+    you can't change these later. If you want to know the line's default audio format
+    and buffer size, you can invoke `DataLine's` `getFormat` and `getBufferSize` methods,
+    even before the line has ever been opened.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了使用上述描述的open方法，还可以使用`Line`的`open()`方法打开`SourceDataLine`，而无需参数。在这种情况下，该线路将以其默认音频格式和缓冲区大小打开。但是，您以后无法更改这些。如果您想知道线路的默认音频格式和缓冲区大小，甚至在线路尚未打开之前，可以调用`DataLine`的`getFormat`和`getBufferSize`方法。
+- en: Once the `SourceDataLine` is open, you can start playing sound. You do this
+    by invoking `DataLine's` start method, and then writing data repeatedly to the
+    line's playback buffer.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦`SourceDataLine`打开，您就可以开始播放声音。您可以通过调用`DataLine`的start方法来实现这一点，然后将数据重复写入线路的播放缓冲区。
+- en: 'The start method permits the line to begin playing sound as soon as there''s
+    any data in its buffer. You place data in the buffer by the following method:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: start方法允许线路在其缓冲区中有任何数据时开始播放声音。您可以通过以下方法将数据放入缓冲区：
+- en: '[PRE3]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The offset into the array is expressed in bytes, as is the array's length.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 数组中的偏移量以字节表示，数组的长度也是以字节表示。
+- en: The line begins sending data as soon as possible to its mixer. When the mixer
+    itself delivers the data to its target, the `SourceDataLine` generates a `START`
+    event. (In a typical implementation of the Java Sound API, the delay between the
+    moment that the source line delivers data to the mixer and the moment that the
+    mixer delivers the data to its target is negligible, that is, much less than the
+    time of one sample.) This `START` event gets sent to the line's listeners, as
+    explained below under [Monitoring a Line's Status](#113711). The line is now considered
+    active, so the `isActive` method of `DataLine` will return `true`. Notice that
+    all this happens only once the buffer contains data to play, not necessarily right
+    when the start method is invoked. If you invoked `start` on a new `SourceDataLine`
+    but never wrote data to the buffer, the line would never be active and a `START`
+    event would never be sent. (However, in this case, the `isRunning` method of `DataLine`
+    would return `true`.)
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该线路尽快将数据发送到其混音器。当混音器将数据传递给其目标时，`SourceDataLine`会生成`START`事件。 （在Java Sound API的典型实现中，源线将数据传递给混音器的时间延迟与混音器将数据传递给其目标的时间延迟可以忽略不计，即远小于一个样本的时间。）此`START`事件将发送给线路的侦听器，如下所述[监视线路状态](#113711)。现在该线路被视为活动的，因此`DataLine`的`isActive`方法将返回`true`。请注意，所有这些仅在缓冲区包含要播放的数据时才会发生，不一定在调用start方法时立即发生。如果您在新的`SourceDataLine`上调用了`start`但从未向缓冲区写入数据，则该线路永远不会处于活动状态，并且`START`事件永远不会发送。（但是，在这种情况下，`DataLine`的`isRunning`方法将返回`true`。）
+- en: 'So how do you know how much data to write to the buffer, and when to send the
+    second batch of data? Fortunately, you don''t need to time the second invocation
+    of write to synchronize with the end of the first buffer! Instead, you can take
+    advantage of the `write` method''s blocking behavior:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么你如何知道要向缓冲区写入多少数据，以及何时发送第二批数据呢？幸运的是，你不需要计时第二次调用write以与第一个缓冲区的结束同步！相反，你可以利用`write`方法的阻塞行为：
+- en: The method returns as soon as the data has been written to the buffer. It doesn't
+    wait until all the data in the buffer has finished playing. (If it did, you might
+    not have time to write the next buffer without creating a discontinuity in the
+    audio.)
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 该方法在数据被写入缓冲区后立即返回。它不会等到缓冲区中的所有数据都播放完毕。（如果等待的话，你可能没有时间写入下一个缓冲区，从而导致音频中断。）
+- en: It's all right to try to write more data than the buffer will hold. In this
+    case, the method blocks (doesn't return) until all the data you requested has
+    actually been placed in the buffer. In other words, one buffer's worth of your
+    data at a time will be written to the buffer and played, until the remaining data
+    all fits in the buffer, at which point the method returns. Whether or not the
+    method blocks, it returns as soon as the last buffer's worth of data from this
+    invocation can be written. Again, this means that your code will in all likelihood
+    regain control before playback of the last buffer's worth of data has finished.
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 尝试写入的数据量超过缓冲区容量是可以的。在这种情况下，该方法会阻塞（不返回），直到你请求的所有数据实际上都被放入缓冲区中。换句话说，每次只会写入一个缓冲区的数据并进行播放，直到剩余数据全部适应缓冲区为止，此时该方法才会返回。无论该方法是否阻塞，它都会在此次调用中最后一个缓冲区的数据被写入时立即返回。这意味着你的代码很可能在最后一个缓冲区的数据播放完成之前就重新获得了控制权。
+- en: While in many contexts it is fine to write more data than the buffer will hold,
+    if you want to be certain that the next write issued does not block, you can limit
+    the number of bytes you write to the number that `DataLine's` `available` method
+    returns.
+  id: totrans-33
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在许多情况下，写入的数据量超过缓冲区容量是可以的，但如果你想确保下一个写入不会阻塞，你可以将写入的字节数限制为`DataLine`的`available`方法返回的数量。
+- en: 'Here''s an example of iterating through chunks of data that are read from a
+    stream, writing one chunk at a time to the `SourceDataLine` for playback:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是一个示例，迭代从流中读取的数据块，一次将一个数据块写入`SourceDataLine`进行播放：
+- en: '[PRE4]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: If you don't want the `write` method to block, you can first invoke the `available`
+    method (inside the loop) to find out how many bytes can be written without blocking,
+    and then limit the `numBytesToRead` variable to this number, before reading from
+    the stream. In the example given, though, blocking won't matter much, since the
+    write method is invoked inside a loop that won't complete until the last buffer
+    is written in the final loop iteration. Whether or not you use the blocking technique,
+    you'll probably want to invoke this playback loop in a separate thread from the
+    rest of the application program, so that your program doesn't appear to freeze
+    when playing a long sound. On each iteration of the loop, you can test whether
+    the user has requested playback to stop. Such a request needs to set the `stopped`
+    boolean, used in the code above, to `true`.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你不希望`write`方法阻塞，你可以首先在循环内调用`available`方法来查找可以无阻塞写入的字节数，然后在从流中读取之前将`numBytesToRead`变量限制为这个数字。然而，在给定的示例中，阻塞并不重要，因为write方法是在一个循环内调用的，直到最后一个缓冲区在最后一个循环迭代中被写入。无论你是否使用阻塞技术，你可能会希望在应用程序的其余部分之外的一个单独线程中调用这个播放循环，这样当播放长声音时，你的程序不会出现冻结的情况。在循环的每次迭代中，你可以测试用户是否请求停止播放。这样的请求需要将上面代码中使用的`stopped`布尔值设置为`true`。
+- en: 'Since `write` returns before all the data has finished playing, how do you
+    learn when the playback has actually completed? One way is to invoke the `drain`
+    method of `DataLine` after writing the last buffer''s worth of data. This method
+    blocks until all the data has been played. When control returns to your program,
+    you can free up the line, if desired, without fear of prematurely cutting off
+    the playback of any audio samples:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于`write`在所有数据完成播放之前返回，那么你如何知道播放实际上已经完成了呢？一种方法是在写入最后一个缓冲区数据后调用`DataLine`的`drain`方法。该方法会阻塞，直到所有数据都已经播放完毕。当控制返回到你的程序时，如果需要的话，你可以释放该线路，而不必担心会过早中断任何音频样本的播放：
+- en: '[PRE5]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: You can intentionally stop playback prematurely, of course. For example, the
+    application program might provide the user with a Stop button. Invoke `DataLine's
+    stop` method to stop playback immediately, even in the middle of a buffer. This
+    leaves any unplayed data in the buffer, so that if you subsequently invoke `start`,
+    the playback resumes where it left off. If that's not what you want to happen,
+    you can discard the data left in the buffer by invoking `flush`.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以有意提前停止播放，当然。例如，应用程序可能会为用户提供一个停止按钮。调用`DataLine`的`stop`方法可以立即停止播放，即使在缓冲区的中间。这会使缓冲区中的任何未播放数据保留下来，因此如果随后调用`start`，播放将从停止的地方恢复。如果这不是你想要发生的事情，你可以通过调用`flush`来丢弃缓冲区中剩余的数据。
+- en: A `SourceDataLine` generates a `STOP` event whenever the flow of data has been
+    stopped, whether this stoppage was initiated by the drain method, the stop method,
+    or the flush method, or because the end of a playback buffer was reached before
+    the application program invoked `write` again to provide new data. A `STOP` event
+    doesn't necessarily mean that the `stop` method was invoked, and it doesn't necessarily
+    mean that a subsequent invocation of `isRunning` will return `false`. It does,
+    however, mean that `isActive` will return `false`. (When the `start` method has
+    been invoked, the `isRunning` method will return `true`, even if a `STOP` event
+    is generated, and it will begin to return `false` only once the `stop` method
+    is invoked.) It's important to realize that `START` and `STOP` events correspond
+    to `isActive`, not to `isRunning`.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当数据流的流动已停止时，`SourceDataLine`会生成一个`STOP`事件，无论此停止是由`drain`方法、`stop`方法、`flush`方法引起的，还是因为在应用程序调用`write`提供新数据之前已到达播放缓冲区的末尾。`STOP`事件并不一定意味着已调用`stop`方法，并且也不一定意味着随后调用`isRunning`将返回`false`。但是，它确实意味着`isActive`将返回`false`。（当调用`start`方法时，即使生成`STOP`事件，`isRunning`方法也将返回`true`，并且只有在调用`stop`方法后才会开始返回`false`。）重要的是要意识到`START`和`STOP`事件对应于`isActive`，而不是`isRunning`。
+- en: Monitoring a Line's Status
+  id: totrans-41
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 监控线路的状态
+- en: 'Once you have started a sound playing, how do you find when it''s finished?
+    We saw one solution above, invoking the `drain` method after writing the last
+    buffer of data, but that approach is applicable only to a `SourceDataLine`. Another
+    approach, which works for both `SourceDataLines` and `Clips`, is to register to
+    receive notifications from the line whenever the line changes its state. These
+    notifications are generated in the form of `LineEvent` objects, of which there
+    are four types: `OPEN`, `CLOSE`, `START`, and `STOP`.'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦开始播放声音，如何确定何时完成？我们在上面看到了一种解决方案，在写入最后一个数据缓冲区后调用`drain`方法，但这种方法仅适用于`SourceDataLine`。另一种途径，适用于`SourceDataLines`和`Clips`，是注册以接收线路在改变其状态时发出的通知。这些通知以`LineEvent`对象的形式生成，其中有四种类型：`OPEN`、`CLOSE`、`START`和`STOP`。
+- en: 'Any object in your program that implements the `LineListener` interface can
+    register to receive such notifications. To implement the `LineListener` interface,
+    the object simply needs an update method that takes a `LineEvent` argument. To
+    register this object as one of the line''s listeners, you invoke the following
+    `Line` method:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在程序中实现`LineListener`接口的任何对象都可以注册以接收此类通知。要实现`LineListener`接口，对象只需要一个接受`LineEvent`参数的`update`方法。要将此对象注册为线路的侦听器之一，您需要调用以下`Line`方法：
+- en: '[PRE6]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Whenever the line opens, closes, starts, or stops, it sends an `update` message
+    to all its listeners. Your object can query the `LineEvent` that it receives.
+    First you might invoke `LineEvent.getLine` to make sure the line that stopped
+    is the one you care about. In the case we're discussing here, you want to know
+    if the sound is finished, so you see whether the `LineEvent` is of type `STOP`.
+    If it is, you might check the sound's current position, which is also stored in
+    the `LineEvent` object, and compare it to the sound's length (if known) to see
+    whether it reached the end and wasn't stopped by some other means (such as the
+    user's clicking a Stop button, although you'd probably be able to determine that
+    cause elsewhere in your code).
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当线路打开、关闭、启动或停止时，它会向所有侦听器发送一个`update`消息。您的对象可以查询接收到的`LineEvent`。首先，您可能会调用`LineEvent.getLine`来确保停止的线路是您关心的线路。在我们讨论的情况下，您想知道声音是否已完成，因此您可以查看`LineEvent`是否为`STOP`类型。如果是，您可以检查声音的当前位置，该位置也存储在`LineEvent`对象中，并将其与声音的长度（如果已知）进行比较，以查看是否已达到结束并且没有被其他方式停止（例如用户点击停止按钮，尽管您可能能够在代码的其他地方确定该原因）。
+- en: Along the same lines, if you need to know when the line is opened, closed, or
+    started, you use the same mechanism. `LineEvents` are generated by different kinds
+    of lines, not just `Clips` and `SourceDataLines`. However, in the case of a `Port`
+    you can't count on getting an event to learn about a line's open or closed state.
+    For example, a `Port` might be initially open when it's created, so you don't
+    invoke the `open` method and the `Port` doesn't ever generate an `OPEN` event.
+    (See the previous discussion of [Selecting Input and Output Ports](accessing.html#113216).)
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，如果您需要知道何时打开、关闭或启动线路，可以使用相同的机制。`LineEvents`由不同类型的线路生成，不仅仅是`Clips`和`SourceDataLines`。但是，在`Port`的情况下，您不能指望获得事件来了解线路的打开或关闭状态。例如，当创建`Port`时，可能会最初打开`Port`，因此您不会调用`open`方法，而`Port`也不会生成`OPEN`事件。
+    (请参阅之前关于[选择输入和输出端口](accessing.html#113216)的讨论。)
+- en: Synchronizing Playback on Multiple Lines
+  id: totrans-47
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 同步多条线路的播放
+- en: If you're playing back multiple tracks of audio simultaneously, you probably
+    want to have them all start and stop at exactly the same time. Some mixers facilitate
+    this behavior with their `synchronize` method, which lets you apply operations
+    such as `open`, `close`, `start`, and `stop` to a group of data lines using a
+    single command, instead of having to control each line individually. Furthermore,
+    the degree of accuracy with which operations are applied to the lines is controllable.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您同时播放多个音轨，您可能希望它们都在完全相同的时间开始和停止。一些混音器通过其`synchronize`方法促进此行为，该方法允许您对一组数据线应用操作，如`open`、`close`、`start`和`stop`，而不是必须单独控制每条线路。此外，可以控制对线路应用操作的精度程度。
+- en: 'To find out whether a particular mixer offers this feature for a specified
+    group of data lines, invoke the `Mixer` interface''s `isSynchronizationSupported`
+    method:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解特定数据线组的特定混音器是否提供此功能，调用`Mixer`接口的`isSynchronizationSupported`方法：
+- en: '[PRE7]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The first parameter specifies a group of specific data lines, and the second
+    parameter indicates the accuracy with which synchronization must be maintained.
+    If the second parameter is `true`, the query is asking whether the mixer is capable
+    of maintaining sample-accurate precision in controlling the specified lines *at
+    all times*; otherwise, precise synchronization is required only during start and
+    stop operations, not throughout playback.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个参数指定了一组特定的数据线，第二个参数表示必须保持同步的精度。如果第二个参数是`true`，则查询是在询问混音器是否能够始终在*所有时间*内保持对指定线路的样本精确控制；否则，精确同步仅在启动和停止操作期间需要，而不是在整个播放过程中。
+- en: Processing the Outgoing Audio
+  id: totrans-52
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理传出音频
+- en: Some source data lines have signal-processing controls, such as gain, pan, reverb,
+    and sample-rate controls. Similar controls, especially gain controls, might be
+    present on the output ports as well. For more information on how to determine
+    whether a line has such controls, and how to use them if it does, see [Processing
+    Audio with Controls](controls.html).
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些源数据线具有信号处理控件，如增益、声像、混响和采样率控件。类似的控件，尤其是增益控件，也可能存在于输出端口上。有关如何确定一条线路是否具有此类控件以及如何在有此类控件的情况下使用它们的更多信息，请参阅[使用控件处理音频](controls.html)。

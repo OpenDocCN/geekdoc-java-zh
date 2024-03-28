@@ -1,0 +1,45 @@
+- en: 'Lesson: Drag and Drop and Data Transfer'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：拖放和数据传输
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/index.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/index.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/index.html)
+- en: '[Examples Index](../examples/dnd/index.html)'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[示例索引](../examples/dnd/index.html)'
+- en: Drag and drop, and cut, copy and paste (collectively called *data transfer*)
+    are essential features of most applications. But what kind of support does Swing
+    provide and how do you take advantage of it?
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 拖放、剪切、复制和粘贴（统称为*数据传输*）是大多数应用程序的基本功能。但Swing提供了什么样的支持，你如何利用它呢？
+- en: For many components, when performing a drag and drop or a cut and paste operation,
+    Swing handles all of the work for you. For a handful of components, most of the
+    work is done for you and all that is left for you is to plug in the details of
+    the data import and export.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于许多组件，在执行拖放或剪切粘贴操作时，Swing会为你处理所有工作。对于少数几个组件，大部分工作都已经为你完成，你只需要插入数据导入和导出的细节。
+- en: This lesson provides an introduction to the data transfer mechanism used by
+    Swing and discusses, in particular, the `TransferHandler` class, the workhorse
+    of the data transfer system.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程介绍了Swing使用的数据传输机制，并特别讨论了`TransferHandler`类，这是数据传输系统的核心。
+- en: If you are interested in using JavaFX to create your GUI, see [Drag-and-Drop
+    Feature in JavaFX Applications](https://docs.oracle.com/javase/8/javafx/events-tutorial/drag_drop_feature.htm).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你对使用JavaFX创建GUI感兴趣，请查看[JavaFX应用程序中的拖放功能](https://docs.oracle.com/javase/8/javafx/events-tutorial/drag_drop_feature.htm)。

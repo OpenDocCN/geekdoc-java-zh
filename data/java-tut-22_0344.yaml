@@ -1,0 +1,247 @@
+- en: Signing JAR Files
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 签署 JAR 文件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/signing.html](https://docs.oracle.com/javase/tutorial/deployment/jar/signing.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/signing.html](https://docs.oracle.com/javase/tutorial/deployment/jar/signing.html)
+- en: You use the JAR Signing and Verification Tool to sign JAR files and time stamp
+    the signature. You invoke the JAR Signing and Verification Tool by using the `jarsigner`
+    command, so we'll refer to it as "Jarsigner" for short.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你使用 JAR 签名和验证工具来签署 JAR 文件并为签名加上时间戳。你通过使用 `jarsigner` 命令来调用 JAR 签名和验证工具，因此我们简称为
+    "Jarsigner"。
+- en: To sign a JAR file, you must first have a private key. Private keys and their
+    associated public-key certificates are stored in password-protected databases
+    called *keystores*. A keystore can hold the keys of many potential signers. Each
+    key in the keystore can be identified by an *alias* which is typically the name
+    of the signer who owns the key. The key belonging to Rita Jones might have the
+    alias "rita", for example.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要签署一个 JAR 文件，你首先必须拥有一个私钥。私钥及其关联的公钥证书存储在受密码保护的数据库中，称为 *keystores*。一个 keystore
+    可以保存许多潜在签署者的密钥。keystore 中的每个密钥可以通过一个 *alias* 来标识，通常是拥有该密钥的签署者的名称。例如，属于 Rita Jones
+    的密钥可能具有别名 "rita"。
+- en: The basic form of the command for signing a JAR file is
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 签署 JAR 文件的命令的基本形式是
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'In this command:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个命令中：
+- en: '`jar-file` is the pathname of the JAR file that''s to be signed.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`jar-file` 是要签署的 JAR 文件的路径名。'
+- en: '`alias` is the alias identifying the private key that''s to be used to sign
+    the JAR file, and the key''s associated certificate.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`alias` 是标识要用于签署 JAR 文件和密钥关联证书的私钥的别名。'
+- en: The Jarsigner tool will prompt you for the passwords for the keystore and alias.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Jarsigner 工具会提示你输入 keystore 和别名的密码。
+- en: This basic form of the command assumes that the keystore to be used is in a
+    file named `.keystore` in your home directory. It will create signature and signature
+    block files with names `x.SF` and `x.DSA` respectively, where `x` is the first
+    eight letters of the alias, all converted to upper case. This basic command will
+    *overwrite* the original JAR file with the signed JAR file.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个命令的基本形式假定要使用的 keystore 存储在你的主目录中名为 `.keystore` 的文件中。它将创建名称分别为 `x.SF` 和 `x.DSA`
+    的签名和签名块文件，其中 `x` 是别名的前八个字母，全部转换为大写。这个基本命令将*覆盖*原始 JAR 文件，用已签名的 JAR 文件替换。
+- en: In practice, you might want to use one or more of the command options that are
+    available. For example, time stamping the signature is encouraged so that any
+    tool used to deploy your application can verify that the certificate used to sign
+    the JAR file was valid at the time that the file was signed. A warning is issued
+    by the Jarsigner tool if a time stamp is not included.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在实践中，你可能希望使用其中一个或多个可用的命令选项。例如，鼓励为签名加上时间戳，以便部署应用程序的任何工具都可以验证用于签署 JAR 文件的证书在签署文件时是有效的。如果未包含时间戳，则
+    Jarsigner 工具会发出警告。
+- en: 'Options precede the `jar-file` pathname. The following table describes the
+    options that are available:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 选项位于`jar-file`路径名之前。以下表格描述了可用的选项：
+- en: '**Jarsigner Command Options**'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**Jarsigner 命令选项**'
+- en: '| Option | Description |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| 选项 | 描述 |'
+- en: '| `-keystore` *url* | Specifies a keystore to be used if you don''t want to
+    use the `.keystore` default database. |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-keystore` *url* | 指定要使用的 keystore，如果你不想使用默认的 `.keystore` 数据库。 |'
+- en: '| `-sigfile` *file* | Specifies the base name for the .SF and .DSA files if
+    you don''t want the base name to be taken from your alias. *file* must be composed
+    only of upper case letters (A-Z), numerals (0-9), hyphen (-), and underscore (_).
+    |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-sigfile` *file* | 指定 .SF 和 .DSA 文件的基本名称，如果你不希望基本名称取自你的别名。 *file* 必须仅由大写字母（A-Z）、数字（0-9）、连字符（-）和下划线（_）组成。
+    |'
+- en: '| `-signedjar` *file* | Specifies the name of the signed JAR file to be generated
+    if you don''t want the original unsigned file to be overwritten with the signed
+    file. |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-signedjar` *file* | 指定要生成的已签名 JAR 文件的名称，如果你不希望原始未签名文件被已签名文件覆盖。 |'
+- en: '| `-tsa` *url* | Generates a time stamp for the signature using the Time Stamping
+    Authority (TSA) identified by the URL. |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-tsa` *url* | 使用由 URL 标识的时间戳机构（TSA）为签名生成时间戳。 |'
+- en: '| `-tsacert` *alias* | Generates a time stamp for the signature using the TSA''s
+    public key certificate identified by *alias*. |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-tsacert` *alias* | 使用由 *alias* 标识的 TSA 的公钥证书为签名生成时间戳。 |'
+- en: '| `-altsigner` *class* | Indicates that an alternative signing mechanism be
+    used to time stamp the signature. The fully-qualified class name identifies the
+    class used. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-altsigner` *class* | 表示要使用另一种签名机制来时间戳签名。完全限定的类名标识所使用的类。 |'
+- en: '| `-altsignerpath` *classpathlist* | Provides the path to the class identified
+    by the `altsigner` option and any JAR files that the class depends on. |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| `-altsignerpath` *classpathlist* | 提供`altsigner`选项标识的类的路径以及类所依赖的任何JAR文件。
+    |'
+- en: Example
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例
+- en: 'Let''s look at a couple of examples of signing a JAR file with the Jarsigner
+    tool. In these examples, we will assume the following:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看几个使用Jarsigner工具签署JAR文件的示例。在这些示例中，我们假设以下情况：
+- en: Your alias is "johndoe".
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您的别名是"johndoe"。
+- en: The keystore you want to use is in a file named "mykeys" in the current working
+    directory.
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您要使用的密钥库位于当前工作目录中名为"mykeys"的文件中。
+- en: The TSA that you want to use to time stamp the signature is located at `http://tsa.url.example.com`.
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您要用于时间戳签名的TSA位于`http://tsa.url.example.com`。
+- en: 'Under these assumptions, you could use this command to sign a JAR file named
+    `app.jar`:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这些假设下，您可以使用此命令对名为`app.jar`的JAR文件进行签名：
+- en: '[PRE1]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: You will be prompted to enter the passwords for both the keystore and your alias.
+    Because this command doesn't make use of the `-sigfile` option, the .SF and .DSA
+    files it creates would be named `JOHNDOE.SF` and `JOHNDOE.DSA`. Because the command
+    doesn't use the `-signedjar` option, the resulting signed file will overwrite
+    the original version of `app.jar`.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您将被提示输入密钥库和别名的密码。因为此命令不使用`-sigfile`选项，因此创建的.SF和.DSA文件将命名为`JOHNDOE.SF`和`JOHNDOE.DSA`。因为该命令不使用`-signedjar`选项，所以生成的签名文件将覆盖`app.jar`的原始版本。
+- en: 'Let''s look at what would happen if you used a different combination of options:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看看如果您使用不同的选项组合会发生什么：
+- en: '[PRE2]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The signature and signature block files would be named `SIG.SF` and `SIG.DSA`,
+    respectively, and the signed JAR file `SignedApp.jar` would be placed in the current
+    directory. The original unsigned JAR file would remain unchanged. Also, the signature
+    would be time stamped with the TSA's public key certificate identified as `testalias`.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 签名和签名块文件将分别命名为`SIG.SF`和`SIG.DSA`，已签名的JAR文件`SignedApp.jar`将放置在当前目录中。原始未签名的JAR文件将保持不变。此外，签名将使用TSA的公钥证书时间戳，标识为`testalias`。
+- en: Additional Information
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 附加信息
+- en: 'Complete reference pages for the JAR Signing and Verification Tool are on-line:
+    [Summary of Security Tools](https://docs.oracle.com/javase/8/docs/technotes/guides/security/SecurityToolsSummary.html)'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAR签名和验证工具的完整参考页面在线查看：[安全工具概述](https://docs.oracle.com/javase/8/docs/technotes/guides/security/SecurityToolsSummary.html)
+- en: '* * *'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** When a certificate is self signed, `UNKNOWN` will be displayed as
+    the publisher of the application. For more information, see [Is it safe to run
+    an application from a publisher that is listed as `UNKNOWN`?](http://www.java.com/en/download/faq/self_signed.xml).'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**当证书是自签名时，应用程序的发布者将显示为`UNKNOWN`。有关更多信息，请参阅[从列为`UNKNOWN`的发布者运行应用程序是否安全？](http://www.java.com/en/download/faq/self_signed.xml)。'
+- en: '* * *'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

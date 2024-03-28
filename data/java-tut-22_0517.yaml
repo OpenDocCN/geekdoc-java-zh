@@ -1,0 +1,225 @@
+- en: Solving Common Painting Problems
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 解决常见绘制问题
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/problems.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/problems.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/problems.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/problems.html)
+- en: '**Problem:** I don''t know where to put my painting code.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我不知道在哪里放置我的绘制代码。'
+- en: Painting code belongs in the `paintComponent` method of any component descended
+    from `JComponent`.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 绘制代码应该放在任何继承自`JComponent`的组件的`paintComponent`方法中。
+- en: '**Problem:** The stuff I paint doesn''t show up.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我绘制的内容不显示。'
+- en: Check whether your component is showing up at all. [Solving Common Component
+    Problems](../components/problems.html) should help you with this.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 检查您的组件是否完全显示。[解决常见组件问题](../components/problems.html)应该可以帮助您解决这个问题。
+- en: Check whether `repaint` is invoked on your component whenever its appearance
+    needs to be updated.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 检查是否在需要更新外观时在组件上调用了`repaint`。
+- en: '**Problem:** My component''s foreground shows up, but its background is invisible.
+    The result is that one or more components directly behind my component are unexpectedly
+    visible.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我的组件的前景显示出来，但背景是不可见的。结果是，我的组件后面的一个或多个组件意外可见。'
+- en: Make sure your component is opaque. `JPanel`s, for example, are opaque by default
+    in many but not all look and feels. To make components such as `JLabel`s and GTK+
+    `JPanel`s opaque, you must invoke `setOpaque(true)` on them.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 确保您的组件是不透明的。例如，许多外观和感觉中的`JPanel`默认是不透明的。要使诸如`JLabel`和GTK+ `JPanel`之类的组件不透明，必须在它们上调用`setOpaque(true)`。
+- en: If your custom component extends `JPanel` or a more specialized `JComponent`
+    descendant, then you can paint the background by invoking `super.paintComponent`
+    before painting the contents of your component.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果您的自定义组件扩展了`JPanel`或更专业的`JComponent`后代，则可以通过在绘制组件内容之前调用`super.paintComponent`来绘制背景。
+- en: 'You can paint the background yourself using this code at the top of a custom
+    component''s `paintComponent` method:'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以使用以下代码在自定义组件的`paintComponent`方法顶部自行绘制背景：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '**Problem:** I used `setBackground` to set my component''s background color,
+    but it seemed to have no effect.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我使用`setBackground`设置组件的背景颜色，但似乎没有效果。'
+- en: Most likely, your component isn't painting its background, either because it's
+    not opaque or your custom painting code doesn't paint the background. If you set
+    the background color for a `JLabel`, for example, you must also invoke `setOpaque(true)`
+    on the label to make the label's background be painted.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 很可能是因为您的组件没有绘制其背景，要么是因为它不是不透明的，要么是因为您的自定义绘制代码没有绘制背景。例如，如果您为`JLabel`设置背景颜色，则还必须在标签上调用`setOpaque(true)`以使标签的背景被绘制。
+- en: '**Problem:** I''m using the exact same code as a tutorial example, but it doesn''t
+    work. Why?'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我使用的代码与教程示例完全相同，但不起作用。为什么？'
+- en: Is the code executed in the exact same method as the tutorial example? For example,
+    if the tutorial example has the code in the example's `paintComponent` method,
+    then this method might be the only place where the code is guaranteed to work.
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 代码是否在与教程示例完全相同的方法中执行？例如，如果教程示例中的代码在示例的`paintComponent`方法中，则该方法可能是代码保证正常工作的唯一位置。
+- en: '**Problem:** How do I paint thick lines? patterns?'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 如何绘制粗���？模式？'
+- en: The Java™ 2D API provides extensive support for implementing line widths and
+    styles, as well as patterns for use in filling and stroking shapes. See the [2D
+    Graphics](../../2d/index.html) trail for more information on using the Java 2D
+    API.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Java™ 2D API提供了广泛的支持，用于实现线宽和样式，以及用于填充和描边形状的模式。有关使用Java 2D API的更多信息，请参阅[2D图形](../../2d/index.html)教程。
+- en: '**Problem:** The edges of a particular component look odd.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 特定组件的边缘看起来很奇怪。'
+- en: Because components often update their borders to reflect component state, you
+    generally should avoid invoking `setBorder` except on `JPanel`s and custom subclasses
+    of `JComponent`.
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 因为组件通常会更新其边框以反映组件状态，所以通常应避免在除了`JPanel`和`JComponent`的自定义子类之外的组件上调用`setBorder`。
+- en: Is the component painted by a look and feel such as GTK+ or Windows XP that
+    uses UI-painted borders instead of `Border` objects? If so, don't invoke `setBorder`
+    on the component.
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 组件是否由类似GTK+或Windows XP的外观和感觉绘制，这些外观和感觉使用UI绘制的边框而不是`Border`对象？如果是这样，请不要在组件上调用`setBorder`。
+- en: Does the component have custom painting code? If so, does the painting code
+    take the component's insets into account?
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 组件是否有自定义绘制代码？如果有，绘制代码是否考虑了组件的插图？
+- en: '**Problem:** Visual artifacts appear in my GUI.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我的GUI中出现视觉伪影。'
+- en: If you set the background color of a component, be sure the color has no transparency
+    if the component is supposed to be opaque.
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果设置组件的背景颜色，请确保颜色没有透明度，如果组件应该是不透明的。
+- en: Use the `setOpaque` method to set component opacity if necessary. For example,
+    the content pane must be opaque, but components with transparent backgrounds must
+    not be opaque.
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果需要，使用`setOpaque`方法设置组件的不透明度。例如，内容窗格必须是不透明的，但具有透明背景的组件不得是不透明的。
+- en: Make sure your custom component fills its painting area completely if it's opaque.
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 确保你的自定义组件完全填充其绘制区域，如果它是不透明的。
+- en: '**Problem:** The performance of my custom painting code is poor.'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我的自定义绘制代码性能较差。'
+- en: If you can paint part of your component, use the `getClip` or `getClipBounds`
+    method of `Graphics` to determine which area you need to paint. The less you paint,
+    the faster it will be.
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果你可以绘制组件的一部分，请使用`Graphics`的`getClip`或`getClipBounds`方法确定需要绘制的区域。你绘制的越少，速度就越快。
+- en: If only part of your component needs to be updated, make paint requests using
+    a version of `repaint` that specifies the painting region.
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果只有组件的一部分需要更新，请使用指定绘制区域的`repaint`版本发出绘制请求。
+- en: For help on choosing efficient painting techniques, look for the string "performance"
+    in the [Java Media APIs home page](http://www.oracle.com/technetwork/java/javase/tech/media-141984.html).
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 想要了解如何选择高效的绘制技术，请查看[Java Media APIs home page](http://www.oracle.com/technetwork/java/javase/tech/media-141984.html)中包含"performance"字符串的部分。
+- en: '**Problem:** The same transforms applied to seemingly identical `Graphics`
+    objects sometimes have slightly different effects.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 应用于看似相同的`Graphics`对象的相同变换有时会产生略有不同的效果。'
+- en: Because the Swing painting code sets the transform (using the `Graphics` method
+    `translate`) before invoking `paintComponent`, any transforms that you apply have
+    a cumulative effect. This doesn't matter when doing a simple translation, but
+    a more complex `AffineTransform`, for example, might have unexpected results.
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 因为Swing绘制代码在调用`paintComponent`之前设置了变换（使用`Graphics`的`translate`方法），所以你应用的任何变换都会具有累积效果。这在进行简单平移时并不重要，但是一个更复杂的`AffineTransform`可能会产生意想不到的结果。
+- en: If you don't see your problem in this list, see [Solving Common Component Problems](../components/problems.html)
+    and [Solving Common Layout Problems](../layout/problems.html).
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你在这个列表中找不到你的问题，请查看[Solving Common Component Problems](../components/problems.html)和[Solving
+    Common Layout Problems](../layout/problems.html)。

@@ -1,0 +1,24 @@
+- en: Supplementary Characters as Surrogates
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 补充字符作为代理
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/supplementaryChars.html](https://docs.oracle.com/javase/tutorial/i18n/text/supplementaryChars.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/supplementaryChars.html](https://docs.oracle.com/javase/tutorial/i18n/text/supplementaryChars.html)
+- en: 'To support supplementary characters without changing the `char` primitive data
+    type and causing incompatibility with previous Java programs, supplementary characters
+    are defined by a pair of code point values that are called *surrogates*. The first
+    code point is from the *high surrogates* range of `U+D800` to `U+DBFF`, and the
+    second code point is from the *low surrogates* range of `U+DC00` to `U+DFFF`.
+    For example, the Deseret character LONG I, `U+10400`, is defined with this pair
+    of surrogate values: `U+D801` and `U+DC00`.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了支持补充字符而不改变`char`原始数据类型并导致与之前的Java程序不兼容，补充字符被定义为一对称为*代理*的代码点值。 第一个代码点来自`U+D800`到`U+DBFF`的*高代理*范围，第二个代码点来自`U+DC00`到`U+DFFF`的*低代理*范围。
+    例如，Deseret字符LONG I，`U+10400`，是用这对代理值定义的：`U+D801`和`U+DC00`。

@@ -1,0 +1,198 @@
+- en: Creation
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/create.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/create.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/create.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/create.html)
+- en: There are several ways in which a connection is created. The most common way
+    is from the creation of an initial context. When you create an [`InitialContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/InitialContext.html),
+    [`InitialDirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/InitialDirContext.html),
+    or [`InitialLdapContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/InitialLdapContext.html)
+    by using the LDAP service provider, a connection is set up immediately with the
+    target LDAP server named in the [`Context.PROVIDER_URL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#PROVIDER_URL)
+    property. Each time an initial context is created, a new LDAP connection is created.
+    See the [Pooling](pool.html) section for information on how to change this behavior.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建连接的几种方式。最常见的方式是从创建初始上下文开始。当您使用LDAP服务提供程序创建[`InitialContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/InitialContext.html)、[`InitialDirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/InitialDirContext.html)或[`InitialLdapContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/InitialLdapContext.html)时，会立即与[`Context.PROVIDER_URL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#PROVIDER_URL)属性中命名的目标LDAP服务器建立连接。每次创建初始上下文时，都会创建一个新的LDAP连接。有关如何更改此行为的信息，请参见[Pooling](pool.html)部分。
+- en: If the property value contains more than one URL, then each URL is tried in
+    turn until one is used to create a successful connection. The property value is
+    then updated to be the successful URL. See the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/url.html#MULTI)
+    for an example of how to create an initial context using a list of URLs.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果属性值包含多个URL，则依次尝试每个URL，直到成功创建连接为止。然后将属性值更新为成功的URL。有关如何使用URL列表创建初始上下文的示例，请参见[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/url.html#MULTI)。
+- en: There are three other direct ways in which a connection is created.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有三种直接创建连接的方式。
+- en: By passing a URL as the name argument to the initial context. When an LDAP or
+    LDAPS URL is passed as a name parameter to the initial context, the information
+    in the URL is used to create a new connection to the LDAP server, regardless of
+    whether the initial context instance itself has a connection to an LDAP server.
+    In fact, the initial context might not be connected to any server. See the [JNDI
+    Tutorial](https://docs.oracle.com/javase/jndi/tutorial/beyond/url/initctx.html)
+    for more information on how URLs are used as names.
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 通过将URL作为初始上下文的名称参数传递。当将LDAP或LDAPS URL作为名称参数传递给初始上下文时，URL中的信息将用于创建到LDAP服务器的新连接，而不管初始上下文实例本身是否连接到LDAP服务器。实际上，初始上下文可能未连接到任何服务器。有关如何将URL用作名称的更多信息，请参见[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/beyond/url/initctx.html)。
+- en: Another way that a connection is created is by use of a `Reference`. When a
+    [`Reference`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Reference.html)
+    containing an LDAP or LDAPS URL is passed to [`NamingManager.getObjectInstance()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/spi/NamingManager.html#getObjectInstance-java.lang.Object-javax.naming.Name-javax.naming.Context-java.util.Hashtable-)
+    or [`DirectoryManager.getObjectInstance()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/spi/DirectoryManager.html#getObjectInstance-java.lang.Object-javax.naming.Name-javax.naming.Context-java.util.Hashtable-javax.naming.directory.Attributes-),
+    a new connection is created using information specified in the URL.
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 另一种创建连接的方式是使用`Reference`。当传递包含LDAP或LDAPS URL的[`Reference`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Reference.html)给[`NamingManager.getObjectInstance()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/spi/NamingManager.html#getObjectInstance-java.lang.Object-javax.naming.Name-javax.naming.Context-java.util.Hashtable-)或[`DirectoryManager.getObjectInstance()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/spi/DirectoryManager.html#getObjectInstance-java.lang.Object-javax.naming.Name-javax.naming.Context-java.util.Hashtable-javax.naming.directory.Attributes-)时，将使用URL中指定的信息创建一个新连接。
+- en: Finally, when a referral is followed manually or automatically, the information
+    in the referral is used to create a new connection. See the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/referral/index.html)
+    for information on referrals.
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 最后，当手动或自动跟随引荐时，引荐中的信息将用于创建新连接。有关引荐的信息，请参见[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/referral/index.html)。
+- en: Shared Connections
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 共享连接
+- en: '`Context` instances and [`NamingEnumeration`s](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html)
+    that are derived from one `Context` instance share the same connection until changes
+    to one of the `Context` instances make sharing no longer possible. For example,
+    if you invoke [`Context.lookup()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#lookup-javax.naming.Name-),
+    [`Context.listBindings()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#listBindings-javax.naming.Name-)
+    or [`DirContext.search()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-javax.naming.directory.SearchControls-)
+    from the initial context and get back other `Context` instances, then all of those
+    `Context` instances will share the same connection.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从一个`Context`实例派生的`Context`实例和[`NamingEnumeration`s](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html)将共享相同的连接，直到对其中一个`Context`实例进行更改使共享不再可能。
+    例如，如果您从初始上下文调用[`Context.lookup()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#lookup-javax.naming.Name-)，[`Context.listBindings()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#listBindings-javax.naming.Name-)或[`DirContext.search()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-javax.naming.directory.SearchControls-)并获得其他`Context`实例，则所有这些`Context`实例将共享相同的连接。
+- en: Here is [`an example`](examples/Shared.java).
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个[`示例`](examples/Shared.java)。
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: In this example, `ctx`, `ctx2`, and `ctx3` will share the same connection.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个示例中，`ctx`，`ctx2`和`ctx3`将共享相同的连接。
+- en: Sharing is done regardless of how the `Context` instance came into existence.
+    For example, a `Context` instance obtained by following a referral will share
+    the same connection as the referral.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 共享是无论`Context`实例如何产生都会进行的。 例如，通过遵循引荐获得的`Context`实例将与引荐共享相同的连接。
+- en: When you change a `Context` instance's environment properties that are related
+    to a connection, such as the principal name or credentials of the user, the `Context`
+    instance on which you make these changes will get its own connection (if the connection
+    is shared). `Context` instances that are derived from this `Context` instance
+    in the future will share this new connection. `Context` instances that previously
+    shared the old connection are not affected (that is, they continue to use the
+    old connection).
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您更改与连接相关的`Context`实例的环境属性，例如用户的主体名称或凭据时，您进行这些更改的`Context`实例将获得自己的连接（如果连接是共享的）。
+    未来从此`Context`实例派生的`Context`实例将共享这个新连接。 先前共享旧连接的`Context`实例不受影响（即它们继续使用旧连接）。
+- en: Here is [`an example`](examples/NewConn.java) that uses two connections.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个使用两个连接的[`示例`](examples/NewConn.java)。
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '`ctx2` initially shares the same connection with `ctx`. But when its principal
+    and password properties are changed, it can no longer use `ctx`''s connection.
+    The LDAP provider will automatically create a new connection for `ctx2`.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ctx2`最初与`ctx`共享相同的连接。 但是当其主体和密码属性更改时，它将无法再使用`ctx`的连接。 LDAP提供程序将自动为`ctx2`创建一个新连接。'
+- en: Similarly, if you use [`LdapContext.reconnect()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapContext.html#reconnect-javax.naming.ldap.Control:A-)
+    to change the `Context` instance's connection controls, the `Context` instance
+    will get its own connection if the connection was being shared.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，如果您使用[`LdapContext.reconnect()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapContext.html#reconnect-javax.naming.ldap.Control:A-)来更改`Context`实例的连接控制，如果连接正在共享，则`Context`实例将获得自己的连接。
+- en: If the `Context` instance's connection was not being shared (that is, no `Context`s
+    have been derived from it), then changes to its environment or connection controls
+    will not cause a new connection to be created. Instead, any changes relevant to
+    the connection will be applied to the existing connection.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`Context`实例的连接未被共享（即没有`Context`派生自它），则对其环境或连接控制的更改不会导致创建新连接。 相反，与连接相关的任何更改将应用于现有连接。
+- en: Creation Timeouts
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建超时
+- en: Not all connection creations are successful. If the LDAP provider cannot establish
+    a connection within a certain timeout period, it aborts the connection attempt.
+    By default, this timeout period is the network (TCP) timeout value, which is in
+    the order of a few minutes. To change the timeout period, you use the `"com.sun.jndi.ldap.connect.timeout"`
+    environment property. The value of this property is the string representation
+    of an integer representing the connection timeout in milliseconds.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 并非所有连接创建都成功。如果LDAP提供程序在一定的超时期限内无法建立连接，则会中止连接尝试。默认情况下，此超时期限是网络（TCP）超时值，大约几分钟。要更改超时期限，您可以使用`"com.sun.jndi.ldap.connect.timeout"`环境属性。此属性的值是表示连接超时的整数的字符串表示。
+- en: Here is [`an example`](examples/Timeout.java).
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是[`一个示例`](examples/Timeout.java)。
+- en: '[PRE2]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: In this example, if a connection cannot be created within 5 seconds, an exception
+    will be thrown.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个示例中，如果在5秒内无法创建连接，将抛出异常。
+- en: If the `Context.PROVIDER_URL` property contains more than one URL, the provider
+    will use the timeout for each URL. For example, if there are 3 URLs and the timeout
+    has been specified to be 5 seconds, then the provider will wait for a maximum
+    of 15 seconds in total.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`Context.PROVIDER_URL`属性包含多个URL，则提供程序将对每个URL使用超时。例如，如果有3个URL并且超时已指定为5秒，则提供程序将总共等待最多15秒。
+- en: See the [Connection Pooling](pool.html#TIMEOUT) section for information on how
+    this property affects connection pooling.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请查看[连接池](pool.html#TIMEOUT)部分，了解此属性如何影响连接池。

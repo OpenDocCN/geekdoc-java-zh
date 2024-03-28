@@ -1,0 +1,178 @@
+- en: The try-with-resources Statement
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: '`try`-with-resources语句'
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html)
+- en: The `try`-with-resources statement is a `try` statement that declares one or
+    more resources. A *resource* is an object that must be closed after the program
+    is finished with it. The `try`-with-resources statement ensures that each resource
+    is closed at the end of the statement. Any object that implements `java.lang.AutoCloseable`,
+    which includes all objects which implement `java.io.Closeable`, can be used as
+    a resource.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`try`-with-resources语句是一个声明一个或多个资源的`try`语句。*资源*是程序在使用完后必须关闭的对象。`try`-with-resources语句确保每个资源在语句结束时关闭。任何实现`java.lang.AutoCloseable`接口的对象，包括所有实现`java.io.Closeable`接口的对象，都可以用作资源。'
+- en: 'The following example reads the first line from a file. It uses an instance
+    of `FileReader` and `BufferedReader` to read data from the file. `FileReader`
+    and `BufferedReader` are resources that must be closed after the program is finished
+    with it:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例从文件中读取第一行。它使用`FileReader`和`BufferedReader`的实例从文件中读取数据。`FileReader`和`BufferedReader`是在程序使用完后必须关闭的资源：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: In this example, the resources declared in the `try`-with-resources statement
+    are a `FileReader` and a `BufferedReader`. The declaration statements of these
+    resources appear within parentheses immediately after the `try` keyword. The classes
+    `FileReader` and `BufferedReader`, in Java SE 7 and later, implement the interface
+    `java.lang.AutoCloseable`. Because the `FileReader` and `BufferedReader` instances
+    are declared in a `try`-with-resource statement, they will be closed regardless
+    of whether the `try` statement completes normally or abruptly (as a result of
+    the method `BufferedReader.readLine` throwing an `IOException`).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个示例中，`try`-with-resources语句中声明的资源是`FileReader`和`BufferedReader`。这些资源的声明语句出现在`try`关键字之后的括号内。在Java
+    SE 7及更高版本中，`FileReader`和`BufferedReader`类实现了`java.lang.AutoCloseable`接口。因为`FileReader`和`BufferedReader`实例是在`try`-with-resources语句中声明的，无论`try`语句是否正常完成或突然中断（因为`BufferedReader.readLine`方法抛出`IOException`），它们都将被关闭。
+- en: 'Prior to Java SE 7, you can use a `finally` block to ensure that a resource
+    is closed regardless of whether the `try` statement completes normally or abruptly.
+    The following example uses a `finally` block instead of a `try`-with-resources
+    statement:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java SE 7之前，可以使用`finally`块来确保资源在`try`语句正常完成或突然中断时关闭。以下示例使用`finally`块而不是`try`-with-resources语句：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: However, this example might have a resource leak. A program has to do more than
+    rely on the garbage collector (GC) to reclaim a resource's memory when it's finished
+    with it. The program must also release the resoure back to the operating system,
+    typically by calling the resource's `close` method. However, if a program fails
+    to do this before the GC reclaims the resource, then the information needed to
+    release the resource is lost. The resource, which is still considered by the operaing
+    system to be in use, has leaked.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，这个示例可能会有资源泄漏。程序不能仅仅依赖垃圾回收器（GC）在完成后回收资源的内存。程序还必须将资源释放回操作系统，通常通过调用资源的`close`方法。但是，如果程序在GC回收资源之前未能执行此操作，则释放资源所需的信息将丢失。这个资源，仍然被操作系统视为正在使用，已经泄漏。
+- en: In this example, if the `readLine` method throws an exception, and the statement
+    `br.close()` in the `finally` block throws an exception, then the `FileReader`
+    has leaked. Therefore, use a `try`-with-resources statement instead of a `finally`
+    block to close your program's resources.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个示例中，如果`readLine`方法抛出异常，并且`finally`块中的`br.close()`语句也抛出异常，那么`FileReader`就会泄漏。因此，使用`try`-with-resources语句而不是`finally`块来关闭程序的资源。
+- en: If the methods `readLine` and `close` both throw exceptions, then the method
+    `readFirstLineFromFileWithFinallyBlock` throws the exception thrown from the `finally`
+    block; the exception thrown from the `try` block is suppressed. In contrast, in
+    the example `readFirstLineFromFile`, if exceptions are thrown from both the `try`
+    block and the `try`-with-resources statement, then the method `readFirstLineFromFile`
+    throws the exception thrown from the `try` block; the exception thrown from the
+    `try`-with-resources block is suppressed. In Java SE 7 and later, you can retrieve
+    suppressed exceptions; see the section [Suppressed Exceptions](#suppressed-exceptions)
+    for more information.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`readLine`和`close`方法都抛出异常，则`readFirstLineFromFileWithFinallyBlock`方法会抛出从`finally`块中抛出的异常；从`try`块中抛出的异常会被抑制。相比之下，在示例`readFirstLineFromFile`中，如果`try`块和`try`-with-resources语句都抛出异常，则`readFirstLineFromFile`方法会抛出从`try`块中抛出的异常；从`try`-with-resources块中抛出的异常会被抑制。在Java
+    SE 7及更高版本中，您可以检索被抑制的异常；有关更多信息，请参阅[被抑制的异常](#suppressed-exceptions)部分。
+- en: 'The following example retrieves the names of the files packaged in the zip
+    file `zipFileName` and creates a text file that contains the names of these files:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例检索打包在zip文件`zipFileName`中的文件的名称，并创建一个包含这些文件名称的文本文件：
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'In this example, the `try`-with-resources statement contains two declarations
+    that are separated by a semicolon: `ZipFile` and `BufferedWriter`. When the block
+    of code that directly follows it terminates, either normally or because of an
+    exception, the `close` methods of the `BufferedWriter` and `ZipFile` objects are
+    automatically called in this order. Note that the `close` methods of resources
+    are called in the *opposite* order of their creation.'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此示例中，`try`-with-resources语句包含两个声明，它们之间用分号分隔：`ZipFile`和`BufferedWriter`。当直接跟在其后的代码块正常终止或因异常终止时，`BufferedWriter`和`ZipFile`对象的`close`方法会按照这个顺序自动调用。请注意，资源的`close`方法按照它们创建的*相反*顺序调用。
+- en: 'The following example uses a `try`-with-resources statement to automatically
+    close a `java.sql.Statement` object:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用`try`-with-resources语句自动关闭`java.sql.Statement`对象：
+- en: '[PRE3]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The resource `java.sql.Statement` used in this example is part of the JDBC 4.1
+    and later API.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例中使用的资源`java.sql.Statement`是JDBC 4.1及更高版本API的一部分。
+- en: '**Note**: A `try`-with-resources statement can have `catch` and `finally` blocks
+    just like an ordinary `try` statement. In a `try`-with-resources statement, any
+    `catch` or `finally` block is run after the resources declared have been closed.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：`try`-with-resources语句可以像普通的`try`语句一样具有`catch`和`finally`块。在`try`-with-resources语句中，任何`catch`或`finally`块都会在声明的资源关闭后运行。'
+- en: Suppressed Exceptions
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 被抑制的异常
+- en: An exception can be thrown from the block of code associated with the `try`-with-resources
+    statement. In the example `writeToFileZipFileContents`, an exception can be thrown
+    from the `try` block, and up to two exceptions can be thrown from the `try`-with-resources
+    statement when it tries to close the `ZipFile` and `BufferedWriter` objects. If
+    an exception is thrown from the `try` block and one or more exceptions are thrown
+    from the `try`-with-resources statement, then those exceptions thrown from the
+    `try`-with-resources statement are suppressed, and the exception thrown by the
+    block is the one that is thrown by the `writeToFileZipFileContents` method. You
+    can retrieve these suppressed exceptions by calling the `Throwable.getSuppressed`
+    method from the exception thrown by the `try` block.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`try`-with-resources语句相关联的代码块中可能会抛出异常。在示例`writeToFileZipFileContents`中，异常可能会从`try`块中抛出，当尝试关闭`ZipFile`和`BufferedWriter`对象时，`try`-with-resources语句最多可能会抛出两个异常。如果从`try`块中抛出异常，并且从`try`-with-resources语句中抛出一个或多个异常，则这些从`try`-with-resources语句中抛出的异常会被抑制，而由该块抛出的异常就是`writeToFileZipFileContents`方法抛出的异常。您可以通过调用由`try`块抛出的异常的`Throwable.getSuppressed`方法来检索这些被抑制的异常。
+- en: Classes That Implement the AutoCloseable or Closeable Interface
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 实现AutoCloseable或Closeable接口的类
+- en: See the Javadoc of the [`AutoCloseable`](https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html)
+    and [`Closeable`](https://docs.oracle.com/javase/8/docs/api/java/io/Closeable.html)
+    interfaces for a list of classes that implement either of these interfaces. The
+    `Closeable` interface extends the `AutoCloseable` interface. The `close` method
+    of the `Closeable` interface throws exceptions of type `IOException` while the
+    `close` method of the `AutoCloseable` interface throws exceptions of type `Exception`.
+    Consequently, subclasses of the `AutoCloseable` interface can override this behavior
+    of the `close` method to throw specialized exceptions, such as `IOException`,
+    or no exception at all.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[`AutoCloseable`](https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html)和[`Closeable`](https://docs.oracle.com/javase/8/docs/api/java/io/Closeable.html)接口的Javadoc，以获取实现这两个接口之一的类列表。`Closeable`接口扩展了`AutoCloseable`接口。`Closeable`接口的`close`方法会抛出`IOException`类型的异常，而`AutoCloseable`接口的`close`方法会抛出`Exception`类型的异常。因此，`AutoCloseable`接口的子类可以重写`close`方法的行为，以抛出特定的异常，比如`IOException`，或者根本不抛出异常。

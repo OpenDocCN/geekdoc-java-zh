@@ -1,0 +1,152 @@
+- en: Clipping the Drawing Region
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 绘制区域剪切
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/advanced/clipping.html](https://docs.oracle.com/javase/tutorial/2d/advanced/clipping.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/advanced/clipping.html](https://docs.oracle.com/javase/tutorial/2d/advanced/clipping.html)
+- en: Any [`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)
+    object can be used as a clipping path that restricts the portion of the drawing
+    area that will be rendered. The clipping path is part of the [`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)
+    context; to set the clip attribute, you call `Graphics2D.setClip` and pass in
+    the `Shape` that defines the clipping path you want to use. You can shrink the
+    clipping path by calling the `clip` method and passing in another `Shape`; the
+    clip is set to the intersection of the current clip and the specified `Shape`.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何[`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)对象都可以用作限制将呈现的绘图区域的剪切路径。剪切路径是[`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)上下文的一部分；要设置剪切属性，调用`Graphics2D.setClip`并传入定义要使用的剪切路径的`Shape`。可以通过调用`clip`方法并传入另一个`Shape`来缩小剪切路径；剪切设置为当前剪切和指定`Shape`的交集。
+- en: 'Example: ClipImage'
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例：ClipImage
+- en: This example animates a clipping path to reveal different portions of an image.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例通过动画剪切路径来显示图像的不同部分。
+- en: <applet code="ClipImage" alt="applet animates clipping path" archive="examples/lib/ClipImageApplet.jar"
+    width="300" height="300"><param name="permissions" value="sandbox"></applet>
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="ClipImage" alt="applet animates clipping path" archive="examples/lib/ClipImageApplet.jar"
+    width="300" height="300"><param name="permissions" value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果看不到小程序运行，请至少安装[Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[`ClipImage.java`](examples/ClipImage.java) contains the complete code for
+    this applet. The applet requires the [`clouds.jpg`](examples/images/clouds.jpg)
+    image file.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`ClipImage.java`](examples/ClipImage.java)包含此小程序的完整代码。小程序需要[`clouds.jpg`](examples/images/clouds.jpg)图像文件。'
+- en: The clipping path is defined by the intersection of an ellipse and a rectangle
+    whose dimensions are set randomly. The ellipse is passed to the `setClip` method,
+    and then `clip` is called to set the clipping path to the intersection of the
+    ellipse and the rectangle.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 剪切路径由椭圆和随机设置尺寸的矩形的交集定义。将椭圆传递给`setClip`方法，然后调用`clip`将剪切路径设置为椭圆和矩形的交集。
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Example: Starry'
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例：Starry
+- en: A clipping area can also be created from a text string. The following example
+    creates a `TextLayout` with the string *The Starry Night*. Then, it gets the outline
+    of the `TextLayout`. The [`TextLayout.getOutline`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/TextLayout.html#getOutline-java.awt.geom.AffineTransform-)
+    method returns a `Shape` object and a `Rectangle` is created from the bounds of
+    this `Shape` object. The bounds contain all the pixels the layout can draw. The
+    color in the graphics context is set to blue and the outline shape is drawn, as
+    illustrated by the following image and code snippet.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也可以从文本字符串创建一个剪切区域。以下示例使用字符串*The Starry Night*创建一个`TextLayout`。然后，获取`TextLayout`的轮廓。[`TextLayout.getOutline`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/TextLayout.html#getOutline-java.awt.geom.AffineTransform-)方法返回一个`Shape`对象，并从该`Shape`对象的边界创建一个`Rectangle`。边界包含布局可以绘制的所有像素。将图形上下文中的颜色设置为蓝色，并绘制轮廓形状，如下图和代码片段所示。
+- en: '![The Starry Night text (outline)](../Images/858a497e45605021bbb6564d33c175d0.png)'
+  id: totrans-14
+  prefs: []
+  type: TYPE_IMG
+  zh: '![The Starry Night text (outline)](../Images/858a497e45605021bbb6564d33c175d0.png)'
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Next, a clipping area is set on the graphics context using the `Shape` object
+    created from `getOutline`. The `starry.gif` image, which is Van Gogh's famous
+    painting, *The Starry Night*, is drawn into this clipping area starting at the
+    lower left corner of the `Rectangle` object.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，使用从`getOutline`创建的`Shape`对象在图形上下文中设置一个剪切区域。将梵高的著名绘画作品`The Starry Night`的`starry.gif`图像绘制到从`Rectangle`对象的左下角开始的剪切区域中。
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: <applet code="Starry" alt="applet showing Starry Night painting in clipping
+    area" archive="examples/lib/StarryApplet.jar" width="600" height="150"><param
+    name="permissions" value="sandbox"></applet>
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="Starry" alt="applet showing Starry Night painting in clipping
+    area" archive="examples/lib/StarryApplet.jar" width="600" height="150"><param
+    name="permissions" value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果你看不到小程序在运行，你需要安装至少 [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    版本。'
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[`Starry.java`](examples/Starry.java) contains the complete code for this program.
+    This applet requires the [`Starry.gif`](examples/images/Starry.gif) image file.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Starry.java`](examples/Starry.java) 包含了这个程序的完整代码。这个小程序需要 [`Starry.gif`](examples/images/Starry.gif)
+    图像文件。'

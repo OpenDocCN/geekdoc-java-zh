@@ -1,0 +1,266 @@
+- en: How to Use BorderLayout
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用BorderLayout
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/border.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/border.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/border.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/border.html)
+- en: '* * *'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程涵盖了手动编写布局代码，这可能具有挑战性。如果您不想学习布局管理的所有细节，您可能更喜欢使用`GroupLayout`布局管理器结合构建工具来布局您的GUI。其中一个构建工具是[NetBeans
+    IDE](../learn/index.html)。否则，如果您想手动编码而不想使用`GroupLayout`，那么`GridBagLayout`被推荐为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有兴趣使用JavaFX创建GUI，请参阅[JavaFX中的布局](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: The following figure represents a snapshot of an application that uses the [`BorderLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/BorderLayout.html)
+    class.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图表示了一个使用[`BorderLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/BorderLayout.html)类的应用程序的快照。
+- en: '![A snapshot of BorderLayoutDemo](../Images/ad6ae2877c21489c23de688be50fa24d.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![BorderLayoutDemo的快照](../Images/ad6ae2877c21489c23de688be50fa24d.png)'
+- en: Click the Launch button to run BorderLayoutDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/layout/index.html#BorderLayoutDemo).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行BorderLayoutDemo（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自己编译和运行示例，请参考[示例索引](../examples/layout/index.html#BorderLayoutDemo)。
+- en: '[![Launches the BorderLayoutDemo application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BorderLayoutDemoProject/BorderLayoutDemo.jnlp)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动BorderLayoutDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BorderLayoutDemoProject/BorderLayoutDemo.jnlp)'
+- en: The complete code of this demo is in the [`BorderLayoutDemo.java`](../examples/layout/BorderLayoutDemoProject/src/layout/BorderLayoutDemo.java)
+    file.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个演示的完整代码在[`BorderLayoutDemo.java`](../examples/layout/BorderLayoutDemoProject/src/layout/BorderLayoutDemo.java)文件中。
+- en: 'As the preceding picture shows, a `BorderLayout` object has five areas. These
+    areas are specified by the `BorderLayout` constants:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前面的图片所示，`BorderLayout`对象有五个区域。这些区域由`BorderLayout`常量指定：
+- en: '`PAGE_START`'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`PAGE_START`'
+- en: '`PAGE_END`'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`PAGE_END`'
+- en: '`LINE_START`'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LINE_START`'
+- en: '`LINE_END`'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LINE_END`'
+- en: '`CENTER`'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CENTER`'
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Version note:**'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**版本说明：**'
+- en: Before JDK release 1.4, the preferred names for the various areas were different,
+    ranging from points of the compass (for example, `BorderLayout.NORTH` for the
+    top area) to wordier versions of the constants we use in our examples. The constants
+    our examples use are preferred because they are standard and enable programs to
+    adjust to languages that have different orientations.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在JDK 1.4版本发布之前，各个区域的首选名称不同，从罗盘点（例如，`BorderLayout.NORTH`表示顶部区域）到我们示例中使用的常量的较长版本。我们示例中使用的常量是首选的，因为它们是标准的，并且使程序能够适应具有不同方向的语言。
+- en: '* * *'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: "If the window is enlarged, the center area gets as much of the available space\
+    \ as possible. The other areas expand only as much as necessary to fill all available\
+    \ space. Often a container uses only one or two of the areas of the `BorderLayout`\
+    \ object \x97 just the center, or the center and the bottom."
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "如果窗口被放大，中心区域会尽可能占用所有可用空间。其他区域只会扩展到填满所有可用空间为止。通常，一个容器只使用`BorderLayout`对象的一个或两个区域\
+    \ \x97 只有中心，或中心和底部。"
+- en: The following code adds components to a frame's content pane. Because content
+    panes use the `BorderLayout` class by default, the code does not need to set the
+    layout manager. The complete program is in the [`BorderLayoutDemo.java`](../examples/layout/BorderLayoutDemoProject/src/layout/BorderLayoutDemo.java)
+    file.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码向框架的内容窗格添加组件。因为内容窗格默认使用 `BorderLayout` 类，所以代码不需要设置布局管理器。完整程序在 [`BorderLayoutDemo.java`](../examples/layout/BorderLayoutDemoProject/src/layout/BorderLayoutDemo.java)
+    文件中。
+- en: '[PRE0]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Specify the component's location (for example, `BorderLayout.LINE_END`) as one
+    of the arguments to the `add` method. If this component is missing from a container
+    controlled by a `BorderLayout` object, make sure that the component's location
+    was specified and no another component was placed in the same location.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定组件的位置（例如，`BorderLayout.LINE_END`）作为 `add` 方法的参数之一。如果此组件在由 `BorderLayout` 对象控制的容器中缺失，请确保已指定组件的位置，并且没有其他组件放置在相同位置。
+- en: 'All tutorial examples that use the `BorderLayout` class specify the component
+    as the first argument to the `add` method. For example:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有使用 `BorderLayout` 类的教程示例将组件指定为 `add` 方法的第一个参数。例如：
+- en: '[PRE1]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'However, the code in other programs specifies the component as the second argument.
+    For example, here are alternate ways of writing the preceding code:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，在其他程序中的代码将组件指定为第二个参数。例如，以下是编写前述代码的替代方式：
+- en: '[PRE2]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The BorderLayout API
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: BorderLayout API
+- en: The following table lists constructors and methods to specify gaps (in pixels).
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表列出了指定间隙（以像素为单位）的构造函数和方法。
+- en: Specifying gaps
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定间隙
+- en: '| Constructor or Method | Purpose |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数或方法 | 目的 |'
+- en: '| [`BorderLayout(int *horizontalGap*, int *verticalGap*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/BorderLayout.html#BorderLayout-int-int-)
+    | Defines a border layout with specified gaps between components. |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`BorderLayout(int *horizontalGap*, int *verticalGap*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/BorderLayout.html#BorderLayout-int-int-)
+    | 定义具有指定组件间隙的边界布局。 |'
+- en: '| [`setHgap(int)`](https://docs.oracle.com/javase/8/docs/api/java/awt/BorderLayout.html#setHgap-int-)
+    | Sets the horizontal gap between components. |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`setHgap(int)`](https://docs.oracle.com/javase/8/docs/api/java/awt/BorderLayout.html#setHgap-int-)
+    | 设置组件之间的水平间距。 |'
+- en: '| [`setVgap(int)`](https://docs.oracle.com/javase/8/docs/api/java/awt/BorderLayout.html#setVgap-int-)
+    | Sets the vertical gap between components. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`setVgap(int)`](https://docs.oracle.com/javase/8/docs/api/java/awt/BorderLayout.html#setVgap-int-)
+    | 设置组件之间的垂直间距。 |'
+- en: Examples that Use BorderLayout
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用 BorderLayout 的示例
+- en: The following table lists code examples that use the `BorderLayout` class and
+    provides links to related sections.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表列出了使用 `BorderLayout` 类的代码示例，并提供到相关部分的链接。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`BorderLayoutDemo`](../examples/layout/index.html#BorderLayoutDemo) | This
+    page | Puts a component in each of the five possible locations. |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`BorderLayoutDemo`](../examples/layout/index.html#BorderLayoutDemo) | 本页
+    | 将一个组件放在五个可能的位置中的每一个。 |'
+- en: '| [`TabbedPaneDemo`](../examples/components/index.html#TabbedPaneDemo) | [How
+    to Use Tabbed Panes](../components/tabbedpane.html) | One of many examples that
+    puts a single component in the center of a content pane, so that the component
+    is as large as possible. |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TabbedPaneDemo`](../examples/components/index.html#TabbedPaneDemo) | [如何使用选项卡窗格](../components/tabbedpane.html)
+    | 其中一个示例，将一个组件放在内容窗格的中心，使组件尽可能大。 |'
+- en: '| [`CheckBoxDemo`](../examples/components/index.html#CheckBoxDemo) | [How to
+    Use Check Boxes](../components/button.html#checkbox) | Creates a `JPanel` object
+    that uses the `BorderLayout` class. Puts components into the left (actually, `LINE_START`)
+    and center locations. |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`CheckBoxDemo`](../examples/components/index.html#CheckBoxDemo) | [如何使用复选框](../components/button.html#checkbox)
+    | 创建一个使用 `BorderLayout` 类的 `JPanel` 对象。将组件放入左侧（实际上是 `LINE_START`）和中心位置。 |'

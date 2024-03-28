@@ -1,0 +1,252 @@
+- en: More Fun with Wildcards
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 通配符更有趣
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/morefun.html](https://docs.oracle.com/javase/tutorial/extra/generics/morefun.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/morefun.html](https://docs.oracle.com/javase/tutorial/extra/generics/morefun.html)
+- en: In this section, we'll consider some of the more advanced uses of wildcards.
+    We've seen several examples where bounded wildcards were useful when reading from
+    a data structure. Now consider the inverse, a write-only data structure. The interface
+    `Sink` is a simple example of this sort.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本节中，我们将考虑通配符的一些更高级用法。我们已经看到了几个示例，在从数据结构中读取时有界通配符是有用的。现在考虑相反的情况，一个只写数据结构。接口`Sink`是这种类型的一个简单示例。
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: We can imagine using it as demonstrated by the code below. The method `writeAll()`
+    is designed to flush all elements of the collection `coll` to the sink `snk`,
+    and return the last element flushed.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以想象使用它，如下面的代码所示。方法`writeAll()`旨在将集合`coll`的所有元素刷新到接收器`snk`中，并返回最后一个刷新的元素。
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: As written, the call to `writeAll()` is illegal, as no valid type argument can
+    be inferred; neither `String` nor `Object` are appropriate types for `T`, because
+    the `Collection` element and the `Sink` element must be of the same type.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如所写，对`writeAll()`的调用是非法的，因为无法推断出有效的类型参数；`String`和`Object`都不适合`T`的类型，因为`Collection`元素和`Sink`元素必须是相同类型。
+- en: We can fix this error by modifying the signature of `writeAll()` as shown below,
+    using a wildcard.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以通过修改`writeAll()`的签名来修复此错误，如下所示，使用通配符。
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The call is now legal, but the assignment is erroneous, since the return type
+    inferred is `Object` because `T` matches the element type of `s`, which is `Object`.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在调用是合法的，但赋值是错误的，因为推断的返回类型是`Object`，因为`T`与`s`的元素类型匹配，而`s`是`Object`。
+- en: 'The solution is to use a form of bounded wildcard we haven''t seen yet: wildcards
+    with a *lower bound*. The syntax `? **super** T` denotes an unknown type that
+    is a supertype of `T` (or `T` itself; remember that the supertype relation is
+    reflexive). It is the dual of the bounded wildcards we''ve been using, where we
+    use `? **extends** T` to denote an unknown type that is a subtype of `T`.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 解决方案是使用我们尚未看到的一种有界通配符形式：带有*下界*的通配符。语法`? **super** T`表示一个未知类型，它是`T`的超类型（或`T`本身；请记住超类型关系是自反的）。这是我们一直在使用的有界通配符的对偶，我们使用`?
+    **extends** T`来表示一个未知类型，它是`T`的子类型。
+- en: '[PRE3]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Using this syntax, the call is legal, and the inferred type is `String`, as
+    desired.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用这种语法，调用是合法的，并且推断的类型是`String`，如所需。
+- en: Now let's turn to a more realistic example. A `java.util.TreeSet<E>` represents
+    a tree of elements of type `E` that are ordered. One way to construct a `TreeSet`
+    is to pass a `Comparator` object to the constructor. That comparator will be used
+    to sort the elements of the `TreeSet` according to a desired ordering.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们转向一个更现实的例子。`java.util.TreeSet<E>`表示一个按顺序排列的类型为`E`的元素树。构造`TreeSet`的一种方法是将`Comparator`对象传递给构造函数。该比较器将用于根据所需的顺序对`TreeSet`的元素进行排序。
+- en: '[PRE4]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The `Comparator` interface is essentially:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Comparator`接口本质上是：'
+- en: '[PRE5]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'Suppose we want to create a `TreeSet<String>` and pass in a suitable comparator,
+    We need to pass it a `Comparator` that can compare `String`s. This can be done
+    by a `Comparator<String>`, but a `Comparator<Object>` will do just as well. However,
+    we won''t be able to invoke the constructor given above on a `Comparator<Object>`.
+    We can use a lower bounded wildcard to get the flexibility we want:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设我们想创建一个`TreeSet<String>`并传入一个合适的比较器，我们需要传递一个可以比较`String`的`Comparator`。这可以通过`Comparator<String>`来完成，但`Comparator<Object>`同样有效。但是，我们将无法在`Comparator<Object>`上调用上面给出的构造函数。我们可以使用下界通配符来获得所需的灵活性：
+- en: '[PRE6]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: This code allows any applicable comparator to be used.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码允许使用任何适用的比较器。
+- en: As a final example of using lower bounded wildcards, lets look at the method
+    `Collections.max()`, which returns the maximal element in a collection passed
+    to it as an argument. Now, in order for `max()` to work, all elements of the collection
+    being passed in must implement `Comparable`. Furthermore, they must all be comparable
+    to *each other*.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为使用下界通配符的最后一个示例，让我们看看方法`Collections.max()`，它返回作为参数传递给它的集合中的最大元素。现在，为了让`max()`起作用，传入的集合的所有元素都必须实现`Comparable`。此外，它们都必须可以相互比较。
+- en: 'A first attempt at generifying this method signature yields:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对这种方法签名的泛型化的第一次尝试产生了：
+- en: '[PRE7]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'That is, the method takes a collection of some type `T` that is comparable
+    to itself, and returns an element of that type. However, this code turns out to
+    be too restrictive. To see why, consider a type that is comparable to arbitrary
+    objects:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 换句话说，该方法接受一个可与自身比较的某种类型`T`的集合，并返回该类型的一个元素。然而，这段代码实际上过于限制性。要了解原因，考虑一种可与任意对象进行比较的类型：
+- en: '[PRE8]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Every element of `cf` is comparable to every other element in `cf`, since every
+    such element is a `Foo`, which is comparable to any object, and in particular
+    to another `Foo`. However, using the signature above, we find that the call is
+    rejected. The inferred type must be `Foo`, but `Foo` does not implement `Comparable<Foo>`.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`cf`的每个元素都可以与`cf`中的其他元素进行比较，因为每个这样的元素都是`Foo`，而`Foo`可以与任何对象进行比较，特别是与另一个`Foo`进行比较。然而，使用上面的签名，我们发现该调用被拒绝了。推断的类型必须是`Foo`，但`Foo`并没有实现`Comparable<Foo>`。'
+- en: 'It isn''t necessary that `T` be comparable to **exactly** itself. All that''s
+    required is that `T` be comparable to one of its supertypes. This give us:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`T`与**自身**比较并不是必需的。所需的是`T`与其超类型之一进行比较。这给了我们：'
+- en: '[PRE9]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'Note that the actual signature of `Collections.max()` is more involved. We
+    return to it in the next section, [Converting Legacy Code to Use Generics](convert.html).
+    This reasoning applies to almost any usage of `Comparable` that is intended to
+    work for arbitrary types: You always want to use `Comparable<? **super** T>`.'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`Collections.max()`的实际签名更为复杂。我们将在下一节[将遗留代码转换为使用泛型](convert.html)中回到这一点。这种推理几乎适用于任何旨在适用于任意类型的`Comparable`的用法：您总是希望使用`Comparable<?
+    **super** T>`。
+- en: In general, if you have an API that only uses a type parameter `T` as an argument,
+    its uses should take advantage of lower bounded wildcards (`? **super** T`). Conversely,
+    if the API only returns `T`, you'll give your clients more flexibility by using
+    upper bounded wildcards (`? **extends** T`).
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一般来说，如果您的API只使用类型参数`T`作为参数，那么它的使用应该利用下界通配符（`? **super** T`）。相反，如果API只返回`T`，那么使用上界通配符（`?
+    **extends** T`）将为客户端提供更大的灵活性。
+- en: Wildcard Capture
+  id: totrans-30
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 通配符捕获
+- en: 'It should be pretty clear by now that given:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在应该很清楚了，鉴于：
+- en: '[PRE10]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: The call below is illegal.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的调用是非法的。
+- en: '[PRE11]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: It makes no difference that the actual set being passed is a set of strings;
+    what matters is that the expression being passed as an argument is a set of an
+    unknown type, which cannot be guaranteed to be a set of strings, or of any type
+    in particular.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际传递的集合是字符串集合并不重要；重要的是作为参数传递的表达式是未知类型的集合，不能保证是字符串集合，或者是特定类型的集合。
+- en: 'Now, consider the following code:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，考虑以下代码：
+- en: '[PRE12]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: It seems this should not be allowed; yet, looking at this specific call, it
+    is perfectly safe to permit it. After all, `unmodifiableSet()` does work for any
+    kind of `Set`, regardless of its element type.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 看起来这不应该被允许；然而，看着这个具体的调用，允许它是完全安全的。毕竟，`unmodifiableSet()`对于任何类型的`Set`都有效，无论其元素类型是什么。
+- en: Because this situation arises relatively frequently, there is a special rule
+    that allows such code under very specific circumstances in which the code can
+    be proven to be safe. This rule, known as *wildcard capture*, allows the compiler
+    to infer the unknown type of a wildcard as a type argument to a generic method.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于这种情况相对频繁出现，有一条特殊规则允许在非常具体的情况下使用这样的代码，其中可以证明代码是安全的。这条规则称为*通配符捕获*，允许编译器将通配符的未知类型推断为泛型方法的类型参数。

@@ -1,0 +1,342 @@
+- en: Inheritance
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 继承
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html](https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html](https://docs.oracle.com/javase/tutorial/java/IandI/subclasses.html)
+- en: In the preceding lessons, you have seen *inheritance* mentioned several times.
+    In the Java language, classes can be *derived* from other classes, thereby *inheriting*
+    fields and methods from those classes.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前面的课程中，您已经多次看到*继承*的提及。在Java语言中，类可以从其他类*派生*，从而*继承*那些类的字段和方法。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Definitions:** A class that is derived from another class is called a *subclass*
+    (also a *derived class*, *extended class*, or *child class*). The class from which
+    the subclass is derived is called a *superclass* (also a *base class* or a *parent
+    class*).'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义：** 从另一个类派生的类称为*子类*（也称为*派生类*、*扩展类*或*子类*）。从子类派生的类称为*超类*（也称为*基类*或*父类*）。'
+- en: Excepting `Object`, which has no superclass, every class has one and only one
+    direct superclass (single inheritance). In the absence of any other explicit superclass,
+    every class is implicitly a subclass of `Object`.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了`Object`没有超类之外，每个类只有一个直接超类（单继承）。在没有其他显式超类的情况下，每个类都隐式地是`Object`的子类。
+- en: Classes can be derived from classes that are derived from classes that are derived
+    from classes, and so on, and ultimately derived from the topmost class, `Object`.
+    Such a class is said to be *descended* from all the classes in the inheritance
+    chain stretching back to `Object`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类可以从派生自其他类的类派生，而这些类又从其他类派生，依此类推，最终都是从顶级类`Object`派生而来。这样的类被称为*继承*自继承链中一直延伸到`Object`的所有类。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The idea of inheritance is simple but powerful: When you want to create a new
+    class and there is already a class that includes some of the code that you want,
+    you can derive your new class from the existing class. In doing this, you can
+    reuse the fields and methods of the existing class without having to write (and
+    debug!) them yourself.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 继承的概念简单而强大：当您想要创建一个新类，并且已经有一个包含您想要的一些代码的类时，您可以从现有类派生您的新类。通过这样做，您可以重用现有类的字段和方法，而无需自己编写（和调试！）它们。
+- en: A subclass inherits all the *members* (fields, methods, and nested classes)
+    from its superclass. Constructors are not members, so they are not inherited by
+    subclasses, but the constructor of the superclass can be invoked from the subclass.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 子类从其超类继承所有*成员*（字段、方法和嵌套类）。构造函数不是成员，因此它们不会被子类继承，但是可以从子类中调用超类的构造函数。
+- en: The Java Platform Class Hierarchy
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Java平台类层次结构
+- en: "The [`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)\
+    \ class, defined in the `java.lang` package, defines and implements behavior common\
+    \ to all classes\x97including the ones that you write. In the Java platform, many\
+    \ classes derive directly from `Object`, other classes derive from some of those\
+    \ classes, and so on, forming a hierarchy of classes."
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)类，定义在`java.lang`包中，定义并实现了所有类共有的行为，包括您编写的类。在Java平台中，许多类直接从`Object`派生，其他类从其中一些类派生，依此类推，形成一个类的层次结构。'
+- en: '![All Classes in the Java Platform are Descendants of Object](../Images/de7eb1c95f2611f2583ebbd6951d1e98.png)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Java平台中的所有类都是Object的子类](../Images/de7eb1c95f2611f2583ebbd6951d1e98.png)'
+- en: All Classes in the Java Platform are Descendants of Object
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台中的所有类都是Object的子类
+- en: At the top of the hierarchy, `Object` is the most general of all classes. Classes
+    near the bottom of the hierarchy provide more specialized behavior.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在层次结构的顶部，`Object`是所有类中最通用的类。层次结构底部附近的类提供更专业化的行为。
+- en: An Example of Inheritance
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 继承的示例
+- en: 'Here is the sample code for a possible implementation of a `Bicycle` class
+    that was presented in the Classes and Objects lesson:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个可能实现的`Bicycle`类的示例代码，该代码在类和对象课程中提供：
+- en: '[PRE0]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'A class declaration for a `MountainBike` class that is a subclass of `Bicycle`
+    might look like this:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`MountainBike`类的类声明，它是`Bicycle`的子类，可能如下所示：
+- en: '[PRE1]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '`MountainBike` inherits all the fields and methods of `Bicycle` and adds the
+    field `seatHeight` and a method to set it. Except for the constructor, it is as
+    if you had written a new `MountainBike` class entirely from scratch, with four
+    fields and five methods. However, you didn''t have to do all the work. This would
+    be especially valuable if the methods in the `Bicycle` class were complex and
+    had taken substantial time to debug.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MountainBike`继承了`Bicycle`的所有字段和方法，并添加了字段`seatHeight`和一个设置它的方法。除了构造函数外，就好像你完全从头开始编写了一个新的`MountainBike`类，有四个字段和五个方法。但是，你不必做所有的工作。如果`Bicycle`类中的方法很复杂并且花费了大量时间来调试，这将特别有价值。'
+- en: What You Can Do in a Subclass
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在子类中可以做什么
+- en: 'A subclass inherits all of the *public* and *protected* members of its parent,
+    no matter what package the subclass is in. If the subclass is in the same package
+    as its parent, it also inherits the *package-private* members of the parent. You
+    can use the inherited members as is, replace them, hide them, or supplement them
+    with new members:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 子类继承其父类的所有*public*和*protected*成员，无论子类位于何种包中。如果子类与其父类在同一包中，它还会继承父类的*package-private*成员。你可以直接使用继承的成员，替换它们，隐藏它们，或者用新成员补充它们：
+- en: The inherited fields can be used directly, just like any other fields.
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 继承的字段可以直接使用，就像任何其他字段一样。
+- en: You can declare a field in the subclass with the same name as the one in the
+    superclass, thus *hiding* it (not recommended).
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以在子类中声明一个与超类中相同名称的字段，从而*隐藏*它（不建议）。
+- en: You can declare new fields in the subclass that are not in the superclass.
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以在子类中声明超类中没有的新字段。
+- en: The inherited methods can be used directly as they are.
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 继承的方法可以直接使用。
+- en: You can write a new *instance* method in the subclass that has the same signature
+    as the one in the superclass, thus *overriding* it.
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以在子类中编写一个新的*实例*方法，其签名与超类中的方法相同，从而*覆盖*它。
+- en: You can write a new *static* method in the subclass that has the same signature
+    as the one in the superclass, thus *hiding* it.
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以在子类中编写一个新的*静态*方法，其签名与超类中的方法相同，从而*隐藏*它。
+- en: You can declare new methods in the subclass that are not in the superclass.
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以在子类中声明超类中没有的新方法。
+- en: You can write a subclass constructor that invokes the constructor of the superclass,
+    either implicitly or by using the keyword `super`.
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以编写一个子类构造函数，隐式地或使用关键字`super`调用超类的构造函数。
+- en: The following sections in this lesson will expand on these topics.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程的以下部分将扩展这些主题。
+- en: Private Members in a Superclass
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 超类中的私有成员
+- en: A subclass does not inherit the `private` members of its parent class. However,
+    if the superclass has public or protected methods for accessing its private fields,
+    these can also be used by the subclass.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 子类不继承其父类的`private`成员。但是，如果超类有用于访问其私有字段的公共或受保护方法，子类也可以使用这些方法。
+- en: "A nested class has access to all the private members of its enclosing class\x97\
+    both fields and methods. Therefore, a public or protected nested class inherited\
+    \ by a subclass has indirect access to all of the private members of the superclass."
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "嵌套类可以访问其封闭类的所有私有成员\x97包括字段和方法。因此，一个由子类继承的公共或受保护的嵌套类间接访问了超类的所有私有成员。"
+- en: Casting Objects
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 对象转型
+- en: We have seen that an object is of the data type of the class from which it was
+    instantiated. For example, if we write
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们已经看到，一个对象的数据类型是它实例化的类的数据类型。例如，如果我们写
+- en: '[PRE2]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: then `myBike` is of type `MountainBike`.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么`myBike`的类型是`MountainBike`。
+- en: '`MountainBike` is descended from `Bicycle` and `Object`. Therefore, a `MountainBike`
+    is a `Bicycle` and is also an `Object`, and it can be used wherever `Bicycle`
+    or `Object` objects are called for.'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MountainBike`是从`Bicycle`和`Object`继承而来的。因此，`MountainBike`是一个`Bicycle`，也是一个`Object`，可以在需要`Bicycle`或`Object`对象的任何地方使用。'
+- en: 'The reverse is not necessarily true: a `Bicycle` *may be* a `MountainBike`,
+    but it isn''t necessarily. Similarly, an `Object` *may be* a `Bicycle` or a `MountainBike`,
+    but it isn''t necessarily.'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 反之未必成立：`Bicycle`*可能是*`MountainBike`，但不一定。同样，`Object`*可能是*`Bicycle`或`MountainBike`，但不一定。
+- en: '*Casting* shows the use of an object of one type in place of another type,
+    among the objects permitted by inheritance and implementations. For example, if
+    we write'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*转型*展示了在继承和实现允许的对象之间使用一个类型的对象代替另一个类型的对象。例如，如果我们写'
+- en: '[PRE3]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: then `obj` is both an `Object` and a `MountainBike` (until such time as `obj`
+    is assigned another object that is *not* a `MountainBike`). This is called *implicit
+    casting*.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么`obj`既是一个`Object`，也是一个`MountainBike`（直到`obj`被分配为*不是*`MountainBike`的另一个对象为止）。这被称为*隐式转换*。
+- en: If, on the other hand, we write
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，如果我们写
+- en: '[PRE4]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: we would get a compile-time error because `obj` is not known to the compiler
+    to be a `MountainBike`. However, we can *tell* the compiler that we promise to
+    assign a `MountainBike` to `obj` by *explicit casting:*
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们会得到一个编译时错误，因为编译器不知道`obj`是一个`MountainBike`。然而，我们可以*告诉*编译器，我们承诺将一个`MountainBike`分配给`obj`，通过*显式转换*：
+- en: '[PRE5]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: This cast inserts a runtime check that `obj` is assigned a `MountainBike` so
+    that the compiler can safely assume that `obj` is a `MountainBike`. If `obj` is
+    not a `MountainBike` at runtime, an exception will be thrown.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个转换插入了一个运行时检查，以确保`obj`被分配为`MountainBike`，这样编译器可以安全地假定`obj`是一个`MountainBike`。如果在运行时`obj`不是`MountainBike`，则会抛出异常。
+- en: '* * *'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** You can make a logical test as to the type of a particular object
+    using the `instanceof` operator. This can save you from a runtime error owing
+    to an improper cast. For example:'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 您可以使用`instanceof`运算符对特定对象的类型进行逻辑测试。这可以避免由于不正确的转换而导致运行时错误。例如：'
+- en: '[PRE6]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Here the `instanceof` operator verifies that `obj` refers to a `MountainBike`
+    so that we can make the cast with knowledge that there will be no runtime exception
+    thrown.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里的`instanceof`运算符验证`obj`指向一个`MountainBike`，这样我们可以进行转换，并确保不会抛出运行时异常。
+- en: '* * *'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

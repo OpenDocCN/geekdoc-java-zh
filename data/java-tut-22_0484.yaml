@@ -1,0 +1,317 @@
+- en: How to Write an Action Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写一个动作监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/actionlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/actionlistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/actionlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/actionlistener.html)
+- en: Action listeners are probably the easiest — and most common — event handlers
+    to implement. You implement an action listener to define what should be done when
+    an user performs certain operation.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 动作监听器可能是最容易实现的事件处理程序，也是最常见的。您实现一个动作监听器来定义用户执行某些操作时应该执行的操作。
+- en: 'An action event occurs, whenever an action is performed by the user. Examples:
+    When the user clicks a [button](../components/button.html), chooses a [menu item](../components/menu.html),
+    presses Enter in a [text field](../components/textfield.html). The result is that
+    an `actionPerformed` message is sent to all action listeners that are registered
+    on the relevant component.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当用户执行操作时，都会发生一个动作事件。例如：当用户点击一个[按钮](../components/button.html)，选择一个[菜单项](../components/menu.html)，在[文本字段](../components/textfield.html)中按Enter键。结果是向所有注册在相关组件上的动作监听器发送一个`actionPerformed`消息。
+- en: 'To write an Action Listener, follow the steps given below:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编写一个动作监听器，请按照以下步骤进行：
+- en: 'Declare an event handler class and specify that the class either implements
+    an ActionListener interface or extends a class that implements an ActionListener
+    interface. For example:'
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 声明一个事件处理程序类，并指定该类要么实现ActionListener接口，要么扩展实现ActionListener接口的类。例如：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Register an instance of the event handler class as a listener on one or more
+    components. For example:'
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在一个或多个组件上注册事件处理程序类的实例作为监听器。例如：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Include code that implements the methods in listener interface. For example:'
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 包含实现监听器接口中方法的代码。例如：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: In general, to detect when the user clicks an onscreen button (or does the keyboard
+    equivalent), a program must have an object that implements the ActionListener
+    interface. The program must register this object as an action listener on the
+    button (the event source), using the addActionListener method. When the user clicks
+    the onscreen button, the button fires an action event. This results in the invocation
+    of the action listener's actionPerformed method (the only method in the ActionListener
+    interface). The single argument to the method is an ActionEvent object that gives
+    information about the event and its source.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，要检测用户何时点击屏幕按钮（或执行键盘等效操作），程序必须有一个实现ActionListener接口的对象。程序必须使用addActionListener方法将此对象注册为按钮（事件源）的动作监听器。当用户点击屏幕按钮时，按钮会触发一个动作事件。这将导致调用动作监听器的actionPerformed方法（ActionListener接口中的唯一方法）。该方法的唯一参数是一个ActionEvent对象，提供有关事件及其来源的信息。
+- en: 'Let us write a simple program which displays how many number of times a button
+    is clicked by the user. First, here is the code that sets up the TextField , button
+    and numClicks variable:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们编写一个简单的程序，显示用户点击按钮的次数。首先，这是设置TextField、按钮和numClicks变量的代码：
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: In the above example, the event handler class is AL which implements ActionListener.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上面的示例中，事件处理程序类是AL，它实现了ActionListener。
+- en: 'We would like to handle the button-click event, so we add an action listener
+    to the button b as below:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们想要处理按钮点击事件，因此我们将一个动作监听器添加到按钮b上，如下所示：
+- en: '[PRE4]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: In the above code, Button b is a component upon which an instance of event handler
+    class AL is registered.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上述代码中，按钮b是一个组件，事件处理程序类AL的实例已注册在其上。
+- en: 'Now, we want to display the text as to how many number of times a user clicked
+    button. We can do this by writing the code as below:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，我们想要显示文本，显示用户点击按钮的次数。我们可以通过以下代码实现：
+- en: '[PRE5]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Now, when the user clicks the Button b, the button fires an action event which
+    invokes the action listener's actionPerformed method. Each time the user presses
+    the button, numClicks variable is appended and the message is displayed in the
+    text field.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，当用户点击按钮b时，按钮会触发一个动作事件，调用动作监听器的actionPerformed方法。每次用户按下按钮时，numClicks变量都会被追加，并且消息会显示在文本字段中。
+- en: 'Here is the complete program(AL.java):'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是完整的程序（AL.java）：
+- en: '[PRE6]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'More Examples: `Beeper` program example is available in this trail''s introduction
+    to events, [Introduction to Event Listeners](intro.html). You can find the entire
+    program in [`Beeper.java`](../examples/events/BeeperProject/src/events/Beeper.java).
+    The other example described in that section, [`MultiListener.java`](../examples/events/MultiListenerProject/src/events/MultiListener.java),
+    has two action sources and two action listeners, with one listener listening to
+    both sources and the other listening to just one.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更多示例：`Beeper` 程序示例可以在本教程的事件简介中找到，[事件监听器简介](intro.html)。你可以在 [`Beeper.java`](../examples/events/BeeperProject/src/events/Beeper.java)
+    中找到整个程序。在该部分描述的另一个示例，[`MultiListener.java`](../examples/events/MultiListenerProject/src/events/MultiListener.java)，有两个动作源和两个动作监听器，一个监听器同时监听两个源，另一个只监听一个。
+- en: The Action Listener API
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 动作监听器 API
+- en: The ActionListener Interface
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ActionListener 接口
+- en: '*Because `ActionListener` has only one method, it has no corresponding adapter
+    class.*'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*因为 `ActionListener` 只有一个方法，所以它没有对应的适配器类。*'
+- en: '| Method | Purpose |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [actionPerformed(actionEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ActionListener.html#actionPerformed-java.awt.event.ActionEvent-)
+    | Called just after the user performs an action. |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| [actionPerformed(actionEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ActionListener.html#actionPerformed-java.awt.event.ActionEvent-)
+    | 在用户执行动作后立即调用。 |'
+- en: The ActionEvent Class
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ActionEvent 类
+- en: '| Method | Purpose |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [String getActionCommand()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ActionEvent.html#getActionCommand--)
+    | Returns the string associated with this action. Most objects that can fire action
+    events support a method called `setActionCommand` that lets you set this string.
+    |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| [String getActionCommand()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ActionEvent.html#getActionCommand--)
+    | 返回与此动作关联的字符串。大多数可以触发动作事件的对象支持一个名为 `setActionCommand` 的方法，让您设置这个字符串。 |'
+- en: '| [int getModifiers()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ActionEvent.html#getModifiers--)
+    | Returns an integer representing the modifier keys the user was pressing when
+    the action event occurred. You can use the `ActionEvent`-defined constants `SHIFT_MASK`,
+    `CTRL_MASK`, `META_MASK`, and `ALT_MASK` to determine which keys were pressed.
+    For example, if the user Shift-selects a menu item, then the following expression
+    is nonzero:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [int getModifiers()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ActionEvent.html#getModifiers--)
+    | 返回一个整数，表示用户在动作事件发生时按下的修饰键。您可以使用 `ActionEvent` 定义的常量 `SHIFT_MASK`、`CTRL_MASK`、`META_MASK`
+    和 `ALT_MASK` 来确定按下了哪些键。例如，如果用户 Shift-选择一个菜单项，则以下表达式不为零：'
+- en: '[PRE7]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '|'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*in `java.util.EventObject`*) | Returns the object that fired the event. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*在 `java.util.EventObject` 中*) | 返回触发事件的对象。 |'
+- en: Examples that Use Action Listeners
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用动作监听器的示例
+- en: The following table lists some of the many examples that use action listeners.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了一些使用动作监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`Beeper`](../examples/events/index.html#Beeper) | This section and [Introduction
+    to Event Listeners](intro.html) | Contains one button with one action listener
+    that beeps when you click the button. |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`Beeper`](../examples/events/index.html#Beeper) | 本节和 [事件监听器简介](intro.html)
+    | 包含一个按钮和一个在点击按钮时发出哔声的动作监听器。 |'
+- en: '| [`MultiListener`](../examples/events/index.html#MultiListener) | [Introduction
+    to Event Listeners](intro.html) | Registers two different action listeners on
+    one button. Also registers the same action listener on two different buttons.
+    |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`MultiListener`](../examples/events/index.html#MultiListener) | [事件监听器简介](intro.html)
+    | 在一个按钮上注册两个不同的动作监听器。同时在两个不同的按钮上注册相同的动作监听器。 |'
+- en: '| [`RadioButtonDemo`](../examples/components/index.html#RadioButtonDemo) |
+    [How to Use Radio Buttons](../components/button.html#radiobutton) | Registers
+    the same action listener on five radio buttons. The listener uses the `getActionCommand`
+    method to determine which radio button fired the event. |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`RadioButtonDemo`](../examples/components/index.html#RadioButtonDemo) |
+    [如何使用单选按钮](../components/button.html#radiobutton) | 在五个单选按钮上注册相同的动作监听器。监听器使用 `getActionCommand`
+    方法来确定哪个单选按钮触发了事件。 |'
+- en: '| [`MenuDemo`](../examples/components/index.html#MenuDemo) | [How to Use Menus](../components/menu.html)
+    | Shows how to listen for action events on menu items. |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`MenuDemo`](../examples/components/index.html#MenuDemo) | [如何使用菜单](../components/menu.html)
+    | 展示如何监听菜单项的动作事件。 |'
+- en: '| [`TextDemo`](../examples/components/index.html#TextDemo) | [How to Use Text
+    Fields](../components/textfield.html) | An applet that registers an action listener
+    on a text field. |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextDemo`](../examples/components/index.html#TextDemo) | [如何使用文本字段](../components/textfield.html)
+    | 在文本字段上注册动作监听器的小程序。 |'
+- en: '| [`IconDemo`](../examples/components/index.html#IconDemo) | [How to Use Icons](../components/icon.html)
+    | Loads an image in an action listener. Because loading an image can take a while,
+    this program uses a `SwingWorker` to load the image in a background thread. |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`IconDemo`](../examples/components/index.html#IconDemo) | [如何使用图标](../components/icon.html)
+    | 在动作监听器中加载图像。由于加载图像可能需要一些时间，该程序使用`SwingWorker`在后台线程中加载图像。 |'
+- en: '| [`TableDialogEditDemo`](../examples/components/index.html#TableDialogEditDemo)
+    | [How to Use Tables](../components/table.html) | Registers an action listener
+    through a factory method on the OK button of a color chooser dialog. |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TableDialogEditDemo`](../examples/components/index.html#TableDialogEditDemo)
+    | [如何使用表格](../components/table.html) | 通过颜色选择对话框的确定按钮上的工厂方法注册动作监听器。 |'
+- en: '| [`SliderDemo`](../examples/components/index.html#SliderDemo) | [How to Use
+    Sliders](../components/slider.html) | Registers an action listener on a timer
+    that controls an animation loop. |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SliderDemo`](../examples/components/index.html#SliderDemo) | [如何使用滑块](../components/slider.html)
+    | 在控制动画循环的计时器上注册动作监听器。 |'

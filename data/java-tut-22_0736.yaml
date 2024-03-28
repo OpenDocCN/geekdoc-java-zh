@@ -1,0 +1,136 @@
+- en: Using Datalink Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用Datalink对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqldatalink.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqldatalink.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqldatalink.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqldatalink.html)
+- en: A `DATALINK` value references a resource outside the underlying data source
+    through a URL. A URL, uniform resource locator, is a pointer to a resource on
+    the World Wide Web. A resource can be something as simple as a file or a directory,
+    or it can be a reference to a more complicated object, such as a query to a database
+    or to a search engine.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DATALINK`值通过URL引用底层数据源之外的资源。URL，统一资源定位符，是指向万维网上资源的指针。资源可以是简单的文件或目录，也可以是对更复杂对象的引用，比如对数据库查询或搜索引擎的查询。'
+- en: 'The following topics are covered:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下列主题包括：
+- en: '[Storing References to External Data](#storing_datalink)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[存储外部数据引用](#storing_datalink)'
+- en: '[Retrieving References to External Data](#retrieving_datalink)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检索外部数据引用](#retrieving_datalink)'
+- en: Storing References to External Data
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 存储外部数据引用
+- en: Use the method `PreparedStatement.setURL` to specify a `java.net.URL` object
+    to a prepared statement. In cases where the type of URL being set is not supported
+    by the Java platform, store the URL with the `setString` method.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用方法`PreparedStatement.setURL`来为预编译语句指定一个`java.net.URL`对象。在URL类型不被Java平台支持的情况下，可以使用`setString`方法存储URL。
+- en: 'For example, suppose the owner of The Coffee Break would like to store a list
+    of important URLs in a database table. The following method, [`DatalinkSample.addURLRow`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/DatalinkSample.java),
+    adds one row of data to the table `DATA_REPOSITORY`. The row consists of a string
+    identifying the URL, `DOCUMENT_NAME` and the URL itself, `URL`:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设The Coffee Break的所有者想要在数据库表中存储一组重要的URL。以下方法[`DatalinkSample.addURLRow`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/DatalinkSample.java)向表`DATA_REPOSITORY`添加一行数据。该行包括标识URL的字符串，`DOCUMENT_NAME`和URL本身，`URL`：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Retrieving References to External Data
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检索外部数据引用
+- en: Use the method `ResultSet.getURL` to retrieve a reference to external data as
+    a `java.net.URL` object. In cases where the type of URL returned by the methods
+    `getObject` or `getURL` is not supported by the Java platform, retrieve the URL
+    as a `String` object by calling the method `getString`.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用方法`ResultSet.getURL`检索外部数据引用作为`java.net.URL`对象。在`getObject`或`getURL`方法返回的URL类型不被Java平台支持的情况下，通过调用`getString`方法将URL作为`String`对象检索。
+- en: 'The following method, [`DatalinkSample.viewTable`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/DatalinkSample.java),
+    displays the contents of all the URLs stored in the table `DATA_REPOSITORY`:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下列方法[`DatalinkSample.viewTable`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/DatalinkSample.java)显示了表`DATA_REPOSITORY`中所有URL的内容：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The sample [`DatalinkSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/DatalinkSample.java)
+    stores the Oracle URL, [https://www.oracle.com](https://www.oracle.com) in the
+    table `DATA_REPOSITORY`. Afterward, it displays the contents of all documents
+    referred to by the URLs stored in `DATA_REPOSITORY`, which includes the Oracle
+    home page, [https://www.oracle.com](https://www.oracle.com).
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例[`DatalinkSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/DatalinkSample.java)将Oracle
+    URL [https://www.oracle.com](https://www.oracle.com) 存储在表`DATA_REPOSITORY`中。然后，它显示了所有在`DATA_REPOSITORY`中存储的URL引用的文档内容，其中包括Oracle主页，[https://www.oracle.com](https://www.oracle.com)。
+- en: 'The sample retrieves the URL from the result set as a `java.net.URL` object
+    with the following statement:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下语句从结果集中检索URL作为`java.net.URL`对象：
+- en: '[PRE2]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The sample accesses the data referred to by the `URL` object with the following
+    statements:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例使用以下语句访问`URL`对象引用的数据：
+- en: '[PRE3]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The method `URLConnection.openConnection` can take no arguments, which means
+    that the `URLConnection` represents a direct connection to the Internet. If you
+    require a proxy server to connect to the Internet, the `openConnection` method
+    accepts a `java.net.Proxy` object as an argument. The following statements demonstrate
+    how to create an HTTP proxy with the server name `www-proxy.example.com` and port
+    number `80`:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`URLConnection.openConnection`可以不带参数，这意味着`URLConnection`表示直接连接到互联网。如果需要代理服务器连接到互联网，`openConnection`方法接受一个`java.net.Proxy`对象作为参数。以下语句演示如何创建一个HTTP代理，服务器名称为`www-proxy.example.com`，端口号为`80`：
+- en: '[PRE4]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'

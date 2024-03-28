@@ -1,0 +1,383 @@
+- en: Using Package Members
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用包成员
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/package/usepkgs.html](https://docs.oracle.com/javase/tutorial/java/package/usepkgs.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/package/usepkgs.html](https://docs.oracle.com/javase/tutorial/java/package/usepkgs.html)
+- en: The types that comprise a package are known as the *package members*.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组成包的类型被称为*包成员*。
+- en: 'To use a `public` package member from outside its package, you must do one
+    of the following:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要从其包外部使用`public`包成员，你必须执行以下操作之一：
+- en: Refer to the member by its fully qualified name
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过其完全限定名称引用成员
+- en: Import the package member
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 导入包成员
+- en: Import the member's entire package
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 导入成员的整个包
+- en: Each is appropriate for different situations, as explained in the sections that
+    follow.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每种情况都适用于不同的情况，如下面的部分所解释的。
+- en: Referring to a Package Member by Its Qualified Name
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 通过其限定名称引用包成员
+- en: So far, most of the examples in this tutorial have referred to types by their
+    simple names, such as `Rectangle` and `StackOfInts`. You can use a package member's
+    simple name if the code you are writing is in the same package as that member
+    or if that member has been imported.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，在本教程中的大多数示例都通过其简单名称引用类型，如`Rectangle`和`StackOfInts`。如果你编写的代码与该成员在同一个包中，或者已经导入了该成员，你可以使用包成员的简单名称。
+- en: However, if you are trying to use a member from a different package and that
+    package has not been imported, you must use the member's fully qualified name,
+    which includes the package name. Here is the fully qualified name for the `Rectangle`
+    class declared in the `graphics` package in the previous example.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，如果你尝试使用来自不同包的成员，并且该包尚未被导入，你必须使用成员的完全限定名称，其中包括包名称。以下是在前面示例中声明的`graphics`包中的`Rectangle`类的完全限定名称。
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'You could use this qualified name to create an instance of `graphics.Rectangle`:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用这个限定名称来创建`graphics.Rectangle`的实例：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Qualified names are all right for infrequent use. When a name is used repetitively,
+    however, typing the name repeatedly becomes tedious and the code becomes difficult
+    to read. As an alternative, you can *import* the member or its package and then
+    use its simple name.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于不经常使用的限定名称是可以的。然而，当一个名称被重复使用时，反复输入名称变得乏味，代码变得难以阅读。作为替代方案，你可以*导入*成员或其包，然后使用其简单名称。
+- en: Importing a Package Member
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 导入包成员
+- en: To import a specific member into the current file, put an `import` statement
+    at the beginning of the file before any type definitions but after the `package`
+    statement, if there is one. Here's how you would import the `Rectangle` class
+    from the `graphics` package created in the previous section.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将特定成员导入当前文件，请在文件开头放置一个`import`语句，在任何类型定义之前，但在`package`语句之后（如果有的话）。以下是如何从前一节中创建的`graphics`包中导入`Rectangle`类。
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Now you can refer to the `Rectangle` class by its simple name.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你可以通过其简单名称引用`Rectangle`类。
+- en: '[PRE3]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: This approach works well if you use just a few members from the `graphics` package.
+    But if you use many types from a package, you should import the entire package.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你只从`graphics`包中使用少量成员，这种方法很有效。但如果你从一个包中使用许多类型，你应该导入整个包。
+- en: Importing an Entire Package
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 导入整个包
+- en: To import all the types contained in a particular package, use the `import`
+    statement with the asterisk `(*)` wildcard character.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要导入特定包中包含的所有类型，请使用带有星号`(*)`通配符的`import`语句。
+- en: '[PRE4]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Now you can refer to any class or interface in the `graphics` package by its
+    simple name.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你可以通过其简单名称引用`graphics`包中的任何类或接口。
+- en: '[PRE5]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The asterisk in the `import` statement can be used only to specify all the classes
+    within a package, as shown here. It cannot be used to match a subset of the classes
+    in a package. For example, the following does not match all the classes in the
+    `graphics` package that begin with `A`.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`import`语句中的星号只能用于指定包中的所有类，如下所示。它不能用于匹配包中的一部分类。例如，以下内容不匹配以`A`开头的`graphics`包中的所有类。'
+- en: '[PRE6]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Instead, it generates a compiler error. With the `import` statement, you generally
+    import only a single package member or an entire package.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相反，它会生成编译器错误。通常情况下，使用`import`语句只导入单个包成员或整个包。
+- en: '* * *'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Another, less common form of `import` allows you to import the public
+    nested classes of an enclosing class. For example, if the `graphics.Rectangle`
+    class contained useful nested classes, such as `Rectangle.DoubleWide` and `Rectangle.Square`,
+    you could import `Rectangle` and its nested classes by using the following *two*
+    statements.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 另一种不太常见的 `import` 形式允许你导入封闭类的公共嵌套类。例如，如果 `graphics.Rectangle` 类包含有用的嵌套类，比如
+    `Rectangle.DoubleWide` 和 `Rectangle.Square`，你可以通过以下*两个*语句导入 `Rectangle` 及其嵌套类。'
+- en: '[PRE7]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Be aware that the second import statement will *not* import `Rectangle`.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，第二个导入语句*不会*导入 `Rectangle`。
+- en: Another less common form of `import`, the *static import statement*, will be
+    discussed at the end of this section.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种不太常见的 `import` 形式，即*静态导入语句*，将在本节末尾讨论。
+- en: '* * *'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'For convenience, the Java compiler automatically imports two entire packages
+    for each source file: (1) the `java.lang` package and (2) the current package
+    (the package for the current file).'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了方便起见，Java 编译器会自动为每个源文件导入两个完整的包：（1）`java.lang` 包和（2）当前包（当前文件的包）。
+- en: Apparent Hierarchies of Packages
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 包的表面层次结构
+- en: At first, packages appear to be hierarchical, but they are not. For example,
+    the Java API includes a `java.awt` package, a `java.awt.color` package, a `java.awt.font`
+    package, and many others that begin with `java.awt`. However, the `java.awt.color`
+    package, the `java.awt.font` package, and other `java.awt.xxxx` packages are *not
+    included* in the `java.awt` package. The prefix `java.awt` (the Java Abstract
+    Window Toolkit) is used for a number of related packages to make the relationship
+    evident, but not to show inclusion.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 起初，包看起来是分层的，但实际上并非如此。例如，Java API 包括一个 `java.awt` 包，一个 `java.awt.color` 包，一个
+    `java.awt.font` 包，以及许多以 `java.awt` 开头的其他包。然而，`java.awt.color` 包、`java.awt.font`
+    包和其他 `java.awt.xxxx` 包*不包含*在 `java.awt` 包中。前缀 `java.awt`（Java 抽象窗口工具包）用于一些相关的包，以明确显示它们之间的关系，而不是表示包含关系。
+- en: 'Importing `java.awt.*` imports all of the types in the `java.awt` package,
+    but it *does not import* `java.awt.color`, `java.awt.font`, or any other `java.awt.xxxx`
+    packages. If you plan to use the classes and other types in `java.awt.color` as
+    well as those in `java.awt`, you must import both packages with all their files:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 导入 `java.awt.*` 导入了 `java.awt` 包中的所有类型，但*不会导入* `java.awt.color`、`java.awt.font`
+    或任何其他 `java.awt.xxxx` 包。如果你计划使用 `java.awt.color` 中的类以及 `java.awt` 中的类，你必须导入这两个包及其所有文件：
+- en: '[PRE8]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Name Ambiguities
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 名称歧义
+- en: If a member in one package shares its name with a member in another package
+    and both packages are imported, you must refer to each member by its qualified
+    name. For example, the `graphics` package defined a class named `Rectangle`. The
+    `java.awt` package also contains a `Rectangle` class. If both `graphics` and `java.awt`
+    have been imported, the following is ambiguous.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个包中的成员与另一个包中的成员同名，并且两个包都被导入，你必须通过其限定名称引用每个成员。例如，`graphics` 包定义了一个名为 `Rectangle`
+    的类。`java.awt` 包也包含一个 `Rectangle` 类。如果 `graphics` 和 `java.awt` 都被导入，以下内容是模棱两可的。
+- en: '[PRE9]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: In such a situation, you have to use the member's fully qualified name to indicate
+    exactly which `Rectangle` class you want. For example,
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，你必须使用成员的完全限定名称来指示你想要的确切 `Rectangle` 类。例如，
+- en: '[PRE10]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: The Static Import Statement
+  id: totrans-45
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 静态导入语句
+- en: There are situations where you need frequent access to static final fields (constants)
+    and static methods from one or two classes. Prefixing the name of these classes
+    over and over can result in cluttered code. The *static import* statement gives
+    you a way to import the constants and static methods that you want to use so that
+    you do not need to prefix the name of their class.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有些情况下，你需要频繁访问一个或两个类的静态 final 字段（常量）和静态方法。反复添加这些类的名称可能会导致代码混乱。*静态导入*语句为你提供了一种导入你想要使用的常量和静态方法的方式，这样你就不需要为它们的类名添加前缀。
+- en: The `java.lang.Math` class defines the `PI` constant and many static methods,
+    including methods for calculating sines, cosines, tangents, square roots, maxima,
+    minima, exponents, and many more. For example,
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.lang.Math` 类定义了 `PI` 常量和许多静态方法，包括用于计算正弦、余弦、正切、平方根、最大值、最小值、指数等的方法。例如，'
+- en: '[PRE11]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: Ordinarily, to use these objects from another class, you prefix the class name,
+    as follows.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，要从另一个类中使用这些对象，你需要添加类名前缀，如下所示。
+- en: '[PRE12]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'You can use the static import statement to import the static members of java.lang.Math
+    so that you don''t need to prefix the class name, `Math`. The static members of
+    `Math` can be imported either individually:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用静态导入语句可以导入java.lang.Math的静态成员，这样就不需要在类名`Math`前加前缀了。`Math`的静态成员可以单独导入：
+- en: '[PRE13]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: 'or as a group:'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者作为一个组：
+- en: '[PRE14]'
+  id: totrans-54
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: 'Once they have been imported, the static members can be used without qualification.
+    For example, the previous code snippet would become:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦它们被导入，静态成员可以无需限定地使用。例如，前面的代码片段将变为：
+- en: '[PRE15]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: Obviously, you can write your own classes that contain constants and static
+    methods that you use frequently, and then use the static import statement. For
+    example,
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 显然，你可以编写自己的类，其中包含你经常使用的常量和静态方法，然后使用静态导入语句。例如，
+- en: '[PRE16]'
+  id: totrans-58
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: '* * *'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Use static import very sparingly. Overusing static import can result
+    in code that is difficult to read and maintain, because readers of the code won''t
+    know which class defines a particular static object. Used properly, static import
+    makes code more readable by removing class name repetition.'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 静态导入要非常谨慎使用。过度使用静态导入会导致代码难以阅读和维护，因为代码读者无法知道哪个类定义了特定的静态对象。正确使用静态导入可以通过消除类名重复使代码更易读。'
+- en: '* * *'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

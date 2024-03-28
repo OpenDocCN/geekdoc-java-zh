@@ -1,0 +1,77 @@
+- en: Read Attributes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 读取属性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/getattrs.html](https://docs.oracle.com/javase/tutorial/jndi/ops/getattrs.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/getattrs.html](https://docs.oracle.com/javase/tutorial/jndi/ops/getattrs.html)
+- en: 'To read the attributes of an object from the directory, use [`DirContext.getAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#getAttributes-javax.naming.Name-)
+    and pass it the name of the object for which you want the attributes. Suppose
+    that an object in the naming service has the name `"cn=Ted Geisel, ou=People"`.
+    To retrieve this object''s attributes, you''ll need [`code`](examples/GetAllAttrs.java)
+    that looks like this:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要从目录中读取对象的属性，请使用[`DirContext.getAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#getAttributes-javax.naming.Name-)并传递您想要属性的对象的名称。假设命名服务中的一个对象的名称为`"cn=Ted
+    Geisel, ou=People"`。要检索此对象的属性，您需要类似于以下的[`code`](examples/GetAllAttrs.java)：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: You can then print the contents of this answer as follows.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以按照以下方式打印此答案的内容。
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This produces the following output.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将产生以下输出。
+- en: '[PRE2]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Returning Selected Attributes
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 返回选定的属性
+- en: To read a selective subset of attributes, you supply an array of strings that
+    are attribute identifiers of the attributes that you want to retrieve.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要读取属性的选择性子集，您需要提供一个字符串数组，这些字符串是您想要检索的属性的属性标识符。
+- en: '[PRE3]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '[`This example`](examples/GetAllAttrs.java) asks for the `"sn"`, `"telephonenumber"`,
+    `"golfhandicap"` and `"mail"` attributes of the object `"cn=Ted Geisel, ou=People"`.
+    This object has all but the `"golfhandicap"` attribute, and so three attributes
+    are returned in the answer. Following is the output of the example.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`此示例`](examples/GetAllAttrs.java)请求对象`"cn=Ted Geisel, ou=People"`的`"sn"`、`"telephonenumber"`、`"golfhandicap"`和`"mail"`属性。此对象除了`"golfhandicap"`属性外，其余属性都存在，因此答案中返回了三个属性。以下是示例的输出。'
+- en: '[PRE4]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'

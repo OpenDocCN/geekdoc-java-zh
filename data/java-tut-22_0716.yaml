@@ -1,0 +1,309 @@
+- en: Establishing a Connection
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 建立连接
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/connecting.html)
+- en: 'First, you need to establish a connection with the data source you want to
+    use. A data source can be a DBMS, a legacy file system, or some other source of
+    data with a corresponding JDBC driver. Typically, a JDBC application connects
+    to a target data source using one of two classes:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，您需要与要使用的数据源建立连接。数据源可以是DBMS、传统文件系统或其他具有相应JDBC驱动程序的数据源。通常，JDBC应用程序使用以下两个类之一连接到目标数据源：
+- en: '`DriverManager`: This fully implemented class connects an application to a
+    data source, which is specified by a database URL. When this class first attempts
+    to establish a connection, it automatically loads any JDBC 4.0 drivers found within
+    the class path. Note that your application must manually load any JDBC drivers
+    prior to version 4.0.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DriverManager`：此完全实现的类将应用程序连接到由数据库URL指定的数据源。当此类首次尝试建立连接时，它会自动加载类路径中找到的任何JDBC
+    4.0驱动程序。请注意，您的应用程序必须在版本4.0之前手动加载任何JDBC驱动程序。'
+- en: '`DataSource`: This interface is preferred over `DriverManager` because it allows
+    details about the underlying data source to be transparent to your application.
+    A `DataSource` object''s properties are set so that it represents a particular
+    data source. See [Connecting with DataSource Objects](sqldatasources.html) for
+    more information. For more information about developing applications with the
+    `DataSource` class, see the latest *[The Java EE Tutorial](https://javaee.github.io/tutorial/toc.html)*.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DataSource`：此接口优先于`DriverManager`，因为它允许底层数据源的详细信息对您的应用程序透明。设置`DataSource`对象的属性，使其表示特定的数据源。有关更多信息，请参阅[使用DataSource对象进行连接](sqldatasources.html)。有关使用`DataSource`类开发应用程序的更多信息，请参阅最新版本的*[Java
+    EE教程](https://javaee.github.io/tutorial/toc.html)*。'
+- en: '**Note**: The samples in this tutorial use the `DriverManager` class instead
+    of the `DataSource` class because it is easier to use and the samples do not require
+    the features of the `DataSource` class.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：本教程中的示例使用`DriverManager`类而不是`DataSource`类，因为它更容易使用，而且示例不需要`DataSource`类的功能。'
+- en: 'This page covers the following topics:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页涵盖以下主题：
+- en: '[Using the DriverManager Class](#drivermanager)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用DriverManager类](#drivermanager)'
+- en: '[Specifying Database Connection URLs](#db_connection_url)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[指定数据库连接URL](#db_connection_url)'
+- en: Using the DriverManager Class
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用DriverManager类
+- en: 'Connecting to your DBMS with the `DriverManager` class involves calling the
+    method `DriverManager.getConnection`. The following method, [`JDBCTutorialUtilities.getConnection`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JDBCTutorialUtilities.java),
+    establishes a database connection:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`DriverManager`类连接到您的DBMS涉及调用方法`DriverManager.getConnection`。以下方法，[`JDBCTutorialUtilities.getConnection`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JDBCTutorialUtilities.java)，建立数据库连接：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The method `DriverManager.getConnection` establishes a database connection.
+    This method requires a database URL, which varies depending on your DBMS. The
+    following are some examples of database URLs:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`DriverManager.getConnection`建立数据库连接。此方法需要数据库URL，具体取决于您的DBMS。以下是一些数据库URL的示例：
+- en: 'MySQL: `jdbc:mysql://localhost:3306/`, where `localhost` is the name of the
+    server hosting your database, and `3306` is the port number'
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: MySQL：`jdbc:mysql://localhost:3306/`，其中`localhost`是托管数据库的服务器名称，`3306`是端口号
+- en: 'Java DB: `jdbc:derby:*testdb*;create=true`, where `*testdb*` is the name of
+    the database to connect to, and `create=true` instructs the DBMS to create the
+    database.'
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: Java DB：`jdbc:derby:*testdb*;create=true`，其中`*testdb*`是要连接的数据库的名称，`create=true`指示DBMS创建数据库。
+- en: '**Note**: This URL establishes a database connection with the Java DB Embedded
+    Driver. Java DB also includes a Network Client Driver, which uses a different
+    URL.'
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '**注意**：此URL与Java DB嵌入式驱动程序建立数据库连接。Java DB还包括使用不同URL的网络客户端驱动程序。'
+- en: This method specifies the user name and password required to access the DBMS
+    with a `Properties` object.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此方法使用`Properties`对象指定访问DBMS所需的用户名和密码。
+- en: '**Note**:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：'
+- en: Typically, in the database URL, you also specify the name of an existing database
+    to which you want to connect. For example, the URL `jdbc:mysql://localhost:3306/mysql`
+    represents the database URL for the MySQL database named `mysql`. The samples
+    in this tutorial use a URL that does not specify a specific database because the
+    samples create a new database.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通常，在数据库 URL 中，你还会指定要连接的现有数据库的名称。例如，URL `jdbc:mysql://localhost:3306/mysql` 代表了名为
+    `mysql` 的 MySQL 数据库的数据库 URL。本教程中的示例使用不指定特定数据库的 URL，因为示例会创建一个新数据库。
+- en: In previous versions of JDBC, to obtain a connection, you first had to initialize
+    your JDBC driver by calling the method `Class.forName`. This methods required
+    an object of type `java.sql.Driver`. Each JDBC driver contains one or more classes
+    that implements the interface `java.sql.Driver`. The drivers for Java DB are `org.apache.derby.jdbc.EmbeddedDriver`
+    and `org.apache.derby.jdbc.ClientDriver`, and the one for MySQL Connector/J is
+    `com.mysql.cj.jdbc.Driver`. See the documentation of your DBMS driver to obtain
+    the name of the class that implements the interface `java.sql.Driver`.
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在以前的 JDBC 版本中，要获取连接，你首先需要通过调用方法 `Class.forName` 来初始化你的 JDBC 驱动程序。这些方法需要一个类型为
+    `java.sql.Driver` 的对象。每个 JDBC 驱动程序都包含一个或多个实现接口 `java.sql.Driver` 的类。Java DB 的驱动程序是
+    `org.apache.derby.jdbc.EmbeddedDriver` 和 `org.apache.derby.jdbc.ClientDriver`，而
+    MySQL Connector/J 的驱动程序是 `com.mysql.cj.jdbc.Driver`。查看你的 DBMS 驱动程序的文档以获取实现接口 `java.sql.Driver`
+    的类名。
+- en: Any JDBC 4.0 drivers that are found in your class path are automatically loaded.
+    (However, you must manually load any drivers prior to JDBC 4.0 with the method
+    `Class.forName`.)
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 任何在你的类路径中找到的 JDBC 4.0 驱动程序都会自动加载。（但是，在 JDBC 4.0 之前，你必须手动加载任何驱动程序，使用方法 `Class.forName`。）
+- en: The method returns a `Connection` object, which represents a connection with
+    the DBMS or a specific database. Query the database through this object.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该方法返回一个 `Connection` 对象，表示与 DBMS 或特定数据库的连接。通过这个对象查询数据库。
+- en: Specifying Database Connection URLs
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定数据库连接 URL
+- en: A database connection URL is a string that your DBMS JDBC driver uses to connect
+    to a database. It can contain information such as where to search for the database,
+    the name of the database to connect to, and configuration properties. The exact
+    syntax of a database connection URL is specified by your DBMS.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 数据库连接 URL 是你的 DBMS JDBC 驱动程序用来连接数据库的字符串。它可以包含诸如在哪里搜索数据库、要连接的数据库名称和配置属性等信息。数据库连接
+    URL 的确切语法由你的 DBMS 指定。
+- en: Java DB Database Connection URLs
+  id: totrans-24
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: Java DB 数据库连接 URL
+- en: 'The following is the database connection URL syntax for Java DB:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是 Java DB 的数据库连接 URL 语法：
+- en: '[PRE1]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '`*subsubprotocol*` specifies where Java DB should search for the database,
+    either in a directory, in memory, in a class path, or in a JAR file. It is typically
+    omitted.'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`*subsubprotocol*` 指定 Java DB 应在何处搜索数据库，可以是目录、内存、类路径或 JAR 文件。通常会省略。'
+- en: '`*databaseName*` is the name of the database to connect to.'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`*databaseName*` 是要连接的数据库的名称。'
+- en: '`*attribute*=*value*` represents an optional, semicolon-separated list of attributes.
+    These attributes enable you to instruct Java DB to perform various tasks, including
+    the following:'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`*attribute*=*value*` 表示一个可选的、以分号分隔的属性列表。这些属性使你能够指示 Java DB 执行各种任务，包括以下内容：'
+- en: Create the database specified in the connection URL.
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建连接 URL 中指定的数据库。
+- en: Encrypt the database specified in the connection URL.
+  id: totrans-31
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 加密连接 URL 中指定的数据库。
+- en: Specify directories to store logging and trace information.
+  id: totrans-32
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 指定存储日志和跟踪信息的目录。
+- en: Specify a user name and password to connect to the database.
+  id: totrans-33
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 指定用户名和密码以连接到数据库。
+- en: See *Java DB Developer's Guide* and *Java DB Reference Manual* from [Java DB
+    Technical Documentation](https://docs.oracle.com/javadb/index_jdk8.html) for more
+    information.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[Java DB 技术文档](https://docs.oracle.com/javadb/index_jdk8.html)中的*Java DB 开发人员指南*和*Java
+    DB 参考手册*以获取更多信息。
+- en: MySQL Connector/J Database URL
+  id: totrans-35
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: MySQL Connector/J 数据库 URL
+- en: 'The following is the database connection URL syntax for MySQL Connector/J:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是 MySQL Connector/J 的数据库连接 URL 语法：
+- en: '[PRE2]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '`*host*:*port*` is the host name and port number of the computer hosting your
+    database. If not specified, the default values of `*host*` and `*port*` are 127.0.0.1
+    and 3306, respectively.'
+  id: totrans-38
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`*host*:*port*` 是托管数据库的计算机的主机名和端口号。如果未指定，默认值为 `*host*` 和 `*port*` 分别为 127.0.0.1
+    和 3306。'
+- en: '`*database*` is the name of the database to connect to. If not specified, a
+    connection is made with no default database.'
+  id: totrans-39
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`*database*` 是要连接的数据库的名称。如果未指定，将连接到没有默认数据库的连接。'
+- en: '`*failover*` is the name of a standby database (MySQL Connector/J supports
+    failover).'
+  id: totrans-40
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`*failover*` 是一个备用数据库的名称（MySQL Connector/J 支持故障转移）。'
+- en: '`*propertyName*=*propertyValue*` represents an optional, ampersand-separated
+    list of properties. These attributes enable you to instruct MySQL Connector/J
+    to perform various tasks.'
+  id: totrans-41
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`*propertyName*=*propertyValue*` 表示一个可选的、以&符号分隔的属性列表。这些属性使您能够指示 MySQL Connector/J
+    执行各种任务。'
+- en: See [*MySQL Reference Manual*](https://dev.mysql.com/doc/) for more information.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[*MySQL 参考手册*](https://dev.mysql.com/doc/) 获取更多信息。

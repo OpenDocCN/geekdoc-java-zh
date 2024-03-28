@@ -1,0 +1,105 @@
+- en: CCP in a Text Component
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 在文本组件中进行 CCP
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/textpaste.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/textpaste.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/textpaste.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/textpaste.html)
+- en: If you are implementing cut, copy and paste using one of the Swing text components
+    (text field, password field, formatted text field, or text area) your work is
+    very straightforward. These text components utilize the [`DefaultEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html)
+    which provides built-in actions for cut, copy and paste. The default editor kit
+    also handles the work of remembering which component last had the focus. This
+    means that if the user initiates one of these actions using the menu or a keyboard
+    equivalent, the correct component receives the action — no additional code is
+    required.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在使用 Swing 文本组件（文本字段、密码字段、格式化文本字段或文本区域）之一实现剪切、复制和粘贴，您的工作非常简单。这些文本组件利用了[`DefaultEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html)，它提供了内置的剪切、复制和粘贴操作。默认编辑工具包还处理了记住上次焦点在哪个组件的工作。这意味着如果用户使用菜单或键盘快捷键启动其中一个操作，正确的组件将接收该操作
+    —— 不需要额外的代码。
+- en: The following demo, `TextCutPaste`, contains three text fields. As you can see
+    in the screen shot, you can cut, copy, and paste to or from any of these text
+    fields. They also support drag and drop.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的演示`TextCutPaste`包含三个文本字段。如您在屏幕截图中所见，您可以剪切、复制和粘贴到任何一个文本字段或从中粘贴。它们还支持拖放操作。
+- en: '![A snapshot of the TextCutPaste demo.](../Images/8c14b93e64d323efbbae02318b15631c.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TextCutPaste演示的快照。](../Images/8c14b93e64d323efbbae02318b15631c.png)'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: Click the Launch button to run `TextCutPaste` using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/dnd/index.html#TextCutPaste).[![Launches
+    the TextCutPaste example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextCutPasteProject/TextCutPaste.jnlp)
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行`TextCutPaste`（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/dnd/index.html#TextCutPaste)。[![启动TextCutPaste示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextCutPasteProject/TextCutPaste.jnlp)
+- en: Select text in one of the text fields. Use the Edit menu or the keyboard equivalent
+    to cut or copy the text from the source.
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在其中一个文本字段中选择文本。使用编辑菜单或键盘快捷键从源处剪切或复制文本。
+- en: Position the caret where you want the text to be pasted.
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将光标定位到要粘贴文本的位置。
+- en: Paste the text using the menu or the keyboard equivalent.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用菜单或键盘快捷键粘贴文本。
+- en: Perform the same operation using drag and drop.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用拖放执行相同的操作。
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Here is the code that creates the Edit menu by hooking up the built-in cut,
+    copy, and paste actions defined in `DefaultEditorKit` to the menu items. This
+    works with any component that descends from `JComponent`:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是创建编辑菜单的代码，通过将`DefaultEditorKit`中定义的内置剪切、复制和粘贴操作与菜单项连接起来。这适用于任何继承自`JComponent`的组件：
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Next we will look at how to accomplish the same functionality using a component
+    that does not have the built-in support of the `DefaultEditorKit`.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来我们将看看如何使用不具有`DefaultEditorKit`内置支持的组件实现相同的功能。

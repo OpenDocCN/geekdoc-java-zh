@@ -1,0 +1,61 @@
+- en: Printing
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 打印
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/printing.html](https://docs.oracle.com/javase/tutorial/2d/overview/printing.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/printing.html](https://docs.oracle.com/javase/tutorial/2d/overview/printing.html)
+- en: All of the Swing and Java 2D graphics, including composited graphics and images,
+    can be rendered to a printer by using the Java 2D Printing API. This API also
+    provides document composition features that enable you to perform such operations
+    as changing the order in which pages are printed.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有的Swing和Java 2D图形，包括合成图形和图像，都可以通过使用Java 2D Printing API渲染到打印机上。该API还提供文档组合功能，使您能够执行诸如更改打印页面顺序之类的操作。
+- en: Rendering to a printer is like rendering to a screen. The printing system controls
+    when pages are rendered, just like the drawing system controls when a component
+    is painted on the screen.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 渲染到打印机就像渲染到屏幕一样。打印系统控制何时渲染页面，就像绘图系统控制组件何时在屏幕上绘制一样。
+- en: The Java 2D Printing API is based on a *callback* model in which the printing
+    system, not the application, controls when pages are printed. The application
+    provides the printing system with information about the document to be printed,
+    and the printing system determines when each page needs to be imaged.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D Printing API基于*回调*模型，其中打印系统而不是应用程序控制打印页面的时间。应用程序向打印系统提供要打印的文档信息，打印系统确定何时需要成像每一页。
+- en: 'The following two features are important to support printing:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下两个功能对支持打印很重要：
+- en: '**Job control** – Initiating and managing the print job including displaying
+    the standard print and setup dialog boxes'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**作业控制** – 启动和管理打印作业，包括显示标准打印和设置对话框'
+- en: '**Pagination** – Rendering each page when the printing system requests it'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**分页** – 在打印系统请求时呈现每一页'
+- en: When pages need to be imaged, the printing system calls the application’s `print`
+    method with an appropriate `Graphics` context. To use Java 2D API features when
+    you print, you cast the `Graphics` object to a `Graphics2D` class, just like you
+    do when you are rendering to the screen.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当需要成像页面时，打印系统使用适当的`Graphics`上下文调用应用程序的`print`方法。要在打印时使用Java 2D API功能，您将`Graphics`对象转换为`Graphics2D`类，就像在渲染到屏幕时一样。

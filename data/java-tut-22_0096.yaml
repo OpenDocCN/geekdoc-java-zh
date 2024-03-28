@@ -1,0 +1,284 @@
+- en: Abstract Methods and Classes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 抽象方法和类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html](https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html](https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html)
+- en: "An *abstract class* is a class that is declared `abstract`\x97it may or may\
+    \ not include abstract methods. Abstract classes cannot be instantiated, but they\
+    \ can be subclassed."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "*抽象类* 是一个声明为 `abstract` 的类\x97它可能包含或不包含抽象方法。抽象类不能被实例化，但可以被子类化。"
+- en: 'An *abstract method* is a method that is declared without an implementation
+    (without braces, and followed by a semicolon), like this:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*抽象方法* 是一种声明但没有实现的方法（没有大括号，后面跟着一个分号），如下所示：'
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'If a class includes abstract methods, then the class itself *must* be declared
+    `abstract`, as in:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个类包含抽象方法，那么这个类本身*必须*声明为 `abstract`，如下所示：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: When an abstract class is subclassed, the subclass usually provides implementations
+    for all of the abstract methods in its parent class. However, if it does not,
+    then the subclass must also be declared `abstract`.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '当一个抽象类被子类化时，子类通常为其父类中的所有抽象方法提供实现。但是，如果没有提供实现，则子类也必须声明为 `abstract`。 '
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Methods in an *interface* (see the [Interfaces](../IandI/createinterface.html)
+    section) that are not declared as default or static are *implicitly* abstract,
+    so the `abstract` modifier is not used with interface methods. (It can be used,
+    but it is unnecessary.)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** *接口* 中的方法（参见 [接口](../IandI/createinterface.html) 部分）如果没有声明为默认或静态，则*隐式*是抽象的，因此不需要使用
+    `abstract` 修饰符。 （可以使用，但是不必要。）'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Abstract Classes Compared to Interfaces
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 抽象类与接口的比较
+- en: Abstract classes are similar to interfaces. You cannot instantiate them, and
+    they may contain a mix of methods declared with or without an implementation.
+    However, with abstract classes, you can declare fields that are not static and
+    final, and define public, protected, and private concrete methods. With interfaces,
+    all fields are automatically public, static, and final, and all methods that you
+    declare or define (as default methods) are public. In addition, you can extend
+    only one class, whether or not it is abstract, whereas you can implement any number
+    of interfaces.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 抽象类类似于接口。你不能实例化它们，它们可能包含一些声明有或没有实现的方法。然而，使用抽象类，你可以声明非静态和非最终的字段，并定义公共、受保护和私有的具体方法。使用接口，所有字段都自动是公共的、静态的和最终的，你声明或定义的所有方法（作为默认方法）都是公共的。此外，你只能扩展一个类，无论它是否是抽象的，而你可以实现任意数量的接口。
+- en: Which should you use, abstract classes or interfaces?
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你应该使用抽象类还是接口？
+- en: 'Consider using abstract classes if any of these statements apply to your situation:'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果你的情况符合以下任何一种情况，请考虑使用抽象类：
+- en: You want to share code among several closely related classes.
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你想在几个密切相关的类之间共享代码。
+- en: You expect that classes that extend your abstract class have many common methods
+    or fields, or require access modifiers other than public (such as protected and
+    private).
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你期望扩展你的抽象类的类有许多共同的方法或字段，或者需要除了 public 之外的访问修饰符（比如 protected 和 private）。
+- en: You want to declare non-static or non-final fields. This enables you to define
+    methods that can access and modify the state of the object to which they belong.
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你想声明非静态或非最终字段。这使你能够定义可以访问和修改它们所属对象状态的方法。
+- en: 'Consider using interfaces if any of these statements apply to your situation:'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果你的情况符合以下任何一种情况，请考虑使用接口：
+- en: You expect that unrelated classes would implement your interface. For example,
+    the interfaces [`Comparable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html)
+    and [`Cloneable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Cloneable.html)
+    are implemented by many unrelated classes.
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你期望不相关的类会实现你的接口。例如，[`Comparable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html)
+    和 [`Cloneable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Cloneable.html)
+    这些接口被许多不相关的类实现。
+- en: You want to specify the behavior of a particular data type, but not concerned
+    about who implements its behavior.
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你想指定特定数据类型的行为，但不关心谁实现它的行为。
+- en: You want to take advantage of multiple inheritance of type.
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你想利用类型的多重继承。
+- en: An example of an abstract class in the JDK is [`AbstractMap`](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractMap.html),
+    which is part of the Collections Framework. Its subclasses (which include `HashMap`,
+    `TreeMap`, and `ConcurrentHashMap`) share many methods (including `get`, `put`,
+    `isEmpty`, `containsKey`, and `containsValue`) that `AbstractMap` defines.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JDK 中抽象类的一个示例是[`AbstractMap`](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractMap.html)，它是集合框架的一部分。它的子类（包括
+    `HashMap`、`TreeMap` 和 `ConcurrentHashMap`）共享许多方法（包括 `get`、`put`、`isEmpty`、`containsKey`
+    和 `containsValue`），这些方法是由 `AbstractMap` 定义的。
+- en: An example of a class in the JDK that implements several interfaces is [`HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html),
+    which implements the interfaces `Serializable`, `Cloneable`, and `Map<K, V>`.
+    By reading this list of interfaces, you can infer that an instance of `HashMap`
+    (regardless of the developer or company who implemented the class) can be cloned,
+    is serializable (which means that it can be converted into a byte stream; see
+    the section [Serializable Objects](../../jndi/objects/serial.html)), and has the
+    functionality of a map. In addition, the `Map<K, V>` interface has been enhanced
+    with many default methods such as `merge` and `forEach` that older classes that
+    have implemented this interface do not have to define.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JDK 中实现多个接口的一个类的示例是[`HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html)，它实现了接口
+    `Serializable`、`Cloneable` 和 `Map<K, V>`。通过阅读这些接口列表，你可以推断出 `HashMap` 的实例（无论是哪个开发者或公司实现的类）可以被克隆，是可序列化的（这意味着它可以被转换为字节流；参见[可序列化对象](../../jndi/objects/serial.html)部分），并且具有映射功能。此外，`Map<K,
+    V>` 接口已经通过许多默认方法（如 `merge` 和 `forEach`）进行了增强，而旧类实现了该接口的类不必定义这些方法。
+- en: Note that many software libraries use both abstract classes and interfaces;
+    the `HashMap` class implements several interfaces and also extends the abstract
+    class `AbstractMap`.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，许多软件库同时使用抽象类和接口；`HashMap` 类实现了多个接口，并且还扩展了抽象类 `AbstractMap`。
+- en: An Abstract Class Example
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 抽象类示例
+- en: 'In an object-oriented drawing application, you can draw circles, rectangles,
+    lines, Bezier curves, and many other graphic objects. These objects all have certain
+    states (for example: position, orientation, line color, fill color) and behaviors
+    (for example: moveTo, rotate, resize, draw) in common. Some of these states and
+    behaviors are the same for all graphic objects (for example: position, fill color,
+    and moveTo). Others require different implementations (for example, resize or
+    draw). All `GraphicObject`s must be able to draw or resize themselves; they just
+    differ in how they do it. This is a perfect situation for an abstract superclass.
+    You can take advantage of the similarities and declare all the graphic objects
+    to inherit from the same abstract parent object (for example, `GraphicObject`)
+    as shown in the following figure.'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在面向对象的绘图应用程序中，你可以绘制圆、矩形、线条、贝塞尔曲线和许多其他图形对象。这些对象都具有某些状态（例如：位置、方向、线条颜色、填充颜色）和行为（例如：moveTo、rotate、resize、draw）是共同的。其中一些状态和行为对所有图形对象都是相同的（例如：位置、填充颜色和
+    moveTo）。其他需要不同实现（例如，resize 或 draw）。所有 `GraphicObject` 必须能够自行绘制或调整大小；它们只是在如何执行这些操作上有所不同。这是一个抽象超类的完美情况。你可以利用相似之处，并声明所有图形对象都继承自相同的抽象父对象（例如
+    `GraphicObject`），如下图所示。
+- en: '![Classes Rectangle, Line, Bezier, and Circle Inherit from GraphicObject ](../Images/a96478bc843eccbcb74710d8257ae4bd.png)'
+  id: totrans-27
+  prefs: []
+  type: TYPE_IMG
+  zh: '![类 Rectangle、Line、Bezier 和 Circle 继承自 GraphicObject](../Images/a96478bc843eccbcb74710d8257ae4bd.png)'
+- en: Classes Rectangle, Line, Bezier, and Circle Inherit from GraphicObject
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类 Rectangle、Line、Bezier 和 Circle 继承自 GraphicObject
+- en: 'First, you declare an abstract class, `GraphicObject`, to provide member variables
+    and methods that are wholly shared by all subclasses, such as the current position
+    and the `moveTo` method. `GraphicObject` also declares abstract methods for methods,
+    such as `draw` or `resize`, that need to be implemented by all subclasses but
+    must be implemented in different ways. The `GraphicObject` class can look something
+    like this:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，声明一个抽象类 `GraphicObject`，以提供所有子类完全共享的成员变量和方法，例如当前位置和 `moveTo` 方法。`GraphicObject`
+    还声明了抽象方法，例如 `draw` 或 `resize`，这些方法需要所有子类实现，但必须以不同的方式实现。`GraphicObject` 类可能如下所示：
+- en: '[PRE2]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Each nonabstract subclass of `GraphicObject`, such as `Circle` and `Rectangle`,
+    must provide implementations for the `draw` and `resize` methods:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个非抽象子类 `GraphicObject`，如 `Circle` 和 `Rectangle`，必须提供 `draw` 和 `resize` 方法的实现：
+- en: '[PRE3]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: When an Abstract Class Implements an Interface
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 当抽象类实现接口时
+- en: In the section on [`Interfaces`](../IandI/createinterface.html), it was noted
+    that a class that implements an interface must implement *all* of the interface's
+    methods. It is possible, however, to define a class that does not implement all
+    of the interface's methods, provided that the class is declared to be `abstract`.
+    For example,
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[`接口`](../IandI/createinterface.html)部分中指出，实现接口的类必须实现*所有*接口的方法。然而，可以定义一个不实现所有接口方法的类，只要该类声明为`abstract`。例如，
+- en: '[PRE4]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: In this case, class `X` must be `abstract` because it does not fully implement
+    `Y`, but class `XX` does, in fact, implement `Y`.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，类`X`必须是`abstract`，因为它没有完全实现`Y`，但事实上，类`XX`实现了`Y`。
+- en: Class Members
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 类成员
+- en: An abstract class may have `static` fields and `static` methods. You can use
+    these static members with a class reference (for example, `AbstractClass.staticMethod()`)
+    as you would with any other class.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个抽象类可能有`static`字段和`static`方法。您可以像使用其他类一样使用这些静态成员，通过类引用（例如，`AbstractClass.staticMethod()`）。

@@ -1,0 +1,478 @@
+- en: How to Use Key Bindings
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用键绑定
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/keybinding.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/keybinding.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/keybinding.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/keybinding.html)
+- en: 'The `JComponent` class supports key bindings as a way of responding to individual
+    keys typed by a user. Here are some examples of when key bindings are appropriate:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JComponent`类支持键绑定作为响应用户键入的单个键的一种方式。以下是键绑定适用的一些示例情况：'
+- en: You're creating a custom component and want to support keyboard access to it.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您正在创建自定义组件并希望支持键盘访问。
+- en: For example, you might want the component to react when it has the focus and
+    the user presses the Space key.
+  id: totrans-4
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 例如，您可能希望组件在焦点在其上且用户按下空格键时做出反应。
+- en: You want to override the behavior of an existing key binding.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您希望覆盖现有键绑定的行为。
+- en: For example, if your application normally reacts to presses of the F2 key in
+    a particular way, you might want it to perform a different action or ignore the
+    key press.
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 例如，如果您的应用程序通常对F2键的按下做出特定反应，您可能希望它执行不同的操作或忽略按键。
+- en: You want to provide a new key binding for an existing action.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您希望为现有操作提供新的键绑定。
+- en: For example, you might feel strongly that Control-Shift-Insert should perform
+    a paste operation.
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 例如，您可能强烈感觉Control-Shift-Insert应该执行粘贴操作。
+- en: You often don't need to use key bindings directly. They're used behind the scenes
+    by mnemonics (supported by all buttons and by tabbed panes as well as by [`JLabel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html))
+    and accelerators (supported by menu items). You can find coverage of mnemonics
+    and accelerators in the section [Enabling Keyboard Operation](../components/menu.html#mnemonic).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您通常不需要直接使用键绑定。它们在幕后由助记键（所有按钮和选项卡窗格以及[`JLabel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html)支持）和加速键（菜单项支持）使用。您可以在[启用键盘操作](../components/menu.html#mnemonic)部分找到助记键和加速键的覆盖范围。
+- en: An alternative to key bindings is using [key listeners](../events/keylistener.html).
+    Key listeners have their place as a low-level interface to keyboard input, but
+    for responding to individual keys key bindings are more appropriate and tend to
+    result in more easily maintained code. Key listeners are also difficult if the
+    key binding is to be active when the component doesn't have focus. Some of the
+    advantages of key bindings are they're somewhat self documenting, take the containment
+    hierarchy into account, encourage reusable chunks of code (`Action` objects),
+    and allow actions to be easily removed, customized, or shared. Also, they make
+    it easy to change the key to which an action is bound. Another advantage of Actions
+    is that they have an enabled state which provides an easy way to disable the action
+    without having to track which component it is attached to.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 键绑定的替代方法是使用[键监听器](../events/keylistener.html)。键监听器作为与键盘输入的低级接口有其用处，但对于响应单个键，键绑定更合适且更易于维护。如果组件没有焦点时要激活键绑定，则键监听器也会变得困难。键绑定的一些优点是它们在一定程度上是自解释的，考虑了包含层次结构，鼓励可重用的代码块（`Action`对象），并允许轻松删除、自定义或共享操作。此外，它们使更改绑定到操作的键变得容易。另一个`Action`的优点是它们具有启用状态，这提供了一种轻松禁用操作而无需跟踪其附加到的组件的方法。
+- en: 'The rest of this section gives you the details you need to use key bindings:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的其余部分将为您提供使用键绑定所需的详细信息：
+- en: '[How Key Bindings Work](#maps)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[键绑定的工作原理](#maps)'
+- en: '[How to Make and Remove Key Bindings](#howto)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[如何创建和删除键绑定](#howto)'
+- en: '[The Key Binding API](#api)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[键绑定API](#api)'
+- en: '[Examples that Use Key Bindings](#eg)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用键绑定的示例](#eg)'
+- en: How Key Bindings Work
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 键绑定的工作原理
+- en: The key binding support provided by `JComponent` relies on the [`InputMap`](https://docs.oracle.com/javase/8/docs/api/javax/swing/InputMap.html)
+    and [`ActionMap`](https://docs.oracle.com/javase/8/docs/api/javax/swing/ActionMap.html)
+    classes. An input map binds key strokes to action names, and an action map specifies
+    the [action](action.html) corresponding to each action name. Technically, you
+    don't need to use action names in the maps; you can use any object as the "key"
+    into the maps. By convention, however, you use a string that names an action.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JComponent`提供的键绑定支持依赖于[`InputMap`](https://docs.oracle.com/javase/8/docs/api/javax/swing/InputMap.html)和[`ActionMap`](https://docs.oracle.com/javase/8/docs/api/javax/swing/ActionMap.html)类。输入映射将键盘按键绑定到操作名称，而操作映射指定与每个操作名称对应的[action](action.html)。从技术上讲，您不需要在映射中使用操作名称；您可以使用任何对象作为映射中的“键”。但是，按照惯例，您使用命名操作的字符串作为“键”。'
+- en: Each `InputMap`/`ActionMap` has a parent that typically comes from the UI. Any
+    time the look and feel is changed, the parent is reset. In this way, any bindings
+    specified by the developer are never lost on look and feel changes.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个`InputMap`/`ActionMap`都有一个通常来自UI的父级。每当外观和感觉发生变化时，父级都会被重置。通过这种方式，开发人员指定的任何绑定在外观和感觉变化时都不会丢失。
+- en: 'Each `JComponent` has one action map and three input maps. The input maps correspond
+    to the following focus situations:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个`JComponent`都有一个动作映射和三个输入映射。输入映射对应以下焦点情况：
+- en: '`JComponent.WHEN_FOCUSED`'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JComponent.WHEN_FOCUSED`'
+- en: The component has the keyboard focus. The `WHEN_FOCUSED` input map is typically
+    used when the component has no children. For example, buttons bind the Space key
+    using the `WHEN_FOCUSED` map.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组件具有键盘焦点。`WHEN_FOCUSED`输入映射通常在组件没有子组件时使用。例如，按钮使用`WHEN_FOCUSED`映射绑定Space键。
+- en: These bindings are only effective when the component has focus.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些绑定只在组件获得焦点时生效。
+- en: '`JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`'
+- en: "The component contains (or is) the component that has the focus. This input\
+    \ map is commonly used for a composite component \x97 a component whose implementation\
+    \ depends on child components. For example, `JTable`s make all their bindings\
+    \ using `WHEN_ANCESTOR_OF_FOCUSED_COMPONENT` so that if the user is editing, the\
+    \ up-arrow key (for example) still changes the selected cell."
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "该组件包含（或是）具有焦点的组件。这个输入映射通常用于复合组件 \x97 一个其实现依赖于子组件的组件。例如，`JTable`使用`WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`制作所有绑定，以便如果用户正在编辑，上箭头键（例如）仍然会更改所选单元格。"
+- en: '`JComponent.WHEN_IN_FOCUSED_WINDOW`'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JComponent.WHEN_IN_FOCUSED_WINDOW`'
+- en: The component's window either has the focus or contains the component that has
+    the focus. This input map is commonly used for mnemonics or accelerators, which
+    need to be active regardless of where focus is in the window.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组件的窗口具有焦点或包含具有焦点的组件。这个输入映射通常用于助记键或加速键，无论焦点在窗口的哪个位置，它们都需要处于活动状态。
+- en: When the user types a key, the `JComponent` key event processing code searches
+    through one or more input maps to find a valid binding for the key. When it finds
+    a binding, it looks up the corresponding action in the action map. If the action
+    is enabled, the binding is valid and the action is executed. If it's disabled,
+    the search for a valid binding continues.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户按下一个键时，`JComponent`键事件处理代码会在一个或多个输入映射中搜索有效的按键绑定。当找到一个绑定时，它会在动作映射中查找相应的动作。如果动作已启用，则绑定有效且动作被执行。如果它被禁用，则继续搜索有效绑定。
+- en: 'If more than one binding exists for the key, only the first valid one found
+    is used. Input maps are checked in this order:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个按键存在多个绑定，只有找到的第一个有效绑定会被使用。输入映射按照以下顺序进行检查：
+- en: The focused component's `WHEN_FOCUSED` input map.
+  id: totrans-29
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 焦点组件的`WHEN_FOCUSED`输入映射。
+- en: The focused component's `WHEN_ANCESTOR_OF_FOCUSED_COMPONENT` input map.
+  id: totrans-30
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 焦点组件的`WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`输入映射。
+- en: 'The `WHEN_ANCESTOR_OF_FOCUSED_COMPONENT` input maps of the focused component''s
+    parent, and then its parent''s parent, and so on, continuing up the containment
+    hierarchy. Note: Input maps for disabled components are skipped.'
+  id: totrans-31
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 焦点组件的父级的`WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`输入映射，然后是其父级的父级，依此类推，沿着包含关系层次结构向上继续。注意：跳过禁用组件的输入映射。
+- en: The `WHEN_IN_FOCUSED_WINDOW` input maps of all the enabled components in the
+    focused window are searched. Because the order of searching the components is
+    unpredictable, **avoid duplicate `WHEN_IN_FOCUSED_WINDOW` bindings!**
+  id: totrans-32
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 所有焦点窗口中启用的组件的`WHEN_IN_FOCUSED_WINDOW`输入映射都会被搜索。因为搜索组件的顺序是不可预测的，**避免重复的`WHEN_IN_FOCUSED_WINDOW`绑定！**
+- en: 'Let''s consider what happens in two typical key binding cases: a button reacting
+    to the Space key, and a frame with a default button reacting to the Enter key.'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们考虑两种典型的按键绑定情况：一个按钮对Space键做出反应，一个带有默认按钮对Enter键做出反应的框架。
+- en: In the first case, assume the user presses the Space key while a `JButton` has
+    the keyboard focus. First, the button's key listeners are notified of the event.
+    Assuming none of the key listeners *consumes* the event (by invoking the [`consume`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/InputEvent.html#consume--)
+    method on the `KeyEvent`) the button's `WHEN_FOCUSED` input map is consulted.
+    A binding is found because `JButton` uses that input map to bind Space to an action
+    name. The action name is looked up in the button's action map, and the `actionPerformed`
+    method of the action is invoked. The `KeyEvent` is consumed, and processing stops.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第一种情况下，假设用户在`JButton`具有键盘焦点时按下Space键。首先，按钮的键监听器会收到事件通知。假设没有键监听器消耗事件（通过在`KeyEvent`上调用[`consume`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/InputEvent.html#consume--)方法），则会查阅按钮的`WHEN_FOCUSED`输入映射。会找到一个绑定，因为`JButton`使用该输入映射将Space绑定到一个动作名称。然后在按钮的动作映射中查找动作名称，并调用该动作的`actionPerformed`方法。`KeyEvent`被消耗，处理停止。
+- en: In the second case, assume the Enter key is pressed while the focus is anywhere
+    inside a frame that has a default button (set using the `JRootPane` [`setDefaultButton`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JRootPane.html#setDefaultButton-javax.swing.JButton-)
+    method). Whatever the focused component is, its key listeners are first notified.
+    Assuming none of them consumes the key event the focused component's `WHEN_FOCUSED`
+    input map is consulted. If it has no binding for the key or the Action bound to
+    the key is disabled, the focused component's `WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`
+    input map is consulted and then (if no binding is found or the Action bound to
+    the key is disabled) the `WHEN_ANCESTOR_OF_FOCUSED_COMPONENT` input maps of each
+    of the component's ancestors in the containment hierarchy. Eventually, the root
+    pane's `WHEN_ANCESTOR_OF_FOCUSED_COMPONENT` input map is searched. Since that
+    input map has a valid binding for Enter, the action is executed, causing the default
+    button to be clicked.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第二种情况下，假设在具有默认按钮的框架内的任何位置按下Enter键（使用`JRootPane`的[`setDefaultButton`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JRootPane.html#setDefaultButton-javax.swing.JButton-)方法设置默认按钮）。无论焦点在哪个组件上，首先通知其键监听器。假设它们中没有一个消耗了键事件，则会查阅焦点组件的`WHEN_FOCUSED`输入映射。如果它没有与该键绑定的内容，或者与该键绑定的操作已禁用，则会查阅焦点组件的`WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`输入映射，然后（如果未找到绑定或与该键绑定的操作已禁用）查阅组件在包含层次结构中的每个祖先的`WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`输入映射。最终，会搜索根窗格的`WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`输入映射。由于该输入映射对Enter有有效绑定，因此会执行该操作，导致默认按钮被点击。
+- en: How to Make and Remove Key Bindings
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 如何创建和删除键绑定
+- en: 'Here is an example of specifying that a component should react to the F2 key:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个指定组件应该对F2键做出反应的示例：
+- en: '[PRE0]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: As the preceding code shows, to get a component's action map you use the `getActionMap`
+    method (inherited from `JComponent`). To get an input map, you can use the `getInputMap(int)`
+    method, where the integer is one of the `JComponent.WHEN_*FOCUSED*` constants
+    shown in the preceding list. Or, in the usual case where the constant is `JComponent.WHEN_FOCUSED`,
+    you can just use `getInputMap` with no arguments.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前面的代码所示，要获取组件的动作映射，您可以使用`getActionMap`方法（从`JComponent`继承而来）。要获取输入映射，您可以使用`getInputMap(int)`方法，其中整数是前面列表中显示的`JComponent.WHEN_*FOCUSED*`常量之一。或者，在通常情况下，常量为`JComponent.WHEN_FOCUSED`，您可以直接使用不带参数的`getInputMap`。
+- en: To add an entry to one of the maps, use the `put` method. You specify a key
+    using a `KeyStroke` object, which you can get using the [`KeyStroke.getKeyStroke(String)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/KeyStroke.html#getKeyStroke-java.lang.String-)
+    method. You can find examples of creating an `Action` (to put in an action map)
+    in [How to Use Actions](../misc/action.html).
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要向其中一个映射添加条目，请使用`put`方法。您可以使用`KeyStroke.getKeyStroke(String)`方法获取`KeyStroke`对象来指定键。您可以在[如何使用操作](../misc/action.html)中找到创建`Action`（放入动作映射中）的示例。
+- en: Here's a slightly more complex example that specifies that a component should
+    react to the Space key as if the user clicked the mouse.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个稍微复杂的示例，指定组件应该对Space键做出反应，就像用户点击鼠标一样。
+- en: '[PRE1]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: To make a component ignore a key that it normally responds to, you can use the
+    special action name "none". For example, the following code makes a component
+    ignore the F2 key.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使组件忽略其通常会响应的按键，您可以使用特殊的动作名称"none"。例如，以下代码使组件忽略F2键。
+- en: '[PRE2]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '* * *'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: 'The preceding code doesn''t prevent the relevant `WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`
+    and `WHEN_IN_FOCUSED_WINDOW` input maps from being searched for an F2 key binding.
+    To prevent this search, you must use a valid action instead of "none". For example:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的代码不会阻止搜索相关的 `WHEN_ANCESTOR_OF_FOCUSED_COMPONENT` 和 `WHEN_IN_FOCUSED_WINDOW`
+    输入映射以查找 F2 键绑定。要阻止此搜索，必须使用有效的操作而不是 "none"。例如：
+- en: '[PRE3]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '* * *'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The Key Binding API
+  id: totrans-50
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 键绑定 API
+- en: The following tables list the commonly used API for key bindings. Also see the
+    API table [Creating and Using an Action](action.html#actionapi), in the section
+    [How to Use Actions](action.html).
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的键绑定 API。还请参阅 API 表格[创建和使用操作](action.html#actionapi)，在[如何使用操作](action.html)部分。
+- en: '[Creating and Using InputMaps](#inputmap)'
+  id: totrans-52
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建和使用 InputMaps](#inputmap)'
+- en: '[Creating and Using ActionMaps](#actionmap)'
+  id: totrans-53
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建和使用 ActionMaps](#actionmap)'
+- en: Getting and Using InputMaps
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 获取和使用 InputMaps
+- en: '| Method | Purpose |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [InputMap getInputMap()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getInputMap--)
+    [InputMap getInputMap(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getInputMap-int-)'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [获取输入映射](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getInputMap--)
+    [获取输入映射（int）](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getInputMap-int-)
+    |'
+- en: '*(in `JComponent`)* | Get one of the input maps for the component. The arguments
+    can be one of these `JComponent` constants: `WHEN_FOCUSED`, `WHEN_IN_FOCUSED_WINDOW`,
+    or `WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`. The no-argument method gets the `WHEN_FOCUSED`
+    input map. |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在 `JComponent` 中)* | 获取组件的一个输入映射。参数可以是这些 `JComponent` 常量之一：`WHEN_FOCUSED`、`WHEN_IN_FOCUSED_WINDOW`
+    或 `WHEN_ANCESTOR_OF_FOCUSED_COMPONENT`。无参数方法获取 `WHEN_FOCUSED` 输入映射。 |'
+- en: '| [void put(KeyStroke, Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/InputMap.html#put-javax.swing.KeyStroke-java.lang.Object-)
+    *(in `InputMap`)* | Set the action name associated with the specified key stroke.
+    If the second argument is `null`, this method removes the binding for the key
+    stroke. To make the key stroke be ignored, use `"none"` as the second argument.
+    |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| [设置（KeyStroke，Object）](https://docs.oracle.com/javase/8/docs/api/javax/swing/InputMap.html#put-javax.swing.KeyStroke-java.lang.Object-)
+    *(在 `InputMap` 中)* | 设置与指定键盘按键关联的操作名称。如果第二个参数为 `null`，此方法将移除键盘按键的绑定。要忽略键盘按键，请使用
+    `"none"` 作为第二个参数。 |'
+- en: '| [static KeyStroke getKeyStroke(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/KeyStroke.html#getKeyStroke-java.lang.String-)
+    *(in `KeyStroke`)* | Get the object specifying a particular user keyboard activity.
+    Typical arguments are "alt shift X", "INSERT", and "typed a". See the [`KeyStroke`
+    API documentation](https://docs.oracle.com/javase/8/docs/api/javax/swing/KeyStroke.html)
+    for full details and for other forms of the `getKeyStroke` method. |'
+  id: totrans-59
+  prefs: []
+  type: TYPE_TB
+  zh: '| [获取指定用户键盘活动的对象](https://docs.oracle.com/javase/8/docs/api/javax/swing/KeyStroke.html#getKeyStroke-java.lang.String-)
+    *(在 `KeyStroke` 中)* | 获取指定用户键盘活动的对象。典型参数为 "alt shift X"、"INSERT" 和 "typed a"。查看[`KeyStroke`
+    API 文档](https://docs.oracle.com/javase/8/docs/api/javax/swing/KeyStroke.html)获取完整详情和`getKeyStroke`方法的其他形式。
+    |'
+- en: Getting and Using ActionMaps
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 获取和使用 ActionMaps
+- en: '| Method | Purpose |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [ActionMap getActionMap()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getActionMap--)
+    *(in `JComponent`)* | Get the object that maps names into actions for the component.
+    |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_TB
+  zh: '| [获取操作映射](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getActionMap--)
+    *(在 `JComponent` 中)* | 获取将名称映射到组件操作的对象。 |'
+- en: '| [void put(Object, Action)](https://docs.oracle.com/javase/8/docs/api/javax/swing/ActionMap.html#put-java.lang.Object-javax.swing.Action-)
+    *(in `ActionMap`)* | Set the action associated with the specified name. If the
+    second argument is `null`, this method removes the binding for the name. |'
+  id: totrans-63
+  prefs: []
+  type: TYPE_TB
+  zh: '| [设置（Object，Action）](https://docs.oracle.com/javase/8/docs/api/javax/swing/ActionMap.html#put-java.lang.Object-javax.swing.Action-)
+    *(在 `ActionMap` 中)* | 设置与指定名称关联的操作。如果第二个参数为 `null`，此方法将移除名称的绑定。 |'
+- en: Examples that Use Key Bindings
+  id: totrans-64
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用键绑定的示例
+- en: 'The following table lists examples that use key bindings:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了使用键绑定的示例：
+- en: '| Example | Where Described | Notes |'
+  id: totrans-66
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [TableFTFEditDemo](../examples/components/index.html#TableFTFEditDemo) |
+    [How to Use Tables](../components/table.html) | The [IntegerEditor](../components/../examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java)
+    class registers a key binding on a formatted text field to validate the input
+    when the user presses the Enter key. |'
+  id: totrans-67
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TableFTFEditDemo](../examples/components/index.html#TableFTFEditDemo) |
+    [如何使用表格](../components/table.html) | [IntegerEditor](../components/../examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java)
+    类在格式化文本字段上注册一个键绑定，以在用户按下 Enter 键时验证输入。 |'
+- en: '| [TextComponentDemo](../examples/components/index.html#TextComponentDemo)
+    | [Text Component Features](../components/generaltext.html) | Key bindings are
+    registered on a text pane to navigate through the text when the user presses the
+    Control-B, Control-F, Control-P, and Control-N keys. |'
+  id: totrans-68
+  prefs: []
+  type: TYPE_TB
+  zh: '| [文本组件演示](../examples/components/index.html#TextComponentDemo) | [文本组件特性](../components/generaltext.html)
+    | 在文本窗格上注册了按键绑定，用户按下Control-B、Control-F、Control-P和Control-N键时可以在文本中导航。 |'

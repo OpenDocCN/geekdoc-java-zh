@@ -1,0 +1,56 @@
+- en: The HighScorePermission Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: HighScorePermission 类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/userperm/perm.html](https://docs.oracle.com/javase/tutorial/security/userperm/perm.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/userperm/perm.html](https://docs.oracle.com/javase/tutorial/security/userperm/perm.html)
+- en: The `HighScorePermission` class defines the permission that `ExampleGame` needs
+    to update the user's high score.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`HighScorePermission` 类定义了 `ExampleGame` 需要更新用户高分的权限。'
+- en: All permission classes should subclass from either `java.security.Permission`
+    or `java.security.BasicPermission`. The basic difference between the two is that
+    `java.security.Permission` defines more complex permissions that require names
+    and actions. For example, a `java.io.FilePermission` extends from `java.security.Permission`,
+    and requires a name (a filename), and actions allowed for that file (read/write/delete).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有权限类都应该从 `java.security.Permission` 或 `java.security.BasicPermission` 中的一个子类化。两者之间的基本区别在于，`java.security.Permission`
+    定义了需要名称和操作的更复杂的权限。例如，`java.io.FilePermission` 扩展自 `java.security.Permission`，并需要一个名称（文件名）以及该文件允许的操作（读/写/删除）。
+- en: In contrast, `java.security.BasicPermission` defines simpler permissions that
+    only require a name. For example, `java.lang.RuntimePermission` extends from `java.security.BasicPermission`
+    and simply needs a name (like "exitVM"), which allows programs to exit the Java
+    Virtual Machine.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相比之下，`java.security.BasicPermission` 定义了只需要名称的更简单的权限。例如，`java.lang.RuntimePermission`
+    扩展自 `java.security.BasicPermission`，只需要一个名称（如 "exitVM"），允许程序退出 Java 虚拟机。
+- en: Our `HighScorePermission` is a simple permission, and hence can be extended
+    from `java.security.BasicPermission`.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们的 `HighScorePermission` 是一个简单的权限，因此可以从 `java.security.BasicPermission` 扩展。
+- en: 'Often, the method implementations in the `BasicPermission` class itself do
+    not need to be overridden by its subclasses. That is the case with our `HighScorePermission`,
+    so all we need to implement are the constructors, which just invoke the superclass
+    constructors, as shown in the [`following`](examples/com/scoredev/scores/HighScorePermission.java):'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，`BasicPermission` 类中的方法实现本身不需要被其子类重写。这就是我们的 `HighScorePermission` 的情况，所以我们只需要实现构造函数，它们只是调用超类的构造函数，如[`以下`](examples/com/scoredev/scores/HighScorePermission.java)所示：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'

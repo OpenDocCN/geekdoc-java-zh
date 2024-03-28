@@ -1,0 +1,89 @@
+- en: Verifying Signed JAR Files
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 验证已签名的JAR文件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/verify.html](https://docs.oracle.com/javase/tutorial/deployment/jar/verify.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/verify.html](https://docs.oracle.com/javase/tutorial/deployment/jar/verify.html)
+- en: Typically, verification of signed JAR files will be the responsibility of your
+    Java™ Runtime Environment. Your browser will verify signed applets that it downloads.
+    Signed applications invoked with the `-jar` option of the interpreter will be
+    verified by the runtime environment.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，验证已签名的JAR文件将由您的Java™运行环境负责。您的浏览器将验证下载的已签名小程序。使用解释器的`-jar`选项调用的已签名应用程序将由运行环境验证。
+- en: However, you can verify signed JAR files yourself by using the `jarsigner` tool.
+    You might want to do this, for example, to test a signed JAR file that you've
+    prepared.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，您可以使用`jarsigner`工具自行验证已签名的JAR文件。例如，您可能想要这样做来测试您准备的已签名JAR文件。
+- en: 'The basic command to use for verifying a signed JAR file is:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于验证已签名的JAR文件的基本命令是：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This command will verify the JAR file''s signature and ensure that the files
+    in the archive haven''t changed since it was signed. You''ll see the following
+    message if the verification is successful:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个命令将验证JAR文件的签名，并确保存档中的文件在签名后没有发生变化。如果验证成功，您将看到以下消息：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'If you try to verify an unsigned JAR file, the following message results:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您尝试验证一个未签名的JAR文件，将会出现以下消息：
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'If the verification fails, an appropriate message is displayed. For example,
+    if the contents of a JAR file have changed since the JAR file was signed, a message
+    similar to the following will result if you try to verify the file:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果验证失败，将显示相应的消息。例如，如果JAR文件的内容自签名以来发生了变化，当您尝试验证文件时，将会出现类似以下消息：
+- en: '[PRE3]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The JDK treats a signed JAR file as unsigned if the signed JAR file
+    uses any algorithm that''s specified in the `jdk.jar.disabledAlgorithms` Security
+    Property in the `*java.home*/lib/security/java.security` file (where `*java.home*`
+    is the directory where you installed your JRE).'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果已签名的JAR文件使用了`jdk.jar.disabledAlgorithms`安全属性中指定的任何算法（其中`*java.home*`是您安装JRE的目录），JDK将把已签名的JAR文件视为未签名。'
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

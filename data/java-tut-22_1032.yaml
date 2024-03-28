@@ -1,0 +1,91 @@
+- en: Setting Timeout for Ldap Operations
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 设置 LDAP 操作的超时时间
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/readtimeout.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/readtimeout.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/readtimeout.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/readtimeout.html)
+- en: When an LDAP request is made by a client to a server and the server does not
+    respond for some reason, the client waits forever for the server to respond until
+    the TCP timeouts. On the client-side what the user experiences is essentially
+    a process hang. In order to control the LDAP request in a timely manner, a read
+    timeout can be configured for the JNDI/LDAP Service Provider since Java SE 6.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当客户端向服务器发出 LDAP 请求并且服务器由于某种原因未响应时，客户端将永远等待服务器响应，直到 TCP 超时。在客户端端，用户体验实际上是一个进程挂起。为了及时控制
+    LDAP 请求，自 Java SE 6 以来可以为 JNDI/LDAP 服务提供程序配置读取超时。
+- en: 'The new environment property:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 新的环境属性：
+- en: '`com.sun.jndi.ldap.read.timeout`'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`com.sun.jndi.ldap.read.timeout`'
+- en: can be used to specify the read timeout for an LDAP operation. The value of
+    this property is the string representation of an integer representing the read
+    timeout in milliseconds for LDAP operations. If the LDAP provider doesn't get
+    an LDAP response within the specified period, it aborts the read attempt. The
+    integer should be greater than zero. An integer less than or equal to zero means
+    no read timeout is specified which is equivalent to waiting for the response infinitely
+    until it is received which defaults to the original behavior.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可用于指定 LDAP 操作的读取超时时间。该属性的值是表示 LDAP 操作的读取超时时间（以毫秒为单位）的整数的字符串表示。如果 LDAP 提供程序在指定的时间内未收到
+    LDAP 响应，则会中止读取尝试。整数应大于零。小于或等于零的整数表示未指定读取超时，相当于无限等待响应直到接收到响应，这是默认行为。
+- en: If this property is not specified, the default is to wait for the response until
+    it is received.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果未指定此属性，默认情况下将等待响应直到接收到响应。
+- en: For example, `env.put("com.sun.jndi.ldap.read.timeout", "5000");` causes the
+    LDAP service provider to abort the read attempt if the server does not respond
+    with a reply within 5 seconds.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，`env.put("com.sun.jndi.ldap.read.timeout", "5000");` 会导致 LDAP 服务提供程序在服务器在
+    5 秒内未响应时中止读取尝试。
+- en: Here is an example, [`ReadTimeoutTest`](examples/ReadTimeoutTest.java), that
+    uses a dummy server which does not respond to LDAP requests to show how this property
+    behaves when set to a non-zero value.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个示例，[`ReadTimeoutTest`](examples/ReadTimeoutTest.java)，使用一个不响应 LDAP 请求的虚拟服务器，展示了当将此属性设置为非零值时的行为。
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The above program prints the stack trace below, as the server does not even
+    respond to the LDAP bind request when an InitialDirContext is created. The client
+    times out waiting for the server's response.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于服务器甚至未响应 LDAP 绑定请求，当创建 InitialDirContext 时，上述程序打印下面的堆栈跟踪。客户端在等待服务器响应时超时。
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Note that this property is different from the another environment property `com.sun.jndi.ldap.connect.timeout`
+    that sets the timeout for connecting to the server. The read timeout applies to
+    the LDAP response from the server after the initial connection is established
+    with the server.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，此属性与另一个环境属性 `com.sun.jndi.ldap.connect.timeout` 不同，后者设置连接到服务器的超时时间。读取超时适用于与服务器建立初始连接后从服务器接收的
+    LDAP 响应。

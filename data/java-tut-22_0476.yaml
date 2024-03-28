@@ -1,0 +1,143 @@
+- en: Using and Creating a DataFlavor
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用和创建DataFlavor
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/dataflavor.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/dataflavor.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/dataflavor.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/dataflavor.html)
+- en: 'The [`DataFlavor`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html)
+    class allows you to specify the content type of your data. You need to specify
+    a `DataFlavor` when fetching the data from the `importData` method. Several flavor
+    types are predefined for you:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`DataFlavor`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html)类允许你指定数据的内容类型。在从`importData`方法中获取数据时，你需要指定一个`DataFlavor`。有几种预定义的类型供你使用：'
+- en: '[`imageFlavor`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#imageFlavor)
+    represents data in the `java.awt.Image` format. This is used when dragging image
+    data.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`imageFlavor`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#imageFlavor)代表`java.awt.Image`格式的数据。在拖动图像数据时使用。'
+- en: '[`stringFlavor`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#stringFlavor)
+    represents data in the most basic form of text — `java.lang.String`. This is the
+    most commonly used data flavor for most applications.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`stringFlavor`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#stringFlavor)代表最基本的文本形式数据
+    — `java.lang.String`。这是大多数应用程序中最常用的数据类型。'
+- en: '[`javaFileListFlavor`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#javaFileListFlavor)
+    represents `java.io.File` objects in a `java.util.List` format. This is useful
+    for applications that drag files, such as the `TopLevelTransferHandler` example,
+    discussed in the [Top-Level Drop](toplevel.html) lesson.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javaFileListFlavor`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#javaFileListFlavor)代表以`java.util.List`格式表示的`java.io.File`对象。这对于拖动文件的应用程序非常有用，比如在[顶级拖放](toplevel.html)课程中讨论的`TopLevelTransferHandler`示例。'
+- en: 'For most applications, this is all you need to know about data flavors. However,
+    if you require a flavor other than these predefined types, you can create your
+    own. If you create a custom component and want it to participate in data transfer,
+    you will need to create a custom data flavor. The constructor for specifying a
+    data flavor is [`DataFlavor(Class, String)`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#DataFlavor-java.lang.Class-java.lang.String-).
+    For example, to create a data flavor for the `java.util.ArrayList` class:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于大多数应用程序，这就是你需要了解的关于数据类型的全部内容。然而，如果你需要除了这些预定义类型之外的类型，你可以创建自己的类型。如果你创建了一个自定义组件并希望它参与数据传输，你将需要创建一个自定义数据类型。指定数据类型的构造函数是[`DataFlavor(Class,
+    String)`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#DataFlavor-java.lang.Class-java.lang.String-)。例如，为`java.util.ArrayList`类创建一个数据类型：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To create a data flavor for an integer array:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要为整数数组创建一个数据类型：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Transferring the data using this mechanism uses `Object` serialization, so the
+    class you use to transfer the data must implement the `Serializable` interface,
+    as must anything that is serialized with it. If everything is not serializable,
+    you will see a `NotSerializableException` during drop or copy to the clipboard.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用这种机制传输数据使用了`Object`序列化，因此你用于传输数据的类必须实现`Serializable`接口，以及与之一起序列化的任何内容。如果不是所有内容都是可序列化的，你将在拖放或复制到剪贴板时看到`NotSerializableException`。
+- en: 'Creating a data flavor using the `DataFlavor(Class, String)` constructor allows
+    you to transfer data between applications, including native applications. If you
+    want to create a data flavor that transfers data only within an application, use
+    [``javaJVMLocalObjectMimeType``](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#javaJVMLocalObjectMimeType)
+    and the [``DataFlavor(String)``](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#DataFlavor-java.lang.String-)
+    constructor. For example, to specify a data flavor that transfers color from a
+    `JColorChooser` only within your application, you could use this code:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`DataFlavor(Class, String)`构造函数创建数据类型允许你在应用程序之间传输数据，包括本地应用程序。如果你想创建一个只在应用程序内部传输数据的数据类型，可以使用[``javaJVMLocalObjectMimeType``](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#javaJVMLocalObjectMimeType)和[``DataFlavor(String)``](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html#DataFlavor-java.lang.String-)构造函数。例如，要指定一个从`JColorChooser`仅在你的应用程序内传输颜色的数据类型，你可以使用这段代码：
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'To create a data flavor for an `ArrayList` that would work only within your
+    application:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为一个只在你的应用程序中起作用的`ArrayList`创建一个数据类型：
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'To create a data flavor for an integer array:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要为整数数组创建一个数据类型：
+- en: '[PRE4]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: A MIME type containing special characters, such as **[** or **;**, must have
+    those characters enclosed in quotes.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 包含特殊字符的 MIME 类型，比如**[**或**;**，必须将这些字符用引号括起来。
+- en: A `Transferable` can be implemented to support multiple flavors. For example,
+    you can use both local and serialization flavors together, or you can use two
+    forms of the same data, such as the `ArrayList` and integer array flavors, together,
+    or you can create a `TransferHandler` that accepts different types of data, such
+    as color and text.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`Transferable`可以被实现以支持多种风味。例如，你可以同时使用本地和序列化风味，或者你可以同时使用两种形式的相同数据，比如`ArrayList`和整数数组风味，或者你可以创建一个接受不同类型数据的`TransferHandler`，比如颜色和文本。
+- en: When you create an array of `DataFlavors` to be returned from the `Transferable`'s
+    [`getTransferDataFlavors`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/Transferable.html#getTransferDataFlavors--)
+    method, the flavors should be inserted in preferred order, with the most preferred
+    appearing at element 0 of the array. Generally the preferred order is from the
+    richest, or most complex, form of the data down to the simple set — the form most
+    likely to be understood by other objects.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你创建一个`DataFlavors`数组以从`Transferable`的[`getTransferDataFlavors`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/Transferable.html#getTransferDataFlavors--)方法返回时，风味应按照首选顺序插入，最首选的风味应出现在数组的元素0位置。一般来说，首选顺序是从最丰富或最复杂的数据形式到简单集合的形式
+    — 最有可能被其他对象理解的形式。

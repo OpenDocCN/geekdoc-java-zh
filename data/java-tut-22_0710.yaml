@@ -1,0 +1,139 @@
+- en: 'Lesson: JDBC Introduction'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：JDBC简介
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html](https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html](https://docs.oracle.com/javase/tutorial/jdbc/overview/index.html)
+- en: The JDBC API is a Java API that can access any kind of tabular data, especially
+    data stored in a relational database.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JDBC API是一个可以访问任何类型表格数据的Java API，特别是存储在关系数据库中的数据。
+- en: 'JDBC helps you to write Java applications that manage these three programming
+    activities:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JDBC帮助您编写管理这三种编程活动的Java应用程序：
+- en: Connect to a data source, like a database
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 连接到数据源，比如数据库
+- en: Send queries and update statements to the database
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 向数据库发送查询和更新语句
+- en: Retrieve and process the results received from the database in answer to your
+    query
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从数据库中检索并处理查询结果
+- en: 'The following simple code fragment gives a simple example of these three steps:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下简单的代码片段给出了这三个步骤的简单示例：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This short code fragment instantiates a `DriverManager` object to connect to
+    a database driver and log into the database, instantiates a `Statement` object
+    that carries your SQL language query to the database; instantiates a `ResultSet`
+    object that retrieves the results of your query, and executes a simple `while`
+    loop, which retrieves and displays those results. It's that simple.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这段简短的代码片段实例化了一个`DriverManager`对象，用于连接数据库驱动程序并登录数据库，实例化了一个`Statement`对象，将您的SQL语言查询传递给数据库；实例化了一个`ResultSet`对象，检索您的查询结果，并执行一个简单的`while`循环，用于检索和显示这些结果。就是这么简单。
+- en: JDBC Product Components
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: JDBC产品组件
+- en: 'JDBC includes four components:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JDBC包括四个组件：
+- en: '**The JDBC API** —  The JDBC™ API provides programmatic access to relational
+    data from the Java™ programming language. Using the JDBC API, applications can
+    execute SQL statements, retrieve results, and propagate changes back to an underlying
+    data source. The JDBC API can also interact with multiple data sources in a distributed,
+    heterogeneous environment.'
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**JDBC API** —  JDBC™ API提供了从Java™编程语言对关系数据进行编程访问的方式。使用JDBC API，应用程序可以执行SQL语句，检索结果，并将更改传播回底层数据源。JDBC
+    API还可以在分布式、异构环境中与多个数据源交互。'
+- en: 'The JDBC API is part of the Java platform, which includes the *Java™ Standard
+    Edition* (Java™ SE ) and the *Java™ Enterprise Edition* (Java™ EE). The JDBC 4.0
+    API is divided into two packages: `java.sql` and `javax.sql.` Both packages are
+    included in the Java SE and Java EE platforms.'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: JDBC API是Java平台的一部分，包括*Java™标准版*（Java™ SE）和*Java™企业版*（Java™ EE）。JDBC 4.0 API分为两个包：`java.sql`和`javax.sql.`
+    这两个包都包含在Java SE和Java EE平台中。
+- en: '**JDBC Driver Manager** —  The JDBC `DriverManager` class defines objects which
+    can connect Java applications to a JDBC driver. `DriverManager` has traditionally
+    been the backbone of the JDBC architecture. It is quite small and simple.'
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**JDBC驱动管理器** —  JDBC `DriverManager`类定义了可以将Java应用程序连接到JDBC驱动程序的对象。`DriverManager`一直是JDBC架构的支柱。它非常小而简单。'
+- en: The Standard Extension packages `javax.naming` and `javax.sql` let you use a
+    `DataSource` object registered with a *Java Naming and Directory Interface*™ (JNDI)
+    naming service to establish a connection with a data source. You can use either
+    connecting mechanism, but using a `DataSource` object is recommended whenever
+    possible.
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 标准扩展包`javax.naming`和`javax.sql`允许您使用注册到*Java命名和目录接口*™（JNDI）命名服务的`DataSource`对象与数据源建立连接。您可以使用任一连接机制，但尽可能使用`DataSource`对象是推荐的。
+- en: '**JDBC Test Suite** —  The JDBC driver test suite helps you to determine that
+    JDBC drivers will run your program. These tests are not comprehensive or exhaustive,
+    but they do exercise many of the important features in the JDBC API.'
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**JDBC测试套件** —  JDBC驱动程序测试套件帮助您确定JDBC驱动程序是否能运行您的程序。这些测试并不全面或详尽，但它们确实涵盖了JDBC
+    API中的许多重要特性。'
+- en: '**JDBC-ODBC Bridge** —  The Java Software bridge provides JDBC access via ODBC
+    drivers. Note that you need to load ODBC binary code onto each client machine
+    that uses this driver. As a result, the ODBC driver is most appropriate on a corporate
+    network where client installations are not a major problem, or for application
+    server code written in Java in a three-tier architecture.'
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**JDBC-ODBC桥** —  Java软件桥通过ODBC驱动程序提供JDBC访问。请注意，您需要将ODBC二进制代码加载到每台使用此驱动程序的客户端机器上。因此，ODBC驱动程序最适合用于企业网络，其中客户端安装不是一个主要问题，或者用于在Java中编写的应用程序服务器代码的三层架构。'
+- en: This Trail uses the first two of these four JDBC components to connect to a
+    database and then build a java program that uses SQL commands to communicate with
+    a test relational database. The last two components are used in specialized environments
+    to test web applications, or to communicate with ODBC-aware DBMSs.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个教程使用这四个JDBC组件中的前两个来连接数据库，然后构建一个使用SQL命令与测试关系数据库通信的Java程序。最后两个组件用于在专业环境中测试Web应用程序，或与支持ODBC的数据库管理系统通信。

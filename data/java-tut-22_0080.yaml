@@ -1,0 +1,123 @@
+- en: Interfaces
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 接口
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/createinterface.html](https://docs.oracle.com/javase/tutorial/java/IandI/createinterface.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/createinterface.html](https://docs.oracle.com/javase/tutorial/java/IandI/createinterface.html)
+- en: There are a number of situations in software engineering when it is important
+    for disparate groups of programmers to agree to a "contract" that spells out how
+    their software interacts. Each group should be able to write their code without
+    any knowledge of how the other group's code is written. Generally speaking, *interfaces*
+    are such contracts.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在软件工程中有许多情况下，不同组的程序员需要达成一致的“合同”，明确规定他们的软件如何交互。每个组都应该能够编写他们的代码，而不需要了解其他组的代码是如何编写的。一般来说，*接口*就是这样的合同。
+- en: "For example, imagine a futuristic society where computer-controlled robotic\
+    \ cars transport passengers through city streets without a human operator. Automobile\
+    \ manufacturers write software (Java, of course) that operates the automobile\x97\
+    stop, start, accelerate, turn left, and so forth. Another industrial group, electronic\
+    \ guidance instrument manufacturers, make computer systems that receive GPS (Global\
+    \ Positioning System) position data and wireless transmission of traffic conditions\
+    \ and use that information to drive the car."
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "例如，想象一个未来社会，在这个社会中，由计算机控制的机器人汽车在城市街道上运载乘客，没有人类操作员。汽车制造商编写软件（当然是Java），操作汽车\x97\
+    停止、启动、加速、左转等等。另一个工业团体，电子导航仪制造商，制造接收GPS（全球定位系统）位置数据和交通状况无线传输的计算机系统，并利用这些信息驾驶汽车。"
+- en: The auto manufacturers must publish an industry-standard interface that spells
+    out in detail what methods can be invoked to make the car move (any car, from
+    any manufacturer). The guidance manufacturers can then write software that invokes
+    the methods described in the interface to command the car. Neither industrial
+    group needs to know *how* the other group's software is implemented. In fact,
+    each group considers its software highly proprietary and reserves the right to
+    modify it at any time, as long as it continues to adhere to the published interface.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 汽车制造商必须发布一个行业标准接口，详细说明可以调用哪些方法来使汽车移动（任何制造商的任何汽车）。导航制造商可以编写调用接口中描述的方法来命令汽车的软件。两个工业团体都不需要知道*对方的软件是如何实现的。事实上，每个团体都认为自己的软件是高度专有的，并保留随时修改的权利，只要它继续遵守已发布的接口。
+- en: Interfaces in Java
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Java中的接口
+- en: "In the Java programming language, an *interface* is a reference type, similar\
+    \ to a class, that can contain *only* constants, method signatures, default methods,\
+    \ static methods, and nested types. Method bodies exist only for default methods\
+    \ and static methods. Interfaces cannot be instantiated\x97they can only be *implemented*\
+    \ by classes or *extended* by other interfaces. Extension is discussed later in\
+    \ this lesson."
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "在Java编程语言中，*接口*是一种引用类型，类似于类，只能包含常量、方法签名、默认方法、静态方法和嵌套类型。方法体仅存在于默认方法和静态方法中。接口不能被实例化\x97\
+    它们只能被类*实现*或其他接口*扩展*。扩展将在本课程的后面讨论。"
+- en: 'Defining an interface is similar to creating a new class:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定义接口类似于创建新类：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Note that the method signatures have no braces and are terminated with a semicolon.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，方法签名没有大括号，并以分号结尾。
+- en: To use an interface, you write a class that *implements* the interface. When
+    an instantiable class implements an interface, it provides a method body for each
+    of the methods declared in the interface. For example,
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用接口，您需要编写一个*实现*接口的类。当一个可实例化的类实现一个接口时，它为接口中声明的每个方法提供一个方法体。例如，
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'In the robotic car example above, it is the automobile manufacturers who will
+    implement the interface. Chevrolet''s implementation will be substantially different
+    from that of Toyota, of course, but both manufacturers will adhere to the same
+    interface. The guidance manufacturers, who are the clients of the interface, will
+    build systems that use GPS data on a car''s location, digital street maps, and
+    traffic data to drive the car. In so doing, the guidance systems will invoke the
+    interface methods: turn, change lanes, brake, accelerate, and so forth.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上面的机器人汽车示例中，将实现接口的是汽车制造商。雪佛兰的实现肯定与丰田的实现大不相同，但两家制造商都会遵守相同的接口。作为接口的客户，导航制造商将构建使用汽车位置的GPS数据、数字街道地图和交通数据来驾驶汽车的系统。在这样做的过程中，导航系统将调用接口方法：转向、变道、刹车、加速等等。
+- en: Interfaces as APIs
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 接口作为API
+- en: "The robotic car example shows an interface being used as an industry standard\
+    \ *Application Programming Interface (API)*. APIs are also common in commercial\
+    \ software products. Typically, a company sells a software package that contains\
+    \ complex methods that another company wants to use in its own software product.\
+    \ An example would be a package of digital image processing methods that are sold\
+    \ to companies making end-user graphics programs. The image processing company\
+    \ writes its classes to implement an interface, which it makes public to its customers.\
+    \ The graphics company then invokes the image processing methods using the signatures\
+    \ and return types defined in the interface. While the image processing company's\
+    \ API is made public (to its customers), its implementation of the API is kept\
+    \ as a closely guarded secret\x97in fact, it may revise the implementation at\
+    \ a later date as long as it continues to implement the original interface that\
+    \ its customers have relied on."
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "机器人汽车示例展示了一个作为行业标准*应用程序编程接口（API）*使用的接口。API在商业软件产品中也很常见。通常，一家公司销售一个包含复杂方法的软件包，另一家公司希望在自己的软件产品中使用这些方法。一个例子是数字图像处理方法包，这些方法被销售给制作最终用户图形程序的公司。图像处理公司编写其类来实现一个接口，然后将其公开给客户。图形公司然后使用接口中定义的签名和返回类型调用图像处理方法。虽然图像处理公司的API是公开的（给其客户），但其API的实现被保持为严格保密的秘密\x97\
+    事实上，它可以在以后的某个日期修改实现，只要它继续实现客户依赖的原始接口。"

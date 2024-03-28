@@ -1,0 +1,112 @@
+- en: Wiring the Application
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 连接应用程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/quick/wiring.html](https://docs.oracle.com/javase/tutorial/javabeans/quick/wiring.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/quick/wiring.html](https://docs.oracle.com/javase/tutorial/javabeans/quick/wiring.html)
+- en: To wire the button and the label together, click on the **Connection Mode**
+    button in the visual designer toolbar.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将按钮和标签连接在一起，请点击可视化设计工具栏中的**连接模式**按钮。
+- en: '![Connection mode button in the visual designer toolbar](../Images/54113b7eb248afe82fd7e8c9923d36ad.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![可视化设计工具栏中的连接模式按钮](../Images/54113b7eb248afe82fd7e8c9923d36ad.png)'
+- en: Click on the button in the `SnapFrame` form. NetBeans outlines the button in
+    red to show that it is the component that will be generating an event.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击`SnapFrame`表单中的按钮。NetBeans用红色轮廓显示按钮，以显示它是将生成事件的组件。
+- en: '![NetBeans outlines the event-producing component](../Images/a5d2d0e9143e3f8d5f8628fce3930370.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![NetBeans轮廓显示生成事件的组件](../Images/a5d2d0e9143e3f8d5f8628fce3930370.png)'
+- en: Click on the label. NetBeans' **Connection Wizard** pops up. First you will
+    choose the event you wish to respond to. For the button, this is the **action**
+    event. Click on the **+** next to **action** and select **actionPerformed**. Click
+    **Next >**.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击标签。NetBeans的**连接向导**弹出。首先，您将选择要响应的事件。对于按钮来说，这是**动作**事件。点击**动作**旁边的**+**，然后选择**actionPerformed**。点击**下一步**。
+- en: '![Choose the source event](../Images/86f6744c27254cc18b1310a006dbc87e.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![选择源事件](../Images/86f6744c27254cc18b1310a006dbc87e.png)'
+- en: Now you get to choose what happens when the button fires its **action** event.
+    The **Connection Wizard** lists all the properties in the label bean. Select **text**
+    in the list and click **Next**.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您可以选择按钮触发其**动作**事件时发生的情况。**连接向导**列出标签bean中的所有属性。在列表中选择**text**，然后点击**下一步**。
+- en: '![Choose the destination property](../Images/4fdf18fcb3294789fd13d2de91c55c71.png)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_IMG
+  zh: '![选择目标属性](../Images/4fdf18fcb3294789fd13d2de91c55c71.png)'
+- en: In the final screen of the **Connection Wizard**, fill in the value you wish
+    to set for the **text** property. Click on **Value**, then type **You pressed
+    the button!** or something just as eloquent. Click **Finish**.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在**连接向导**的最后一个屏幕中，填写您希望为**text**属性设置的值。点击**值**，然后输入**您按下了按钮！**或类似的内容。点击**完成**。
+- en: '![Fill in a value](../Images/6cda033ce2670ee212c1d0bbc11e5811.png)'
+  id: totrans-11
+  prefs: []
+  type: TYPE_IMG
+  zh: '![填写数值](../Images/6cda033ce2670ee212c1d0bbc11e5811.png)'
+- en: NetBeans wires the components together and shows you its handiwork in the source
+    code editor.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: NetBeans将组件连接在一起，并在源代码编辑器中展示其成果。
+- en: '![The code for the connection](../Images/7f6ce6e1e5ed6a9b04f5cf4f83f2668e.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_IMG
+  zh: '![连接的代码](../Images/7f6ce6e1e5ed6a9b04f5cf4f83f2668e.png)'
+- en: Click on the **Design** button in the source code toolbar to return to the UI
+    designer. Click **Run Main Project** or press **F6** to build and run your project.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击源代码工具栏中的**设计**按钮返回UI设计器。点击**运行主项目**或按**F6**构建和运行您的项目。
+- en: '![The Run Main Project button](../Images/2b7d177820e826f52340ab8226c3deb3.png)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_IMG
+  zh: '![运行主项目按钮](../Images/2b7d177820e826f52340ab8226c3deb3.png)'
+- en: NetBeans builds and runs the project. It asks you to identify the main class,
+    which is `SnapFrame`. When the application window pops up, click on the button.
+    You'll see your immortal prose in the label.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: NetBeans构建并运行项目。它会要求您标识主类，即`SnapFrame`。当应用程序窗口弹出时，点击按钮。您将在标签中看到您的不朽散文。
+- en: '![Look ma, no code!](../Images/a0002bca7db64ec21d1aaaa3e96694b6.png)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_IMG
+  zh: '![看吧，没有代码！](../Images/a0002bca7db64ec21d1aaaa3e96694b6.png)'
+- en: Notice that you did not write any code. This is the real power of JavaBeans
+    — with a good builder tool like NetBeans, you can quickly wire together components
+    to create a running application.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，您没有编写任何代码。这就是JavaBeans的真正力量——借助像NetBeans这样的优秀构建工具，您可以快速将组件连接在一起，创建一个运行的应用程序。

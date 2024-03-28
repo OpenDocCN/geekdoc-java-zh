@@ -1,0 +1,123 @@
+- en: Attribute Names
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 属性名称
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/attrnames.html](https://docs.oracle.com/javase/tutorial/jndi/ops/attrnames.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/attrnames.html](https://docs.oracle.com/javase/tutorial/jndi/ops/attrnames.html)
+- en: An attribute consists of an *attribute identifier* and a set of *attribute values*.
+    The *attribute identifier*, also called *attribute name*, is a string that identifies
+    an attribute. An *attribute value* is the content of the attribute and its type
+    is not restricted to that of string. You use an attribute name when you want to
+    specify a particular attribute for either retrieval, searches, or modification.
+    Names are also returned by operations that return attributes (such as when you
+    perform reads or searches in the directory).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个属性由一个*属性标识符*和一组*属性值*组成。*属性标识符*，也称为*属性名称*，是一个字符串，用于标识属性。*属性值*是属性的内容，其类型不限于字符串。当您想要为检索、搜索或修改指定特定属性时，您使用属性名称。名称也会被返回操作返回的属性（例如在目录中执行读取或搜索时）。
+- en: When using attribute names, you need to be aware of certain directory server
+    features so that you won't be surprised by the result. These features are described
+    in the next subsections.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在使用属性名称时，您需要了解某些目录服务器功能，以免对结果感到惊讶。这些功能在下一小节中描述。
+- en: Attribute Type
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 属性类型
+- en: In directories such as the LDAP, the attribute's name identifies the attribute's
+    type and is often called the *attribute type name*. For example, the attribute
+    name `"cn"` is also called the attribute type name. An attribute's type definition
+    specifies the syntax that the attribute's value is to have, whether it can have
+    multiple values, and equality and ordering rules to use when performing comparison
+    and ordering operations on the attribute's values.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在LDAP等目录中，属性的名称标识属性的类型，通常称为*属性类型名称*。例如，属性名称`"cn"`也称为属性类型名称。属性的类型定义指定属性值应具有的语法，它是否可以具有多个值，以及在执行比较和排序操作时使用的相等性和排序规则。
+- en: Attribute Subclassing
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 属性子类化
+- en: 'Some directory implementations support *attribute subclassing*, in which the
+    server allows attribute types to be defined in terms of other attribute types.
+    For example, a `"name"` attribute might be the superclass of all name-related
+    attributes: `"commonName"` might be a subclass of `"name"`. For directory implementations
+    that support this, asking for the `"name"` attribute might return the `"commonName"`
+    attribute.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些目录实现支持*属性子类化*，其中服务器允许以其他属性类型定义属性类型。例如，`"name"`属性可能是所有与名称相关属性的超类：`"commonName"`可能是`"name"`的子类。对于支持此功能的目录实现，请求`"name"`属性可能返回`"commonName"`属性。
+- en: When accessing directories that support attribute subclassing, you have to be
+    aware that the server might return attributes that have names different from those
+    that you requested. To minimize the chance of this, use the most derived subclass.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当访问支持属性子类化的目录时，您必须注意服务器可能返回具有与您请求的名称不同的属性。为了最大程度减少这种情况发生的机会，请使用最派生的子类。
+- en: Attribute Name Synonyms
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 属性名称同义词
+- en: Some directory implementations support synonyms for attribute names. For example,
+    `"cn"` might be a synonym for `"commonName"`. Thus a request for the `"cn"` attribute
+    might return the `"commonName"` attribute.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些目录实现支持属性名称的同义词。例如，`"cn"`可能是`"commonName"`的同义词。因此，对`"cn"`属性的请求可能返回`"commonName"`属性。
+- en: When accessing directories that support synonyms for attribute names, you must
+    be aware that the server might return attributes that have names different from
+    those you requested. To help prevent this from happening, use the canonical attribute
+    name instead of one of its synonyms. The *canonical attribute name* is the name
+    used in the attribute's definition; a synonym is the name that refers to the canonical
+    attribute name in its definition.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当访问支持属性名称同义词的目录时，您必须注意服务器可能返回具有与您请求的名称不同的属性。为了防止这种情况发生，请使用规范属性名称而不是其同义词。*规范属性名称*是属性定义中使用的名称；同义词是在其定义中指向规范属性名称的名称。
+- en: Language Preferences
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 语言偏好
+- en: 'An extension to the LDAP v3 ( [RFC 2596](http://www.ietf.org/rfc/rfc2596.txt))
+    allows you to specify a language code along with an attribute name. This resembles
+    attribute subclassing in that one attribute name can represent several different
+    attributes. An example is a `"description"` attribute that has two language variations:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP v3的扩展（[RFC 2596](http://www.ietf.org/rfc/rfc2596.txt)）允许您在属性名称旁指定语言代码。这类似于属性子类化，一个属性名称可以表示多个不同的属性。例如，一个具有两种语言变体的`"description"`属性：
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: A request for the `"description"` attribute would return all three attributes.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请求`"description"`属性将返回所有三个属性。
+- en: When accessing directories that support this feature, you must be aware that
+    the server might return attributes that have names different from those that you
+    requested.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当访问支持此功能的目录时，您必须注意服务器可能返回与您请求的名称不同的属性。

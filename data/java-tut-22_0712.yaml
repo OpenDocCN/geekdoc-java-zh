@@ -1,0 +1,570 @@
+- en: A Relational Database Overview
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 关系数据库概述
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/overview/database.html](https://docs.oracle.com/javase/tutorial/jdbc/overview/database.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/overview/database.html](https://docs.oracle.com/javase/tutorial/jdbc/overview/database.html)
+- en: A database is a means of storing information in such a way that information
+    can be retrieved from it. In simplest terms, a relational database is one that
+    presents information in tables with rows and columns. A table is referred to as
+    a relation in the sense that it is a collection of objects of the same type (rows).
+    Data in a table can be related according to common keys or concepts, and the ability
+    to retrieve related data from a table is the basis for the term relational database.
+    A Database Management System (DBMS) handles the way data is stored, maintained,
+    and retrieved. In the case of a relational database, a Relational Database Management
+    System (RDBMS) performs these tasks. DBMS as used in this book is a general term
+    that includes RDBMS.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 数据库是一种以便于检索信息的方式存储信息的手段。简单来说，关系数据库是以行和列的形式呈现信息的数据库。表被称为关系，因为它是相同类型对象（行）的集合。表中的数据可以根据共同的键或概念相关联，从表中检索相关数据的能力是关系数据库这个术语的基础。数据库管理系统（DBMS）处理数据的存储、维护和检索方式。在关系数据库的情况下，关系数据库管理系统（RDBMS）执行这些任务。本书中使用的DBMS是一个包括RDBMS在内的通用术语。
+- en: Integrity Rules
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 完整性规则
+- en: Relational tables follow certain integrity rules to ensure that the data they
+    contain stay accurate and are always accessible. First, the rows in a relational
+    table should all be distinct. If there are duplicate rows, there can be problems
+    resolving which of two possible selections is the correct one. For most DBMSs,
+    the user can specify that duplicate rows are not allowed, and if that is done,
+    the DBMS will prevent the addition of any rows that duplicate an existing row.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关系表遵循某些完整性规则，以确保它们包含的数据保持准确并始终可访问。首先，关系表中的行应该都是不同的。如果有重复的行，解决哪一个是正确选择的问题可能会出现问题。对于大多数DBMS，用户可以指定不允许重复行，如果这样做，DBMS将阻止添加任何重复现有行的行。
+- en: A second integrity rule of the traditional relational model is that column values
+    must not be repeating groups or arrays. A third aspect of data integrity involves
+    the concept of a null value. A database takes care of situations where data may
+    not be available by using a null value to indicate that a value is missing. It
+    does not equate to a blank or zero. A blank is considered equal to another blank,
+    a zero is equal to another zero, but two null values are not considered equal.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传统关系模型的第二个完整性规则是列值不能是重复组或数组。数据完整性的第三个方面涉及空值的概念。数据库通过使用空值来指示缺失值的情况。它不等同于空白或零。空白被认为等于另一个空白，零等于另一个零，但两个空值不被视为相等。
+- en: When each row in a table is different, it is possible to use one or more columns
+    to identify a particular row. This unique column or group of columns is called
+    a primary key. Any column that is part of a primary key cannot be null; if it
+    were, the primary key containing it would no longer be a complete identifier.
+    This rule is referred to as entity integrity.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当表中的每一行都不同时，可以使用一个或多个列来标识特定行。这个唯一的列或列组称为主键。任何作为主键的列都不能为null；如果是，包含它的主键将不再是完整的标识符。这个规则称为实体完整性。
+- en: The `Employees` table illustrates some of these relational database concepts.
+    It has five columns and six rows, with each row representing a different employee.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Employees`表展示了一些关系数据库概念。它有五列和六行，每行代表一个不同的雇员。'
+- en: '`Employees` Table'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Employees`表'
+- en: '| `Employee_Number` | `First_name` | `Last_Name` | `Date_of_Birth` | `Car_Number`
+    |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `员工编号` | `名` | `姓` | `出生日期` | `车牌号` |'
+- en: '| 10001 | Axel | Washington | 28-Aug-43 | 5 |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| 10001 | 阿克塞尔 | 华盛顿 | 43年8月28日 | 5 |'
+- en: '| 10083 | Arvid | Sharma | 24-Nov-54 | null |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| 10083 | 阿维德 | 沙玛 | 54年11月24日 | null |'
+- en: '| 10120 | Jonas | Ginsberg | 01-Jan-69 | null |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| 10120 | 乔纳斯 | 金斯伯格 | 69年1月1日 | null |'
+- en: '| 10005 | Florence | Wojokowski | 04-Jul-71 | 12 |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| 10005 | 弗洛伦斯 | 沃约科夫斯基 | 71年7月4日 | 12 |'
+- en: '| 10099 | Sean | Washington | 21-Sep-66 | null |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| 10099 | 肖恩 | 华盛顿 | 66年9月21日 | null |'
+- en: '| 10035 | Elizabeth | Yamaguchi | 24-Dec-59 | null |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| 10035 | 伊丽莎白 | 山口 | 59年12月24日 | null |'
+- en: The primary key for this table would generally be the employee number because
+    each one is guaranteed to be different. (A number is also more efficient than
+    a string for making comparisons.) It would also be possible to use `First_Name`
+    and `Last_Name` because the combination of the two also identifies just one row
+    in our sample database. Using the last name alone would not work because there
+    are two employees with the last name of "Washington." In this particular case
+    the first names are all different, so one could conceivably use that column as
+    a primary key, but it is best to avoid using a column where duplicates could occur.
+    If Elizabeth Yamaguchi gets a job at this company and the primary key is `First_Name`,
+    the RDBMS will not allow her name to be added (if it has been specified that no
+    duplicates are permitted). Because there is already an Elizabeth in the table,
+    adding a second one would make the primary key useless as a way of identifying
+    just one row. Note that although using `First_Name` and `Last_Name` is a unique
+    composite key for this example, it might not be unique in a larger database. Note
+    also that the `Employees` table assumes that there can be only one car per employee.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该表的主键通常会是员工编号，因为每个员工编号都保证是不同的。（数字比字符串更有效率用于比较。）也可以使用 `First_Name` 和 `Last_Name`，因为两者的组合在我们的示例数据库中也只标识一行。仅使用姓氏将不起作用，因为有两个姓氏为“Washington”的员工。在这种特殊情况下，名字都是不同的，因此可以想象使用该列作为主键，但最好避免使用可能出现重复的列。如果
+    Elizabeth Yamaguchi 在这家公司找到工作，而主键是 `First_Name`，则关系数据库管理系统将不允许添加她的名字（如果已经指定不允许重复）。因为表中已经有一个
+    Elizabeth，再添加一个将使主键无法作为标识一行的方法。请注意，虽然使用 `First_Name` 和 `Last_Name` 是这个示例的唯一复合键，但在更大的数据库中可能不是唯一的。还要注意，`Employees`
+    表假设每个员工只能有一辆车。
+- en: '`SELECT` Statements'
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`SELECT` 语句'
+- en: SQL is a language designed to be used with relational databases. There is a
+    set of basic SQL commands that is considered standard and is used by all RDBMSs.
+    For example, all RDBMSs use the `SELECT` statement.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SQL 是一种设计用于与关系数据库一起使用的语言。有一组被认为是标准的基本 SQL 命令，被所有关系数据库管理系统使用。例如，所有关系数据库管理系统都使用
+    `SELECT` 语句。
+- en: 'A `SELECT` statement, also called a query, is used to get information from
+    a table. It specifies one or more column headings, one or more tables from which
+    to select, and some criteria for selection. The RDBMS returns rows of the column
+    entries that satisfy the stated requirements. A `SELECT` statement such as the
+    following will fetch the first and last names of employees who have company cars:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SELECT` 语句，也称为查询，用于从表中获取信息。它指定一个或多个列标题，一个或多个要选择的表，以及一些选择条件。关系数据库管理系统返回满足所述要求的列条目的行。例如，以下
+    `SELECT` 语句将获取拥有公司车辆的员工的名字和姓氏：'
+- en: '[PRE0]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The result set (the set of rows that satisfy the requirement of not having null
+    in the `Car_Number` column) follows. The first name and last name are printed
+    for each row that satisfies the requirement because the `SELECT` statement (the
+    first line) specifies the columns `First_Name` and `Last_Name`. The `FROM` clause
+    (the second line) gives the table from which the columns will be selected.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 符合要求（`Car_Number` 列中不为 null 的行集）的结果集如下。对于满足要求的每一行，都会打印出名字和姓氏，因为 `SELECT` 语句（第一行）指定了列
+    `First_Name` 和 `Last_Name`。`FROM` 子句（第二行）给出了将从中选择列的表。
+- en: '| `FIRST_NAME` | `LAST_NAME` |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| `FIRST_NAME` | `LAST_NAME` |'
+- en: '| Axel | Washington |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| Axel | Washington |'
+- en: '| Florence | Wojokowski |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| Florence | Wojokowski |'
+- en: The following code produces a result set that includes the whole table because
+    it asks for all of the columns in the table Employees with no restrictions (no
+    `WHERE` clause). Note that `SELECT *` means "`SELECT` all columns."
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码生成一个包含整个表的结果集，因为它要求表 Employees 中的所有列没有限制（没有 `WHERE` 子句）。请注意，`SELECT *` 意味着“`SELECT`
+    所有列”。
+- en: '[PRE1]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '`WHERE` Clauses'
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`WHERE` 子句'
+- en: The `WHERE` clause in a `SELECT` statement provides the criteria for selecting
+    values. For example, in the following code fragment, values will be selected only
+    if they occur in a row in which the column `Last_Name` begins with the string
+    'Washington'.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SELECT` 语句中的 `WHERE` 子句提供了选择值的条件。例如，在以下代码片段中，只有在列 `Last_Name` 以字符串 ''Washington''
+    开头的行中才会选择值。'
+- en: '[PRE2]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The keyword `LIKE` is used to compare strings, and it offers the feature that
+    patterns containing wildcards can be used. For example, in the code fragment above,
+    there is a percent sign (`%`) at the end of 'Washington', which signifies that
+    any value containing the string 'Washington' plus zero or more additional characters
+    will satisfy this selection criterion. So 'Washington' or 'Washingtonian' would
+    be matches, but 'Washing' would not be. The other wildcard used in `LIKE` clauses
+    is an underscore (`_`), which stands for any one character. For example,
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关键字`LIKE`用于比较字符串，并提供了可以使用通配符的功能。例如，在上面的代码片段中，'Washington'末尾有一个百分号(`%`)，表示任何包含字符串'Washington'加零个或多个额外字符的值都将满足这个选择条件。因此，'Washington'或'Washingtonian'都会匹配，但'Washing'不会。`LIKE`子句中使用的另一个通配符是下划线(`_`)，代表任意一个字符。例如，
+- en: '[PRE3]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: would match 'Barman', 'Badman', 'Balman', 'Bagman', 'Bamman', and so on.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 会匹配'Barman'、'Badman'、'Balman'、'Bagman'、'Bamman'等等。
+- en: The code fragment below has a `WHERE` clause that uses the equal sign (`=`)
+    to compare numbers. It selects the first and last name of the employee who is
+    assigned car 12.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的代码片段有一个使用等号(`=`)比较数字的`WHERE`子句。它选择了被分配车辆12的员工的名字和姓氏。
+- en: '[PRE4]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The next code fragment selects the first and last names of employees whose
+    employee number is greater than 10005:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个代码片段选择了员工编号大于10005的员工的名字和姓氏：
+- en: '[PRE5]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '`WHERE` clauses can get rather elaborate, with multiple conditions and, in
+    some DBMSs, nested conditions. This overview will not cover complicated `WHERE`
+    clauses, but the following code fragment has a `WHERE` clause with two conditions;
+    this query selects the first and last names of employees whose employee number
+    is less than 10100 and who do not have a company car.'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`WHERE`子句可能会变得相当复杂，包含多个条件，在一些数据库管理系统中还可能有嵌套条件。本概述不会涵盖复杂的`WHERE`子句，但以下代码片段有一个带有两个条件的`WHERE`子句；这个查询选择了员工编号小于10100且没有公司车的员工的名字和姓氏。'
+- en: '[PRE6]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: A special type of `WHERE` clause involves a join, which is explained in the
+    next section.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一种特殊类型的`WHERE`子句涉及连接，将在下一节中解释。
+- en: Joins
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 连接
+- en: 'A distinguishing feature of relational databases is that it is possible to
+    get data from more than one table in what is called a join. Suppose that after
+    retrieving the names of employees who have company cars, one wanted to find out
+    who has which car, including the make, model, and year of car. This information
+    is stored in another table, `Cars`:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关系数据库的一个显著特点是可以通过所谓的连接从多个表中获取数据。假设在检索拥有公司车辆的员工姓名后，想要找出谁拥有哪辆车，包括车辆的品牌、型号和年份。这些信息存储在另一个表`Cars`中：
+- en: '`Cars` Table'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Cars`表'
+- en: '| `Car_Number` | `Make` | `Model` | `Year` |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Car_Number` | `品牌` | `型号` | `年份` |'
+- en: '| 5 | Honda | Civic DX | 1996 |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| 5 | 本田 | 思域 DX | 1996 |'
+- en: '| 12 | Toyota | Corolla | 1999 |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| 12 | 丰田 | 卡罗拉 | 1999 |'
+- en: There must be one column that appears in both tables in order to relate them
+    to each other. This column, which must be the primary key in one table, is called
+    the foreign key in the other table. In this case, the column that appears in two
+    tables is `Car_Number`, which is the primary key for the table `Cars` and the
+    foreign key in the table `Employees`. If the 1996 Honda Civic were wrecked and
+    deleted from the `Cars` table, then `Car_Number` 5 would also have to be removed
+    from the `Employees` table in order to maintain what is called referential integrity.
+    Otherwise, the foreign key column (`Car_Number`) in the `Employees` table would
+    contain an entry that did not refer to anything in the `Cars` table. A foreign
+    key must either be null or equal to an existing primary key value of the table
+    to which it refers. This is different from a primary key, which may not be null.
+    There are several null values in the `Car_Number` column in the table `Employees`
+    because it is possible for an employee not to have a company car.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了将两个表关联起来，必须有一列同时出现在两个表中。这一列在一个表中必须是主键，在另一个表中被称为外键。在这种情况下，出现在两个表中的列是`Car_Number`，它是表`Cars`的主键，也是表`Employees`的外键。如果1996年本田思域被损坏并从`Cars`表中删除，那么`Car_Number`为5也必须从`Employees`表中删除，以保持所谓的参照完整性。否则，`Employees`表中的外键列(`Car_Number`)将包含一个不指向`Cars`表中任何内容的条目。外键必须为空或等于所引用表的现有主键值。这与主键不同，主键不可为空。在表`Employees`的`Car_Number`列中有几个空值，因为员工可能没有公司车。
+- en: The following code asks for the first and last names of employees who have company
+    cars and for the make, model, and year of those cars. Note that the `FROM` clause
+    lists both the `Employees` and `Cars` tables because the requested data is contained
+    in both tables. Using the table name and a dot (`.`) before the column name indicates
+    which table contains the column.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码要求输入拥有公司车辆的员工的名字和姓氏，以及这些车辆的制造商、型号和年份。请注意，`FROM`子句列出了`Employees`和`Cars`表，因为请求的数据包含在这两个表中。在列名之前使用表名和点号（`.`）表示哪个表包含该列。
+- en: '[PRE7]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'This returns a result set that will look similar to the following:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将返回一个类似以下的结果集：
+- en: '| `FIRST_NAME` | `LAST_NAME` | `LICENSE_PLATE` | `MILEAGE` | `YEAR` |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| `FIRST_NAME` | `LAST_NAME` | `LICENSE_PLATE` | `MILEAGE` | `YEAR` |'
+- en: '| John | Washington | ABC123 | 5000 | 1996 |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| John | Washington | ABC123 | 5000 | 1996 |'
+- en: '| Florence | Wojokowski | DEF123 | 7500 | 1999 |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| Florence | Wojokowski | DEF123 | 7500 | 1999 |'
+- en: Common SQL Commands
+  id: totrans-53
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 常见的 SQL 命令
+- en: SQL commands are divided into categories, the two main ones being Data Manipulation
+    Language (DML) commands and Data Definition Language (DDL) commands. DML commands
+    deal with data, either retrieving it or modifying it to keep it up-to-date. DDL
+    commands create or change tables and other database objects such as views and
+    indexes.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SQL 命令分为不同的类别，主要包括数据操作语言（DML）命令和数据定义语言（DDL）命令。DML 命令处理数据，无论是检索数据还是修改数据以保持其最新状态。DDL
+    命令创建或更改表以及其他数据库对象，如视图和索引。
+- en: 'A list of the more common DML commands follows:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是更常见的 DML 命令列表：
+- en: '`SELECT — ` used to query and display data from a database. The `SELECT` statement
+    specifies which columns to include in the result set. The vast majority of the
+    SQL commands used in applications are `SELECT` statements.'
+  id: totrans-56
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SELECT — ` 用于从数据库中查询和显示数据。`SELECT`语句指定要包含在结果集中的列。应用程序中使用的 SQL 命令中绝大多数是`SELECT`语句。'
+- en: '`INSERT — ` adds new rows to a table. `INSERT` is used to populate a newly
+    created table or to add a new row (or rows) to an already-existing table.'
+  id: totrans-57
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`INSERT — ` 向表中添加新行。`INSERT`用于填充新创建的表或向已存在的表中添加新行（或多行）。'
+- en: '`DELETE — ` removes a specified row or set of rows from a table'
+  id: totrans-58
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DELETE — ` 从表中删除指定的行或一组行'
+- en: '`UPDATE — ` changes an existing value in a column or group of columns in a
+    table'
+  id: totrans-59
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`UPDATE — ` 改变表中某一列或一组列中的现有值'
+- en: 'The more common DDL commands follow:'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更常见的 DDL 命令如下：
+- en: '`CREATE TABLE — ` creates a table with the column names the user provides.
+    The user also needs to specify a type for the data in each column. Data types
+    vary from one RDBMS to another, so a user might need to use metadata to establish
+    the data types used by a particular database. `CREATE TABLE` is normally used
+    less often than the data manipulation commands because a table is created only
+    once, whereas adding or deleting rows or changing individual values generally
+    occurs more frequently.'
+  id: totrans-61
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CREATE TABLE — ` 创建一个带有用户提供的列名的表。用户还需要为每个列中的数据指定一个类型。不同的关系型数据库管理系统具有不同的数据类型，因此用户可能需要使用元数据来确定特定数据库使用的数据类型。`CREATE
+    TABLE`通常比数据操作命令使用频率低，因为表只创建一次，而添加或删除行或更改单个值通常更频繁发生。'
+- en: '`DROP TABLE — ` deletes all rows and removes the table definition from the
+    database. A JDBC API implementation is required to support the DROP TABLE command
+    as specified by SQL92, Transitional Level. However, support for the `CASCADE`
+    and `RESTRICT` options of `DROP TABLE` is optional. In addition, the behavior
+    of `DROP TABLE` is implementation-defined when there are views or integrity constraints
+    defined that reference the table being dropped.'
+  id: totrans-62
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DROP TABLE — ` 删除所有行并从数据库中删除表定义。根据 SQL92，过渡级别的规范，JDBC API 实现需要支持`DROP TABLE`命令。但是，对于`DROP
+    TABLE`的`CASCADE`和`RESTRICT`选项的支持是可选的。此外，当存在引用正在被删除的表的视图或完整性约束时，`DROP TABLE`的行为是由实现定义的。'
+- en: '`ALTER TABLE — ` adds or removes a column from a table. It also adds or drops
+    table constraints and alters column attributes'
+  id: totrans-63
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ALTER TABLE — ` 向表中添加或删除列。它还添加或删除表约束并更改列属性'
+- en: Result Sets and Cursors
+  id: totrans-64
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 结果集和游标
+- en: The rows that satisfy the conditions of a query are called the result set. The
+    number of rows returned in a result set can be zero, one, or many. A user can
+    access the data in a result set one row at a time, and a cursor provides the means
+    to do that. A cursor can be thought of as a pointer into a file that contains
+    the rows of the result set, and that pointer has the ability to keep track of
+    which row is currently being accessed. A cursor allows a user to process each
+    row of a result set from top to bottom and consequently may be used for iterative
+    processing. Most DBMSs create a cursor automatically when a result set is generated.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 满足查询条件的行被称为结果集。结果集中返回的行数可以是零、一或多个。用户可以逐行访问结果集中的数据，游标提供了这样的功能。游标可以被看作是指向包含结果集行的文件的指针，并且该指针有能力跟踪当前正在访问的行。游标允许用户从顶部到底部处理结果集的每一行，因此可用于迭代处理。大多数数据库管理系统在生成结果集时会自动创建游标。
+- en: Earlier JDBC API versions added new capabilities for a result set's cursor,
+    allowing it to move both forward and backward and also allowing it to move to
+    a specified row or to a row whose position is relative to another row.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 早期的JDBC API版本为结果集的游标增加了新的功能，允许它向前和向后移动，还允许它移动到指定的行或相对于另一行的位置。
+- en: See [Retrieving and Modifying Values from Result Sets](../basics/retrieving.html)
+    for more information.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更多信息请参见[从结果集中检索和修改值](../basics/retrieving.html)。
+- en: Transactions
+  id: totrans-68
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 事务
+- en: When one user is accessing data in a database, another user may be accessing
+    the same data at the same time. If, for instance, the first user is updating some
+    columns in a table at the same time the second user is selecting columns from
+    that same table, it is possible for the second user to get partly old data and
+    partly updated data. For this reason, DBMSs use transactions to maintain data
+    in a consistent state (data consistency) while allowing more than one user to
+    access a database at the same time (data concurrency).
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当一个用户正在访问数据库中的数据时，另一个用户可能同时访问相同的数据。例如，第一个用户正在同时更新表中的某些列，而第二个用户正在从同一表中选择列，这时第二个用户可能会得到部分旧数据和部分更新数据。因此，数据库管理系统使用事务来维护数据的一致状态（数据一致性），同时允许多个用户同时访问数据库（数据并发性）。
+- en: A transaction is a set of one or more SQL statements that make up a logical
+    unit of work. A transaction ends with either a commit or a rollback, depending
+    on whether there are any problems with data consistency or data concurrency. The
+    commit statement makes permanent the changes resulting from the SQL statements
+    in the transaction, and the rollback statement undoes all changes resulting from
+    the SQL statements in the transaction.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事务是由一个或多个SQL语句组成的逻辑工作单元。事务以提交或回滚结束，具体取决于数据一致性或数据并发性是否存在问题。提交语句将使事务中SQL语句产生的更改永久生效，而回滚语句将撤消事务中SQL语句产生的所有更改。
+- en: A lock is a mechanism that prohibits two transactions from manipulating the
+    same data at the same time. For example, a table lock prevents a table from being
+    dropped if there is an uncommitted transaction on that table. In some DBMSs, a
+    table lock also locks all of the rows in a table. A row lock prevents two transactions
+    from modifying the same row, or it prevents one transaction from selecting a row
+    while another transaction is still modifying it.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 锁是一种机制，阻止两个事务同时操作相同的数据。例如，表锁会阻止在该表上存在未提交事务时删除该表。在某些数据库管理系统中，表锁还会锁定表中的所有行。行锁可以阻止两个事务修改同一行，或者阻止一个事务在另一个事务仍在修改该行时选择该行。
+- en: See [Using Transactions](../basics/transactions.html) for more information.
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更多信息请参见[使用事务](../basics/transactions.html)。
+- en: Stored Procedures
+  id: totrans-73
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 存储过程
+- en: A stored procedure is a group of SQL statements that can be called by name.
+    In other words, it is executable code, a mini-program, that performs a particular
+    task that can be invoked the same way one can call a function or method. Traditionally,
+    stored procedures have been written in a DBMS-specific programming language. The
+    latest generation of database products allows stored procedures to be written
+    using the Java programming language and the JDBC API. Stored procedures written
+    in the Java programming language are bytecode portable between DBMSs. Once a stored
+    procedure is written, it can be used and reused because a DBMS that supports stored
+    procedures will, as its name implies, store it in the database. See [Using Stored
+    Procedures](../basics/storedprocedures.html) for information about writing stored
+    procedures.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 存储过程是一组可以通过名称调用的 SQL 语句。换句话说，它是可执行的代码，一个小型程序，执行特定任务，可以像调用函数或方法一样调用。传统上，存储过程是用特定于数据库管理系统的编程语言编写的。最新一代的数据库产品允许使用
+    Java 编程语言和 JDBC API 编写存储过程。用 Java 编程语言编写的存储过程在不同数据库管理系统之间是字节码可移植的。一旦编写了存储过程，它就可以被使用和重复使用，因为支持存储过程的数据库管理系统会将其存储在数据库中。查看[使用存储过程](../basics/storedprocedures.html)获取有关编写存储过程的信息。
+- en: Metadata
+  id: totrans-75
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 元数据
+- en: Databases store user data, and they also store information about the database
+    itself. Most DBMSs have a set of system tables, which list tables in the database,
+    column names in each table, primary keys, foreign keys, stored procedures, and
+    so forth. Each DBMS has its own functions for getting information about table
+    layouts and database features. JDBC provides the interface `DatabaseMetaData`,
+    which a driver writer must implement so that its methods return information about
+    the driver and/or DBMS for which the driver is written. For example, a large number
+    of methods return whether or not the driver supports a particular functionality.
+    This interface gives users and tools a standardized way to get metadata. In general,
+    developers writing tools and drivers are the ones most likely to be concerned
+    with metadata.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 数据库存储用户数据，也存储关于数据库本身的信息。大多数数据库管理系统都有一组系统表，列出数据库中的表、每个表中的列名、主键、外键、存储过程等。每个数据库管理系统都有自己的函数来获取有关表布局和数据库功能的信息。JDBC
+    提供了 `DatabaseMetaData` 接口，驱动程序编写者必须实现该接口，以便其方法返回有关驱动程序和/或为其编写驱动程序的数据库管理系统的信息。例如，大量的方法返回驱动程序是否支持特定功能。这个接口为用户和工具提供了一种标准化的获取元数据的方式。一般来说，编写工具和驱动程序的开发人员最有可能关注元数据。

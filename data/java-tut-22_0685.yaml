@@ -1,0 +1,334 @@
+- en: Accessing MIDI System Resources
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 访问 MIDI 系统资源
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sound/accessing-MIDI.html](https://docs.oracle.com/javase/tutorial/sound/accessing-MIDI.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sound/accessing-MIDI.html](https://docs.oracle.com/javase/tutorial/sound/accessing-MIDI.html)
+- en: The Java Sound API offers a flexible model for MIDI system configuration, just
+    as it does for configuration of the sampled-audio system. An implementation of
+    the Java Sound API can itself provide different sorts of MIDI devices, and additional
+    ones can be supplied by service providers and installed by users. You can write
+    your program in such a way that it makes few assumptions about which specific
+    MIDI devices are installed on the computer. Instead, the program can take advantage
+    of the MIDI system's defaults, or it can allow the user to select from whatever
+    devices happen to be available.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API 为 MIDI 系统配置提供了灵活的模型，就像为采样音频系统配置一样。Java Sound API 的实现本身可以提供不同类型的
+    MIDI 设备，并且服务提供者和用户可以提供并安装其他设备。您可以编写程序，使其对计算机上安装的具体 MIDI 设备做出少量假设。相反，程序可以利用 MIDI
+    系统的默认设置，或者允许用户从可用设备中选择。
+- en: This section shows how your program can learn what MIDI resources have been
+    installed, and how to get access to the desired ones. After you've accessed and
+    opened the devices, you can connect them to each other, as discussed later in
+    [Transmitting and Receiving MIDI Messages](MIDI-messages.html).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节展示了您的程序如何了解已安装的 MIDI 资源，以及如何访问所需的资源。在访问并打开设备之后，您可以将它们连接在一起，如后面的 [传输和接收 MIDI
+    消息](MIDI-messages.html) 中所讨论的。
+- en: The MidiSystem Class
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: MidiSystem 类
+- en: The role of the [`MidiSystem`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiSystem.html)
+    class in the Java Sound API's MIDI package is directly analogous to the role of
+    [`AudioSystem`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/AudioSystem.html)
+    in the sampled-audio package. `MidiSystem` acts as a clearinghouse for accessing
+    the installed MIDI resources.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API 的 MIDI 包中的 [`MidiSystem`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiSystem.html)
+    类的作用与采样音频包中的 [`AudioSystem`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/AudioSystem.html)
+    类的作用直接类似。`MidiSystem` 充当访问已安装 MIDI 资源的中转站。
+- en: You can query the `MidiSystem` to learn what sorts of devices are installed,
+    and then you can iterate over the available devices and obtain access to the desired
+    ones. For example, an application program might start out by asking the `MidiSystem`
+    what synthesizers are available, and then display a list of them, from which the
+    user can select one. A simpler application program might just use the system's
+    default synthesizer.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以查询`MidiSystem`以了解安装了什么类型的设备，然后可以遍历可用设备并访问所需设备。例如，一个应用程序可能首先询问`MidiSystem`有哪些合成器可用，然后显示一个列表，用户可以从中选择一个。一个更简单的应用程序可能只使用系统的默认合成器。
+- en: The `MidiSystem` class also provides methods for translating between MIDI files
+    and `Sequences`. It can report the file format of a MIDI file and can write files
+    of different types.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MidiSystem` 类还提供了在 MIDI 文件和`Sequences`之间进行转换的方法。它可以报告 MIDI 文件的文件格式，并且可以写入不同类型的文件。'
+- en: 'An application program can obtain the following resources from the `MidiSystem`:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序可以从`MidiSystem`获取以下资源：
+- en: Sequencers
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 顺序器
+- en: Synthesizers
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 合成器
+- en: Transmitters (such as those associated with MIDI input ports)
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 发射器（例如与 MIDI 输入端口相关联的发射器）
+- en: Receivers (such as those associated with MIDI output ports)
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 接收器（例如与 MIDI 输出端口相关联的接收器）
+- en: Data from standard MIDI files
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 来自标准 MIDI 文件的数据
+- en: Data from soundbank files
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 来自声音库文件的数据
+- en: This page focuses on the first four of these types of resource. The others are
+    discussed later in this tutorial.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页重点介绍了这些类型资源中的前四种。其他类型将在本教程的后面讨论。
+- en: Obtaining Default Devices
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 获取默认设备
+- en: A typical MIDI application program that uses the Java Sound API begins by obtaining
+    the devices it needs, which can consist of one or more sequencers, synthesizers,
+    input ports, or output ports.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 Java Sound API 的典型 MIDI 应用程序程序首先获取所需的设备，这些设备可以包括一个或多个顺序器、合成器、输入端口或输出端口。
+- en: There is a default synthesizer device, a default sequencer device, a default
+    transmitting device, and a default receiving device. The latter two devices normally
+    represent the MIDI input and output ports, respectively, if there are any available
+    on the system. (It's easy to get confused about the directionality here. Think
+    of the ports' transmission or reception in relation to the software, not in relation
+    to any external physical devices connected to the physical ports. A MIDI input
+    port *transmits* data from an external device to a Java Sound API `Receiver`,
+    and likewise a MIDI output port *receives* data from a software object and relays
+    the data to an external device.)
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有一个默认的合成器设备，一个默认的定序器设备，一个默认的传输设备和一个默认的接收设备。后两个设备通常代表系统上可用的MIDI输入和输出端口，如果有的话。（在这里很容易混淆方向性。将端口的传输或接收视为与软件相关，而不是与连接到物理端口的任何外部物理设备相关。MIDI输入端口*传输*来自外部设备的数据到Java
+    Sound API的`Receiver`，同样，MIDI输出端口*接收*来自软件对象的数据并将数据中继到外部设备。）
+- en: 'A simple application program might just use the default instead of exploring
+    all the installed devices. The `MidiSystem` class includes the following methods
+    for retrieving default resources:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个简单的应用程序可能只使用默认设备而不探索所有安装的设备。`MidiSystem`类包括以下方法来检索默认资源：
+- en: '[PRE0]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The first two of these methods obtain the system's default sequencing and synthesis
+    resources, which either represent physical devices or are implemented wholly in
+    software. The `getReceiver` method obtains a `Receiver` object that takes MIDI
+    messages sent to it and relays them to the default receiving device. Similarly,
+    the getTransmitter method obtains a Transmitter object that can send MIDI messages
+    to some receiver on behalf of the default transmitting device.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前两种方法获取系统的默认排序和合成资源，这些资源可以代表物理设备或完全在软件中实现。`getReceiver`方法获取一个`Receiver`对象，该对象接收发送给它的MIDI消息并将其中继到默认接收设备。类似地，`getTransmitter`方法获取一个Transmitter对象，该对象可以代表默认传输设备向某个接收设备发送MIDI消息。
+- en: Learning What Devices Are Installed
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 学习安装了哪些设备
+- en: Instead of using the default devices, a more thorough approach is to select
+    the desired devices from the full set of devices that are installed on the system.
+    An application program can select the desired devices programmatically, or it
+    can display a list of available devices and let the user select which ones to
+    use. The `MidiSystem` class provides a method for learning which devices are installed,
+    and a corresponding method to obtain a device of a given type.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与使用默认设备不同，更彻底的方法是从系统上安装的所有设备中选择所需的设备。应用程序可以通过编程方式选择所需的设备，或者可以显示可用设备列表，让用户选择要使用的设备。`MidiSystem`类提供了一个方法来了解安装了哪些设备，以及一个相应的方法来获取给定类型的设备。
+- en: 'Here is the method for learning about the installed devices:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是学习已安装设备的方法：
+- en: '[PRE1]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'As you can see, it returns an array of information objects. Each of these returned
+    `MidiDevice.Info` objects identifies one type of sequencer, synthesizer, port,
+    or other device that is installed. (Usually a system has at most one instance
+    of a given type. For example, a given model of synthesizer from a certain vendor
+    will be installed only once.) The `MidiDevice.Info` includes the following strings
+    to describe the device:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，它返回一个信息对象数组。每个返回的`MidiDevice.Info`对象标识已安装的一种类型的定序器、合成器、端口或其他设备。（通常系统最多只有一个给定类型的实例。例如，来自某个供应商的特定型号的合成器只会安装一次。）`MidiDevice.Info`包括以下字符串来描述设备：
+- en: Name
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 名称
+- en: Version number
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 版本号
+- en: Vendor (the company that created the device)
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 厂商（创建设备的公司）
+- en: A description of the device
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 设备的描述
+- en: You can display these strings in your user interface to let the user select
+    from the list of devices.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在用户界面中显示这些字符串，让用户从设备列表中进行选择。
+- en: However, to use the strings programmatically to select a device (as opposed
+    to displaying the strings to the user), you need to know in advance what they
+    might be. The company that provides each device should include this information
+    in its documentation. An application program that requires or prefers a particular
+    device can use this information to locate that device. This approach has the drawback
+    of limiting the program to device implementations that it knows about in advance.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，要在程序中使用字符串来选择设备（而不是向用户显示字符串），你需要事先知道可能的字符串是什么。每个提供设备的公司应该在其文档中包含这些信息。需要或偏好特定设备的应用程序可以利用这些信息来定位该设备。这种方法的缺点是将程序限制在事先知道的设备实现上。
+- en: Another, more general, approach is to go ahead and iterate over the `MidiDevice.Info`
+    objects, obtaining each corresponding device, and determining programmatically
+    whether it's suitable to use (or at least suitable to include in a list from which
+    the user can choose). The next section describes how to do this.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种更一般的方法是继续遍历`MidiDevice.Info`对象，获取每个相应的设备，并以编程方式确定是否适合使用（或至少适合包含在用户可以选择的列表中）。下一节将介绍如何执行此操作。
+- en: Obtaining a Desired Device
+  id: totrans-34
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 获取所需设备
+- en: 'Once an appropriate device''s info object is found, the application program
+    invokes the following `MidiSystem` method to obtain the corresponding device itself:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦找到适当设备的信息对象，应用程序调用以下`MidiSystem`方法来获取相应的设备本身：
+- en: '[PRE2]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'You can use this method if you''ve already found the info object describing
+    the device you need. However, if you can''t interpret the info objects returned
+    by `getMidiDeviceInfo` to determine which device you need, and if you don''t want
+    to display information about all the devices to the user, you might be able to
+    do the following instead: Iterate over all the `MidiDevice.Info` objects returned
+    by `getMidiDeviceInfo`, get the corresponding devices using the method above,
+    and test each device to see whether it''s suitable. In other words, you can query
+    each device for its class and its capabilities before including it in the list
+    that you display to the user, or as a way to decide upon a device programmatically
+    without involving the user. For example, if your program needs a synthesizer,
+    you can obtain each of the installed devices, see which are instances of classes
+    that implement the `Synthesizer` interface, and then display them in a list from
+    which the user can choose one, as follows:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您已经找到描述所需设备的信息对象，可以使用此方法。但是，如果无法解释`getMidiDeviceInfo`返回的信息对象以确定所需设备，且不想向用户显示所有设备的信息，您可以尝试以下操作：遍历`getMidiDeviceInfo`返回的所有`MidiDevice.Info`对象，使用上述方法获取相应设备，并测试每个设备以查看其是否合适。换句话说，您可以在将设备包含在向用户显示的列表中之前，查询每个设备的类和功能，或者以编程方式决定设备而不涉及用户。例如，如果您的程序需要合成器，可以获取每个已安装的设备，查看哪些是实现`Synthesizer`接口的类的实例，然后将它们显示在用户可以选择的列表中，如下所示：
+- en: '[PRE3]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: As another example, you might choose a device programmatically, without involving
+    the user. Let's suppose you want to obtain the synthesizer that can play the most
+    notes simultaneously. You iterate over all the MidiDevice.Info objects, as above,
+    but after determining that a device is a synthesizer, you query its capabilities
+    by invoking the `getMaxPolyphony` method of `Synthesizer`. You reserve the synthesizer
+    that has the greatest polyphony, as described in the next section. Even though
+    you're not asking the user to choose a synthesizer, you might still display strings
+    from the chosen `MidiDevice.Info` object, just for the user's information.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为另一个示例，您可以以编程方式选择设备，而不涉及用户。假设您想获取可以同时播放最多音符的合成器。您遍历所有`MidiDevice.Info`对象，如上所述，但在确定设备是合成器后，通过调用`Synthesizer`的`getMaxPolyphony`方法查询其功能。您保留具有最大音色的合成器，如下一节所述。即使您不要求用户选择合成器，您可能仍然显示所选`MidiDevice.Info`对象的字符串，仅供用户参考。
+- en: Opening Devices
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 打开设备
+- en: 'The previous section showed how to get an installed device. However, a device
+    might be installed but unavailable. For example, another application program might
+    have exclusive use of it. To actually reserve a device for your program, you need
+    to use the `MidiDevice` method `open`:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前一节展示了如何获取已安装的设备。然而，设备可能已安装但不可用。例如，另一个应用程序可能独占使用它。要为您的程序实际保留设备，您需要使用`MidiDevice`方法`open`：
+- en: '[PRE4]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Once you've accessed a device and reserved it by opening it, you'll probably
+    want to connect it to one or more other devices to let MIDI data flow between
+    them. This procedure is described in later in [Transmitting and Receiving MIDI
+    Messages](MIDI-messages.html).
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦您访问了设备并通过打开它来预留了它，您可能希望将其连接到一个或多个其他设备，以便让 MIDI 数据在它们之间流动。这个过程在[传输和接收 MIDI
+    消息](MIDI-messages.html)中有描述。
+- en: When done with a device, you release it for other programs' use by invoking
+    the `close` method of `MidiDevice`.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当完成对设备的操作后，通过调用`MidiDevice`的`close`方法释放它，以便其他程序可以使用。

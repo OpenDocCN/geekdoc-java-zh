@@ -1,0 +1,299 @@
+- en: How to Write a Component Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写组件监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/componentlistener.html)
+- en: The Component listener is a listener interface for receiving component events.
+    A component is an object having a graphical representation that can be displayed
+    on the screen and that can interact with the user. Some of the examples of components
+    are the buttons, check boxes, and scrollbars of a typical graphical user interface.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组件监听器是用于接收组件事件的监听器接口。组件是具有图形表示的对象，可以显示在屏幕上并与用户交互。一些组件的示例是典型图形用户界面中的按钮、复选框和滚动条。
+- en: The class that is interested in processing a component event either implements
+    this interface and all the methods it contains, or extends the abstract ComponentAdapter
+    class overriding only the methods of interest. The listener object created from
+    that class is then registered with a component using the component's addComponentListener
+    method. When the component's size, location, or visibility changes, the relevant
+    method in the listener object is invoked, and the ComponentEvent is passed to
+    it.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于对处理组件事件感兴趣的类，要么实现此接口及其所有包含的方法，要么扩展抽象的ComponentAdapter类，只覆盖感兴趣的方法。然后，从该类创建的监听器对象将使用组件的addComponentListener方法注册到组件上。当组件的大小、位置或可见性发生变化时，监听器对象中的相关方法将被调用，并将ComponentEvent传递给它。
+- en: One or more component events are fired by a `Component` object just after the
+    component is hidden, made visible, moved, or resized.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个或多个组件事件是由`Component`对象在组件被隐藏、显示、移动或调整大小后立即触发的。
+- en: The component-hidden and component-shown events occur only as the result of
+    calls to a `Component` 's `setVisible` method. For example, a window might be
+    miniaturized into an icon (iconified) without a component-hidden event being fired.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组件隐藏和组件显示事件仅在调用`Component`的`setVisible`方法时发生。例如，窗口可能被缩小为图标（图标化），而不会触发组件隐藏事件。
+- en: 'To write a simple Component listener program, follow the steps mentioned below:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编写一个简单的组件监听器程序，请按照以下步骤进行：
+- en: 'Declare a class which implements Component listener. For example:'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 声明一个实现了组件监听器的类。例如：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Identify the components that you would like to catch the events for. For example:
+    pane, label, check box, etc.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 确定您要捕获事件的组件。例如：面板、标签、复选框等。
+- en: 'Add the Component Listener to the identified components. For example:'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将组件监听器添加到已识别的组件中。例如：
+- en: '[PRE1]'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Finally, catch the different events of these components by using four methods
+    of Component Listener as shown below:'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 最后，通过使用组件监听器的四种方法来捕获这些组件的不同事件，如下所示：
+- en: '[PRE2]'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The following example demonstrates component events. The window contains a panel
+    that has a label and a check box. The check box controls whether the label is
+    visible. A text area displays a message every time the window, panel, label, or
+    check box fires a component event.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例演示了组件事件。窗口包含一个带有标签和复选框的面板。复选框控制标签是否可见。文本区域在窗口、面板、标签或复选框触发组件事件时显示消息。
+- en: '![A window demonstrating component events](../Images/4a052929fe9b4608e74565c7199f7ffd.png)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_IMG
+  zh: '![演示组件事件的窗口](../Images/4a052929fe9b4608e74565c7199f7ffd.png)'
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: Click the Launch button to run ComponentEventDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/events/index.html#Beeper).[![Launches
+    the ComponentEventDemo example](../Images/da4517ad7f535fc3704f4a24e3890554.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ComponentEventDemoProject/ComponentEventDemo.jnlp)
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行ComponentEventDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/events/index.html#Beeper)。[![启动
+    ComponentEventDemo 示例](../Images/da4517ad7f535fc3704f4a24e3890554.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ComponentEventDemoProject/ComponentEventDemo.jnlp)
+- en: When the window appears, one or more component-shown events have been fired.
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 当窗口出现时，一个或多个组件显示事件已被触发。
+- en: Click the check box to hide the label.
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击复选框以隐藏标签。
+- en: The label fires a component-hidden event. The panel fires component-moved and
+    component-resized events. The check box fires a component-moved event.
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 标签触发了一个组件隐藏事件。面板触发了组件移动和组件调整大小事件。复选框触发了一个组件移动事件。
+- en: Click the check box again to show the label.
+  id: totrans-22
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次点击复选框以显示标签。
+- en: The label fires a component-shown event. The panel fires component-moved and
+    component-resized events. The check box fires a component-moved event.
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 标签触发了一个组件显示事件。面板触发了组件移动和组件调整大小事件。复选框触发了一个组件移动事件。
+- en: Iconify and then deiconify the window.
+  id: totrans-24
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 最小化然后还原窗口。
+- en: You do *not* get component-hidden or -shown events. If you want to be notified
+    of iconification events, you should use a window listener or a window state listener.
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 你不会收到组件隐藏或显示事件。如果想要收到最小化事件的通知，应该使用窗口监听器或窗口状态监听器。
+- en: Resize the window.
+  id: totrans-26
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调整窗口大小。
+- en: You will see component-resized (and possibly component-moved) events from all
+    four components — label, check box, panel, and frame. If the frame and panel's
+    layout manager did not make every component as wide as possible, the panel, label,
+    and check box would not have been resized.
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 你将会看到所有四个组件——标签、复选框、面板和框架——发出了组件调整大小（可能还有组件移动）事件。如果框架和面板的布局管理器没有使每个组件尽可能宽，那么面板、标签和复选框就不会被调整大小。
+- en: '* * *'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'You can find the demo''s code in [`ComponentEventDemo.java`](../examples/events/ComponentEventDemoProject/src/events/ComponentEventDemo.java).
+    Here is just the code related to handling component events:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在[`ComponentEventDemo.java`](../examples/events/ComponentEventDemoProject/src/events/ComponentEventDemo.java)中找到演示代码。这里只是与处理组件事件相关的代码：
+- en: '[PRE3]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The Component Listener API
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 组件监听器 API
+- en: The ComponentListener Interface
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组件监听器接口
+- en: '*All of these methods are also in the adapter class, [`ComponentAdapter`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentAdapter.html).*'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*所有这些方法也在适配器类[`ComponentAdapter`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentAdapter.html)中。*'
+- en: '| Method | Purpose |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [componentHidden(ComponentEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentListener.html#componentHidden-java.awt.event.ComponentEvent-)
+    | Called after the listened-to component is hidden as the result of the `setVisible`
+    method being called. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| [componentHidden(ComponentEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentListener.html#componentHidden-java.awt.event.ComponentEvent-)
+    | 在被监听的组件由于调用`setVisible`方法而被隐藏后调用。 |'
+- en: '| [componentMoved(ComponentEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentListener.html#componentMoved-java.awt.event.ComponentEvent-)
+    | Called after the listened-to component moves, relative to its container. For
+    example, if a window is moved, the window fires a component-moved event, but the
+    components it contains do not. |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| [componentMoved(ComponentEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentListener.html#componentMoved-java.awt.event.ComponentEvent-)
+    | 在被监听的组件相对于其容器移动后调用。例如，如果移动了一个窗口，窗口会触发一个组件移动事件，但它包含的组件不会。 |'
+- en: '| [componentResized(ComponentEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentListener.html#componentResized-java.awt.event.ComponentEvent-)
+    | Called after the listened-to component''s size (rectangular bounds) changes.
+    |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| [componentResized(ComponentEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentListener.html#componentResized-java.awt.event.ComponentEvent-)
+    | 在被监听的组件的大小（矩形边界）发生变化后调用。 |'
+- en: '| [componentShown(ComponentEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentListener.html#componentShown-java.awt.event.ComponentEvent-)
+    | Called after the listened-to component becomes visible as the result of the
+    `setVisible` method being called. |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| [componentShown(ComponentEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentListener.html#componentShown-java.awt.event.ComponentEvent-)
+    | 在被监听的组件由于调用`setVisible`方法而变为可见后调用。 |'
+- en: The ComponentEvent Class
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组件事件类
+- en: '| Method | Purpose |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Component getComponent()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentEvent.html#getComponent--)
+    | Returns the component that fired the event. You can use this instead of the
+    `getSource` method. |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Component getComponent()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ComponentEvent.html#getComponent--)
+    | 返回触发事件的组件。你可以使用这个方法代替`getSource`方法。 |'
+- en: Examples that Use Component Listeners
+  id: totrans-42
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用组件监听器的示例
+- en: The following table lists the examples that use component listeners.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了使用组件监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`ComponentEventDemo`](../examples/events/index.html#ComponentEventDemo)
+    | This section | Reports all component events that occur on several components
+    to demonstrate the circumstances under which component events are fired. |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ComponentEventDemo`](../examples/events/index.html#ComponentEventDemo)
+    | 本节 | 报告了发生在多个组件上的所有组件事件，以展示组件事件触发的情况。 |'

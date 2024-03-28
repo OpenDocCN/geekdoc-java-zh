@@ -1,0 +1,166 @@
+- en: About the ResourceBundle Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 关于 ResourceBundle 类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/resbundle/concept.html](https://docs.oracle.com/javase/tutorial/i18n/resbundle/concept.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/resbundle/concept.html](https://docs.oracle.com/javase/tutorial/i18n/resbundle/concept.html)
+- en: How a ResourceBundle is Related to a Locale
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 如何 ResourceBundle 与 Locale 相关联
+- en: Conceptually each `ResourceBundle` is a set of related subclasses that share
+    the same base name. The list that follows shows a set of related subclasses. `ButtonLabel`
+    is the base name. The characters following the base name indicate the language
+    code, country code, and variant of a `Locale`. `ButtonLabel_en_GB`, for example,
+    matches the `Locale` specified by the language code for English (`en`) and the
+    country code for Great Britain (`GB`).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从概念上讲，每个 `ResourceBundle` 都是一组相关的子类，共享相同的基本名称。以下列表显示了一组相关的子类。`ButtonLabel` 是基本名称。基本名称后面的字符表示
+    `Locale` 的语言代码、国家代码和变体。例如，`ButtonLabel_en_GB` 匹配由英语语言代码 (`en`) 和英国国家代码 (`GB`)
+    指定的 `Locale`。
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: To select the appropriate `ResourceBundle`, invoke the `ResourceBundle.getBundle`
+    method. The following example selects the `ButtonLabel` `ResourceBundle` for the
+    `Locale` that matches the French language, the country of Canada, and the UNIX
+    platform.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要选择适当的 `ResourceBundle`，请调用 `ResourceBundle.getBundle` 方法。以下示例选择与法语语言、加拿大国家和
+    UNIX 平台匹配的 `ButtonLabel` `ResourceBundle`。
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'If a `ResourceBundle` class for the specified `Locale` does not exist, `getBundle`
+    tries to find the closest match. For example, if `ButtonLabel_fr_CA_UNIX` is the
+    desired class and the default `Locale` is `en_US`, `getBundle` will look for classes
+    in the following order:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果指定 `Locale` 的 `ResourceBundle` 类不存在，`getBundle` 将尝试找到最接近的匹配项。例如，如果期望的类是 `ButtonLabel_fr_CA_UNIX`，默认
+    `Locale` 是 `en_US`，`getBundle` 将按以下顺序查找类：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Note that `getBundle` looks for classes based on the default `Locale` before
+    it selects the base class (`ButtonLabel)`. If `getBundle` fails to find a match
+    in the preceding list of classes, it throws a `MissingResourceException`. To avoid
+    throwing this exception, you should always provide a base class with no suffixes.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，在选择基类（`ButtonLabel`）之前，`getBundle` 会根据默认 `Locale` 查找类。如果 `getBundle` 在前述类列表中找不到匹配项，则会抛出
+    `MissingResourceException`。为避免抛出此异常，您应始终提供没有后缀的基类。
+- en: The ListResourceBundle and PropertyResourceBundle Subclasses
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ListResourceBundle 和 PropertyResourceBundle 子类
+- en: 'The abstract class `ResourceBundle` has two subclasses: `PropertyResourceBundle`
+    and `ListResourceBundle`.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 抽象类 `ResourceBundle` 有两个子类：`PropertyResourceBundle` 和 `ListResourceBundle`。
+- en: A `PropertyResourceBundle` is backed by a properties file. A properties file
+    is a plain-text file that contains translatable text. Properties files are not
+    part of the Java source code, and they can contain values for `String` objects
+    only. If you need to store other types of objects, use a `ListResourceBundle`
+    instead. The section [Backing a ResourceBundle with Properties Files](propfile.html)
+    shows you how to use a `PropertyResourceBundle`.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`PropertyResourceBundle` 由属性文件支持。属性文件是包含可翻译文本的纯文本文件。属性文件不是 Java 源代码的一部分，它们只能包含
+    `String` 对象的值。如果需要存储其他类型的对象，请改用 `ListResourceBundle`。章节 [使用属性文件支持 ResourceBundle](propfile.html)
+    展示了如何使用 `PropertyResourceBundle`。'
+- en: The `ListResourceBundle` class manages resources with a convenient list. Each
+    `ListResourceBundle` is backed by a class file. You can store any locale-specific
+    object in a `ListResourceBundle`. To add support for an additional `Locale`, you
+    create another source file and compile it into a class file. The section [Using
+    a ListResource Bundle](list.html) has a coding example you may find helpful.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ListResourceBundle` 类使用方便的列表管理资源。每个 `ListResourceBundle` 都由一个类文件支持。您可以在 `ListResourceBundle`
+    中存储任何特定于区域设置的对象。要为其他 `Locale` 添加支持，您需要创建另一个源文件并将其编译为类文件。章节 [使用 ListResourceBundle](list.html)
+    中有一个您可能会发现有用的编码示例。'
+- en: 'The `ResourceBundle` class is flexible. If you first put your locale-specific
+    `String` objects in a `PropertyResourceBundle` and then later decided to use `ListResourceBundle`
+    instead, there is no impact on your code. For example, the following call to `getBundle`
+    will retrieve a `ResourceBundle` for the appropriate `Locale`, whether `ButtonLabel`
+    is backed up by a class or by a properties file:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ResourceBundle` 类是灵活的。如果您首先将特定于区域设置的 `String` 对象放入 `PropertyResourceBundle`
+    中，然后稍后决定改用 `ListResourceBundle`，则对您的代码没有影响。例如，对 `getBundle` 的以下调用将检索适当 `Locale`
+    的 `ResourceBundle`，无论 `ButtonLabel` 是由类支持还是由属性文件支持：'
+- en: '[PRE3]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Key-Value Pairs
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 键-值对
+- en: '`ResourceBundle` objects contain an array of key-value pairs. You specify the
+    key, which must be a `String`, when you want to retrieve the value from the `ResourceBundle`.
+    The value is the locale-specific object. The keys in the following example are
+    the `OkKey` and `CancelKey` strings:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ResourceBundle`对象包含一组键值对。当您想要从`ResourceBundle`中检索值时，您需要指定键，该键必须是一个`String`。该值是特定于区域设置的对象。以下示例中的键是`OkKey`和`CancelKey`字符串：'
+- en: '[PRE4]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'To retrieve the `OK` `String` from the `ResourceBundle`, you would specify
+    the appropriate key when invoking `getString`:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要从`ResourceBundle`中检索`OK` `String`，您需要在调用`getString`时指定适当的键：
+- en: '[PRE5]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'A properties file contains key-value pairs. The key is on the left side of
+    the equal sign, and the value is on the right. Each pair is on a separate line.
+    The values may represent `String` objects only. The following example shows the
+    contents of a properties file named `ButtonLabel.properties`:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性文件包含键值对。键位于等号的左侧，值位于右侧。每对位于单独的一行。值只能表示`String`对象。以下示例显示了名为`ButtonLabel.properties`的属性文件的内容：
+- en: '[PRE6]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'

@@ -1,0 +1,63 @@
+- en: Erasure of Generic Methods
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 擦除通用方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/genMethods.html](https://docs.oracle.com/javase/tutorial/java/generics/genMethods.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/genMethods.html](https://docs.oracle.com/javase/tutorial/java/generics/genMethods.html)
+- en: 'The Java compiler also erases type parameters in generic method arguments.
+    Consider the following generic method:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编译器还会擦除通用方法参数中的类型参数。考虑以下通用方法：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Because `T` is unbounded, the Java compiler replaces it with `Object`:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`T`是无界的，Java编译器将其替换为`Object`：
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Suppose the following classes are defined:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设以下类已被定义：
+- en: '[PRE2]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'You can write a generic method to draw different shapes:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以编写一个通用方法来绘制不同的形状：
+- en: '[PRE3]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The Java compiler replaces `T` with `Shape`:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编译器将`T`替换为`Shape`：
+- en: '[PRE4]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'

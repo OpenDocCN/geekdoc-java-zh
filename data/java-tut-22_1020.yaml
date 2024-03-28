@@ -1,0 +1,530 @@
+- en: Frequently Asked Questions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 常见问题
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/faq.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/faq.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 译文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/faq.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/faq.html)
+- en: This lesson answers the frequently asked questions users often have when using
+    the JNDI to access LDAP services. Some of the common problems are answered in
+    the [Trouble Shooting Tips](../ops/faq.html) of the Naming and Directory Operations
+    lesson.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这节课回答了用户在使用JNDI访问LDAP服务时经常遇到的常见问题。一些常见问题在命名和目录操作课程的[Trouble Shooting Tips](../ops/faq.html)中得到解答。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Contexts:'
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 上下文：
+- en: '[Is the context safe for multithreaded access?](#1)'
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[上下文是否安全用于多线程访问？](#1)'
+- en: '[Why does the LDAP provider ignore my security environment properties?](#2)'
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[为什么LDAP提供程序忽略我的安全环境属性？](#2)'
+- en: '[Why do I keep getting a CommunicationException?](#3)'
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[为什么我一直收到CommunicationException？](#3)'
+- en: '[How can I get a trace of LDAP messages?](#4)'
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[如何获取LDAP消息的跟踪？](#4)'
+- en: '[How do I use a different authentication mechanism such as Kerberos?](#5)'
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[如何使用不同的身份验证机制，如Kerberos？](#5)'
+- en: '[Should I enable SSL when changing the password?](#6)'
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[更改密码时是否应启用SSL？](#6)'
+- en: 'Attributes:'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 属性：
+- en: '[When I ask for one attribute, I get back another. Why?](#7)'
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[当我请求一个属性时，为什么返回另一个属性？](#7)'
+- en: '[How do I know the type of an attribute''s value?](#8)'
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[如何知道属性值的类型？](#8)'
+- en: '[How do I get back an attribute''s value in a form other than a String or byte
+    array?](#9)'
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[如何以除了字符串或字节数组之外的形式获取属性的值？](#9)'
+- en: '[Why does putting an "*" as an attribute value not work as expected in my search?](#10)'
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[为什么在我的搜索中将"*"作为属性值不按预期工作？](#10)'
+- en: 'Searches:'
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 搜索：
+- en: '[Why don''t wildcards in search filters always work?](#11)'
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[为什么搜索过滤器中的通配符不总是起作用？](#11)'
+- en: '[Why do I get back only *n* number of entries when I know there are more in
+    the directory?](#12)'
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[当我知道目录中还有更多条目时，为什么我只返回*n*个条目？](#12)'
+- en: '[How do I pass controls with my search?](#13)'
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[如何在我的搜索中传递控件？](#13)'
+- en: '[How do I find out how many search results I got back?](#14)'
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[我如何查看返回的搜索结果数量？](#14)'
+- en: 'Names:'
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 名称：
+- en: '[Why do I get an empty string as a name in my SearchResult?](#15)'
+  id: totrans-22
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[为什么我的搜索结果中的名称是空字符串？](#15)'
+- en: '[Why do I get a URL string as a name in my SearchResult?](#16)'
+  id: totrans-23
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[为什么我的搜索结果中的名称是一个URL字符串？](#16)'
+- en: '[What type is the Name argument passed to the context methods?](#17)'
+  id: totrans-24
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[传递给上下文方法的Name参数是什么类型？](#17)'
+- en: '[Can I pass the name I got back from NameParser to the Context methods?](#18)'
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[我可以将从NameParser获取的名称传递给Context方法吗？](#18)'
+- en: '[What''s the relationship between the name I use for the `Context.SECURITY_PRINCIPAL`
+    property and the directory?](#19)'
+  id: totrans-26
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[我用于`Context.SECURITY_PRINCIPAL`属性的名称与目录之间有什么关系？](#19)'
+- en: '[Why are there strange quotation marks and escapes in the names that I read
+    from the directory?](#20)'
+  id: totrans-27
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[为什么我从目录中读取的名称中有奇怪的引号和转义字符？](#20)'
+- en: '[How do I get an LDAP entry''s full DN?](#21)'
+  id: totrans-28
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[如何获取LDAP条目的完整DN？](#21)'
+- en: '* * *'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 1\. Is the context safe for multithreaded access, or do I need to lock/synchronize
+    access to a context?
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. 上下文是否安全用于多线程访问，还是需要对上下文进行锁定/同步访问？
+- en: The answer depends on the implementation. This is because the [`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)
+    and [`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html)
+    interfaces do not specify synchronization requirements. The LDAP implementation
+    in the JDK is optimized for single-threaded access. If you have multiple threads
+    accessing the same `Context` instance, then each thread needs to lock the `Context`
+    instance when using it. This also applies to any `NamingEnumeration` that is derived
+    from the same `Context` instance. However, multiple threads can access *different*
+    `Context` instances (even those derived from the same initial context) concurrently
+    without locks.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 答案取决于实现。这是因为[`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)和[`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html)接口没有指定同步要求。JDK中的LDAP实现针对单线程访问进行了优化。如果有多个线程访问相同的`Context`实例，则每个线程在使用时需要锁定`Context`实例。这也适用于从相同`Context`实例派生的任何`NamingEnumeration`。然而，多个线程可以同时访问*不同*的`Context`实例（甚至是从同一个初始上下文派生的实例）而无需锁定。
+- en: 2\. Why does the LDAP provider ignore my security environment properties if
+    I do not set the [`Context.SECURITY_CREDENTIALS`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS)
+    (`"java.naming.security.credentials"`) property or set it to the empty string?
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. 如果我不设置[`Context.SECURITY_CREDENTIALS`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS)
+    (`"java.naming.security.credentials"`)属性或将其设置为空字符串，为什么 LDAP 提供程序会忽略我的安全环境属性？
+- en: If you supply an empty string, an empty `byte`/`char` array, or `null` to the
+    `Context.SECURITY_CREDENTIALS` environment property, then an anonymous bind will
+    occur even if the `Context.SECURITY_AUTHENTICATION` property was set to `"simple"`.
+    This is because for simple authentication, the LDAP requires the password to be
+    nonempty. If a password is not supplied, then the protocol automatically converts
+    the authentication to `"none"`.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您向`Context.SECURITY_CREDENTIALS`环境属性提供空字符串、空的`byte`/`char`数组或`null`，即使`Context.SECURITY_AUTHENTICATION`属性设置为`"simple"`，也会发生匿名绑定。这是因为对于简单认证，LDAP
+    要求密码不能为空。如果未提供密码，则协议会自动将认证转换为`"none"`。
+- en: 3\. Why do I keep getting a [`CommunicationException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/CommunicationException.html)
+    when I try to create an initial context?
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 3\. 当我尝试创建初始上下文时为什么会一直收到[`CommunicationException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/CommunicationException.html)？
+- en: You might be talking to a server that supports only the LDAP v2\. See the Miscellaneous
+    lesson of the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/version.html)
+    for an example of how to set the version number.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能正在与仅支持 LDAP v2 的服务器通信。请参考[JNDI 教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/version.html)中的杂项课程，了解如何设置版本号的示例。
+- en: 4\. How can I trace the LDAP message?
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 4\. 我如何追踪 LDAP 消息？
+- en: Try using the `"com.sun.jndi.ldap.trace.ber"` environment property. If the value
+    of this property is an instance of `java.io.OutputStream`, then trace information
+    about BER buffers sent and received by the LDAP provider is written to that stream.
+    If the property's value is `null`, then no trace output is written.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尝试使用`"com.sun.jndi.ldap.trace.ber"`环境属性。如果此属性的值是`java.io.OutputStream`的实例，则
+    LDAP 提供程序发送和接收的 BER 缓冲区的跟踪信息将写入该流。如果属性的值为`null`，则不会写入跟踪输出。
+- en: For example, the following code will send the trace output to `System.err`.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，以下代码将把跟踪输出发送到`System.err`。
+- en: '[PRE0]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 5\. How do I use a different authentication mechanism such as Kerberos?
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 5\. 我如何使用不同的认证机制，比如 Kerberos？
+- en: Follow the instructions in the GSS-API/Kerberos v5 Authentication of the [JNDI
+    Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/gssapi.html)
+    for information on how to use Kerberos authentication. To use other authentication
+    mechanisms, see the Using Arbitrary SASL Mechanisms section of the [JNDI tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/mechanism.html).
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参考[JNDI 教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/gssapi.html)中的
+    GSS-API/Kerberos v5 认证部分，了解如何使用 Kerberos 认证。要使用其他认证机制，请参阅[JNDI 教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/mechanism.html)中的使用任意
+    SASL 机制部分。
+- en: 6\. Should I enable SSL when changing the password? /
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 6\. 在更改密码时应该启用 SSL 吗？
+- en: It really depends on the directory server you are using. Some directory servers
+    won't allow you to change the password if SSL is not enabled but some do allow
+    it. It's good to have SSL enabled to have your password secured in the communication
+    channel.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这实际取决于您正在使用的目录服务器。一些目录服务器如果未启用 SSL，则不允许您更改密码，但有些允许。启用 SSL 可以确保密码在通信通道中得到保护。
+- en: 7\. When I ask for one attribute, I get back another. Why?
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 7\. 当我请求一个属性时，为什么会返回另一个属性？
+- en: The attribute name that you are using might be a synonym for another attribute.
+    In this case, the LDAP server might return the canonical attribute name instead
+    of the one that you supplied. When you look in the `Attributes` returned by the
+    server, you need to use the canonical name instead of the synonym.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您正在使用的属性名称可能是另一个属性的同义词。在这种情况下，LDAP 服务器可能返回规范属性名称而不是您提供的属性名称。当您查看服务器返回的`Attributes`时，需要使用规范名称而不是同义词。
+- en: For example, `"fax"` might be a synonym for the canonical attribute name `"facsimiletelephonenumber"`.
+    If you ask for `"fax"`, the server will return the attribute named `"facsimiletelephonenumber"`.
+    See the [Naming and Directory Operations](../ops/attrnames.html) lesson for details
+    on synonyms and other issues regarding attribute names.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，`"fax"`可能是规范属性名称`"facsimiletelephonenumber"`的同义词。如果您请求`"fax"`，服务器将返回名为`"facsimiletelephonenumber"`的属性。有关同义词和属性名称的其他问题，请参阅[Naming
+    and Directory Operations](../ops/attrnames.html)课程。
+- en: 8\. How do I know the type of an attribute's value?
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 8\. 我如何知道属性值的类型？
+- en: An attribute's value can be either `java.lang.String` or `byte[]`. See the Miscellaneous
+    section of the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/attrs.html)
+    for information on which attributes' values are returned as `byte[]`. To do this
+    programmatically, you can use the `instanceof` operator to examine the attribute
+    value that you get back from the LDAP provider.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性值可以是`java.lang.String`或`byte[]`。请参阅[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/attrs.html)的杂项部分，了解哪些属性值以`byte[]`形式返回。要以编程方式执行此操作，您可以使用`instanceof`运算符检查从LDAP提供程序返回的属性值。
+- en: 9\. How do I get back an attribute's value in a form other than a String or
+    byte array?
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 9\. 如何以字符串或字节数组以外的形式获取属性值？
+- en: Currently you can't. The LDAP provider returns only attribute values that are
+    either `java.lang.String` or `byte[]`. See the Miscellaneous section of the [JNDI
+    Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/attrs.html).
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 目前你不能。LDAP提供程序仅返回`java.lang.String`或`byte[]`类型的属性值。请参阅[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/attrs.html)的杂项部分。
+- en: 10\. Why does putting an "*" as an attribute value not work as expected in my
+    search?
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 10\. 为什么在我的搜索中将"*"作为属性值不起作用？
+- en: 'When you use the following form of `search()`, the attribute values are treated
+    as literals; that is, the attribute in the directory entry is expected to contain
+    exactly that value: [`search(Name name, Attributes matchingAttrs)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-javax.naming.directory.Attributes-)
+    To use wildcards, you should use the string filter forms of `search()`, as follows.
+    [`search(Name name, String filter, SearchControls ctls)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-javax.naming.directory.SearchControls-)'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您使用以下形式的`search()`时，属性值被视为文字；也就是说，目录条目中的属性应该正好包含该值：[`search(Name name, Attributes
+    matchingAttrs)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-javax.naming.directory.Attributes-)
+    要使用通配符，您应该使用`search()`的字符串过滤形式，如下所示。[`search(Name name, String filter, SearchControls
+    ctls)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-javax.naming.directory.SearchControls-)
+- en: '[`search(Name name, String filterExpr, Object[]filterArgs, SearchControls ctls)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-java.lang.Object:A-javax.naming.directory.SearchControls-)'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`search(Name name, String filterExpr, Object[]filterArgs, SearchControls ctls)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-java.lang.Object:A-javax.naming.directory.SearchControls-) '
+- en: For the last form, the wildcard characters must appear in the `filterExpr` argument,
+    and not in `filterArgs`. The values in `filterArgs` are also treated as literals.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于最后一种形式，通配符字符必须出现在`filterExpr`参数中，而不是在`filterArgs`中。`filterArgs`中的值也被视为文字。
+- en: 11\. Why don't wildcards in search filters always work?
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 11\. 为什么搜索过滤器中的通配符不总是起作用？
+- en: A wildcard that appears before or after the attribute value (such as in `"attr=*I*"`)
+    indicates that the server is to search for matching attribute values by using
+    the attribute's substring matching rule. If the attribute's definition does not
+    have a substring matching rule, then the server cannot find the attribute. You'll
+    have to search by using an equality or "present" filter instead.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通配符出现在属性值之前或之后（例如在`"attr=*I*"`中）表示服务器将使用属性的子字符串匹配规则搜索匹配的属性值。如果属性的定义没有子字符串匹配规则，则服务器无法找到属性。您必须使用相等或“存在”过滤器进行搜索。
+- en: 12\. Why do I get back only *n* number of entries when I know there are more
+    in the directory? Some servers are configured to limit the number of entries that
+    can be returned. Others also limit the number of entries that can be examined
+    during a search. Check your server configuration.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 12\. 当我知道目录中还有更多条目时，为什么我只返回了*n*个条目？一些服务器配置为限制可以返回的条目数。其他服务器在搜索期间也限制可以检查的条目数。请检查您的服务器配置。
+- en: 13\. How do I pass controls with my search?
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 13\. 我如何在我的搜索中传递控件？
+- en: Controls are not explained in this tutorial. Check out the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/ext/context.html).
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程中未解释控件。查看[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/ext/context.html)。
+- en: 14\. How do I find out how many search results I got back?
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 14\. 我如何知道我得到了多少搜索结果？
+- en: You must keep count as you enumerate through the results. The LDAP does not
+    provide this information.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在枚举结果时必须进行计数。LDAP不提供这些信息。
+- en: 15\. Why do I get an empty string as a name in my [`SearchResult`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchResult.html)?
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 15\. 为什么我在我的[`SearchResult`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchResult.html)中得到一个空字符串作为名称？
+- en: '[`getName()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getName--)
+    always returns a name *relative* to the *target context* of the search. So, if
+    the target context satisfies the search filter, then the name returned will be
+    "" (the empty name) because that is the name relative to the target context. See
+    the [Search Results](result.html) section for details.'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`getName()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getName--)
+    总是返回一个相对于搜索的*目标上下文*的名称。因此，如果目标上下文满足搜索过滤器，则返回的名称将是""（空名称），因为这是相对于目标上下文的名称。有关详细信息，请参阅[搜索结果](result.html)部分。'
+- en: 16\. Why do I get a URL string as a name in my [`SearchResult`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchResult.html)?
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 16\. 为什么我在我的[`SearchResult`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchResult.html)中得到一个URL字符串作为名称？
+- en: The LDAP entry was retrieved by following either an alias or a referral, so
+    its name is a URL. See the [Search Results](result.html) lesson for details.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP条目是通过跟随别名或引荐而检索的，因此它的名称是一个URL。有关详细信息，请参阅[搜索结果](result.html)课程。
+- en: 17\. What type is the [`Name`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Name.html)
+    argument passed to the [`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)
+    and [`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html)
+    methods? - a [`CompoundName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/CompoundName.html)
+    or a [`CompositeName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/CompositeName.html)?
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 17\. 传递给[`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)和[`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html)方法的[`Name`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Name.html)参数是什么类型？-
+    一个[`CompoundName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/CompoundName.html)还是一个[`CompositeName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/CompositeName.html)？
+- en: The string forms accept the string representation of a composite name. That
+    is, using a string name is equivalent to calling `new CompositeName(stringName)`
+    and passing the results to the `Context`/`DirContext` method. The `Name` argument
+    can be any object that implements the `Name` interface. If it is an instance of
+    `CompositeName`, then the name is treated as a composite name; otherwise, it is
+    treated as a compound name.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字符串形式接受复合名称的字符串表示。也就是说，使用字符串名称等同于调用`new CompositeName(stringName)`并将结果传递给`Context`/`DirContext`方法。`Name`参数可以是实现`Name`接口的任何对象。如果它是`CompositeName`的一个实例，则该名称被视为复合名称；否则，它被视为复合名称。
+- en: 18\. Can I pass the name I got back from [`NameParser`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameParser.html)
+    to [`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)
+    methods?
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 18\. 我可以将从[`NameParser`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameParser.html)得到的名称传递给[`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)方法吗？
+- en: This is related to the previous question. Yes, you can. [`NameParser.parse()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameParser.html#parse-java.lang.String-)
+    returns a compound name that implements the `Name` interface. This name can be
+    passed to the `Context` methods, which will interpret it as a compound name.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这与前一个问题有关。是的，你可以。[`NameParser.parse()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameParser.html#parse-java.lang.String-)
+    返回一个实现了`Name`接口的复合名称。这个名称可以传递给`Context`方法，这些方法将把它解释为一个复合名称。
+- en: 19\. What's the relationship between the name I use for the [`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL)
+    property and the directory?
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 19\. 我在[`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL)属性中使用的名称与目录之间有什么关系？
+- en: You can think of the principal name as coming from a different namespace than
+    the directory. See [RFC 2829](http://www.ietf.org/rfc/rfc2829.txt) and the [Security](../ldap/security.html)
+    section for details on LDAP authentication mechanisms. The LDAP service provider
+    in the JDK accepts a string principal name, which it passes directly to the LDAP
+    server. Some LDAP servers accept DNs, whereas others support the schemes proposed
+    by [RFC 2829](http://www.ietf.org/rfc/rfc2829.txt).
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以将主要名称视为来自不同命名空间的名称。参见[RFC 2829](http://www.ietf.org/rfc/rfc2829.txt)和[安全](../ldap/security.html)部分，了解LDAP认证机制的详细信息。JDK中的LDAP服务提供程序接受一个字符串主要名称，直接传递给LDAP服务器。一些LDAP服务器接受DN，而其他一些支持[RFC
+    2829](http://www.ietf.org/rfc/rfc2829.txt)提出的方案。
+- en: 20\. Why are there strange quotation marks and escapes in the names that I read
+    from the directory?
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 20\. 为什么我从目录中读取的名称中会有奇怪的引号和转义字符？
+- en: The LDAP name parser in the JDK is conservative with respect to quoting rules,
+    but it nevertheless produces "correct" names. Also, remember that the names of
+    entries returned by [`NamingEnumeration`s](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html)
+    are composite names that can be passed back to the `Context` and `DirContext`
+    methods. So, if the name contains a character that conflicts with the composite
+    name syntax (such as the forward slash character "/"), then the LDAP provider
+    will provide an encoding to ensure that the slash character will be treated as
+    part of the LDAP name rather than as a composite name separator.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JDK中的LDAP名称解析器在引号规则方面比较保守，但仍然生成“正确”的名称。另外，请记住，[`NamingEnumeration`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html)返回的条目名称是可以传递回`Context`和`DirContext`方法的复合名称。因此，如果名称中包含与复合名称语法冲突的字符（例如斜杠字符“/”），那么LDAP提供程序将提供一种编码，以确保斜杠字符将被视为LDAP名称的一部分，而不是复合名称分隔符。
+- en: Start using the [`LdapName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html)
+    and [`Rdn`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html)
+    classes that enable easy name manipulation.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 开始使用[`LdapName`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapName.html)和[`Rdn`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Rdn.html)类，实现简单的名称操作。
+- en: 21\. How do I get an LDAP entry's full DN?
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 21\. 如何获取LDAP条目的完整DN？
+- en: You can use [`NameClassPair.getNameInNamespace()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getNameInNamespace--).
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用[`NameClassPair.getNameInNamespace()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getNameInNamespace--)。
+- en: '* * *'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

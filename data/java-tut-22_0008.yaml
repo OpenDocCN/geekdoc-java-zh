@@ -1,0 +1,440 @@
+- en: '"Hello World!" for Microsoft Windows'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: “Hello World!” for Microsoft Windows
+- en: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/cupojava/win32.html](https://docs.oracle.com/javase/tutorial/getStarted/cupojava/win32.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/cupojava/win32.html](https://docs.oracle.com/javase/tutorial/getStarted/cupojava/win32.html)
+- en: It's time to write your first application! The following instructions are for
+    users of Windows Vista, Windows 7, and Windows 8\. Instructions for other platforms
+    are in ["Hello World!" for Solaris OS, Linux, and Mac OS X](unix.html) and ["Hello
+    World!" for the NetBeans IDE](netbeans.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是时候编写你的第一个应用程序了！以下说明适用于Windows Vista、Windows 7和Windows 8的用户。其他平台的说明在["Hello
+    World!" for Solaris OS, Linux, and Mac OS X](unix.html)和["Hello World!" for the
+    NetBeans IDE](netbeans.html)中。
+- en: If you encounter problems with the instructions on this page, consult the [Common
+    Problems (and Their Solutions)](../problems/index.html).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在本页的说明中遇到问题，请参考[常见问题（及其解决方案）](../problems/index.html)。
+- en: '[A Checklist](#win32-1)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[一个清单](#win32-1)'
+- en: '[Creating Your First Application](#win32-2)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建你的第一个应用程序](#win32-2)'
+- en: '[Create a Source File](#win32-2a)'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建一个源文件](#win32-2a)'
+- en: '[Compile the Source File into a `.class` File](#win32-2b)'
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将源文件编译为`.class`文件](#win32-2b)'
+- en: '[Run the Program](#win32-2c)'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[运行程序](#win32-2c)'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: A Checklist  ![a checkmark](../Images/ae285209df9792caff36016a53cd305f.png)
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个清单  ![一个勾选标记](../Images/ae285209df9792caff36016a53cd305f.png)
+- en: 'To write your first program, you''ll need:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编写你的第一个程序，你需要：
+- en: The Java SE Development Kit 8 (JDK 8)
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: Java SE开发工具包8（JDK 8）
+- en: You can [download the Windows version now](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
+    (Make sure you download the **JDK**, *not* the JRE.) Consult the [installation
+    instructions](https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html).
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 你可以[立即下载Windows版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)。（确保你下载的是**JDK**，*而不是*JRE。）请参考[安装说明](https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html)。
+- en: A text editor
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 一个文本编辑器
+- en: In this example, we'll use Notepad, a simple editor included with the Windows
+    platforms. You can easily adapt these instructions if you use a different text
+    editor.
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在这个例子中，���们将使用Notepad，���是Windows平台上包含的一个简单编辑器。如果你使用不同的文本编辑器，你可以轻松地调整这些说明。
+- en: These two items are all you'll need to write your first application.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这两个项目是你编写第一个应用程序所需的全部内容。
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Creating Your First Application
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建你的第一个应用程序
+- en: 'Your first application, `HelloWorldApp`, will simply display the greeting "Hello
+    world!". To create this program, you will:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你的第一个应用程序`HelloWorldApp`将简单地显示问候语“Hello world!”。为了创建这个程序，你将：
+- en: Create a source file
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建一个源文件
+- en: A source file contains code, written in the Java programming language, that
+    you and other programmers can understand. You can use any text editor to create
+    and edit source files.
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 一个源文件包含用Java编程语言编写的代码，你和其他程序员都可以理解。你可以使用任何文本编辑器来创建和编辑源文件。
+- en: Compile the source file into a .class file
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 编译源文件为 .class 文件
+- en: The Java programming language *compiler* (`javac`) takes your source file and
+    translates its text into instructions that the Java virtual machine can understand.
+    The instructions contained within this file are known as *bytecodes*.
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: Java编程语言*编译器*（`javac`）接受你的源文件并将其文本翻译为Java虚拟机可以理解的指令。该文件中包含的指令称为*字节码*。
+- en: Run the program
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 运行程序
+- en: The Java application *launcher tool* (`java`) uses the Java virtual machine
+    to run your application.
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: Java应用程序*启动器工具*（`java`）使用Java虚拟机来运行你的应用程序。
+- en: Create a Source File
+  id: totrans-26
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个源文件
+- en: 'To create a source file, you have two options:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建一个源文件，你有两个选项：
+- en: You can save the file `[`HelloWorldApp.java`](../application/examples/HelloWorldApp.java)`
+    on your computer and avoid a lot of typing. Then, you can go straight to [Compile
+    the Source File into a `.class` File](#win32-2b).
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以在计算机上保存文件[`HelloWorldApp.java`](../application/examples/HelloWorldApp.java)，避免大量输入。然后，你可以直接转到[将源文件编译为`.class`文件](#win32-2b)。
+- en: Or, you can use the following (longer) instructions.
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 或者，你可以使用以下（更长的）说明。
+- en: 'First, start your editor. You can launch the Notepad editor from the **Start**
+    menu by selecting **Programs > Accessories > Notepad**. In a new document, type
+    in the following code:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，启动你的编辑器。你可以从**开始**菜单中选择**程序 > 附件 > 记事本**来启动记事本编辑器。在一个新文档中，输入以下代码：
+- en: '[PRE0]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '**Be Careful When You Type** ![uppercase letter A](../Images/fe2a9efa9303e3a11008a371960c6958.png)  
+    ![lowercase letter A](../Images/35dfe1acb05615f4c50f882eefb02a10.png)'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**输入时要小心** ![大写字母A](../Images/fe2a9efa9303e3a11008a371960c6958.png)   ![小写字母A](../Images/35dfe1acb05615f4c50f882eefb02a10.png)'
+- en: '* * *'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Type all code, commands, and file names exactly as shown. Both the
+    compiler (`javac`) and launcher (`java`) are *case-sensitive*, so you must capitalize
+    consistently.'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**请按照所示的方式输入所有代码、命令和文件名。编译器（`javac`）和启动器（`java`）都是*区分大小写*的，因此你必须保持一致。'
+- en: '`HelloWorldApp` is *not* the same as `helloworldapp`.'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`HelloWorldApp`与`helloworldapp`*不*相同。'
+- en: '* * *'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Save the code in a file with the name `HelloWorldApp.java`. To do this in Notepad,
+    first choose the **File > Save As ...** menu item. Then, in the **Save As** dialog
+    box:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将代码保存在名为`HelloWorldApp.java`的文件中。在Notepad中执行此操作，首先选择**文件 > 另存为...**菜单项。然后，在**另存为**对话框中：
+- en: Using the **Save in** combo box, specify the folder (directory) where you'll
+    save your file. In this example, the directory is `myapplication` on the `C` drive.
+  id: totrans-38
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用**保存位置**组合框，指定你将保存文件的文件夹（目录）。在这个例子中，目录是`C`驱动器上的`myapplication`。
+- en: In the **File name** text field, type `"HelloWorldApp.java"`, without the quotation
+    marks.
+  id: totrans-39
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在**文件名**文本字段中，输入`"HelloWorldApp.java"`，不包括引号。
+- en: From the **Save as type** combo box, choose **Text Documents (*.txt)**.
+  id: totrans-40
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从**另存为类型**组合框中选择**文本文档（*.txt）**。
+- en: In the **Encoding** combo box, leave the encoding as ANSI.
+  id: totrans-41
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在**编码**组合框中，将编码保留为ANSI。
+- en: When you're finished, the dialog box should look like this.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当完成后，对话框应该看起来像这样。
+- en: '![TEXT The Save As dialog, as described in the text.](../Images/e79c5a4475f456d8614ab24453240431.png)'
+  id: totrans-43
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TEXT 另存为对话框，如文本中所述。](../Images/e79c5a4475f456d8614ab24453240431.png)'
+- en: The Save As dialog just before you click **Save**.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在你点击**保存**之前的另存为对话框。
+- en: Now click **Save**, and exit Notepad.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在点击**保存**，然后退出Notepad。
+- en: Compile the Source File into a .class File
+  id: totrans-46
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 编译源文件为 .class 文件
+- en: Bring up a shell, or "command," window. You can do this from the **Start** menu
+    by choosing **Run...** and then entering `cmd`. The shell window should look similar
+    to the following figure.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 打开一个shell或“命令”窗口。你可以从**开始**菜单中选择**运行...**，然后输入`cmd`来执行此操作。shell窗口应该类似于以下图示。
+- en: '![a window where you can enter DOS commands](../Images/a2a910bef609d5233a19cd0a54d361ef.png)'
+  id: totrans-48
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个窗口，你可以输入DOS命令](../Images/a2a910bef609d5233a19cd0a54d361ef.png)'
+- en: A shell window.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个shell窗口。
+- en: The prompt shows your *current directory*. When you bring up the prompt, your
+    current directory is usually your home directory for Windows XP (as shown in the
+    preceding figure.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 提示符显示你的*当前目录*。当你打开提示符时，你��当前目录通常是Windows XP的主目录（如前面的图所示）。
+- en: 'To compile your source file, change your current directory to the directory
+    where your file is located. For example, if your source directory is `myapplication`
+    on the `C` drive, type the following command at the prompt and press **Enter**:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编译你的源文件，请将当前目录更改为文件所在的目录。例如，如果你的源目录是`C`驱动器上的`myapplication`，请在提示符处输入以下命令并按**Enter**：
+- en: '[PRE1]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Now the prompt should change to `C:\myapplication>`.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在提示符应该变成`C:\myapplication>`。
+- en: '* * *'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: 'To change to a directory on a different drive, you must type an extra command:
+    the name of the drive. For example, to change to the `myapplication` directory
+    on the `D` drive, you must enter `D:`, as follows:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要切换到另一个驱动器上的目录，你必须输入一个额外的命令：驱动器的名称。例如，要切换到`D`驱动器上的`myapplication`目录，你必须输入`D:`，如下所示：
+- en: '[PRE2]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '* * *'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'If you enter `dir` at the prompt, you should see your source file, as follows:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在提示符处输入`dir`，你应该看到你的源文件，如下所示：
+- en: '[PRE3]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Now you are ready to compile. At the prompt, type the following command and
+    press **Enter**.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你已经准备好编译了。在提示符处，输入以下命令并按**Enter**。
+- en: '[PRE4]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The compiler has generated a bytecode file, `HelloWorldApp.class`. At the prompt,
+    type `dir` to see the new file that was generated as follows:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编译器已生成一个字节码文件`HelloWorldApp.class`。在提示符处，输入`dir`以查看生成的新文件，如下所示：
+- en: '[PRE5]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Now that you have a `.class` file, you can run your program.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你有了一个`.class`文件，你可以运行你的程序。
+- en: If you encounter problems with the instructions in this step, consult the [Common
+    Problems (and Their Solutions)](../problems/index.html).
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在这一步的说明中遇到问题，请参考[常见问题（及其解决方案）](../problems/index.html)。
+- en: Run the Program
+  id: totrans-67
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行程序
+- en: 'In the same directory, enter the following command at the prompt:'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在同一个目录中，在提示符处输入以下命令：
+- en: '[PRE6]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'You should see the following on your screen:'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你应该在屏幕上看到以下内容：
+- en: '[PRE7]'
+  id: totrans-71
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Congratulations! Your program works!
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 恭喜！你的程序运行成功！
+- en: If you encounter problems with the instructions in this step, consult the [Common
+    Problems (and Their Solutions)](../problems/index.html).
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在这一步的说明中遇到问题，请参考[常见问题（及其解决方案）](../problems/index.html)。

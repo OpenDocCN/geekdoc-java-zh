@@ -1,0 +1,282 @@
+- en: Legacy Date-Time Code
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 传统日期时间代码
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/legacy.html](https://docs.oracle.com/javase/tutorial/datetime/iso/legacy.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/legacy.html](https://docs.oracle.com/javase/tutorial/datetime/iso/legacy.html)
+- en: 'Prior to the Java SE 8 release, the Java date and time mechanism was provided
+    by the [`java.util.Date`](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html),
+    [`java.util.Calendar`](https://docs.oracle.com/javase/8/docs/api/java/util/Calendar.html),
+    and [`java.util.TimeZone`](https://docs.oracle.com/javase/8/docs/api/java/util/TimeZone.html)
+    classes, as well as their subclasses, such as [`java.util.GregorianCalendar`](https://docs.oracle.com/javase/8/docs/api/java/util/GregorianCalendar.html).
+    These classes had several drawbacks, including:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 Java SE 8 发布之前，Java 日期和时间机制由 [`java.util.Date`](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html)、[`java.util.Calendar`](https://docs.oracle.com/javase/8/docs/api/java/util/Calendar.html)
+    和 [`java.util.TimeZone`](https://docs.oracle.com/javase/8/docs/api/java/util/TimeZone.html)
+    类以及它们的子类，如 [`java.util.GregorianCalendar`](https://docs.oracle.com/javase/8/docs/api/java/util/GregorianCalendar.html)
+    提供。这些类有几个缺点，包括：
+- en: The `Calendar` class was not type safe.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Calendar` 类不是类型安全的。'
+- en: Because the classes were mutable, they could not be used in multithreaded applications.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 由于这些类是可变的，它们不能在多线程应用程序中使用。
+- en: Bugs in application code were common due to the unusual numbering of months
+    and the lack of type safety.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 应用程序代码中常见的错误是由于月份编号不寻常和缺乏类型安全性。
+- en: Interoperability with Legacy Code
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 与传统代码的互操作性
+- en: Perhaps you have legacy code that uses the `java.util` date and time classes
+    and you would like to take advantage of the `java.time` functionality with minimal
+    changes to your code.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也许您有使用 `java.util` 日期和时间类的传统代码，并且希望在最小更改代码的情况下利用 `java.time` 功能。
+- en: 'Added to the JDK 8 release are several methods that allow conversion between
+    `java.util` and `java.time` objects:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JDK 8 发布中添加了几种允许在 `java.util` 和 `java.time` 对象之间进行转换的方法：
+- en: '[`Calendar.toInstant()`](https://docs.oracle.com/javase/8/docs/api/java/util/Calendar.html#toInstant--)
+    converts the `Calendar` object to an `Instant`.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Calendar.toInstant()`](https://docs.oracle.com/javase/8/docs/api/java/util/Calendar.html#toInstant--)
+    将 `Calendar` 对象转换为 `Instant`。'
+- en: '[`GregorianCalendar.toZonedDateTime()`](https://docs.oracle.com/javase/8/docs/api/java/util/GregorianCalendar.html#toZonedDateTime--)
+    converts a `GregorianCalendar` instance to a `ZonedDateTime`.'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`GregorianCalendar.toZonedDateTime()`](https://docs.oracle.com/javase/8/docs/api/java/util/GregorianCalendar.html#toZonedDateTime--)
+    将 `GregorianCalendar` 实例转换为 `ZonedDateTime`。'
+- en: '[`GregorianCalendar.from(ZonedDateTime)`](https://docs.oracle.com/javase/8/docs/api/java/util/GregorianCalendar.html#from-java.time.ZonedDateTime-)
+    creates a `GregorianCalendar` object using the default locale from a `ZonedDateTime`
+    instance.'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`GregorianCalendar.from(ZonedDateTime)`](https://docs.oracle.com/javase/8/docs/api/java/util/GregorianCalendar.html#from-java.time.ZonedDateTime-)
+    使用默认区域设置从 `ZonedDateTime` 实例创建一个 `GregorianCalendar` 对象。'
+- en: '[`Date.from(Instant)`](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#from-java.time.Instant-)
+    creates a `Date` object from an `Instant`.'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Date.from(Instant)`](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#from-java.time.Instant-)
+    从 `Instant` 创建一个 `Date` 对象。'
+- en: '[`Date.toInstant()`](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#toInstant--)
+    converts a `Date` object to an `Instant`.'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Date.toInstant()`](https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#toInstant--)
+    将 `Date` 对象转换为 `Instant`。'
+- en: '[`TimeZone.toZoneId()`](https://docs.oracle.com/javase/8/docs/api/java/util/TimeZone.html#toZoneId--)
+    converts a `TimeZone` object to a `ZoneId`.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`TimeZone.toZoneId()`](https://docs.oracle.com/javase/8/docs/api/java/util/TimeZone.html#toZoneId--)
+    将一个 `TimeZone` 对象转换为 `ZoneId`。'
+- en: 'The following example converts a `Calendar` instance to a `ZonedDateTime` instance.
+    Note that a time zone must be supplied to convert from an `Instant` to a `ZonedDateTime`:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例将 `Calendar` 实例转换为 `ZonedDateTime` 实例。请注意，必须提供一��时区来从 `Instant` 转换为 `ZonedDateTime`：
+- en: '[PRE0]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following example shows conversion between a `Date` and an `Instant`:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例展示了 `Date` 和 `Instant` 之间的转换：
+- en: '[PRE1]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The following example converts from a `GregorianCalendar` to a `ZonedDateTime`,
+    and then from a `ZonedDateTime` to a `GregorianCalendar`. Other temporal-based
+    classes are created using the `ZonedDateTime` instance:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例将从 `GregorianCalendar` 转换为 `ZonedDateTime`，然后从 `ZonedDateTime` 转换为 `GregorianCalendar`。其他基于时间的类是使用
+    `ZonedDateTime` 实例创建的：
+- en: '[PRE2]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Mapping java.util Date and Time Functionality to java.time
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将 java.util 日期和时间功能映射到 java.time
+- en: Because the Java implementation of date and time has been completely redesigned
+    in the Java SE 8 release, you cannot swap one method for another method. If you
+    want to use the rich functionality offered by the `java.time` package, your easiest
+    solution is to use the `toInstant` or `toZonedDateTime` methods listed in the
+    previous section. However, if you do not want to use that approach or it is not
+    sufficient for your needs, then you must rewrite your date-time code.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于在 Java SE 8 发布中完全重新设计了日期和时间的 Java 实现，您不能将一个方法替换为另一个方法。如果您想使用 `java.time` 包提供的丰富功能，最简单的解决方案是使用前一节中列出的
+    `toInstant` 或 `toZonedDateTime` 方法。但是，如果您不想使用该方法或该方法不满足您的需求，则必须重写您的日期时间代码。
+- en: The table introduced on the [Overview](overview.html) page is a good place to
+    begin evaluating which `java.time` classes meet your needs.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 [概述](overview.html) 页面介绍的表格是评估哪些 `java.time` 类满足您需求的好地方。
+- en: There is no one-to-one mapping correspondence between the two APIs, but the
+    following table gives you a general idea of which functionality in the `java.util`
+    date and time classes maps to the `java.time` APIs.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两个 API 之间没有一对一的映射对应关系，但以下表格给出了 `java.util` 日期和时间类中的哪些功能映射到 `java.time` API 的一般想法。
+- en: '| java.util Functionality | java.time Functionality | Comments |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| java.util 功能 | java.time 功能 | 注释 |'
+- en: '| `java.util.Date` | `java.time.Instant` | The `Instant` and `Date` classes
+    are similar. Each class: - Represents an instantaneous point of time on the timeline
+    (UTC)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `java.util.Date` | `java.time.Instant` | `Instant` 和 `Date` 类相似。每个类：- 表示时间线上的瞬时时间点（UTC）'
+- en: '- Holds a time independent of a time zone'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '- 持有独立于时区的时间'
+- en: '- Is represented as epoch-seconds (since 1970-01-01T00:00:00Z) plus nanoseconds'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '- 表示为自 1970-01-01T00:00:00Z 以来的纪元秒数加上纳秒'
+- en: The `Date.from(Instant)` and `Date.toInstant()` methods allow conversion between
+    these classes. |
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Date.from(Instant)` 和 `Date.toInstant()` 方法允许在这些类之间进行转换。 |'
+- en: '| `java.util.GregorianCalendar` | `java.time.ZonedDateTime` | The `ZonedDateTime`
+    class is the replacement for `GregorianCalendar`. It provides the following similar
+    functionality. Human time representation is as follows:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `java.util.GregorianCalendar` | `java.time.ZonedDateTime` | `ZonedDateTime`
+    类是 `GregorianCalendar` 的替代品。它提供以下类似功能。人类时间表示如下：'
+- en: '`LocalDate`: year, month, day'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`LocalDate`：年，月，日'
+- en: '`LocalTime`: hours, minutes, seconds, nanoseconds'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`LocalTime`：小时，分钟，秒，纳秒'
+- en: '`ZoneId`: time zone'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ZoneId`：时区'
+- en: '`ZoneOffset`: current offset from GMT'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ZoneOffset`：与 GMT 的当前偏移量'
+- en: The `GregorianCalendar.from(ZonedDateTime)` and `GregorianCalendar.to(ZonedDateTime)`
+    methods facilitate conversions between these classes. |
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GregorianCalendar.from(ZonedDateTime)` 和 `GregorianCalendar.to(ZonedDateTime)`
+    方法促进这些类之间的转换。'
+- en: '| `java.util.TimeZone` | `java.time.ZoneId` or `java.time.ZoneOffset` | The
+    `ZoneId` class specifies a time zone identifier and has access to the rules used
+    each time zone. The `ZoneOffset` class specifies only an offset from Greenwich/UTC.
+    For more information, see [Time Zone and Offset Classes](timezones.html). |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.util.TimeZone` | `java.time.ZoneId` 或 `java.time.ZoneOffset` | `ZoneId`
+    类指定时区标识符，并访问每个时区使用的规则。`ZoneOffset` 类仅指定与格林威治/UTC 的偏移量。更多信息，请参阅[时区和偏移类](timezones.html)。
+    |'
+- en: '| `GregorianCalendar` with the date set to `1970-01-01` | `java.time.LocalTime`
+    | Code that sets the date to 1970-01-01 in a `GregorianCalendar` instance in order
+    to use the time components can be replaced with an instance of `LocalTime`. |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| 将日期设置为 `1970-01-01` 的 `GregorianCalendar` | `java.time.LocalTime` | 将日期设置为
+    `1970-01-01` 的 `GregorianCalendar` 实例中的代码以使用时间组件可以替换为 `LocalTime` 实例。 |'
+- en: '| `GregorianCalendar` with time set to `00:00.` | `java.time.LocalDate` | Code
+    that sets the time to 00:00 in a `GregorianCalendar` instance in order to use
+    the date components can be replaced with an instance of `LocalDate`. (This `GregorianCalendar`
+    approach was flawed, as midnight does not occur in some countries once a year
+    due to the transition to daylight saving time.) |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| `GregorianCalendar` 时间设置为 `00:00.` | `java.time.LocalDate` | 将时间设置为 `GregorianCalendar`
+    实例中的 `00:00` 以使用日期组件的代码可以替换为 `LocalDate` 实例。（这种 `GregorianCalendar` 方法存在缺陷，因为由于转换到夏令时，有些国家一年中不会发生午夜。）
+    |'
+- en: Date and Time Formatting
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 日期和时间格式化
+- en: Although the `java.time.format.DateTimeFormatter` provides a powerful mechanism
+    for formatting date and time values, you can also use the `java.time` temporal-based
+    classes directly with `java.util.Formatter` and `String.format`, using the same
+    pattern-based formatting that you use with the `java.util` date and time classes.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管`java.time.format.DateTimeFormatter`提供了一个强大的机制来格式化日期和时间值，但你也可以直接使用`java.time`基于时间的类与`java.util.Formatter`和`String.format`一起使用，使用与`java.util`日期和时间类相同的基于模式的格式化。

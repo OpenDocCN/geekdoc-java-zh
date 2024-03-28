@@ -1,0 +1,213 @@
+- en: 'Lesson: JDBC Basics'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：JDBC 基础知识
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/index.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/index.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/index.html)
+- en: In this lesson you will learn the basics of the JDBC API.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这节课中，您将学习 JDBC API 的基础知识。
+- en: '[Getting Started](gettingstarted.html) sets up a basic database development
+    environment and shows you how to compile and run the JDBC tutorial samples.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[入门指南](gettingstarted.html)设��了一个基本的数据库开发环境，并展示了如何编译和运行 JDBC 教程示例。'
+- en: '[Processing SQL Statements with JDBC](processingsqlstatements.html) outlines
+    the steps required to process any SQL statement. The pages that follow describe
+    these steps in more detail:'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 JDBC 处理 SQL 语句](processingsqlstatements.html)概述了处理任何 SQL 语句所需的步骤。接下来的页面将更详细地描述这些步骤：'
+- en: '[Establishing a Connection](connecting.html) connects you to your database.'
+  id: totrans-5
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[建立连接](connecting.html)连接到您的数据库。'
+- en: '[Connecting with DataSource Objects](sqldatasources.html) shows you how to
+    connect to your database with `DataSource` objects, the preferred way of getting
+    a connection to a data source.'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[连接到数据源对象](sqldatasources.html)展示了如何使用`DataSource`对象连接到数据库，这是获取数据源连接的首选方式。'
+- en: '[Handling SQLExceptions](sqlexception.html) shows you how to handle exceptions
+    caused by database errors.'
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[处理 SQLException](sqlexception.html)展示了如何处理由数据库错误引起的异常。'
+- en: '[Setting Up Tables](tables.html) describes all the database tables used in
+    the JDBC tutorial samples and how to create and populate tables with JDBC API
+    and SQL scripts.'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置表格](tables.html)描述了 JDBC 教程示例中使用的所有数据库表格以及如何使用 JDBC API 和 SQL 脚本创建和填充表格。'
+- en: '[Retrieving and Modifying Values from Result Sets](retrieving.html) develop
+    the process of configuring your database, sending queries, and retrieving data
+    from your database.'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[从结果集中检索和修改值](retrieving.html)开发了配置数据库、发送查询和从数据库检索数据的过程。'
+- en: '[Using Prepared Statements](prepared.html) describes a more flexible way to
+    create database queries.'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用预编译语句](prepared.html)描述了创建数据库查询的更灵活方式。'
+- en: '[Using Transactions](transactions.html) shows you how to control when a database
+    query is actually executed.'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用事务](transactions.html)展示了如何控制数据库查询何时实际执行。'
+- en: '[Using RowSet Objects](rowset.html) introduces you to `RowSet` objects; these
+    are objects that hold tabular data in a way that make it more flexible and easier
+    to use than result sets. The pages that follow describe the different kinds of
+    `RowSet` objects available:'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 RowSet 对象](rowset.html)介绍了`RowSet`对象；这些对象以一种比结果集更灵活且更易于使用的方式保存表格数据。接下来的页面将描述可用的不同类型的`RowSet`对象：'
+- en: '[Using JdbcRowSet Objects](jdbcrowset.html)'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 JdbcRowSet 对象](jdbcrowset.html)'
+- en: '[Using CachedRowSetObjets](cachedrowset.html)'
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 CachedRowSet 对象](cachedrowset.html)'
+- en: '[Using JoinRowSet Objects](joinrowset.html)'
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 JoinRowSet 对象](joinrowset.html)'
+- en: '[Using FilteredRowSet Objects](filteredrowset.html)'
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 FilteredRowSet 对象](filteredrowset.html)'
+- en: '[Using WebRowSet Objects](webrowset.html)'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 WebRowSet 对象](webrowset.html)'
+- en: '[Using Advanced Data Types](sqltypes.html) introduces you to other data types;
+    the pages that follow describe these data types in further detail:'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用高级数据类型](sqltypes.html)介绍了其他数据类型；接下来的页面将更详细地描述这些数据类型：'
+- en: '[Using Large Objects](blob.html)'
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用大对象](blob.html)'
+- en: '[Using SQLXML Objects](sqlxml.html)'
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 SQLXML 对象](sqlxml.html)'
+- en: '[Using Array Objects](array.html)'
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用数组对象](array.html)'
+- en: '[Using DISTINCT Data Type](distinct.html)'
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 DISTINCT 数据类型](distinct.html)'
+- en: '[Using Structured Objects](sqlstructured.html)'
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用结构化对象](sqlstructured.html)'
+- en: '[Using Customized Type Mappings](sqlcustommapping.html)'
+  id: totrans-24
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用自定义类型映射](sqlcustommapping.html)'
+- en: '[Using Datalink Objects](sqldatalink.html)'
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用数据链接对象](sqldatalink.html)'
+- en: '[Using RowId Objects](sqlrowid.html)'
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用行 ID 对象](sqlrowid.html)'
+- en: '[Using Stored Procedures](storedprocedures.html) shows you how to create and
+    use a stored procedure, which is a group of SQL statements that can be called
+    like a Java method with variable input and output parameters.'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用存储过程](storedprocedures.html)展示了如何创建和使用存储过程，这是一组可以像调用 Java 方法一样具有可变输入和输出参数的
+    SQL 语句组。'
+- en: '[Using JDBC with GUI API](jdbcswing.html) demonstrates how to integrate JDBC
+    with the Swing API.'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 GUI API 的 JDBC](jdbcswing.html)演示了如何将 JDBC 与 Swing API 集成。'

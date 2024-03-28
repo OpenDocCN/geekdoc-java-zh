@@ -1,0 +1,332 @@
+- en: Handling Plurals
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 处理复数形式
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/choiceFormat.html](https://docs.oracle.com/javase/tutorial/i18n/format/choiceFormat.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/choiceFormat.html](https://docs.oracle.com/javase/tutorial/i18n/format/choiceFormat.html)
+- en: The words in a message may vary if both plural and singular word forms are possible.
+    With the `ChoiceFormat` class, you can map a number to a word or a phrase, allowing
+    you to construct grammatically correct messages.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果消息中的单词既可能是复数形式又可能是单数形式，则可能会有所变化。使用`ChoiceFormat`类，您可以将数字映射到一个单词或短语，从而构造语法正确的消息。
+- en: 'In English the plural and singular forms of a word are usually different. This
+    can present a problem when you are constructing messages that refer to quantities.
+    For example, if your message reports the number of files on a disk, the following
+    variations are possible:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在英语中，单词的复数和单数形式通常是不同的。当您构造涉及数量的消息时，这可能会带来问题。例如，如果您的消息报告磁盘上的文件数量，则可能存在以下变化：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The fastest way to solve this problem is to create a `MessageFormat` pattern
+    like this:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 解决这个问题的最快方法是创建一个像这样的`MessageFormat`模式：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Unfortunately the preceding pattern results in incorrect grammar:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不幸的是，前面的模式导致了不正确的语法：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: You can do better than that, provided that you use the [`ChoiceFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/ChoiceFormat.html)
+    class. In this section you'll learn how to deal with plurals in a message by stepping
+    through a sample program called [`ChoiceFormatDemo`](examples/ChoiceFormatDemo.java).
+    This program also uses the `MessageFormat` class, which is discussed in the previous
+    section, [Dealing with Compound Messages](messageFormat.html).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只要使用[`ChoiceFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/ChoiceFormat.html)类，你就可以做得更好。在本节中，您将通过一个名为[`ChoiceFormatDemo`](examples/ChoiceFormatDemo.java)的示例程序逐步学习如何处理消息中的复数。该程序还使用了在前一节中讨论的`MessageFormat`类，即[处理复合消息](messageFormat.html)。
+- en: 1\. Define the Message Pattern
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 1\. 定义消息模式
+- en: 'First, identify the variables in the message:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，识别消息中的变量：
+- en: '![Three lines of text, with the variables in each line highlighted.](../Images/329f040f8e07ba19cbf29c8caf488611.png)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_IMG
+  zh: '![三行文本，每行中的变量都突出显示。](../Images/329f040f8e07ba19cbf29c8caf488611.png)'
+- en: 'Next, replace the variables in the message with arguments, creating a pattern
+    that can be applied to a `MessageFormat` object:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，用参数替换消息中的变量，创建一个可以应用于`MessageFormat`对象的模式：
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The argument for the disk name, which is represented by`{1}`, is easy enough
+    to deal with. You just treat it like any other `String` variable in a `MessageFormat`
+    pattern. This argument matches the element at index 1 in the array of argument
+    values. (See [step 7](#step7).)
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 磁盘名称的参数，由`{1}`表示，处理起来相当简单。您只需像处理`MessageFormat`模式中的任何其他`String`变量一样对待它。此参数匹配参数值数组中索引为1的元素。（参见[步骤7](#step7)。）
+- en: 'Dealing with argument`{0}` is more complex, for a couple of reasons:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 处理参数`{0}`更加复杂，原因有几个：
+- en: The phrase that this argument replaces varies with the number of files. To construct
+    this phrase at run time, you need to map the number of files to a particular `String`.
+    For example, the number 1 will map to the `String` containing the phrase `is one
+    file`. The `ChoiceFormat` class allows you to perform the necessary mapping.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 此参数替换的短语随文件数量的变化而变化。为了在运行时构造这个短语，您需要将文件数量映射到特定的`String`。例如，数字1将映射到包含短语`is one
+    file`的`String`。`ChoiceFormat`类允许您执行必要的映射。
+- en: If the disk contains multiple files, the phrase includes an integer. The `MessageFormat`
+    class lets you insert a number into a phrase.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果磁盘包含多个文件，则短语中包含一个整数。`MessageFormat`类允许您将数字插入到短语中。
+- en: 2\. Create a ResourceBundle
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 2\. 创建一个ResourceBundle
+- en: 'Because the message text must be translated, isolate it in a `ResourceBundle`:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为消息文本必须被翻译，所以将其隔离在一个`ResourceBundle`中：
+- en: '[PRE4]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The sample program backs the `ResourceBundle` with properties files. The [`ChoiceBundle_en_US.properties`](examples/ChoiceBundle_en_US.properties)contains
+    the following lines:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例程序使用属性文件支持`ResourceBundle`。[`ChoiceBundle_en_US.properties`](examples/ChoiceBundle_en_US.properties)包含以下内容：
+- en: '[PRE5]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The contents of this properties file show how the message will be constructed
+    and formatted. The first line contains the pattern for `MessageFormat` . (See
+    [step 1](#step1).) The other lines contain phrases that will replace argument
+    `{0}` in the pattern. The phrase for the `multipleFiles` key contains the argument
+    `{2}`, which will be replaced by a number.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此属性文件的内容显示了消息将如何构建和格式化。第一行包含了`MessageFormat`的模式。（参见[步骤 1](#step1)。）其他行包含了将替换模式中参数`{0}`的短语。`multipleFiles`
+    键的短语包含了参数`{2}`，该参数将被一个数字替换。
+- en: Here is the French version of the properties file, [`ChoiceBundle_fr_FR.properties`](examples/ChoiceBundle_fr_FR.properties)
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是属性文件的法语版本，[`ChoiceBundle_fr_FR.properties`](examples/ChoiceBundle_fr_FR.properties)
+- en: '[PRE6]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 3\. Create a Message Formatter
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 3\. 创建消息格式化器
+- en: 'In this step you instantiate `MessageFormat` and set its `Locale`:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此步骤中，您实例化`MessageFormat`并设置其`Locale`：
+- en: '[PRE7]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 4\. Create a Choice Formatter
+  id: totrans-30
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 4\. 创建选择格式化器
+- en: 'The `ChoiceFormat` object allows you to choose, based on a `double` number,
+    a particular `String`. The range of `double` numbers, and the `String` objects
+    to which they map, are specified in arrays:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ChoiceFormat`对象允许您根据`double`数字选择特定的`String`。`double`数字的范围，以及它们映射到的`String`对象，都在数组中指定：'
+- en: '[PRE8]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: '`ChoiceFormat` maps each element in the `double` array to the element in the
+    `String` array that has the same index. In the sample code the 0 maps to the `String`
+    returned by calling `bundle.getString("noFiles")`. By coincidence the index is
+    the same as the value in the `fileLimits` array. If the code had set `fileLimits[0]`
+    to seven, `ChoiceFormat` would map the number 7 to `fileStrings[0]`.'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ChoiceFormat` 将`double`数组中的每个元素映射到具有相同索引的`String`数组中的元素。在示例代码中，0映射到调用`bundle.getString("noFiles")`返回的`String`。巧合的是，索引与`fileLimits`数组中的值相同。如果代码将`fileLimits[0]`设置为七，`ChoiceFormat`将把数字7映射到`fileStrings[0]`。'
+- en: 'You specify the `double` and `String` arrays when instantiating `ChoiceFormat`:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在实例化`ChoiceFormat`时，您需要指定`double`和`String`数组：
+- en: '[PRE9]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 5\. Apply the Pattern
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 5\. 应用模式
+- en: 'Remember the pattern you constructed in step 1? It''s time to retrieve the
+    pattern from the `ResourceBundle` and apply it to the `MessageFormat` object:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还记得您在步骤 1 中构建的模式吗？现在是从`ResourceBundle`中检索模式并应用到`MessageFormat`对象的时候了：
+- en: '[PRE10]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 6\. Assign the Formats
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 6\. 分配格式
+- en: 'In this step you assign to the `MessageFormat` object the `ChoiceFormat` object
+    created in step 4:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此步骤中，您将在步骤 4 中创建的`ChoiceFormat`对象分配给`MessageFormat`对象：
+- en: '[PRE11]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'The `setFormats` method assigns `Format` objects to the arguments in the message
+    pattern. You must invoke the `applyPattern` method before you call the `setFormats`
+    method. The following table shows how the elements of the `Format` array correspond
+    to the arguments in the message pattern:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`setFormats`方法将`Format`对象分配给消息模式中的参数。在调用`setFormats`方法之前，必须调用`applyPattern`方法。以下表格显示了`Format`数组的元素如何对应于消息模式中的参数：'
+- en: The `Format` Array of the `ChoiceFormatDemo` Program
+  id: totrans-43
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`ChoiceFormatDemo` 程序的`Format`数组'
+- en: '| Array Element | Pattern Argument |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| 数组元素 | 模式参数 |'
+- en: '| `choiceForm` | `{0}` |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| `choiceForm` | `{0}` |'
+- en: '| `null` | `{1}` |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| `null` | `{1}` |'
+- en: '| `NumberFormat.getInstance()` | `{2}` |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| `NumberFormat.getInstance()` | `{2}` |'
+- en: 7\. Set the Arguments and Format the Message
+  id: totrans-48
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 7\. 设置参数并格式化消息
+- en: 'At run time the program assigns the variables to the array of arguments it
+    passes to the `MessageFormat` object. The elements in the array correspond to
+    the arguments in the pattern. For example, `messageArgument[1]` maps to pattern
+    argument `{1}`, which is a `String` containing the name of the disk. In the previous
+    step the program assigned a `ChoiceFormat` object to argument `{0}` of the pattern.
+    Therefore the number assigned to `messageArgument[0]` determines which `String`
+    the `ChoiceFormat` object selects. If `messageArgument[0]` is greater than or
+    equal to 2, the `String` containing the phrase `are {2} files` replaces argument
+    `{0}` in the pattern. The number assigned to `messageArgument[2]` will be substituted
+    in place of pattern argument `{2}`. Here''s the code that tries this out:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在运行时，程序将变量分配给传递给`MessageFormat`对象的参数数组。数组中的元素对应于模式中的参数。例如，`messageArgument[1]`映射到模式参数`{1}`，其中包含磁盘名称的`String`。在上一步中，程序将`ChoiceFormat`对象分配给模式的参数`{0}`。因此，分配给`messageArgument[0]`的数字确定`ChoiceFormat`对象选择哪个`String`。如果`messageArgument[0]`大于或等于2，则包含短语`are
+    {2} files`的`String`将替换模式中的参数`{0}`。分配给`messageArgument[2]`的数字将替换模式参数`{2}`的位置。以下是尝试此操作的代码：
+- en: '[PRE12]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 8\. Run the Demo Program
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 8\. 运行演示程序
+- en: 'Compare the messages displayed by the program with the phrases in the `ResourceBundle`
+    of step 2\. Notice that the `ChoiceFormat` object selects the correct phrase,
+    which the `MessageFormat` object uses to construct the proper message. The output
+    of the `ChoiceFormatDemo` program is as follows:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将程序显示的消息与第2步的`ResourceBundle`中的短语进行比较。注意`ChoiceFormat`对象选择了正确的短语，`MessageFormat`对象用于构建适当的消息。`ChoiceFormatDemo`程序的输出如下：
+- en: '[PRE13]'
+  id: totrans-53
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'

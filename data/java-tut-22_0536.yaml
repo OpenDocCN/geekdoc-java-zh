@@ -1,0 +1,154 @@
+- en: 'Questions and Exercises: Aggregate Operations'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习：聚合操作
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/streams/QandE/questions.html](https://docs.oracle.com/javase/tutorial/collections/streams/QandE/questions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/streams/QandE/questions.html](https://docs.oracle.com/javase/tutorial/collections/streams/QandE/questions.html)
+- en: Questions
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 问题
+- en: A sequence of aggregate operations is known as a ___ .
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 一系列的聚合操作被称为___。
+- en: Each pipeline contains zero or more ___ operations.
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 每个流水线包含零个或多个___操作。
+- en: Each pipeline ends with a ___ operation.
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 每个流水线以一个___操作结束。
+- en: What kind of operation produces another stream as its output?
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 什么样的操作以另一个流作为输出？
+- en: Describe one way in which the `forEach` aggregate operation differs from the
+    enhanced `for` statement or iterators.
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 描述`forEach`聚合操作与增强的`for`语句或迭代器之间的一个区别。
+- en: 'True or False: A stream is similar to a collection in that it is a data structure
+    that stores elements.'
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 真或假：流类似于集合，因为它是一个存储元素的数据结构。
+- en: 'Identify the intermediate and terminal operations in this code:'
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在这段代码中识别中间操作和终端操作：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The code `p -> p.getGender() == Person.Sex.MALE` is an example of what?
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 代码`p -> p.getGender() == Person.Sex.MALE`是什么的一个例子？
+- en: The code `Person::getAge` is an example of what?
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 代码`Person::getAge`是什么的一个例子？
+- en: Terminal operations that combine the contents of a stream and return one value
+    are known as what?
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将流的内容组合并返回一个值的终端操作被称为什么？
+- en: Name one important difference between the `Stream.reduce` method and the `Stream.collect`
+    method.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`Stream.reduce`方法和`Stream.collect`方法之间的一个重要区别是什么？'
+- en: If you wanted to process a stream of names, extract the male names, and store
+    them in a new `List`, would `Stream.reduce` or `Stream.collect` be the most appropriate
+    operation to use?
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果你想处理一个包含姓名的流，提取男性姓名，并将它们存储在一个新的`List`中，那么`Stream.reduce`或`Stream.collect`是最合适的操作？
+- en: 'True or False: Aggregate operations make it possible to implement parallelism
+    with non-thread-safe collections.'
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 真或假：聚合操作使得可以在非线程安全的集合中实现并行性。
+- en: Streams are always serial unless otherwise specified. How do you request that
+    a stream be processed in parallel?
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 流通常是串行的，除非另有规定。如何请求以并行方式处理流？
+- en: Exercises
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 练习
+- en: 'Write the following enhanced `for` statement as a pipeline with lambda expressions.
+    Hint: Use the `filter` intermediate operation and the `forEach` terminal operation.'
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将以下增强的`for`语句编写为使用lambda表达式的流水线。提示：使用`filter`中间操作和`forEach`终端操作。
+- en: '[PRE1]'
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Convert the following code into a new implementation that uses lambda expressions
+    and aggregate operations instead of nested `for` loops. Hint: Make a pipeline
+    that invokes the `filter`, `sorted`, and `collect` operations, in that order.'
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将以下代码转换为一个使用lambda表达式和聚合操作而不是嵌套`for`循环的新实现。提示：创建一个依次调用`filter`、`sorted`和`collect`操作的流水线。
+- en: '[PRE2]'
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '[Check your answers.](answers.html)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[检查你的答案。](answers.html)'

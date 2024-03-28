@@ -1,0 +1,197 @@
+- en: Autoboxing and Unboxing
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 自动装箱和拆箱
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html](https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html](https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html)
+- en: '*Autoboxing* is the automatic conversion that the Java compiler makes between
+    the primitive types and their corresponding object wrapper classes. For example,
+    converting an `int` to an `Integer`, a `double` to a `Double`, and so on. If the
+    conversion goes the other way, this is called *unboxing*.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*自动装箱*是Java编译器在原始类型和其对应的对象包装类之间进行的自动转换。例如，将`int`转换为`Integer`，将`double`转换为`Double`等。如果转换反向进行，则称为*拆箱*。'
+- en: 'Here is the simplest example of autoboxing:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是自动装箱的最简单示例：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The rest of the examples in this section use generics. If you are not yet familiar
+    with the syntax of generics, see the [Generics (Updated)](../generics/index.html)
+    lesson.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节中的其余示例使用泛型。如果您还不熟悉泛型的语法，请参阅[泛型（更新）](../generics/index.html)课程。
+- en: 'Consider the following code:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑以下代码：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Although you add the `int` values as primitive types, rather than `Integer`
+    objects, to `li`, the code compiles. Because `li` is a list of `Integer` objects,
+    not a list of `int` values, you may wonder why the Java compiler does not issue
+    a compile-time error. The compiler does not generate an error because it creates
+    an `Integer` object from `i` and adds the object to `li`. Thus, the compiler converts
+    the previous code to the following at runtime:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管您将`int`值作为原始类型而不是`Integer`对象添加到`li`中，但代码仍然可以编译。因为`li`是`Integer`对象的列表，而不是`int`值的列表，您可能会想知道为什么Java编译器没有发出编译时错误。编译器不会生成错误，因为它从`i`创建一个`Integer`对象并将该对象添加到`li`中。因此，编译器在运行时将前面的代码转换为以下代码：
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Converting a primitive value (an `int`, for example) into an object of the
+    corresponding wrapper class (`Integer`) is called autoboxing. The Java compiler
+    applies autoboxing when a primitive value is:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将原始值（例如`int`）转换为相应包装类（`Integer`）的对象称为自动装箱。当原始值是以下情况时，Java编译器会应用自动装箱：
+- en: Passed as a parameter to a method that expects an object of the corresponding
+    wrapper class.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 作为传递给期望相应包装类对象的方法的参数。
+- en: Assigned to a variable of the corresponding wrapper class.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 赋给相应包装类的变量。
+- en: 'Consider the following method:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑以下方法：
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Because the remainder (`%`) and unary plus (`+=`) operators do not apply to
+    `Integer` objects, you may wonder why the Java compiler compiles the method without
+    issuing any errors. The compiler does not generate an error because it invokes
+    the `intValue` method to convert an `Integer` to an `int` at runtime:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为余数（`%`）和一元加号（`+=`）运算符不适用于`Integer`对象，您可能会想知道为什么Java编译器在不发出任何错误的情况下编译该方法。编译器不会生成错误，因为它在运行时调用`intValue`方法将`Integer`转换为`int`：
+- en: '[PRE4]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Converting an object of a wrapper type (`Integer`) to its corresponding primitive
+    (`int`) value is called unboxing. The Java compiler applies unboxing when an object
+    of a wrapper class is:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将包装类型的对象（`Integer`）转换为其对应的原始类型（`int`）值称为拆箱。当包装类的对象是以下情况时，Java编译器会应用拆箱：
+- en: Passed as a parameter to a method that expects a value of the corresponding
+    primitive type.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 作为传递给期望相应原始类型值的方法的参数。
+- en: Assigned to a variable of the corresponding primitive type.
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 赋给相应原始类型的变量。
+- en: 'The [``Unboxing``](examples/Unboxing.java) example shows how this works:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``Unboxing``](examples/Unboxing.java)示例展示了这是如何工作的：'
+- en: '[PRE5]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The program prints the following:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序打印如下内容：
+- en: '[PRE6]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'Autoboxing and unboxing lets developers write cleaner code, making it easier
+    to read. The following table lists the primitive types and their corresponding
+    wrapper classes, which are used by the Java compiler for autoboxing and unboxing:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自动装箱和拆箱使开发人员编写更清晰的代码，使其更易于阅读。以下表列出了原始类型及其对应的包装类，这些包装类由Java编译器用于自动装箱和拆箱：
+- en: '| Primitive type | Wrapper class |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| Primitive type | Wrapper class |'
+- en: '| boolean | Boolean |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| boolean | Boolean |'
+- en: '| byte | Byte |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| byte | Byte |'
+- en: '| char | Character |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| char | Character |'
+- en: '| float | Float |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| float | Float |'
+- en: '| int | Integer |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| int | Integer |'
+- en: '| long | Long |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| long | Long |'
+- en: '| short | Short |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| short | Short |'
+- en: '| double | Double |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| double | Double |'

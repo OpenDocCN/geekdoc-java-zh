@@ -1,0 +1,46 @@
+- en: 'Lesson: Understanding the Sockets Direct Protocol'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：理解套接字直接协议
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/index.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/index.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/index.html)
+- en: For high performance computing environments, the capacity to move data across
+    a network quickly and efficiently is a requirement. Such networks are typically
+    described as requiring high throughput and low latency. *High throughput* refers
+    to an environment that can deliver a large amount of processing capacity over
+    a long period of time. *Low latency* refers to the minimal delay between processing
+    input and providing output, such as you would expect in a real-time application.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于高性能计算环境，快速高效地在网络中传输数据是必需的。这样的网络通常被描述为需要高吞吐量和低延迟。*高吞吐量*指的是在长时间内可以提供大量处理能力的环境。*低延迟*指的是处理输入并提供输出之间的最小延迟，就像您在实时应用程序中所期望的那样。
+- en: In these environments, conventional networking using socket streams can create
+    bottlenecks when it comes to moving data. Introduced in 1999 by the [InfiniBand
+    Trade Association](http://www.infinibandta.org/), InfiniBand (IB) was created
+    to address the need for high performance computing. One of the most important
+    features of IB is Remote Direct Memory Access (RDMA). RDMA enables moving data
+    directly from the memory of one computer to another computer, bypassing the operating
+    system of both computers and resulting in significant performance gains.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这些环境中，使用套接字流进行传输数据可能会导致瓶颈。InfiniBand（IB）由[InfiniBand贸易协会](http://www.infinibandta.org/)于1999年推出，旨在满足高性能计算的需求。IB的最重要特性之一是远程直接内存访问（RDMA）。RDMA使得可以直接从一台计算机的内存移动数据到另一台计算机，绕过两台计算机的操作系统，从而实现显著的性能提升。
+- en: The Sockets Direct Protocol (SDP) is a networking protocol developed to support
+    stream connections over InfiniBand fabric. SDP support was introduced to the JDK
+    7 release of the Java Platform, Standard Edition ("Java SE Platform") for applications
+    deployed in the Solaris Operating System ("Solaris OS") and on Linux operating
+    systems. The Solaris OS has supported SDP and InfiniBand since Solaris 10 5/08\.
+    On Linux, the InfiniBand package is called OFED (OpenFabrics Enterprise Distribution).
+    The JDK 7 release supports the 1.4.2 and 1.5 versions of OFED.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 套接字直接协议（SDP）是一种网络协议，旨在支持在InfiniBand结构上的流连接。SDP支持是在Java平台标准版（"Java SE平台"）的JDK
+    7版本中引入的，用于在Solaris操作系统（"Solaris OS"）和Linux操作系统上部署的应用程序。Solaris OS自Solaris 10 5/08版本以来一直支持SDP和InfiniBand。在Linux上，InfiniBand软件包称为OFED（OpenFabrics企业发行版）。JDK
+    7版本支持OFED的1.4.2和1.5版本。

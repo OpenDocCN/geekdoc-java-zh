@@ -1,0 +1,409 @@
+- en: Arrays
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 数组
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html)
+- en: An *array* is a container object that holds a fixed number of values of a single
+    type. The length of an array is established when the array is created. After creation,
+    its length is fixed. You have seen an example of arrays already, in the `main`
+    method of the "Hello World!" application. This section discusses arrays in greater
+    detail.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*数组*是一个容器对象，它保存单一类型的固定数量的值。数组的长度在创建数组时确定。创建后，其长度是固定的。你已经在"Hello World!"应用程序的`main`方法中看到了数组的一个示例。本节将更详细地讨论数组。'
+- en: '![Illustration of an array as 10 boxes numbered 0 through 9; an index of 0
+    indicates the first element in the array](../Images/1c76b8eadfd68779ef8986ab2bca7e3b.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![数组插图，包含10个从0到9编号的方框；索引为0表示数组中的第一个元素](../Images/1c76b8eadfd68779ef8986ab2bca7e3b.png)'
+- en: An array of 10 elements.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个包含10个元素的数组。
+- en: Each item in an array is called an *element*, and each element is accessed by
+    its numerical *index*. As shown in the preceding illustration, numbering begins
+    with 0\. The 9th element, for example, would therefore be accessed at index 8.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 数组中的每个项称为*元素*，每个元素通过其数字*索引*访问。如前面的插图所示，编号从0开始。例如，第9个元素将在索引8处访问。
+- en: The following program, [`ArrayDemo`](examples/ArrayDemo.java), creates an array
+    of integers, puts some values in the array, and prints each value to standard
+    output.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的程序，[`ArrayDemo`](examples/ArrayDemo.java)，创建了一个整数数组，向数组中放入一些值，并将每个值打印到标准输出。
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The output from this program is:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序的输出是：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: In a real-world programming situation, you would probably use one of the supported
+    *looping constructs* to iterate through each element of the array, rather than
+    write each line individually as in the preceding example. However, the example
+    clearly illustrates the array syntax. You will learn about the various looping
+    constructs (`for`, `while`, and `do-while`) in the [Control Flow](flow.html) section.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在实际的编程情况中，你可能会使用支持的*循环结构*之一来遍历数组的每个元素，而不是像前面的示例中那样逐行编写。然而，该示例清楚地说明了数组的语法。你将在[Control
+    Flow](flow.html)部分学习各种循环结构（`for`、`while`和`do-while）。
+- en: Declaring a Variable to Refer to an Array
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 声明一个变量来引用一个数组
+- en: 'The preceding program declares an array (named `anArray`) with the following
+    line of code:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的程序用以下代码声明了一个数组（名为`anArray`）：
+- en: '[PRE2]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Like declarations for variables of other types, an array declaration has two
+    components: the array''s type and the array''s name. An array''s type is written
+    as `*type*[]`, where `*type*` is the data type of the contained elements; the
+    brackets are special symbols indicating that this variable holds an array. The
+    size of the array is not part of its type (which is why the brackets are empty).
+    An array''s name can be anything you want, provided that it follows the rules
+    and conventions as previously discussed in the [naming](variables.html#naming)
+    section. As with variables of other types, the declaration does not actually create
+    an array; it simply tells the compiler that this variable will hold an array of
+    the specified type.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与其他类型的变量声明类似，数组声明有两个组成部分：数组的类型和数组的名称。数组的类型写作`*type*[]`，其中`*type*`是包含元素的数据类型；方括号是特殊符号，表示该变量保存一个数组。数组的大小不是其类型的一部分（这就是为什么方括号是空的）。数组的名称可以是任何你想要的，只要遵循之前在[naming](variables.html#naming)部分讨论的规则和约定。与其他类型的变量一样，声明并不会实际创建一个数组；它只是告诉编译器这个变量将保存指定类型的数组。
+- en: 'Similarly, you can declare arrays of other types:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，你也可以声明其他类型的数组：
+- en: '[PRE3]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'You can also place the brackets after the array''s name:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你也可以将方括号放在数组名称后面：
+- en: '[PRE4]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: However, convention discourages this form; the brackets identify the array type
+    and should appear with the type designation.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，约定不鼓励这种形式；方括号标识数组类型，应该与类型标识一起出现。
+- en: Creating, Initializing, and Accessing an Array
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建、初始化和访问数组
+- en: One way to create an array is with the `new` operator. The next statement in
+    the `ArrayDemo` program allocates an array with enough memory for 10 integer elements
+    and assigns the array to the `anArray` variable.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用`new`运算符创建数组的一种方法。`ArrayDemo`程序中的下一条语句分配了足够内存以容纳10个整数元素的数组，并将该数组分配给`anArray`变量。
+- en: '[PRE5]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'If this statement is missing, then the compiler prints an error like the following,
+    and compilation fails:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果缺少这个语句，那么编译器会打印如下错误，并且编译失败：
+- en: '[PRE6]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The next few lines assign values to each element of the array:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的几行为数组的每个元素赋值：
+- en: '[PRE7]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Each array element is accessed by its numerical index:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个数组元素都通过其数字索引访问：
+- en: '[PRE8]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'Alternatively, you can use the shortcut syntax to create and initialize an
+    array:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，您可以使用快捷语法来创建和初始化一个数组：
+- en: '[PRE9]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Here the length of the array is determined by the number of values provided
+    between braces and separated by commas.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里数组的长度由大括号中提供的数值数量和逗号分隔确定。
+- en: You can also declare an array of arrays (also known as a *multidimensional*
+    array) by using two or more sets of brackets, such as `String[][] names`. Each
+    element, therefore, must be accessed by a corresponding number of index values.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以通过使用两个或更多组括号（如`String[][] names`）声明一个数组的数组（也称为*多维*数组）。因此，必须通过相应数量的索引值访问每个元素。
+- en: 'In the Java programming language, a multidimensional array is an array whose
+    components are themselves arrays. This is unlike arrays in C or Fortran. A consequence
+    of this is that the rows are allowed to vary in length, as shown in the following
+    [`MultiDimArrayDemo`](examples/MultiDimArrayDemo.java) program:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java编程语言中，多维数组是其组件本身为数组的数组。这与C或Fortran中的数组不同。由此产生的一个结果是，行的长度允许变化，如下面的[`MultiDimArrayDemo`](examples/MultiDimArrayDemo.java)程序所示：
+- en: '[PRE10]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'The output from this program is:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此程序的输出为：
+- en: '[PRE11]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'Finally, you can use the built-in `length` property to determine the size of
+    any array. The following code prints the array''s size to standard output:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，您可以使用内置的`length`属性来确定任何数组的大小。以下代码将数组的大小打印到标准输出：
+- en: '[PRE12]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: Copying Arrays
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 复制数组
+- en: 'The `System` class has an `arraycopy` method that you can use to efficiently
+    copy data from one array into another:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`System`类有一个`arraycopy`方法，您可以使用它来高效地将数据从一个数组复制到另一个数组中：'
+- en: '[PRE13]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: The two `Object` arguments specify the array to copy *from* and the array to
+    copy *to*. The three `int` arguments specify the starting position in the source
+    array, the starting position in the destination array, and the number of array
+    elements to copy.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两个`Object`参数指定要从中复制的数组*源*和要复制到的数组*目标*。三个`int`参数指定源数组中的起始位置，目标数组中的起始位置，以及要复制的数组元素数量。
+- en: 'The following program, [`ArrayCopyDemo`](examples/ArrayCopyDemo.java), declares
+    an array of `String` elements. It uses the `System.arraycopy` method to copy a
+    subsequence of array components into a second array:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序，[`ArrayCopyDemo`](examples/ArrayCopyDemo.java)，声明了一个`String`元素数组。它使用`System.arraycopy`方法将数组组件的子序列复制到第二个数组中：
+- en: '[PRE14]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: 'The output from this program is:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此程序的输出为：
+- en: '[PRE15]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: Array Manipulations
+  id: totrans-47
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 数组操作
+- en: Arrays are a powerful and useful concept used in programming. Java SE provides
+    methods to perform some of the most common manipulations related to arrays. For
+    instance, the [`ArrayCopyDemo`](examples/ArrayCopyDemo.java) example uses the
+    `arraycopy` method of the `System` class instead of manually iterating through
+    the elements of the source array and placing each one into the destination array.
+    This is performed behind the scenes, enabling the developer to use just one line
+    of code to call the method.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 数组是编程中使用的一个强大而有用的概念。Java SE提供了一些用于执行与数组相关的最常见操作的方法。例如，[`ArrayCopyDemo`](examples/ArrayCopyDemo.java)示例使用`System`类的`arraycopy`方法，而不是手动迭代源数组的元素并将每个元素放入目标数组中。这是在后台执行的，使开发人员只需使用一行代码调用该方法。
+- en: 'For your convenience, Java SE provides several methods for performing array
+    manipulations (common tasks, such as copying, sorting and searching arrays) in
+    the [`java.util.Arrays`](https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html)
+    class. For instance, the previous example can be modified to use the `copyOfRange`
+    method of the `java.util.Arrays` class, as you can see in the [`ArrayCopyOfDemo`](examples/ArrayCopyOfDemo.java)
+    example. The difference is that using the `copyOfRange` method does not require
+    you to create the destination array before calling the method, because the destination
+    array is returned by the method:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了方便起见，Java SE在[`java.util.Arrays`](https://docs.oracle.com/javase/8/docs/api/java/util/Arrays.html)类中提供了几种执行数组操作（如复制、排序和搜索数组等常见任务）的方法。例如，前面的示例可以修改为使用`java.util.Arrays`类的`copyOfRange`方法，如您可以在[`ArrayCopyOfDemo`](examples/ArrayCopyOfDemo.java)示例中看到的那样。不同之处在于，使用`copyOfRange`方法不需要在调用方法之前创建目标数组，因为目标数组是由该方法返回的：
+- en: '[PRE16]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: As you can see, the output from this program is the same, although it requires
+    fewer lines of code. Note that the second parameter of the `copyOfRange` method
+    is the initial index of the range to be copied, inclusively, while the third parameter
+    is the final index of the range to be copied, *exclusively*. In this example,
+    the range to be copied does not include the array element at index 9 (which contains
+    the string `Lungo`).
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，该程序的输出相同，尽管代码行数更少。请注意，`copyOfRange` 方法的第二个参数是要复制的范围的初始索引（包括），而第三个参数是要复制的范围的最终索引，*不包括*。在此示例中，要复制的范围不包括索引为
+    9 的数组元素（其中包含字符串`Lungo`）。
+- en: 'Some other useful operations provided by methods in the `java.util.Arrays`
+    class are:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.util.Arrays` 类中的一些其他有用操作包括：'
+- en: Searching an array for a specific value to get the index at which it is placed
+    (the `binarySearch` method).
+  id: totrans-53
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 搜索数组以找到特定值的索引位置（`binarySearch` 方法）。
+- en: Comparing two arrays to determine if they are equal or not (the `equals` method).
+  id: totrans-54
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 比较两个数组以确定它们是否相等（`equals` 方法）。
+- en: Filling an array to place a specific value at each index (the `fill` method).
+  id: totrans-55
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 填充数组以在每个索引处放置特定值（`fill` 方法）。
+- en: Sorting an array into ascending order. This can be done either sequentially,
+    using the `sort` method, or concurrently, using the `parallelSort` method introduced
+    in Java SE 8\. Parallel sorting of large arrays on multiprocessor systems is faster
+    than sequential array sorting.
+  id: totrans-56
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将数组按升序排序。可以顺序执行，使用`sort` 方法，也可以并行执行，使用 Java SE 8 中引入的`parallelSort` 方法。在多处理器系统上，并行排序大型数组比顺序数组排序更快。
+- en: 'Creating a stream that uses an array as its source (the `stream` method). For
+    example, the following statement prints the contents of the `copyTo` array in
+    the same way as in the previous example:'
+  id: totrans-57
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建使用数组作为其源的流（`stream` 方法）。例如，以下语句以与前面示例相同的方式打印`copyTo`数组的内容：
+- en: '[PRE17]'
+  id: totrans-58
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: See [Aggregate Operations](../../collections/streams/index.html) for more information
+    about streams.
+  id: totrans-59
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 有关流的更多信息，请参见[聚合操作](../../collections/streams/index.html)。
+- en: 'Converting an array to a string. The `toString` method converts each element
+    of the array to a string, separates them with commas, then surrounds them with
+    brackets. For example, the following statement converts the `copyTo` array to
+    a string and prints it:'
+  id: totrans-60
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将数组转换为字符串。`toString` 方法将数组的每个元素转换为字符串，用逗号分隔，然后用括号括起来。例如，以下语句将`copyTo`数组转换为字符串并打印出来：
+- en: '[PRE18]'
+  id: totrans-61
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: 'This statement prints the following:'
+  id: totrans-62
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此语句打印如下内容：
+- en: '[PRE19]'
+  id: totrans-63
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE19]'

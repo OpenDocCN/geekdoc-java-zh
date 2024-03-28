@@ -1,0 +1,91 @@
+- en: Design Considerations
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 设计考虑事项
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/design.html](https://docs.oracle.com/javase/tutorial/i18n/text/design.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/design.html](https://docs.oracle.com/javase/tutorial/i18n/text/design.html)
+- en: To write code that works seamlessly for any language using any script, there
+    are a few things to keep in mind.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编写能够无缝运行于任何语言和任何脚本的代码，有几点需要牢记。
+- en: '| Consideration | Reason |'
+  id: totrans-3
+  prefs: []
+  type: TYPE_TB
+  zh: '| 考虑事项 | 原因 |'
+- en: '| Avoid methods that use the `char` data type. | Avoid using the `char` primitive
+    data type or methods that use the `char` data type, because code that uses that
+    data type does not work for supplementary characters. For methods that take a
+    `char` type parameter, use the corresponding `int` method, where available. For
+    example, use the `Character.isDigit(int)` method rather than `Character.isDigit(char)`
+    method. |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| 避免使用`char`数据类型的方法。 | 避免使用`char`原始数据类型或使用`char`数据类型的方法，因为使用该数据类型的代码对补充字符不起作用。对于需要`char`类型参数的方法，尽可能使用相应的`int`方法。例如，使用`Character.isDigit(int)`方法而不是`Character.isDigit(char)`方法。
+    |'
+- en: '| Use the `isValidCodePoint` method to verify code point values. | A code point
+    is defined as an `int` data type, which allows for values outside of the valid
+    range of code point values from 0x0000 to 0x10FFFF. For performance reasons, the
+    methods that take a code point value as a parameter do not check the validity
+    of the parameter, but you can use the `isValidCodePoint` method to check the value.
+    |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| 使用`isValidCodePoint`方法验证代码点值。 | 代码点被定义为`int`数据类型，允许值超出从0x0000到0x10FFFF的有效代码点值范围。出于性能原因，接受代码点值作为参数的方法不会检查参数的有效性，但您可以使用`isValidCodePoint`方法检查该值。
+    |'
+- en: '| Use the `codePointCount` method to count characters. | The `String.length()`
+    method returns the number of code units, or 16-bit `char` values, in the string.
+    If the string contains supplementary characters, the count can be misleading because
+    it will not reflect the true number of code points. To get an accurate count of
+    the number of characters (including supplementary characters), use the `codePointCount`
+    method. |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| 使用`codePointCount`方法计算字符数。 | `String.length()`方法返回字符串中代码单元或16位`char`值的数量。如果字符串包含补充字符，则计数可能会误导，因为它不会反映真实的代码点数量。要准确计算字符数（包括补充字符），请使用`codePointCount`方法。
+    |'
+- en: '| Use the `String.toUpperCase(int codePoint)` and `String.toLowerCase(int codePoint)`
+    methods rather than the `Character.toUpperCase(int codePoint)` or `Character.toLowerCase(int
+    codePoint)` methods. | While the `Character.toUpperCase(int)` and `Character.toLowerCase(int)`
+    methods do work with code point values, there are some characters that cannot
+    be converted on a one-to-one basis. The lowercase German character ß, for example,
+    becomes two characters, SS, when converted to uppercase. Likewise, the small Greek
+    Sigma character is different depending on the position in the string. The `Character.toUpperCase(int)`
+    and `Character.toLowerCase(int)` methods cannot handle these types of cases; however,
+    the `String.toUpperCase` and `String.toLowerCase` methods handle these cases correctly.
+    |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| 使用`String.toUpperCase(int codePoint)`和`String.toLowerCase(int codePoint)`方法而不是`Character.toUpperCase(int
+    codePoint)`或`Character.toLowerCase(int codePoint)`方法。 | 虽然`Character.toUpperCase(int)`和`Character.toLowerCase(int)`方法可以处理代码点值，但有些字符无法进行一对一转换。例如，德语小写字符ß在转换为大写时变为两个字符SS。同样，希腊语小写Sigma字符在字符串中的位置不同而有所不同。`Character.toUpperCase(int)`和`Character.toLowerCase(int)`方法无法处理这些情况；然而，`String.toUpperCase`和`String.toLowerCase`方法可以正确处理这些情况。
+    |'
+- en: '| Be careful when deleting characters. | When invoking the `StringBuilder.deleteCharAt(int
+    index)` or `StringBuffer.deleteCharAt(int index)` methods where the index points
+    to a supplementary character, only the first half of that character (the first
+    `char` value) is removed. First, invoke the `Character.charCount` method on the
+    character to determine if one or two `char` values must be removed. |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| 删除字符时要小心。 | 在调用`StringBuilder.deleteCharAt(int index)`或`StringBuffer.deleteCharAt(int
+    index)`方法时，索引指向补充字符时，只会删除该字符的前半部分（第一个`char`值）。首先，调用`Character.charCount`方法对字符进行检查，以确定必须删除一个或两个`char`值。
+    |'
+- en: '| Be careful when reversing characters in a sequence. | When invoking the `StringBuffer.reverse()`
+    or `StringBuilder.reverse()` methods on text that contains supplementary characters,
+    the high and low surrogate pairs are reversed which results in incorrect and possibly
+    invalid surrogate pairs. |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: 在对序列中的字符进行反转时要小心。当在包含补充字符的文本上调用`StringBuffer.reverse()`或`StringBuilder.reverse()`方法时，高低代理对会被反转，导致不正确甚至可能无效的代理对。

@@ -1,0 +1,232 @@
+- en: Text Layout Concepts
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 文本布局概念
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/text/textlayoutconcepts.html](https://docs.oracle.com/javase/tutorial/2d/text/textlayoutconcepts.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/text/textlayoutconcepts.html](https://docs.oracle.com/javase/tutorial/2d/text/textlayoutconcepts.html)
+- en: 'Before a piece of text can be displayed, it must be properly shaped and positioned
+    using the appropriate glyphs and ligatures. This process is referred to as *text
+    layout*. The text layout process involves the following:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在显示一段文本之前，必须使用适当的字形和连字对其进行正确的形状和定位。这个过程被称为*文本布局*。文本布局过程涉及以下内容：
+- en: Shaping text using the appropriate glyphs and ligatures
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用适当的字形和连字来形状文本
+- en: Properly ordering the text
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 正确排序文本
+- en: Measuring and positioning the text
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 测量和定位文本
+- en: The information used to lay out text is also necessary for performing text operations
+    such as caret positioning, hit detection, and highlighting. See [Working with
+    Bidirectional Text](../text/textlayoutbidirectionaltext.html) for more information
+    about these text operations.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于排列文本的信息也对执行文本操作（如插入符定位、点击检测和高亮显示）是必要的。查看[处理双向文本](../text/textlayoutbidirectionaltext.html)以获取有关这些文本操作的更多信息。
+- en: To develop software that can be deployed in international markets, text must
+    be laid out in different languages in a way that conforms to the rules of the
+    appropriate writing system.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要开发可以部署在国际市场的软件，文本必须以符合适当书写系统规则的方式排列在不同语言中。
+- en: 'This section covers the following topics:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下主题：
+- en: '[Shaping Text](#shaping_text)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[形状文本](#shaping_text)'
+- en: '[Ordering Text](#ordering_text)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[排序文本](#ordering_text)'
+- en: '[Measuring and Positioning Text](#measuring_and_positioning_text)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[测量和定位文本](#measuring_and_positioning_text)'
+- en: Shaping Text
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 形状文本
+- en: A *glyph* is the visual representation of one or more characters. The shape,
+    size, and position of a glyph is dependent on its context. Many different glyphs
+    can be used to represent a single character or combination of characters, depending
+    on the font and style.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*字形*是一个或多个字符的视觉表示。字形的形状、大小和位置取决于其上下文。根据字体和样式，可以使用许多不同的字形来表示单个字符或字符组合。'
+- en: For example, in handwritten cursive text, a particular character can take on
+    different shapes depending on how it is connected to adjacent characters.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，在手写草书文本中，特定字符的形状可能会因其与相邻字符的连接方式而异。
+- en: In some writing systems, particularly Arabic, the context of a glyph must always
+    be taken into account. Unlike in English, cursive forms are mandatory in Arabic;
+    it is unacceptable to present text without using cursive forms.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某些书写系统中，特别是阿拉伯文中，必须始终考虑字形的上下文。与英语不同，阿拉伯文中的草书形式是强制性的；在阿拉伯文中，不能不使用草书形式呈现文本。
+- en: 'Depending on the context, these cursive forms can differ radically in shape.
+    For example, the Arabic letter *heh* has the four cursive forms shown in the following
+    figure:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据上下文，这些草书形式在形状上可能有很大差异。例如，阿拉伯字母*heh*有以下图中显示的四种草书形式：
+- en: '![Illustration of unconnected, connect on right, connect on both sides and
+    connect on left cursive forms in Arabic](../Images/39d2b549dc5bc09f34478d5eaf06f33b.png)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_IMG
+  zh: '![阿拉伯文中未连接、右侧连接、两侧连接和左侧连接草书形式的插图](../Images/39d2b549dc5bc09f34478d5eaf06f33b.png)'
+- en: Although these four forms are quite different from one another, such cursive
+    shape-changing is not fundamentally different from cursive writing in English.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管这四种形式彼此非常不同，但这种草书形式的变化与英语中的草书写作并无根本区别。
+- en: 'In some contexts, two glyphs can change shape even more radically and merge
+    to form a single glyph. This type of merged glyph is called a *ligature*. For
+    example, most English fonts contain the ligature *fi* shown in the following figure:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某些情况下，两个字形的形状甚至可以发生更大变化，合并成一个单一的字形。这种合并的字形称为*连字*。例如，大多数英文字体包含以下图中显示的连字*fi*：
+- en: '![Ligature for fi](../Images/cdb913f0aa9fe493b4ccf81a2dd197ca.png)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_IMG
+  zh: '![fi的连字](../Images/cdb913f0aa9fe493b4ccf81a2dd197ca.png)'
+- en: The merged glyph takes into account the overhang on the letter *f* and combines
+    the characters in a natural-looking way, instead of simply letting the letters
+    collide.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 合并的字形考虑了字母*f*的悬挑，并以一种自然的方式组合字符，而不是简单地让字母相撞。
+- en: Ligatures are also used in Arabic and the use of some ligatures is mandatory;
+    it is unacceptable to present certain character combinations without using the
+    appropriate ligature. When ligatures are formed from Arabic characters, the shapes
+    change even more radically than they do in English. For example, the following
+    figure illustrates how two Arabic characters are combined into a single ligature
+    when they appear together.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 阿拉伯文中也使用连字，有些连字的使用是强制性的；在不使用适当的连字的情况下呈现某些字符组合是不可接受的。当从阿拉伯字符形成连字时，形状甚至比在英文中更根本地改变。例如，下图说明了当两个阿拉伯字符在一起时如何组合成单个连字。
+- en: '![How two Arabic characters are combined into a single ligature when they appear
+    together](../Images/a82538dfc65f2c4d8a9f6c62eb3d5497.png)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_IMG
+  zh: '![当两个阿拉伯字符在一起时如何组合成单个连字](../Images/a82538dfc65f2c4d8a9f6c62eb3d5497.png)'
+- en: Ordering Text
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文本排序
+- en: In the Java programming language, text is encoded using Unicode character encoding.
+    Text that uses Unicode character encoding is stored in memory in *logical order*.
+    Logical order is the order in which characters and words are read and written.
+    The logical order is not necessarily the same as the *visual order*, the order
+    in which the corresponding glyphs are displayed.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java编程语言中，文本使用Unicode字符编码进行编码。使用Unicode字符编码的文本以*逻辑顺序*存储在内存中。逻辑顺序是字符和单词被读取和写入的顺序。逻辑顺序不一定与*视觉顺序*相同，即对应字形显示的顺序。
+- en: The visual order for glyphs in a particular writing system (script) is called
+    the *script order*. For example, the script order for Roman text is left-to-right
+    and the script order for Arabic and Hebrew is right-to-left.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 特定书写系统（脚本）中字形的视觉顺序称为*脚本顺序*。例如，罗马文本的脚本顺序是从左到右，而阿拉伯文和希伯来文的脚本顺序是从右到左。
+- en: Some writing systems have rules in addition to script order for arranging glyphs
+    and words on lines of text. For example, Arabic and Hebrew numbers run left to
+    right, even though the letters run right to left. This means that Arabic and Hebrew,
+    even with no embedded English text, are truly bidirectional. See [Working with
+    Bidirectional Text](textlayoutbidirectionaltext.html) for more information.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些书写系统除了脚本顺序外，还有规则来排列文本行上的字形和单词。例如，阿拉伯文和希伯来文的数字是从左到右排列的，即使字母是从右到左排列的。这意味着阿拉伯文和希伯来文，即使没有嵌入英文文本，也是真正的双向文本。更多信息请参见[处理双向文本](textlayoutbidirectionaltext.html)。
+- en: Measuring and Positioning Text
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 测量和定位文本
+- en: Unless you are working with a monospaced font, different characters in a font
+    have different widths. This means that all positioning and measuring of text has
+    to take into account exactly which characters are used, not just how many. For
+    example, to right-align a column of numbers displayed in a proportional font,
+    you can't simply use extra spaces to position the text. To properly align the
+    column, you need to know the exact width of each number so that you can adjust
+    accordingly.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除非您使用等宽字体，否则字体中的不同字符具有不同的宽度。这意味着所有文本的定位和测量都必须考虑到确切使用了哪些字符，而不仅仅是数量。例如，要在比例字体中右对齐显示的数字列，您不能简单地使用额外的空格来定位文本。为了正确对齐列，您需要知道每个数字的确切宽度，以便相应调整。
+- en: Text is often displayed using multiple fonts and styles, such as bold or italic.
+    In this case, even the same character can have different shapes and widths, depending
+    on how it is styled. To properly position, measure, and render text, you need
+    to keep track of each individual character *and* the style applied to that character.
+    Fortunately, the [`TextLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/TextLayout.html)
+    class does this for you.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文本通常使用多种字体和样式显示，如粗体或斜体。在这种情况下，即使是相同的字符也可能有不同的形状和宽度，这取决于其样式。为了正确定位、测量和呈现文本，您需要跟踪每个单独的字符*和*应用于该字符的样式。幸运的是，[`TextLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/TextLayout.html)类可以为您完成这些工作。
+- en: To properly display text in languages such as Hebrew and Arabic, each individual
+    character needs to be measured and positioned within the context of neighboring
+    characters. Because the shapes and positions of the characters can change depending
+    on the context, measuring and positioning such text without taking the context
+    into account produces unacceptable results.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要正确显示希伯来文和阿拉伯文等语言的文本，需要测量和定位每个单独的字符，并将其放置在相邻字符的上下文中。由于字符的形状和位置可能会根据上下文而变化，因此在不考虑上下文的情况下测量和定位此类文本会产生不可接受的结果。
+- en: In addition, Java SE provides you with the [`FontMetrics`](https://docs.oracle.com/javase/8/docs/api/java/awt/FontMetrics.html)
+    class, which enables you to obtain measurements of text rendered by a [`Font`](https://docs.oracle.com/javase/8/docs/api/java/awt/Font.html)
+    object such as the height of a line of text in the font. You can use this information
+    to precisely position text in Java graphical applications. See [Measuring Text](measuringtext.html)
+    for more information.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，Java SE 为您提供了[`FontMetrics`](https://docs.oracle.com/javase/8/docs/api/java/awt/FontMetrics.html)类，它使您能够获取由[`Font`](https://docs.oracle.com/javase/8/docs/api/java/awt/Font.html)对象渲染的文本的测量值，比如字体中一行文本的高度。您可以利用这些信息在Java图形应用程序中精确定位文本。更多信息请参见[测量文本](measuringtext.html)。

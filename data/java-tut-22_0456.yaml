@@ -1,0 +1,148 @@
+- en: Introduction to DnD
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: DnD 简介
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/intro.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/intro.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/intro.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/intro.html)
+- en: 'If you are writing an application you will want to support the ability to transfer
+    information between components in your application. But you will also want your
+    application to play well with others — this includes supporting the ability to
+    transfer information between your application and other Java applications, and
+    between your application and native applications. The ability to transfer data
+    takes two forms:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在编写一个应用程序，您会希望支持在应用程序组件之间传输信息的能力。但您也希望您的应用程序与其他应用程序良好地配合 — 包括支持在您的应用程序和其他
+    Java 应用程序之间以及在您的应用程序和本地应用程序之间传输信息的能力。传输数据的能力有两种形式：
+- en: Drag and drop (DnD) support. The following diagram illustrates dragging from
+    a `JList` and dropping onto a `JTextField` component (the arrows show the path
+    of the data):![Drag and Drop Illustration](../Images/1f470d183d3409e1abbd6e9e048983ef.png)
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 拖放（DnD）支持。以下图示展示了从`JList`拖动并放置到`JTextField`组件的过程（箭头显示数据的路径）：![拖放示例](../Images/1f470d183d3409e1abbd6e9e048983ef.png)
+- en: Clipboard transfer through cut or copy and paste. The following diagrams show
+    cutting (or copying) from a `JList` and pasting onto a `JTextField` component:![Cut/Copy/Paste
+    Illustration](../Images/660f11350ac3675902bb58bafec2a49e.png)
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 剪切或复制粘贴的剪贴板传输。以下图示展示了从`JList`剪切（或复制）并粘贴到`JTextField`组件的过程：![剪切/复制/粘贴示例](../Images/660f11350ac3675902bb58bafec2a49e.png)
+- en: Drag and Drop — Behind the Scenes
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 拖放 — 幕后
+- en: 'Let us say there is a user named Rollo, who is running a Java application.
+    He wants to drag some text from a list and deposit it into a text field. (Note
+    that the process is the same when dragging from a native application to a Java
+    application.) In a nutshell, the drag and drop process works like this:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设有一个名为 Rollo 的用户，他正在运行一个 Java 应用程序。他想要从列表中拖动一些文本并将其放入文本字段中。（请注意，从本地应用程序拖动到
+    Java 应用程序时，过程是相同的。）简而言之，拖放过程如下进行：
+- en: 'Rollo has selected a row of text in the *source* component: the list. While
+    holding the mouse button Rollo begins to drag the text — this initiates the *drag
+    gesture*.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Rollo 在*源*组件（列表）中选择了一行文本。在按住鼠标按钮的同时，Rollo 开始拖动文本 — 这启动了*拖动手势*。
+- en: When the drag begins, the list packages up the data for *export* and declares
+    what *source actions* it supports, such as `COPY`, `MOVE`, or `LINK`.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当拖动开始时，列表会打包数据以进行*导出*，并声明它支持的*源操作*，比如`COPY`、`MOVE`或`LINK`。
+- en: As Rollo drags the data, Swing continuously calculates the location and handles
+    the rendering.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当 Rollo 拖动数据时，Swing 不断计算位置并处理渲染。
+- en: If Rollo simultaneously holds the Shift and/or Control key during the drag,
+    this *user action* is also part of the drag gesture. Typically, an ordinary drag
+    requests the `MOVE` action. Holding the Control key while dragging requests the
+    `COPY` action, and holding both Shift and Control requests the `LINK` action.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果 Rollo 在拖动过程中同时按住 Shift 和/或 Control 键，这个*用户操作*也是拖动手势的一部分。通常，普通拖动请求`MOVE`操作。在拖动时按住
+    Control 键请求`COPY`操作，同时按住 Shift 和 Control 请求`LINK`操作。
+- en: Once Rollo drags the text over the bounds of a text field component, the *target*
+    is continually polled to see if it will accept or reject the potential drop. As
+    he drags, the target provides feedback by showing the *drop location*, perhaps
+    an insertion cursor or a highlighted selection. In this case, the text field (the
+    current target) allows both replacement of selected text and insertion of new
+    text.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一旦 Rollo 将文本拖动到文本字段组件的边界上，*目标*会持续轮询以查看是否接受或拒绝潜在的放置。在拖动过程中，目标通过显示*放置位置*（可能是插入光标或高亮选择）来提供反馈。在这种情况下，文本字段（当前目标）允许替换选定文本和插入新文本。
+- en: When Rollo releases the mouse button, the text component inspects the declared
+    source actions and any user action and then it chooses what it wants out of the
+    available options. In this case, the text field chooses to insert the new text
+    at the point of the drop.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当 Rollo 释放鼠标按钮时，文本组件会检查声明的源操作和任何用户操作，然后选择它想要的可用选项。在这种情况下，文本字段选择在放置点插入新文本。
+- en: Finally, the text field *imports* the data.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 最后，文本字段*导入*数据。
+- en: While this might seem like a daunting process, Swing handles most of the work
+    for you. The framework is designed so that you plug in the details specific to
+    your component, and the rest "just works".
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然这可能看起来是一个艰巨的过程，但Swing会为您处理大部分工作。这个框架被设计成您只需插入特定于您的组件的细节，其余的"就能运行"。
+- en: More on this in the next section.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更多内容请参见下一节。
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: We *do not recommend* that you create your own drag and drop support using the
+    AWT classes. This implementation would require significant complex support internal
+    to each component. Prior to release 1.4 when the dnd system was reworked, developers
+    did occasionally create their own dnd support, but it does not work with sophisticated
+    components, like tree and table, that have subtle selection and drop issues.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们*不建议*您使用AWT类创建自己的拖放支持。这种实现将需要每个组件内部的显著复杂支持。在1.4版本发布之前，当拖放系统被重新设计时，开发人员偶尔会创建自己的拖放支持，但它无法处理像树和表格这样具有微妙选择和放置问题的复杂组件。
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

@@ -1,0 +1,78 @@
+- en: File I/O (Featuring NIO.2)
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 文件I/O（具有NIO.2功能）
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/fileio.html](https://docs.oracle.com/javase/tutorial/essential/io/fileio.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 译文：[https://docs.oracle.com/javase/tutorial/essential/io/fileio.html](https://docs.oracle.com/javase/tutorial/essential/io/fileio.html)
+- en: '* * *'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This tutorial reflects the file I/O mechanism introduced in the JDK
+    7 release. The Java SE 6 version of the File I/O tutorial was brief, but you can
+    download the [Java SE Tutorial 2008-03-14](http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-tutorials-419421.html#tutorial-2008_03_14-oth-JPR)
+    version of the tutorial which contains the earlier File I/O content.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本教程反映了JDK 7版本中引入的文件I/O机制。Java SE 6版本的文件I/O教程很简短，但您可以下载包含早期文件I/O内容的[Java
+    SE Tutorial 2008-03-14](http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-tutorials-419421.html#tutorial-2008_03_14-oth-JPR)版本的教程。'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The `java.nio.file` package and its related package, `java.nio.file.attribute`,
+    provide comprehensive support for file I/O and for accessing the default file
+    system. Though the API has many classes, you need to focus on only a few entry
+    points. You will see that this API is very intuitive and easy to use.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.nio.file`包及其相关包`java.nio.file.attribute`为文件I/O和访问默认文件系统提供了全面支持。尽管API有许多类，但您只需关注其中的一些入口点。您会发现这个API非常直观和易于使用。'
+- en: The tutorial starts by asking [what is a path?](path.html) Then, the [Path class](pathClass.html),
+    the primary entry point for the package, is introduced. Methods in the `Path`
+    class relating to [syntactic operations](pathOps.html) are explained. The tutorial
+    then moves on to the other primary class in the package, the `Files` class, which
+    contains methods that deal with file operations. First, some concepts common to
+    many [file operations](fileOps.html) are introduced. The tutorial then covers
+    methods for [checking](check.html), [deleting](delete.html), [copying](copy.html),
+    and [moving](move.html) files.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程首先询问[什么是路径？](path.html)然后介绍了该包的主要入口点[Path类](pathClass.html)。解释了与[语法操作](pathOps.html)相关的`Path`类中的方法。然后教程转向包中的另一个主要类`Files`类，其中包含处理文件操作的方法。首先介绍了许多[file
+    operations](fileOps.html)共有的一些概念。然后介绍了用于[检查](check.html)、[删除](delete.html)、[复制](copy.html)和[移动](move.html)文件的方法。
+- en: The tutorial shows how [metadata](fileAttr.html) is managed, before moving on
+    to [file I/O](file.html) and [directory I/O](dirs.html). [Random access files](rafs.html)
+    are explained and issues specific to [symbolic and hard links](links.html) are
+    examined.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 教程展示了在继续学习[file I/O](file.html)和[directory I/O](dirs.html)之前如何管理[元数据](fileAttr.html)。解释了[随机访问文件](rafs.html)并检查了与[符号链接和硬链接](links.html)相关的问题。
+- en: Next, some of the very powerful, but more advanced, topics are covered. First,
+    the capability to [recursively walk the file tree](walk.html) is demonstrated,
+    followed by information about how to [search for files using wild cards](find.html).
+    Next, how to [watch a directory for changes](notification.html) is explained and
+    demonstrated. Then, [methods that didn't fit elsewhere](misc.html) are given some
+    attention.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，涵盖了一些非常强大但更高级的主题。首先演示了[递归遍历文件树](walk.html)的能力，然后介绍了如何使用通配符[搜索文件](find.html)的信息。接下来，解释并演示了如何[监视目录以进行更改](notification.html)。然后，给出了一些[其他地方不适用的方法](misc.html)的关注。
+- en: Finally, if you have file I/O code written prior to the Java SE 7 release, there
+    is a [map from the old API to the new API](legacy.html#mapping), as well as important
+    information about the `File.toPath` method for developers who would like to [leverage
+    the new API without rewriting existing code](legacy.html#interop).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，如果您在Java SE 7发布之前编写了文件I/O代码，有一个[从旧API到新API的映射](legacy.html#mapping)，以及关于`File.toPath`方法的重要信息，供希望[利用新API而无需重写现有代码](legacy.html#interop)的开发人员参考。

@@ -1,0 +1,1496 @@
+- en: Creating Extensible Applications
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建可扩展应用程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/ext/basics/spi.html](https://docs.oracle.com/javase/tutorial/ext/basics/spi.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/ext/basics/spi.html](https://docs.oracle.com/javase/tutorial/ext/basics/spi.html)
+- en: 'The following topics are covered:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面涵盖了以下主题：
+- en: '[Introduction](#introduction)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[介绍](#introduction)'
+- en: '[Dictionary Service Example](#dictionary-service-example)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[字典服务示例](#dictionary-service-example)'
+- en: '[Running the DictionaryServiceDemo Sample](#running-the-dictionaryservicedemo-sample)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[运行 DictionaryServiceDemo 示例](#running-the-dictionaryservicedemo-sample)'
+- en: '[Compiling and Running the DictionaryServiceDemo Sample](#compiling-and-running-the-dictionaryservicedemo-sample)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[编译和运行 DictionaryServiceDemo 示例](#compiling-and-running-the-dictionaryservicedemo-sample)'
+- en: '[Understanding the DictionaryServiceDemo Sample](#understanding-the-dictionaryservicedemo-sample)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[理解 DictionaryServiceDemo 示例](#understanding-the-dictionaryservicedemo-sample)'
+- en: '[Define the Service Provider Interface](#define-the-service-provider-interface)'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[定义服务提供者接口](#define-the-service-provider-interface)'
+- en: '[Define the Service That Retrieves the Service Provider Implementations](#definte-the-service-that-retrieves-service-provider-implementations)'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[定义检索服务提供者实现的服务](#definte-the-service-that-retrieves-service-provider-implementations)'
+- en: '[The Singleton Design Pattern](#singleton)'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[单例设计模式](#singleton)'
+- en: '[Implement the Service Provider](#implement-the-service-provider)'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[实现服务提供者](#implement-the-service-provider)'
+- en: '[Register Service Providers](#register-service-providers)'
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[注册服务提供者](#register-service-providers)'
+- en: '[Create a Client That Uses the Service and Service Providers](#create-a-client-that-uses-the-service-and-service-providers)'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[创建使用服务和服务提供者的客户端](#create-a-client-that-uses-the-service-and-service-providers)'
+- en: '[Package the Service Providers, the Service, and the Service Client in JAR
+    Files](#package-in-jar-files)'
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[将服务提供者、服务和服务客户端打包在 JAR 文件中](#package-in-jar-files)'
+- en: '[Packaging Service Providers in JAR Files](#packaging-service-providers-in-jar-files)'
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将服务提供者打包在 JAR 文件中](#packaging-service-providers-in-jar-files)'
+- en: '[Packaging the Dictionary SPI and Dictionary Service in a JAR File](#packaging-the-dictionary-service-in-a-jar-file)'
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将字典 SPI 和字典服务打包在 JAR 文件中](#packaging-the-dictionary-service-in-a-jar-file)'
+- en: '[Packaging the Client in a JAR File](#packaging-the-client-in-a-jar-file)'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将客户端打包在 JAR 文件中](#packaging-the-client-in-a-jar-file)'
+- en: '[Run the Client](#run-the-client)'
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[运行客户端](#run-the-client)'
+- en: '[The ServiceLoader Class](#the-serviceloader-class)'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[ServiceLoader 类](#the-serviceloader-class)'
+- en: '[Limitations of the ServiceLoader API](#limitations-of-the-service-loader-api)'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[ServiceLoader API 的限制](#limitations-of-the-service-loader-api)'
+- en: '[Summary](#summary)'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[摘要](#summary)'
+- en: Introduction
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 介绍
+- en: An *extensible* application is one that you can extend without modifying its
+    original code base. You can enhance its functionality with new plug-ins or modules.
+    Developers, software vendors, and customers can add new functionality or application
+    programming interfaces (APIs) by adding a new Java Archive (JAR) file onto the
+    application class path or into an application-specific extension directory.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可扩展的应用程序是一种可以在不修改其原始代码基础的情况下扩展的应用程序。您可以通过添加新的插件或模块来增强其功能。开发人员、软件供应商和客户可以通过将新的
+    Java 存档（JAR）文件添加到应用程序类路径或应用程序特定的扩展目录中来添加新功能或应用程序编程接口（API）。
+- en: This section describes how to create applications with extensible services,
+    which enable you or others to provide service implementations that require no
+    modifications to the original application. By designing an extensible application,
+    you provide a way to upgrade or enhance specific parts of a product without changing
+    the core application.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了如何创建具有可扩展服务的应用程序，这使您或其他人可以提供不需要修改原始应用程序的服务实现。通过设计一个可扩展的应用程序，您提供了一种升级或增强产品特定部分而无需更改核心应用程序的方法。
+- en: One example of an extensible application is a word processor that allows the
+    end user to add a new dictionary or spelling checker. In this example, the word
+    processor provides a dictionary or spelling feature that other developers, or
+    even customers, can extend by providing their own implementation of the feature.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可扩展应用程序的一个示例是允许最终用户添加新字典或拼写检查器的文字处理器。在这个示例中，文字处理器提供了一个字典或拼写功能，其他开发人员甚至客户可以通过提供自己的功能实现来扩展该功能。
+- en: 'The following are terms and definitions important to understand extensible
+    applications:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是理解可扩展应用程序重要的术语和定义：
+- en: Service
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 服务
+- en: A set of programming interfaces and classes that provide access to some specific
+    application functionality or feature. The service can define the interfaces for
+    the functionality and a way to retrieve an implementation. In the word-processor
+    example, a dictionary service can define a way to retrieve a dictionary and the
+    definition of a word, but it does not implement the underlying feature set. Instead,
+    it relies on a *service provider* to implement that functionality.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一组编程接口和类，提供对某些特定应用功能或特性的访问。服务可以定义功能的接口和检索实现的方法。在文字处理器示例中，字典服务可以定义检索字典和单词定义的方法，但不实现底层功能集。相反，它依赖于*服务提供者*来实现该功能。
+- en: Service provider interface (SPI)
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 服务提供者接口（SPI）
+- en: The set of public interfaces and abstract classes that a service defines. The
+    SPI defines the classes and methods available to your application.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 服务定义的一组公共接口和抽象类。SPI定义了应用程序可用的类和方法。
+- en: Service Provider
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 服务提供者
+- en: Implements the SPI. An application with extensible services enable you, vendors,
+    and customers to add service providers without modifying the original application.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现SPI。具有可扩展服务的应用程序使您、供应商和客户能够添加服务提供者，而无需修改原始应用程序。
+- en: Dictionary Service Example
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 字典服务示例
+- en: Consider how you might design a dictionary service in a word processor or editor.
+    One way is to define a service represented by a class named `DictionaryService`
+    and a service provider interface named `Dictionary`. The `DictionaryService` provides
+    a singleton `DictionaryService` object. (See the section [The Singleton Design
+    Pattern](#singleton) for more information.) This object retrieves definitions
+    of words from `Dictionary` providers. Dictionary service clients — your application
+    code — retrieve an instance of this service, and the service will search, instantiate,
+    and use `Dictionary` service providers.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑如何在文字处理器或编辑器中设计一个字典服务。一种方法是定义一个由类`DictionaryService`和服务提供者接口`Dictionary`表示的服务。`DictionaryService`提供一个单例`DictionaryService`对象。（有关更多信息，请参见[单例设计模式](#singleton)部分。）此对象从`Dictionary`提供者那里检索单词的定义。字典服务客户端——您的应用代码——检索此服务的一个实例，服务将搜索、实例化和使用`Dictionary`服务提供者。
+- en: Although the word-processor developer would most likely provide a basic, general
+    dictionary with the original product, the customer might require a specialized
+    dictionary, perhaps containing legal or technical terms. Ideally, the customer
+    is able to create or purchase new dictionaries and add them to the existing application.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管文字处理器开发人员很可能会在原始产品中提供一个基本的通用字典，但客户可能需要一个包含法律或技术术语的专业字典。理想情况下，客户能够创建或购买新的字典并将其添加到现有应用程序中。
+- en: 'The `[DictionaryServiceDemo](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`
+    sample shows you how to implement a `Dictionary` service, create `Dictionary`
+    service providers that add additional dictionaries, and create a simple `Dictionary`
+    service client that tests the service. This sample, which is packaged in the zip
+    file `[DictionaryServiceDemo.zip](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`,
+    consists of the following files:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`[DictionaryServiceDemo](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`示例向您展示如何实现`Dictionary`服务，创建添加额外字典的`Dictionary`服务提供者，并创建一个简单的`Dictionary`服务客户端来测试该服务。此示例打包在zip文件`[DictionaryServiceDemo.zip](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`中，包括以下文件：'
+- en: '[``build.xml``](examples/DictionaryServiceDemo/build.xml)'
+  id: totrans-37
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``build.xml``](examples/DictionaryServiceDemo/build.xml)'
+- en: '`DictionaryDemo`'
+  id: totrans-38
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DictionaryDemo`'
+- en: '[``build.xml``](examples/DictionaryServiceDemo/DictionaryDemo/build.xml)'
+  id: totrans-39
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``build.xml``](examples/DictionaryServiceDemo/DictionaryDemo/build.xml)'
+- en: '`build`'
+  id: totrans-40
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`build`'
+- en: '`dist`'
+  id: totrans-41
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dist`'
+- en: '`DictionaryDemo.jar`'
+  id: totrans-42
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DictionaryDemo.jar`'
+- en: '`src`'
+  id: totrans-43
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`src`'
+- en: '`dictionary`'
+  id: totrans-44
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dictionary`'
+- en: '[``DictionaryDemo.java``](examples/DictionaryServiceDemo/DictionaryDemo/src/dictionary/DictionaryDemo.java)'
+  id: totrans-45
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``DictionaryDemo.java``](examples/DictionaryServiceDemo/DictionaryDemo/src/dictionary/DictionaryDemo.java)'
+- en: '`DictionaryServiceProvider`'
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DictionaryServiceProvider`'
+- en: '[``build.xml``](examples/DictionaryServiceDemo/DictionaryDemo/build.xml)'
+  id: totrans-47
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``build.xml``](examples/DictionaryServiceDemo/DictionaryDemo/build.xml)'
+- en: '`build`'
+  id: totrans-48
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`build`'
+- en: '`dist`'
+  id: totrans-49
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dist`'
+- en: '`DictionaryServiceProvider.jar`'
+  id: totrans-50
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DictionaryServiceProvider.jar`'
+- en: '`src`'
+  id: totrans-51
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`src`'
+- en: '`dictionary`'
+  id: totrans-52
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dictionary`'
+- en: '[``DictionaryService.java``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/DictionaryService.java)'
+  id: totrans-53
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``DictionaryService.java``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/DictionaryService.java)'
+- en: '`spi`'
+  id: totrans-54
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`spi`'
+- en: '[``Dictionary.java``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/spi/Dictionary.java)'
+  id: totrans-55
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``Dictionary.java``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/spi/Dictionary.java)'
+- en: '`ExtendedDictionary`'
+  id: totrans-56
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ExtendedDictionary`'
+- en: '[``build.xml``](examples/DictionaryServiceDemo/ExtendedDictionary/build.xml)'
+  id: totrans-57
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``build.xml``](examples/DictionaryServiceDemo/ExtendedDictionary/build.xml)'
+- en: '`build`'
+  id: totrans-58
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`build`'
+- en: '`dist`'
+  id: totrans-59
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dist`'
+- en: '`ExtendedDictionary.jar`'
+  id: totrans-60
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ExtendedDictionary.jar`'
+- en: '`src`'
+  id: totrans-61
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`src`'
+- en: '`dictionary`'
+  id: totrans-62
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dictionary`'
+- en: '[``ExtendedDictionary.java``](examples/DictionaryServiceDemo/ExtendedDictionary/src/dictionary/ExtendedDictionary.java)'
+  id: totrans-63
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``ExtendedDictionary.java``](examples/DictionaryServiceDemo/ExtendedDictionary/src/dictionary/ExtendedDictionary.java)'
+- en: '`META-INF`'
+  id: totrans-64
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`META-INF`'
+- en: '`services`'
+  id: totrans-65
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`services`'
+- en: '[``dictionary.spi.Dictionary``](examples/DictionaryServiceDemo/ExtendedDictionary/src/META-INF/services/dictionary.spi.Dictionary)'
+  id: totrans-66
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``dictionary.spi.Dictionary``](examples/DictionaryServiceDemo/ExtendedDictionary/src/META-INF/services/dictionary.spi.Dictionary)'
+- en: '`GeneralDictionary`'
+  id: totrans-67
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`GeneralDictionary`'
+- en: '[``build.xml``](examples/DictionaryServiceDemo/GeneralDictionary/build.xml)'
+  id: totrans-68
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``build.xml``](examples/DictionaryServiceDemo/GeneralDictionary/build.xml)'
+- en: '`build`'
+  id: totrans-69
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`build`'
+- en: '`dist`'
+  id: totrans-70
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dist`'
+- en: '`GeneralDictionary.jar`'
+  id: totrans-71
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`GeneralDictionary.jar`'
+- en: '`src`'
+  id: totrans-72
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`src`'
+- en: '`dictionary`'
+  id: totrans-73
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dictionary`'
+- en: '[``GeneralDictionary.java``](examples/DictionaryServiceDemo/GeneralDictionary/src/dictionary/GeneralDictionary.java)'
+  id: totrans-74
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``GeneralDictionary.java``](examples/DictionaryServiceDemo/GeneralDictionary/src/dictionary/GeneralDictionary.java)'
+- en: '`META-INF`'
+  id: totrans-75
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`META-INF`'
+- en: '`services`'
+  id: totrans-76
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`services`'
+- en: '[``dictionary.spi.Dictionary``](examples/DictionaryServiceDemo/GeneralDictionary/src/META-INF/services/dictionary.spi.Dictionary)'
+  id: totrans-77
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``dictionary.spi.Dictionary``](examples/DictionaryServiceDemo/GeneralDictionary/src/META-INF/services/dictionary.spi.Dictionary)'
+- en: '**Note**: The `build` directories contain the compiled class files of the Java
+    source files contained in the `src` directory in the same level.'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：`build`目录包含与`src`目录中的Java源文件相同级别的编译后的类文件。'
+- en: Running the DictionaryServiceDemo Sample
+  id: totrans-79
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行`DictionaryServiceDemo`示例
+- en: 'Because the zip file `[DictionaryServiceDemo.zip](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`
+    contains compiled class files, you can unzip this file to your computer and run
+    the sample without compiling it by following these steps:'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为zip文件`[DictionaryServiceDemo.zip](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`包含编译后的类文件，您可以将此文件解压缩到计算机上，并按照以下步骤运行示例而无需编译：
+- en: 'Download and unzip the sample code: Download and unzip the file `[DictionaryServiceDemo.zip](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`
+    to your computer. It is These steps assume that you unzipped the contents of this
+    file into the directory `C:\DictionaryServiceDemo`.'
+  id: totrans-81
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 下载并解压缩示例代码：将文件`[DictionaryServiceDemo.zip](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`下载并解压缩到计算机上。这些步骤假定您已将此文件的内容解压缩到目录`C:\DictionaryServiceDemo`中。
+- en: Change the current directory to `C:\DictionaryServiceDemo\DictionaryDemo` and
+    follow the step [Run the Client](#run-the-client).
+  id: totrans-82
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将当前目录更改为`C:\DictionaryServiceDemo\DictionaryDemo`，并按照步骤[运行客户端](#run-the-client)进行操作。
+- en: Compiling and Running the DictionaryServiceDemo Sample
+  id: totrans-83
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编译和运行`DictionaryServiceDemo`示例
+- en: 'The `DictionaryServiceDemo` sample includes Apache Ant build files, which are
+    all named `build.xml`. The following steps show you how to use Apache Ant to compile,
+    build, and run the `DictionaryServiceDemo` sample:'
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DictionaryServiceDemo`示例包含Apache Ant构建文件，全部命名为`build.xml`。以下步骤展示了如何使用Apache
+    Ant编译、构建和运行`DictionaryServiceDemo`示例：'
+- en: 'Install Apache Ant: Go to the following link to download and install Apache
+    Ant:'
+  id: totrans-85
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 安装Apache Ant：前往以下链接下载并安装Apache Ant：
+- en: '`[http://ant.apache.org/](http://ant.apache.org/)`'
+  id: totrans-86
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`[http://ant.apache.org/](http://ant.apache.org/)`'
+- en: Ensure that the directory that contains the Apache Ant executable file is in
+    your `PATH` environment variable so that you can run it from any directory. In
+    addition, ensure that your JDK's `bin` directory, which contains the `java` and
+    `javac` executables (`java.exe` and `javac.exe` for Microsoft Windows). is in
+    your `PATH` environment variable. See [PATH and CLASSPATH](../../essential/environment/paths.html)
+    for information about setting the `PATH` environment variable.
+  id: totrans-87
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 确保包含Apache Ant可执行文件的目录在您的`PATH`环境变量中，以便您可以从任何目录运行它。此外，请确保您的JDK的`bin`目录，其中包含`java`和`javac`可执行文件（对于Microsoft
+    Windows为`java.exe`和`javac.exe`），在您的`PATH`环境变量中。有关设置`PATH`环境变量的信息，请参阅[PATH and
+    CLASSPATH](../../essential/environment/paths.html)。
+- en: 'Download and unzip the sample code: Download and unzip the file `[DictionaryServiceDemo.zip](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`
+    to your computer. These steps assume that you unzipped the contents of this file
+    into the directory `C:\DictionaryServiceDemo`.'
+  id: totrans-88
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 下载并解压缩示例代码：将文件`[DictionaryServiceDemo.zip](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`下载并解压缩到��算机上。这些步骤假定您已将此文件的内容解压缩到目录`C:\DictionaryServiceDemo`中。
+- en: 'Compile the code: Change the current directory to `C:\DictionaryServiceDemo`
+    and run the following command:'
+  id: totrans-89
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编译代码：将当前目录更改为`C:\DictionaryServiceDemo`，并运行以下命令：
+- en: '[PRE0]'
+  id: totrans-90
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This command compiles the source code in the `src` directories contained in
+    the directories `DictionaryDemo`, `DictionaryServiceProvider`, `ExtendedDictionary`,
+    and `GeneralDictionary`, and puts the generated `class` files in the corresponding
+    `build` directories.
+  id: totrans-91
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此命令编译了`DictionaryDemo`、`DictionaryServiceProvider`、`ExtendedDictionary`和`GeneralDictionary`目录中包含的`src`目录中的源代码，并将生成的`class`文件放入相应的`build`目录中。
+- en: 'Package the compiled Java files into JAR files: Ensure the current directory
+    is `C:\DictionaryServiceDemo` and run the following command:'
+  id: totrans-92
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将编译后的Java文件打包成JAR文件：确保当前目录为`C:\DictionaryServiceDemo`，然后运行以下命令：
+- en: '[PRE1]'
+  id: totrans-93
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'This command creates the following JAR files:'
+  id: totrans-94
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此命令创建以下JAR文件：
+- en: '`DictionaryDemo/dist/DictionaryDemo.jar`'
+  id: totrans-95
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DictionaryDemo/dist/DictionaryDemo.jar`'
+- en: '`DictionaryServiceProvider/dist/DictionaryServiceProvider.jar`'
+  id: totrans-96
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DictionaryServiceProvider/dist/DictionaryServiceProvider.jar`'
+- en: '`GeneralDictionary/dist/GeneralDictionary.jar`'
+  id: totrans-97
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`GeneralDictionary/dist/GeneralDictionary.jar`'
+- en: '`ExtendedDictionary/dist/ExtendedDictionary.jar`'
+  id: totrans-98
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ExtendedDictionary/dist/ExtendedDictionary.jar`'
+- en: 'Run the sample: Ensure that the directory that contains the `java` executable
+    is in your `PATH` environment variable. See [PATH and CLASSPATH](../../essential/environment/paths.html)
+    for more information.'
+  id: totrans-99
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 运行示例：确保包含`java`可执行文件的目录在您的`PATH`环境变量中。有关更多信息，请参阅[PATH和CLASSPATH](../../essential/environment/paths.html)。
+- en: 'Change the current directory to `C:\DictionaryServiceDemo\DictionaryDemo` and
+    run the following command:'
+  id: totrans-100
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 将当前目录更改为`C:\DictionaryServiceDemo\DictionaryDemo`，然后运行以下命令：
+- en: '[PRE2]'
+  id: totrans-101
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The sample prints the following:'
+  id: totrans-102
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 该示例打印以下内容：
+- en: '`book: a set of written or printed pages, usually bound with a protective cover'
+  id: totrans-103
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`book: a set of written or printed pages, usually bound with a protective cover`'
+- en: 'editor: a person who edits'
+  id: totrans-104
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 编辑者：一个编辑文档的人
+- en: 'xml: a document standard often used in web services, among other things'
+  id: totrans-105
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: xml：一种经常用于Web服务等的文档标准
+- en: 'REST: an architecture style for creating, reading, updating, and deleting data
+    that attempts to use the common vocabulary of the HTTP protocol; Representational
+    State Transfer`'
+  id: totrans-106
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: REST：一种用于创建、读取、更新和删除数据的架构风格，试图使用HTTP协议的常见词汇；表述性状态转移
+- en: Understanding the DictionaryServiceDemo Sample
+  id: totrans-107
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 理解DictionaryServiceDemo示例
+- en: The following steps show you how to re-create the contents of the file `[DictionaryServiceDemo.zip](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`.
+    These steps show you how the sample works and how to run it.
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下步骤向您展示如何重新创建文件`[DictionaryServiceDemo.zip](examples/DictionaryServiceDemo/DictionaryServiceDemo.zip)`的内容。这些步骤向您展示示例的工作原理以及如何运行它。
+- en: 1\. Define the Service Provider Interface
+  id: totrans-109
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 1\. 定义服务提供者接口
+- en: 'The `DictionaryServiceDemo` sample defines one SPI, the [``Dictionary.java``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/spi/Dictionary.java)
+    interface. It contains only one method:'
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DictionaryServiceDemo`示例定义了一个SPI，即[``Dictionary.java``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/spi/Dictionary.java)接口。它只包含一个方法：'
+- en: '[PRE3]'
+  id: totrans-111
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The sample stores the compiled class file in the directory `DictionaryServiceProvider/build`.
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例将编译后的类文件存储在`DictionaryServiceProvider/build`目录中。
+- en: 2\. Define the Service That Retrieves the Service Provider Implementations
+  id: totrans-113
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 2\. 定义检索服务提供者实现的服务
+- en: 'The [``DictionaryService.java``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/DictionaryService.java)
+    class loads and accesses available `Dictionary` service providers on behalf of
+    dictionary service clients:'
+  id: totrans-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``DictionaryService.java``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/DictionaryService.java)类加载并访问可用的`Dictionary`服务提供者，代表字典服务客户端：'
+- en: '[PRE4]'
+  id: totrans-115
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The sample stores the compiled class file in the directory `DictionaryServiceProvider/build`.
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例将编译后的类文件存储在`DictionaryServiceProvider/build`目录中。
+- en: The `DictionaryService` class implements the singleton design pattern. This
+    means that only a single instance of the `DictionaryService` class is ever created.
+    See the section [The Singleton Design Pattern](#singleton) for more information.
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DictionaryService`类实现了单例设计模式。这意味着`DictionaryService`类只会创建一个实例。有关更多信息，请参阅[单例设计模式](#singleton)部分。'
+- en: The `DictionaryService` class is the dictionary service client's entry point
+    to using any installed `Dictionary` service provider. Use the [`ServiceLoader.load`](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html#load-java.lang.Class-)
+    method to retrieve the private static member `DictionaryService.service`, the
+    singleton service entry point. Then the application can call the `getDefinition`
+    method, which iterates through available `Dictionary` providers until it finds
+    the targeted word. The `getDefinition` method returns null if no `Dictionary`
+    instance contains the specified definition of the word.
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DictionaryService`类是字典服务客户端使用任何已安装的`Dictionary`服务提供者的入口点。使用[`ServiceLoader.load`](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html#load-java.lang.Class-)方法来检索私有静态成员`DictionaryService.service`，单例服务入口点。然后应用程序可以调用`getDefinition`方法，该方法遍历可用的`Dictionary`提供者，直到找到目标词。如果没有`Dictionary`实例包含指定词的定义，则`getDefinition`方法返回null。'
+- en: The dictionary service uses the `ServiceLoader.load` method to find the target
+    class. The SPI is defined by the interface `dictionary.spi.Dictionary`, so the
+    example uses this class as the load method's argument. The default load method
+    searches the application class path with the default class loader.
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字典服务使用`ServiceLoader.load`方法来查找目标类。SPI由接口`dictionary.spi.Dictionary`定义，因此示例使用这个类作为load方法的参数。默认的load方法使用默认类加载器搜索应用程序类路径。
+- en: However, an overloaded version of this method enables you to specify custom
+    class loaders if you wish. That enables you to do more sophisticated class searches.
+    A particularly enthusiastic programmer might, for example, create a [`ClassLoader`](https://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html)
+    instance that can search in an application-specific subdirectory that contains
+    provider JARs added during runtime. The result is an application that does not
+    require a restart to access new provider classes.
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，这个方法的重载版本允许您指定自定义的类加载器。这使您能够进行更复杂的类搜索。一个特别热情的程序员可能会创建一个[`ClassLoader`](https://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html)实例，可以在运行时添加包含提供者JAR的应用程序特定子目录中进行搜索。结果是一个应用程序不需要重新启动就可以访问新的提供者类。
+- en: After a loader for this class exists, you can use its iterator method to access
+    and use each provider that it finds. The `getDefinition` method uses a `Dictionary`
+    iterator to go through the providers until it finds a definition for the specified
+    word. The iterator method caches `Dictionary` instances, so successive calls require
+    little additional processing time. If new providers have been placed into service
+    since the last invocation, the iterator method adds them to the list.
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当这个类的加载器存在后，您可以使用它的迭代器方法来访问和使用它找到的每个提供者。`getDefinition`方法使用`Dictionary`迭代器来遍历提供者，直到找到指定词的定义。迭代器方法缓存`Dictionary`实例，因此连续调用需要很少的额外处理时间。如果自上次调用以来已经投入使用新的提供者，则迭代器方法将它们添加到列表中。
+- en: The [``DictionaryDemo.java``](examples/DictionaryServiceDemo/DictionaryDemo/src/dictionary/DictionaryDemo.java)
+    class uses this service. To use the service, the application obtains a `DictionaryService`
+    instance and calls the `getDefinition` method. If a definition is available, the
+    application prints it. If a definition is not available, the application prints
+    a message stating that no available dictionary carries the word.
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``DictionaryDemo.java``](examples/DictionaryServiceDemo/DictionaryDemo/src/dictionary/DictionaryDemo.java)
+    类使用这个服务。要使用该服务，应用程序获取一个`DictionaryService`实例并调用`getDefinition`方法。如果有定义可用，应用程序将打印出来。如果没有定义可用，应用程序将打印一条消息，说明没有可用的字典包含这个词。'
+- en: The Singleton Design Pattern
+  id: totrans-123
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+  zh: 单例设计模式
+- en: 'A design pattern is a general solution to a common problem in software design.
+    The idea is that the solution gets translated into code, and that code can be
+    applied in different situations where the problem occurs. The singleton pattern
+    describes a technique to ensure that only a single instance of a class is ever
+    created. In essence, the technique takes the following approach: Do not let anyone
+    outside the class create instances of the object.'
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设计模式是软件设计中常见问题的一般解决方案。思路是将解决方案转化为代码，并且该代码可以应用在不同的情况下。单例模式描述了一种技术，确保只创建一个类的实例。本质上，该技术采取以下方法：不要让类外部的任何人创建对象的实例。
+- en: 'For example, the [``DictionaryService``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/DictionaryService.java)
+    class implements the singleton pattern as follows:'
+  id: totrans-125
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，[``DictionaryService``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/DictionaryService.java)类实现了单例模式如下：
+- en: Declares the `DictionaryService` constructor as `private`, which prevents all
+    other classes, except `DictionaryService`, from creating instances of it.
+  id: totrans-126
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将`DictionaryService`构造函数声明为`private`，这样除了`DictionaryService`之外的所有其他类都无法创建它的实例。
+- en: Defines the `DictionaryService` member variable `service` as `static`, which
+    ensures only one instance of `DictionaryService` exists.
+  id: totrans-127
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将`DictionaryService`成员变量`service`声明为`static`，这确保只存在一个`DictionaryService`实例。
+- en: Defines the method `getInstance`, which enables other classes controlled access
+    to the `DictionaryService` member variable `service`.
+  id: totrans-128
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 定义了`getInstance`方法，使其他类可以受控地访问`DictionaryService`成员变量`service`。
+- en: 3\. Implement the Service Provider
+  id: totrans-129
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 3\. 实现服务提供程序
+- en: To provide this service, you must create a [``Dictionary.java``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/spi/Dictionary.java)
+    implementation. To keep things simple, create a general dictionary that defines
+    just a few words. You can implement the dictionary with a database, a set of property
+    files, or any other technology. The easiest way to demonstrate the provider pattern
+    is to include all the words and definitions within a single file.
+  id: totrans-130
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要提供此服务，您必须创建一个[``Dictionary.java``](examples/DictionaryServiceDemo/DictionaryServiceProvider/src/dictionary/spi/Dictionary.java)的实现。为了保持简单，创建一个定义了几个词的通用词典。您可以使用数据库、一组属性文件或任何其他技术来实现词典。展示提供程序模式的最简单方法是在单个文件中包含所有单词和定义。
+- en: The following code shows an implementation of the `Dictionary` SPI, the [``GeneralDictionary.java``](examples/DictionaryServiceDemo/GeneralDictionary/src/dictionary/GeneralDictionary.java)
+    class. Notice that it provides a no-argument constructor and implements the `getDefinition`
+    method defined by the SPI.
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码展示了`Dictionary` SPI的一个实现，[``GeneralDictionary.java``](examples/DictionaryServiceDemo/GeneralDictionary/src/dictionary/GeneralDictionary.java)类。请注意，它提供了一个无参数构造函数，并实现了SPI定义的`getDefinition`方法。
+- en: '[PRE5]'
+  id: totrans-132
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The sample stores the compiled class file in the directory `GeneralDictionary/build`.
+    **Note**: You must compile the classes `dictionary.DictionaryService` and `dictionary.spi.Dictionary`
+    before the class `GeneralDictionary`.'
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例将编译后的类文件存储在目录`GeneralDictionary/build`中。**注意**：在类`GeneralDictionary`之前，您必须编译类`dictionary.DictionaryService`和`dictionary.spi.Dictionary`。
+- en: 'The `GeneralDictionary` provider for this example defines just two words: *book*
+    and *editor*. Obviously, a more usable dictionary would provide a more substantial
+    list of generally used vocabulary.'
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例的`GeneralDictionary`提供程序仅定义了两个词：*book*和*editor*。显然，一个更可用的词典将提供一个更实质的通用词汇列表。
+- en: To demonstrate how multiple providers can implement the same SPI, the following
+    code shows yet another possible provider. The [``ExtendedDictionary.java``](examples/DictionaryServiceDemo/ExtendedDictionary/src/dictionary/ExtendedDictionary.java)
+    service provider is an extended dictionary containing technical terms familiar
+    to most software developers.
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了演示多个提供程序如何实现相同的SPI，以下代码展示了另一个可能的提供程序。[``ExtendedDictionary.java``](examples/DictionaryServiceDemo/ExtendedDictionary/src/dictionary/ExtendedDictionary.java)服务提供程序是一个包含大多数软件开发人员熟悉的技术术语的扩展词典。
+- en: '[PRE6]'
+  id: totrans-136
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The sample stores the compiled class file in the directory `ExtendedDictionary/build`.
+    **Note**: You must compile the classes `dictionary.DictionaryService` and `dictionary.spi.Dictionary`
+    before the class `ExtendedDictionary`.'
+  id: totrans-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例将编译后的类文件存储在目录`ExtendedDictionary/build`中。**注意**：在类`ExtendedDictionary`之前，您必须编译类`dictionary.DictionaryService`和`dictionary.spi.Dictionary`。
+- en: It is easy to imagine customers using a complete set of `Dictionary` providers
+    for their own special needs. The service loader API enables them to add new dictionaries
+    to their application as their needs or preferences change. Because the underlying
+    word-processor application is extensible, no additional coding is required for
+    customers to use the new providers.
+  id: totrans-138
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 很容易想象客户使用完整的`Dictionary`提供程序集来满足他们自己的特殊需求。服务加载器API使他们能够根据需要或偏好向其应用程序添加新的词典。由于底层的文字处理应用程序是可扩展的，因此客户无需编写额外的代码即可使用新的提供程序。
+- en: 4\. Register Service Providers
+  id: totrans-139
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 4\. 注册服务提供程序
+- en: To register your service provider, you create a provider configuration file,
+    which is stored in the `META-INF/services` directory of the service provider's
+    JAR file. The name of the configuration file is the fully qualified class name
+    of the service provider, in which each component of the name is separated by a
+    period (`.`), and nested classes are separated by a dollar sign (`$`).
+  id: totrans-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要注册您的服务提供者，需要创建一个提供者配置文件，该文件存储在服务提供者的 JAR 文件的 `META-INF/services` 目录中。配置文件的名称是服务提供者的完全限定类名，其中名称的每个组件由句点（`.`）分隔，嵌套类由美元符号（`$`）分隔。
+- en: The provider configuration file contains the fully qualified class names of
+    your service providers, one name per line. The file must be UTF-8 encoded. Additionally,
+    you can include comments in the file by beginning the comment line with the number
+    sign (`#`).
+  id: totrans-141
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 提供者配置文件包含您的服务提供者的完全限定类名，每个名称占一行。该文件必须使用 UTF-8 编码。此外，您可以通过在注释行前面加上井号（`#`）来在文件中包含注释。
+- en: 'For example, to register the service provider `GeneralDictionary` create a
+    text file named [``dictionary.spi.Dictionary``](examples/DictionaryServiceDemo/GeneralDictionary/src/META-INF/services/dictionary.spi.Dictionary)
+    . This file contains one line:'
+  id: totrans-142
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，要注册服务提供者 `GeneralDictionary`，创建一个名为 [``dictionary.spi.Dictionary``](examples/DictionaryServiceDemo/GeneralDictionary/src/META-INF/services/dictionary.spi.Dictionary)
+    的文本文件。该文件包含一行：
+- en: '[PRE7]'
+  id: totrans-143
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Similarly, to register the service provider `ExtendedDictionary` create a text
+    file named [``dictionary.spi.Dictionary``](examples/DictionaryServiceDemo/ExtendedDictionary/src/META-INF/services/dictionary.spi.Dictionary)
+    . This file contains one line:'
+  id: totrans-144
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，要注册服务提供者 `ExtendedDictionary`，创建一个名为 [``dictionary.spi.Dictionary``](examples/DictionaryServiceDemo/ExtendedDictionary/src/META-INF/services/dictionary.spi.Dictionary)
+    的文本文件。该文件包含一行：
+- en: '[PRE8]'
+  id: totrans-145
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 5\. Create a Client That Uses the Service and Service Providers
+  id: totrans-146
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 5\. 创建使用服务和服务提供者的客户端
+- en: Because developing a full word-processor application is a significant undertaking,
+    this tutorial provides a simpler application that uses the `DictionaryService`
+    and `Dictionary` SPI. The `DictionaryDemo` sample searches for the words *book*,
+    *editor*, *xml*, and *REST* words from any `Dictionary` providers on the class
+    path and retrieves their definitions.
+  id: totrans-147
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为开发完整的文字处理器应用程序是一项重大工作，本教程提供了一个更简单的应用程序，该应用程序使用 `DictionaryService` 和 `Dictionary`
+    SPI。`DictionaryDemo` 示例从类路径上的任何 `Dictionary` 提供者中搜索单词 *book*、*editor*、*xml* 和
+    *REST*，并检索它们的定义。
+- en: The following is the [``DictionaryDemo``](examples/DictionaryServiceDemo/DictionaryDemo/src/dictionary/DictionaryDemo.java)
+    sample. It requests a definition of the target word from the `DictionaryService`
+    instance, which passes the request to its known `Dictionary` providers.
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是 [``DictionaryDemo``](examples/DictionaryServiceDemo/DictionaryDemo/src/dictionary/DictionaryDemo.java)
+    示例。它从 `DictionaryService` 实例请求目标单词的定义，然后将请求传递给已知的 `Dictionary` 提供者。
+- en: '[PRE9]'
+  id: totrans-149
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'The sample stores the compiled class file in the directory `DictionaryDemo/build`.
+    **Note**: You must compile the classes `dictionary.DictionaryService` and `dictionary.spi.Dictionary`
+    before the class `DictionaryDemo`.'
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例将编译后的类文件存储在目录 `DictionaryDemo/build` 中。**注意**：在运行 `DictionaryDemo` 类之前，必须先编译类
+    `dictionary.DictionaryService` 和 `dictionary.spi.Dictionary`。
+- en: 6\. Package the Service Providers, the Service, and the Service Client in JAR
+    Files
+  id: totrans-151
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 6\. 将服务提供者、服务和服务客户端打包到 JAR 文件中
+- en: See the lesson [Packaging Programs in JAR Files](../../deployment/jar/index.html)
+    for information about how to create JAR files.
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请参阅课程 [在 JAR 文件中打包程序](../../deployment/jar/index.html) 了解��何创建 JAR 文件的信息。
+- en: Packaging Service Providers in JAR Files
+  id: totrans-153
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+  zh: 在 JAR 文件中打包服务提供者
+- en: 'To package the `GeneralDictionary` service provider, create a JAR file named
+    `GeneralDictionary/dist/GeneralDictionary.jar` that contains the compiled class
+    file of this service provider and the configuration file in the following directory
+    structure:'
+  id: totrans-154
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要打包 `GeneralDictionary` 服务提供者，创建一个名为 `GeneralDictionary/dist/GeneralDictionary.jar`
+    的 JAR 文件，其中包含此服务提供者的编译类文件和以下目录结构中的配置文件：
+- en: '`META-INF`'
+  id: totrans-155
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`META-INF`'
+- en: '`services`'
+  id: totrans-156
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`服务`'
+- en: '`dictionary.spi.Dictionary`'
+  id: totrans-157
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dictionary.spi.Dictionary`'
+- en: '`dictionary`'
+  id: totrans-158
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dictionary`'
+- en: '`GeneralDictionary.class`'
+  id: totrans-159
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`GeneralDictionary.class`'
+- en: 'Similarly, to package the `ExtendedDictionary` service provider, create a JAR
+    file named `ExtendedDictionary/dist/ExtendedDictionary.jar` that contains the
+    compiled class file of this service provider and the configuration file in the
+    following directory structure:'
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，要打包 `ExtendedDictionary` 服务提供者，创建一个名为 `ExtendedDictionary/dist/ExtendedDictionary.jar`
+    的 JAR 文件，其中包含此服务提供者的编译类文件和以下目录结构中的配置文件：
+- en: '`META-INF`'
+  id: totrans-161
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`META-INF`'
+- en: '`services`'
+  id: totrans-162
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`服务`'
+- en: '`dictionary.spi.Dictionary`'
+  id: totrans-163
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dictionary.spi.Dictionary`'
+- en: '`dictionary`'
+  id: totrans-164
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dictionary`'
+- en: '`ExtendedDictionary.class`'
+  id: totrans-165
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ExtendedDictionary.class`'
+- en: Note that the provider configuration file must be in the directory `META-INF/services`
+    in the JAR file.
+  id: totrans-166
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，提供者配置文件必须位于JAR文件中的`META-INF/services`目录中。
+- en: Packaging the Dictionary SPI and Dictionary Service in a JAR File
+  id: totrans-167
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+  zh: 将Dictionary SPI和Dictionary Service打包成一个JAR文件
+- en: 'Create a JAR file named `DictionaryServiceProvider/dist/DictionaryServiceProvider.jar`
+    that contains the following files:'
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建一个名为`DictionaryServiceProvider/dist/DictionaryServiceProvider.jar`的JAR文件，其中包含以下文件：
+- en: '`dictionary`'
+  id: totrans-169
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dictionary`'
+- en: '`DictionaryService.class`'
+  id: totrans-170
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DictionaryService.class`'
+- en: '`spi`'
+  id: totrans-171
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`spi`'
+- en: '`Dictionary.class`'
+  id: totrans-172
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Dictionary.class`'
+- en: Packaging the Client in a JAR File
+  id: totrans-173
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+  zh: 将客户端打包成一个JAR文件
+- en: 'Create a JAR file named `DictionaryDemo/dist/DictionaryDemo.jar` that contains
+    the following file:'
+  id: totrans-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建一个名为`DictionaryDemo/dist/DictionaryDemo.jar`的JAR文件，其中包含以下文件：
+- en: '`dictionary`'
+  id: totrans-175
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`dictionary`'
+- en: '`DictionaryDemo.class`'
+  id: totrans-176
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DictionaryDemo.class`'
+- en: 7\. Run the Client
+  id: totrans-177
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 7\. 运行客户端
+- en: 'The following command runs the `DictionaryDemo` sample with the `GeneralDictionary`
+    service provider:'
+  id: totrans-178
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下命令运行带有`GeneralDictionary`服务提供者的`DictionaryDemo`示例：
+- en: '**Linux and Solaris:**'
+  id: totrans-179
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**Linux和Solaris:**'
+- en: '`java -Djava.ext.dirs=../DictionaryServiceProvider/dist:../GeneralDictionary/dist
+    -cp dist/DictionaryDemo.jar dictionary.DictionaryDemo`'
+  id: totrans-180
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java -Djava.ext.dirs=../DictionaryServiceProvider/dist:../GeneralDictionary/dist
+    -cp dist/DictionaryDemo.jar dictionary.DictionaryDemo`'
+- en: '**Windows:**'
+  id: totrans-181
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**Windows:**'
+- en: '`java -Djava.ext.dirs=..\DictionaryServiceProvider\dist;..\GeneralDictionary\dist
+    -cp dist\DictionaryDemo.jar dictionary.DictionaryDemo`'
+  id: totrans-182
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java -Djava.ext.dirs=..\DictionaryServiceProvider\dist;..\GeneralDictionary\dist
+    -cp dist\DictionaryDemo.jar dictionary.DictionaryDemo`'
+- en: 'When using this command, the following is assumed:'
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用此命令时，假设以下情况：
+- en: The current directory is `DictionaryDemo`.
+  id: totrans-184
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当前目录是`DictionaryDemo`。
+- en: 'The following JAR files exist:'
+  id: totrans-185
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 存在以下JAR文件：
+- en: '`DictionaryDemo/dist/DictionaryDemo.jar`: Contains the `DictionaryDemo` class'
+  id: totrans-186
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DictionaryDemo/dist/DictionaryDemo.jar`: 包含`DictionaryDemo`类'
+- en: '`DictionaryServiceProvider/dist/DictionaryServiceProvider.jar`: Contains the
+    `Dictionary` SPI and the `DictionaryService` class'
+  id: totrans-187
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DictionaryServiceProvider/dist/DictionaryServiceProvider.jar`: 包含`Dictionary`
+    SPI和`DictionaryService`类'
+- en: '`GeneralDictionary/dist/GeneralDictionary.jar`: Contains the `GeneralDictionary`
+    service provider and configuration file'
+  id: totrans-188
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`GeneralDictionary/dist/GeneralDictionary.jar`: 包含`GeneralDictionary`服务提供者和配置文件'
+- en: 'The command prints the following:'
+  id: totrans-189
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该命令打印以下内容：
+- en: '[PRE10]'
+  id: totrans-190
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'Suppose you run the following command and `ExtendedDictionary/dist/ExtendedDictionary.jar`
+    exists:'
+  id: totrans-191
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你运行以下命令并且`ExtendedDictionary/dist/ExtendedDictionary.jar`存在：
+- en: '**Linux and Solaris:**'
+  id: totrans-192
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**Linux和Solaris:**'
+- en: '`java -Djava.ext.dirs=../DictionaryServiceProvider/dist:../ExtendedDictionary/dist
+    -cp dist/DictionaryDemo.jar dictionary.DictionaryDemo`'
+  id: totrans-193
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java -Djava.ext.dirs=../DictionaryServiceProvider/dist:../ExtendedDictionary/dist
+    -cp dist/DictionaryDemo.jar dictionary.DictionaryDemo`'
+- en: '**Windows:**'
+  id: totrans-194
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**Windows:**'
+- en: '`java -Djava.ext.dirs=..\DictionaryServiceProvider\dist;..\ExtendedDictionary\dist
+    -cp dist\DictionaryDemo.jar dictionary.DictionaryDemo`'
+  id: totrans-195
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java -Djava.ext.dirs=..\DictionaryServiceProvider\dist;..\ExtendedDictionary\dist
+    -cp dist\DictionaryDemo.jar dictionary.DictionaryDemo`'
+- en: 'The command prints the following:'
+  id: totrans-196
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该命令打印以下内容：
+- en: '[PRE11]'
+  id: totrans-197
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: The ServiceLoader Class
+  id: totrans-198
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ServiceLoader类
+- en: The `java.util.ServiceLoader` class helps you find, load, and use service providers.
+    It searches for service providers on your application's class path or in your
+    runtime environment's extensions directory. It loads them and enables your application
+    to use the provider's APIs. If you add new providers to the class path or runtime
+    extension directory, the `ServiceLoader` class finds them. If your application
+    knows the provider interface, it can find and use different implementations of
+    that interface. You can use the first loadable instance of the interface or iterate
+    through all the available interfaces.
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.util.ServiceLoader`类帮助你查找、加载和使用服务提供者。它在应用程序的类路径或运行时环境的扩展目录中搜索服务提供者。它加载它们并使你的应用程序能够使用提供者的API。如果你将新的提供者添加到类路径或运行时扩展目录中，`ServiceLoader`类会找到它们。如果你的应用程序知道提供者接口，它可以找到并使用该接口的不同实现。你可以使用接口的第一个可加载实例或遍历所有可用接口。'
+- en: The `ServiceLoader` class is final, which means that you cannot make it a subclass
+    or override its loading algorithms. You cannot, for example, change its algorithm
+    to search for services from a different location.
+  id: totrans-200
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ServiceLoader`类是final的，这意味着你不能将其作为子类或覆盖其加载算法。例如，你不能改变其算法以从不同位置搜索服务。'
+- en: From the perspective of the `ServiceLoader` class, all services have a single
+    type, which is usually a single interface or abstract class. The provider itself
+    contains one or more concrete classes that extend the service type with an implementation
+    specific to its purpose. The `ServiceLoader` class requires that the single exposed
+    provider type has a default constructor, which requires no arguments. This enables
+    the `ServiceLoader` class to easily instantiate the service providers that it
+    finds.
+  id: totrans-201
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从`ServiceLoader`类的角度来看，所有服务都具有单一类型，通常是单一接口或抽象类。提供者本身包含一个或多个具体类，这些类扩展了服务类型，具有特定于其目的的实现。`ServiceLoader`类要求单个公开的提供者类型具有默认构造函数，不需要参数。这使得`ServiceLoader`类可以轻松实例化它找到的服务提供者。
+- en: Providers are located and instantiated on demand. A service loader maintains
+    a cache of the providers that were loaded. Each invocation of the loader's `iterator`
+    method returns an iterator that first yields all of the elements of the cache,
+    in instantiation order. The service loader then locates and instantiates any new
+    providers, adding each one to the cache in turn. You can clear the provider cache
+    with the `reload` method.
+  id: totrans-202
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 提供者是按需定位和实例化的。服务加载器维护了已加载的提供者的缓存。加载器的`iterator`方法的每次调用都会返回一个迭代器，首先按实例化顺序产生缓存中的所有元素。然后，服务加载器会定位和实例化任何新的提供者，依次将每个提供者添加到缓存中。您可以使用`reload`方法清除提供者缓存。
+- en: To create a loader for a specific class, provide the class itself to the `load`
+    or `loadInstalled` method. You can use default class loaders or provide your own
+    `ClassLoader` subclass.
+  id: totrans-203
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要为特定类创建加载器，请将类本身提供给`load`或`loadInstalled`方法。您可以使用默认类加载器或提供自己的`ClassLoader`子类。
+- en: The `loadInstalled` method searches the runtime environment's extension directory
+    of installed runtime providers. The default extension location is your runtime
+    environment's `jre/lib/ext` directory. You should use the extension location only
+    for well-known, trusted providers because this location becomes part of the class
+    path for all applications. In this article, providers do not use the extension
+    directory but will instead depend on an application-specific class path.
+  id: totrans-204
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`loadInstalled`方法搜索已安装的运行时提供者的扩展目录。默认的扩展位置是您运行时环境的`jre/lib/ext`目录。您应该仅将扩展位置用于知名的、可信任的提供者，因为此位置将成为所有应用程序的类路径的一部分。在本文中，提供者不使用扩展目录，而是依赖于特定于应用程序的类路径。'
+- en: Limitations of the ServiceLoader API
+  id: totrans-205
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`ServiceLoader` API的局限性'
+- en: The `ServiceLoader` API is useful, but it has limitations. For example, it is
+    impossible to derive a class from the `ServiceLoader` class, so you cannot modify
+    its behavior. You can use custom `ClassLoader` subclasses to change how classes
+    are found, but `ServiceLoader` itself cannot be extended. Also, the current `ServiceLoader`
+    class cannot tell your application when new providers are available at runtime.
+    Additionally, you cannot add change-listeners to the loader to find out whether
+    a new provider was placed into an application-specific extension directory.
+  id: totrans-206
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ServiceLoader` API很有用，但也有局限性。例如，不可能从`ServiceLoader`类派生类，因此无法修改其行为。您可以使用自定义的`ClassLoader`子类来更改类的查找方式，但`ServiceLoader`本身无法扩展。此外，当前的`ServiceLoader`类无法告诉您的应用程序运行时何时有新的提供者可用。此外，您无法向加载器添加更改侦听器，以查找新提供者是否放置在特定于应用程序的扩展目录中。'
+- en: The public `ServiceLoader` API is available in Java SE 6\. Although the loader
+    service existed as early as JDK 1.3, the API was private and only available to
+    internal Java runtime code.
+  id: totrans-207
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 公共的`ServiceLoader` API在Java SE 6中可用。虽然加载器服务早在JDK 1.3时就存在，但API是私有的，只对内部Java运行时代码可用。
+- en: Summary
+  id: totrans-208
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 摘要
+- en: Extensible applications provide service points that can be extended by service
+    providers. The easiest way to create an extensible application is to use the `ServiceLoader`,
+    which is available for Java SE 6 and later. Using this class, you can add provider
+    implementations to the application class path to make new functionality available.
+    The `ServiceLoader` class is final, so you cannot modify its abilities.
+  id: totrans-209
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可扩展的应用程序提供了可以由服务提供者扩展的服务点。创建可扩展应用程序的最简单方法是使用`ServiceLoader`，该工具适用于Java SE 6及更高版本。使用这个类，您可以将提供者实现添加到应用程序类路径中，以提供新功能。`ServiceLoader`类是final的，因此您无法修改其功能。

@@ -1,0 +1,177 @@
+- en: 'Lesson: Members'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：成员
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/index.html](https://docs.oracle.com/javase/tutorial/reflect/member/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/index.html](https://docs.oracle.com/javase/tutorial/reflect/member/index.html)
+- en: Reflection defines an interface [`java.lang.reflect.Member`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Member.html)
+    which is implemented by [`java.lang.reflect.Field`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html),
+    [`java.lang.reflect.Method`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html),
+    and [`java.lang.reflect.Constructor`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html)
+    . These objects will be discussed in this lesson. For each member, the lesson
+    will describe the associated APIs to retrieve declaration and type information,
+    any operations unique to the member (for example, setting the value of a field
+    or invoking a method), and commonly encountered errors. Each concept will be illustrated
+    with code samples and related output which approximate some expected reflection
+    uses.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 反射定义了一个接口[`java.lang.reflect.Member`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Member.html)，该接口由[`java.lang.reflect.Field`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html)、[`java.lang.reflect.Method`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html)和[`java.lang.reflect.Constructor`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html)实现。这些对象将在本课程中讨论。对于每个成员，本课程将描述相关的API以检索声明和类型信息，成员特有的任何操作（例如，设置字段的值或调用方法），以及常见的错误。每个概念将通过代码示例和相关输出进行说明，这些输出近似一些预期的反射用法。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** According to [*The Java Language Specification, Java SE 7 Edition*](https://docs.oracle.com/javase/specs/jls/se7/html/index.html),
+    the *members* of a class are the inherited components of the class body including
+    fields, methods, nested classes, interfaces, and enumerated types. Since constructors
+    are not inherited, they are not members. This differs from the implementing classes
+    of [`java.lang.reflect.Member`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Member.html).'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 根据[*Java语言规范，Java SE 7版*](https://docs.oracle.com/javase/specs/jls/se7/html/index.html)，类的*成员*是类主体的继承组件，包括字段、方法、嵌套类、接口和枚举类型。由于构造函数不会被继承，因此它们不是成员。这与[`java.lang.reflect.Member`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Member.html)的实现类有所不同。'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Fields
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 字段
+- en: Fields have a type and a value. The [`java.lang.reflect.Field`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html)
+    class provides methods for accessing type information and setting and getting
+    values of a field on a given object.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字段具有类型和值。[`java.lang.reflect.Field`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html)类提供了用于访问类型信息以及在给定对象上设置和获取字段值的方法。
+- en: '[Obtaining Field Types](fieldTypes.html) describes how to get the declared
+    and generic types of a field'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[获取字段类型](fieldTypes.html) 描述了如何获取字段的声明类型和泛型类型'
+- en: '[Retrieving and Parsing Field Modifiers](fieldModifiers.html) shows how to
+    get portions of the field declaration such as `public` or `transient`'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检索和解析字段修饰符](fieldModifiers.html) 展示了如何获取字段声明的部分，如`public`或`transient`'
+- en: '[Getting and Setting Field Values](fieldValues.html) illustrates how to access
+    field values'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[获取和设置字段值](fieldValues.html) 说明了如何访问字段的值'
+- en: '[Troubleshooting](fieldTrouble.html) describes some common coding errors which
+    may cause confusion'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[故障排除](fieldTrouble.html) 描述了可能导致混淆的一些常见编码错误'
+- en: Methods
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 方法
+- en: Methods have return values, parameters, and may throw exceptions. The [`java.lang.reflect.Method`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html)
+    class provides methods for obtaining the type information for the parameters and
+    return value. It may also be used to invoke methods on a given object.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法具有返回值、参数，并可能抛出异常。[`java.lang.reflect.Method`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html)类提供了用于获取参数和返回值的类型信息的方法。它还可以用于在给定对象上调用方法。
+- en: '[Obtaining Method Type Information](methodType.html) shows how to enumerate
+    methods declared in a class and obtain type information'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[获取方法类型信息](methodType.html) 展示了如何枚举类中声明的方法并获取类型信息'
+- en: '[Obtaining Names of Method Parameters](methodparameterreflection.html) shows
+    how to retrieve names and other information of a method or constructor''s parameters'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[获取方法参数的名称](methodparameterreflection.html) 展示了如何检索方法或构造函数的参数的名称和其他信息'
+- en: '[Retrieving and Parsing Method Modifiers](methodModifiers.html) describes how
+    to access and decode modifiers and other information associated with the method'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检索和解析方法修饰符](methodModifiers.html)描述了如何访问和解码与方法相关的修饰符和其他信息'
+- en: '[Invoking Methods](methodInvocation.html) illustrates how to execute a method
+    and obtain its return value'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[调用方法](methodInvocation.html)说明了如何执行一个方法并获得其返回值'
+- en: '[Troubleshooting](methodTrouble.html) covers common errors encountered when
+    finding or invoking methods'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[故障排除](methodTrouble.html)涵盖了在查找或调用方法时遇到的常见错误'
+- en: Constructors
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 构造函数
+- en: 'The Reflection APIs for constructors are defined in [`java.lang.reflect.Constructor`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html)
+    and are similar to those for methods, with two major exceptions: first, constructors
+    have no return values; second, the invocation of a constructor creates a new instance
+    of an object for a given class.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 构造函数的反射API在[`java.lang.reflect.Constructor`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html)中定义，与方法的API类似，但有两个主要例外：首先，构造函数没有返回值；其次，调用构造函数会为给定类创建一个新的对象实例。
+- en: '[Finding Constructors](ctorLocation.html) illustrates how to retrieve constructors
+    with specific parameters'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[查找构造函数](ctorLocation.html)说明了如何检索具有特定参数的构造函数'
+- en: '[Retrieving and Parsing Constructor Modifiers](ctorModifiers.html) shows how
+    to obtain the modifiers of a constructor declaration and other information about
+    the constructor'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检索和解析构造函数修饰符](ctorModifiers.html)展示了如何获取构造函数声明的修饰符以及有关构造函数的其他信息'
+- en: '[Creating New Class Instances](ctorInstance.html) shows how to instantiate
+    an instance of an object by invoking its constructor'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建新的类实例](ctorInstance.html)展示了如何通过调用其构造函数来实例化一个对象的实例'
+- en: '[Troubleshooting](ctorTrouble.html) describes common errors which may be encountered
+    while finding or invoking constructors'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[故障排除](ctorTrouble.html)描述了在查找或调用构造函数时可能遇到的常见错误'

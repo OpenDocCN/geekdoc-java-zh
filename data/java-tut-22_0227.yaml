@@ -1,0 +1,64 @@
+- en: 'Questions and Exercises: Concurrency'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习：并发
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/QandE/questions.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/QandE/questions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/QandE/questions.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/QandE/questions.html)
+- en: Questions
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 问题
+- en: Can you pass a `Thread` object to `Executor.execute`? Would such an invocation
+    make sense?
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 你能将`Thread`对象传递给`Executor.execute`吗？这样的调用有意义吗？
+- en: Exercises
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 练习
+- en: 'Compile and run [``BadThreads.java``](BadThreads.java):'
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编译并运行[``BadThreads.java``](BadThreads.java)：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The application should print out "Mares do eat oats." Is it guaranteed to always
+    do this? If not, why not? Would it help to change the parameters of the two invocations
+    of `Sleep`? How would you guarantee that all changes to `message` will be visible
+    in the main thread?
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 应用程序应该打印出“Mares do eat oats.” 这是一定会发生的吗？如果不是，为什么？改变两次`Sleep`调用的参数会有帮助吗？如何确保所有对`message`的更改在主线程中可见？
+- en: Modify the producer-consumer example in [Guarded Blocks](../guardmeth.html)
+    to use a standard library class instead of the `Drop` class.
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 修改[Guarded Blocks](../guardmeth.html)中的生产者-消费者示例，使用标准库类代替`Drop`类。
+- en: '[Check your answers.](answers.html)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[检查你的答案。](answers.html)'

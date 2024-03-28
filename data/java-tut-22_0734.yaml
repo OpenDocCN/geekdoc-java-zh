@@ -1,0 +1,522 @@
+- en: Using Structured Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用结构化对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlstructured.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlstructured.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlstructured.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlstructured.html)
+- en: '**Note**: MySQL and Java DB currently do not support user-defined types. Consequently,
+    no JDBC tutorial example is available to demonstrate the features described in
+    this section.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：MySQL和Java DB目前不支持用户定义类型。因此，没有JDBC教程示例可用来演示本节描述的功能。'
+- en: 'The following topics are covered:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下列主题包括：
+- en: '[Overview of Structured Types](#overview_structured)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[结构化类型概述](#overview_structured)'
+- en: '[Using DISTINCT Type in Structured Types](#using_distinct_in_structured)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在结构化类型中使用DISTINCT类型](#using_distinct_in_structured)'
+- en: '[Using References to Structured Types](#references_structured)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用结构化类型的引用](#references_structured)'
+- en: '[Sample Code for Creating SQL REF Object](#code_ref)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建SQL REF对象的示例代码](#code_ref)'
+- en: '[Using User-Defined Types as Column Values](#udt_column_values)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将用户定义类型用作列值](#udt_column_values)'
+- en: '[Inserting User-Defined Types into Tables](#insert_udt)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将用户定义类型插入表中](#insert_udt)'
+- en: Overview of Structured Types
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 结构化类型概述
+- en: SQL structured types and `DISTINCT` types are the two data types that a user
+    can define in SQL. They are often referred to as UDTs (user-defined types), and
+    you create them with a SQL `CREATE` `TYPE` statement.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SQL结构化类型和`DISTINCT`类型是用户可以在SQL中定义的两种数据类型。它们通常被称为UDT（用户定义类型），您可以使用SQL的`CREATE`
+    `TYPE`语句来创建它们。
+- en: 'Getting back to the example of The Coffee Break, suppose that the owner has
+    been successful beyond all expectations and has been expanding with new branches.
+    The owner has decided to add a `STORES` table to the database containing information
+    about each establishment. `STORES` will have four columns:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 回到The Coffee Break的例子，假设所有者的成功超出了所有预期，并且一直在扩张新分店。所有者决定向数据库添加一个`STORES`表，其中包含有关每个机构的信息。`STORES`将有四列：
+- en: '`STORE_NO` for each store''s identification number'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`STORE_NO`代表每个店铺的识别号'
+- en: '`LOCATION` for its address'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LOCATION`代表其地址'
+- en: '`COF_TYPES` for the coffees it sells'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`COF_TYPES`代表其销售的咖啡'
+- en: '`MGR` for the name of the store manager'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`MGR`代表店长的姓名'
+- en: The owner makes the column `LOCATION` be a SQL structured type, the column `COF_TYPES`
+    a SQL `ARRAY`, and the column `MGR` a `REF(MANAGER)`, with `MANAGER` being a SQL
+    structured type.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有者将`LOCATION`列设为SQL结构化类型，`COF_TYPES`列设为SQL `ARRAY`，`MGR`列设为`REF(MANAGER)`，其中`MANAGER`是SQL结构化类型。
+- en: 'The first thing the owner must define the new structured types for the address
+    and the manager. A SQL structured type is similar to structured types in the Java
+    programming language in that it has members, called *attributes*, that may be
+    any data type. The owner writes the following SQL statement to create the new
+    data type `ADDRESS`:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有者首先必须为地址和经理定义新的结构化类型。SQL结构化类型类似于Java编程语言中的结构化类型，它具有称为*属性*的成员，可以是任何数据类型。所有者编写以下SQL语句来创建新数据类型`ADDRESS`：
+- en: '[PRE0]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: In this statement, the new type `ADDRESS` has five attributes, which are analogous
+    to fields in a Java class. The attribute `NUM` is an `INTEGER`, the attribute
+    `STREET` is a `VARCHAR(40)`, the attribute `CITY` is a `VARCHAR(40)`, the attribute
+    `STATE` is a `CHAR(2)`, and the attribute `ZIP` is a `CHAR(5)`.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此语句中，新类型`ADDRESS`有五个属性，类似于Java类中的字段。属性`NUM`是一个`INTEGER`，属性`STREET`是一个`VARCHAR(40)`，属性`CITY`是一个`VARCHAR(40)`，属性`STATE`是一个`CHAR(2)`，属性`ZIP`是一个`CHAR(5)`。
+- en: 'The following excerpt, in which `con` is a valid `Connection` object, sends
+    the definition of `ADDRESS` to the database:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的摘录中，`con`是一个有效的`Connection`对象，将`ADDRESS`的定义发送到数据库：
+- en: '[PRE1]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Now the `ADDRESS` structured type is registered with the database as a data
+    type, and the owner can use it as the data type for a table column or an attribute
+    of a structured type.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在`ADDRESS`结构化类型已在数据库中注册为数据类型，所有者可以将其用作表列或结构化类型属性的数据类型。
+- en: Using DISTINCT Type in Structured Type
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在结构化类型中使用DISTINCT类型
+- en: 'One of the attributes the owner of The Coffee Break plans to include in the
+    new structured type `MANAGER` is the manager''s telephone number. Because the
+    owner will always list the telephone number as a 10-digit number (to be sure it
+    includes the area code) and will never manipulate it as a number, the owner decides
+    to define a new type called `PHONE_NO` that consists of 10 characters. The SQL
+    definition of this data type, which can be thought of as a structured type with
+    only one attribute, looks like this:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: The Coffee Break的所有者计划在新的结构化类型`MANAGER`中包含的属性之一是经理的电话号码。因为所有者总是将电话号码列为一个10位数（以确保包括区号），并且永远不会将其作为数字进行操作，所以所有者决定定义一个名为`PHONE_NO`的新类型，该类型由10个字符组成。这种数据类型的SQL定义，可以被视为只有一个属性的结构化类型，如下所示：
+- en: '[PRE2]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Or, as noted earlier, for some drivers the definition might look like this:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，如前面提到的，对于某些驱动程序，定义可能如下所示：
+- en: '[PRE3]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: A `DISTINCT` type is always based on another data type, which must be a predefined
+    type. In other words, a `DISTINCT` type cannot be based on a user-defined type
+    (UDT). To retrieve or set a value that is a `DISTINCT` type, use the appropriate
+    method for the underlying type (the type on which it is based). For example, to
+    retrieve an instance of `PHONE_NO`, which is based on a `CHAR` type, you would
+    use the method `getString` because that is the method for retrieving a `CHAR`.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DISTINCT`类型始终基于另一个数据类型，该数据类型必须是预定义类型。换句话说，`DISTINCT`类型不能基于用户定义类型（UDT）。要检索或设置`DISTINCT`类型的值，请使用基础类型（其基础类型）的适当方法。例如，要检索基于`CHAR`类型的`PHONE_NO`实例，您将使用`getString`方法，因为这是检索`CHAR`的方法。'
+- en: 'Assuming that a value of type `PHONE_NO` is in the fourth column of the current
+    row of the `ResultSet` object `*rs*`, the following line of code retrieves it:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设`ResultSet`对象`*rs*`的当前行的第四列中有一个类型为`PHONE_NO`的值，以下代码行检索它：
+- en: '[PRE4]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Similarly, the following line of code sets an input parameter that has type
+    `PHONE_NO` for a prepared statement being sent to the database:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，以下代码行设置了一个输入参数，该参数具有类型`PHONE_NO`，用于发送到数据库的预备语句：
+- en: '[PRE5]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'Adding on to the previous code fragment, the definition of `PHONE_NO` will
+    be sent to the database with the following line of code:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前面的代码片段中添加，`PHONE_NO`的定义将通过以下代码行发送到数据库：
+- en: '[PRE6]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'After registering the type `PHONE_NO` with the database, the owner can use
+    it as a column type in a table or as the data type for an attribute in a structured
+    type. The definition of `MANAGER` in the following SQL statement uses `PHONE_NO`
+    as the data type for the attribute `PHONE`:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在向数据库注册类型`PHONE_NO`之后，所有者可以将其用作表中的列类型或作为结构化类型中属性的数据类型。以下SQL语句中`MANAGER`的定义使用`PHONE_NO`作为属性`PHONE`的数据类型：
+- en: '[PRE7]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Reusing `*stmt*`, defined previously, the following code fragment sends the
+    definition of the structured type `MANAGER` to the database:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 重用之前定义的`*stmt*`，以下代码片段将结构化类型`MANAGER`的定义发送到数据库：
+- en: '[PRE8]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Using References to Structured Types
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用结构化类型的引用
+- en: 'The owner of The Coffee Break has created three new data types used as column
+    types or attribute types in the database: The structured types `LOCATION` and
+    `MANAGER`, and the `DISTINCT` type `PHONE_NO`. The entrepreneur has used `PHONE_NO`
+    as the type for the attribute `PHONE` in the new type `MANAGER`, and `ADDRESS`
+    as the data type for the column `LOCATION` in the table `STORES`. The `MANAGER`
+    type could be used as the type for the column `MGR`, but instead the entrepreneur
+    prefers to use the type `REF(MANAGER)` because the entrepreneur often has one
+    person manage two or three stores. Using `REF(MANAGER)` as a column type avoids
+    repeating all the data for `MANAGER` when one person manages more than one store.'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: The Coffee Break的所有者创建了三种新的数据类型，用作数据库中的列类型或属性类型：结构化类型`LOCATION`和`MANAGER`，以及`DISTINCT`类型`PHONE_NO`。企业家将`PHONE_NO`用作新类型`MANAGER`中属性`PHONE`的类型，并将`ADDRESS`用作表`STORES`中列`LOCATION`的数据类型。`MANAGER`类型可以用作列`MGR`的类型，但企业家更喜欢使用类型`REF(MANAGER)`，因为企业家经常让一个人管理两到三家店铺。将`REF(MANAGER)`用作列类型可以避免在一个人管理多家店铺时重复所有`MANAGER`的数据。
+- en: With the structured type `MANAGER` already created, the owner can now create
+    a table containing instances of `MANAGER` that can be referenced. A reference
+    to an instance of `MANAGER` will have the type `REF(MANAGER)`. A SQL `REF` is
+    nothing more than a logical pointer to a structured type, so an instance of `REF(MANAGER)`
+    serves as a logical pointer to an instance of `MANAGER`.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 已经创建了结构化类型 `MANAGER`，所有者现在可以创建一个包含可以被引用的 `MANAGER` 实例的表。对 `MANAGER` 实例的引用将具有类型
+    `REF(MANAGER)`。SQL `REF` 只不过是指向结构化类型的逻辑指针，因此 `REF(MANAGER)` 实例充当对 `MANAGER` 实例的逻辑指针。
+- en: 'Because a SQL `REF` value needs to be permanently associated with the instance
+    of the structured type that it references, it is stored in a special table together
+    with its associated instance. A programmer does not create `REF` types directly
+    but rather creates the table that will store instances of a particular structured
+    type that can be referenced. Every structured type that is to be referenced will
+    have its own table. When you insert an instance of the structured type into the
+    table, the database automatically creates a `REF` instance. For example, to contain
+    instances of `MANAGER` that can be referenced, the owner created the following
+    special table using SQL:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为 SQL `REF` 值需要永久与其引用的结构化类型实例关联在一起，所以它存储在一个特殊的表中，与其关联的实例一起。程序员不直接创建 `REF` 类型，而是创建将存储特定结构化类型实例的表，这些实例可以被引用。每个要被引用的结构化类型都将有自己的表。当你将结构化类型的实例插入表中时，数据库会自动创建一个
+    `REF` 实例。例如，为了包含可以被引用的 `MANAGER` 实例，所有者使用 SQL 创建了以下特殊表：
+- en: '[PRE9]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'This statement creates a table with the special column `OID`, which stores
+    values of type `REF(MANAGER)`. Each time an instance of `MANAGER` is inserted
+    into the table, the database will generate an instance of `REF(MANAGER)` and store
+    it in the column `OID`. Implicitly, an additional column stores each attribute
+    of `MANAGER` that has been inserted into the table, as well. For example, the
+    following code fragment shows how the entrepreneur created three instances of
+    the `MANAGER` structured type to represent three managers:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个语句创建了一个带有特殊列 `OID` 的表，该列存储 `REF(MANAGER)` 类型的值。每次将 `MANAGER` 实例插入表中时，数据库都会生成一个
+    `REF(MANAGER)` 实例并将其存储在列 `OID` 中。隐式地，另外一列存储已插入表中的 `MANAGER` 的每个属性。例如，以下代码片段展示了企业家如何创建了三个
+    `MANAGER` 结构化类型的实例来代表三个经理：
+- en: '[PRE10]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: The table `MANAGERS` will now have three rows, one row for each manager inserted
+    so far. The column `OID` will contain three unique object identifiers of type
+    `REF(MANAGER)`, one for each instance of `MANAGER.` These object identifiers were
+    generated automatically by the database and will be permanently stored in the
+    table `MANAGERS`. Implicitly, an additional column stores each attribute of `MANAGER`.
+    For example, in the table `MANAGERS`, one row contains a `REF(MANAGER)` that references
+    Alfredo Montoya, another row contains a `REF(MANAGER)` that references Margaret
+    Haskins, and a third row contains a `REF(MANAGER)` that references Helen Chen.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 `MANAGERS` 现在将有三行，每个已插入的经理一行。列 `OID` 将包含三个 `REF(MANAGER)` 类型的唯一对象标识符，每个 `MANAGER`
+    实例一个。这些对象标识符是由数据库自动生成的，并将永久存储在表 `MANAGERS` 中。隐式地，另外一列存储 `MANAGER` 的每个属性。例如，在表
+    `MANAGERS` 中，一行包含一个引用 Alfredo Montoya 的 `REF(MANAGER)`，另一行包含一个引用 Margaret Haskins
+    的 `REF(MANAGER)`，第三行包含一个引用 Helen Chen 的 `REF(MANAGER)`。
+- en: 'To access a `REF(MANAGER)` instance, you select it from its table. For example,
+    the owner retrieved the reference to Alfredo Montoya, whose ID number is 000001,
+    with the following code fragment:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要访问 `REF(MANAGER)` 实例，您可以从其表中选择。例如，所有者使用以下代码片段检索了对 ID 号为 000001 的 Alfredo Montoya
+    的引用：
+- en: '[PRE11]'
+  id: totrans-49
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: Now the variable `*manager*` can be used as a column value that references Alfredo
+    Montoya.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在变量 `*manager*` 可以被用作引用 Alfredo Montoya 的列值。
+- en: Sample Code for Creating SQL REF Object
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建 SQL REF 对象的示例代码
+- en: The following code example creates the table `MANAGERS`, a table of instances
+    of the structured type `MANAGER` that can be referenced, and inserts three instances
+    of `MANAGER` into the table. The column `OID` in this table will store instances
+    of `REF(MANAGER)`. After this code is executed, the `MANAGERS` table will have
+    a row for each of the three `MANAGER` objects inserted, and the value in the `OID`
+    column will be the `REF(MANAGER)` type that identifies the instance of `MANAGER`
+    stored in that row.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码示例创建了表`MANAGERS`，这是结构化类型`MANAGER`的实例表，可以引用，并将三个`MANAGER`实例插入表中。此表中的列`OID`将存储`REF(MANAGER)`的实例。执行此代码后，`MANAGERS`表将为插入的三个`MANAGER`对象的每个对象插入一行，并且`OID`列中的值将是标识存储在该行中的`MANAGER`实例的`REF(MANAGER)`类型。
+- en: '[PRE12]'
+  id: totrans-53
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: Using User-Defined Types as Column Values
+  id: totrans-54
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用用户定义类型作为列值
+- en: Our entrepreneur now has the UDTs required to create the table `STORES`. The
+    structured type `ADDRESS` is the type for the column `LOCATION`, and the type
+    `REF(MANAGER)` is the type for the column `MGR`.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们的企业家现在拥有创建表`STORES`所需的UDT。结构化类型`ADDRESS`是列`LOCATION`的类型，类型`REF(MANAGER)`是列`MGR`的类型。
+- en: The UDT `COF_TYPES` is based on the SQL data type `ARRAY` and is the type for
+    the column `COF_TYPES`. The following line of code creates the type `COF_ARRAY`
+    as an `ARRAY` value with 10 elements. The base type of `COF_ARRAY` is `VARCHAR(40)`.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: UDT `COF_TYPES`基于SQL数据类型`ARRAY`，是列`COF_TYPES`的类型。以下代码行创建了类型`COF_ARRAY`作为具有10个元素的`ARRAY`值。`COF_ARRAY`的基本类型是`VARCHAR(40)`。
+- en: '[PRE13]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: 'With the new data types defined, the following SQL statement creates the table
+    `STORES`:'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定义了新数据类型后，以下SQL语句创建了表`STORES`：
+- en: '[PRE14]'
+  id: totrans-59
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: Inserting User-Defined Types into Tables
+  id: totrans-60
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将用户定义类型插入表中
+- en: 'The following code fragment inserts one row into the `STORES` table, supplying
+    values for the columns `STORE_NO`, `LOCATION`, `COF_TYPES`, and `MGR`, in that
+    order:'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段向`STORES`表中插入一行，按顺序提供了列`STORE_NO`，`LOCATION`，`COF_TYPES`和`MGR`的值：
+- en: '[PRE15]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: The following goes through each column and the value inserted into it.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下逐个列出每列及其插入的值。
+- en: '[PRE16]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: This column is type `INTEGER`, and the number `100001` is an `INTEGER` type,
+    similar to entries made before in the tables `COFFEES` and `SUPPLIERS`.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此列类型为`INTEGER`，数字`100001`是`INTEGER`类型，类似于之前在`COFFEES`和`SUPPLIERS`表中插入的条目。
+- en: '[PRE17]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: The type for this column is the structured type `ADDRESS`, and this value is
+    the constructor for an instance of `ADDRESS`. When we sent the definition of `ADDRESS`
+    was sent to the database, one of the things it did was to create a constructor
+    for the new type. The comma-separated values in parentheses are the initialization
+    values for the attributes of the `ADDRESS` type, and they must appear in the same
+    order in which the attributes were listed in the definition of the `ADDRESS` type.
+    `888` is the value for the attribute `NUM`, which is an `INTEGER` value. `"Main_Street"`
+    is the value for `STREET`, and `"Rancho_Alegre"` is the value for `CITY`, with
+    both attributes being of type `VARCHAR(40)`. The value for the attribute `STATE`
+    is `"CA"`, which is of type `CHAR(2)`, and the value for the attribute `ZIP` is
+    `"94049"`, which is of type `CHAR(5)`.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此列的类型为结构化类型`ADDRESS`，此值是`ADDRESS`实例的构造函数。当我们将`ADDRESS`的定义发送到数据库时，其中一件事是为新类型创建构造函数。括号中的逗号分隔值是`ADDRESS`类型属性的初始化值，它们必须按照`ADDRESS`类型定义中属性列出的顺序出现。`888`是属性`NUM`的值，是`INTEGER`值。`"Main_Street"`是`STREET`的值，`"Rancho_Alegre"`是`CITY`的值，这两个属性都是`VARCHAR(40)`类型。属性`STATE`的值为`"CA"`，是`CHAR(2)`类型，属性`ZIP`的值为`"94049"`，是`CHAR(5)`类型。
+- en: '[PRE18]'
+  id: totrans-68
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: The column `COF_TYPES` is of type `COF_ARRAY` with a base type of `VARCHAR(40)`,
+    and the comma-separated values between parentheses are the `String` objects that
+    are the array elements. The owner defined the type `COF_ARRAY` as having a maximum
+    of 10 elements. This array has 5 elements because the entrepreneur supplied only
+    5 `String` objects for it.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列`COF_TYPES`的类型为`COF_ARRAY`，基本类型为`VARCHAR(40)`，括号中的逗号分隔值是数组元素为`String`对象。所有者定义了类型`COF_ARRAY`最多有10个元素。此数组有5个元素，因为企业家仅提供了5个`String`对象。
+- en: '[PRE19]'
+  id: totrans-70
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: The column `MGR` is type `REF(MANAGER)`, which means that a value in this column
+    must be a reference to the structured type `MANAGER`. All of the instances of
+    `MANAGER` are stored in the table `MANAGERS`. All of the instances of `REF(MANAGER)`
+    are also stored in this table, in the column `OID`. The manager for the store
+    described in this table row is Alfredo Montoya, and his information is stored
+    in the instance of `MANAGER` that has `100001` for the attribute `MGR_ID`. To
+    get the `REF(MANAGER)` instance associated with the `MANAGER` object for Alfredo
+    Montoya, select the column `OID` that is in the row where `MGR_ID` is `100001`
+    in the table `MANAGERS`. The value that will be stored in the `MGR` column of
+    the `STORES` table (the `REF(MANAGER)` value) is the value the DBMS generated
+    to uniquely identify this instance of the `MANAGER` structured type.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列`MGR`的类型是`REF(MANAGER)`，这意味着该列中的值必须是指向结构化类型`MANAGER`的引用。所有`MANAGER`的实例都存储在表`MANAGERS`中。所有`REF(MANAGER)`的实例也存储在该表中，存储在列`OID`中。此表行中描述的商店的经理是Alfredo
+    Montoya，他的信息存储在具有属性`MGR_ID`为`100001`的`MANAGER`实例中。要获取与Alfredo Montoya的`MANAGER`对象关联的`REF(MANAGER)`实例，请选择表`MANAGERS`中`MGR_ID`为`100001`的行中的列`OID`。将存储在`STORES`表的`MGR`列中的值（`REF(MANAGER)`值）是
+    DBMS 生成的用于唯一标识此`MANAGER`结构化类型实例的值。
+- en: 'Send the preceding SQL statement to the database with the following code fragment:'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将上述 SQL 语句发送到数据库，使用以下代码片段：
+- en: '[PRE20]'
+  id: totrans-73
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: 'However, because you are going to send several `INSERT INTO` statements, it
+    will be more efficient to send them all together as a batch update, as in the
+    following code example:'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，因为你将发送多个`INSERT INTO`语句，将它们一起作为批量更新发送会更有效，就像以下代码示例中所示：
+- en: '[PRE21]'
+  id: totrans-75
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'

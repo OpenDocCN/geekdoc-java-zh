@@ -1,0 +1,302 @@
+- en: Troubleshooting
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 故障排除
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/methodTrouble.html](https://docs.oracle.com/javase/tutorial/reflect/member/methodTrouble.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/methodTrouble.html](https://docs.oracle.com/javase/tutorial/reflect/member/methodTrouble.html)
+- en: This section contains examples of problems developers might encounter when using
+    reflection to locate, invoke, or get information about methods.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节包含开发人员在使用反射定位、调用或获取方法时可能遇到的问题示例。
+- en: NoSuchMethodException Due to Type Erasure
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 由于类型擦除导致的NoSuchMethodException
+- en: The [``MethodTrouble``](example/MethodTrouble.java) example illustrates what
+    happens when type erasure is not taken into consideration by code which searches
+    for a particular method in a class.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``MethodTrouble``](example/MethodTrouble.java)示例说明了当代码在类中搜索特定方法时未考虑类型擦除时会发生什么。'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '[PRE2]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'When a method is declared with a generic parameter type, the compiler will
+    replace the generic type with its upper bound, in this case, the upper bound of
+    `T` is [`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html).
+    Thus, when the code searches for `lookup(Integer)`, no method is found, despite
+    the fact that the instance of `MethodTrouble` was created as follows:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当方法声明具有泛型参数类型时，编译器将使用其上界替换泛型类型，在本例中，`T`的上界为[`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)。因此，当代码搜索`lookup(Integer)`时，尽管`MethodTrouble`的实例是如下创建的，但不会找到方法：
+- en: '[PRE3]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Searching for `lookup(Object)` succeeds as expected.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 搜索`lookup(Object)`成功，如预期。
+- en: '[PRE4]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: In this case, `find()` has no generic parameters, so the parameter types searched
+    for by [`getMethod()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getMethod-java.lang.String-java.lang.Class...-)
+    must match exactly.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，`find()`没有泛型参数，因此[`getMethod()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getMethod-java.lang.String-java.lang.Class...-)搜索的参数类型必须完全匹配。
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:** Always pass the upper bound of the parameterized type when searching
+    for a method.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：** 在搜索方法时，始终传递参数化类型的上界。'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: IllegalAccessException when Invoking a Method
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 调用方法时的IllegalAccessException
+- en: An [`IllegalAccessException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalAccessException.html)
+    is thrown if an attempt is made to invoke a `private` or otherwise inaccessible
+    method.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果尝试调用`private`或其他不可访问方法，则会抛出[`IllegalAccessException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalAccessException.html)。
+- en: The [``MethodTroubleAgain``](example/MethodTroubleAgain.java) example shows
+    a typical stack trace which results from trying to invoke a private method in
+    an another class.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``MethodTroubleAgain``](example/MethodTroubleAgain.java)示例展示了尝试在另一个类中调用私有方法导致的典型堆栈跟踪。'
+- en: '[PRE5]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The stack trace for the exception thrown follows.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 异常抛出的堆栈跟踪如下。
+- en: '[PRE6]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:**  An access restriction exists which prevents reflective invocation
+    of methods which normally would not be accessible via direct invocation. (This
+    includes—but is not limited to---`private` methods in a separate class and public
+    methods in a separate private class.) However, `Method` is declared to extend
+    [`AccessibleObject`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html)
+    which provides the ability to suppress this check via [`AccessibleObject.setAccessible()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html#setAccessible-boolean-).
+    If it succeeds, then subsequent invocations of this method object will not fail
+    due to this problem.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：** 存在访问限制，阻止对通常无法通过直接调用访问的方法进行反射调用。（包括但不限于在另一个类中的`private`方法和在另一个私有类中的公共方法。）但是，`Method`被声明为扩展[`AccessibleObject`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html)，通过[`AccessibleObject.setAccessible()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html#setAccessible-boolean-)提供了抑制此检查的能力。如果成功，则随后对该方法对象的调用不会因此问题而失败。'
+- en: '* * *'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: IllegalArgumentException from Method.invoke()
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 从Method.invoke()中抛出的IllegalArgumentException
+- en: '[`Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-)
+    has been retrofitted to be a variable-arity method. This is an enormous convenience,
+    however it can lead to unexpected behavior. The [``MethodTroubleToo``](example/MethodTroubleToo.java)
+    example shows various ways in which [`Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-)
+    can produce confusing results.'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-)已经被改造成为可变参数方法。这是一个巨大的便利，但可能会导致意外行为。[``MethodTroubleToo``](example/MethodTroubleToo.java)示例展示了[`Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-)可能产生混乱结果的各种方式。'
+- en: '[PRE7]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '[PRE8]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Since all of the parameters of [`Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-)
+    are optional except for the first, they can be omitted when the method to be invoked
+    has no parameters.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于[`Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-)的所有参数都是可选的，除了第一个，当要调用的方法没有参数时，可以省略它们。
+- en: '[PRE9]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: The code in this case generates this compiler warning because `null` is ambiguous.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，代码生成这个编译器警告，因为`null`是模棱两可的。
+- en: '[PRE10]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: It is not possible to determine whether `null` represents an empty array of
+    arguments or a first argument of `null`.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不可能确定`null`代表空参数数组还是第一个参数为`null`。
+- en: '[PRE11]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: This fails despite the fact that the argument is `null`, because the type is
+    a [`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)
+    and `ping()` expects no arguments at all.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管参数为`null`，但这会失败，因为类型是[`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)，而`ping()`不需要任何参数。
+- en: '[PRE12]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: This works because `new Object[0]` creates an empty array, and to a varargs
+    method, this is equivalent to not passing any of the optional arguments.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这能够成功是因为`new Object[0]`创建了一个空数组，对于可变参数方法来说，这等同于不传递任何可选参数。
+- en: '[PRE13]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Unlike the previous example, if the empty array is stored in an [`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html),
+    then it is treated as an [`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html).
+    This fails for the same reason that case 2 fails, `ping()` does not expect an
+    argument.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与前面的例子不同，如果空数组存储在一个[`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)中，那么它将被视为一个[`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)。这与案例2失败的原因相同，`ping()`不期望有参数。
+- en: '* * *'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:** When a method `foo(Object... o)` is declared the compiler will put
+    all of the arguments passed to `foo()` in an array of type [`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html).
+    The implementation of `foo()` is the same as if it were declared `foo(Object[]
+    o)`. Understanding this may help avoid the types of problems illustrated above.'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：**当声明一个方法`foo(Object... o)`时，编译器会将传递给`foo()`的所有参数放入一个[`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)类型的数组中。`foo()`的实现与声明为`foo(Object[]
+    o)`时相同。理解这一点可能有助于避免上面所示问题的类型。'
+- en: '* * *'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: InvocationTargetException when Invoked Method Fails
+  id: totrans-43
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 调用方法失败时的InvocationTargetException
+- en: An [`InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html)
+    wraps all exceptions (checked and unchecked) produced when a method object is
+    invoked. The [``MethodTroubleReturns``](example/MethodTroubleReturns.java) example
+    shows how to retrieve the original exception thrown by the invoked method.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html)包装了调用方法对象时产生的所有异常（已检查和未检查）。[``MethodTroubleReturns``](example/MethodTroubleReturns.java)示例展示了如何检索被调用方法抛出的原始异常。'
+- en: '[PRE14]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: '[PRE15]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: '* * *'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:** If an [`InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html)
+    is thrown, the method was invoked. Diagnosis of the problem would be the same
+    as if the method was called directly and threw the exception that is retrieved
+    by [`getCause()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html#getCause--).
+    This exception does not indicate a problem with the reflection package or its
+    usage.'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：**如果抛出[`InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html)，则方法已被调用。诊断问题的方法与直接调用方法并通过[`getCause()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html#getCause--)检索到的异常相同。此异常并不表示反射包或其使用存在问题。'
+- en: '* * *'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

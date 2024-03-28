@@ -1,0 +1,283 @@
+- en: Anonymous Classes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 匿名类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html](https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html](https://docs.oracle.com/javase/tutorial/java/javaOO/anonymousclasses.html)
+- en: Anonymous classes enable you to make your code more concise. They enable you
+    to declare and instantiate a class at the same time. They are like local classes
+    except that they do not have a name. Use them if you need to use a local class
+    only once.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 匿名类使您的代码更加简洁。它们使您能够同时声明和实例化一个类。它们类似于本地类，只是没有名称。如果您只需要使用本地类一次，请使用它们。
+- en: 'This section covers the following topics:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下主题：
+- en: '[Declaring Anonymous Classes](#declaring-anonymous-classes)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[声明匿名类](#declaring-anonymous-classes)'
+- en: '[Syntax of Anonymous Classes](#syntax-of-anonymous-classes)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[匿名类的语法](#syntax-of-anonymous-classes)'
+- en: '[Accessing Local Variables of the Enclosing Scope, and Declaring and Accessing
+    Members of the Anonymous Class](#accessing)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[访问封闭范围的本地变量，并声明和访问匿名类的成员](#accessing)'
+- en: '[Examples of Anonymous Classes](#examples-of-anonymous-classes)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[匿名类示例](#examples-of-anonymous-classes)'
+- en: Declaring Anonymous Classes
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 声明匿名类
+- en: While local classes are class declarations, anonymous classes are expressions,
+    which means that you define the class in another expression. The following example,
+    [`HelloWorldAnonymousClasses`](examples/HelloWorldAnonymousClasses.java), uses
+    anonymous classes in the initialization statements of the local variables `frenchGreeting`
+    and `spanishGreeting`, but uses a local class for the initialization of the variable
+    `englishGreeting``:`
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然本地类是类声明，匿名类是表达式，这意味着你在另一个表达式中定义类。以下示例，[`HelloWorldAnonymousClasses`](examples/HelloWorldAnonymousClasses.java)，在本地变量`frenchGreeting`和`spanishGreeting`的初始化语句中使用了匿名类，但在变量`englishGreeting`的初始化中使用了本地类：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Syntax of Anonymous Classes
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 匿名类的语法
+- en: As mentioned previously, an anonymous class is an expression. The syntax of
+    an anonymous class expression is like the invocation of a constructor, except
+    that there is a class definition contained in a block of code.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，匿名类是一个表达式。匿名类表达式的语法类似于构造函数的调用，只是其中包含一个代码块中的类定义。
+- en: 'Consider the instantiation of the `frenchGreeting` object:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑`frenchGreeting`对象的实例化：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The anonymous class expression consists of the following:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 匿名类表达式包括以下内容：
+- en: The `new` operator
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`new`运算符'
+- en: The name of an interface to implement or a class to extend. In this example,
+    the anonymous class is implementing the interface `HelloWorld`.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 要实现的接口名称或要扩展的类名称。在此示例中，匿名类正在实现接口`HelloWorld`。
+- en: 'Parentheses that contain the arguments to a constructor, just like a normal
+    class instance creation expression. **Note**: When you implement an interface,
+    there is no constructor, so you use an empty pair of parentheses, as in this example.'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 包含传递给构造函数的参数的括号，就像普通的类实例创建表达式一样。**注意**：当您实现一个接口时，没有构造函数，所以您使用一个空的括号对，就像这个例子中一样。
+- en: A body, which is a class declaration body. More specifically, in the body, method
+    declarations are allowed but statements are not.
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个类声明体。更具体地说，在类体中，允许方法声明，但不允许语句。
+- en: Because an anonymous class definition is an expression, it must be part of a
+    statement. In this example, the anonymous class expression is part of the statement
+    that instantiates the `frenchGreeting` object. (This explains why there is a semicolon
+    after the closing brace.)
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为匿名类定义是一个表达式，所以它必须是语句的一部分。在此示例中，匿名类表达式是实例化`frenchGreeting`对象的语句的一部分。（这就解释了为什么在右括号后有一个分号。）
+- en: Accessing Local Variables of the Enclosing Scope, and Declaring and Accessing
+    Members of the Anonymous Class
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 访问封闭范围的本地变量，并声明和访问匿名类的成员
+- en: 'Like local classes, anonymous classes can [capture variables](localclasses.html#accessing-members-of-an-enclosing-class);
+    they have the same access to local variables of the enclosing scope:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 像本地类一样，匿名类可以[捕获变量](localclasses.html#accessing-members-of-an-enclosing-class)；它们对封闭范围的本地变量具有相同的访问权限：
+- en: An anonymous class has access to the members of its enclosing class.
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 匿名类可以访问其封闭类的成员。
+- en: An anonymous class cannot access local variables in its enclosing scope that
+    are not declared as `final` or effectively final.
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 匿名类无法访问其封闭范围中未声明为`final`或有效`final`的本地变量。
+- en: Like a nested class, a declaration of a type (such as a variable) in an anonymous
+    class shadows any other declarations in the enclosing scope that have the same
+    name. See [Shadowing](../../java/javaOO/nested.html#shadowing) for more information.
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 像嵌套类一样，在匿名类中声明类型（如变量）会遮蔽封闭范围中具有相同名称的任何其他声明。有关更多信息，请参阅[遮蔽](../../java/javaOO/nested.html#shadowing)。
+- en: 'Anonymous classes also have the same restrictions as local classes with respect
+    to their members:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 匿名类在成员方面与局部类具有相同的限制：
+- en: You cannot declare static initializers or member interfaces in an anonymous
+    class.
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您不能在匿名类中声明静态初始化程序或成员接口。
+- en: An anonymous class can have static members provided that they are constant variables.
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个匿名类可以有静态成员，只要它们是常量变量。
+- en: 'Note that you can declare the following in anonymous classes:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，您可以在匿名类中声明以下内容：
+- en: Fields
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 字段
+- en: Extra methods (even if they do not implement any methods of the supertype)
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 额外的方法（即使它们不实现超类型的任何方法）
+- en: Instance initializers
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 实例初始化程序
+- en: Local classes
+  id: totrans-33
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 局部类
+- en: However, you cannot declare constructors in an anonymous class.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，你不能在匿名类中声明构造函数。
+- en: Examples of Anonymous Classes
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 匿名类示例
+- en: Anonymous classes are often used in graphical user interface (GUI) applications.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 匿名类经常用于图形用户界面（GUI）应用程序。
+- en: 'Consider the JavaFX example [`HelloWorld.java`](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/hello_world.htm)
+    (from the section [Hello World, JavaFX Style](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/hello_world.htm)
+    from [Getting Started with JavaFX](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/javafx_get_started.htm)).
+    This sample creates a frame that contains a **Say ''Hello World''** button. The
+    anonymous class expression is highlighted:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑JavaFX示例[`HelloWorld.java`](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/hello_world.htm)（来自[Hello
+    World, JavaFX Style](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/hello_world.htm)部分，取自[Getting
+    Started with JavaFX](https://docs.oracle.com/javase/8/javafx/get-started-tutorial/javafx_get_started.htm)）。此示例创建一个包含**Say
+    'Hello World'**按钮的框架。匿名类表达式被突出显示：
+- en: '[PRE2]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: In this example, the method invocation `btn.setOnAction` specifies what happens
+    when you select the **Say 'Hello World'** button. This method requires an object
+    of type `EventHandler<ActionEvent>`. The `EventHandler<ActionEvent>` interface
+    contains only one method, handle. Instead of implementing this method with a new
+    class, the example uses an anonymous class expression. Notice that this expression
+    is the argument passed to the `btn.setOnAction` method.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此示例中，方法调用`btn.setOnAction`指定了当您选择**Say 'Hello World'**按钮时会发生什么。此方法需要一个`EventHandler<ActionEvent>`类型的对象。`EventHandler<ActionEvent>`接口只包含一个方法，即handle。该示例使用匿名类表达式而不是使用新类来实现此方法。请注意，此表达式是传递给`btn.setOnAction`方法的参数。
+- en: Because the `EventHandler<ActionEvent>` interface contains only one method,
+    you can use a lambda expression instead of an anonymous class expression. See
+    the section [Lambda Expressions](lambdaexpressions.html) for more information.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`EventHandler<ActionEvent>`接口只包含一个方法，所以您可以使用lambda表达式代替匿名类表达式。有关更多信息，请参阅[Lambda表达式](lambdaexpressions.html)部分。
+- en: Anonymous classes are ideal for implementing an interface that contains two
+    or more methods. The following JavaFX example is from the section [Customization
+    of UI Controls](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/custom.htm).
+    The highlighted code creates a text field that only accepts numeric values. It
+    redefines the default implementation of the `TextField` class with an anonymous
+    class by overriding the `replaceText` and `replaceSelection` methods inherited
+    from the `TextInputControl` class.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 匿名类非常适合实现包含两个或更多方法的接口。以下JavaFX示例来自[自定义UI控件](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/custom.htm)部分。突出显示的代码创建一个仅接受数字值的文本字段。它通过覆盖从`TextInputControl`类继承的`replaceText`和`replaceSelection`方法，使用匿名类重新定义了`TextField`类的默认实现。
+- en: '[PRE3]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

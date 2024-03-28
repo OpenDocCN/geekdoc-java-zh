@@ -1,0 +1,47 @@
+- en: Putting it All Together - DnD and CCP
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 将所有内容整合在一起 - 拖放和剪切复制粘贴
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/together.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/together.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/together.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/together.html)
+- en: We have shown how to implement drag and drop support and how to implement cut,
+    copy, paste support. How do you combine both in one component?
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们已经展示了如何实现拖放支持以及如何实现剪切、复制、粘贴支持。如何在一个组件中同时实现两者？
+- en: 'You implement both within the `TransferHandler`''s `importData` method, like
+    this:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你需要在`TransferHandler`的`importData`方法中实现这两种功能，就像这样：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The `ListCutPaste` example, discussed on the [CCP in a non-Text Component](listpaste.html)
+    page, supports both dnd and ccp. Here is its `importData` method (the `if`-`else`
+    drop logic is bolded):'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[非文本组件中的CCP](listpaste.html)页面上讨论的`ListCutPaste`示例支持拖放和剪切复制粘贴。这是它的`importData`方法（用粗体标记了`if`-`else`的逻辑）：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This is the only place where you need to install `if`-`else` logic to distinguish
+    between dnd and ccp.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是唯一需要安装`if`-`else`逻辑来区分拖放和剪切复制粘贴的地方。

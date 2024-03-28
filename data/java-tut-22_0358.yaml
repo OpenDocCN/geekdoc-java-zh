@@ -1,0 +1,127 @@
+- en: Adjusting the CelsiusConverter GUI
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 调整 CelsiusConverter GUI
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/learn/adjustinggui.html](https://docs.oracle.com/javase/tutorial/uiswing/learn/adjustinggui.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/learn/adjustinggui.html](https://docs.oracle.com/javase/tutorial/uiswing/learn/adjustinggui.html)
+- en: With the GUI components now in place, it is time to make the final adjustments.
+    There are a few different ways to do this; the order suggested here is just one
+    possible approach.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，GUI 组件已经就位，是时候进行最后的调整了。有几种不同的方法可以做到这一点；这里建议的顺序只是一种可能的方法。
+- en: 'Step 1: Set the Component Text'
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤 1：设置组件文本
+- en: First, double-click the `JTextField` and `JButton` to change the default text
+    that was inserted by the IDE. When you erase the text from the `JTextField`, it
+    will shrink in size as shown below. Change the text of the `JButton` from "JButton1"
+    to "Convert." Also change the top `JLabel` text to "Celsius" and the bottom to
+    "Fahrenheit."
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，双击`JTextField`和`JButton`以更改 IDE 插入的默认文本。当你从`JTextField`中擦除文本时，它会如下所示地缩小。将`JButton`的文本从“JButton1”更改为“Convert”。还将顶部`JLabel`的文本更改为“Celsius”，底部更改为“Fahrenheit”。
+- en: '![Setting the Component Text](../Images/70e84e4650d35a5f0a8be64b4692df40.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![设置组件文本](../Images/70e84e4650d35a5f0a8be64b4692df40.png)'
+- en: Setting the Component Text
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置组件文本
+- en: 'Step 2: Set the Component Size'
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤 2：设置组件大小
+- en: Next, shift-click the `JTextField` and `JButton` components. This will highlight
+    each showing that they are selected. Right-click (control-click for mac users)
+    Same Size -> Same Width. The components will now be the same width, as shown below.
+    When you perform this step, make sure that `JFrame` itself is not also selected.
+    If it is, the Same Size menu will not be active.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，按住`JTextField`和`JButton`组件并进行 shift 点击。这将突出显示它们各自被选中。右键点击（Mac 用户为 control
+    点击）选择“相同大小” -> “相同宽度”。现在，这些组件的宽度将相同，如下所示。在执行此步骤时，请确保`JFrame`本身没有被选中。如果选中了，相同大小菜单将不可用。
+- en: '![Setting the JTextField and JButton Sizes](../Images/bebeb2074ff96bb430aa7920d2e93fc0.png)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_IMG
+  zh: '![设置 JTextField 和 JButton 大小](../Images/bebeb2074ff96bb430aa7920d2e93fc0.png)'
+- en: Setting the JTextField and JButton Sizes
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置 JTextField 和 JButton 大小
+- en: 'Step 3: Remove Extra Space'
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤 3：移除额外空间
+- en: Finally, grab the lower right-hand corner of the `JFrame` and adjust its size
+    to eliminate any extra whitespace. Note that if you eliminate all of the extra
+    space (as shown below) the title (which only appears at runtime) may not show
+    completely. The end-user is free to resize the application as desired, but you
+    may want to leave some extra space on the right side to make sure that everything
+    fits correctly. Experiment, and use the screenshot of the finished GUI as a guide.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，拖动`JFrame`的右下角并调整其大小以消除任何额外的空白。请注意，如果消除了所有额外的空间（如下所示），标题（仅在运行时显示）可能不会完全显示。最终用户可以根据需要调整应用程序的大小，但你可能希望在右侧留一些额外的空间，以确保一切都正确地适合。尝试一下，并使用完成
+    GUI 的截图作为指南。
+- en: '![The Completed GUI](../Images/16c5a53a8346262c5b23039056a91574.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_IMG
+  zh: '![完成的 GUI](../Images/16c5a53a8346262c5b23039056a91574.png)'
+- en: The Completed GUI
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 完成的 GUI
+- en: The GUI portion of this application is now complete! If the NetBeans IDE has
+    done its job, you should feel that creating this GUI was a simple, if not trivial,
+    task. But take a minute to click on the source tab; you might be surprised at
+    the amount of code that has been generated.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此应用程序的 GUI 部分现在已经完成！如果 NetBeans IDE 完成了它的工作，你应该觉得创建这个 GUI 是一个简单的，甚至是微不足道的任务。但是花点时间点击源选项卡；你可能会对生成的代码量感到惊讶。
+- en: '[![the contents of the NetBeans source tab for the simple GUI example](../Images/19a7854809ea67be86ad5d0e8b0a4982.png)](../../figures/uiswing/learn/nb-swing-19.png)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![简单 GUI 示例中 NetBeans 源选项卡的内容](../Images/19a7854809ea67be86ad5d0e8b0a4982.png)](../../figures/uiswing/learn/nb-swing-19.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击图像以查看其自然大小。*
+- en: To see the code in its entirety, scroll up and down within the IDE as necessary.
+    You can expand or collapse certain blocks of code (such as method bodies) by clicking
+    the + or - symbol on the left-hand side of the source editor.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要查看完整的代码，请根据需要在 IDE 中上下滚动。你可以通过点击源编辑器左侧的 + 或 - 符号来展开或折叠某些代码块（如方法体）。

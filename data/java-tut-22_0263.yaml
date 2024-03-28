@@ -1,0 +1,163 @@
+- en: Developing an Applet
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: ��发 Applet
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/developingApplet.html](https://docs.oracle.com/javase/tutorial/deployment/applet/developingApplet.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/developingApplet.html](https://docs.oracle.com/javase/tutorial/deployment/applet/developingApplet.html)
+- en: 'An application designed using [component-based architecture](../index.html#componentBasedArch)
+    can be developed into a Java applet. Consider the example of a Java applet with
+    a Swing-based graphical user interface (GUI). With component-based design, the
+    GUI can be built with smaller building blocks or components. The following general
+    steps are used to create an applet GUI:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[基于组件的架构](../index.html#componentBasedArch)设计的应用程序可以开发为 Java applet。考虑具有基于
+    Swing 的图形用户界面（GUI）的 Java applet 的示例。通过组件化设计，GUI 可以使用更小的构建块或组件构建。以下是用于创建 applet
+    GUI 的一般步骤：
+- en: Create a class `MyTopJPanel` that is a subclass of `javax.swing.JPanel`. Lay
+    out your applet's GUI components in the constructor of the `MyTopJPanel` class.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建一个名为`MyTopJPanel`的类，它是`javax.swing.JPanel`的子类。在`MyTopJPanel`类的构造函数中布置您的 applet
+    的 GUI 组件。
+- en: Create a class called `MyApplet` that is a subclass of `javax.swing.JApplet`.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建一个名为`MyApplet`的类，它是`javax.swing.JApplet`的子类。
+- en: In the `init` method of `MyApplet`, instantiate `MyTopJPanel` and set it as
+    the applet's content pane.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在`MyApplet`的`init`方法中，实例化`MyTopJPanel`并将其设置为 applet 的内容窗格。
+- en: The following sections explore these steps in greater detail by using the Dynamic
+    Tree Demo applet. If you are not familiar with Swing, see [Creating a GUI with
+    Swing](../../uiswing/index.html) to learn more about using Swing GUI components.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下部分通过使用动态树演示 applet 更详细地探讨这些步骤。如果您对 Swing 不熟悉，请参阅[使用 Swing 创建 GUI](../../uiswing/index.html)以了解更多关于使用
+    Swing GUI 组件的信息。
+- en: '//&lt;![CDATA[ var attributes = { code:''appletComponentArch.DynamicTreeApplet.class'',
+    archive:''examples/dist/applet_ComponentArch_DynamicTreeDemo/DynamicTreeDemo.jar'',
+    width:300, height:300} ; var parameters = {jnlp_href: ''examples/dist/applet_ComponentArch_DynamicTreeDemo/dynamictree_applet.jnlp''}
+    ; deployJava.runApplet(attributes, parameters, ''1.4''); //]]&gt;'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '//&lt;![CDATA[ var attributes = { code:''appletComponentArch.DynamicTreeApplet.class'',
+    archive:''examples/dist/applet_ComponentArch_DynamicTreeDemo/DynamicTreeDemo.jar'',
+    width:300, height:300} ; var parameters = {jnlp_href: ''examples/dist/applet_ComponentArch_DynamicTreeDemo/dynamictree_applet.jnlp''}
+    ; deployJava.runApplet(attributes, parameters, ''1.4''); //]]&gt;'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到示例运行，请确保在浏览器中启用 JavaScript 解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Creating the Top `JPanel` Class
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建顶部`JPanel`类
+- en: Create a class that is a subclass of `JPanel`. This top `JPanel` acts as a container
+    for all your other UI components. In the following example, the `DynamicTreePanel`
+    class is the topmost `JPanel`. The constructor of the `DynamicTreePanel` class
+    invokes other methods to create and lay out the UI controls properly.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建一个是`JPanel`子类的类。这个顶部`JPanel`充当所有其他 UI 组件的容器。在下面的示例中，`DynamicTreePanel`类是最顶层的`JPanel`。`DynamicTreePanel`类的构造函数调用其他方法来正确创建和布局
+    UI 控件。
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Creating the Applet
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建 Applet
+- en: For a Java applet that has a Swing-based GUI, create a class that is a subclass
+    of `javax.swing.JApplet`. An applet that does not contain a Swing-based GUI can
+    extend the `java.applet.Applet` class.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于具有基于 Swing 的 GUI 的 Java applet，请创建一个类，它是`javax.swing.JApplet`的子类。不包含基于 Swing
+    的 GUI 的 applet 可以扩展`java.applet.Applet`类。
+- en: Override the applet's `init` method to instantiate your top `JPanel` class and
+    create the applet's GUI. The `init` method of the `DynamicTreeApplet` class invokes
+    the `createGUI` method in the AWT Event Dispatcher thread.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 覆盖 applet 的`init`方法以实例化您的顶部`JPanel`类并创建 applet 的 GUI。`DynamicTreeApplet`类的`init`方法在
+    AWT 事件分发线程中调用`createGUI`方法。
+- en: '[PRE1]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Benefits of Separating Core Functionality From the Final Deployment Mechanism
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将核心功能与最终部署机制分离的好处
+- en: Another way to create an applet is to just remove the layer of abstraction (separate
+    top `JPanel`) and lay out all the controls in the applet's `init` method itself.
+    The downside to creating the GUI directly in the applet is that it will now be
+    more difficult to deploy your functionality as a Java Web Start application, if
+    you choose to do so later.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种创建 applet 的方法是只需移除抽象层（单独的顶部`JPanel`）并在 applet 的`init`方法中布置所有控件。直接在 applet
+    中创建 GUI 的缺点是，如果以后选择将功能部署为 Java Web Start 应用程序，则现在将更难部署您的功能。
+- en: In the Dynamic Tree Demo example, the core functionality resides in the `DynamicTreePanel`
+    class. It is now trivial to drop the `DynamicTreePanel` class into a `JFrame`
+    and deploy as a Java Web Start application.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在动态树演示示例中，核心功能位于`DynamicTreePanel`类中。现在，将`DynamicTreePanel`类放入`JFrame`并部署为Java
+    Web Start应用程序变得轻而易举。
+- en: Hence, to preserve portability and keep deployment options open, follow component-based
+    design as described on this page.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，为了保持可移植性并保持部署选项开放，请按照本页描述的基于组件的设计。
+- en: '[Download source code](examplesIndex.html#ComponentArchDynamicTreeDemo) for
+    the *Dynamic Tree Demo Applet* example to experiment further.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#ComponentArchDynamicTreeDemo)以进一步实验*动态树演示程序*示例。'

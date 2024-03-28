@@ -1,0 +1,138 @@
+- en: Demo - ChooseDropAction
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 演示 - 选择放置操作
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropactiondemo.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropactiondemo.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropactiondemo.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropactiondemo.html)
+- en: The following demo, `ChooseDropActionDemo`, contains three lists. As you can
+    see in the screen shot, the list on the left, labeled "Drag from here", is the
+    drag source. This list supports both move and copy but it does not implement import
+    — so you cannot drop into it.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下演示`ChooseDropActionDemo`包含三个列表。如屏幕截图所示，左侧的列表标有“从这里拖动”，是拖动源。该列表支持移动和复制，但不实现导入，因此无法将内容拖放到其中。
+- en: On the right side are two lists that act as drop targets. The top list, labeled
+    "Drop to COPY here" will only allow data to be copied to it. The bottom list,
+    labeled "Drop to MOVE here" will only allow data to be moved to it. The source
+    list only allows data to be dragged from it.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 右侧是两个充当放置目标的列表。顶部列表标有“在此处复制”，只允许将数据复制到其中。底部列表标有“在此处移动”，只允许将数据移动到其中。源列表只允许从中拖动数据。
+- en: '![A snapshot of the ChooseDropActionDemo demo.](../Images/33d75f9a4430f2ba47e75ed64ff00968.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ChooseDropActionDemo演示的快照。](../Images/33d75f9a4430f2ba47e75ed64ff00968.png)'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: Click the Launch button to run `ChooseDropActionDemo` using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/dnd/index.html#ChooseDropAction).[![Launches
+    the ChooseDropActionDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ChooseDropActionDemoProject/ChooseDropActionDemo.jnlp)
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行`ChooseDropActionDemo`（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/dnd/index.html#ChooseDropAction)。[![启动ChooseDropActionDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ChooseDropActionDemoProject/ChooseDropActionDemo.jnlp)
+- en: Select an item in the source list and drag to the upper target list. As you
+    drag over the target, notice that the copy-drop mouse cursor displays, even if
+    you are not holding the Control key to signify that you want a copy action. (Note
+    that the copy cursor does not appear on the Macintosh platform, unless you are
+    pressing the Option key.)
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在源列表中选择一个项目并拖动到上方目标列表。当你拖动到目标上方��，即使你没有按住 Control 键表示要进行复制操作，也会注意到显示复制放置鼠标指针。（请注意，在
+    Macintosh 平台上，除非按住 Option 键，否则不会显示复制指针。）
+- en: Drop the item. It is inserted into the target list but not removed from the
+    source — as desired.
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 放下项目。它被插入到目标列表中，但不会从源列表中移除 - 如期望的那样。
+- en: Drag again from the source list, but this time into the lower target list. Drop
+    the item. It is inserted into the target list and removed from the source list.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次从源列表拖动，但这次放入下方目标列表。放下项目。它被插入到目标列表中并从源列表中移除。
+- en: Select another item in the source list and, while pressing the Control key to
+    indicate a preference for the COPY action, drag the item to the lower target list.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在源列表中选择另一项，并在按住 Control 键的同时拖动该项到下方目标列表，表示偏好复制操作。
+- en: Drop the item into the list. The item is not inserted — the drop is rejected.
+    The `canImport` method for the transfer handler was coded to reject the COPY action,
+    but it could have been implemented to return true, in which case the user action
+    would prevail and a copy would occur.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将项目放入列表中。项目不会被插入 - 拖放被拒绝。传输处理程序的`canImport`方法被编码为拒绝复制操作，但也可以实现为返回 true，这样用户操作将占上风，复制将发生。
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'As you might guess, the [``ChooseDropActionDemo.java``](../examples/dnd/ChooseDropActionDemoProject/src/dnd/ChooseDropActionDemo.java)
+    example contains two `TransferHandler` implementations:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你所猜测的，[``ChooseDropActionDemo.java``](../examples/dnd/ChooseDropActionDemoProject/src/dnd/ChooseDropActionDemo.java)示例包含两个`TransferHandler`实现：
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `FromTransferHandler`, attached to the source list, allows for dragging
+    from the list and supports both copy and move actions. If you try to drop onto
+    this list, the drop will be rejected because `FromTransferHandler` has not implemented
+    the `canImport` and `importData` methods.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`FromTransferHandler`附加到源列表，允许从列表中拖动并支持复制和移动操作。如果尝试将内容放置到此列表中，将会被拒绝，因为`FromTransferHandler`未实现`canImport`和`importData`方法。'
+- en: The `ToTransferHandler`, attached to *both* the move-only and the copy-only
+    target list, contains a constructor that specifies whether the target list will
+    allow only copy or only move. An instance that supports the copy action is attached
+    to the copy-only list and an instance that supports the move action is attached
+    to the move-only list.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ToTransferHandler` 被附加到*移动*和*复制*目标列表上，包含一个构造函数，指定目标列表是否只允许复制或只允许移动。支持复制操作的实例被附加到复制列表上，支持移动操作的实例被附加到移动列表上。'
+- en: You might also be interested in the [Top-Level Drop](toplevel.html) example
+    which also illustrates choosing the drop action.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能也对[顶层放置](toplevel.html)示例感兴趣，该示例还说明了如何选择放置操作。
+- en: Next we look at showing the drop location.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来我们来看如何显示放置位置。

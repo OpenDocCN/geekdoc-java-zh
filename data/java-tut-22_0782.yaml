@@ -1,0 +1,651 @@
+- en: Using StAX
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用 StAX
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/stax/using.html](https://docs.oracle.com/javase/tutorial/jaxp/stax/using.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/stax/using.html](https://docs.oracle.com/javase/tutorial/jaxp/stax/using.html)
+- en: In general, StAX programmers create XML stream readers, writers, and events
+    by using the `XMLInputFactory`, `XMLOutputFactory`, and `XMLEventFactory` classes.
+    Configuration is done by setting properties on the factories, whereby implementation-specific
+    settings can be passed to the underlying implementation using the `setProperty`
+    method on the factories. Similarly, implementation-specific settings can be queried
+    using the `getProperty` factory method.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一般来说，StAX 程序员通过使用 `XMLInputFactory`、`XMLOutputFactory` 和 `XMLEventFactory` 类来创建
+    XML 流读取器、写入器和事件。通过在工厂上设置属性来进行配置，可以通过在工厂上使用 `setProperty` 方法将特定于实现的设置传递给底层实现。类似地，可以使用
+    `getProperty` 工厂方法查询特定于实现的设置。
+- en: The `XMLInputFactory`, `XMLOutputFactory`, and `XMLEventFactory` classes are
+    described below, followed by discussions of resource allocation, namespace and
+    attribute management, error handling, and then finally reading and writing streams
+    using the cursor and iterator APIs.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面描述了 `XMLInputFactory`、`XMLOutputFactory` 和 `XMLEventFactory` 类，然后讨论了资源分配、命名空间和属性管理、错误处理，最后使用游标和迭代器
+    API 读取和写入流。
+- en: StAX Factory Classes
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: StAX 工厂类
+- en: The StAX factory classes. `XMLInputFactory`, `XMLOutputFactory`, and `XMLEventFactory`,
+    let you define and configure implementation instances of XML stream reader, stream
+    writer, and event classes.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX 工厂类。`XMLInputFactory`、`XMLOutputFactory` 和 `XMLEventFactory`，让您定义和配置 XML
+    流读取器、流写入器和事件类的实现实例。
+- en: XMLInputFactory
+  id: totrans-6
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: XMLInputFactory
+- en: The `XMLInputFactory` class lets you configure implementation instances of XML
+    stream reader processors created by the factory. New instances of the abstract
+    class `XMLInputFactory` are created by calling the `newInstance` method on the
+    class. The static method `XMLInputFactory.newInstance` is then used to create
+    a new factory instance.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`XMLInputFactory` 类允许您配置由工厂创建的 XML 流读取器处理器的实现实例。通过在类上调用 `newInstance` 方法来创建抽象类
+    `XMLInputFactory` 的新实例。然后使用静态方法 `XMLInputFactory.newInstance` 来创建新的工厂实例。'
+- en: 'Deriving from JAXP, the `XMLInputFactory.newInstance` method determines the
+    specific `XMLInputFactory` implementation class to load by using the following
+    lookup procedure:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 派生自 JAXP，`XMLInputFactory.newInstance` 方法通过以下查找过程确定要加载的特定 `XMLInputFactory`
+    实现类：
+- en: Use the `javax.xml.stream.XMLInputFactory` system property.
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用 `javax.xml.stream.XMLInputFactory` 系统属性。
+- en: Use the `lib/xml.stream.properties` file in the Java SE platform's Java Runtime
+    Environment (JRE) directory.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用 Java SE 平台的 Java Runtime Environment (JRE) 目录中的 `lib/xml.stream.properties`
+    文件。
+- en: Use the Services API, if available, to determine the classname by looking in
+    the `META-INF/services/javax.xml.stream.XMLInputFactory` files in JAR files available
+    to the JRE.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果可用，使用 Services API 通过查找 JRE 中可用的 JAR 文件中的 `META-INF/services/javax.xml.stream.XMLInputFactory`
+    文件确定类名。
+- en: Use the platform default `XMLInputFactory` instance.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用平台默认的 `XMLInputFactory` 实例。
+- en: After getting a reference to an appropriate `XMLInputFactory`, an application
+    can use the factory to configure and create stream instances. The following table
+    lists the properties supported by `XMLInputFactory`. See the StAX specification
+    for a more detailed listing.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在获取适当的 `XMLInputFactory` 引用之后，应用程序可以使用工厂来配置和创建流实例。以下表格列出了 `XMLInputFactory`
+    支持的属性。详细列表请参阅 StAX 规范。
+- en: '`javax.xml.stream.XMLInputFactory` Properties'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`javax.xml.stream.XMLInputFactory` 属性'
+- en: '| Property | Description |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性 | 描述 |'
+- en: '| `isValidating` | Turns on implementation-specific validation. |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| `isValidating` | 打开实现特定的验证。 |'
+- en: '| `isCoalescing` | **(Required)** Requires the processor to coalesce adjacent
+    character data. |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| `isCoalescing` | **(必需)** 要求处理器合并相邻的字符数据。 |'
+- en: '| `isNamespaceAware` | Turns off namespace support. All implementations must
+    support namespaces. Support for non-namespace-aware documents is optional. |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| `isNamespaceAware` | 关闭命名空间支持。所有实现必须支持命名空间。对非命名空间感知文档的支持是可选的。 |'
+- en: '| `isReplacingEntityReferences` | **(Required)** Requires the processor to
+    replace internal entity references with their replacement value and report them
+    as characters or the set of events that describe the entity. |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| `isReplacingEntityReferences` | **(必需)** 要求处理器用其替换值替换内部实体引用，并将其报告为字符或描述实体的事件集。
+    |'
+- en: '| `isSupportingExternalEntities` | **(Required)** Requires the processor to
+    resolve external parsed entities. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| `isSupportingExternalEntities` | **(必需)** 要求处理器解析外部解析实体。 |'
+- en: '| `reporter` | **(Required)** Sets and gets the implementation of the `XMLReporter`
+    interface. |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| `reporter` | **(必需)** 设置并获取`XMLReporter`接口的实现。 |'
+- en: '| `resolver` | **(Required)** Sets and gets the implementation of the `XMLResolver`
+    interface. |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| `resolver` | **(必需)** 设置并获取`XMLResolver`接口的实现。 |'
+- en: '| `allocator` | **(Required)** Sets and gets the implementation of the `XMLEventAllocator`
+    interface. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| `allocator` | **(必需)** 设置并获取`XMLEventAllocator`接口的实现。 |'
+- en: XMLOutputFactory
+  id: totrans-24
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: XMLOutputFactory
+- en: New instances of the abstract class `XMLOutputFactory` are created by calling
+    the `newInstance` method on the class. The static method `XMLOutputFactory.newInstance`
+    is then used to create a new factory instance. The algorithm used to obtain the
+    instance is the same as for `XMLInputFactory` but references the `javax.xml.stream.XMLOutputFactory`
+    system property.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过在类上调用`newInstance`方法来创建抽象类`XMLOutputFactory`的新实例。然后使用静态方法`XMLOutputFactory.newInstance`来创建一个新的工厂实例。用于获取实例的算法与`XMLInputFactory`相同，但引用`javax.xml.stream.XMLOutputFactory`系统属性。
+- en: '`XMLOutputFactory` supports only one property, `javax.xml.stream.isRepairingNamespaces`.
+    This property is required, and its purpose is to create default prefixes and associate
+    them with Namespace URIs. See the StAX specification for more information.'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`XMLOutputFactory` 只支持一个属性，即`javax.xml.stream.isRepairingNamespaces`。此属性是必需的，其目的是创建默认前缀并将其与命名空间
+    URI 关联起来。有关更多信息，请参阅 StAX 规范。'
+- en: XMLEventFactory
+  id: totrans-27
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: '`XMLEventFactory`'
+- en: New instances of the abstract class `XMLEventFactory` are created by calling
+    the `newInstance` method on the class. The static method `XMLEventFactory.newInstance`
+    is then used to create a new factory instance. This factory references the `javax.xml.stream.XMLEventFactory`
+    property to instantiate the factory. The algorithm used to obtain the instance
+    is the same as for `XMLInputFactory` and `XMLOutputFactory` but references the
+    `javax.xml.stream.XMLEventFactory` system property.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '通过在类上调用`newInstance`方法来创建抽象类`XMLEventFactory`的新实例。然后使用静态方法`XMLEventFactory.newInstance`来创建一个新的工厂实例。此工厂引用`javax.xml.stream.XMLEventFactory`属性来实例化工厂。用于获取实例的算法与`XMLInputFactory`和`XMLOutputFactory`相同，但引用`javax.xml.stream.XMLEventFactory`系统属性。 '
+- en: There are no default properties for `XMLEventFactory`.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`XMLEventFactory` 没有默认属性。'
+- en: Resources, Namespaces, and Errors
+  id: totrans-30
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 资源、命名空间和错误
+- en: The StAX specification handles resource resolution, attributes and namespace,
+    and errors and exceptions as described below.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX 规范处理资源解析、属性和命名空间，以及错误和异常，如下所述。
+- en: Resource Resolution
+  id: totrans-32
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 资源解析
+- en: The `XMLResolver` interface provides a means to set the method that resolves
+    resources during XML processing. An application sets the interface on `XMLInputFactory`,
+    which then sets the interface on all processors created by that factory instance.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`XMLResolver`接口提供了在 XML 处理期间解析资源的方法。应用程序在`XMLInputFactory`上设置接口，然后该工厂实例创建的所有处理器都设置该接口。'
+- en: Attributes and Namespaces
+  id: totrans-34
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 属性和命名空间
+- en: Attributes are reported by a StAX processor using lookup methods and strings
+    in the cursor interface, and `Attribute` and `Namespace` events in the iterator
+    interface. Note here that namespaces are treated as attributes, although namespaces
+    are reported separately from attributes in both the cursor and iterator APIs.
+    Note also that namespace processing is optional for StAX processors. See the StAX
+    specification for complete information about namespace binding and optional namespace
+    processing.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性由 StAX 处理器使用游标接口中的查找方法和字符串以及迭代器接口中的`Attribute`和`Namespace`事件报告。请注意，命名空间被视为属性，尽管在游标和迭代器
+    API 中，命名空间与属性分开报告。还要注意，命名空间处理对于 StAX 处理器是可选的。有关命名空间绑定和可选命名空间处理的完整信息，请参阅 StAX 规范。
+- en: Error Reporting and Exception Handling
+  id: totrans-36
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 错误报告和异常处理
+- en: All fatal errors are reported by way of the `javax.xml.stream.XMLStreamException`
+    interface. All nonfatal errors and warnings are reported using the `javax.xml.stream.XMLReporter`
+    interface.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有致命错误都通过`javax.xml.stream.XMLStreamException`接口报告。所有非致命错误和警告都使用`javax.xml.stream.XMLReporter`接口报告。
+- en: Reading XML Streams
+  id: totrans-38
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 读取 XML 流
+- en: As described earlier in this lesson, the way you read XML streams with a StAX
+    processor—and more importantly, what you get back—varies significantly depending
+    on whether you are using the StAX cursor API or the event iterator API. The following
+    two sections describe how to read XML streams with each of these APIs.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如在本课程前面所描述的，使用StAX处理器读取XML流的方式——更重要的是，您得到的内容——取决于您是使用StAX游标API还是事件迭代器API，这两个部分描述了如何使用这两个API读取XML流。
+- en: Using XMLStreamReader
+  id: totrans-40
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用XMLStreamReader
+- en: 'The `XMLStreamReader` interface in the StAX cursor API lets you read XML streams
+    or documents in a forward direction only, one item in the infoset at a time. The
+    following methods are available for pulling data from the stream or skipping unwanted
+    events:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX游标API中的`XMLStreamReader`接口只允许您以向前方向读取XML流或文档，每次只能读取信息集中的一个项目。以下方法可用于从流中提取数据或跳过不需要的事件：
+- en: Get the value of an attribute
+  id: totrans-42
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取属性的值
+- en: Read XML content
+  id: totrans-43
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 读取XML内容
+- en: Determine whether an element has content or is empty
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 确定一个元素是否有内容或为空
+- en: Get indexed access to a collection of attributes
+  id: totrans-45
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取对属性集合的索引访问
+- en: Get indexed access to a collection of namespaces
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取对命名空间集合的索引访问
+- en: Get the name of the current event (if applicable)
+  id: totrans-47
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取当前事件的名称（如果适用）
+- en: Get the content of the current event (if applicable)
+  id: totrans-48
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取当前事件的内容（如果适用）
+- en: Instances of `XMLStreamReader` have at any one time a single current event on
+    which its methods operate. When you create an instance of `XMLStreamReader` on
+    a stream, the initial current event is the `START_DOCUMENT` state. The `XMLStreamReader.next`
+    method can then be used to step to the next event in the stream.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`XMLStreamReader`的实例在任何时候都有一个当前事件，其方法在其上操作。当您在流上创建一个`XMLStreamReader`实例时，初始当前事件是`START_DOCUMENT`状态。然后可以使用`XMLStreamReader.next`方法来跳到流中的下一个事件。'
+- en: Reading Properties, Attributes, and Namespaces
+  id: totrans-50
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 读取属性、属性和命名空间
+- en: The `XMLStreamReader.next` method loads the properties of the next event in
+    the stream. You can then access those properties by calling the `XMLStreamReader.getLocalName`
+    and `XMLStreamReader.getText` methods.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`XMLStreamReader.next`方法加载流中下一个事件的属性。然后，您可以通过调用`XMLStreamReader.getLocalName`和`XMLStreamReader.getText`方法来访问这些属性。'
+- en: When the `XMLStreamReader` cursor is over a `StartElement` event, it reads the
+    name and any attributes for the event, including the namespace. All attributes
+    for an event can be accessed using an index value, and can also be looked up by
+    namespace URI and local name. Note, however, that only the namespaces declared
+    on the current `StartEvent` are available; previously declared namespaces are
+    not maintained, and redeclared namespaces are not removed.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当`XMLStreamReader`游标位于`StartElement`事件上时，它读取事件的名称和任何属性，包括命名空间。可以使用索引值访问事件的所有属性，并且还可以通过命名空间URI和本地名称查找。但请注意，只有当前`StartEvent`上声明的命名空间可用；之前声明的命名空间不会被保留，重新声明的命名空间也不会被移除。
+- en: XMLStreamReader Methods
+  id: totrans-53
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: XMLStreamReader方法
+- en: '`XMLStreamReader` provides the following methods for retrieving information
+    about namespaces and attributes:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`XMLStreamReader`提供以下方法来检索有关命名空间和属性的信息：'
+- en: '[PRE0]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Namespaces can also be accessed using three additional methods:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也可以使用三种额外的方法访问命名空间：
+- en: '[PRE1]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Instantiating an XMLStreamReader
+  id: totrans-58
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 实例化一个XMLStreamReader
+- en: 'This example, taken from the StAX specification, shows how to instantiate an
+    input factory, create a reader, and iterate over the elements of an XML stream:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例取自StAX规范，展示了如何实例化一个输入工厂，创建一个读取器，并遍历XML流的元素：
+- en: '[PRE2]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Using XMLEventReader
+  id: totrans-61
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用XMLEventReader
+- en: The `XMLEventReader` API in the StAX event iterator API provides the means to
+    map events in an XML stream to allocated event objects that can be freely reused,
+    and the API itself can be extended to handle custom events.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX事件迭代器API中的`XMLEventReader` API提供了将XML流中的事件映射到可以自由重用的分配的事件对象的方法，并且API本身可以扩展以处理自定义事件。
+- en: '`XMLEventReader` provides four methods for iteratively parsing XML streams:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`XMLEventReader`提供了四种方法来迭代解析XML流：'
+- en: '`next`: Returns the next event in the stream'
+  id: totrans-64
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`next`：返回流中的下一个事件'
+- en: '`nextEvent`: Returns the next typed XMLEvent'
+  id: totrans-65
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`nextEvent`：返回下一个类型化的XMLEvent'
+- en: '`hasNext`: Returns true if there are more events to process in the stream'
+  id: totrans-66
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`hasNext`：如果流中有更多事件要处理，则返回true'
+- en: '`peek`: Returns the event but does not iterate to the next event'
+  id: totrans-67
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`peek`：返回事件但不迭代到下一个事件'
+- en: 'For example, the following code snippet illustrates the `XMLEventReader` method
+    declarations:'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，以下代码片段说明了`XMLEventReader`方法声明：
+- en: '[PRE3]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'To read all events on a stream and then print them, you could use the following:'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要读取流上的所有事件然后打印它们，您可以使用以下方法：
+- en: '[PRE4]'
+  id: totrans-71
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Reading Attributes
+  id: totrans-72
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 读取属性
+- en: 'You can access attributes from their associated `javax.xml.stream.StartElement`,
+    as follows:'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以从其关联的`javax.xml.stream.StartElement`中访问属性，如下所示：
+- en: '[PRE5]'
+  id: totrans-74
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: You can use the `getAttributes` method on the `StartElement` interface to use
+    an `Iterator` over all the attributes declared on that `StartElement`.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用`StartElement`接口上的`getAttributes`方法来使用在该`StartElement`上声明的所有属性的`Iterator`。
+- en: Reading Namespaces
+  id: totrans-76
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 读取命名空间
+- en: Similar to reading attributes, namespaces are read using an `Iterator` created
+    by calling the `getNamespaces` method on the `StartElement` interface. Only the
+    namespace for the current `StartElement` is returned, and an application can get
+    the current namespace context by using `StartElement.getNamespaceContext`.
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与读取属性类似，命名空间是通过调用`StartElement`接口上的`getNamespaces`方法创建的`Iterator`来读取的。仅返回当前`StartElement`的命名空间，并且应用程序可以通过使用`StartElement.getNamespaceContext`来获取当前命名空间上下文。
+- en: Writing XML Streams
+  id: totrans-78
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 写入XML流
+- en: StAX is a bidirectional API, and both the cursor and event iterator APIs have
+    their own set of interfaces for writing XML streams. As with the interfaces for
+    reading streams, there are significant differences between the writer APIs for
+    cursor and event iterator. The following sections describe how to write XML streams
+    using each of these APIs.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX是一个双向API，游标和事件迭代器API都有自己的一套接口用于写入XML流。与读取流的接口一样，写入器API对于游标和事件迭代器之间存在显著差异。以下部分描述了如何使用这些API之一来写入XML流。
+- en: Using XMLStreamWriter
+  id: totrans-80
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用XMLStreamWriter
+- en: 'The `XMLStreamWriter` interface in the StAX cursor API lets applications write
+    back to an XML stream or create entirely new streams. XMLStreamWriter has methods
+    that let you:'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX游标API中的`XMLStreamWriter`接口允许应用程序写回到XML流或创建全新的流。XMLStreamWriter具有让您执行以下操作的方法：
+- en: Write well-formed XML
+  id: totrans-82
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 写入格式良好的XML
+- en: Flush or close the output
+  id: totrans-83
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 刷新或关闭输出
+- en: Write qualified names
+  id: totrans-84
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 写入限定名称
+- en: Note that `XMLStreamWriter` implementations are not required to perform well-formedness
+    or validity checks on input. While some implementations may perform strict error
+    checking, others may not. The rules you implement are applied to properties defined
+    in the `XMLOutputFactory` class.
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`XMLStreamWriter`实现不需要对输入执行格式良好性或有效性检查。虽然一些实现可能执行严格的错误检查，但其他可能不会。您实现的规则适用于`XMLOutputFactory`类中定义的属性。
+- en: The `writeCharacters` method is used to escape characters such as `&`, `<`,
+    `>`, and `"`. Binding prefixes can be handled by either passing the actual value
+    for the prefix, by using the `setPrefix` method, or by setting the property for
+    defaulting namespace declarations.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`writeCharacters`方法转义字符，如`&`、`<`、`>`和`"`。绑定前缀可以通过传递前缀的实际值，使用`setPrefix`方法，或设置默认命名空间声明的属性来处理。
+- en: 'The following example, taken from the StAX specification, shows how to instantiate
+    an output factory, create a writer, and write XML output:'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例取自StAX规范，展示了如何实例化输出工厂，创建写入器并写入XML输出：
+- en: '[PRE6]'
+  id: totrans-88
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'This code generates the following XML (new lines are non-normative):'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码生成以下XML（新行不是规范性的）：
+- en: '[PRE7]'
+  id: totrans-90
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Using XMLEventWriter
+  id: totrans-91
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用XMLEventWriter
+- en: 'The `XMLEventWriter` interface in the StAX event iterator API lets applications
+    write back to an XML stream or create entirely new streams. This API can be extended,
+    but the main API is as follows:'
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX事件迭代器API中的`XMLEventWriter`接口允许应用程序写回到XML流或创建全新的流。此API可以扩展，但主要API如下：
+- en: '[PRE8]'
+  id: totrans-93
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Instances of `XMLEventWriter` are created by an instance of `XMLOutputFactory`.
+    Stream events are added iteratively, and an event cannot be modified after it
+    has been added to an event writer instance.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`XMLEventWriter`的实例是由`XMLOutputFactory`的实例创建的。流事件被迭代地添加，一旦添加到事件写入器实例后，事件就不能被修改。'
+- en: Attributes, Escaping Characters, Binding Prefixes
+  id: totrans-95
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 属性、转义字符、绑定前缀
+- en: StAX implementations are required to buffer the last `StartElement` until an
+    event other than `Attribute` or `Namespace` is added or encountered in the stream.
+    This means that when you add an `Attribute` or a `Namespace` to a stream, it is
+    appended the current `StartElement` event.
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX实现需要缓冲最后一个`StartElement`，直到在流中添加或遇到除`Attribute`或`Namespace`之外的事件。这意味着当您向流中添加`Attribute`或`Namespace`时，它会附加到当前的`StartElement`事件。
+- en: You can use the `Characters` method to escape characters like `&`, `<`, `>`,
+    and `"`.
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用`Characters`方法转义字符如`&`、`<`、`>`和`"`。
+- en: The `setPrefix(...)` method can be used to explicitly bind a prefix for use
+    during output, and the `getPrefix(...)` method can be used to get the current
+    prefix. Note that by default, `XMLEventWriter` adds namespace bindings to its
+    internal namespace map. Prefixes go out of scope after the corresponding `EndElement`
+    for the event in which they are bound.
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`setPrefix(...)` 方法可用于显式绑定输出时使用的前缀，而 `getPrefix(...)` 方法可用于获取当前前缀。请注意，默认情况下，`XMLEventWriter`
+    会将命名空间绑定添加到其内部命名空间映射中。前缀在绑定它们的事件对应的 `EndElement` 后会失效。'

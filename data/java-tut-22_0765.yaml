@@ -1,0 +1,161 @@
+- en: Handling Lexical Events
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 处理词法事件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/sax/events.html](https://docs.oracle.com/javase/tutorial/jaxp/sax/events.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/sax/events.html](https://docs.oracle.com/javase/tutorial/jaxp/sax/events.html)
+- en: At this point, you have digested many XML concepts, including DTDs and external
+    entities. You have also learned your way around the SAX parser. The remainder
+    of this lesson covers advanced topics that you will need to understand only if
+    you are writing SAX-based applications. If your primary goal is to write DOM-based
+    applications, you can skip ahead to [Document Object Model](../dom/index.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，您已经消化了许多XML概念，包括DTD和外部实体。您还学会了如何使用SAX解析器。本课程的其余部分涵盖了您只有在编写基于SAX的应用程序时才需要理解的高级主题。如果您的主要目标是编写基于DOM的应用程序，您可以直接跳转到[文档对象模型](../dom/index.html)。
+- en: You saw earlier that if you are writing text out as XML, you need to know whether
+    you are in a CDATA section. If you are, then angle brackets (<) and ampersands
+    (&) should be output unchanged. But if you are not in a CDATA section, they should
+    be replaced by the predefined entities `&lt;` and `&amp;`. But how do you know
+    whether you are processing a CDATA section?
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您之前看到，如果您将文本写出为XML，您需要知道是否处于CDATA部分中。如果是，则尖括号（<）和和号（&）应保持不变输出。但如果不在CDATA部分中，则应将它们替换为预定义的实体`&lt;`和`&amp;`。但是您如何知道自己是否在处理CDATA部分？
+- en: Then again, if you are filtering XML in some way, you want to pass comments
+    along. Normally the parser ignores comments. How can you get comments so that
+    you can echo them?
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，如果您以某种方式过滤XML，您希望传递注释。通常解析器会忽略注释。您如何获取注释以便可以回显它们？
+- en: This section answers those questions. It shows you how to use `org.xml.sax.ext.LexicalHandler`
+    to identify comments, CDATA sections, and references to parsed entities.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节回答了这些问题。它向您展示了如何使用`org.xml.sax.ext.LexicalHandler`来识别注释、CDATA部分和对解析实体的引用。
+- en: Comments, CDATA tags, and references to parsed entities constitute lexical information-that
+    is, information that concerns the text of the XML itself, rather than the XML's
+    information content. Most applications, of course, are concerned only with the
+    content of an XML document. Such applications will not use the `LexicalEventListener`
+    API. But applications that output XML text will find it invaluable.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注释、CDATA标记和对解析实体的引用构成词法信息-即，涉及XML文本本身而不是XML信息内容的信息。当然，大多数应用程序只关注XML文档的内容。这些应用程序将不使用`LexicalEventListener`
+    API。但是输出XML文本的应用程序会发现它非常有价值。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** Lexical event handling is an optional parser feature. Parser implementations
+    are not required to support it. (The reference implementation does so.) This discussion
+    assumes that your parser does so.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 词法事件处理是一个可选的解析器功能。解析器实现不需要支持它。（参考实现是这样的。）本讨论假定您的解析器支持它。'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: How the `LexicalHandler` Works
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`LexicalHandler`的工作原理'
+- en: To be informed when the SAX parser sees lexical information, you configure the
+    `XmlReader` that underlies the parser with a `LexicalHandler`. The `LexicalHandler`
+    interface defines the following event-handling methods.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在SAX解析器看到词法信息时得到通知，您需要使用`LexicalHandler`配置解析器底层的`XmlReader`。`LexicalHandler`接口定义了以下事件处理方法。
+- en: '`comment(String comment)`'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`comment(String comment)`'
+- en: Passes comments to the application.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将注释传递给应用程序。
+- en: '`startCDATA()`, `endCDATA()`'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`startCDATA()`, `endCDATA()`'
+- en: Tells when a CDATA section is starting and ending, which tells your application
+    what kind of characters to expect the next time `characters()` is called.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 告诉您CDATA部分何时开始和结束，这告诉您的应用程序下次调用`characters()`时可以期望什么样的字符。
+- en: '`startEntity(String name)`, `endEntity(String name)`'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`startEntity(String name)`, `endEntity(String name)`'
+- en: Gives the name of a parsed entity.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 给出解析实体的名称。
+- en: '`startDTD(String name, String publicId, String systemId)`, `endDTD()`'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`startDTD(String name, String publicId, String systemId)`, `endDTD()`'
+- en: Tells when a DTD is being processed, and identifies it.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 告诉您正在处理DTD，并标识它。
+- en: To activate the Lexical Handler, your application must extend `DefaultHandler`
+    and implement the `LexicalHandler` interface. Then, you must configure your `XMLReader`
+    instance that the parser delegates to, and configure it to send lexical events
+    to your lexical handler, as shown below.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要激活词法处理程序，您的应用程序必须扩展`DefaultHandler`并实现`LexicalHandler`接口。然后，您必须配置您的`XMLReader`实例，使解析器委托给它，并配置它将词法事件发送到您的词法处理程序，如下所示。
+- en: '[PRE0]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Here, you configure the `XMLReader` using the `setProperty()` method defined
+    in the `XMLReader` class. The property name, defined as part of the SAX standard,
+    is the URN, `http://xml.org/sax/properties/lexical-handler`.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，您可以使用`XMLReader`类中定义的`setProperty()`方法来配置`XMLReader`。作为SAX标准的一部分定义的属性名称是URN，`http://xml.org/sax/properties/lexical-handler`。
+- en: Finally, add something like the following code to define the appropriate methods
+    that will implement the interface.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，添加类似以下代码来定义将实现接口的适当方法。
+- en: '[PRE1]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This code will transform your parsing application into a lexical handler. All
+    that remains to be done is to give each of these new methods an action to perform.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这段代码将把您的解析应用程序转换为一个词法处理程序。剩下的就是为这些新方法中的每一个指定一个要执行的操作。

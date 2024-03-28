@@ -1,0 +1,359 @@
+- en: How to Write a List Selection Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写列表选择监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/listselectionlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/listselectionlistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/listselectionlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/listselectionlistener.html)
+- en: List selection events occur when the selection in a [list](../components/list.html)
+    or [table](../components/table.html) is either changing or has just changed. List
+    selection events are fired from an object that implements the [`ListSelectionModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/ListSelectionModel.html)
+    interface. To get a table's list selection model object, you can use either `getSelectionModel`
+    method or getColumnModel().getSelectionModel().
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列表选择事件发生在 [列表](../components/list.html) 或 [表格](../components/table.html) 中的选择正在更改或刚刚更改时。列表选择事件是从实现
+    [`ListSelectionModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/ListSelectionModel.html)
+    接口的对象中触发的。要获取表格的列表选择模型对象，可以使用 `getSelectionModel` 方法或 `getColumnModel().getSelectionModel()`。
+- en: To detect list selection events, you register a listener on the appropriate
+    list selection model object. The `JList` class also gives you the option of registering
+    a listener on the list itself, rather than directly on the list selection model.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要检测列表选择事件，您需要在适当的列表选择模型对象上注册监听器。`JList` 类还提供了在列表本身上注册监听器的选项，而不是直接在列表选择模型上注册。
+- en: This section looks at two examples that show how to listen to list selection
+    events on a selection model. [Examples that Use List Selection Listeners](#eg)
+    lists examples that listen on the list directly.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节将介绍两个示例，展示如何监听选择模型上的列表选择事件。[使用列表选择监听器的示例](#eg) 列出了直接在列表上监听的示例。
+- en: 'In these two examples, you can dynamically change the selection mode to any
+    of the three supported modes:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这两个示例中，您可以动态更改选择模式为三种支持的模式之一：
+- en: single selection mode
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 单选模式
+- en: single interval selection mode
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 单区间选择模式
+- en: multiple interval selection mode
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 多区间选择模式
+- en: 'Here is a picture of ListSelectionDemo example running in a List :'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是 ListSelectionDemo 示例在列表中运行的图片：
+- en: '![A snapshot of ListSelectionDemo, which demonstrates selection modes and list
+    selection model.](../Images/f8e202290090e8544a5c17aa09067507.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ListSelectionDemo 的快照，演示了选择模式和列表选择模型。](../Images/f8e202290090e8544a5c17aa09067507.png)'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: Click the Launch button to run ListSelectionDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/events/index.html#ListSelectionDemo).[![Launches
+    the ListSelectionDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ListSelectionDemoProject/ListSelectionDemo.jnlp)
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用 [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    运行 ListSelectionDemo（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考
+    [示例索引](../examples/events/index.html#ListSelectionDemo)。[![启动 ListSelectionDemo
+    示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ListSelectionDemoProject/ListSelectionDemo.jnlp)
+- en: 'Select and deselect items in the list. The mouse and keyboard commands required
+    to select items depends on the look and feel. For the Java look and feel, click
+    the left mouse button to begin a selection, use the shift key to extend a selection
+    contiguously, and use the control key to extend a selection discontiguously. Note
+    that there are two types of selections: Lead and Anchor. Lead is the focused item
+    and Anchor is the highlighted item. When you press ctrl key and move up and down,
+    the lead selection causes the events being fired even though the actual selection
+    has not changed. Dragging the mouse moves or extends the selection, depending
+    on the list selection mode.'
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 选择和取消列表中的项目。选择项目所需的鼠标和键盘命令取决于外观。对于 Java 外观，单击左鼠标按钮开始选择，使用 shift 键连续扩展选择，使用 control
+    键不连续扩展选择。请注意，有两种类型的选择：Lead 和 Anchor。Lead 是焦点项目，Anchor 是高亮项目。当您按下 ctrl 键并上下移动时，Lead
+    选择会导致事件被触发，即使实际选择没有改变。拖动鼠标会根据列表选择模式移动或扩展选择。
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Here is a picture of TableListSelectionDemo example running in a Table:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是 TableListSelectionDemo 示例在表格中运行的图片：
+- en: '![A snapshot of TableListSelectionDemo, which demonstrates selection modes
+    and list selection model.](../Images/763b5f51c4262665b9632cd59e42cf17.png)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TableListSelectionDemo的快照，展示了选择模式和列表选择模型。](../Images/763b5f51c4262665b9632cd59e42cf17.png)'
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run TableListSelectionDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/events/index.html#TableListSelectionDemo).[![Launches
+    the TableListSelectionDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableListSelectionDemoProject/TableListSelectionDemo.jnlp)
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TableListSelectionDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/events/index.html#TableListSelectionDemo)。[![启动TableListSelectionDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableListSelectionDemoProject/TableListSelectionDemo.jnlp)
+- en: 'Select and deselect items in the table. The mouse and keyboard commands required
+    to select items depends on the look and feel. For the Java look and feel, click
+    the left mouse button to begin a selection, use the shift key to extend a selection
+    contiguously, and use the control key to extend a selection discontiguously. Note
+    that there are two types of selections: Lead and Anchor. Lead is the focused item
+    and Anchor is the highlighted item. When you press ctrl key and move up or down,
+    the lead selection causes the events being fired even though the actual selection
+    has not changed. Dragging the mouse moves or extends the selection, depending
+    on the list selection mode.'
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在表格中选择和取消选择项目。选择项目所需的鼠标和键盘命令取决于外观。对于Java外观，单击左鼠标按钮开始选择，使用Shift键连续扩展选择，使用Control键不连续扩展选择。请注意，有两种类型的选择：Lead
+    和 Anchor。Lead 是焦点项目，Anchor 是突出显示的项目。当按下ctrl键并向上或向下移动时，主选择会导致事件被触发，即使实际选择没有更改。拖动鼠标会移动或扩展选择，具体取决于列表选择模式。
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: You can find the entire program of ListSelectionDemo in [``ListSelectionDemo.java``](../examples/events/ListSelectionDemoProject/src/events/ListSelectionDemo.java)
+    and the entire program of TableListSelectionDemo in [``TableListSelectionDemo.java``](../examples/events/TableListSelectionDemoProject/src/events/TableListSelectionDemo.java).
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在[``ListSelectionDemo.java``](../examples/events/ListSelectionDemoProject/src/events/ListSelectionDemo.java)中找到ListSelectionDemo的整个程序，以及在[``TableListSelectionDemo.java``](../examples/events/TableListSelectionDemoProject/src/events/TableListSelectionDemo.java)中找到TableListSelectionDemo的整个程序。
+- en: 'Here is the code from `ListSelectionDemo` that sets up the selection model
+    and adds a listener to it:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是设置选择模型并向其添加监听器的`ListSelectionDemo`中的代码：
+- en: '[PRE0]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'And here is the code for the listener, which works for all the possible selection
+    modes:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是适用于所有可能的选择模式的监听器代码：
+- en: '[PRE1]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This `valueChanged` method displays the first and last indices reported by the
+    event, the value of the event's `isAdjusting` flag, and the indices currently
+    selected.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个`valueChanged`方法显示了事件报告的第一个和最后一个索引，事件的`isAdjusting`标志的值，以及当前选定的索引。
+- en: Note that the first and last indices reported by the event indicate the inclusive
+    range of items for which the selection has changed. If the selection mode is multiple
+    interval selection some items within the range might not have changed. The `isAdjusting`
+    flag is `true` if the user is still manipulating the selection, and `false` if
+    the user has finished changing the selection.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，事件报告的第一个和最后一个索引指示了选择已更改的项目的包含范围。如果选择模式是多区间选择，则范围内的某些项目可能未更改。如果用户仍在操作选择，则`isAdjusting`标志为`true`，如果用户已完成更改选择，则为`false`。
+- en: The `ListSelectionEvent` object passed into `valueChanged` indicates only that
+    the selection has changed. The event contains no information about the current
+    selection. So, this method queries the selection model to figure out the current
+    selection.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传递给`valueChanged`的`ListSelectionEvent`对象仅指示选择已更改。事件不包含有关当前选择的任何信息。因此，此方法查询选择模型以确定当前选择。
+- en: The List Selection Listener API
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 列表选择监听器 API
+- en: The ListSelectionListener Interface
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列表选择监听器接口
+- en: '*Because `ListSelectionListener` has only one method, it has no corresponding
+    adapter class.*'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*因为`ListSelectionListener`只有一个方法，所以没有相应的适配器类。*'
+- en: '| Method | Purpose |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [valueChanged(ListSelectionEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListSelectionListener.html#valueChanged-javax.swing.ListSelectionEvent-)
+    | Called in response to selection changes. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| [valueChanged(ListSelectionEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListSelectionListener.html#valueChanged-javax.swing.ListSelectionEvent-)
+    | 响应选择更改时调用。 |'
+- en: The ListSelectionEvent API
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ListSelectionEvent API
+- en: '| Method | Purpose |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*in `java.util.EventObject`*) | Return the object that fired the event. If you
+    register a list selection listener on a list directly, then the source for each
+    event is the list. Otherwise, the source is the selection model. |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*在`java.util.EventObject`中*) | 返回触发事件的对象。如果直接在列表上注册列表选择监听器，则每个事件的源是列表。否则，源是选择模型。
+    |'
+- en: '| [int getFirstIndex()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListSelectionEvent.html#getFirstIndex--)
+    | Return the index of the first item whose selection value has changed. Note that
+    for multiple interval selection, the first and last items are guaranteed to have
+    changed but items between them might not have. However, when you press ctrl key
+    and move up or down, the lead selection causes the events being fired even though
+    the actual selection has not changed. |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getFirstIndex()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListSelectionEvent.html#getFirstIndex--)
+    | 返回选择值已更改的第一项的索引。请注意，对于多个间隔选择，保证第一个和最后一个项目已更改，但它们之间的项目可能没有更改。但是，当您按下ctrl键并向上或向下移动时，主选择会导致事件被触发，即使实际选择没有更改。
+    |'
+- en: '| [int getLastIndex()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListSelectionEvent.html#getLastIndex--)
+    | Return the index of the last item whose selection value has changed. Note that
+    for multiple interval selection, the first and last items are guaranteed to have
+    changed but items between them might not have. However, when you press ctrl key
+    and move up and down, the lead selection causes the events being fired even though
+    the actual selection has not changed. |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getLastIndex()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListSelectionEvent.html#getLastIndex--)
+    | 返回选择值已更改的最后一项的索引。请注意，对于多个间隔选择，保证第一个和最后一个项目已更改，但它们之间的项目可能没有更改。但是，当您按下ctrl键并上下移动时，主选择会导致事件被触发，即使实际选择没有更改。
+    |'
+- en: '| [boolean getValueIsAdjusting()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListSelectionEvent.html#getValueIsAdjusting--)
+    | Return `true` if the selection is still changing. Many list selection listeners
+    are interested only in the final state of the selection and can ignore list selection
+    events when this method returns `true`. |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| [boolean getValueIsAdjusting()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListSelectionEvent.html#getValueIsAdjusting--)
+    | 如果选择仍在更改，则返回`true`。许多列表选择监听器仅对选择的最终状态感兴趣，并且可以在此方法返回`true`时忽略列表选择事件。 |'
+- en: Examples that Use List Selection Listeners
+  id: totrans-42
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用列表选择监听器的示例
+- en: The following table lists the examples that use list selection listeners.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了使用列表选择监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`ListSelectionDemo`](../examples/events/index.html#ListSelectionDemo) |
+    This section | Reports all list selection events that occur on a list. Lets the
+    user dynamically change the selection mode. |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ListSelectionDemo`](../examples/events/index.html#ListSelectionDemo) |
+    本节 | 报告列表上发生的所有列表选择事件。允许用户动态更改选择模式。 |'
+- en: '| [`TableListSelectionDemo`](../examples/events/index.html#TableListSelectionDemo)
+    | This section | Reports all list selection events that occur on a table. Lets
+    the user dynamically change the selection mode. |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TableListSelectionDemo`](../examples/events/index.html#TableListSelectionDemo)
+    | 本节 | 报告表上发生的所有列表选择事件。允许用户动态更改选择模式。 |'
+- en: '| [`ListDemo`](../examples/components/index.html#ListDemo) | [How to Use Lists](../components/list.html)
+    | Listens to events on a single-selection list (not on its selection model). Enables
+    and disables a button depending on whether any items are selected in the list.
+    |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ListDemo`](../examples/components/index.html#ListDemo) | [如何使用列表](../components/list.html)
+    | 监听单选列表上的事件（而不是其选择模型）。根据列表中是否选择了任何项目来启用或禁用按钮。 |'
+- en: '| [`SplitPaneDemo`](../examples/components/index.html#SplitPaneDemo) | [How
+    to Use Lists](../components/list.html) | Listens to events on a single-selection
+    list (not on its selection model). |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SplitPaneDemo`](../examples/components/index.html#SplitPaneDemo) | [如何使用列表](../components/list.html)
+    | 监听单选列表上的事件（而不是其选择模型）。 |'
+- en: '| [`SimpleTableSelectionDemo`](../examples/components/index.html#SimpleTableSelectionDemo)
+    | [How to Use Tables](../components/table.html) | Uses two different list selection
+    listeners on one table. One listener listens to list selection events on table
+    columns, the other listens to list selection events on table rows. |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SimpleTableSelectionDemo`](../examples/components/index.html#SimpleTableSelectionDemo)
+    | [如何使用表格](../components/table.html) | 在一个表格上使用两种不同的列表选择监听器。一个监听器监听表格列上的列表选择事件，另一个监听器监听表格行上的列表选择事件。
+    |'

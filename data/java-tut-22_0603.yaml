@@ -1,0 +1,107 @@
+- en: Messages
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 消息
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/messageintro.html](https://docs.oracle.com/javase/tutorial/i18n/format/messageintro.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/messageintro.html](https://docs.oracle.com/javase/tutorial/i18n/format/messageintro.html)
+- en: We all like to use programs that let us know what's going on. Programs that
+    keep us informed often do so by displaying status and error messages. Of course,
+    these messages need to be translated so they can be understood by end users around
+    the world. The section [Isolating Locale-Specific Data](../resbundle/index.html)
+    discusses translatable text messages. Usually, you're done after you move a message
+    `String` into a `ResourceBundle`. However, if you've embedded variable data in
+    a message, you'll have to take some extra steps to prepare it for translation.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们都喜欢使用让我们了解正在发生什么的程序。通常，让我们保持了解的程序通过显示状态和错误消息来实现。当然，这些消息需要被翻译，以便全球的最终用户能够理解。[隔离特定区域数据](../resbundle/index.html)部分讨论了可翻译的文本消息。通常，在将消息`String`移入`ResourceBundle`后，你就完成了。然而，如果在消息中嵌入了变量数据，你需要采取一些额外的步骤来准备翻译。
+- en: 'A *compound message* contains variable data. In the following list of compound
+    messages, the variable data is underlined:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*复合消息*包含变量数据。在下面的复合消息列表中，变量数据被划线标出：'
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'You might be tempted to construct the last message in the preceding list by
+    concatenating phrases and variables as follows:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能会尝试通过连接短语和变量来构建前述列表中的最后一条消息，如下所示：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This approach works fine in English, but it won't work for languages in which
+    the verb appears at the end of the sentence. Because the word order of this message
+    is hardcoded, your localizers won't be able to create grammatically correct translations
+    for all languages.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种方法在英语中效果很好，但对于动词出现在句子末尾的语言来说，这种方法不适用。因为这条消息的词序是硬编码的，你的本地化人员将无法为所有语言创建语法正确的翻译。
+- en: How can you make your program localizable if you need to use compound messages?
+    You can do so by using the `MessageFormat` class, which is the topic of this section.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果需要使用复合消息，如何使你的程序可本地化？你可以通过使用`MessageFormat`类来实现，这是本节的主题。
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Caution:**'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: Compound messages are difficult to translate because the message text is fragmented.
+    If you use compound messages, localization will take longer and cost more. Therefore
+    you should use compound messages only when necessary.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 复合消息很难翻译，因为消息文本是分散的。如果使用复合消息，本地化将需要更长的时间和更多的成本。因此，只有在必要时才应使用复合消息。
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[Dealing with Compound Messages](messageFormat.html)'
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[处理复合消息](messageFormat.html)'
+- en: 'A compound message may contain several kinds of variables: dates, times, strings,
+    numbers, currencies, and percentages. To format a compound message in a locale-independent
+    manner, you construct a pattern that you apply to a `MessageFormat` object.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 复合消息可能包含多种类型的变量：日期、时间、字符串、数字、货币和百分比。为了以与区域无关的方式格式化复合消息，你需要构建一个模式，然后应用到`MessageFormat`对象上。
+- en: '[Handling Plurals](choiceFormat.html)'
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[处理复数形式](choiceFormat.html)'
+- en: The words in a message usually vary if both plural and singular word forms are
+    possible. With the `ChoiceFormat` class, you can map a number to a word or phrase,
+    allowing you to construct messages that are grammatically correct.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果可能同时存在复数和单数形式的词汇，消息中的词汇通常会有所变化。通过`ChoiceFormat`类，你可以将数字映射到一个词或短语，从而构建语法正确的消息。

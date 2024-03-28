@@ -1,0 +1,366 @@
+- en: Formatting Numeric Print Output
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 格式化数字打印输出
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/data/numberformat.html](https://docs.oracle.com/javase/tutorial/java/data/numberformat.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/data/numberformat.html](https://docs.oracle.com/javase/tutorial/java/data/numberformat.html)
+- en: Earlier you saw the use of the `print` and `println` methods for printing strings
+    to standard output (`System.out`). Since all numbers can be converted to strings
+    (as you will see later in this lesson), you can use these methods to print out
+    an arbitrary mixture of strings and numbers. The Java programming language has
+    other methods, however, that allow you to exercise much more control over your
+    print output when numbers are included.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 之前你看到了使用`print`和`println`方法将字符串打印到标准输出（`System.out`）的示例。由于所有数字都可以转换为字符串（稍后将会看到），你可以使用这些方法打印任意混合的字符串和数字。然而，Java编程语言还有其他方法，允许你在包含数字时更好地控制打印输出。
+- en: The printf and format Methods
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`printf`和`format`方法'
+- en: The `java.io` package includes a `PrintStream` class that has two formatting
+    methods that you can use to replace `print` and `println`. These methods, `format`
+    and `printf`, are equivalent to one another. The familiar `System.out` that you
+    have been using happens to be a `PrintStream` object, so you can invoke `PrintStream`
+    methods on `System.out`. Thus, you can use `format` or `printf` anywhere in your
+    code where you have previously been using `print` or `println`. For example,
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.io`包中包含一个`PrintStream`类，其中有两个格式化方法可用于替换`print`和`println`。这些方法，`format`和`printf`，是等效的。你一直在使用的熟悉的`System.out`恰好是一个`PrintStream`对象，因此你可以在`System.out`上调用`PrintStream`方法。因此，在你以前使用`print`或`println`的代码中，你可以使用`format`或`printf`。例如，'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The syntax for these two [`java.io.PrintStream`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintStream.html)
+    methods is the same:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这两个[`java.io.PrintStream`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintStream.html)方法的语法是相同的：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: where `format` is a string that specifies the formatting to be used and `args`
+    is a list of the variables to be printed using that formatting. A simple example
+    would be
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中`format`是一个指定要使用的格式化的字符串，`args`是要使用该格式化打印的变量列表。一个简单的示例可能是
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The first parameter, `format`, is a format string specifying how the objects
+    in the second parameter, `args`, are to be formatted. The format string contains
+    plain text as well as *format specifiers*, which are special characters that format
+    the arguments of `Object... args`. (The notation `Object... args` is called *varargs*,
+    which means that the number of arguments may vary.)
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个参数，`format`，是一个格式字符串，指定了第二个参数`args`中的对象如何被格式化。格式字符串包含普通文本以及*格式说明符*，这些是特殊字符，用于格式化`Object...
+    args`的参数。（`Object... args`的表示法称为*可变参数*，意味着参数的数量可能变化。）
+- en: Format specifiers begin with a percent sign (%) and end with a *converter*.
+    The converter is a character indicating the type of argument to be formatted.
+    In between the percent sign (%) and the converter you can have optional flags
+    and specifiers. There are many converters, flags, and specifiers, which are documented
+    in [`java.util.Formatter`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html)
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 格式说明符以百分号（%）开始，并以*转换器*结束。转换器是指示要格式化的参数类型的字符。在百分号（%）和转换器之间，你可以有可选的标志和说明符。有许多转换器、标志和说明符，这些都在[`java.util.Formatter`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html)中有文档记录。
+- en: 'Here is a basic example:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个基本示例：
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The `%d` specifies that the single variable is a decimal integer. The `%n`
+    is a platform-independent newline character. The output is:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`%d`指定单个变量为十进制整数。`%n`是一个与平台无关的换行符。输出为：'
+- en: '[PRE4]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The `printf` and `format` methods are overloaded. Each has a version with the
+    following syntax:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`printf`和`format`方法是重载的。每个都有以下语法版本：'
+- en: '[PRE5]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'To print numbers in the French system (where a comma is used in place of the
+    decimal place in the English representation of floating point numbers), for example,
+    you would use:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，要在法国系统中打印数字（在英文浮点数表示中使用逗号代替小数点），你可以使用：
+- en: '[PRE6]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: An Example
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例
+- en: The following table lists some of the converters and flags that are used in
+    the sample program, `TestFormat.java`, that follows the table.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了在接下来的示例程序`TestFormat.java`中使用的一些转换器和标志。
+- en: Converters and Flags Used in `TestFormat.java`
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`TestFormat.java`中使用的转换器和标志
+- en: '| Converter | Flag | Explanation |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| 转换器 | 标志 | 说明 |'
+- en: '| d |   | A decimal integer. |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| d |   | 十进制整数。 |'
+- en: '| f |   | A float. |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| f |   | 一个浮点数。 |'
+- en: '| n |   | A new line character appropriate to the platform running the application.
+    You should always use `%n`, rather than `\n`. |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| n |   | 适用于运行应用程序的平台的换行符。应始终使用`%n`，而不是`\n`。 |'
+- en: "| tB |   | A date & time conversion\x97locale-specific full name of month.\
+    \ |"
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: "| tB |   | 日期和时间转换\x97月份的区域设置全名。 |"
+- en: "| td, te |   | A date & time conversion\x972-digit day of month. td has leading\
+    \ zeroes as needed, te does not. |"
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: "| td, te |   | 日期和时间转换\x97月份中的2位数字。td根据需要带有前导零，te则不带。 |"
+- en: "| ty, tY |   | A date & time conversion\x97ty = 2-digit year, tY = 4-digit\
+    \ year. |"
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: "| ty, tY |   | 日期和时间转换\x97ty = 2位年份，tY = 4位年份。 |"
+- en: "| tl |   | A date & time conversion\x97hour in 12-hour clock. |"
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: "| tl |   | 日期和时间转换\x9712小时制钟表中的小时。 |"
+- en: "| tM |   | A date & time conversion\x97minutes in 2 digits, with leading zeroes\
+    \ as necessary. |"
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: "| tM |   | 日期和时间转换\x97以2位数字表示的分钟，必要时带有前导零。 |"
+- en: "| tp |   | A date & time conversion\x97locale-specific am/pm (lower case).\
+    \ |"
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: "| tp |   | 日期和时间转换\x97区域设置特定的上午/下午（小写）。 |"
+- en: "| tm |   | A date & time conversion\x97months in 2 digits, with leading zeroes\
+    \ as necessary. |"
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: "| tm |   | 日期和时间转换\x97月份以2位数字表示，必要时带有前导零。 |"
+- en: "| tD |   | A date & time conversion\x97date as %tm%td%ty |"
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: "| tD |   | 日期和时间转换\x97日期为 %tm%td%ty |"
+- en: '|   | 08 | Eight characters in width, with leading zeroes as necessary. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '|   | 08 | 宽度为8个字符，必要时带有前导零。 |'
+- en: '|   | + | Includes sign, whether positive or negative. |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '|   | + | 包括符号，无论是正数还是负数。 |'
+- en: '|   | , | Includes locale-specific grouping characters. |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '|   | , | 包括特定于区域设置的分组字符。 |'
+- en: '|   | - | Left-justified.. |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '|   | - | 左对齐。 |'
+- en: '|   | .3 | Three places after decimal point. |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '|   | .3 | 小数点后三位。 |'
+- en: '|   | 10.3 | Ten characters in width, right justified, with three places after
+    decimal point. |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '|   | 10.3 | 宽度为10个字符，右对齐，小数点后三位。 |'
+- en: 'The following program shows some of the formatting that you can do with `format`.
+    The output is shown within double quotes in the embedded comment:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序展示了您可以使用`format`进行的一些格式化。输出在嵌入式注释中用双引号显示：
+- en: '[PRE7]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '* * *'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  The discussion in this section covers just the basics of the `format`
+    and `printf` methods. Further detail can be found in the [`Basic I/O`](../../essential/io/formatting.html)
+    section of the Essential trail, in the "Formatting" page.'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本节讨论仅涵盖了`format`和`printf`方法的基础知识。更详细的信息可以在基础教程的[`基本I/O`](../../essential/io/formatting.html)部分的“格式化”页面中找到。'
+- en: Using `String.format` to create strings is covered in [Strings](strings.html).
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`String.format`创建字符串的方法在[字符串](strings.html)中有介绍。
+- en: '* * *'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The DecimalFormat Class
+  id: totrans-47
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: DecimalFormat类
+- en: You can use the [`java.text.DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html)
+    class to control the display of leading and trailing zeros, prefixes and suffixes,
+    grouping (thousands) separators, and the decimal separator. `DecimalFormat` offers
+    a great deal of flexibility in the formatting of numbers, but it can make your
+    code more complex.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用[`java.text.DecimalFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html)类来控制前导和尾随零、前缀和后缀、分组（千位）分隔符以及小数点分隔符的显示。`DecimalFormat`在数字格式化方面提供了很大的灵活性，但可能会使您的代码变得更加复杂。
+- en: "The example that follows creates a `DecimalFormat` object, `myFormatter`, by\
+    \ passing a pattern string to the `DecimalFormat` constructor. The `format()`\
+    \ method, which `DecimalFormat` inherits from `NumberFormat`, is then invoked\
+    \ by `myFormatter`\x97it accepts a `double` value as an argument and returns the\
+    \ formatted number in a string:"
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "接下来的示例创建了一个`DecimalFormat`对象`myFormatter`，通过将模式字符串传递给`DecimalFormat`构造函数来创建。然后通过`myFormatter`调用从`NumberFormat`继承的`format()`方法\x97\
+    它接受一个`double`值作为参数，并以字符串形式返回格式化的数字："
+- en: 'Here is a sample program that illustrates the use of `DecimalFormat`:'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个演示`DecimalFormat`使用的示例程序：
+- en: '[PRE8]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'The output is:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出为：
+- en: '[PRE9]'
+  id: totrans-53
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: The following table explains each line of output.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格解释了每行输出。
+- en: '`DecimalFormat.java` Output'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DecimalFormat.java` 输出'
+- en: '| Value | Pattern | Output | Explanation |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 模式 | 输出 | 解释 |'
+- en: '| 123456.789 | ###,###.### | 123,456.789 | The pound sign (#) denotes a digit,
+    the comma is a placeholder for the grouping separator, and the period is a placeholder
+    for the decimal separator. |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '| 123456.789 | ###,###.### | 123,456.789 | 井号（#）表示数字，逗号是分组分隔符的占位符���句点是小数分隔符的占位符。
+    |'
+- en: '| 123456.789 | ###.## | 123456.79 | The `value` has three digits to the right
+    of the decimal point, but the `pattern` has only two. The `format` method handles
+    this by rounding up. |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| 123456.789 | ###.## | 123456.79 | `value`小数点右侧有三位数字，但`pattern`只有两位。`format`方法通过四舍五入处理这个问题。
+    |'
+- en: '| 123.78 | 000000.000 | 000123.780 | The `pattern` specifies leading and trailing
+    zeros, because the 0 character is used instead of the pound sign (#). |'
+  id: totrans-59
+  prefs: []
+  type: TYPE_TB
+  zh: '| 123.78 | 000000.000 | 000123.780 | `pattern`指定了前导和尾随零，因为使用的是0字符而不是井号(#)。'
+- en: '| 12345.67 | $###,###.### | $12,345.67 | The first character in the `pattern`
+    is the dollar sign ($). Note that it immediately precedes the leftmost digit in
+    the formatted `output`. |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '| 12345.67 | $###,###.### | $12,345.67 | `pattern`中的第一个字符是美元符号($)。请注意，它紧跟在格式化`output`中最左边的数字之前。'

@@ -1,0 +1,461 @@
+- en: How to Use Modality in Dialogs
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何在对话框中使用模态
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/modality.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/modality.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 译文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/modality.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/modality.html)
+- en: Java™ SE 6 has resolved modality issues that arose in earlier versions of the
+    platform. The new modality model enables the developer to scope, or limit, a dialog
+    box's modality blocking.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java™ SE 6已解决了在平台早期版本中出现的模态问题。新的模态模型使开发人员能够限定对话框的模态阻止。
+- en: 'Before proceeding with the new modality model, review the following terms:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在继续使用新的模态模型之前，请查看以下术语：
+- en: Dialog box — A top-level pop-up window with a title and a border that typically
+    takes some form of input from the user. A dialog box can be modal or modeless.
+    For more information about dialog boxes, see [An Overview of Dialogs](../components/dialog.html#overview)
+    in the [How to Make Dialogs](../components/dialog.html) page.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对话框 — 一个带有标题和边框的顶级弹出窗口，通常从用户那里获取某种形式的输入。对话框可以是模态或非模态。有关对话框的更多信息，请参阅[对话框概述](../components/dialog.html#overview)页面中的[如何创建对话框](../components/dialog.html)。
+- en: Modal dialog box — A dialog box that blocks input to some other top-level windows
+    in the application, except for windows created with the dialog box as their owner.
+    The modal dialog box captures the window focus until it is closed, usually in
+    response to a button press.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 模态对话框 — 一个会阻止应用程序中其他顶级窗口输入的对话框，除了以该对话框为所有者创建的窗口。模态对话框会捕获窗口焦点，直到它被关闭，通常是响应按钮按下。
+- en: Modeless dialog box — A dialog box that enables you to operate with other windows
+    while this dialog box is shown.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 非模态对话框 — 一个对话框，允许您在显示此对话框时操作其他窗口。
+- en: In Java SE 6 the behavior of both modal and modeless dialog boxes has been changed
+    so that they always appear on top of both not only of their parent windows and
+    of all blocked windows as well.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java SE 6中，模态和非模态对话框的行为已经更改，使其始终出现在所有被阻止的窗口的顶部，而不仅仅是它们的父窗口的顶部。
+- en: 'The following modality types are supported in Java SE 6:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java SE 6支持以下模态类型：
+- en: '**Modeless type** — A modeless dialog box does not block any other window while
+    it is visible.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**非模态类型** — 非模态对话框在可见时不会阻止任何其他窗口。'
+- en: '**Document-modal type** — A document-modal dialog box blocks all windows from
+    the same document, except windows from its child hierarchy. In this context, a
+    document is a hierarchy of windows that share a common ancestor, called the document
+    root, which is the closest ancestor window without an owner.'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**文档模态类型** — 文档模态对话框会阻止同一文档的所有窗口，除了其子层次结构的窗口。在此上下文中，文档是共享一个称为文档根的最近祖先窗口的窗口层次结构。'
+- en: '**Application-modal type** — An application-modal dialog box blocks all windows
+    from the same application, except windows from its child hierarchy. If several
+    applets are launched in a browser environment, the browser is allowed to treat
+    them either as separate applications or as a single application. This behavior
+    is implementation-dependent.'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**应用程序模态类型** — 应用程序模态对话框会阻止同一应用程序的所有窗口，除了其子层次结构的窗口。如果在浏览器环境中启动了几个小程序，浏览器可以将它们视为单独的应用程序或单个应用程序。此行为取决于实现。'
+- en: '**Toolkit-modal type** — A toolkit-modal dialog box blocks all windows that
+    run in the same toolkit, except windows from its child hierarchy. If several applets
+    are launched, all of them run with the same toolkit. Hence, a toolkit-modal dialog
+    box shown from an applet may affect other applets and all windows of the browser
+    instance that embeds the Java runtime environment for this toolkit.'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**工具包模态类型** — 工具包模态对话框会阻止在同一工具包中运行的所有窗口，除了其子层次结构的窗口。如果启动了几个小程序，它们都将使用相同的工具包。因此，从小程序显示的工具包模态对话框可能会影响其他小程序和嵌入Java运行时环境的浏览器实例的所有窗口。'
+- en: 'Additionally, you can set up the modality exclusion mode:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，您可以设置模态排除模式：
+- en: '**Exclusion mode** — Any top-level window can be marked not to be blocked by
+    modal dialogs. This property enables you to set up the *modal exclusion* mode.
+    The `Dialog.ModalExclusionType` enum specifies the possible modal exclusion types.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**排除模式** — 任何顶级窗口都可以标记为不被模态对话框阻止。此属性使您可以设置*模态排除*模式。`Dialog.ModalExclusionType`枚举指定可能的模态排除类型。'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note :** The new modality model does not implement a system modality, which
+    blocks all applications (including Java applications) that are displayed on the
+    desktop while a modal dialog box is active.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 新的模态模型不实现系统模态，该模态会在模态对话框激活时阻止显示在桌面上的所有应用程序（包括 Java 应用程序）。'
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The ModalityDemo example demonstrates the first three of the four modality types
+    mentioned above.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ModalityDemo 示例演示了上述四种模态类型中的前三种。
+- en: '[![Four frames to demonstrate different modality types ](../Images/3b402f22c8c180f3cd174cd6157a6f58.png)](../../figures/uiswing/misc/modalityDemo.png)'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![展示不同模态类型的四个框架](../Images/3b402f22c8c180f3cd174cd6157a6f58.png)](../../figures/uiswing/misc/modalityDemo.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击图像以查看其自然大小。
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run ModalityDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/misc/index.html#ModalityDemo).[![Launches
+    the ModalityDemo application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ModalityDemoProject/ModalityDemo.jnlp)
+  id: totrans-24
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行
+    ModalityDemo（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/misc/index.html#ModalityDemo)。[![启动
+    ModalityDemo 应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ModalityDemoProject/ModalityDemo.jnlp)
+- en: 'The following dialog boxes will appear:'
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将出现以下对话框：
+- en: Book 1 (parent frame)
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Book 1（父框架）
+- en: Book 2 (parent frame)
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Book 2（父框架）
+- en: Feedback (parent frame)
+  id: totrans-28
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 反馈（父框架）
+- en: Classics (excluded frame)
+  id: totrans-29
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 经典（排除的框架）
+- en: Switch to the Book 1 frame and choose the Biography title for the book, then
+    select OK.
+  id: totrans-30
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 切换到 Book 1 框架并为该书选择传记标题，然后选择确定。
+- en: The Biography title will be displayed in the title of the dialog box. Enter
+    the name, for example - “John”, into the text field.
+  id: totrans-31
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 传记标题将显示在对话框的标题中。在文本字段中输入名称，例如 - “约翰”。
+- en: Switch to the Book 1 frame and change the title to Funny Tale, then select OK.
+    Since the dialog box for entering the name is *modeless*, you can easily switch
+    to its *parent* frame.
+  id: totrans-32
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 切换到 Book 1 框架并将标题更改为 Funny Tale，然后选择确定。由于输入名称的对话框是*无模态*的，你可以轻松切换到其*父*框架。
+- en: '* * *'
+  id: totrans-33
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note :** The modeless dialog box title has been changed to Funny Tale.'
+  id: totrans-34
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '**注意：** 无模态对话框标题已更改为 Funny Tale。'
+- en: '* * *'
+  id: totrans-35
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Select OK in the modeless dialog box.
+  id: totrans-36
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在无模态对话框中选择确定。
+- en: The Funny tale document-modal dialog box appears.
+  id: totrans-37
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 有趣的故事文档模态对话框出现。
+- en: Type some text in the text field. Notice that it is signed by the name you entered
+    in the modeless dialog box.
+  id: totrans-38
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在文本字段中输入一些文本。注意它是由你在无模态对话框中输入的名称签名的。
+- en: Switch to the modeless dialog box and try to change your name. You will not
+    be able to do so, because the document-modal dialog box blocks all windows in
+    its parent hierarchy.
+  id: totrans-39
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 切换到无模态对话框，尝试更改你的名字。你无法这样做，因为文档模态对话框会阻止其父层次结构中的所有窗口。
+- en: Perform the same sequence of operations (steps 3 - 9) for the Book 2 parent
+    frame.
+  id: totrans-40
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对于 Book 2 的父框架执行相同的操作序列（步骤 3 - 9）。
+- en: Try switching to different dialog boxes. You will notice that you can switch
+    either to the Classics frame or to the Feedback frame as well as to the dialog
+    box of either the Book 1 frame or the Book 2 frame.
+  id: totrans-41
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 尝试切换到不同的对话框。你会注意到你可以切换到经典框架或反馈框架，以及 Book 1 框架或 Book 2 框架的对话框。
+- en: Switch to the Feedback parent frame. Select Rate Yourself.
+  id: totrans-42
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 切换到反馈父框架。选择评价自己。
+- en: The confirmation dialog box will appear. Try switching to different dialog boxes.
+    You are only enabled to switch to the Classics dialog box because the standard
+    confirmation dialog box is an application-modal dialog box and it blocks all windows
+    from the same application. However, you will notice that you can select your favorite
+    classical author in the Classics frame. This frame has been created by using the
+    `APPLICATION_EXCLUDE` modality exclusion type, which prevents all top-level windows
+    from being blocked by any application-modal dialog boxes.
+  id: totrans-43
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 确认对话框将会出现。尝试切换到不同的对话框。你只能切换到经典对话框，因为标准确认对话框是一个应用程序模态对话框，它会阻止同一应用程序的所有窗口。然而，你会注意到你可以在经典框架中选择你最喜欢的古典作家。这个框架是通过使用`APPLICATION_EXCLUDE`模态排除类型创建的，它可以防止所有顶层窗口被任何应用程序模态对话框阻止。
+- en: '* * *'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The following code snippet shows how to create dialog boxes of different modality
+    types:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段显示了如何创建不同模态类型的对话框：
+- en: '[PRE0]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Find the demo's complete code in the [`ModalityDemo.java`](../examples/misc/ModalityDemoProject/src/misc/ModalityDemo.java)
+    file.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[`ModalityDemo.java`](../examples/misc/ModalityDemoProject/src/misc/ModalityDemo.java)文件中找到演示的完整代码。
+- en: In Java SE 6 you can create a document-modal dialog box without a parent. Because
+    the `Dialog` class is a subclass of the `Window` class, a `Dialog` instance automatically
+    becomes the root of the document if it has no owner. Thus, if such a dialog box
+    is document-modal, its scope of blocking is empty, and it behaves as if it were
+    a modeless dialog box.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java SE 6中，您可以创建一个没有父级的文档模态对话框。因为`Dialog`类是`Window`类的子类，如果它没有所有者，`Dialog`实例会自动成为文档的根。因此，如果这样的对话框是文档模态的，它的阻止范围为空，它的行为就像是一个非模态对话框。
+- en: The Modality API
+  id: totrans-49
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 模态API
+- en: The `JDialog` class constructors enable you to create dialog boxes of various
+    modality types.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JDialog`类的构造函数使您能够创建不同模态类型的对话框。'
+- en: '| Constructor | Purpose |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数 | 目的 |'
+- en: '| [JDialog(Dialog owner)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Dialog-)
+    | Creates a modeless dialog box with the specified `Dialog` owner but without
+    a title. |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JDialog(Dialog owner)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Dialog-)
+    | 创建一个具有指定`Dialog`所有者但没有标题的非模态对话框。 |'
+- en: '| [JDialog(Dialog owner, boolean modal)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Dialog-boolean-)
+    | Creates a dialog box with the specified `Dialog` owner and modality. |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JDialog(Dialog owner, boolean modal)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Dialog-boolean-)
+    | 创建一个具有指定`Dialog`所有者和模态性的对话框。 |'
+- en: '| [JDialog(Dialog owner, String title)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Dialog-java.lang.String-)
+    | Creates a modeless dialog box with the specified `Dialog` owner and title. |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JDialog(Dialog owner, String title)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Dialog-java.lang.String-)
+    | 创建一个具有指定`Dialog`所有者和标题的非模态对话框。 |'
+- en: '| [JDialog(Dialog owner, String title, boolean modal)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Dialog-java.lang.String-boolean-)
+    | Creates a dialog box with the specified `Dialog` owner, title, and modality.
+    |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JDialog(Dialog owner, String title, boolean modal)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Dialog-java.lang.String-boolean-)
+    | 创建一个具有指定`Dialog`所有者、标题和模态性的对话框。 |'
+- en: '| [JDialog(Dialog owner, String title, boolean modal, GraphicsConfiguration
+    gc)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Dialog-java.lang.String-boolean-java.awt.GraphicsConfiguration-)
+    | Creates a dialog box with the specified `Dialog` owner, title, modality, and
+    graphics configuration. |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JDialog(Dialog owner, String title, boolean modal, GraphicsConfiguration
+    gc)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Dialog-java.lang.String-boolean-java.awt.GraphicsConfiguration-)
+    | 创建一个具有指定`Dialog`所有者、标题、模态性和图形配置的对话框。 |'
+- en: '| [JDialog(Frame owner)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Frame-)
+    | Creates a modeless dialog box without a title with the specified `Frame` owner.
+    If the value for the owner is null, a shared, hidden frame will be set as the
+    owner of the dialog box. |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JDialog(Frame owner)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Frame-)
+    | 创建一个具有指定`Frame`所有者但没有标题的非模态对话框。如果所有者的值为null，则会将一个共享的隐藏框架设置为对话框的所有者。 |'
+- en: '| [JDialog(Window owner, String title, Dialog.ModalityType modalityType)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Window-java.lang.String-java.awt.Dialog.ModalityType-)
+    | Creates a dialog box with the specified `Window` owner, title, and modality.
+    |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JDialog(Window owner, String title, Dialog.ModalityType modalityType)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JDialog.html#JDialog-java.awt.Window-java.lang.String-java.awt.Dialog.ModalityType-)
+    | 使用指定的`Window`所有者、标题和模态性创建对话框框。 |'
+- en: The following table lists methods inherited from the [`java.awt.Dialog`](https://docs.oracle.com/javase/8/docs/api/java/awt/Dialog.html)
+    class.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了从[`java.awt.Dialog`](https://docs.oracle.com/javase/8/docs/api/java/awt/Dialog.html)类继承的方法。
+- en: '| Method | Purpose |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [getModalityType](https://docs.oracle.com/javase/8/docs/api/java/awt/Dialog.html#getModalityType--)
+    | Returns the modality type for this dialog box. |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '| [获取模态类型](https://docs.oracle.com/javase/8/docs/api/java/awt/Dialog.html#getModalityType--)
+    | 返回此对话框框的模态类型。 |'
+- en: '| [setModalityType](https://docs.oracle.com/javase/8/docs/api/java/awt/Dialog.html#setModalityType-java.awt.Dialog.ModalityType-)
+    | Sets the modality type for this dialog box. See [ModalityType](https://docs.oracle.com/javase/8/docs/api/java/awt/Dialog.ModalityType.html)
+    for possible modality types. If the given modality type is not supported, then
+    the `MODELESS` type is used. To ensure that the modality type has been set, call
+    the `getModalityType()` method after calling this method. |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_TB
+  zh: '| [设置模态类型](https://docs.oracle.com/javase/8/docs/api/java/awt/Dialog.html#setModalityType-java.awt.Dialog.ModalityType-)
+    | 设置此对话框框的模态类型。查看[模态类型](https://docs.oracle.com/javase/8/docs/api/java/awt/Dialog.ModalityType.html)以获取可能的模态类型。如果给定的模态类型不受支持，则使用`MODELESS`类型。要确保已设置模态类型，请在调用此方法后调用`getModalityType()`方法。
+    |'
+- en: Examples That Use Modality API
+  id: totrans-63
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用模态 API 的示例
+- en: The following table lists the example that uses modality in dialogs.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了在对话框中使用模态性的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-65
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`ModalityDemo`](../examples/misc/index.html#ModalityDemo) | This section
+    | Creates dialog boxes of different modality types, demonstrates scope blocking
+    for those types. |'
+  id: totrans-66
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`模态演示`](../examples/misc/index.html#ModalityDemo) | 本节 | 创建不同模态类型的对话框，演示这些类型的作用域阻塞。
+    |'

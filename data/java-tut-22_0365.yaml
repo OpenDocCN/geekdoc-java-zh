@@ -1,0 +1,923 @@
+- en: Text Component Features
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 文本组件功能
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html](https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html](https://docs.oracle.com/javase/tutorial/uiswing/components/generaltext.html)
+- en: 'The [`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)
+    class is the foundation for Swing text components. This class provides the following
+    customizable features for all of its descendants:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)类是Swing文本组件的基础。该类为其所有后代提供以下可定制功能：'
+- en: A model, known as a *document*, that manages the component's content.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个称为*文档*的模型，用于管理组件的内容。
+- en: A view, which displays the component on screen.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个视图，用于在屏幕上显示组件。
+- en: A controller, known as an *editor kit*, that reads and writes text and implements
+    editing capabilities with [actions](../misc/action.html).
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个称为*编辑器工具包*的控制器，用于读取和写入文本，并使用[操作](../misc/action.html)实现编辑功能。
+- en: Support for infinite undo and redo.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 支持无限的撤销和重做。
+- en: A pluggable caret and support for caret change listeners and navigation filters.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 可插拔的插入符和支持插入符更改侦听器和导航过滤器。
+- en: See the example called `TextComponentDemo` to explore these capabilities. Although
+    the `TextComponentDemo` example contains a customized instance of `JTextPane`,
+    the capabilities discussed in this section are inherited by all `JTextComponent`
+    subclasses.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看名为`TextComponentDemo`的示例以探索这些功能。尽管`TextComponentDemo`示例包含一个自定义的`JTextPane`实例，但本节讨论的功能被所有`JTextComponent`子类继承。
+- en: '![A snapshot of TextComponentDemo, which contains a customized text pane and
+    a standard text area](../Images/dba239231b5280cd23b40310ea84253b.png)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TextComponentDemo的快照，其中包含自定义文本窗格和标准文本区域](../Images/dba239231b5280cd23b40310ea84253b.png)'
+- en: The upper text component is the customized text pane. The lower text component
+    is an instance of `JTextArea`, which serves as a log that reports all changes
+    made to the contents of the text pane. The status line at the bottom of the window
+    reports either the location of the selection or the position of the caret, depending
+    on whether text is selected.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 上方文本组件是自定义文本窗格。下方文本组件是`JTextArea`的一个实例，用作报告对文本窗格内容所做的所有更改的日志。窗口底部的状态行报告选择的位置或插入符的位置，具体取决于是否选择了文本。
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run TextComponentDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TextComponentDemo).[![Launches
+    the TextComponentDemo Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextComponentDemoProject/TextComponentDemo.jnlp)
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TextComponentDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TextComponentDemo)。[![启动TextComponentDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextComponentDemoProject/TextComponentDemo.jnlp)
+- en: Use the mouse to select text and place the cursor in the text pane. Information
+    about the selection and cursor is displayed at the bottom of the window.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用鼠标选择文本并将光标放置在文本窗格中。有关选择和光标的信息显示在窗口底部。
+- en: 'Enter text by typing on the keyboard. You can move the caret around using the
+    arrow keys on the keyboard or the four emacs key bindings: Ctrl-B (backward one
+    character), Ctrl-F (forward one character), Ctrl-N (down one line), and Ctrl-P
+    (up one line).'
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 通过键盘输入文本。您可以使用键盘上的箭头键或四个emacs键绑定（Ctrl-B（向后移动一个字符），Ctrl-F（向前移动一个字符），Ctrl-N（向下移动一行）和Ctrl-P（向上移动一行））来移动插入符。
+- en: Open the Edit menu, and use its menu items to edit text in the text pane. Make
+    a selection in the text area at the bottom of the window. Because the text area
+    is not editable, only some of the Edit menu's commands, like copy-to-clipboard,
+    work. It is important to note though, that the menu operates on both text components.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 打开编辑菜单，并使用其菜单项在文本窗格中编辑文本。在窗口底部的文本区域中进行选择。由于文本区域不可编辑，因此只有一些编辑菜单的命令，如复制到剪贴板，才有效。但需要注意的是，该菜单同时适用于文本组件。
+- en: Use the items in the Style menu to apply different styles to the text in the
+    text pane.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用“样式”菜单中的项目将不同的样式应用于文本窗格中的文本。
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Using the `TextComponentDemo` example as a reference point, this section covers
+    the following topics:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`TextComponentDemo`示例作为参考点，本节涵盖以下主题：
+- en: '[Associating Text Actions With Menus and Buttons](#commands)'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将文本操作与菜单和按钮关联](#commands)'
+- en: '[Associating Text Actions With Key Strokes](#bindingkeystrokes)'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将文本操作与按键绑定](#bindingkeystrokes)'
+- en: '[Implementing Undo and Redo](#undo)'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[实现撤销和重做](#undo)'
+- en: '[Concepts: About Documents](#document)'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[概念：关于文档](#document)'
+- en: '[Implementing a Document Filter](#filter)'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[实现文档过滤器](#filter)'
+- en: '[Listening for Changes on a Document](#doclisteners)'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[监听文档更改](#doclisteners)'
+- en: '[Listening for Caret and Selection Changes](#caret)'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[监听插入符和选择更改](#caret)'
+- en: '[Concepts: About Editor Kits](#editorkits)'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[概念：关于编辑工具包](#editorkits)'
+- en: Associating Text Actions With Menus and Buttons
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将文本操作与菜单和按钮关联
+- en: All Swing text components support standard editing commands such as cut, copy,
+    paste, and insert characters. Each editing command is represented and implemented
+    by an `Action` object. (To learn more about actions see [How to Use Actions](../misc/action.html).)
+    Actions allow you to associate a command with a GUI component, such as a menu
+    item or button, and therefore build a GUI around a text component.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有Swing文本组件都支持标准的编辑命令，如剪切、复制、粘贴和插入字符。每个编辑命令由一个`Action`对象表示和实现。（要了解更多关于操作的信息，请参阅[如何使用操作](../misc/action.html)。）操作允许您将命令与GUI组件（如菜单项或按钮）关联起来，从而围绕文本组件构建GUI。
+- en: You can invoke the `getActions` method on any text component to receive an array
+    containing all actions supported by this component. It is also possible to load
+    the array of actions into a `HashMap` so your program can retrieve an action by
+    name. Here is the code from the `TextComponentDemo` example that takes the actions
+    from the text pane and loads them into a `HashMap`.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在任何文本组件上调用`getActions`方法，以接收包含此组件支持的所有操作的数组。还可以将操作数组加载到`HashMap`中，以便您的程序可以按名称检索操作。以下是从`TextComponentDemo`示例中获取文本窗格中的操作并将其加载到`HashMap`中的代码。
+- en: '[PRE0]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Here is the method for retrieving an action by its name from the hash map:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是从哈希映射中按名称检索操作的方法：
+- en: '[PRE1]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: You can use both methods verbatim in your programs.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在程序中逐字使用这两种方法。
+- en: The following code shows how the cut menu item is created and associated with
+    the action of removing text from the text component.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码显示了如何创建剪切菜单项并将其与从文本组件中删除文本的操作关联起来。
+- en: '[PRE2]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: This code gets the action by name using the handy method shown previously. It
+    then adds the action to the menu. That is all you need to do. The menu and the
+    action take care of everything else. Note that the name of the action comes from
+    [`DefaultEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html).
+    This kit provides actions for basic text editing and is the superclass for all
+    the editor kits provided by Swing. So its capabilities are available to all text
+    components unless they are overridden by a customization.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码通过之前展示的方便方法按名称获取操作。然后将操作添加到菜单中。这就是你需要做的一切。菜单和操作会处理其他所有事情。请注意，操作的名称来自[`DefaultEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html)。该工具包提供了基本文本编辑的操作，并且是Swing提供的所有编辑工具包的超类。因此，除非被自定义覆盖，否则其功能对所有文本组件都可用。
+- en: 'For efficiency, text components share actions. The `Action` object returned
+    by `getActionByName(DefaultEditorKit.cutAction)` is shared by the uneditable `JTextArea`
+    at the bottom of the window. This sharing characteristic has two important ramifications:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了效率，文本组件共享操作。通过`getActionByName(DefaultEditorKit.cutAction)`返回的`Action`对象由窗口底部的不可编辑`JTextArea`共享。这种共享特性有两个重要的影响：
+- en: Generally, you should not modify `Action` objects you get from editor kits.
+    If you do, the changes affect all text components in your program.
+  id: totrans-39
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通常，您不应修改从编辑工具包获取的`Action`对象。如果这样做，更改会影响程序中的所有文本组件。
+- en: '`Action` objects can operate on other text components in the program, sometimes
+    more than you intended. In this example, even though it is not editable, the `JTextArea`
+    shares actions with the `JTextPane`. (Select some text in the text area, then
+    choose the cut-to-clipboard menu item. You will hear a beep because the text area
+    is not editable.) If you do not want to share, instantiate the `Action` object
+    yourself. `DefaultEditorKit` defines a number of useful `Action` subclasses.'
+  id: totrans-40
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Action`对象可以在程序中操作其他文本组件，有时会超出您的意图。在这个例子中，即使它是不可编辑的，`JTextArea`也与`JTextPane`共享动作。（在文本区域中选择一些文本，然后选择剪切到剪贴板菜单项。您会听到一声哔声，因为文本区域是不可编辑的。）如果您不想共享，请自行实例化`Action`对象。`DefaultEditorKit`定义了许多有用的`Action`子类。'
+- en: 'Here is the code that creates the Style menu and puts the Bold menu item in
+    it:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是创建样式菜单并将粗体菜单项放入其中的代码：
+- en: '[PRE3]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The `StyledEditorKit` provides `Action` subclasses to implement editing commands
+    for styled text. You will note that instead of getting the action from the editor
+    kit, this code creates an instance of the `BoldAction` class. Thus, this action
+    is not shared with any other text component, and changing its name will not affect
+    any other text component.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`StyledEditorKit`提供了`Action`子类来实现对带样式文本的编辑命令。您会注意到，这段代码创建了`BoldAction`类的一个实例，而不是从编辑器工具包中获取动作。因此，这个动作不会与任何其他文本组件共享，更改其名称不会影响任何其他文本组件。'
+- en: Associating Text Actions With Key Strokes
+  id: totrans-44
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将文本动作与键盘快捷键关联
+- en: In addition to associating an action with a GUI component, you can also associate
+    an action with a key stroke by using a text component's input map. Input maps
+    are described in [How to Use Key Bindings](../misc/keybinding.html).
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了将动作与GUI组件关联外，还可以通过使用文本组件的输入映射将动作与键盘快捷键关联。输入映射在[如何使用键绑定](../misc/keybinding.html)中有描述。
+- en: The text pane in the `TextComponentDemo` example supports four key bindings
+    not provided by default.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextComponentDemo`示例中的文本窗格支持四个默认未提供的键绑定。'
+- en: Ctrl-B to move the caret backward one character
+  id: totrans-47
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 按下Ctrl-B将光标向后移动一个字符
+- en: Ctrl-F to move the caret forward one character
+  id: totrans-48
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 按下Ctrl-F将光标向前移动一个字符
+- en: Ctrl-N to move the caret down one line
+  id: totrans-49
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 按下Ctrl-N将光标向下移动一行
+- en: Ctrl-P to move the caret up one line
+  id: totrans-50
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 按下Ctrl-P将光标向上移动一行
+- en: The following code adds the Ctrl-B key binding to the text pane. The code for
+    adding the other three bindings listed above is similar.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码将Ctrl-B键绑定添加到文本窗格。添加上面列出的其他三个绑定的代码类似。
+- en: '[PRE4]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: First, the code obtains the text component's input map. Next, it finds a [`KeyStroke`](https://docs.oracle.com/javase/8/docs/api/javax/swing/KeyStroke.html)
+    object representing the Ctrl-B key sequence. Finally, the code binds the key stroke
+    to the `Action` that moves the cursor backward.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，代码获取文本组件的输入映射。接下来，它找到代表Ctrl-B键序列的`KeyStroke`对象。最后，代码将该键序列绑定到将光标向后移动的`Action`。
+- en: Implementing Undo and Redo
+  id: totrans-54
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 实现撤销和重做
+- en: 'Implementing undo and redo has two parts:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现撤销和重做有两个部分：
+- en: '[Remembering undoable edits](#undoableedits).'
+  id: totrans-56
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[记住可撤销的编辑](#undoableedits)。'
+- en: '[Implementing the undo and redo commands](#undoredoactions) and providing a
+    user interface for them.'
+  id: totrans-57
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[实现撤销和重做命令](#undoredoactions) 并为其提供用户界面。'
+- en: '**Part 1: Remembering Undoable Edits**'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**第一部分：记住可撤销的编辑**'
+- en: 'To support undo and redo, a text component must remember each edit that occurs,
+    the order of edits, and what is needed to undo each edit. The example program
+    uses an instance of the [`UndoManager`](https://docs.oracle.com/javase/8/docs/api/javax/swing/undo/UndoManager.html)
+    class to manage its list of undoable edits. The undo manager is created where
+    the member variables are declared:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要支持撤销和重做，文本组件必须记住每次编辑的发生，编辑的顺序以及撤销每次编辑所需的内容。示例程序使用`UndoManager`类的一个实例来管理其可撤销编辑的列表。撤销管理器是在声明成员变量的地方创建的：
+- en: '[PRE5]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Now, let us look at how the program discovers undoable edits and adds them to
+    the undo manager.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，让我们看看程序如何发现可撤销的编辑并将其添加到撤销管理器中。
+- en: 'A document notifies interested listeners whenever an undoable edit occurs on
+    the document content. An important step in implementing undo and redo is to register
+    an undoable edit listener on the document of the text component. The following
+    code adds an instance of `MyUndoableEditListener` to the text pane''s document:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当文档内容发生可撤销编辑时，文档会通知感兴趣的监听器。实现撤销和重做的一个重要步骤是在文本组件的文档上注册一个可撤销编辑监听器。以下代码向文本窗格的文档添加了`MyUndoableEditListener`的一个实例：
+- en: '[PRE6]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The undoable edit listener used in our example adds the edit to the undo manager''s
+    list:'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们示例中使用的可撤销编辑侦听器将编辑添加到撤销管理器的列表中：
+- en: '[PRE7]'
+  id: totrans-65
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Note that this method updates two objects: `undoAction` and `redoAction`. These
+    are the action objects attached to the Undo and Redo menu items, respectively.
+    The next step shows you how to create the menu items and how to implement the
+    two actions. For general information about undoable edit listeners and undoable
+    edit events, see [How to Write an Undoable Edit Listener](../events/undoableeditlistener.html).'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，此方法更新两个对象：`undoAction`和`redoAction`。这些是分别附加到撤销和重做菜单项的操作对象。下一步将向您展示如何创建菜单项以及如何实现这两个操作。有关可撤销编辑侦听器和可撤销编辑事件的一般信息，请参阅[如何编写可撤销编辑侦听器](../events/undoableeditlistener.html)。
+- en: '* * *'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: By default, each undoable edit undoes a single character entry. It is possible
+    with some effort to group edits so that a series of key strokes is combined into
+    one undoable edit. Grouping edits in this manner would require you to define a
+    class that intercepts undoable edit events from the document, combining them if
+    appropriate and forwarding the results to your undoable edit listener.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，每个可撤销编辑都会撤消一个字符输入。通过一些努力，可以将编辑分组，以便一系列按键组合成一个可撤销编辑。以这种方式分组编辑需要您定义一个类，拦截文档的可撤销编辑事件，如果适当则将它们组合并将结果转发给您的可撤销编辑侦听器。
+- en: '* * *'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Part 2: Implementing the Undo and Redo Commands**'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**第2部分：实现撤销和重做命令**'
+- en: The first step in implementing undo and redo is to create the actions to put
+    in the Edit menu.
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现撤销和重做的第一步是创建要放入编辑菜单中的操作。
+- en: '[PRE8]'
+  id: totrans-73
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'The undo and redo actions are implemented by custom `AbstractAction` subclasses:
+    `UndoAction` and `RedoAction`, respectively. These classes are inner classes of
+    the example''s primary class.'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 撤销和重做操作由自定义的`AbstractAction`子类实现：`UndoAction`和`RedoAction`，分别。这些类是示例主类的内部类。
+- en: 'When the user invokes the `undo` command, the `actionPerformed` method of the
+    `UndoAction` class is called:'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户调用`undo`命令时，将调用`UndoAction`类的`actionPerformed`方法：
+- en: '[PRE9]'
+  id: totrans-76
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: This method calls the undo manager's `undo` method and updates the menu items
+    to reflect the new undo/redo state.
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此方法调用撤销管理器的`undo`方法，并更新菜单项以反映新的撤销/重做状态。
+- en: 'Similarly, when the user invokes the `redo` command, the `actionPerformed`
+    method of the `RedoAction` class is called:'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，当用户调用`redo`命令时，将调用`RedoAction`类的`actionPerformed`方法：
+- en: '[PRE10]'
+  id: totrans-79
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: This method is similar to undo, except that it calls the undo manager's `redo`
+    method.
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此方法类似于撤销，只是调用撤销管理器的`redo`方法。
+- en: Much of the code in the `UndoAction` and `RedoAction` classes is dedicated to
+    enabling and disabling the actions as appropriate of the current state, and changing
+    the names of the menu items to reflect the edit to be undone or redone.
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`UndoAction`和`RedoAction`类中的大部分代码专门用于根据当前状态启用和禁用操作，并更改菜单项的名称以反映要撤消或重做的编辑。'
+- en: '* * *'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: The implementation of undo and redo in the `TextComponentDemo` example was taken
+    from the `NotePad` demo that comes with the JDK software. Many programmers will
+    also be able to copy this implementation of undo/redo without modification.
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextComponentDemo`示例中的撤销和重做实现取自随JDK软件提供的`NotePad`演示。许多程序员也可以直接复制此撤销/重做实现而无需修改。'
+- en: '* * *'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Concepts: About Documents'
+  id: totrans-86
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 概念：关于文档
+- en: Like other Swing components, a text component separates its data (known as the
+    *model*) from its view of the data. If you are not yet familiar with the model-view
+    split used by Swing components, refer to [Using Models](model.html).
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与其他Swing组件一样，文本组件将其数据（称为*模型*）与数据的视图分开。如果您尚未熟悉Swing组件使用的模型-视图分离，请参考[使用模型](model.html)。
+- en: 'A text component''s model is known as a *document* and is an instance of a
+    class that implements the [`Document`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html)
+    interface. A document provides the following services for a text component:'
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文本组件的模型称为*文档*，是实现[`Document`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Document.html)接口的类的实例。文档为文本组件提供以下服务：
+- en: Contains the text. A document stores the textual content in `Element` objects,
+    which can represent any logical text structure, such as paragraphs, or text runs
+    that share styles. We do not describe `Element` objects here.
+  id: totrans-89
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 包含文本。文档将文本内容存储在`Element`对象中，这些对象可以表示任何逻辑文本结构，如段落，或共享样式的文本运行。我们在这里不描述`Element`对象。
+- en: Provides support for editing the text through the `remove` and `insertString`
+    methods.
+  id: totrans-90
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过`remove`和`insertString`方法支持编辑文本。
+- en: Notifies document listeners and undoable edit listeners of changes to the text.
+  id: totrans-91
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通知文档侦听器和可撤销编辑侦听器文本更改。
+- en: Manages `Position` objects, which track a particular location within the text
+    even as the text is modified.
+  id: totrans-92
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 管理`Position`对象，跟踪文本中的特定位置，即使文本被修改。
+- en: Allows you to obtain information about the text, such as its length, and segments
+    of the text as a string.
+  id: totrans-93
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 允许您获取有关文本的信息，例如其长度以及文本段作为字符串。
+- en: The Swing text package contains a subinterface of `Document`, [`StyledDocument`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledDocument.html),
+    that adds support for marking up the text with styles. One `JTextComponent` subclass,
+    `JTextPane`, requires that its document be a `StyledDocument` rather than merely
+    a `Document`.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing文本包包含`Document`的一个子接口，[`StyledDocument`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledDocument.html)，它添加了使用样式标记文本的支持。一个`JTextComponent`子类，`JTextPane`，要求其文档是`StyledDocument`而不仅仅是`Document`。
+- en: 'The `javax.swing.text` package provides the following hierarchy of document
+    classes, which implement specialized documents for the various `JTextComponent`
+    subclasses:'
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`javax.swing.text`包提供了以下文档类层次结构，这些类实现了各种`JTextComponent`子类的专门文档：'
+- en: '![The hierarchy of document classes that javax.swing.text provides.](../Images/e52feab2dc2eb2b6fc508b2d142d0446.png)'
+  id: totrans-96
+  prefs: []
+  type: TYPE_IMG
+  zh: '![javax.swing.text提供的文档类层次结构。](../Images/e52feab2dc2eb2b6fc508b2d142d0446.png)'
+- en: "A `PlainDocument` is the default document for text fields, password fields,\
+    \ and text areas. `PlainDocument` provides a basic container for text where all\
+    \ the text is displayed in the same font. Even though an editor pane is a styled\
+    \ text component, it uses an instance of `PlainDocument` by default. The default\
+    \ document for a standard `JTextPane` is an instance of `DefaultStyledDocument`\
+    \ \x97 a container for styled text in no particular format. However, the document\
+    \ instance used by any particular editor pane or text pane depends on the type\
+    \ of content bound to it. If you use the `setPage` method to load text into an\
+    \ editor pane or text pane, the document instance used by the pane might change.\
+    \ Refer to [How to Use Editor Panes and Text Panes](editorpane.html) for details."
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`PlainDocument`是文本字段、密码字段和文本区域的默认文档。`PlainDocument`提供一个基本容器，其中所有文本以相同字体显示。即使编辑器窗格是一个样式化文本组件，但默认情况下它使用`PlainDocument`的一个实例。标准`JTextPane`的默认文档是`DefaultStyledDocument`的一个实例，用于以无特定格式显示样式文本的容器。但是，任何特定编辑器窗格或文本窗格使用的文档实例取决于绑定到其上的内容类型。如果使用`setPage`方法将文本加载到编辑器窗格或文本窗格中，则窗格使用的文档实例可能会更改。有关详细信息，请参阅[如何使用编辑器窗格和文本窗格](editorpane.html)。'
+- en: Although you can set the document of a text component, it is usually easier
+    to allow it to set automatically, and if necessary, use a *document filter* to
+    change how the text component's data is set. You can implement certain customizations
+    either by installing a document filter or by replacing a text component's document
+    with one of your own. For example, the text pane in the `TextComponentDemo` example
+    has a document filter that limits the number of characters the text pane can contain.
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然你可以设置文本组件的文档，但通常更容易允许它自动设置，并在必要时使用*文档过滤器*来更改文本组件的数据设置方式。您可以通过安装文档过滤器或将文本组件的文档替换为自己的文档来实现某些自定义。例如，`TextComponentDemo`示例中的文本窗格具有一个限制文本窗格可以包含字符数量的文档过滤器。
+- en: Implementing a Document Filter
+  id: totrans-99
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 实现文档过滤器
+- en: To implement a document filter, create a subclass of [`DocumentFilter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DocumentFilter.html)
+    and then attach it to a document using the `setDocumentFilter` method defined
+    in the `AbstractDocument` class. Although it is possible to have documents that
+    do not descend from `AbstractDocument`, by default Swing text components use `AbstractDocument`
+    subclasses for their documents.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要实现文档过滤器，请创建[`DocumentFilter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DocumentFilter.html)的子类，然后使用`AbstractDocument`类中定义的`setDocumentFilter`方法将其附加到文档上。虽然可能存在不是从`AbstractDocument`继承的文档，但默认情况下，Swing文本组件使用`AbstractDocument`子类作为其文档。
+- en: 'The `TextComponentDemo` application has a document filter, [`DocumentSizeFilter`](../examples/components/TextComponentDemoProject/src/components/DocumentSizeFilter.java),
+    that limits the number of characters that the text pane can contain. Here is the
+    code that creates the filter and attaches it to the text pane''s document:'
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextComponentDemo` 应用程序有一个文档过滤器，[`DocumentSizeFilter`](../examples/components/TextComponentDemoProject/src/components/DocumentSizeFilter.java)，限制文本窗格可以包含的字符数。以下是创建过滤器并将其附加到文本窗格文档的代码：'
+- en: '[PRE11]'
+  id: totrans-102
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'To limit the characters allowed in the document, `DocumentSizeFilter` overrides
+    the `DocumentFilter` class''s `insertString` method, which is called each time
+    that text is inserted into the document. It also overrides the `replace` method,
+    which is most likely to be called when the user pastes in new text. In general,
+    text insertion can result when the user types or pastes in new text, or when the
+    `setText` method is called. Here is the `DocumentSizeFilter` class''s implementation
+    of the `insertString` method:'
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了限制文档中允许的字符数，`DocumentSizeFilter`覆盖了`DocumentFilter`类的`insertString`方法，每次插入文本到文档时都会调用该方法。它还覆盖了`replace`方法，当用户粘贴新文本时最有可能被调用。一般来说，文本插入可能发生在用户键入或粘贴新文本时，或者调用`setText`方法时。这是`DocumentSizeFilter`类对`insertString`方法的实现：
+- en: '[PRE12]'
+  id: totrans-104
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: The code for `replace` is similar. The [`FilterBypass`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DocumentFilter.FilterBypass.html)
+    parameter to the methods defined by the `DocumentFilter` class is simply an object
+    that enables the document to be updated in a thread-safe way.
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`replace`的代码类似。`DocumentFilter`类定义的方法的[`FilterBypass`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DocumentFilter.FilterBypass.html)参数只是一个使文档能够以线程安全方式更新的对象。'
+- en: Because the preceding document filter is concerned with additions to the document's
+    data, it only overrides the `insertString` and `replace` methods. Most document
+    filters would override `DocumentFilter`'s `remove` method as well.
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为前面的文档过滤器涉及文档数据的添加，它仅覆盖了`insertString`和`replace`方法。大多数文档过滤器还会覆盖`DocumentFilter`的`remove`方法。
+- en: Listening for Changes on a Document
+  id: totrans-107
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 监听文档的更改
+- en: 'You can register two different types of listeners on a document: document listeners
+    and undoable edit listeners. This subsection describes document listeners. For
+    information about undoable edit listeners, refer to [Implementing Undo and Redo](#undo).'
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在文档上注册两种不同类型的监听器：文档监听器和可撤销编辑监听器。本小节描述了文档监听器。有关可撤销编辑监听器的信息，请参阅[实现撤销和重做](#undo)。
+- en: A document notifies registered document listeners of changes to the document.
+    Use a document listener to create a reaction when text is inserted or removed
+    from a document, or when the text style changes.
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文档会通知已注册的文档监听器文档的更改。使用文档监听器在文档中插入或删除文本，或文本样式更改时创建反应。
+- en: 'The `TextComponentDemo` program uses a document listener to update the change
+    log whenever a change is made to the text pane. The following line of code registers
+    an instance of the `MyDocumentListener` class as a listener on the text pane''s
+    document:'
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextComponentDemo` 程序使用文档监听器在文本窗格发生更改时更新更改日志。以下代码行将`MyDocumentListener`类的一个实例注册为文本窗格文档的监听器：'
+- en: '[PRE13]'
+  id: totrans-111
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: 'Here is the implementation of the `MyDocumentListener` class:'
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是`MyDocumentListener`类的实现：
+- en: '[PRE14]'
+  id: totrans-113
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: 'The listener implements three methods for handling three different types of
+    document events: insertion, removal, and style changes. `StyledDocument` instances
+    can fire all three types of events. `PlainDocument` instances fire events only
+    for insertion and removal. For general information about document listeners and
+    document events, see [How to Write a Document Listener](../events/documentlistener.html).'
+  id: totrans-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 监听器实现了处理三种不同类型文档事件的三种方法：插入、删除和样式更改。`StyledDocument` 实例可以触发这三种类型的事件。`PlainDocument`
+    实例仅触发插入和删除事件。有关文档监听器和文档事件的一般信息，请参阅[如何编写文档监听器](../events/documentlistener.html)。
+- en: Remember that the document filter for this text pane limits the number of characters
+    allowed in the document. If you try to add more text than the document filter
+    allows, the document filter blocks the change and the listener's `insertUpdate`
+    method is not called. Document listeners are notified of changes only if the change
+    has already occurred.
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，此文本窗格的文档过滤器限制了文档中允许的字符数。如果尝试添加的文本超出文档过滤器允许的范围，文档过滤器将阻止更改，并且监听器的`insertUpdate`方法不会被调用。只有在更改已经发生时，文档监听器才会被通知更改。
+- en: You may want to change the document's text within a document listener. **However,
+    you should never modify the contents of a text component from within a document
+    listener.** If you do, the program will likely deadlock. Instead, you can use
+    a formatted text field or provide a document filter.
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能希望在文档监听器中更改文档的文本。**但是，您绝对不应该在文档监听器中修改文本组件的内容。**如果这样做，程序很可能会死锁。相反，您可以使用格式化文本字段或提供文档过滤器。
+- en: Listening for Caret and Selection Changes
+  id: totrans-117
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 监听插入符和选择更改
+- en: The `TextComponentDemo` program uses a caret listener to display the current
+    position of the caret or, if text is selected, the extent of the selection.
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextComponentDemo` 程序使用一个插入符监听器来显示插入符的当前位置，或者如果选择了文本，则显示选择的范围。'
+- en: 'The caret listener class in this example is a `JLabel` subclass. Here is the
+    code that creates the caret listener label and makes it a caret listener of the
+    text pane:'
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例中的插入符监听器类是一个`JLabel`子类。以下是创建插入符监听器标签并将其设置为文本窗格的插入符监听器的代码：
+- en: '[PRE15]'
+  id: totrans-120
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: 'A caret listener must implement one method, `caretUpdate`, which is called
+    each time the caret moves or the selection changes. Here is the `CaretListenerLabel`
+    implementation of `caretUpdate`:'
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 插入符监听器必须实现一个方法，即`caretUpdate`，每次插入符移动或选择更改时都会调用该方法。以下是`CaretListenerLabel`对`caretUpdate`的实现：
+- en: '[PRE16]'
+  id: totrans-122
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: As you can see, this listener updates its text label to reflect the current
+    state of the caret or selection. The listener gets the information to display
+    from the caret event object. For general information about caret listeners and
+    caret events, see [How to Write a Caret Listener](../events/caretlistener.html).
+  id: totrans-123
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，此监听器会更新其文本标签以反映插入符或选择的当前状态。监听器从插入符事件对象获取要显示的信息。有关插入符监听器和插入符事件的一般信息，请参阅[如何编写插入符监听器](../events/caretlistener.html)。
+- en: As with document listeners, a caret listener is passive. It reacts to changes
+    in the caret or in the selection, but does not change the caret or the selection
+    itself. If you want to change the caret or selection, use a *navigation filter*
+    or a custom caret.
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与文档监听器一样，插入符监听器是被动的。它对插入符或选择的更改做出反应，但不会更改插入符或选择本身。如果要更改插入符或选择，请使用*导航过滤器*或自定义插入符。
+- en: Implementing a navigation filter is similar to implementing a document filter.
+    First, write a subclass of [`NavigationFilter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/NavigationFilter.html).
+    Then attach an instance of the subclass to a text component with the `setNavigationFilter`
+    method.
+  id: totrans-125
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现导航过滤器类似于实现文档过滤器。首先，编写一个[`NavigationFilter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/NavigationFilter.html)的子类。然后使用`setNavigationFilter`方法将子类的实例附加到文本组件。
+- en: "You might create a custom caret to customize the appearance of a caret. To\
+    \ create a custom caret, write a class that implements the [`Caret`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Caret.html)\
+    \ interface \x97 perhaps by extending the [`DefaultCaret`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultCaret.html)\
+    \ class. Then provide an instance of your class as an argument to the `setCaret`\
+    \ method on a text component."
+  id: totrans-126
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能会创建一个自定义插入符来自定义插入符的外观。要创建自定义插入符，请编写一个实现[`Caret`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/Caret.html)接口的类，可能是通过扩展[`DefaultCaret`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultCaret.html)类。然后将您的类的实例作为参数提供给文本组件的`setCaret`方法。
+- en: 'Concepts: About Editor Kits'
+  id: totrans-127
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 概念：关于编辑器工具包
+- en: Text components use an `EditorKit` to tie the various pieces of the text component
+    together. The editor kit provides the view factory, document, caret, and actions.
+    An editor kit also reads and writes documents of a particular format. Although
+    all text components use editor kits, some components hide theirs. You cannot set
+    or get the editor kit used by a text field or text area. Editor panes and text
+    panes provide the `getEditorKit` method to get the current editor kit and the
+    `setEditorKit` method to change it.
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文本组件使用`EditorKit`将文本组件的各个部分联系在一起。编辑器工具包提供视图工厂、文档、插入符和操作。编辑器工具包还读取和写入特定格式的文档。尽管所有文本组件都使用编辑器工具包，但某些组件会隐藏它们的编辑器工具包。您无法设置或获取文本字段或文本区域使用的编辑器工具包。编辑窗格和文本窗格提供`getEditorKit`方法以获取当前编辑器工具包，并提供`setEditorKit`方法以更改它。
+- en: For all components, the `JTextComponent` class provides the API for you to indirectly
+    invoke or customize some editor kit capabilities. For example, `JTextComponent`
+    provides the `read` and `write` methods, which invoke the editor kit's `read`
+    and `write` methods. `JTextComponent` also provides a method, `getActions`, which
+    returns all of the actions supported by a component.
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于所有组件，`JTextComponent`类提供了API，让您间接调用或自定义一些编辑工具包的功能。例如，`JTextComponent`提供了`read`和`write`方法，这些方法调用编辑工具包的`read`和`write`方法。`JTextComponent`还提供了一个方法，`getActions`，它返回组件支持的所有操作。
+- en: 'The Swing text package provides the following editor kits:'
+  id: totrans-130
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing文本包提供以下编辑工具包：
+- en: '[`DefaultEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html)'
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`DefaultEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html)'
+- en: Reads and writes plain text, and provides a basic set of editing commands. Details
+    about how the text system treats newlines can be found in the `DefaultEditorKit`
+    API documentation. Briefly, the '\n' character is used internally, but the document
+    or platform line separators are used when writing files. All the other editor
+    kits are descendants of the `DefaultEditorKit` class.
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 读取和写入纯文本，并提供一组基本的编辑命令。有关文本系统如何处理换行符的详细信息可以在`DefaultEditorKit` API文档中找到。简而言之，'\n'字符在内部使用，但在写入文件时使用文档或平台的换行符。所有其他编辑工具包都是`DefaultEditorKit`类的子类。
+- en: '[`StyledEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.html)'
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`StyledEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/StyledEditorKit.html)'
+- en: Reads and writes styled text, and provides a minimal set of actions for styled
+    text. This class is a subclass of `DefaultEditorKit` and is the editor kit used
+    by `JTextPane` by default.
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 读取和写入样式文本，并为样式文本提供一组最小的操作。这个类是`DefaultEditorKit`的子类，是`JTextPane`默认使用的编辑工具包。
+- en: '[`HTMLEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/html/HTMLEditorKit.html)'
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`HTMLEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/html/HTMLEditorKit.html)'
+- en: Reads, writes, and edits HTML. This is a subclass of `StyledEditorKit`.
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 读取、写入和编辑HTML。这是`StyledEditorKit`的子类。
+- en: Each of the editor kits listed above has been registered with the `JEditorPane`
+    class and associated with the text format that the kit reads, writes, and edits.
+    When a file is loaded into an editor pane, the pane checks the format of the file
+    against its registered kits. If a registered kit is found that supports that file
+    format, the pane uses the kit to read the file, display, and edit it. Thus, the
+    editor pane effectively transforms itself into an editor for that text format.
+    You can extend `JEditorPane` to support your own text format by creating an editor
+    kit for it, and then using `JEditorPane`'s `registerEditorKitForContentType` to
+    associate your kit with your text format.
+  id: totrans-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 上述每个编辑工具包都已注册到`JEditorPane`类，并与工具包读取、写入和编辑的文本格式相关联。当文件加载到编辑窗格中时，窗格会检查文件的格式与其注册的工具包是否匹配。如果找到支持该文件格式的注册工具包，则窗格将使用该工具包来读取文件、显示和编辑。因此，编辑窗格有效地将自身转换为该文本格式的编辑器。您可以通过为其创建编辑工具包，然后使用`JEditorPane`的`registerEditorKitForContentType`将您的工具包与您的文本格式相关联，从而扩展`JEditorPane`以支持您自己的文本格式。

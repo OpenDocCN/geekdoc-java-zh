@@ -1,0 +1,116 @@
+- en: What Is a Socket?
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 什么是套接字？
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/sockets/definition.html](https://docs.oracle.com/javase/tutorial/networking/sockets/definition.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/sockets/definition.html](https://docs.oracle.com/javase/tutorial/networking/sockets/definition.html)
+- en: Normally, a server runs on a specific computer and has a socket that is bound
+    to a specific port number. The server just waits, listening to the socket for
+    a client to make a connection request.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，服务器在特定计算机上运行，并具有绑定到特定端口号的套接字。服务器只是等待，监听套接字，等待客户端发出连接请求。
+- en: 'On the client-side: The client knows the hostname of the machine on which the
+    server is running and the port number on which the server is listening. To make
+    a connection request, the client tries to rendezvous with the server on the server''s
+    machine and port. The client also needs to identify itself to the server so it
+    binds to a local port number that it will use during this connection. This is
+    usually assigned by the system.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在客户端：客户端知道服务器正在运行的机器的主机名和服务器正在监听的端口号。为了发出连接请求，客户端尝试在服务器的机器和端口上与服务器会合。客户端还需要向服务器标识自己，因此它绑定到一个本地端口号，在此连接期间将使用该端口号。这通常由系统分配。
+- en: '![A client''s connection request](../Images/e99613319760e96e1ec0579ce179bb1b.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![客户端的连接请求](../Images/e99613319760e96e1ec0579ce179bb1b.png)'
+- en: If everything goes well, the server accepts the connection. Upon acceptance,
+    the server gets a new socket bound to the same local port and also has its remote
+    endpoint set to the address and port of the client. It needs a new socket so that
+    it can continue to listen to the original socket for connection requests while
+    tending to the needs of the connected client.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一切顺利，服务器接受连接。接受后，服务器会获得一个新的套接字，绑定到相同的本地端口，并且其远程端点设置为客户端的地址和端口。它需要一个新的套接字，以便在继续监听原始套接字以接受连接请求的同时，满足已连接客户端的需求。
+- en: '![The connection is made](../Images/ed36d613974edf463f81ceca157310de.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![建立连接](../Images/ed36d613974edf463f81ceca157310de.png)'
+- en: On the client side, if the connection is accepted, a socket is successfully
+    created and the client can use the socket to communicate with the server.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在客户端，如果连接被接受，套接字将成功创建，客户端可以使用该套接字与服务器通信。
+- en: The client and server can now communicate by writing to or reading from their
+    sockets.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 客户端和服务器现在可以通过写入或从套接字读取来进行通信。
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Definition:**'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义：**'
+- en: A *socket* is one endpoint of a two-way communication link between two programs
+    running on the network. A socket is bound to a port number so that the TCP layer
+    can identify the application that data is destined to be sent to.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*套接字*是网络上两个运行程序之间的双向通信链路的一个端点。套接字绑定到一个端口号，以便TCP层可以识别数据要发送到的应用程序。'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: An endpoint is a combination of an IP address and a port number. Every TCP connection
+    can be uniquely identified by its two endpoints. That way you can have multiple
+    connections between your host and the server.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个端点是IP地址和端口号的组合。每个TCP连接可以通过其两个端点唯一标识。这样，您可以在主机和服务器之间建立多个连接。
+- en: The `java.net` package in the Java platform provides a class, `Socket`, that
+    implements one side of a two-way connection between your Java program and another
+    program on the network. The `Socket` class sits on top of a platform-dependent
+    implementation, hiding the details of any particular system from your Java program.
+    By using the `java.net.Socket` class instead of relying on native code, your Java
+    programs can communicate over the network in a platform-independent fashion.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台中的`java.net`包提供了一个类`Socket`，它实现了您的Java程序与网络上另一个程序之间的双向连接的一侧。`Socket`类位于一个平台相关的实现之上，隐藏了任何特定系统的细节，使您的Java程序能够以与平台无关的方式在网络上通信，而不是依赖本机代码。
+- en: Additionally, `java.net` includes the `ServerSocket` class, which implements
+    a socket that servers can use to listen for and accept connections to clients.
+    This lesson shows you how to use the `Socket` and `ServerSocket` classes.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，`java.net`包含`ServerSocket`类，它实现了服务器可以用来监听并接受客户端连接的套接字。本课程将向您展示如何使用`Socket`和`ServerSocket`类。
+- en: If you are trying to connect to the Web, the `URL` class and related classes
+    (`URLConnection`, `URLEncoder`) are probably more appropriate than the socket
+    classes. In fact, URLs are a relatively high-level connection to the Web and use
+    sockets as part of the underlying implementation. See [Working with URLs](../urls/index.html)
+    for information about connecting to the Web via URLs.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想连接到网络，`URL` 类及其相关类（`URLConnection`，`URLEncoder`）可能比套接字类更合适。实际上，URL 是与网络连接的相对高级的方式，并且在其底层实现中使用了套接字。有关通过
+    URL 连接到网络的信息，请参阅[使用 URL](../urls/index.html)。

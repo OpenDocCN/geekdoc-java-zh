@@ -1,0 +1,124 @@
+- en: Checking a File or Directory
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 检查文件或目录
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/check.html](https://docs.oracle.com/javase/tutorial/essential/io/check.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/check.html](https://docs.oracle.com/javase/tutorial/essential/io/check.html)
+- en: You have a `Path` instance representing a file or directory, but does that file
+    exist on the file system? Is it readable? Writable? Executable?
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您有一个代表文件或目录的`Path`实例，但该文件是否存在于文件系统中？它是否可读？可写？可执行？
+- en: Verifying the Existence of a File or Directory
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 验证文件或目录的存在
+- en: 'The methods in the `Path` class are syntactic, meaning that they operate on
+    the `Path` instance. But eventually you must access the file system to verify
+    that a particular `Path` exists, or does not exist. You can do so with the [`exists(Path,
+    LinkOption...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#exists-java.nio.file.Path-java.nio.file.LinkOption...-)
+    and the [`notExists(Path, LinkOption...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#notExists-java.nio.file.Path-java.nio.file.LinkOption...-)
+    methods. Note that `!Files.exists(path)` is not equivalent to `Files.notExists(path)`.
+    When you are testing a file''s existence, three results are possible:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Path`类中的方法是语法的，意味着它们在`Path`实例上操作。但最终您必须访问文件系统来验证特定的`Path`是否存在或不存在。您可以使用[`exists(Path,
+    LinkOption...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#exists-java.nio.file.Path-java.nio.file.LinkOption...-)和[`notExists(Path,
+    LinkOption...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#notExists-java.nio.file.Path-java.nio.file.LinkOption...-)方法。请注意，`!Files.exists(path)`并不等同于`Files.notExists(path)`。当您测试文件的存在时，可能有三种结果：'
+- en: The file is verified to exist.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 验证文件存在。
+- en: The file is verified to not exist.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 验证文件不存在。
+- en: The file's status is unknown. This result can occur when the program does not
+    have access to the file.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 文件的状态未知。当程序无法访问文件时，会出现此结果。
+- en: If both `exists` and `notExists` return `false`, the existence of the file cannot
+    be verified.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`exists`和`notExists`都返回`false`，则无法验证文件的存在。
+- en: Checking File Accessibility
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检查文件的可访问性
+- en: To verify that the program can access a file as needed, you can use the [`isReadable(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#isReadable-java.nio.file.Path-),
+    [`isWritable(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#isWritable-java.nio.file.Path-),
+    and [`isExecutable(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#isExecutable-java.nio.file.Path-)
+    methods.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要验证程序是否可以按需访问文件，可以使用[`isReadable(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#isReadable-java.nio.file.Path-)、[`isWritable(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#isWritable-java.nio.file.Path-)和[`isExecutable(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#isExecutable-java.nio.file.Path-)方法。
+- en: The following code snippet verifies that a particular file exists and that the
+    program has the ability to execute the file.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段验证特定文件是否存在，并且程序是否有执行文件的能力。
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Once any of these methods completes, there is no guarantee that the
+    file can be accessed. A common security flaw in many applications is to perform
+    a check and then access the file. For more information, use your favorite search
+    engine to look up `TOCTTOU` (pronounced *TOCK-too*).'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 一旦其中任何方法完成，就不能保证可以访问文件。许多应用程序中的常见安全漏洞是执行检查然后访问文件。要获取更多信息，请使用您喜欢的搜索引擎查找`TOCTTOU`（发音为*TOCK-too*）。'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Checking Whether Two Paths Locate the Same File
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检查两个路径是否定位到相同文件
+- en: 'When you have a file system that uses symbolic links, it is possible to have
+    two different paths that locate the same file. The [`isSameFile(Path, Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#isSameFile-java.nio.file.Path-java.nio.file.Path-)
+    method compares two paths to determine if they locate the same file on the file
+    system. For example:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您有一个使用符号链接的文件系统时，可能会有两个不同的路径定位到同一个文件。[`isSameFile(Path, Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#isSameFile-java.nio.file.Path-java.nio.file.Path-)方法比较两个路径，以确定它们是否在文件系统上定位到同一个文件。例如：
+- en: '[PRE1]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

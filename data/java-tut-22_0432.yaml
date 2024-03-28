@@ -1,0 +1,122 @@
+- en: How Layout Management Works
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 布局管理的工作原理
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/howLayoutWorks.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/howLayoutWorks.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/howLayoutWorks.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/howLayoutWorks.html)
+- en: '* * *'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程涵盖手动编写布局代码，这可能具有挑战性。如果您不想学习布局管理的所有细节，您可能更喜欢使用`GroupLayout`布局管理器结合构建工具来布局您的
+    GUI。其中一个构建工具是[NetBeans IDE](../learn/index.html)。否则，如果您想手动编码而不想使用`GroupLayout`，那么建议使用`GridBagLayout`作为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有兴趣使用JavaFX创建 GUI，请参阅[JavaFX中的布局](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: Here is an example of a layout management sequence for a container using [`LayoutManager2`](https://docs.oracle.com/javase/8/docs/api/java/awt/LayoutManager2.html).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个使用[`LayoutManager2`](https://docs.oracle.com/javase/8/docs/api/java/awt/LayoutManager2.html)
+    对容器进行布局管理的示例。
+- en: 'Layout managers basically do two things:'
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 布局管理器基本上执行两项任务：
+- en: Calculate the minimum/preferred/maximum sizes for a container.
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 计算容器的最小/首选/最大大小。
+- en: Lay out the container's children.
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 布局容器的子元素。
+- en: Layout managers do this based on the provided constraints, the container's properties
+    (such as insets) and on the children's minimum/preferred/maximum sizes. If a child
+    is itself a container then its own layout manger is used to get its minimum/preferred/maximum
+    sizes and to lay it out.
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 布局管理器根据提供的约束、容器的属性（如插入）以及子元素的最小/首选/最大大小来执行此操作。如果子元素本身是一个容器，则使用其自身的布局管理器来获取其最小/首选/最大大小并进行布局。
+- en: A container can be *valid* (namely, `isValid()` returns true) or *invalid*.
+    For a container to be valid, all the container's children must be laid out already
+    and must all be valid also. The [`Container.validate`](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#validate--)
+    method can be used to validate an invalid container. This method triggers the
+    layout for the container and all the child containers down the component hierarchy
+    and marks this container as valid.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 容器可以是*有效*的（即，`isValid()` 返回 true），也可以是*无效*的。要使容器有效，所有容器的子元素必须已经布局，并且也必须全部有效。[`Container.validate`](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#validate--)
+    方法可用于验证无效容器。此方法触发容器及其子容器沿组件层次结构向下的布局，并将此容器标记为有效。
+- en: After a component is created it is in the invalid state by default. The [`Window.pack`](https://docs.oracle.com/javase/8/docs/api/java/awt/Window.html)
+    method validates the window and lays out the window's component hierarchy for
+    the first time.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 组件创建后，默认处于无效状态。[`Window.pack`](https://docs.oracle.com/javase/8/docs/api/java/awt/Window.html)
+    方法验证窗口，并首次布局窗口的组件层次结构。
+- en: The end result is that to determine the best size for the container, the system
+    determines the sizes of the containers at the bottom of the containment hierarchy.
+    These sizes then percolate up the containment hierarchy, eventually determining
+    the container's total size.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最终结果是为了确定容器的最佳大小，系统确定了包含层次结构底部容器的大小。然后这些大小向上层次结构传播，最终确定容器的总大小。
+- en: "If the size of a component changes, for example following a change of font,\
+    \ the component must be resized and repainted by calling the `revalidate` and\
+    \ `repaint` methods on that component. Both `revalidate` and `repaint` are [thread-safe](../concurrency/index.html)\
+    \ \x97 you need not invoke them from the event-dispatching thread."
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "如果组件的大小发生变化，例如更改字体后，必须调用该组件的`revalidate`和`repaint`方法来重新调整大小并重绘。`revalidate`和`repaint`都是[线程安全](../concurrency/index.html)的\
+    \ \x97 您无需从事件分派线程调用它们。"
+- en: When you invoke `revalidate` on a component, a request is passed up the containment
+    hierarchy until it encounters a container, such as a scroll pane or top-level
+    container, that should not be affected by the component's resizing. (This is determined
+    by calling the container's `isValidateRoot` method.) The container is then laid
+    out, which has the effect of adjusting the revalidated component's size and the
+    size of all affected components.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你在组件上调用`revalidate`时，请求会沿着包含层次结构传递，直到遇到一个容器，比如滚动窗格或顶层容器，这些容器不应受到组件调整大小的影响。（这是通过调用容器的`isValidateRoot`方法来确定的。）然后对容器进行布局，这会调整重新验证的组件的大小以及所有受影响组件的大小。

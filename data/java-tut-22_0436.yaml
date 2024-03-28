@@ -1,0 +1,261 @@
+- en: How to Use CardLayout
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用CardLayout
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/card.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/card.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/card.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/card.html)
+- en: '* * *'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程涵盖手动编写布局代码，这可能具有挑战性。如果您对学习布局管理的所有细节不感兴趣，您可能更喜欢使用`GroupLayout`布局管理器结合构建工具来布局您的GUI。其中一个构建工具是[NetBeans
+    IDE](../learn/index.html)。否则，如果您想手动编码而不想使用`GroupLayout`，那么建议使用`GridBagLayout`作为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有兴趣使用JavaFX创建GUI，请参阅[JavaFX中的布局](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: The following figure represents a snapshot of an application that uses the [`CardLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html)
+    class to switch between two panels.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图表示一个应用程序的快照，该应用程序使用[`CardLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html)类在两个面板之间切换。
+- en: '![A snapshot of CardLayoutDemo](../Images/26aec8afefd1f2f5326323d57942ca0a.png)
+    ![Another snapshot of CardLayoutDemo](../Images/3b53a2bceda4ff23a72ba9b204c40c0b.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![CardLayoutDemo的快照](../Images/26aec8afefd1f2f5326323d57942ca0a.png) ![CardLayoutDemo的另一个快照](../Images/3b53a2bceda4ff23a72ba9b204c40c0b.png)'
+- en: Click the Launch button to run CardLayoutDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download Java SE](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/layout/index.html#CardLayoutDemo).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行CardLayoutDemo（[下载Java
+    SE](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/layout/index.html#CardLayoutDemo)。
+- en: '[![Launches the CardLayoutDemo application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/CardLayoutDemoProject/CardLayoutDemo.jnlp)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动CardLayoutDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/CardLayoutDemoProject/CardLayoutDemo.jnlp)'
+- en: The complete code of this demo is in the [`CardLayoutDemo.java`](../examples/layout/CardLayoutDemoProject/src/layout/CardLayoutDemo.java)
+    file.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个演示的完整代码在[`CardLayoutDemo.java`](../examples/layout/CardLayoutDemoProject/src/layout/CardLayoutDemo.java)文件中。
+- en: The `CardLayout` class manages two or more components (usually `JPanel` instances)
+    that share the same display space. When using the `CardLayout` class, let the
+    user choose between the components by using a combo box. The `CardLayoutDemo`
+    application is an example to illustrate this feature.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CardLayout`类管理两个或多个组件（通常是`JPanel`实例），它们共享相同的显示空间。使用`CardLayout`类时，让用户通过使用组合框在组件之间进行选择。`CardLayoutDemo`应用程序是一个示例，用于说明此功能。'
+- en: 'Another way to accomplish the same task is to use a [tabbed pane](../components/tabbedpane.html).
+    The following picture shows a tabbed pane version of the preceding example:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种完成相同任务的方法是使用[选项卡窗格](../components/tabbedpane.html)。下图显示了前面示例的选项卡窗格版本：
+- en: '![A snapshot of TabDemo](../Images/0da84c9eda881e73f8a254ae9ab6f61c.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TabDemo的快照](../Images/0da84c9eda881e73f8a254ae9ab6f61c.png)'
+- en: Because a tabbed pane provides its own GUI, using a tabbed pane is simpler than
+    using the `CardLayout` class. For example, implementing the preceding example
+    using a tabbed pane results in a program with fewer lines of code.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为选项卡窗格提供了自己的GUI，所以使用选项卡窗格比使用`CardLayout`类更简单。例如，使用选项卡窗格实现前面的示例会导致代码行数更少的程序。
+- en: Click the Launch button to run TabDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/layout/index.html#TabDemo).
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TabDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/layout/index.html#TabDemo)。
+- en: '[![Launches the TabDemo application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TabDemoProject/TabDemo.jnlp)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 TabDemo 应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TabDemoProject/TabDemo.jnlp)'
+- en: The complete code of this demo is in the [`TabDemo.java`](../examples/layout/TabDemoProject/src/layout/TabDemo.java)
+    file.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此演示的完整代码位于[`TabDemo.java`](../examples/layout/TabDemoProject/src/layout/TabDemo.java)文件中。
+- en: 'Conceptually, each component that a `CardLayout` manages is like a playing
+    card or trading card in a stack, where only the top card is visible at any time.
+    You can choose the card that is showing in any of the following ways:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从概念上讲，`CardLayout`管理的每个组件都像一叠扑克牌或交换卡片，任何时候只有顶部卡片可见。您可以通过以下任何方式选择显示的卡片：
+- en: By asking for either the first or last card, in the order it was added to the
+    container
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过请求第一张或最后一张卡片，按照添加到容器的顺序
+- en: By flipping through the deck backwards or forwards
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过向前或向后翻转卡片堆栈来选择卡片。
+- en: By specifying a card with a specific name
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过指定具有特定名称的卡片
+- en: The `CardLayoutDemo` class uses the last scheme.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CardLayoutDemo`类使用最后一种方案。'
+- en: The following code snippet from the [`CardLayoutDemo.java`](../examples/layout/CardLayoutDemoProject/src/layout/CardLayoutDemo.java)
+    application creates the `CardLayout` object and the components it manages.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 来自[`CardLayoutDemo.java`](../examples/layout/CardLayoutDemoProject/src/layout/CardLayoutDemo.java)应用程序的以下代码片段创建了`CardLayout`对象及其管理的组件。
+- en: '[PRE0]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: To add a component to a container that a `CardLayout` object manages, specify
+    a string that identifies the component being added. For example, in this demo,
+    the first panel has the string `"Card with JButtons"`, and the second panel has
+    the string `"Card with JTextField"`. In this demo those strings are also used
+    in the combo box.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将组件添加到`CardLayout`对象管理的容器中，请指定一个标识要添加的组件的字符串。例如，在此演示中，第一个面板的字符串是`"Card with
+    JButtons"`，第二个面板的字符串是`"Card with JTextField"`。在此演示中，这些字符串也在组合框中使用。
+- en: 'To choose which component a `CardLayout` object shows, put additional code
+    in your code example:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要选择`CardLayout`对象显示的组件，请在您的代码示例中添加额外的代码：
+- en: '[PRE1]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: "This example shows that to use the `show` method of the `CardLayout` class,\
+    \ you must set the currently visible component. The first argument in the `show`\
+    \ method is the container the `CardLayout` controls \x97 that is, the container\
+    \ of the components the `CardLayout` manages. The second argument is the string\
+    \ that identifies the component to show. This string is the same string that was\
+    \ used when adding the component to the container."
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例显示，要使用`CardLayout`类的`show`方法，必须设置当前可见的组件。`show`方法中的第一个参数是`CardLayout`控制的容器，即`CardLayout`管理的组件的容器。第二个参数是标识要显示的组件的字符串。这个字符串与将组件添加到容器时使用的字符串相同。
+- en: The CardLayout API
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: CardLayout API
+- en: The following table lists the `CardLayout` class methods that are used to choose
+    a component. For each method, the first argument is the container for which the
+    `CardLayout` is the layout manager (the container of the cards the `CardLayout`
+    controls).
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了用于选择组件的`CardLayout`类方法。对于每个方法，第一个参数是`CardLayout`是布局管理器的容器（`CardLayout`控制的卡片的容器）。
+- en: '| Method | Purpose |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [`first (Container *parent*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#first-java.awt.Container-)
+    | Flips to the first card of the container. |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`first (Container *parent*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#first-java.awt.Container-)
+    | 翻转到容器的第一张卡片。 |'
+- en: '| [`next (Container *parent*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#next-java.awt.Container-)
+    | Flips to the next card of the container. If the currently visible card is the
+    last one, this method flips to the first card in the layout. |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`next (Container *parent*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#next-java.awt.Container-)
+    | 翻转到容器的下一张卡片。如果当前可见的卡片是最后一张，则此方法将翻转到布局中的第一张卡片。 |'
+- en: '| [`previous (Container *parent*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#previous-java.awt.Container-)
+    | Flips to the previous card of the container. If the currently visible card is
+    the first one, this method flips to the last card in the layout. |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`previous (Container *parent*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#previous-java.awt.Container-)
+    | 翻转到容器的上一张卡片。如果当前可见的卡片是第一张，则此方法将翻转到布局中的最后一张卡片。 |'
+- en: '| [`last (Container *parent*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#last-java.awt.Container-)
+    | Flips to the last card of the container. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`last (Container *parent*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#last-java.awt.Container-)
+    | 翻转到容器的最后一张卡片。 |'
+- en: '| [`show (Container *parent*, String *name*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#show-java.awt.Container-java.lang.String-)
+    | Flips to the component that was added to this layout with the specified `name`,
+    using the [`addLayoutComponent`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#addLayoutComponent-java.awt.Component-java.lang.Object-)
+    method. |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`show (Container *parent*, String *name*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#show-java.awt.Container-java.lang.String-)
+    | 使用指定的 `name` 使用 [`addLayoutComponent`](https://docs.oracle.com/javase/8/docs/api/java/awt/CardLayout.html#addLayoutComponent-java.awt.Component-java.lang.Object-)
+    方法添加到此布局中的组件进行翻转。 |'
+- en: Examples that Use CardLayout
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用 CardLayout 的示例
+- en: Only one example in this trail uses `CardLayout`, and this is the [`CardLayoutDemo`](../examples/layout/index.html#CardLayoutDemo).
+    Generally, our examples use [tabbed panes](../components/tabbedpane.html) instead
+    of `CardLayout`, since a tabbed pane provides its own GUI.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个教程中，只有一个示例使用了 `CardLayout`，即 [`CardLayoutDemo`](../examples/layout/index.html#CardLayoutDemo)。一般来说，我们的示例使用
+    [选项卡面板](../components/tabbedpane.html) 而不是 `CardLayout`，因为选项卡面板提供了自己的 GUI。

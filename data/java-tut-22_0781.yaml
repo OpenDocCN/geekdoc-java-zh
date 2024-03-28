@@ -1,0 +1,547 @@
+- en: StAX API
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: StAX API
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/stax/api.html](https://docs.oracle.com/javase/tutorial/jaxp/stax/api.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/stax/api.html](https://docs.oracle.com/javase/tutorial/jaxp/stax/api.html)
+- en: The StAX API exposes methods for iterative, event-based processing of XML documents.
+    XML documents are treated as a filtered series of events, and infoset states can
+    be stored in a procedural fashion. Moreover, unlike SAX, the StAX API is bidirectional,
+    enabling both reading and writing of XML documents.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX API公开了用于XML文档的迭代式、基于事件的处理的方法。XML文档被视为一系列经过过滤的事件，并且信息集状态可以以过程化方式存储。此外，与SAX不同，StAX
+    API是双向的，可以实现对XML文档的读取和写入。
+- en: 'The StAX API is really two distinct API sets: a **cursor** API and an **iterator**
+    API. These two API sets are explained in greater detail later in this lesson,
+    but their main features are briefly described below.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX API实际上是两个不同的API集：一个**光标** API和一个**迭代器** API。这两个API集将在本课程的后面更详细地解释，但它们的主要特点如下所述。
+- en: Cursor API
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 光标API
+- en: As the name implies, the StAX **cursor** API represents a cursor with which
+    you can walk an XML document from beginning to end. This cursor can point to one
+    thing at a time, and always moves forward, never backward, usually one infoset
+    element at a time.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如其名称所示，StAX **光标** API表示一个光标，您可以使用它从头到尾遍历XML文档。这个光标一次只能指向一件事，并且总是向前移动，从不后退，通常一次移动一个信息集元素。
+- en: 'The two main cursor interfaces are `XMLStreamReader` and `XMLStreamWriter`.
+    `XMLStreamReader` includes accessor methods for all possible information retrievable
+    from the XML Information model, including document encoding, element names, attributes,
+    namespaces, text nodes, start tags, comments, processing instructions, document
+    boundaries, and so forth; for example:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两个主要的光标接口是`XMLStreamReader`和`XMLStreamWriter`。`XMLStreamReader`包括了从XML信息模型中检索所有可能信息的访问方法，包括文档编码、元素名称、属性、命名空间、文本节点、起始标记、注释、处理指令、文档边界等等；例如：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'You can call methods on `XMLStreamReader`, such as `getText` and `getName`,
+    to get data at the current cursor location. `XMLStreamWriter` provides methods
+    that correspond to `StartElement` and `EndElement` event types; for example:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在`XMLStreamReader`上调用诸如`getText`和`getName`之类的方法，以获取当前光标位置的数据。`XMLStreamWriter`提供了与`StartElement`和`EndElement`事件类型对应的方法；例如：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The cursor API mirrors SAX in many ways. For example, methods are available
+    for directly accessing string and character information, and integer indexes can
+    be used to access attribute and namespace information. As with SAX, the cursor
+    API methods return XML information as strings, which minimizes object allocation
+    requirements.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 光标API与SAX在许多方面相似。例如，可以直接访问字符串和字符信息的方法可用，并且可以使用整数索引访问属性和命名空间信息。与SAX一样，光标API方法将XML信息作为字符串返回，这减少了对象分配的需求。
+- en: Iterator API
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 迭代器API
+- en: The StAX **iterator** API represents an XML document stream as a set of discrete
+    event objects. These events are pulled by the application and provided by the
+    parser in the order in which they are read in the source XML document.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX **迭代器** API将XML文档流表示为一组离散的事件对象。这些事件由应用程序拉取，并由解析器按照它们在源XML文档中读取的顺序提供。
+- en: 'The base iterator interface is called `XMLEvent`, and there are subinterfaces
+    for each event type listed in [XMLEvent table](#indexterm-18). The primary parser
+    interface for reading iterator events is `XMLEventReader`, and the primary interface
+    for writing iterator events is `XMLEventWriter`. The `XMLEventReader` interface
+    contains five methods, the most important of which is `nextEvent`, which returns
+    the next event in an XML stream. `XMLEventReader` implements `java.util.Iterator`,
+    which means that returns from `XMLEventReader` can be cached or passed into routines
+    that can work with the standard Java Iterator; for example:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基本的迭代器接口称为`XMLEvent`，并且为[事件迭代器API表](#indexterm-18)中列出的每种事件类型都有子接口。用于读取迭代器事件的主要解析器接口是`XMLEventReader`，用于写入迭代器事件的主要接口是`XMLEventWriter`。`XMLEventReader`接口包含五种方法，其中最重要的是`nextEvent`，它返回XML流中的下一个事件。`XMLEventReader`实现了`java.util.Iterator`，这意味着从`XMLEventReader`返回的内容可以被缓存或传递给可以与标准Java迭代器一起工作的程序；例如：
+- en: '[PRE2]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Similarly, on the output side of the iterator API, you have:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，在迭代器API的输出端，你有：
+- en: '[PRE3]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Iterator Event Types
+  id: totrans-17
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 迭代器事件类型
+- en: '`XMLEvent` Types Defined in the Event Iterator API'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`XMLEvent`在事件迭代器API中定义的类型'
+- en: '| Event Type | Description |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| 事件类型 | 描述 |'
+- en: '| `StartDocument` | Reports the beginning of a set of XML events, including
+    encoding, XML version, and standalone properties. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| `StartDocument` | 报告一组 XML 事件的开始，包括编码、XML 版本和独立属性。'
+- en: '| `StartElement` | Reports the start of an element, including any attributes
+    and namespace declarations; also provides access to the prefix, namespace URI,
+    and local name of the start tag. |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| `StartElement` | 报告元素的开始，包括任何属性和命名空间声明；还提供了开始标记的前缀、命名空间 URI 和本地名称的访问。'
+- en: '| `EndElement` | Reports the end tag of an element. Namespaces that have gone
+    out of scope can be recalled here if they have been explicitly set on their corresponding
+    `StartElement`. |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| `EndElement` | 报告元素的结束标记。如果已在相应的 `StartElement` 上显式设置了命名空间，则在此处可以调用已经超出范围的命名空间。'
+- en: '| `Characters` | Corresponds to XML `CData` sections and `CharacterData` entities.
+    Note that ignorable white space and significant white space are also reported
+    as `Character` events. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Characters` | 对应于 XML `CData` 部分和 `CharacterData` 实体。请注意，可忽略的空格和重要的空格也被报告为
+    `Character` 事件。'
+- en: '| `EntityReference` | Character entities can be reported as discrete events,
+    which an application developer can then choose to resolve or pass through unresolved.
+    By default, entities are resolved. Alternatively, if you do not want to report
+    the entity as an event, replacement text can be substituted and reported as `Characters`.
+    |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| `EntityReference` | 字符实体可以作为独立事件报告，应用程序开发人员可以选择解析或传递未解析的实体。默认情况下，实体会被解析。或者，如果不想将实体报告为事件，则可以替换文本并报告为
+    `Characters`。'
+- en: '| `ProcessingInstruction` | Reports the target and data for an underlying processing
+    instruction. |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| `ProcessingInstruction` | 报告底层处理指令的目标和数据。'
+- en: '| `Comment` | Returns the text of a comment. |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Comment` | 返回注释的文本。'
+- en: '| `EndDocument` | Reports the end of a set of XML events. |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| `EndDocument` | 报告一组 XML 事件的结束。'
+- en: '| `DTD` | Reports as `java.lang.String` information about the DTD, if any,
+    associated with the stream, and provides a method for returning custom objects
+    found in the DTD. |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DTD` | 报告与流相关联的（如果有的话）DTD 的信息，并提供一种返回在 DTD 中找到的自定义对象的方法。'
+- en: '| `Attribute` | Attributes are generally reported as part of a `StartElement`
+    event. However, there are times when it is desirable to return an attribute as
+    a standalone `Attribute` event; for example, when a namespace is returned as the
+    result of an `XQuery` or `XPath` expression. |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Attribute` | 属性通常作为 `StartElement` 事件的一部分报告。然而，有时希望将属性作为独立的 `Attribute`
+    事件返回；例如，当命名空间作为 `XQuery` 或 `XPath` 表达式的结果返回时。'
+- en: '| `Namespace` | As with attributes, namespaces are usually reported as part
+    of a `StartElement`, but there are times when it is desirable to report a namespace
+    as a discrete `Namespace` event. |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Namespace` | 与属性一样，命名空间通常作为 `StartElement` 的一部分报告，但有时希望将命名空间作为独立的 `Namespace`
+    事件报告。'
+- en: Note that the `DTD`, `EntityDeclaration`, `EntityReference`, `NotationDeclaration`,
+    and `ProcessingInstruction` events are only created if the document being processed
+    contains a DTD.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，只有在处理的文档包含 DTD 时，才会创建 `DTD`、`EntityDeclaration`、`EntityReference`、`NotationDeclaration`
+    和 `ProcessingInstruction` 事件。
+- en: Example of Event Mapping
+  id: totrans-32
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 事件映射示例
+- en: 'As an example of how the event iterator API maps an XML stream, consider the
+    following XML document:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为事件迭代器 API 如何映射 XML 流的示例，请考虑以下 XML 文档：
+- en: '[PRE4]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: This document would be parsed into eighteen primary and secondary events, as
+    shown in the following table. Note that secondary events, shown in curly braces
+    (`{}`), are typically accessed from a primary event rather than directly.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此文档将被解析为十八个主要和次要事件，如下表所示。请注意，通常从主要事件而不是直接访问，可以访问用大括号（`{}`）显示的次要事件。
+- en: Example of Iterator API Event Mapping
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 迭代器 API 事件映射示例
+- en: '| # | Element/Attribute | Event |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| # | 元素/属性 | 事件 |'
+- en: '| 1 | `version="1.0"` | `StartDocument` |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| 1 | `version="1.0"` | `StartDocument` |'
+- en: '| 2 | `isCData = false data = "\n" IsWhiteSpace = true` | `Characters` |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| 2 | `isCData = false data = "\n" IsWhiteSpace = true` | `Characters` |'
+- en: '| 3 | `qname = BookCatalogue:http://www.publishing.org attributes = null namespaces
+    = {BookCatalogue" -> http://www.publishing.org"}` | `StartElement` |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| 3 | `qname = BookCatalogue:http://www.publishing.org 属性 = null 命名空间 = {BookCatalogue"
+    -> http://www.publishing.org"}` | `StartElement` |'
+- en: '| 4 | `qname = Book attributes = null namespaces = null` | `StartElement` |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| 4 | `qname = 书 属性 = null 命名空间 = null` | `StartElement` |'
+- en: '| 5 | `qname = Title attributes = null namespaces = null` | `StartElement`
+    |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| 5 | `qname = 标题 属性 = null 命名空间 = null` | `StartElement` |'
+- en: '| 6 | `isCData = false data = "Yogasana Vijnana: the Science of Yoga\n\t" IsWhiteSpace
+    = false` | `Characters` |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| 6 | `isCData = false data = "Yogasana Vijnana: the Science of Yoga\n\t" IsWhiteSpace
+    = false` | `Characters` |'
+- en: '| 7 | `qname = Title namespaces = null` | `EndElement` |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| 7 | `qname = Title namespaces = null` | `EndElement` |'
+- en: '| 8 | `qname = ISBN attributes = null namespaces = null` | `StartElement` |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| 8 | `qname = ISBN attributes = null namespaces = null` | `StartElement` |'
+- en: '| 9 | `isCData = false data = "81-40-34319-4\n\t" IsWhiteSpace = false` | `Characters`
+    |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| 9 | `isCData = false data = "81-40-34319-4\n\t" IsWhiteSpace = false` | `Characters`
+    |'
+- en: '| 10 | `qname = ISBN namespaces = null` | `EndElement` |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| 10 | `qname = ISBN namespaces = null` | `EndElement` |'
+- en: '| 11 | `qname = Cost attributes = {"currency" -> INR} namespaces = null` |
+    `StartElement` |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| 11 | `qname = Cost attributes = {"currency" -> INR} namespaces = null` |
+    `StartElement` |'
+- en: '| 12 | `isCData = false data = "11.50\n\t" IsWhiteSpace = false` | `Characters`
+    |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| 12 | `isCData = false data = "11.50\n\t" IsWhiteSpace = false` | `Characters`
+    |'
+- en: '| 13 | `qname = Cost namespaces = null` | `EndElement` |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| 13 | `qname = Cost namespaces = null` | `EndElement` |'
+- en: '| 14 | `isCData = false data = "\n" IsWhiteSpace = true` | `Characters` |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| 14 | `isCData = false data = "\n" IsWhiteSpace = true` | `Characters` |'
+- en: '| 15 | `qname = Book namespaces = null` | `EndElement` |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| 15 | `qname = Book namespaces = null` | `EndElement` |'
+- en: '| 16 | `isCData = false data = "\n" IsWhiteSpace = true` | `Characters` |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| 16 | `isCData = false data = "\n" IsWhiteSpace = true` | `Characters` |'
+- en: '| 17 | `qname = BookCatalogue:http://www.publishing.org namespaces = {BookCatalogue"
+    -> http://www.publishing.org"}` | `EndElement` |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| 17 | `qname = BookCatalogue:http://www.publishing.org namespaces = {BookCatalogue"
+    -> http://www.publishing.org"}` | `EndElement` |'
+- en: '| 18 |  | `EndDocument` |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| 18 |  | `EndDocument` |'
+- en: 'There are several important things to note in this example:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中有几个重要的事项需要注意：
+- en: The events are created in the order in which the corresponding XML elements
+    are encountered in the document, including nesting of elements, opening and closing
+    of elements, attribute order, document start and document end, and so forth.
+  id: totrans-57
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 事件按照文档中遇到相应的 XML 元素的顺序创建，包括元素的嵌套、打开和关闭元素、属性顺序、文档开始和文档结束等。
+- en: As with proper XML syntax, all container elements have corresponding start and
+    end events; for example, every `StartElement` has a corresponding `EndElement`,
+    even for empty elements.
+  id: totrans-58
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 与正确的 XML 语法一样，所有容器元素都有相应的开始和结束事件；例如，每个 `StartElement` 都有一个对应的 `EndElement`，即使是空元素也是如此。
+- en: '`Attribute` events are treated as secondary events, and are accessed from their
+    corresponding `StartElement` event.'
+  id: totrans-59
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Attribute` 事件被视为次要事件，并且可以从其对应的 `StartElement` 事件中访问。'
+- en: Similar to `Attribute` events, `Namespace` events are treated as secondary,
+    but appear twice and are accessible twice in the event stream, first from their
+    corresponding `StartElement` and then from their corresponding `EndElement`.
+  id: totrans-60
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 与 `Attribute` 事件类似，`Namespace` 事件被视为次要事件，但在事件流中出现两次，并且可以从它们对应的 `StartElement`
+    和 `EndElement` 中分别访问两次。
+- en: '`Character` events are specified for all elements, even if those elements have
+    no character data. Similarly, `Character` events can be split across events.'
+  id: totrans-61
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 所有元素都指定了 `Character` 事件，即使这些元素没有字符数据。同样，`Character` 事件可以跨事件分割。
+- en: The StAX parser maintains a namespace stack, which holds information about all
+    XML namespaces defined for the current element and its ancestors. The namespace
+    stack, which is exposed through the `javax.xml.namespace.NamespaceContext` interface,
+    can be accessed by namespace prefix or URI.
+  id: totrans-62
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: StAX 解析器维护一个命名空间堆栈，其中保存了当前元素及其祖先元素定义的所有 XML 命名空间信息。通过 `javax.xml.namespace.NamespaceContext`
+    接口暴露的命名空间堆栈可以通过命名空间前缀或 URI 访问。
+- en: Choosing between Cursor and Iterator APIs
+  id: totrans-63
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在游标和迭代器 API 之间进行选择
+- en: It is reasonable to ask at this point, “What API should I choose? Should I create
+    instances of `XMLStreamReader` or `XMLEventReader`? Why are there two kinds of
+    APIs anyway?”
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此时合理地问一下，“我应该选择哪个 API？我应该创建 `XMLStreamReader` 还是 `XMLEventReader` 的实例？为什么会有两种类型的
+    API？”
+- en: Development Goals
+  id: totrans-65
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 开发目标
+- en: 'The authors of the StAX specification targeted three types of developers:'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX 规范的作者针对三种类型的开发者：
+- en: '**Library and infrastructure developers**: Create application servers, JAXM,
+    JAXB, JAX-RPC and similar implementations; need highly efficient, low-level APIs
+    with minimal extensibility requirements.'
+  id: totrans-67
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**图书馆和基础设施开发者**：创建应用服务器、JAXM、JAXB、JAX-RPC 等实现；需要高效、低级别的 API，并且具有最小的可扩展性要求。'
+- en: '**Java ME developers**: Need small, simple, pull-parsing libraries, and have
+    minimal extensibility needs.'
+  id: totrans-68
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**Java ME 开发者**：需要小型、简单的拉取解析库，并且具有最小的可扩展性需求。'
+- en: '**Java Platform, Enterprise Edition (Java EE) and Java Platform, Standard Edition
+    (Java SE) developers**: Need clean, efficient pull-parsing libraries, plus need
+    the flexibility to both read and write XML streams, create new event types, and
+    extend XML document elements and attributes.'
+  id: totrans-69
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**Java平台企业版（Java EE）和Java平台标准版（Java SE）开发人员**：需要干净、高效的拉取解析库，同时需要灵活性来读取和写入XML流，创建新的事件类型，并扩展XML文档元素和属性。'
+- en: Given these wide-ranging development categories, the StAX authors felt it was
+    more useful to define two small, efficient APIs rather than overloading one larger
+    and necessarily more complex API.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 鉴于这些广泛的开发类别，StAX的作者认为定义两个小型、高效的API比过载一个更大、必然更复杂的API更有用。
+- en: Comparing Cursor and Iterator APIs
+  id: totrans-71
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 比较游标和迭代器API
+- en: 'Before choosing between the cursor and iterator APIs, you should note a few
+    things that you can do with the iterator API that you cannot do with the cursor
+    API:'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在选择游标和迭代器API之间之前，你应该注意一些你可以使用迭代器API而不能使用游标API的事项：
+- en: Objects created from the `XMLEvent` subclasses are immutable, and can be used
+    in arrays, lists, and maps, and can be passed through your applications even after
+    the parser has moved on to subsequent events.
+  id: totrans-73
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 从`XMLEvent`子类创建的对象是不可变的，可以在数组、列表和映射中使用，并且可以在解析器继续处理后传递到你的应用程序中。
+- en: You can create subtypes of `XMLEvent` that are either completely new information
+    items or extensions of existing items but with additional methods.
+  id: totrans-74
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以创建`XMLEvent`的子类型，这些子类型可以是全新的信息项，也可以是现有项目的扩展，但具有额外的方法。
+- en: You can add and remove events from an XML event stream in much simpler ways
+    than with the cursor API.
+  id: totrans-75
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以以比游标API更简单的方式向XML事件流中添加和删除事件。
+- en: 'Similarly, keep some general recommendations in mind when making your choice:'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，在做出选择时，请记住一些一般性建议：
+- en: If you are programming for a particularly memory-constrained environment, like
+    Java ME, you can make smaller, more efficient code with the cursor API.
+  id: totrans-77
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果你正在为特别受内存限制的环境编程，比如Java ME，你可以使用游标API创建更小、更高效的代码。
+- en: If performance is your highest priority—for example, when creating low-level
+    libraries or infrastructure—the cursor API is more efficient.
+  id: totrans-78
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果性能是你的最高优先级——例如，在创建低级库或基础设施时——游标API更有效率。
+- en: If you want to create XML processing pipelines, use the iterator API.
+  id: totrans-79
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果你想创建XML处理管道，请使用迭代器API。
+- en: If you want to modify the event stream, use the iterator API.
+  id: totrans-80
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果你想修改事件流，请使用迭代器API。
+- en: If you want your application to be able to handle pluggable processing of the
+    event stream, use the iterator API.
+  id: totrans-81
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果你希望你的应用程序能够处理事件流的可插拔处理，请使用迭代器API。
+- en: In general, if you do not have a strong preference one way or the other, using
+    the iterator API is recommended because it is more flexible and extensible, thereby
+    “future-proofing” your applications.
+  id: totrans-82
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一般来说，如果你没有明确偏好，建议使用迭代器API，因为它更灵活、可扩展，从而“未雨绸缪”你的应用程序。

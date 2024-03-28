@@ -1,0 +1,148 @@
+- en: 'Lesson: Regular Expressions'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：正则表达式
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/index.html](https://docs.oracle.com/javase/tutorial/essential/regex/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/index.html](https://docs.oracle.com/javase/tutorial/essential/regex/index.html)
+- en: This lesson explains how to use the `[`java.util.regex`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/package-summary.html)`
+    API for pattern matching with regular expressions. Although the syntax accepted
+    by this package is similar to the [Perl](http://www.perl.com) programming language,
+    knowledge of Perl is not a prerequisite. This lesson starts with the basics, and
+    gradually builds to cover more advanced techniques.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程解释了如何使用`[`java.util.regex`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/package-summary.html)`
+    API进行正则表达式的模式匹配。尽管此包接受的语法类似于[Perl](http://www.perl.com)编程语言，但并不需要了解 Perl。本课程从基础知识开始，逐渐深入，涵盖更高级的技术。
+- en: '[Introduction](intro.html)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[介绍](intro.html)'
+- en: Provides a general overview of regular expressions. It also introduces the core
+    classes that comprise this API.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 提供了正则表达式的一般概述。还介绍了构成此 API 的核心类。
+- en: '[Test Harness](test_harness.html)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[测试工具](test_harness.html)'
+- en: Defines a simple application for testing pattern matching with regular expressions.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定义了一个简单的应用程序，用于测试正则表达式的模式匹配。
+- en: '[String Literals](literals.html)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[字符串字面值](literals.html)'
+- en: Introduces basic pattern matching, metacharacters, and quoting.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 介绍了基本的模式匹配、元字符和引用。
+- en: '[Character Classes](char_classes.html)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[字符类](char_classes.html)'
+- en: Describes simple character classes, negation, ranges, unions, intersections,
+    and subtraction.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 描述了简单字符类、否定、范围、并集、交集和差集。
+- en: '[Predefined Character Classes](pre_char_classes.html)'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[预定义字符类](pre_char_classes.html)'
+- en: Describes the basic predefined character classes for whitespace, word, and digit
+    characters.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 描述了用于空白、单词和数字字符的基本预定义字符类。
+- en: '[Quantifiers](quant.html)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[量词](quant.html)'
+- en: Explains greedy, reluctant, and possessive quantifiers for matching a specified
+    expression *x* number of times.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 解释了贪婪、懒惰和占有量词，用于匹配指定表达式*x*的次数。
+- en: '[Capturing Groups](groups.html)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[捕获组](groups.html)'
+- en: Explains how to treat multiple characters as a single unit.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 解释了如何将多个字符视为单个单元。
+- en: '[Boundary Matchers](bounds.html)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[边界匹配器](bounds.html)'
+- en: Describes line, word, and input boundaries.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 描述了行、单词和输入边界。
+- en: '[Methods of the Pattern Class](pattern.html)'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Pattern 类的方法](pattern.html)'
+- en: Examines other useful methods of the `Pattern` class, and explores advanced
+    features such as compiling with flags and using embedded flag expressions.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 探讨了`Pattern`类的其他有用方法，并探索了高级功能，如使用标志进行编译和使用嵌入式标志表达式。
+- en: '[Methods of the Matcher Class](matcher.html)'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Matcher 类的方法](matcher.html)'
+- en: Describes the commonly-used methods of the `Matcher` class.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 描述了`Matcher`类的常用方法。
+- en: '[Methods of the PatternSyntaxException Class](pse.html)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[PatternSyntaxException 类的方法](pse.html)'
+- en: Describes how to examine a `PatternSyntaxException`.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 描述了如何检查`PatternSyntaxException`。
+- en: '[Additional Resources](resources.html)'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[其他资源](resources.html)'
+- en: To read more about regular expressions, consult this section for additional
+    resources.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解更多关于正则表达式的信息，请查阅此部分的其他资源。

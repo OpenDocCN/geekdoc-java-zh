@@ -1,0 +1,240 @@
+- en: SASL
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: SASL
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/sasl.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/sasl.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/sasl.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/sasl.html)
+- en: The LDAP v3 protocol uses the [SASL](http://www.ietf.org/rfc/rfc2222.txt) to
+    support *pluggable* authentication. This means that the LDAP client and server
+    can be configured to negotiate and use possibly nonstandard and/or customized
+    mechanisms for authentication, depending on the level of protection desired by
+    the client and the server. The LDAP v2 protocol does not support the SASL.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP v3协议使用[SASL](http://www.ietf.org/rfc/rfc2222.txt)来支持*可插拔*身份验证。这意味着LDAP客户端和服务器可以根据客户端和服务器所需的保护级别协商和使用可能是非标准和/或定制的身份验证机制。LDAP
+    v2协议不支持SASL。
+- en: 'Several SASL mechanisms are currently defined:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 目前定义了几种SASL机制：
+- en: Anonymous ( [RFC 2245](http://www.ietf.org/rfc/rfc2245.txt))
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 匿名（[RFC 2245](http://www.ietf.org/rfc/rfc2245.txt)）
+- en: CRAM-MD5 ( [RFC 2195](http://www.ietf.org/rfc/rfc2195.txt) )
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: CRAM-MD5（[RFC 2195](http://www.ietf.org/rfc/rfc2195.txt)）
+- en: Digest-MD5 ( [RFC 2831](http://www.ietf.org/rfc/rfc2831.txt))
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Digest-MD5（[RFC 2831](http://www.ietf.org/rfc/rfc2831.txt)）
+- en: External ( [RFC 2222](http://www.ietf.org/rfc/rfc2830.txt))
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 外部（[RFC 2222](http://www.ietf.org/rfc/rfc2830.txt))
+- en: Kerberos V4 ( [RFC 2222](http://www.ietf.org/rfc/rfc2830.txt))
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Kerberos V4（[RFC 2222](http://www.ietf.org/rfc/rfc2830.txt)）
+- en: Kerberos V5 ( [RFC 2222](http://www.ietf.org/rfc/rfc2830.txt))
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Kerberos V5（[RFC 2222](http://www.ietf.org/rfc/rfc2830.txt)）
+- en: SecurID ( [RFC 2808](http://www.ietf.org/rfc/rfc2808.txt))
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: SecurID（[RFC 2808](http://www.ietf.org/rfc/rfc2808.txt)）
+- en: S/Key ( [RFC 2222](http://www.ietf.org/rfc/rfc2830.txt))
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: S/Key（[RFC 2222](http://www.ietf.org/rfc/rfc2830.txt)）
+- en: SASL Mechanisms Supported by LDAP Servers
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: LDAP服务器支持的SASL机制
+- en: Of the mechanisms on the previous list, popular LDAP servers (such as those
+    from Oracle, OpenLDAP, and Microsoft) support External, Digest-MD5, and Kerberos
+    V5\. [RFC 2829](http://www.ietf.org/rfc/rfc2829.txt) proposes the use of Digest-MD5
+    as the mandatory default mechanism for LDAP v3 servers.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上述列表中，流行的LDAP服务器（如Oracle、OpenLDAP和Microsoft）支持外部、摘要-MD5和Kerberos V5。[RFC 2829](http://www.ietf.org/rfc/rfc2829.txt)提议将摘要-MD5用作LDAP
+    v3服务器的强制默认机制。
+- en: Here is a [`simple program`](examples/ServerSasl.java) for finding out the list
+    of SASL mechanisms that an LDAP server supports.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个[`简单的程序`](examples/ServerSasl.java)，用于查找LDAP服务器支持的SASL机制列表。
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Here is the output produced by running this program against a server that supports
+    the External SASL mechanism.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行此程序针对支持外部SASL机制的服务器产生的输出如下。
+- en: '[PRE1]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Specifying the Authentication Mechanism
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定身份验证机制
+- en: To use a particular SASL mechanism, you specify its Internet Assigned Numbers
+    Authority (IANA)-registered mechanism name in the [`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION)
+    environment property. You can also specify a list of mechanisms for the LDAP provider
+    to try. This is done by specifying an ordered list of space-separated mechanism
+    names. The LDAP provider will use the first mechanism for which it finds an implementation.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用特定的SASL机制，您需要在[`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION)环境属性中指定其IANA注册的机制名称。您还可以指定LDAP提供程序尝试的机制列表。通过指定一个有序的以空格分隔的机制名称列表来实现。LDAP提供程序将使用它找到实现的第一个机制。
+- en: Here's an example that asks the LDAP provider to try to get the implementation
+    for the DIGEST-MD5 mechanism and if that's not available, use the one for GSSAPI.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个示例，要求LDAP提供程序尝试获取DIGEST-MD5机制的实现，如果不可用，则使用GSSAPI的实现。
+- en: '[PRE2]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: You might get this list of authentication mechanisms from the user of your application.
+    Or you might get it by asking the LDAP server, via a call similar to that shown
+    previously. The LDAP provider itself does not consult the server for this information.
+    It simply attempts to locate and use the implementation of the specified mechanisms.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以从应用程序的用户获取此身份验证机制列表。或者您可以通过类似于之前显示的调用询问LDAP服务器获取它。LDAP提供程序本身不会向服务器查询此信息。它只是尝试定位和使用指定机制的实现。
+- en: The LDAP provider in the platform has built-in support for the External, Digest-MD5,
+    and GSSAPI (Kerberos v5) SASL mechanisms. You can add support for additional mechanisms.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 平台中的LDAP提供程序内置支持外部、摘要-MD5和GSSAPI（Kerberos v5）SASL机制。您可以添加对其他机制的支持。
+- en: Specifying Input for the Authentication Mechanism
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定身份验证机制的输入
+- en: Some mechanisms, such as External, require no additional input—the mechanism
+    name alone is sufficient for the authentication to proceed. The [External example](ssl.html#EXTERNAL)
+    shows how to use the External SASL mechanism.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些机制，如 External，不需要额外的输入，仅凭借机制名称就足以进行认证。[External 示例](ssl.html#EXTERNAL)展示了如何使用
+    External SASL 机制。
+- en: Most other mechanisms require some additional input. Depending on the mechanism,
+    the type of input might vary. Following are some common inputs required by mechanisms.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数其他机制需要一些额外的输入。根据机制的不同，输入的类型可能会有所不同。以下是一些机制常见的输入要求。
+- en: '**Authentication id**. The identity of the entity performing the authentication.'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**认证 ID**。执行认证的实体的身份。'
+- en: '**Authorization id**. The identity of the entity for which access control checks
+    should be made if the authentication succeeds.'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**授权 ID**。如果认证成功，应该进行访问控制检查的实体的身份。'
+- en: '**Authentication credentials**. For example, a password or a key.'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**认证凭据**。例如，密码或密钥。'
+- en: The authentication and authorization ids might differ if the program (such as
+    a proxy server) is authenticating on behalf of another entity. The authentication
+    id is specified by using the [`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL)
+    environment property. It is of type `java.lang.String`.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 认证和授权 ID 可能会有所不同，如果程序（如代理服务器）代表另一个实体进行认证。认证 ID 是通过使用[`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL)环境属性指定的。它的类型是`java.lang.String`。
+- en: The password/key of the authentication id is specified by using the [`Context.SECURITY_CREDENTIALS`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS)
+    environment property. It is of type `java.lang.String`, `char` array (`char[]`),
+    or `byte` array (`byte[]`). If the password is a `byte` array, then it is transformed
+    into a `char` array by using an UTF-8 encoding.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 认证 ID 的密码/密钥是通过使用[`Context.SECURITY_CREDENTIALS`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS)环境属性指定的。它的类型是`java.lang.String`、`char`
+    数组（`char[]`）或`byte` 数组（`byte[]`）。如果密码是`byte`数组，则会使用 UTF-8 编码将其转换为`char`数组。
+- en: If the `"java.naming.security.sasl.authorizationId"` property has been set,
+    then its value is used as the authorization ID. Its value must be of type `java.lang.String`.
+    By default, the empty string is used as the authorization ID, which directs the
+    server to derive an authorization ID from the client's authentication credentials.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果已设置`"java.naming.security.sasl.authorizationId"`属性，则其值将用作授权 ID。其值必须是`java.lang.String`类型。默认情况下，空字符串将用作授权
+    ID，这将指示服务器从客户端的认证凭据中派生授权 ID。
+- en: The [Digest-MD5 example](digest.html) shows how to use the `Context.SECURITY_PRINCIPAL`
+    and `Context.SECURITY_CREDENTIALS` properties for Digest-MD5 authentication.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Digest-MD5 示例](digest.html)展示了如何使用`Context.SECURITY_PRINCIPAL`和`Context.SECURITY_CREDENTIALS`属性进行
+    Digest-MD5 认证。'
+- en: If a mechanism requires input other than those already described, then you need
+    to define a *callback* object for the mechanism to use, you can check out the
+    callback example in the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/callback.html).
+    The next part of this lesson discusses how to use SASL Digest-MD5 authentication
+    mechanism. The [SASL Policies](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/sasl.html),
+    [GSS API (Kerberos v5)](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/gssapi.html)
+    and [CRAM-MD5](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/crammd5.html)
+    mechanisms are covered in the JNDI Tutorial.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果某个机制需要除了已经描述的之外的输入，那么你需要为该机制定义一个*回调*对象供其使用，你可以在[JNDI 教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/callback.html)中查看回调示例。本课程的下一部分将讨论如何使用
+    SASL Digest-MD5 认证机制。[SASL 策略](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/sasl.html)、[GSS
+    API（Kerberos v5）](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/gssapi.html)
+    和 [CRAM-MD5](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/crammd5.html)
+    机制在 JNDI 教程中有介绍。

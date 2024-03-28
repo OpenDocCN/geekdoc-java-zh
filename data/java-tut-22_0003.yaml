@@ -1,0 +1,228 @@
+- en: About the Java Technology
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 关于Java技术
+- en: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/intro/definition.html](https://docs.oracle.com/javase/tutorial/getStarted/intro/definition.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/intro/definition.html](https://docs.oracle.com/javase/tutorial/getStarted/intro/definition.html)
+- en: Java technology is both a programming language and a platform.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java技术既是一种编程语言，也是一个平台。
+- en: The Java Programming Language
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Java编程语言
+- en: 'The Java programming language is a high-level language that can be characterized
+    by all of the following buzzwords:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编程语言是一种高级语言，可以用以下所有流行词来描述：
+- en: '|'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: Simple
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 简单
+- en: Object oriented
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 面向对象
+- en: Distributed
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 分布式
+- en: Multithreaded
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 多线程
+- en: Dynamic
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 动态
+- en: '|'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: Architecture neutral
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 架构中立
+- en: Portable
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 可移植
+- en: High performance
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 高性能
+- en: Robust
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 健壮
+- en: Secure
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 安全
+- en: '|'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: Each of the preceding buzzwords is explained in [*The Java Language Environment*](http://www.oracle.com/technetwork/java/langenv-140151.html)
+    , a white paper written by James Gosling and Henry McGilton.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前述流行词在[《Java语言环境》](http://www.oracle.com/technetwork/java/langenv-140151.html)一书中有详细解释，该书是由詹姆斯·高斯林和亨利·麦吉尔顿撰写的白皮书。
+- en: In the Java programming language, all source code is first written in plain
+    text files ending with the `.java` extension. Those source files are then compiled
+    into `.class` files by the `javac` compiler. A `.class` file does not contain
+    code that is native to your processor; it instead contains *bytecodes* — the machine
+    language of the Java Virtual Machine^([1](#FOOT)) (Java VM). The `java` launcher
+    tool then runs your application with an instance of the Java Virtual Machine.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java编程语言中，所有源代码首先以`.java`扩展名结尾的纯文本文件中编写。然后，这些源文件由`javac`编译器编译成`.class`文件。`.class`文件不包含本机于处理器的代码；它包含*字节码*
+    —— Java虚拟机的机器语言^([1](#FOOT))（Java VM）。然后，`java`启动器工具使用Java虚拟机的实例运行你的应用程序。
+- en: '![Figure showing MyProgram.java, compiler, MyProgram.class, Java VM, and My
+    Program running on a computer.](../Images/33167633b277fd83e02ef5a731e00045.png)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_IMG
+  zh: '![显示MyProgram.java、编译器、MyProgram.class、Java虚拟机和计算机上运行的我的程序的图示](../Images/33167633b277fd83e02ef5a731e00045.png)'
+- en: An overview of the software development process.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 软件开发过程概述。
+- en: Because the Java VM is available on many different operating systems, the same
+    `.class` files are capable of running on Microsoft Windows, the Solaris™ Operating
+    System (Solaris OS), Linux, or Mac OS. Some virtual machines, such as the [Java
+    SE HotSpot at a Glance](http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136373.html),
+    perform additional steps at runtime to give your application a performance boost.
+    This includes various tasks such as finding performance bottlenecks and recompiling
+    (to native code) frequently used sections of code.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于Java虚拟机在许多不同操作系统上可用，同样的`.class`文件能够在Microsoft Windows、Solaris™操作系统（Solaris
+    OS）、Linux或Mac OS上运行。一些虚拟机，如[Java SE HotSpot概览](http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136373.html)，在运行时执行额外步骤以提高应用程序性能。这包括诸如查找性能瓶颈和重新编译（为本机代码）频繁使用的代码段等任务。
+- en: '![Figure showing source code, compiler, and Java VM''s for Win32, Solaris OS/Linux,
+    and Mac OS](../Images/0bdba43143fe74ca908f316eb73f0ab7.png)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_IMG
+  zh: '![显示源代码、编译器和Win32、Solaris OS/Linux和Mac OS上的Java虚拟机的图示](../Images/0bdba43143fe74ca908f316eb73f0ab7.png)'
+- en: Through the Java VM, the same application is capable of running on multiple
+    platforms.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过Java虚拟机，同一个应用程序能够在多个平台上运行。
+- en: The Java Platform
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Java平台
+- en: A *platform* is the hardware or software environment in which a program runs.
+    We've already mentioned some of the most popular platforms like Microsoft Windows,
+    Linux, Solaris OS, and Mac OS. Most platforms can be described as a combination
+    of the operating system and underlying hardware. The Java platform differs from
+    most other platforms in that it's a software-only platform that runs on top of
+    other hardware-based platforms.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*平台*是程序运行的硬件或软件环境。我们已经提到了一些最流行的平台，如Microsoft Windows、Linux、Solaris OS和Mac OS。大多数平台可以描述为操作系统和底层硬件的组合。Java平台与大多数其他平台不同，它是一个仅软件的平台，运行在其他基于硬件的平台之上。'
+- en: 'The Java platform has two components:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台有两个组成部分：
+- en: The *Java Virtual Machine*
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*Java虚拟机*'
+- en: The *Java Application Programming Interface* (API)
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*Java应用程序编程接口*（API）'
+- en: You've already been introduced to the Java Virtual Machine; it's the base for
+    the Java platform and is ported onto various hardware-based platforms.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你已经了解了Java虚拟机；它是Java平台的基础，并被移植到各种基于硬件的平台上。
+- en: The API is a large collection of ready-made software components that provide
+    many useful capabilities. It is grouped into libraries of related classes and
+    interfaces; these libraries are known as *packages*. The next section, [What Can
+    Java Technology Do?](cando.html) highlights some of the functionality provided
+    by the API.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: API是一个庞大的现成软件组件集合，提供许多有用的功能。它被分组为相关类和接口的库；这些库被称为*包*。下一节，[Java技术能做什么？](cando.html)突出了API提供的一些功能。
+- en: '![Figure showing MyProgram.java, API, Java Virtual Machine, and Hardware-Based
+    Platform](../Images/487483258c8ef14e800a55d6ae726828.png)'
+  id: totrans-32
+  prefs: []
+  type: TYPE_IMG
+  zh: '![显示MyProgram.java、API、Java虚拟机和基于硬件的平台的图示](../Images/487483258c8ef14e800a55d6ae726828.png)'
+- en: The API and Java Virtual Machine insulate the program from the underlying hardware.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: API和Java虚拟机使程序与底层硬件隔离。
+- en: As a platform-independent environment, the Java platform can be a bit slower
+    than native code. However, advances in compiler and virtual machine technologies
+    are bringing performance close to that of native code without threatening portability.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为一个独立于平台的环境，Java平台可能比本机代码慢一些。然而，编译器和虚拟机技术的进步正在使性能接近本机代码，而不会威胁可移植性。
+- en: The terms"Java Virtual Machine" and "JVM" mean a Virtual Machine for the Java
+    platform.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 术语"Java虚拟机"和"JVM"指的是Java平台的虚拟机。

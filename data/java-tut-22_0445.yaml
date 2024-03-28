@@ -1,0 +1,161 @@
+- en: Solving Common Layout Problems
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 解决常见布局问题
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/problems.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/problems.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/problems.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/problems.html)
+- en: '* * *'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程涵盖了手动编写布局代码，这可能具有挑战性。如果你不想学习布局管理的所有细节，可以选择使用`GroupLayout`布局管理器结合构建工具来布局你的GUI。其中一种构建工具是[NetBeans
+    IDE](../learn/index.html)。否则，如果你想手动编码而不想使用`GroupLayout`，那么推荐使用`GridBagLayout`作为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你有兴趣使用JavaFX来创建GUI，请查看[使用JavaFX中的布局](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: '**Problem:** How do I specify a component''s exact size?'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 如何指定组件的确切尺寸？'
+- en: A handful of the more modern layout managers provide ways to override the size
+    set by the component. Check whether the layout manager you are using allows you
+    to specify component sizes.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一些较现代的布局管理器提供了覆盖组件设置的尺寸的方法。检查你正在使用的布局管理器是否允许你指定组件大小。
+- en: Make sure that you really need to set the component's exact size. Each Swing
+    component has a different preferred size, depending on the font it uses and the
+    look and feel. For this reason, it often does not make sense to specify a Swing
+    component's exact size.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 确保你真的需要设置组件的确切尺寸。每个Swing组件的首选尺寸都不同，取决于其使用的字体和外观。因此，通常没有必要指定Swing组件的确切尺寸。
+- en: If the component is not controlled by a layout manager, you can set its size
+    by invoking the `setSize` or `setBounds` method on it. Otherwise, you need to
+    provide size hints and then make sure you are using a layout manager that respects
+    the size hints.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果组件不受布局管理器控制，可以通过调用`setSize`或`setBounds`方法来设置其大小。否则，你需要提供尺寸提示，然后确保你使用的布局管理器尊重尺寸提示。
+- en: If you extend a Swing component class, you can give size hints by overriding
+    the component's `getMinimumSize`, `getPreferredSize`, and `getMaximumSize` methods.
+    What is nice about this approach is that each `get*Xxxx*Size` method can get the
+    component's default size hints by invoking `super.get*Xxxx*Size()`. Then it can
+    adjust the size, if necessary, before returning it. This is particularly handy
+    for text components, where you might want to fix the width, but have the height
+    determined from the content. However, sometimes problems can be encountered with
+    `GridBagLayout` and text fields, wherein if the size of the container is smaller
+    than the preferred size, the minimum size gets used, which can cause text fields
+    to shrink quite substantially.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果你扩展了Swing组件类，可以通过重写组件的`getMinimumSize`、`getPreferredSize`和`getMaximumSize`方法来给出尺寸提示。这种方法的好处在于，每个`get*Xxxx*Size`方法可以通过调用`super.get*Xxxx*Size()`来获取组件的默认尺寸提示。然后在返回之前可以调整尺寸，如果有必要的话。这对于文本组件特别方便，其中你可能希望固定宽度，但高度由内容确定。然而，有时会在`GridBagLayout`和文本字段中遇到问题，如果容器的尺寸小于首选尺寸，则使用最小尺寸，这可能会导致文本字段大幅缩小。
+- en: Another way to give size hints is to invoke the component's `setMinimumSize`,
+    `setPreferredSize`, and `setMaximumSize` methods.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 另一种给出尺寸提示的方法是调用组件的`setMinimumSize`、`setPreferredSize`和`setMaximumSize`方法。
+- en: If you specify new size hints for a component that is already visible, you then
+    need to invoke the `revalidate` method on it, to make sure that its containment
+    hierarchy is laid out again. Then invoke the `repaint` method.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果为已经可见的组件指定了新的尺寸提示，则需要在其上调用`revalidate`方法，以确保其包含层次结构再次布局。然后调用`repaint`方法。
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** No matter how you specify your component''s size, be sure that your
+    component''s container uses a layout manager that respects the requested size
+    of the component. The `FlowLayout` and `GridBagLayout` managers use the component''s
+    preferred size (the latter depending on the constraints that you set), but `BorderLayout`
+    and `GridLayout` usually do not. The `BoxLayout` manager generally uses a component''s
+    preferred size (although components can be larger), and is one of the few layout
+    managers that respects the component''s maximum size.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 无论您如何指定组件的大小，请确保组件的容器使用一个能够尊重组件请求大小的布局管理器。`FlowLayout` 和 `GridBagLayout`
+    布局管理器使用组件的首选大小（后者取决于您设置的约束条件），但 `BorderLayout` 和 `GridLayout` 通常不会。`BoxLayout`
+    布局管理器通常使用组件的首选大小（尽管组件可以更大），并且是少数几个尊重组件最大大小的布局管理器之一。'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Problem:** My component does not appear after I have added it to the container.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我添加了组件到容器后，组件没有显示出来。'
+- en: You need to invoke `revalidate` and `repaint` after adding a component before
+    it will show up in your container.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在添加组件后，您需要调用 `revalidate` 和 `repaint` 才能使组件显示在容器中。
+- en: '**Problem:** My custom component is being sized too small.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我的自定义组件尺寸太小了。'
+- en: Does the component implement the `getPreferredSize` and `getMinimumSize` methods?
+    If so, do they return the right values?
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 组件是否实现了 `getPreferredSize` 和 `getMinimumSize` 方法？如果是，它们是否返回了正确的值？
+- en: Are you using a layout manager that can use as much space as is available? See
+    [Tips on Choosing a Layout Manager](using.html#choosing) for some tips on choosing
+    a layout manager and specifying that it use the maximum available space for a
+    particular component.
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您是否使用了一个可以利用所有可用空间的布局管理器？请参阅[选择布局管理器的提示](using.html#choosing)以获取一些关于选择布局管理器并指定其使用特定组件的最大可用空间的提示。
+- en: If you do not see your problem in this list, see [Solving Common Component Problems](../components/problems.html).
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您在此列表中找不到您的问题，请参阅[解决常见组件问题](../components/problems.html)。

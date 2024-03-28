@@ -1,0 +1,76 @@
+- en: Observe the Restricted Application
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 观察受限应用程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/rstep1.html](https://docs.oracle.com/javase/tutorial/security/toolsign/rstep1.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/rstep1.html](https://docs.oracle.com/javase/tutorial/security/toolsign/rstep1.html)
+- en: The last part of the [Quick Tour of Controlling Applications](../tour2/index.html)
+    lesson shows how an application can be run under a security manager by invoking
+    the interpreter with the new `-Djava.security.manager` command-line argument.
+    But what if the application to be invoked resides inside a JAR file?
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[控制应用程序快速浏览](../tour2/index.html)课程的最后一部分展示了如何通过使用新的`-Djava.security.manager`命令行参数调用解释器来在安全管理器下运行应用程序。但是，如果要调用的应用程序位于JAR文件中怎么办？'
+- en: 'One of the interpreter options is the `-cp` (for class path) option, that lets
+    you specify a search path for application classes and resources. Therefore, to
+    execute the `Count` application inside the `sCount.jar` JAR file, specifying the
+    file `C:\TestData\data` as its argument, you can type the following command while
+    in the directory containing `sCount.jar`:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 解释器选项之一是`-cp`（用于类路径）选项，它允许您为应用程序类和资源指定搜索路径。因此，要在`sCount.jar` JAR文件内执行`Count`应用程序，并将文件`C:\TestData\data`指定为其参数，您可以在包含`sCount.jar`的目录中键入以下命令：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To execute the application with a security manager, add `-Djava.security.manager`,
+    as shown below:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用安全管理器执行应用程序，请添加`-Djava.security.manager`，如下所示：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Important:**  When you run this command, your Java interpreter will throw
+    an exception shown below:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**重要：** 运行此命令时，您的Java解释器将抛出下面显示的异常：'
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: In this example, `AccessControlException` reported that the `count` application
+    does not have permission to read the file `C:\TestData\data`. Your interpreter
+    raised this exception because it will not allow any application running under
+    a security manager to read a file or to access other resources unless it has explicit
+    permission to do so -- usually specified in a `grant` statement contained in a
+    `policy` file.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此示例中，`AccessControlException`报告说`count`应用程序没有权限读取文件`C:\TestData\data`。您的解释器引发此异常，因为除非在`policy`文件中包含的`grant`语句中明确允许，否则它不会允许任何在安全管理器下运行的应用程序读取文件或访问其他资源。
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

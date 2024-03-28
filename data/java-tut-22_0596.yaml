@@ -1,0 +1,48 @@
+- en: Numbers and Currencies
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 数字和货币
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/numberintro.html](https://docs.oracle.com/javase/tutorial/i18n/format/numberintro.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/numberintro.html](https://docs.oracle.com/javase/tutorial/i18n/format/numberintro.html)
+- en: Programs store and operate on numbers in a locale-independent way. Before displaying
+    or printing a number, a program must convert it to a `String` that is in a locale-sensitive
+    format. For example, in France the number 123456.78 should be formatted as 123
+    456,78, and in Germany it should appear as 123.456,78\. In this section, you will
+    learn how to make your programs independent of the locale conventions for decimal
+    points, thousands-separators, and other formatting properties.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 程序以与语言环境无关的方式存储和操作数字。在显示或打印数字之前，程序必须将其转换为符合语言环境的`String`格式。例如，在法国，数字123456.78应格式化为123
+    456,78，在德国应显示为123.456,78。在本节中，您将学习如何使您的程序独立于语言环境的小数点、千位分隔符和其他格式化属性的约定。
+- en: '[Using Predefined Formats](numberFormat.html)'
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用预定义格式](numberFormat.html)'
+- en: Using the factory methods provided by the `NumberFormat` class, you can get
+    locale-specific formats for numbers, currencies, and percentages.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`NumberFormat`类提供的工厂方法，您可以获得针对数字、货币和百分比的特定于语言环境的格式。
+- en: '[Formatting with Patterns](decimalFormat.html)'
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用模式进行格式化](decimalFormat.html)'
+- en: With the `DecimalFormat` class you specify a number's format with a `String`
+    pattern. The `DecimalFormatSymbols` class allows you to modify formatting symbols
+    such as decimal separators and minus signs.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`DecimalFormat`类，您可以使用`String`模式指定数字的格式。`DecimalFormatSymbols`类允许您修改格式化符号，如小数分隔符和减号。

@@ -1,0 +1,209 @@
+- en: How to Write a Tree Selection Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写树选择监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/treeselectionlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/treeselectionlistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/treeselectionlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/treeselectionlistener.html)
+- en: 'To detect when the user selects a node in a [tree](../components/tree.html),
+    you need to register a tree selection listener. Here is an example, taken from
+    the `TreeDemo` example discussed in [Responding to Node Selection](../components/tree.html#select),
+    of detecting node selection in a tree that can have at most one node selected
+    at a time:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要检测用户何时在 [树](../components/tree.html) 中选择节点，需要注册树选择监听器。以下是一个示例，取自 [响应节点选择](../components/tree.html#select)
+    中讨论的 `TreeDemo` 示例，用于检测一次最多可以选择一个节点的树中的节点选择：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To specify that the tree should support single selection, the program uses
+    this code:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要指定树应支持单选，程序使用以下代码：
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The `TreeSelectionModel` interface defines three values for the selection mode:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TreeSelectionModel` 接口定义了三个选择模式的值：'
+- en: '`DISCONTIGUOUS_TREE_SELECTION`'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DISCONTIGUOUS_TREE_SELECTION`'
+- en: This is the default mode for the default tree selection model. With this mode,
+    any combination of nodes can be selected.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是默认树选择模型的默认模式。使用此模式，可以选择任意组合的节点。
+- en: '`SINGLE_TREE_SELECTION`'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SINGLE_TREE_SELECTION`'
+- en: This is the mode used by the preceding example. At most one node can be selected
+    at a time.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是前面示例中使用的模式。一次最多只能选择一个节点。
+- en: '`CONTIGUOUS_TREE_SELECTION`'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CONTIGUOUS_TREE_SELECTION`'
+- en: With this mode, only nodes in adjoining rows can be selected.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用此模式，只能选择相邻行中的节点。
+- en: The Tree Selection Listener API
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Tree Selection Listener API
+- en: The TreeSelectionListener Interface
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: TreeSelectionListener 接口
+- en: '*Because `TreeSelectionListener` has only one method, it has no corresponding
+    adapter class.*'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*因为 `TreeSelectionListener` 只有一个方法，所以没有相应的适配器类。*'
+- en: '| Method | Purpose |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [valueChanged(TreeSelectionEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionListener.html#valueChanged-javax.swing.event.TreeSelectionEvent-)
+    | Called whenever the selection changes. |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| [valueChanged(TreeSelectionEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionListener.html#valueChanged-javax.swing.event.TreeSelectionEvent-)
+    | 每当选择更改时调用。 |'
+- en: The TreeSelectionEvent API
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: TreeSelectionEvent API
+- en: '| Method | Purpose |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*in `java.util.EventObject`*) | Return the object that fired the event. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*在 `java.util.EventObject` 中*) | 返回触发事件的对象。 |'
+- en: '| [TreePath getNewLeadSelectionPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#getNewLeadSelectionPath--)
+    | Return the current lead path. |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreePath getNewLeadSelectionPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#getNewLeadSelectionPath--)
+    | 返回当前主导路径。 |'
+- en: '| [TreePath getOldLeadSelectionPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#getOldLeadSelectionPath--)
+    | Return the path that was previously the lead path. |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreePath getOldLeadSelectionPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#getOldLeadSelectionPath--)
+    | 返回先前的主导路径。 |'
+- en: '| [TreePath getPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#getPath--)
+    | Return the first path element. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreePath getPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#getPath--)
+    | 返回第一个路径元素。 |'
+- en: '| [TreePath[] getPaths()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#getPaths--)
+    | Return the paths that have been added or removed from the selection. |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreePath[] getPaths()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#getPaths--)
+    | 返回已添加或移除的路径。 |'
+- en: '| [boolean isAddedPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#isAddedPath--)
+    | Return true if the first path element has been added to the selection. Returns
+    false if the first path has been removed from the selection. |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| [boolean isAddedPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#isAddedPath--)
+    | 如果第一个路径元素已添加到选择中，则返回 true。如果第一个路径已从选择中移除，则返回 false。 |'
+- en: '| [boolean isAddedPath(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#isAddedPath-int-)
+    | Return true if the path specified by the index was added to the selection. |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| [boolean isAddedPath(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#isAddedPath-int-)
+    | 如果指定索引的路径已添加到选择中，则返回 true。 |'
+- en: '| [boolean isAddedPath(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#isAddedPath-javax.swing.tree.TreePath-)
+    | Return true if the specified path was added to the selection. |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| [boolean isAddedPath(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html#isAddedPath-javax.swing.tree.TreePath-)
+    | 如果指定的路径已添加到选择中，则返回true。 |'
+- en: '| [Object getLastSelectedPathComponent()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getLastSelectedPathComponent--)
+    | Return the last path component in the first node of the current selection. |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getLastSelectedPathComponent()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getLastSelectedPathComponent--)
+    | 返回当前选择中第一个节点中的最后路径组件。 |'
+- en: '| [TreePath getLeadSelectionPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getLeadSelectionPath--)
+    (*in `JTree`*) | Return the current lead path. |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreePath getLeadSelectionPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getLeadSelectionPath--)
+    (*在`JTree`中*) | 返回当前主导路径。 |'
+- en: Examples that Use Tree Selection Listeners
+  id: totrans-30
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用树选择监听器的示例
+- en: The following table lists the examples that use tree selection listeners.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了使用树选择监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`TreeDemo`](../examples/components/index.html#TreeDemo)  | [How to Use Trees](../components/tree.html)
+    | The tree listener responds to node clicks by showing the appropriate HTML document.
+    |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TreeDemo`](../examples/components/index.html#TreeDemo)  | [如何使用树](../components/tree.html)
+    | 树监听器通过显示适当的HTML文档来响应节点点击。 |'

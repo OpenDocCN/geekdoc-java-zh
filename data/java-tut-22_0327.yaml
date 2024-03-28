@@ -1,0 +1,171 @@
+- en: 'Lesson: Packaging Programs in JAR Files'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：在 JAR 文件中打包程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/index.html](https://docs.oracle.com/javase/tutorial/deployment/jar/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/index.html](https://docs.oracle.com/javase/tutorial/deployment/jar/index.html)
+- en: The Java™ Archive (JAR) file format enables you to bundle multiple files into
+    a single archive file. Typically a JAR file contains the class files and auxiliary
+    resources associated with applets and applications.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java™ 存档（JAR）文件格式使您能够将多个文件打包到单个存档文件中。通常，JAR 文件包含与小程序和应用程序相关的类文件和辅助资源。
+- en: 'The JAR file format provides many benefits:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAR 文件格式提供了许多好处：
+- en: '*Security*: You can digitally sign the contents of a JAR file. Users who recognize
+    your signature can then optionally grant your software security privileges it
+    wouldn''t otherwise have.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*安全性*：您可以对 JAR 文件的内容进行数字签名。识别您签名的用户可以选择授予您的软件安全权限，否则软件将无法获得这些权限。'
+- en: '*Decreased download time*: If your applet is bundled in a JAR file, the applet''s
+    class files and associated resources can be downloaded to a browser in a single
+    HTTP transaction without the need for opening a new connection for each file.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*减少下载时间*：如果您的小程序打包在 JAR 文件中，小程序的类文件和相关资源可以在单个 HTTP 事务中下载到浏览器，而无需为每个文件打开新连接。'
+- en: '*Compression*: The JAR format allows you to compress your files for efficient
+    storage.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*压缩*：JAR 格式允许您压缩文件以实现高效存储。'
+- en: '*Packaging for extensions*: The extensions framework provides a means by which
+    you can add functionality to the Java core platform, and the JAR file format defines
+    the packaging for extensions. By using the JAR file format, you can turn your
+    software into extensions as well.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*为扩展打包*：扩展框架提供了一种方式，您可以通过该方式向 Java 核心平台添加功能，而 JAR 文件格式定义了扩展的打包方式。通过使用 JAR 文件格式，您也可以将您的软件转换为扩展。'
+- en: '*Package Sealing*: Packages stored in JAR files can be optionally sealed so
+    that the package can enforce version consistency. Sealing a package within a JAR
+    file means that all classes defined in that package must be found in the same
+    JAR file.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*软件包封装*：存储在 JAR 文件中的软件包可以选��性地封装，以便软件包可以强制执行版本一致性。在 JAR 文件中封装软件包意味着该软件包中定义的所有类必须在同一个
+    JAR 文件中找到。'
+- en: '*Package Versioning*: A JAR file can hold data about the files it contains,
+    such as vendor and version information.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*软件包版本控制*：JAR 文件可以保存有关其包含的文件的数据，例如供应商和版本信息。'
+- en: '*Portability*: The mechanism for handling JAR files is a standard part of the
+    Java platform''s core API.'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*可移植性*：处理 JAR 文件的机制是 Java 平台核心 API 的标准部分。'
+- en: 'This lesson has four sections:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程分为四个部分：
+- en: '[Using JAR Files: The Basics](basicsindex.html)'
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用 JAR 文件：基础知识](basicsindex.html)'
+- en: This section shows you how to perform basic JAR-file operations, and how to
+    run software that is bundled in JAR files.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节向您展示如何执行基本的 JAR 文件操作，以及如何运行打包在 JAR 文件中的软件。
+- en: '[Working with Manifest Files: The Basics](manifestindex.html)'
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用清单文件：基础知识](manifestindex.html)'
+- en: This section explains manifest files and how to customize them so you can do
+    such things as seal packages and set an application's entry point.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍清单文件以及如何自定义它们，以便您可以执行诸如封装软件包和设置应用程序入口点等操作。
+- en: '[Signing and Verifying JAR Files](signindex.html)'
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[签名和验证 JAR 文件](signindex.html)'
+- en: This section shows you how to digitally sign JAR files and verify the signatures
+    of signed JAR files.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节向您展示如何对 JAR 文件进行数字签名并验证已签名的 JAR 文件的签名。
+- en: '[Using JAR-related APIs](apiindex.html)'
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用与 JAR 相关的 API](apiindex.html)'
+- en: This section introduces you to some of the JAR-handling features of the Java
+    platform. The JAR file format is an important part of the Java platform's extension
+    mechanism. You can learn more about that aspect of JAR files in the [The Extension
+    Mechanism](../../ext/index.html) trail of this tutorial.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节向您介绍了 Java 平台的一些 JAR 处理功能。JAR 文件格式是 Java 平台扩展机制的重要部分。您可以在本教程的 [扩展机制](../../ext/index.html)
+    部分了解有关 JAR 文件这一方面的更多信息。
+- en: '[Questions and Exercises: JAR](QandE/questions.html)'
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[问题和练习：JAR](QandE/questions.html)'
+- en: Test what you've learned about JAR.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 测试您对 JAR 的了解。
+- en: Additional References
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 其他参考资料
+- en: 'The documentation for the Java Development Kit (JDK) includes information about
+    the Jar tool:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 开发工具包（JDK）的文档包括有关 Jar 工具的信息：
+- en: '[Java Archive (JAR) Files Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/jar/index.html)'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Java 存档（JAR）文件指南](https://docs.oracle.com/javase/8/docs/technotes/guides/jar/index.html)'
+- en: '[JAR File Specification](https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html)'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[JAR 文件规范](https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html)'

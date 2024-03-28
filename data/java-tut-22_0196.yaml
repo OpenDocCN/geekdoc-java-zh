@@ -1,0 +1,34 @@
+- en: 'Lesson: Concurrency'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：并发编程
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/index.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/index.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/index.html)
+- en: Computer users take it for granted that their systems can do more than one thing
+    at a time. They assume that they can continue to work in a word processor, while
+    other applications download files, manage the print queue, and stream audio. Even
+    a single application is often expected to do more than one thing at a time. For
+    example, that streaming audio application must simultaneously read the digital
+    audio off the network, decompress it, manage playback, and update its display.
+    Even the word processor should always be ready to respond to keyboard and mouse
+    events, no matter how busy it is reformatting text or updating the display. Software
+    that can do such things is known as *concurrent* software.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 计算机用户认为他们的系统可以同时执行多项任务是理所当然的。他们认为他们可以在一个文字处理器中继续工作，同时其他应用程序可以下载文件，管理打印队列和流式传输音频。甚至单个应用程序通常也被期望同时执行多项任务。例如，流式传输音频应用程序必须同时从网络上读取数字音频，解压缩它，管理播放和更新显示。即使文字处理器也应该始终准备好响应键盘和鼠标事件，无论它是在重新格式化文本还是更新显示。能够执行这些操作的软件被称为*并发*软件。
+- en: The Java platform is designed from the ground up to support concurrent programming,
+    with basic concurrency support in the Java programming language and the Java class
+    libraries. Since version 5.0, the Java platform has also included high-level concurrency
+    APIs. This lesson introduces the platform's basic concurrency support and summarizes
+    some of the high-level APIs in the `java.util.concurrent` packages.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台从头开始就设计用于支持并发编程，在Java编程语言和Java类库中具有基本的并发支持。自5.0版本以来，Java平台还包括高级并发API。本课程介绍了平台的基本并发支持，并总结了`java.util.concurrent`包中的一些高级API。

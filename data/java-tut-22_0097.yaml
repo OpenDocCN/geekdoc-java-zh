@@ -1,0 +1,48 @@
+- en: Summary of Inheritance
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 继承摘要
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/summaryinherit.html](https://docs.oracle.com/javase/tutorial/java/IandI/summaryinherit.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/summaryinherit.html](https://docs.oracle.com/javase/tutorial/java/IandI/summaryinherit.html)
+- en: Except for the `Object` class, a class has exactly one direct superclass. A
+    class inherits fields and methods from all its superclasses, whether direct or
+    indirect. A subclass can override methods that it inherits, or it can hide fields
+    or methods that it inherits. (Note that hiding fields is generally bad programming
+    practice.)
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了`Object`类外，一个类只有一个直接的父类。一个类从所有直接或间接的父类那里继承字段和方法。子类可以重写继承的方法，或者隐藏继承的字段或方法。（请注意，隐藏字段通常是不良的编程实践。）
+- en: The table in [Overriding and Hiding Methods](override.html) section shows the
+    effect of declaring a method with the same signature as a method in the superclass.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[覆盖和隐藏方法](override.html)部分的表格显示了声明具有与超类中方法相同签名的方法的效果。
+- en: The `Object` class is the top of the class hierarchy. All classes are descendants
+    from this class and inherit methods from it. Useful methods inherited from `Object`
+    include `toString()`, `equals()`, `clone()`, and `getClass()`.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Object`类是类层次结构的顶部。所有类都是从这个类继承的后代，并从中继承方法。从`Object`继承的有用方法包括`toString()`，`equals()`，`clone()`和`getClass()`。'
+- en: You can prevent a class from being subclassed by using the `final` keyword in
+    the class's declaration. Similarly, you can prevent a method from being overridden
+    by subclasses by declaring it as a final method.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过在类的声明中使用`final`关键字，可以防止类被子类化。同样，通过将方法声明为最终方法，可以防止子类覆盖它。
+- en: "An abstract class can only be subclassed; it cannot be instantiated. An abstract\
+    \ class can contain abstract methods\x97methods that are declared but not implemented.\
+    \ Subclasses then provide the implementations for the abstract methods."
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "抽象类只能被子类化；它不能被实例化。抽象类可以包含抽象方法\x97声明但未实现的方法。然后子类为抽象方法提供实现。"

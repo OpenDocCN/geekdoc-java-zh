@@ -1,0 +1,68 @@
+- en: Miscellaneous Methods in System
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: System 中的其他方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/environment/sysmisc.html](https://docs.oracle.com/javase/tutorial/essential/environment/sysmisc.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/environment/sysmisc.html](https://docs.oracle.com/javase/tutorial/essential/environment/sysmisc.html)
+- en: This section describes some of the methods in `System` that aren't covered in
+    the previous sections.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了一些在前几节中未涵盖的`System`中的方法。
+- en: The `arrayCopy` method efficiently copies data between arrays. For more information,
+    refer to [Arrays](../../java/nutsandbolts/arrays.html) in the [Language Basics](../../java/nutsandbolts/index.html)
+    lesson.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`arrayCopy` 方法有效地在数组之间复制数据。有关更多信息，请参考[Arrays](../../java/nutsandbolts/arrays.html)中的[Language
+    Basics](../../java/nutsandbolts/index.html)课程。'
+- en: The [`currentTimeMillis`](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#currentTimeMillis--)
+    and [`nanoTime`](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#nanoTime--)
+    methods are useful for measuring time intervals during execution of an application.
+    To measure a time interval in milliseconds, invoke `currentTimeMillis` twice,
+    at the beginning and end of the interval, and subtract the first value returned
+    from the second. Similarly, invoking `nanoTime` twice measures an interval in
+    nanoseconds.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`currentTimeMillis`](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#currentTimeMillis--)
+    和 [`nanoTime`](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#nanoTime--)
+    方法在应用程序执行期间测量时间间隔很有用。要测量毫秒级时间间隔，需要在间隔开始和结束时分别调用`currentTimeMillis`，并将第一个返回值从第二个返回值中减去。类似地，连续调用`nanoTime`可以测量纳秒级时间间隔。'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The accuracy of both `currentTimeMillis` and `nanoTime` is limited
+    by the time services provided by the operating system. Do not assume that `currentTimeMillis`
+    is accurate to the nearest millisecond or that `nanoTime` is accurate to the nearest
+    nanosecond. Also, neither `currentTimeMillis` nor `nanoTime` should be used to
+    determine the current time. Use a high-level method, such as [`java.util.Calendar.getInstance`](https://docs.oracle.com/javase/8/docs/api/java/util/Calendar.html#getInstance--).'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** `currentTimeMillis` 和 `nanoTime` 的准确性受操作系统提供的时间服务限制。不要假设`currentTimeMillis`精确到最近的毫秒，也不要假设`nanoTime`精确到最近的纳秒。此外，既不应该使用`currentTimeMillis`也不应该使用`nanoTime`来确定当前时间。应使用高级方法，如[`java.util.Calendar.getInstance`](https://docs.oracle.com/javase/8/docs/api/java/util/Calendar.html#getInstance--)。'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The [`exit`](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#exit-int-)
+    method causes the Java virtual machine to shut down, with an integer exit status
+    specified by the argument. The exit status is available to the process that launched
+    the application. By convention, an exit status of `0` indicates normal termination
+    of the application, while any other value is an error code.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`exit`](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#exit-int-)
+    方法导致 Java 虚拟机关闭，退出状态由参数指定。退出状态可供启动应用程序的进程使用。按照惯例，退出状态为`0`表示应用程序正常终止，而其他任何值都是错误代码。'

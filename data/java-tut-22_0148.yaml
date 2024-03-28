@@ -1,0 +1,98 @@
+- en: What Is an Exception?
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 什么是异常？
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/definition.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/definition.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/definition.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/definition.html)
+- en: The term *exception* is shorthand for the phrase "exceptional event."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 术语*异常*是“异常事件”的简称。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Definition:** An *exception* is an event, which occurs during the execution
+    of a program, that disrupts the normal flow of the program''s instructions.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义：** *异常*是程序执行过程中发生的事件，打断了程序正常指令流程。'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: When an error occurs within a method, the method creates an object and hands
+    it off to the runtime system. The object, called an *exception object*, contains
+    information about the error, including its type and the state of the program when
+    the error occurred. Creating an exception object and handing it to the runtime
+    system is called *throwing an exception*.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当方法内部发生错误时，方法会创建一个对象并将其交给运行时系统。这个对象称为*异常对象*，包含有关错误的信息，包括错误发生时的类型和程序状态。创建异常对象并将其交给运行时系统称为*抛出异常*。
+- en: After a method throws an exception, the runtime system attempts to find something
+    to handle it. The set of possible "somethings" to handle the exception is the
+    ordered list of methods that had been called to get to the method where the error
+    occurred. The list of methods is known as the *call stack* (see the next figure).
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法抛出异常后，运行时系统会尝试寻找处理异常的方法。可以处理异常的一系列可能的“方法”是调用到发生错误的方法的有序方法列表。这些方法的列表称为*调用堆栈*（见下图）。
+- en: '![The call stack showing three method calls, where the first method called
+    has the exception handler.](../Images/a3ada6aaec8cd7196e8ac704d5f246c3.png)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_IMG
+  zh: '![调用堆栈显示三个方法调用，其中第一个调用的方法具有异常处理程序。](../Images/a3ada6aaec8cd7196e8ac704d5f246c3.png)'
+- en: The call stack.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调用堆栈。
+- en: The runtime system searches the call stack for a method that contains a block
+    of code that can handle the exception. This block of code is called an *exception
+    handler*. The search begins with the method in which the error occurred and proceeds
+    through the call stack in the reverse order in which the methods were called.
+    When an appropriate handler is found, the runtime system passes the exception
+    to the handler. An exception handler is considered appropriate if the type of
+    the exception object thrown matches the type that can be handled by the handler.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行时系统在调用堆栈中搜索包含可以处理异常的代码块的方法。这个代码块称为*异常处理程序*。搜索从发生错误的方法开始，并按照调用方法的相反顺序在调用堆栈中进行。当找到适当的处理程序时，运行时系统将异常传递给处理程序。如果抛出的异常对象的类型与处理程序可以处理的类型匹配，则认为异常处理程序是适当的。
+- en: The exception handler chosen is said to *catch the exception*. If the runtime
+    system exhaustively searches all the methods on the call stack without finding
+    an appropriate exception handler, as shown in the next figure, the runtime system
+    (and, consequently, the program) terminates.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 选择的异常处理程序被称为*捕获异常*。如果运行时系统在调用堆栈上详尽搜索而找不到适当的异常处理程序，如下图所示，运行时系统（以及因此程序）将终止。
+- en: '![The call stack showing three method calls, where the first method called
+    has the exception handler.](../Images/0d275d710fa7beac49efa736d9ad13f5.png)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_IMG
+  zh: '![调用堆栈显示三个方法调用，其中第一个调用的方法具有异常处理程序。](../Images/0d275d710fa7beac49efa736d9ad13f5.png)'
+- en: Searching the call stack for the exception handler.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在调用堆栈中搜索异常处理程序。
+- en: Using exceptions to manage errors has some advantages over traditional error-management
+    techniques. You can learn more in the [Advantages of Exceptions](advantages.html)
+    section.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用异常来管理错误相比传统的错误管理技术有一些优势。您可以在[异常的优势](advantages.html)部分了解更多信息。

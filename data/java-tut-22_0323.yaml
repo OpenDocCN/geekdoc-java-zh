@@ -1,0 +1,69 @@
+- en: Providing a Default Argument
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 提供默认参数
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/defaultarg.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/defaultarg.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/defaultarg.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/defaultarg.html)
+- en: Arguments are passed to Java applications when an application is started. Self-contained
+    applications can be set up with a default argument that is used when no argument
+    is specified. The `<fx:argument>` element is used to define the argument. More
+    than one argument can be passed by adding an `<fx:argument>` element for each
+    argument. See [<fx:argument>](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_task_reference.html#JSDPG528)
+    for information about this element.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当启动应用程序时，参数会传递给Java应用程序。自包含应用程序可以设置一个默认参数，当未指定参数时使用。使用`<fx:argument>`元素来定义参数。可以通过为每个参数添加一个`<fx:argument>`元素来传递多个参数。有关此元素的信息，请参阅[<fx:argument>](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_task_reference.html#JSDPG528)。
+- en: The File Association Demo described in [Using File Associations](../selfContainedApps/fileassociation.html)
+    is set up use the name of one of the sample files that is bundled with the application
+    as the default argument.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[使用文件关联](../selfContainedApps/fileassociation.html)中描述的文件关联演示设置为使用打包在应用程序中的示例文件之一的名称作为默认参数。
+- en: 'The following code in the `<fx:deploy>` task in the `build.xml` file shows
+    how the default argument is defined:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`build.xml`文件中`<fx:deploy>`任务中的以下代码显示了如何定义默认参数：'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: See [`build.xml`](examples/packager_FileAssociations/build.xml) for the complete
+    build code.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[`build.xml`](examples/packager_FileAssociations/build.xml)以获取完整的构建代码。
+- en: You can download the source files for the File Association Demo from [Self-Contained
+    Application Examples](../selfContainedApps/examplesIndex.html).
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以从[自包含应用程序示例](../selfContainedApps/examplesIndex.html)下载文件关联演示的源文件。
+- en: Additional Resources
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 其他资源
+- en: For more information about default arguments, see [Passing Arguments to a Self-Contained
+    Application](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#JSDPG995).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关默认参数的更多信息，请参阅[向自包含应用程序传递参数](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#JSDPG995)。
+- en: For more information about JavaFX Ant arguments, see [JavaFX Ant Task Reference](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_task_reference.html).
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关JavaFX Ant参数的更多信息，请参阅[JavaFX Ant任务参考](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_task_reference.html)。

@@ -1,0 +1,38 @@
+- en: Summary of Variables
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 变量总结
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variablesummary.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variablesummary.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variablesummary.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variablesummary.html)
+- en: The Java programming language uses both "fields" and "variables" as part of
+    its terminology. Instance variables (non-static fields) are unique to each instance
+    of a class. Class variables (static fields) are fields declared with the `static`
+    modifier; there is exactly one copy of a class variable, regardless of how many
+    times the class has been instantiated. Local variables store temporary state inside
+    a method. Parameters are variables that provide extra information to a method;
+    both local variables and parameters are always classified as "variables" (not
+    "fields"). When naming your fields or variables, there are rules and conventions
+    that you should (or must) follow.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编程语言在其术语中同时使用“字段”和“变量”。实例变量（非静态字段）对于类的每个实例都是唯一的。类变量（静态字段）是用`static`修饰的字段；无论类被实例化多少次，类变量都只有一个副本。局部变量在方法内部存储临时状态。参数是向方法提供额外信息的变量；局部变量和参数始终被分类为“变量”（而不是“字段”）。在命名字段或变量时，有一些规则和约定您应该（或必须）遵循。
+- en: 'The eight primitive data types are: byte, short, int, long, float, double,
+    boolean, and char. The [`java.lang.String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+    class represents character strings. The compiler will assign a reasonable default
+    value for fields of the above types; for local variables, a default value is never
+    assigned. A literal is the source code representation of a fixed value. An array
+    is a container object that holds a fixed number of values of a single type. The
+    length of an array is established when the array is created. After creation, its
+    length is fixed.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 八种基本数据类型分别为：byte、short、int、long、float、double、boolean 和 char。[`java.lang.String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+    类表示字符串。编译器会为上述类型的字段分配一个合理的默认值；对于局部变量，永远不会分配默认值。字面值是固定值的源代码表示。数组是一个容器对象，它保存了单一类型的固定数量的值。数组的长度在创建数组时确定，创建后其长度是固定的。

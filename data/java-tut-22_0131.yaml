@@ -1,0 +1,45 @@
+- en: Type Erasure
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 类型擦除
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/erasure.html](https://docs.oracle.com/javase/tutorial/java/generics/erasure.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/erasure.html](https://docs.oracle.com/javase/tutorial/java/generics/erasure.html)
+- en: 'Generics were introduced to the Java language to provide tighter type checks
+    at compile time and to support generic programming. To implement generics, the
+    Java compiler applies type erasure to:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 泛型被引入Java语言，以在编译时提供更严格的类型检查，并支持泛型编程。为了实现泛型，Java编译器对其应用类型擦除：
+- en: Replace all type parameters in generic types with their bounds or `Object` if
+    the type parameters are unbounded. The produced bytecode, therefore, contains
+    only ordinary classes, interfaces, and methods.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将泛型类型中的所有类型参数替换为它们的边界或`Object`（如果类型参数是无界的）。因此生成的字节码只包含普通类、接口和方法。
+- en: Insert type casts if necessary to preserve type safety.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如有必要，插入类型转换以保持类型安全。
+- en: Generate bridge methods to preserve polymorphism in extended generic types.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 生成桥接方法以保留扩展泛型类型中的多态性。
+- en: Type erasure ensures that no new classes are created for parameterized types;
+    consequently, generics incur no runtime overhead.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类型擦除确保为参数化类型不会创建新类；因此，泛型不会产生运行时开销。

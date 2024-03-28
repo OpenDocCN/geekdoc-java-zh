@@ -1,0 +1,87 @@
+- en: Summary of Implementations
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 实现摘要
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/implementations/summary.html](https://docs.oracle.com/javase/tutorial/collections/implementations/summary.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/implementations/summary.html](https://docs.oracle.com/javase/tutorial/collections/implementations/summary.html)
+- en: Implementations are the data objects used to store collections, which implement
+    the interfaces described in the [Interfaces lesson](../interfaces/index.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现是用于存储集合的数据对象，这些对象实现了[接口课程](../interfaces/index.html)中描述的接口。
+- en: 'The Java Collections Framework provides several general-purpose implementations
+    of the core interfaces:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java集合框架提供了几个核心接口的通用实现：
+- en: For the `Set` interface, `HashSet` is the most commonly used implementation.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于`Set`接口，`HashSet`是最常用的实现。
+- en: For the `List` interface, `ArrayList` is the most commonly used implementation.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于`List`接口，`ArrayList`是最常用的实现。
+- en: For the `Map` interface, `HashMap` is the most commonly used implementation.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于`Map`接口，`HashMap`是最常用的实现。
+- en: For the `Queue` interface, `LinkedList` is the most commonly used implementation.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于`Queue`接口，`LinkedList`是最常用的实现。
+- en: For the `Deque` interface, `ArrayDeque` is the most commonly used implementation.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于`Deque`接口，`ArrayDeque`是最常用的实现。
+- en: Each of the general-purpose implementations provides all optional operations
+    contained in its interface.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个通用实现提供其接口中包含的所有可选操作。
+- en: The Java Collections Framework also provides several special-purpose implementations
+    for situations that require nonstandard performance, usage restrictions, or other
+    unusual behavior.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java集合框架还提供了几个特殊用途的实现，用于需要非标准性能、使用限制或其他异常行为的情况。
+- en: The `java.util.concurrent` package contains several collections implementations,
+    which are thread-safe but not governed by a single exclusion lock.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.util.concurrent`包含几个集合实现，这些实现是线程安全的，但不受单个排他锁的控制。'
+- en: The `Collections` class (as opposed to the `Collection` interface), provides
+    static methods that operate on or return collections, which are known as Wrapper
+    implementations.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Collections`类（与`Collection`接口相对），提供了在集合上操作或返回集合的静态方法，这些方法被称为包装器实现。'
+- en: Finally, there are several Convenience implementations, which can be more efficient
+    than general-purpose implementations when you don't need their full power. The
+    Convenience implementations are made available through static factory methods.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，还有几个便利实现，当您不需要它们的全部功能时，这些便利实现可能比通用实现更有效。这些便利实现通过静态工厂方法提供。

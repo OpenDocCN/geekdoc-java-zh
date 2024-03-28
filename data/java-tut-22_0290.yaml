@@ -1,0 +1,72 @@
+- en: Common Java Web Start Problems
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 常见的Java Web启动问题
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/webstart/problems.html](https://docs.oracle.com/javase/tutorial/deployment/webstart/problems.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/webstart/problems.html](https://docs.oracle.com/javase/tutorial/deployment/webstart/problems.html)
+- en: This section covers some common problems that you might encounter when developing
+    and deploying Java Web Start applications. After each problem is a list of possible
+    reasons and solutions.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖了在开发和部署Java Web启动应用程序时可能遇到的一些常见问题。每个问题后面都列出了可能的原因和解决方案。
+- en: '**Problem:** My browser shows the Java Network Launch Protocol (JNLP) file
+    for my application as plain text.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我的浏览器将我的应用程序的Java网络启动协议（JNLP）文件显示为纯文本。'
+- en: Most likely, your web server is not aware of the proper MIME type for JNLP files.
+    See the [Setting up the web server](settingUpWebServerMimeType.html) section for
+    more information.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 很可能，您的Web服务器不知道JNLP文件的正确MIME类型。有关更多信息，请参阅[设置Web服务器](settingUpWebServerMimeType.html)部分。
+- en: Furthermore, if you are using a proxy server, ensure that the update versions
+    of the files are returned, by updating the time stamp of the resources on the
+    web server such that the proxies will update their caches.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，如果您正在使用代理服务器，请确保更新文件的时间戳，以便在Web服务器上更新资源的情况下，代理服务器将更新其缓存。
+- en: '**Problem:** When I try to launch my JNLP file, I get the following error:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 当我尝试启动我的JNLP文件时，我收到以下错误：'
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Often this error occurs when your XML is malformed. You can stare at the code
+    until you figure it out but it is easier to run an XML syntax checker over the
+    file. (NetBeans IDE and jEdit both provide XML syntax checkers.)
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，当您的XML格式不正确时会出现此错误。您可以盯着代码直到找到问题所在，但更容易的方法是在文件上运行XML语法检查器。（NetBeans IDE和jEdit都提供XML语法检查器。）
+- en: 'However, this error can occur in a other situations and the above was caused
+    by the following line in an otherwise well-formed XML file:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，此错误可能在其他情况下发生，上述情况是由另一个情况引起的，在其他情况下，这是由一个在其他情况下是格式良好的XML文件中的以下行引起的：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The error was caused by the illegal embedded `code` tags.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 错误是由非法嵌入的`code`标签引起的。

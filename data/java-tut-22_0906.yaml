@@ -1,0 +1,123 @@
+- en: Finding Constructors
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 查找构造函数
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/ctorLocation.html](https://docs.oracle.com/javase/tutorial/reflect/member/ctorLocation.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/ctorLocation.html](https://docs.oracle.com/javase/tutorial/reflect/member/ctorLocation.html)
+- en: A constructor declaration includes the name, modifiers, parameters, and list
+    of throwable exceptions. The [`java.lang.reflect.Constructor`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html)
+    class provides a way to obtain this information.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 构造函数声明包括名称、修饰符、参数和可抛出异常列表。[`java.lang.reflect.Constructor`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html)类提供了获取这些信息的方法。
+- en: The [``ConstructorSift``](example/ConstructorSift.java) example illustrates
+    how to search a class's declared constructors for one which has a parameter of
+    a given type.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``ConstructorSift``](example/ConstructorSift.java)示例演示了如何搜索一个类的声明构造函数中具有给定类型参数的构造函数。'
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[`Method.getGenericParameterTypes()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#getGenericParameterTypes--)
+    will consult the Signature Attribute in the class file if it''s present. If the
+    attribute isn''t available, it falls back on [`Method.getParameterType()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#getParameterType--)
+    which was not changed by the introduction of generics. The other methods with
+    name `getGeneric*Foo*()` for some value of *Foo* in reflection are implemented
+    similarly. The syntax for the returned values of `Method.get*Types()` is described
+    in [`Class.getName()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getName--).'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Method.getGenericParameterTypes()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#getGenericParameterTypes--)将在类文件中的签名属性中查找（如果存在）。如果属性不可用，则会回退到[`Method.getParameterType()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#getParameterType--)，这个方法在引入泛型之前并未更改。其他以`getGeneric*Foo*()`命名的反射方法也是类似实现的。`Method.get*Types()`返回值的语法在[`Class.getName()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getName--)中有描述。'
+- en: Here is the output for all constructors in [`java.util.Formatter`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html)
+    which have a [`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)
+    argument.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是所有在[`java.util.Formatter`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html)中具有[`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)参数的构造函数的输出。
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The next example output illustrates how to search for a parameter of type `char[]`
+    in [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个示例输出演示了如何在[`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)中搜索类型为`char[]`的参数。
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The syntax for expressing arrays of reference and primitive types acceptable
+    to [`Class.forName()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#forName-java.lang.String-)
+    is described in [`Class.getName()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getName--).
+    Note that the first listed constructor is `package-private`, not `public`. It
+    is returned because the example code uses [`Class.getDeclaredConstructors()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredConstructors--)
+    rather than [`Class.getConstructors()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getConstructors--),
+    which returns only `public` constructors.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表达接受[`Class.forName()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#forName-java.lang.String-)的引用和基本类型数组的语法在[`Class.getName()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getName--)中有描述。请注意，第一个列出的构造函数是`包私有`的，而不是`public`的。它被返回是因为示例代码使用了[`Class.getDeclaredConstructors()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredConstructors--)而不是[`Class.getConstructors()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getConstructors--)，后者只返回`public`构造函数。
+- en: 'This example shows that searching for arguments of variable arity (which have
+    a variable number of parameters) requires use of array syntax:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例表明，搜索可变参数的参数（具有可变数量的参数）需要使用数组语法：
+- en: '[PRE3]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'This is the actual declaration of the [`ProcessBuilder`](https://docs.oracle.com/javase/8/docs/api/java/lang/ProcessBuilder.html#ProcessBuilder-java.lang.String...-)
+    constructor in source code:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是源代码中[`ProcessBuilder`](https://docs.oracle.com/javase/8/docs/api/java/lang/ProcessBuilder.html#ProcessBuilder-java.lang.String...-)构造函数的实际声明：
+- en: '[PRE4]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The parameter is represented as a single-dimension array of type `java.lang.String`.
+    This can be distinguished from a parameter that is explicitly an array of `java.lang.String`
+    by invoking [`Constructor.isVarArgs()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#isVarArgs--).
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参数表示为类型为`java.lang.String`的单维数组。可以通过调用[`Constructor.isVarArgs()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#isVarArgs--)来区分明确为`java.lang.String`数组的参数。
+- en: 'The final example reports the output for a constructor which has been declared
+    with a generic parameter type:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一个示例报告了已声明具有泛型参数类型的构造函数的输出：
+- en: '[PRE5]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Exception types may be retrieved for constructors in a similar way as for methods.
+    See the [``MethodSpy``](example/MethodSpy.java) example described in [Obtaining
+    Method Type Information](methodType.html) section for further details.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与方法类似，可以以类似的方式检索构造函数的异常类型。有关更多详细信息，请参见[``MethodSpy``](example/MethodSpy.java)示例中描述的[获取方法类型信息](methodType.html)部分。

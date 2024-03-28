@@ -1,0 +1,410 @@
+- en: 'Trail: Sound'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 路径：声音
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sound/index.html](https://docs.oracle.com/javase/tutorial/sound/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sound/index.html](https://docs.oracle.com/javase/tutorial/sound/index.html)
+- en: The Java Sound API is a low-level API for effecting and controlling the input
+    and output of sound media, including both audio and Musical Instrument Digital
+    Interface (MIDI) data. The Java Sound API provides explicit control over the capabilities
+    normally required for sound input and output, in a framework that promotes extensibility
+    and flexibility.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API是一个低级API，用于影响和控制声音媒体的输入和输出，包括音频和MIDI（Musical Instrument Digital
+    Interface）数据。 Java Sound API提供了对通常需要的声音输入和输出功能的明确控制，以促进可扩展性和灵活性。
+- en: 'The Java Sound API fulfills the needs of a wide range of application developers.
+    Potential application areas include:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API满足了各种应用程序开发人员的需求。潜在的应用领域包括：
+- en: Communication frameworks, such as conferencing and telephony
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通信框架，如会议和电话会议
+- en: End-user content delivery systems, such as media players and music using streamed
+    content
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 最终用户内容传递系统，如使用流媒体内容的媒体播放器和音乐
+- en: Interactive application programs, such as games and Web sites that use dynamic
+    content
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 交互式应用程序，如使用动态内容的游戏和网站
+- en: Content creation and editing
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 内容创建和编辑
+- en: Tools, toolkits, and utilities
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 工具、工具包和实用程序
+- en: The Java Sound API provides the lowest level of sound support on the Java platform.
+    It provides application programs with a great amount of control over sound operations,
+    and it is extensible. For example, the Java Sound API supplies mechanisms for
+    installing, accessing, and manipulating system resources such as audio mixers,
+    MIDI synthesizers, other audio or MIDI devices, file readers and writers, and
+    sound format converters. The Java Sound API does not include sophisticated sound
+    editors or graphical tools, but it provides capabilities upon which such programs
+    can be built. It emphasizes low-level control beyond that commonly expected by
+    the end user.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API在Java平台上提供了最低级别的声音支持。它为应用程序提供了对声音操作的大量控制，并且是可扩展的。例如，Java Sound
+    API提供了安装、访问和操作系统资源的机制，如音频混音器、MIDI合成器、其他音频或MIDI设备、文件读取器和写入器以及声音格式转换器。 Java Sound
+    API不包括复杂的声音编辑器或图形工具，但它提供了可以构建此类程序的功能。它强调低于最终用户通常期望的低级别控制。
+- en: 'The Java Sound API includes support for both digital audio and MIDI data. These
+    two major modules of functionality are provided in separate packages:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API包括对数字音频和MIDI数据的支持。这两个主要功能模块分别在不同的包中提供：
+- en: '[`javax.sound.sampled`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/package-summary.html)
+    – This package specifies interfaces for capture, mixing, and playback of digital
+    (sampled) audio.'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.sound.sampled`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/package-summary.html)
+    – 该包指定了用于捕获、混合和播放数字（采样）音频的接口。'
+- en: '[`javax.sound.midi`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/package-summary.html)
+    – This package provides interfaces for MIDI synthesis, sequencing, and event transport.'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.sound.midi`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/package-summary.html)
+    – 该包提供了用于MIDI合成、序列化和事件传输的接口。'
+- en: 'Two other packages permit service providers (as opposed to application developers)
+    to create custom software components that extend the capabilities of an implementation
+    of the Java Sound API:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另外两个包允许服务提供商（而不是应用程序开发人员）创建自定义软件组件，以扩展Java Sound API的实现的功能：
+- en: '[`javax.sound.sampled.spi`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/spi/package-summary.html)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.sound.sampled.spi`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/spi/package-summary.html)'
+- en: '[`javax.sound.midi.spi`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/package-summary.html)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.sound.midi.spi`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/package-summary.html)'
+- en: This page introduces the sampled-audio system, the MIDI system, and the SPI
+    packages. Each package is then discussed in greater detail later in the tutorial.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页介绍了采样音频系统、MIDI系统和SPI包。每个包稍后在教程中进行了更详细的讨论。
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: There are other Java platform APIs that also have sound-related elements. The
+    [Java Media Framework API (JMF)](http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html)
+    is a higher-level API that is currently available as a Standard Extension to the
+    Java platform. JMF specifies a unified architecture, messaging protocol, and programming
+    interface for capturing and playing back time-based media. JMF provides a simpler
+    solution for basic media-player application programs, and it enables synchronization
+    between different media types, such as audio and video. On the other hand, programs
+    that focus on sound can benefit from the Java Sound API, especially if they require
+    more advanced features, such as the ability to carefully control buffered audio
+    playback or directly manipulate a MIDI synthesizer. Other Java APIs with sound
+    aspects include Java 3D and APIs for telephony and speech. An implementation of
+    any of these APIs might use an implementation of the Java Sound API internally,
+    but is not required to do so.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有其他 Java 平台 API 也涉及声音相关元素。[Java 媒体框架 API (JMF)](http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html)
+    是当前作为 Java 平台标准扩展可用的更高级 API。JMF 指定了用于捕获和播放基于时间的媒体的统一架构、消息协议和编程接口。JMF 为基本媒体播放器应用程序提供了更简单的解决方案，并且它实现了不同媒体类型之间的同步，例如音频和视频。另一方面，专注于声音的程序可以从
+    Java Sound API 中受益，特别是如果它们需要更高级的功能，例如精细控制缓冲音频播放或直接操作 MIDI 合成器。其他具有声音方面的 Java API
+    包括 Java 3D 和用于电话和语音的 API。这些 API 的任何实现可能在内部使用 Java Sound API 的实现，但不是必须的。
+- en: '* * *'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: What is Sampled Audio?
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 什么是采样音频？
+- en: The [`javax.sound.sampled`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/package-summary.html)
+    package handles digital audio data, which the Java Sound API refers to as sampled
+    audio. *Samples* are successive snapshots of a signal. In the case of audio, the
+    signal is a sound wave. A microphone converts the acoustic signal into a corresponding
+    analog electrical signal, and an analog-to-digital converter transforms that analog
+    signal into a sampled digital form. The following figure shows a brief moment
+    in a sound recording.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`javax.sound.sampled`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/package-summary.html)
+    包处理数字音频数据，Java Sound API 将其称为采样音频。*样本* 是信号的连续快照。在音频的情况下，信号是声波。麦克风将声学信号转换为相应的模拟电信号，模拟-数字转换器将该模拟信号转换为采样数字形式。以下图显示了声音录制中的一个瞬间。'
+- en: '![A Sampled Sound Wave](../Images/812b3bac88ee9a1f9f25947ccdd1189e.png)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个采样声波](../Images/812b3bac88ee9a1f9f25947ccdd1189e.png)'
+- en: A Sampled Sound Wave
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 采样声波
+- en: This graph plots sound pressure (amplitude) on the vertical axis, and time on
+    the horizontal axis. The amplitude of the analog sound wave is measured periodically
+    at a certain rate, resulting in the discrete samples (the red data points in the
+    figure) that comprise the digital audio signal. The center horizontal line indicates
+    zero amplitude; points above the line are positive-valued samples, and points
+    below are negative. The accuracy of the digital approximation of the analog signal
+    depends on its resolution in time (the *sampling rate*) and its *quantization*,
+    or resolution in amplitude (the number of bits used to represent each sample).
+    As a point of reference, the audio recorded for storage on compact discs is sampled
+    44,100 times per second and represented with 16 bits per sample.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个图表将声压（振幅）绘制在垂直轴上，时间绘制在水平轴上。模拟声波的振幅以一定速率周期性地进行测量，导致离散样本（图中的红色数据点）构成数字音频信号。中心水平线表示零振幅；线上的点为正值样本，线下的点为负值。模拟信号的数字近似精度取决于其时间分辨率（*采样率*）和振幅分辨率（*量化*），即用于表示每个样本的位数。作为参考，用于存储在光盘上的音频每秒采样44,100次，并以每个样本16位表示。
+- en: The term "sampled audio" is used here slightly loosely. A sound wave could be
+    sampled at discrete intervals while being left in an analog form. For purposes
+    of the Java Sound API, however, "sampled audio" is equivalent to "digital audio."
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里稍微宽松地使用了“采样音频”这个术语。声波可以在被保留为模拟形式的同时以离散间隔进行采样。然而，对于 Java Sound API 来说，“采样音频”等同于“数字音频”。
+- en: Typically, sampled audio on a computer comes from a sound recording, but the
+    sound could instead be synthetically generated (for example, to create the sounds
+    of a touch-tone telephone). The term "sampled audio" refers to the type of data,
+    not its origin.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，计算机上的采样音频来自声音录制，但声音也可以被合成生成（例如，创建触摸电话的声音）。术语“采样音频”指的是数据类型，而不是其来源。
+- en: 'The Java Sound API does not assume a specific audio hardware configuration;
+    it is designed to allow different sorts of audio components to be installed on
+    a system and accessed by the API. The Java Sound API supports common functionality
+    such as input and output from a sound card (for example, for recording and playback
+    of sound files) as well as mixing of multiple streams of audio. Here is one example
+    of a typical audio architecture:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API不假设特定的音频硬件配置；它设计为允许在系统上安装不同类型的音频组件，并通过API访问。Java Sound API支持常见功能，例如从声卡输入和输出（例如，用于录制和播放声音文件）以及混合多个音频流。以下是一个典型音频架构的示例：
+- en: '![The following context describes this figure](../Images/bb9e7948dc523659c150e82ba39bb580.png)'
+  id: totrans-29
+  prefs: []
+  type: TYPE_IMG
+  zh: '![以下上下文描述这幅图](../Images/bb9e7948dc523659c150e82ba39bb580.png)'
+- en: A Typical Audio Architecture
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 典型音频架构
+- en: In this example, a device such as a sound card has various input and output
+    ports, and mixing is provided in the software. The mixer might receive data that
+    has been read from a file, streamed from a network, generated on the fly by an
+    application program, or produced by a MIDI synthesizer. The mixer combines all
+    its audio inputs into a single stream, which can be sent to an output device for
+    rendering.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，像声卡这样的设备具有各种输入和输出端口，并且混音是在软件中提供的。混音器可能接收从文件中读取的数据，从网络流式传输的数据，应用程序动态生成的数据，或者由MIDI合成器产生的数据。混音器将所有音频输入组合成一个流，可以发送到输出设备进行渲染。
+- en: What is MIDI?
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 什么是MIDI？
+- en: The [javax.sound.midi](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/package-summary.html)
+    package contains APIs for transporting and sequencing MIDI events, and for synthesizing
+    sound from those events.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[javax.sound.midi](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/package-summary.html)包含用于传输和排序MIDI事件以及从这些事件中合成声音的API。'
+- en: Whereas sampled audio is a direct representation of a sound itself, *MIDI data*
+    can be thought of as a recipe for creating a sound, especially a musical sound.
+    MIDI data, unlike audio data, does not describe sound directly. Instead, it describes
+    events that affect the sounds (or actions) performed by a MIDI-enabled device
+    or instrument, such as a synthesizer. MIDI data is analogous to a graphical user
+    interface's keyboard and mouse events. In the case of MIDI, the events can be
+    thought of as actions upon a musical keyboard, along with actions on various pedals,
+    sliders, switches, and knobs on that musical instrument. These events need not
+    actually originate with a hardware musical instrument; they can be simulated in
+    software, and they can be stored in MIDI files. A program that can create, edit,
+    and perform these files is called a sequencer. Many computer sound cards include
+    MIDI-controllable music synthesizer chips to which sequencers can send their MIDI
+    events. Synthesizers can also be implemented entirely in software. The synthesizers
+    interpret the MIDI events that they receive and produce audio output. Usually
+    the sound synthesized from MIDI data is musical sound (as opposed to speech, for
+    example). MIDI synthesizers are also capable of generating various kinds of sound
+    effects.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 而采样音频是声音本身的直接表示，*MIDI数据*可以被视为创建声音的配方，特别是音乐声音的配方。与音频数据不同，MIDI数据不直接描述声音。相反，它描述影响由MIDI启用的设备或乐器执行的声音（或动作）的事件，例如合成器。
+    MIDI数据类似于图形用户界面的键盘和鼠标事件。在MIDI的情况下，这些事件可以被视为对音乐键盘以及乐器上的各种踏板、滑块、开关和旋钮的动作。这些事件不一定实际起源于硬件乐器；它们可以在软件中模拟，并且可以存储在MIDI文件中。一个可以创建、编辑和执行这些文件的程序被称为序列器。许多计算机声卡包括可以通过序列器发送其MIDI事件的MIDI可控音乐合成器芯片。合成器也可以完全在软件中实现。合成器解释它们接收到的MIDI事件并产生音频输出。通常，从MIDI数据合成的声音是音乐声音（例如，与语音相对）。MIDI合成器还能够生成各种声音效果。
+- en: Some sound cards include MIDI input and output ports to which external MIDI
+    hardware devices (such as keyboard synthesizers or other instruments) can be connected.
+    From a MIDI input port, an application program can receive events generated by
+    an external MIDI-equipped musical instrument. The program might play the musical
+    performance using the computer's internal synthesizer, save it to disk as a MIDI
+    file, or render it into musical notation. A program might use a MIDI output port
+    to play an external instrument, or to control other external devices such as recording
+    equipment.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些声卡包括 MIDI 输入和输出端口，可以连接外部 MIDI 硬件设备（如键盘合成器或其他乐器）。从 MIDI 输入端口，应用程序可以接收外部 MIDI
+    设备生成的事件。程序可以使用计算机的内部合成器演奏音乐表演，将其保存为 MIDI 文件，或将其渲染为音乐符号。程序可以使用 MIDI 输出端口来演奏外部乐器，或控制其他外部设备，如录音设备。
+- en: The following diagram illustrates the functional relationships between the major
+    components in a possible MIDI configuration based on the Java Sound API. (As with
+    audio, the Java Sound API permits a variety of MIDI software devices to be installed
+    and interconnected. The system shown here is just one potential scenario.) The
+    flow of data between components is indicated by arrows. The data can be in a standard
+    file format, or (as indicated by the key in the lower right corner of the diagram),
+    it can be audio, raw MIDI bytes, or time-tagged MIDI messages.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图示了基于 Java Sound API 的可能 MIDI 配置中主要组件之间的功能关系。（与音频一样，Java Sound API 允许安装和连接各种
+    MIDI 软件设备。此处显示的系统只是一个潜在的场景。）组件之间的数据流由箭头表示。数据可以是标准文件格式，或者（如图示右下角的关键所示），可以是音频、原始
+    MIDI 字节或时间标记 MIDI 消息。
+- en: '![The following context describes this figure. ](../Images/724d313ee1b0393f908502559badc09c.png)'
+  id: totrans-37
+  prefs: []
+  type: TYPE_IMG
+  zh: '![以下上下文描述了这个图。](../Images/724d313ee1b0393f908502559badc09c.png)'
+- en: A Possible MIDI Configuration
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可能的 MIDI 配置
+- en: In this example, the application program prepares a musical performance by loading
+    a musical score that's stored as a standard MIDI file on a disk (left side of
+    the diagram). Standard MIDI files contain tracks, each of which is a list of time-tagged
+    MIDI events. Most of the events represent musical notes (pitches and rhythms).
+    This MIDI file is read and then "performed" by a software sequencer. A sequencer
+    performs its music by sending MIDI messages to some other device, such as an internal
+    or external synthesizer. The synthesizer itself may read a soundbank file containing
+    instructions for emulating the sounds of certain musical instruments. If not,
+    the synthesizer will play the notes stored in the MIDI file using whatever instrument
+    sounds are already loaded into it.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此示例中，应用程序通过加载存储在磁盘上的标准 MIDI 文件的音乐乐谱（图中的左侧）来准备音乐表演。标准 MIDI 文件包含轨道，每个轨道都是一个时间标记
+    MIDI 事件列表。大多数事件代表音乐音符（音高和节奏）。这个 MIDI 文件被读取，然后由软件音序器“演奏”。音序器通过向其他设备发送 MIDI 消息来演奏音乐，例如内部或外部合成器。合成器本身可能会读取包含模拟某些乐器声音指令的声音库文件。如果没有，合成器将使用已加载的任何乐器声音来播放
+    MIDI 文件中存储的音符。
+- en: As illustrated, the MIDI events must be translated into raw (non-time-tagged)
+    MIDI before being sent through a MIDI output port to an external MIDI instrument.
+    Similarly, raw MIDI data coming into the computer from an external MIDI source
+    (a keyboard instrument, in the diagram) is translated into time-tagged MIDI messages
+    that can control a synthesizer, or that a sequencer can store for later use.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如图所示，MIDI 事件必须在通过 MIDI 输出端口发送到外部 MIDI 乐器之前被转换为原始（非时间标记）MIDI。同样，从外部 MIDI 源（图中的键盘乐器）进入计算机的原始
+    MIDI 数据被转换为可以控制合成器的时间标记 MIDI 消息，或者可以由音序器存储以供以后使用。
+- en: Service Provider Interfaces
+  id: totrans-41
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 服务提供者接口
+- en: 'The [`javax.sound.sampled.spi`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/spi/package-summary.html)
+    and [`javax.sound.midi.spi`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/package-summary.html)
+    packages contain APIs that let software developers create new audio or MIDI resources
+    that can be provided separately to the user and "plugged in" to an existing implementation
+    of the Java Sound API. Here are some examples of services (resources) that can
+    be added in this way:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`javax.sound.sampled.spi`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/spi/package-summary.html)
+    和 [`javax.sound.midi.spi`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/spi/package-summary.html)
+    包含的 API 允许软件开发人员创建新的音频或 MIDI 资源，可以单独提供给用户并“插入”到 Java Sound API 的现有实现中。以下是可以以这种方式添加的一些服务（资源）的示例：'
+- en: An audio mixer
+  id: totrans-43
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 音频混音器
+- en: A MIDI synthesizer
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: MIDI合成器
+- en: A file parser that can read or write a new type of audio or MIDI file
+  id: totrans-45
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个可以读取或写入新类型音频或MIDI文件的文件解析器
+- en: A converter that translates between different sound data formats
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在不同声音数据格式之间进行转换的转换器
+- en: In some cases, services are software interfaces to the capabilities of hardware
+    devices, such as sound cards, and the service provider might be the same as the
+    vendor of the hardware. In other cases, the services exist purely in software.
+    For example, a synthesizer or a mixer could be an interface to a chip on a sound
+    card, or it could be implemented without any hardware support at all.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某些情况下，服务是软件接口，用于访问硬件设备的功能，比如声卡，而服务提供者可能与硬件供应商相同。在其他情况下，服务纯粹存在于软件中。例如，合成器或混音器可以是声卡上的芯片的接口，也可以在没有任何硬件支持的情况下实现。
+- en: An implementation of the Java Sound API contains a basic set of services, but
+    the service provider interface (SPI) packages allow third parties to create new
+    services. These third-party services are integrated into the system in the same
+    way as the built-in services. The [`AudioSystem`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/AudioSystem.html)
+    class and the [`MidiSystem`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiSystem.html)
+    class act as coordinators that let application programs access the services explicitly
+    or implicitly. Often the existence of a service is completely transparent to an
+    application program that uses it. The service-provider mechanism benefits users
+    of application programs based on the Java Sound API, because new sound features
+    can be added to a program without requiring a new release of the JDK or runtime
+    environment, and, in many cases, without even requiring a new release of the application
+    program itself.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API的实现包含一组基本服务，但服务提供者接口（SPI）包允许第三方创建新服务。这些第三方服务以与内置服务相同的方式集成到系统中。[`AudioSystem`](https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/AudioSystem.html)类和[`MidiSystem`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiSystem.html)类充当协调器，让应用程序明确或隐式地访问服务。对于使用它的应用程序来说，服务的存在通常对其完全透明。服务提供者机制使基于Java
+    Sound API的应用程序的用户受益，因为可以向程序添加新的声音功能，而无需新版本的JDK或运行时环境，甚至在许多情况下，甚至无需新版本的应用程序本身。

@@ -1,0 +1,199 @@
+- en: Deploying Without Codebase
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 在没有 Codebase 的情况下部署
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/deployingWithoutCodebase.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/deployingWithoutCodebase.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/deployingWithoutCodebase.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/deployingWithoutCodebase.html)
+- en: Beginning in the Java SE 7 release, you do not have to specify an absolute path
+    for the `codebase` attribute in the Java Web Start application's Java Network
+    Launch Protocol (JNLP) file. You can develop and test your applications in different
+    environments without having to modify the path in the `codebase` attribute. If
+    no codebase is specified, the Java Web Start software assumes that the codebase
+    is relative to the web page from which the Java Web Start application is launched.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从 Java SE 7 发行版开始，您不必为 Java Web Start 应用程序的 Java 网络启动协议 (JNLP) 文件中的`codebase`属性指定绝对路径。您可以在不修改`codebase`属性中的路径的情况下在不同环境中开发和测试应用程序。如果未指定
+    codebase，则 Java Web Start 软件会假定 codebase 相对于启动 Java Web Start 应用程序的网页。
+- en: 'The following functions of the Deployment Toolkit script can be used to deploy
+    Java Web Start applications in a web page when the JNLP file does not contain
+    the `codebase` attribute:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当 JNLP 文件不包含`codebase`属性时，可以使用部署工具脚本的以下函数在网页中部署 Java Web Start 应用程序：
+- en: '[`launchWebStartApplication`](#launchWebStartApplication) – Use this function
+    in an HTML link to deploy your Java Web Start application.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`launchWebStartApplication`](#launchWebStartApplication) – 在 HTML 链接中使用此函数部署您的
+    Java Web Start 应用程序。'
+- en: '[`createWebStartLaunchButtonEx`](#createWebStartLaunchButtonEx) – Use this
+    function to create a Launch button for your Java Web Start application.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`createWebStartLaunchButtonEx`](#createWebStartLaunchButtonEx) – 使用此函数为您的
+    Java Web Start 应用程序创建一个启动按钮。'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** To run, Java Web Start applications deployed by using the previously
+    specified functions require at least the Java SE 7 release. If the client does
+    not have at least the Java SE 7 release, the functions instruct the user to install
+    the required Java Runtime Environment (JRE) software before launching the Java
+    Web Start application.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意:** 要运行通过先前指定的函数部署的 Java Web Start 应用程序，至少需要 Java SE 7 发行版。如果客户端没有至少 Java
+    SE 7 发行版，函数会指示用户在启动 Java Web Start 应用程序之前安装所需的 Java Runtime Environment (JRE)
+    软件。'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Function signature:** `launchWebStartApplication: function(jnlp)`'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**函数签名:** `launchWebStartApplication: function(jnlp)`'
+- en: 'Parameter:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '参数:'
+- en: '`jnlp` – The path to the JNLP file containing deployment information for the
+    Java Web Start application. This path can be relative to the web page in which
+    the Java Web Start application is deployed.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`jnlp` – 包含 Java Web Start 应用程序部署信息的 JNLP 文件的路径。此路径可以相对于部署 Java Web Start 应用程序的网页。'
+- en: 'Usage:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '用法:'
+- en: In the following example, the `launchWebStartApplication` function is invoked
+    in the `href` attribute of an HTML `anchor (a)` tag.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在以下示例中，`launchWebStartApplication`函数在 HTML `anchor (a)` 标签的`href`属性中被调用。
+- en: The [``dynamictree_webstart_no_codebase.jnlp``](../webstart/examples/webstart_ComponentArch_DynamicTreeDemo/src/dynamictree_webstart_no_codebase.jnlp)
+    JNLP file is used to deploy the Dynamic Tree Demo application.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``dynamictree_webstart_no_codebase.jnlp``](../webstart/examples/webstart_ComponentArch_DynamicTreeDemo/src/dynamictree_webstart_no_codebase.jnlp)
+    JNLP 文件用于部署动态树演示应用程序。'
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The Java Web Start application is launched when the user clicks the resulting
+    HTML link.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户点击生成的 HTML 链接时，将启动 Java Web Start 应用程序。
+- en: '**Function signature:** `createWebStartLaunchButtonEx: function(jnlp)`'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**函数签名:** `createWebStartLaunchButtonEx: function(jnlp)`'
+- en: 'Parameter:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '参数:'
+- en: '`jnlp` – The path to the JNLP file containing deployment information for the
+    Java Web Start application. This path can be relative to the web page in which
+    the Java Web Start application is deployed.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`jnlp` – 包含 Java Web Start 应用程序部署信息的 JNLP 文件的路径。此路径可以相对于部署 Java Web Start 应用程序的网页。'
+- en: 'Usage:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '用法:'
+- en: The following example shows the usage of the `createWebStartLaunchButtonEx`
+    function.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例展示了`createWebStartLaunchButtonEx`函数的用法。
+- en: The [``dynamictree_webstart_no_codebase.jnlp``](../webstart/examples/webstart_ComponentArch_DynamicTreeDemo/src/dynamictree_webstart_no_codebase.jnlp)
+    JNLP file is used to deploy the Dynamic Tree Demo application.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``dynamictree_webstart_no_codebase.jnlp``](../webstart/examples/webstart_ComponentArch_DynamicTreeDemo/src/dynamictree_webstart_no_codebase.jnlp)
+    JNLP 文件用于部署动态树演示应用程序。'
+- en: '[PRE1]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The Java Web Start application is launched when the user clicks the resulting
+    Launch button.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户点击生成的启动按钮时，将启动 Java Web Start 应用程序。
+- en: Open [``JavaWebStartAppPage_No_Codebase.html``](../webstart/examples/dist/webstart_ComponentArch_DynamicTreeDemo/JavaWebStartAppPage_No_Codebase.html)
+    in a browser to view the Dynamic Tree Demo application that is deployed by using
+    the functions described in this topic.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在浏览器中打开[``JavaWebStartAppPage_No_Codebase.html``](../webstart/examples/dist/webstart_ComponentArch_DynamicTreeDemo/JavaWebStartAppPage_No_Codebase.html)以查看通过本主题中描述的功能部署的动态树演示应用程序。
+- en: '* * *'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: You can also launch the Java Web Start application at the system command prompt
+    by invoking the `javaws` command with the complete url of the JNLP file as shown
+    in the following code snippet.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以通过在系统命令提示符中使用完整的 JNLP 文件的 URL 调用`javaws`命令来启动 Java Web Start 应用程序，如下面的代码片段所示。
+- en: '[PRE2]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '* * *'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[Download source code](../webstart/examplesIndex.html#DynamicTreeDemo) for
+    the *Dynamic Tree Demo* example to experiment further.'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](../webstart/examplesIndex.html#DynamicTreeDemo)以进一步进行实验的*动态树演示*示例。'

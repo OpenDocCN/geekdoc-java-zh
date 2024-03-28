@@ -1,0 +1,65 @@
+- en: Identifying Available Locales
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 可用区域设置的识别
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/identify.html](https://docs.oracle.com/javase/tutorial/i18n/locale/identify.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/identify.html](https://docs.oracle.com/javase/tutorial/i18n/locale/identify.html)
+- en: You can create a `Locale` with any combination of valid language and country
+    codes, but that doesn't mean that you can use it. Remember, a `Locale` object
+    is only an identifier. You pass the `Locale` object to other objects, which then
+    do the real work. These other objects, which we call locale-sensitive, do not
+    know how to deal with all possible `Locale` definitions.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用任何有效的语言和国家代码组合创建`Locale`，但这并不意味着您可以使用它。请记住，`Locale`对象只是一个标识符。您将`Locale`对象传递给其他对象，然后这些对象才会执行实际工作。这些其他对象，我们称之为区域敏感对象，不知道如何处理所有可能的`Locale`定义。
+- en: 'To find out which types of `Locale` definitions a locale-sensitive class recognizes,
+    you invoke the `getAvailableLocales` method. For example, to find out which `Locale`
+    definitions are supported by the `DateFormat` class, you could write a routine
+    such as the following:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要找出区域敏感类识别的哪些类型的`Locale`定义，您可以调用`getAvailableLocales`方法。例如，要找出`DateFormat`类支持哪些`Locale`定义，您可以编写以下类似的例程：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Note that the `String` returned by `toString` contains the language and country
+    codes, separated by an underscore:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`toString`返回的`String`包含由下划线分隔的语言和国家代码：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'If you want to display a list of `Locale` names to end users, you should show
+    them something easier to understand than the language and country codes returned
+    by `toString`. Instead you can invoke the `Locale.getDisplayName` method, which
+    retrieves a localized `String` of a `Locale` object. For example, when `toString`
+    is replaced by `getDisplayName` in the preceding code, the program prints the
+    following lines:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想向最终用户显示`Locale`名称列表，您应该向他们显示比`toString`返回的语言和国家代码更容易理解的内容。相反，您可以调用`Locale.getDisplayName`方法，该方法检索`Locale`对象的本地化`String`。例如，当在前面的代码中用`getDisplayName`替换`toString`时，程序会打印以下行：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: You may see different locale lists depending on the Java Platform implementations.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据Java平台的不同实现，您可能会看到不同的区域设置列表。

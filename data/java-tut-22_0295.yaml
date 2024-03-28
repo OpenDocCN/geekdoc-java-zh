@@ -1,0 +1,92 @@
+- en: JNLP API
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: JNLP API
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/jnlpAPI.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/jnlpAPI.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/jnlpAPI.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/jnlpAPI.html)
+- en: 'Rich Internet applications (RIAs) can use the Java Network Launch Protocol
+    (JNLP) API to perform extensive operations on the user''s environment. When launched
+    by using JNLP, even unsigned RIAs can perform the following operations with the
+    user''s permission:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 富互联网应用程序（RIAs）可以使用Java网络启动协议（JNLP）API对用户环境执行广泛的操作。当使用JNLP启动时，即使未签名的RIAs也可以在用户许可的情况下执行以下操作：
+- en: They can use the [`FileOpenService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/FileOpenService.html)
+    and [`FileSaveService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/FileSaveService.html)
+    API to access the user's file system..
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们可以使用[`FileOpenService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/FileOpenService.html)和[`FileSaveService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/FileSaveService.html)
+    API访问用户的文件系统。
+- en: They can use the [`ClipboardService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/ClipboardService.html)
+    API to access the shared system-wide clipboard.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们可以使用[`ClipboardService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/ClipboardService.html)
+    API访问共享的系统剪贴板。
+- en: They can use the [`PrintService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/PrintService.html)
+    API to access printing functions.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们可以使用[`PrintService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/PrintService.html)
+    API访问打印功能。
+- en: They can use the [`PersistenceService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/PersistenceService.html)
+    API to access persistence storage.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们可以使用[`PersistenceService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/PersistenceService.html)
+    API访问持久性存储。
+- en: They can use the [`DownloadService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/DownloadService.html)
+    API to control how the RIA is downloaded and cached.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们可以使用[`DownloadService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/DownloadService.html)
+    API控制RIA的下载和缓存方式。
+- en: They can use the [`DownloadServiceListener`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/DownloadServiceListener.html)
+    API to determine progress of the RIA's download.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们可以使用[`DownloadServiceListener`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/DownloadServiceListener.html)
+    API确定RIA下载的进度。
+- en: They can use the [`SingleInstanceService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/SingleInstanceService.html)
+    API to decide how to handle arguments when multiple instances of the RIA are launched.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们可以使用[`SingleInstanceService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/SingleInstanceService.html)
+    API决定在启动多个RIA实例时如何处理参数。
+- en: They can use the [`ExtendedService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/ExtendedService.html)
+    API to request permission to open certain files that have not been opened before.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们可以使用[`ExtendedService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/ExtendedService.html)
+    API请求权限打开以前未打开过的某些文件。
+- en: Check the [JNLP API documentation](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/package-summary.html)
+    to see the complete list of the functionality available to RIAs that are launched
+    by using JNLP.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[JNLP API文档](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/package-summary.html)以查看通过JNLP启动的RIA可用功能的完整列表。

@@ -1,0 +1,434 @@
+- en: Object as a Superclass
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 作为超类的对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/objectclass.html](https://docs.oracle.com/javase/tutorial/java/IandI/objectclass.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/objectclass.html](https://docs.oracle.com/javase/tutorial/java/IandI/objectclass.html)
+- en: 'The [`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)
+    class, in the `java.lang` package, sits at the top of the class hierarchy tree.
+    Every class is a descendant, direct or indirect, of the `Object` class. Every
+    class you use or write inherits the instance methods of `Object`. You need not
+    use any of these methods, but, if you choose to do so, you may need to override
+    them with code that is specific to your class. The methods inherited from `Object`
+    that are discussed in this section are:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)类，位于`java.lang`包中，位于类层次结构树的顶部。每个类都是`Object`类的后代，直接或间接的。你使用或编写的每个类都继承了`Object`的实例方法。你不需要使用这些方法中的任何一个，但是如果选择这样做，可能需要用特定于你的类的代码重写它们。本节讨论的从`Object`继承的方法有：'
+- en: '`protected Object clone() throws CloneNotSupportedException`'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`protected Object clone() throws CloneNotSupportedException`'
+- en: Creates and returns a copy of this object.
+  id: totrans-4
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 创建并返回此对象的副本。
+- en: '`public boolean equals(Object obj)`'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public boolean equals(Object obj)`'
+- en: Indicates whether some other object is "equal to" this one.
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 指示某个其他对象是否"等于"这个对象。
+- en: '`protected void finalize() throws Throwable`'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`protected void finalize() throws Throwable`'
+- en: Called by the garbage collector on an object when garbage
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 垃圾回收器在对象上调用的方法
+- en: collection determines that there are no more references to the object
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 集合确定没有更多引用指向该对象
+- en: '`public final Class getClass()`'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public final Class getClass()`'
+- en: Returns the runtime class of an object.
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 返回对象的运行时类。
+- en: '`public int hashCode()`'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public int hashCode()`'
+- en: Returns a hash code value for the object.
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 为对象返回一个哈希码值。
+- en: '`public String toString()`'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public String toString()`'
+- en: Returns a string representation of the object.
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 返回对象的字符串表示形式。
+- en: 'The `notify`, `notifyAll`, and `wait` methods of `Object` all play a part in
+    synchronizing the activities of independently running threads in a program, which
+    is discussed in a later lesson and won''t be covered here. There are five of these
+    methods:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Object`的`notify`、`notifyAll`和`wait`方法在程序中独立运行的线程的活动同步中起着作用，这将在后面的课程中讨论，这里不会涉及。这些方法有五个：'
+- en: '`public final void notify()`'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public final void notify()`'
+- en: '`public final void notifyAll()`'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public final void notifyAll()`'
+- en: '`public final void wait()`'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public final void wait()`'
+- en: '`public final void wait(long timeout)`'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public final void wait(long timeout)`'
+- en: '`public final void wait(long timeout, int nanos)`'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`public final void wait(long timeout, int nanos)`'
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** There are some subtle aspects to a number of these methods, especially
+    the `clone` method.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 这些方法中有一些微妙的方面，特别是`clone`方法。'
+- en: '* * *'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The clone() Method
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: clone()方法
+- en: 'If a class, or one of its superclasses, implements the `Cloneable` interface,
+    you can use the `clone()` method to create a copy from an existing object. To
+    create a clone, you write:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个类或其父类实现了`Cloneable`接口，你可以使用`clone()`方法从现有对象创建一个副本。要创建一个克隆，你需要编写：
+- en: '[PRE0]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '`Object`''s implementation of this method checks to see whether the object
+    on which `clone()` was invoked implements the `Cloneable` interface. If the object
+    does not, the method throws a `CloneNotSupportedException` exception. Exception
+    handling will be covered in a later lesson. For the moment, you need to know that
+    `clone()` must be declared as'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Object`的这个方法的实现会检查调用`clone()`的对象是否实现了`Cloneable`接口。如果对象没有实现，该方法会抛出一个`CloneNotSupportedException`异常。异常处理将在后面的课程中介绍。目前，你需要知道`clone()`必须声明为'
+- en: '[PRE1]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'or:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或：
+- en: '[PRE2]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: if you are going to write a `clone()` method to override the one in `Object`.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你要编写一个`clone()`方法来覆盖`Object`中的方法。
+- en: If the object on which `clone()` was invoked does implement the `Cloneable`
+    interface, `Object`'s implementation of the `clone()` method creates an object
+    of the same class as the original object and initializes the new object's member
+    variables to have the same values as the original object's corresponding member
+    variables.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果调用`clone()`的对象确实实现了`Cloneable`接口，`Object`的`clone()`方法的实现会创建一个与原始对象相同类的对象，并初始化新对象的成员变量为与原始对象对应的成员变量相同的值。
+- en: The simplest way to make your class cloneable is to add `implements Cloneable`
+    to your class's declaration. then your objects can invoke the `clone()` method.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使你的类可克隆的最简单方法是在类的声明中添加`implements Cloneable`，然后你的对象可以调用`clone()`方法。
+- en: "For some classes, the default behavior of `Object`'s `clone()` method works\
+    \ just fine. If, however, an object contains a reference to an external object,\
+    \ say `ObjExternal`, you may need to override `clone()` to get correct behavior.\
+    \ Otherwise, a change in `ObjExternal` made by one object will be visible in its\
+    \ clone also. This means that the original object and its clone are not independent\x97\
+    to decouple them, you must override `clone()` so that it clones the object *and*\
+    \ `ObjExternal`. Then the original object references `ObjExternal` and the clone\
+    \ references a clone of `ObjExternal`, so that the object and its clone are truly\
+    \ independent."
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "对于一些类，`Object` 的 `clone()` 方法的默认行为就很好用。然而，如果一个对象包含对外部对象的引用，比如 `ObjExternal`，你可能需要重写\
+    \ `clone()` 来获得正确的行为。否则，一个对象对 `ObjExternal` 的更改也会在其克隆中可见。这意味着原始对象和其克隆不是独立的\x97\
+    为了解耦它们，你必须重写 `clone()`，使其克隆对象*和* `ObjExternal`。然后原始对象引用 `ObjExternal`，而克隆引用 `ObjExternal`\
+    \ 的克隆，这样对象和其克隆就是真正独立的。"
+- en: The equals() Method
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`equals()` 方法'
+- en: "The `equals()` method compares two objects for equality and returns `true`\
+    \ if they are equal. The `equals()` method provided in the `Object` class uses\
+    \ the identity operator (`==`) to determine whether two objects are equal. For\
+    \ primitive data types, this gives the correct result. For objects, however, it\
+    \ does not. The `equals()` method provided by `Object` tests whether the object\
+    \ *references* are equal\x97that is, if the objects compared are the exact same\
+    \ object."
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "`equals()` 方法用于比较两个对象是否相等，如果它们相等则返回 `true`。`Object` 类中提供的 `equals()` 方法使用身份运算符\
+    \ (`==`) 来确定两个对象是否相等。对于基本数据类型，这会给出正确的结果。然而，对于对象来说，这并不适用。`Object` 提供的 `equals()`\
+    \ 方法测试对象的*引用*是否相等\x97也就是说，如果比较的对象是完全相同的对象。"
+- en: 'To test whether two objects are equal in the sense of *equivalency* (containing
+    the same information), you must override the `equals()` method. Here is an example
+    of a `Book` class that overrides `equals()`:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要测试两个对象是否在*等价性*意义上相等（包含相同的信息），你必须重写 `equals()` 方法。下面是一个重写 `equals()` 的 `Book`
+    类的示例：
+- en: '[PRE3]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Consider this code that tests two instances of the `Book` class for equality:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑下面这段代码，用于测试 `Book` 类的两个实例是否相等：
+- en: '[PRE4]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: This program displays `objects are equal` even though `firstBook` and `secondBook`
+    reference two distinct objects. They are considered equal because the objects
+    compared contain the same ISBN number.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使 `firstBook` 和 `secondBook` 引用了两个不同的对象，这个程序会显示 `objects are equal`。它们被认为是相等的，因为比较的对象包含相同的
+    ISBN 号码。
+- en: You should always override the `equals()` method if the identity operator is
+    not appropriate for your class.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果身份运算符对于你的类不合适，你应该始终重写 `equals()` 方法。
+- en: '* * *'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** If you override `equals()`, you must override `hashCode()` as well.'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**如果你重写了 `equals()`，你必须同时重写 `hashCode()`。'
+- en: '* * *'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The finalize() Method
+  id: totrans-47
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`finalize()` 方法'
+- en: "The `Object` class provides a callback method, `finalize()`, that *may be*\
+    \ invoked on an object when it becomes garbage. `Object`'s implementation of `finalize()`\
+    \ does nothing\x97you can override `finalize()` to do cleanup, such as freeing\
+    \ resources."
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "`Object` 类提供了一个回调方法 `finalize()`，当对象变为垃圾时*可能会*被调用。`Object` 的 `finalize()` 实现什么也不做\x97\
+    你可以重写 `finalize()` 来进行清理，比如释放资源。"
+- en: The `finalize()` method *may be* called automatically by the system, but when
+    it is called, or even if it is called, is uncertain. Therefore, don't rely on
+    this method to do your cleanup for you. For example, if you don't close file descriptors
+    in your code after performing I/O and you expect `finalize()` to close them for
+    you, you may run out of file descriptors. Instead, use a `try`-with resources
+    statement to automatically close your application's resources. See [The try-with-resources
+    Statement](../../essential/exceptions/tryResourceClose.html) and [Finalization
+    and Weak, Soft, and Phantom References](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/considerations.html#sthref63)
+    in *Java Platform, Standard Edition HotSpot Virtual Machine Garbage Collection
+    Tuning Guide*.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`finalize()` 方法*可能会*被系统自动调用，但是何时调用，甚至是否调用都是不确定的。因此，不要依赖这个方法来清理资源。例如，如果在执行 I/O
+    操作后没有关闭文件描述符，并且期望 `finalize()` 为您关闭它们，那么可能会耗尽文件描述符。相反，使用 `try`-with 资源语句来自动关闭应用程序的资源。参见
+    [The try-with-resources Statement](../../essential/exceptions/tryResourceClose.html)
+    和 [Finalization and Weak, Soft, and Phantom References](https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/considerations.html#sthref63)
+    中的 *Java Platform, Standard Edition HotSpot Virtual Machine Garbage Collection
+    Tuning Guide*。'
+- en: The getClass() Method
+  id: totrans-50
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: getClass() 方法
+- en: You cannot override `getClass`.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你不能重写 `getClass`。
+- en: 'The `getClass()` method returns a `Class` object, which has methods you can
+    use to get information about the class, such as its name (`getSimpleName()`),
+    its superclass (`getSuperclass()`), and the interfaces it implements (`getInterfaces()`).
+    For example, the following method gets and displays the class name of an object:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getClass()`方法返回一个`Class`对象，该对象有一些方法可以获取关于类的信息，比如它的名称（`getSimpleName()`）、它的父类（`getSuperclass()`）和它实现的接口（`getInterfaces()`）。例如，下面的方法获取并显示对象的类名：'
+- en: '[PRE5]'
+  id: totrans-53
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The [`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)
+    class, in the `java.lang` package, has a large number of methods (more than 50).
+    For example, you can test to see if the class is an annotation (`isAnnotation()`),
+    an interface (`isInterface()`), or an enumeration (`isEnum()`). You can see what
+    the object's fields are (`getFields()`) or what its methods are (`getMethods()`),
+    and so on.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)类，位于`java.lang`包中，有大量的方法（超过50个）。例如，你可以测试类是否为注解（`isAnnotation()`）、接口（`isInterface()`）或枚举（`isEnum()`）。你可以查看对象的字段（`getFields()`）或方法（`getMethods()`），等等。'
+- en: The hashCode() Method
+  id: totrans-55
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`hashCode()`方法'
+- en: The value returned by `hashCode()` is the object's hash code, which is an integer
+    value generated by a hashing algorithm.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`hashCode()`返回的值是对象的哈希码，是由哈希算法生成的整数值。'
+- en: By definition, if two objects are equal, their hash code *must also* be equal.
+    If you override the `equals()` method, you change the way two objects are equated
+    and `Object`'s implementation of `hashCode()` is no longer valid. Therefore, if
+    you override the `equals()` method, you must also override the `hashCode()` method
+    as well.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据定义，如果两个对象相等，它们的哈希码*也必须*相等。如果你重写了`equals()`方法，改变了两个对象相等的方式，那么`Object`的`hashCode()`实现就不再有效。因此，如果你重写了`equals()`方法，你也必须重写`hashCode()`方法。
+- en: The toString() Method
+  id: totrans-58
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`toString()`方法'
+- en: You should always consider overriding the `toString()` method in your classes.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你应该始终考虑在你的类中重写`toString()`方法。
+- en: The `Object`'s `toString()` method returns a `String` representation of the
+    object, which is very useful for debugging. The `String` representation for an
+    object depends entirely on the object, which is why you need to override `toString()`
+    in your classes.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Object`的`toString()`方法返回对象的`String`表示，对于调试非常有用。对象的`String`表示完全取决于对象本身，这就是为什么你需要在你的类中重写`toString()`。'
+- en: 'You can use `toString()` along with `System.out.println()` to display a text
+    representation of an object, such as an instance of `Book`:'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`toString()`和`System.out.println()`可以显示对象的文本表示，比如`Book`的实例：
+- en: '[PRE6]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'which would, for a properly overridden `toString()` method, print something
+    useful, like this:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于正确重写的`toString()`方法，会打印出有用的信息，就像这样：
+- en: '[PRE7]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'

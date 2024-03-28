@@ -1,0 +1,39 @@
+- en: Background
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 背景
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/backgnd.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/backgnd.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/backgnd.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/backgnd.html)
+- en: The JAXP secure-processing feature places resource limits on XML processors
+    in order to counter certain type of denial-of-service attacks. It does not, however,
+    limit the means by which external resources may be fetched, which is also useful
+    when attempting to process XML documents securely. The current JAXP implementation
+    supports implementation-specific properties that can be used to enforce such restrictions,
+    but there is a need for a standard way to do so.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAXP安全处理功能对XML处理器施加资源限制，以抵御某些类型的拒绝服务攻击。 但是，它并不限制获取外部资源的方式，这在尝试安全处理XML文档时也是有用的。
+    当前的JAXP实现支持特定于实现的属性，可用于强制执行此类限制，但需要一种标准方法来实现。
+- en: JAXP 1.5 adds three new properties along with their corresponding System Properties
+    to allow users to specify the type of external connections that can or can not
+    be permitted. The property values are a list of protocols. The JAXP processors
+    check if a given external connection is allowed by matching the protocol with
+    those in the list. Processors will attempt to establish the connection if it is
+    on the list, or reject it if not.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAXP 1.5添加了三个新属性以及它们对应的系统属性，允许用户指定可以或不可以允许的外部连接类型。属性值是协议列表。 JAXP处理器通过将协议与列表中的协议进行匹配来检查给定的外部连接是否被允许。
+    如果连接在列表中，则处理器将尝试建立连接，否则将拒绝连接。
+- en: JAXP 1.5 has been integrated into 7u40 and JDK8.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAXP 1.5已经集成到7u40和JDK8中。

@@ -1,0 +1,128 @@
+- en: Intrinsic Locks and Synchronization
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 内在锁和同步
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html)
+- en: 'Synchronization is built around an internal entity known as the *intrinsic
+    lock* or *monitor lock*. (The API specification often refers to this entity simply
+    as a "monitor.") Intrinsic locks play a role in both aspects of synchronization:
+    enforcing exclusive access to an object''s state and establishing happens-before
+    relationships that are essential to visibility.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同步建立在一个称为*内在锁*或*监视器锁*的内部实体周围。内在锁在同步的两个方面发挥作用：强制对对象状态的独占访问和建立对可见性至关重要的happens-before关系。
+- en: Every object has an intrinsic lock associated with it. By convention, a thread
+    that needs exclusive and consistent access to an object's fields has to *acquire*
+    the object's intrinsic lock before accessing them, and then *release* the intrinsic
+    lock when it's done with them. A thread is said to *own* the intrinsic lock between
+    the time it has acquired the lock and released the lock. As long as a thread owns
+    an intrinsic lock, no other thread can acquire the same lock. The other thread
+    will block when it attempts to acquire the lock.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个对象都有一个与之关联的内在锁。按照惯例，需要独占和一致访问对象字段的线程在访问这些字段之前必须*获取*对象的内在锁，然后在完成后*释放*内在锁。线程在获取锁和释放锁之间被认为*拥有*内在锁。只要一个线程拥有内在锁，其他线程就无法获取相同的锁。当另一个线程尝试获取锁时，它将被阻塞。
+- en: When a thread releases an intrinsic lock, a happens-before relationship is established
+    between that action and any subsequent acquisition of the same lock.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当一个线程释放一个内在锁时，该操作与后续获取相同锁的任何操作建立happens-before关系。
+- en: Locks In Synchronized Methods
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 同步方法中的锁
+- en: When a thread invokes a synchronized method, it automatically acquires the intrinsic
+    lock for that method's object and releases it when the method returns. The lock
+    release occurs even if the return was caused by an uncaught exception.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当一个线程调用一个同步方法时，它会自动获取该方法对象的内在锁，并在方法返回时释放它。即使返回是由未捕获的异常引起的，锁也会被释放。
+- en: You might wonder what happens when a static synchronized method is invoked,
+    since a static method is associated with a class, not an object. In this case,
+    the thread acquires the intrinsic lock for the `Class` object associated with
+    the class. Thus access to class's static fields is controlled by a lock that's
+    distinct from the lock for any instance of the class.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能会想知道当调用静态同步方法时会发生什么，因为静态方法与类相关联，而不是对象。在这种情况下，线程会获取与类相关联的`Class`对象的内在锁。因此，对类的静态字段的访问受到一个与类的任何实例的锁不同的锁的控制。
+- en: Synchronized Statements
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 同步语句
+- en: 'Another way to create synchronized code is with *synchronized statements*.
+    Unlike synchronized methods, synchronized statements must specify the object that
+    provides the intrinsic lock:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建同步代码的另一种方法是使用*synchronized语句*。与同步方法不同，同步语句必须指定提供内在锁的对象：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: In this example, the `addName` method needs to synchronize changes to `lastName`
+    and `nameCount`, but also needs to avoid synchronizing invocations of other objects'
+    methods. (Invoking other objects' methods from synchronized code can create problems
+    that are described in the section on [Liveness](liveness.html).) Without synchronized
+    statements, there would have to be a separate, unsynchronized method for the sole
+    purpose of invoking `nameList.add`.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，`addName`方法需要同步对`lastName`和`nameCount`的更改，但也需要避免同步调用其他对象的方法。（从同步代码调用其他对象的方法可能会导致在[Liveness](liveness.html)部分描述的问题。）如果没有同步语句，就必须有一个单独的、非同步的方法，唯一目的是调用`nameList.add`。
+- en: "Synchronized statements are also useful for improving concurrency with fine-grained\
+    \ synchronization. Suppose, for example, class `MsLunch` has two instance fields,\
+    \ `c1` and `c2`, that are never used together. All updates of these fields must\
+    \ be synchronized, but there's no reason to prevent an update of c1 from being\
+    \ interleaved with an update of c2 \x97 and doing so reduces concurrency by creating\
+    \ unnecessary blocking. Instead of using synchronized methods or otherwise using\
+    \ the lock associated with `this`, we create two objects solely to provide locks."
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "同步语句也有助于通过细粒度同步提高并发性。例如，假设类`MsLunch`有两个实例字段，`c1`和`c2`，它们永远不会同时使用。所有这些字段的更新必须同步，但没有理由阻止对c1的更新与对c2的更新交错\x97\
+    这样做会通过创建两个仅用于提供锁的对象来减少并发性。"
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Use this idiom with extreme care. You must be absolutely sure that it really
+    is safe to interleave access of the affected fields.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用这种习语要非常小心。你必须绝对确定交错访问受影响字段是安全的。
+- en: Reentrant Synchronization
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 可重入同步
+- en: Recall that a thread cannot acquire a lock owned by another thread. But a thread
+    *can* acquire a lock that it already owns. Allowing a thread to acquire the same
+    lock more than once enables *reentrant synchronization*. This describes a situation
+    where synchronized code, directly or indirectly, invokes a method that also contains
+    synchronized code, and both sets of code use the same lock. Without reentrant
+    synchronization, synchronized code would have to take many additional precautions
+    to avoid having a thread cause itself to block.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，一个线程不能获取另一个线程拥有的锁。但一个线程*可以*获取它已经拥有的锁。允许一个线程多次获取相同的锁使*可重入同步*成为可能。这描述了一种情况，即同步代码直接或间接地调用一个也包含同步代码的方法，并且两组代码使用相同的锁。如果没有可重入同步，同步代码将不得不采取许多额外的预防措施，以避免一个线程导致自己被阻塞。

@@ -1,0 +1,173 @@
+- en: Grant the Required Permissions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 授予所需权限
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/tour2/wstep2.html](https://docs.oracle.com/javase/tutorial/security/tour2/wstep2.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/tour2/wstep2.html](https://docs.oracle.com/javase/tutorial/security/tour2/wstep2.html)
+- en: To grant the `GetProps` application permission to read the `"user.home"` and
+    `"java.home"` property values, you must create a policy entry granting those permissions.
+    Choose the **Add Policy Entry** button in the main Policy Tool window. This brings
+    up the Policy Entry dialog box, as shown in the following figure.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要授予`GetProps`应用程序读取`"user.home"`和`"java.home"`属性值的权限，必须创建一个授予这些权限的策略条目。在主策略工具窗口中选择**添加策略条目**按钮。这将弹出策略条目对话框，如下图所示。
+- en: '![the Policy Entry dialog](../Images/3c564acdfa5f545df2ecf819a4941040.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![策略条目对话框](../Images/3c564acdfa5f545df2ecf819a4941040.png)'
+- en: Type the following file URL into the **CodeBase** text box to indicate that
+    you are going to be granting a permission to code from the specified directory,
+    which is the directory in which `GetProps.class` is stored.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在**CodeBase**文本框中键入以下文件URL，以指示您将授予来自指定目录中的代码的权限，该目录是存储`GetProps.class`的目录。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: (Note, this is a URL and thus must always have slashes, not backslashes.)
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: （注意，这是一个URL，因此必须始终使用斜杠，而不是反斜杠。）
+- en: Leave the **SignedBy** text box blank, since you aren't requiring the code to
+    be signed.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将**SignedBy**文本框留空，因为您不需要代码签名。
+- en: To add permission to read the `"user.home"` property value, choose the **Add
+    Permission** button. This brings up the Permissions dialog box.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要添加读取`"user.home"`属性值的权限，请选择**添加权限**按钮。这将弹出权限对话框。
+- en: '![the Permission dialog](../Images/d835a9db408a06b19edb28fc4d18cdd6.png)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_IMG
+  zh: '![权限对话框](../Images/d835a9db408a06b19edb28fc4d18cdd6.png)'
+- en: Do the following.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 执行以下操作。
+- en: Choose **Property Permission** from the Permission drop-down list. The complete
+    permission type name (`java.util.PropertyPermission`) now appears in the text
+    box to the right of the drop-down list.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从权限下拉列表中选择**属性权限**。完整的权限类型名称（`java.util.PropertyPermission`）现在出现在下拉列表右侧的文本框中。
+- en: 'Type the following in the text box to the right of the list labeled Target
+    Name to specify the `"user.home"` property:'
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在标有目标名称列表右侧的文本框中键入以下内容，以指定`"user.home"`属性：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Specify permission to read this property by selecting the **read** option from
+    the Actions drop-down list.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 通过从操作下拉列表中选择**读取**选项来指定读取此属性的权限。
+- en: Now the Permissions dialog box looks like the following.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在权限对话框如下所示。
+- en: '![the Permissions dialog with the text fields filled in](../Images/4cf17abcfda10653cc098b587ed2fbb6.png)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_IMG
+  zh: '![填写文本字段的权限对话框](../Images/4cf17abcfda10653cc098b587ed2fbb6.png)'
+- en: Choose the **OK** button. The new permission appears in a line in the policy
+    entry window.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 选择**确定**按钮。新权限将出现在策略条目窗口中的一行中。
+- en: '![the new permission in the Policy Entry window](../Images/ed80c09604ef4ca91c92056bb5f6f4b7.png)'
+  id: totrans-18
+  prefs: []
+  type: TYPE_IMG
+  zh: '![策略条目窗口中的新权限](../Images/ed80c09604ef4ca91c92056bb5f6f4b7.png)'
+- en: 'To add permission to read the `"java.home"` property value, choose the **Add
+    Permission** button again. In the Permissions dialog box, do the following:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要添加读取`"java.home"`属性值的权限，请再次选择**添加权限**按钮。在权限对话框中，执行以下操作：
+- en: Choose **Property Permission** from the Permission drop-down list.
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从权限下拉列表中选择**属性权限**。
+- en: 'Type the following in the text box to the right of the list labeled Target
+    Name to specify the `"java.home"` property:'
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在标有目标名称列表右侧的文本框中键入以下内容，以指定`"java.home"`属性：
+- en: '[PRE2]'
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Specify permission to read this property by choosing the **read** option from
+    the Actions drop-down list.
+  id: totrans-23
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 通过从操作下拉列表中选择**读取**选项来指定读取此属性的权限。
+- en: Now the Permissions dialog box looks like the following.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在权限对话框如下所示。
+- en: '![the Permissions dialog with the java home property set to read](../Images/90d9ee8573557db25f17b7de6d87a81e.png)'
+  id: totrans-25
+  prefs: []
+  type: TYPE_IMG
+  zh: '![将java home属性设置为读取的权限对话框](../Images/90d9ee8573557db25f17b7de6d87a81e.png)'
+- en: Choose the **OK** button. The new permission and the previously added permission
+    appear in lines in the policy entry window, as shown in the following figure.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 选择**确定**按钮。新权限和先前添加的权限将出现在策略条目窗口中的行中，如下图所示。
+- en: '![the new permission appears in the Policy Entry dialog](../Images/0ebcd74f3350190556b8f3532ff60b31.png)'
+  id: totrans-27
+  prefs: []
+  type: TYPE_IMG
+  zh: '![新权限出现在策略条目对话框中](../Images/0ebcd74f3350190556b8f3532ff60b31.png)'
+- en: You are now done specifying this policy entry, so choose the **Done** button
+    in the Policy Entry dialog. The Policy Tool window now includes a line representing
+    the new policy entry, showing the **CodeBase** value.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您现在已经完成了指定此策略条目的操作，因此在策略条目对话框中选择**完成**按钮。策略工具窗口现在包括表示新策略条目的一行，显示**CodeBase**值。

@@ -1,0 +1,136 @@
+- en: Steps for the ExampleGame Developer (Terry)
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 示例游戏开发者（Terry）的步骤
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/userperm/terry.html](https://docs.oracle.com/javase/tutorial/security/userperm/terry.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/userperm/terry.html](https://docs.oracle.com/javase/tutorial/security/userperm/terry.html)
+- en: 'The steps Terry would take, after creating a game (`ExampleGame` ) that calls
+    the `HighScore` `getHighScore` and `setHighScore` methods to get and set, respectively,
+    the user''s high scores, are:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Terry 创建一个调用 `HighScore` 的 `getHighScore` 和 `setHighScore` 方法来获取和设置用户高分的游戏（`ExampleGame`）后，Terry
+    需要采取的步骤是：
+- en: Compile the Game Class
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编译游戏类
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Place its class file in a JAR File
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将其类文件放入一个 JAR 文件中
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Create a Keystore and Keys for Signing
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建用于签名的密钥库和密钥
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Specify whatever you want for the passwords and distinguished name information.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为密码和区分名称信息指定任何你想要的内容。
+- en: Sign the JAR File
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 签署 JAR 文件
+- en: '[PRE3]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Export the Public Key Certificate
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 导出公钥证书
+- en: '[PRE4]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Supply Files and Information Needed by Users
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为用户提供所需的文件和信息
+- en: That is, supply them
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也就是说，向他们提供
+- en: the signed JAR File `terry.jar,`
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 签名的 JAR 文件 `terry.jar,`
+- en: the public key certificate file `Terry.cer`, and
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 公钥证书文件 `Terry.cer`, 和
+- en: information as to the permissions the `ExampleGame` class needs. For this, Terry
+    could supply the exact grant entry needed.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ExampleGame` 类所需权限的信息。对于这一点，Terry 可能会提供所需的确切授权条目。'
+- en: 'Game users also need files and information from Chris. For their convenience,
+    Terry may forward this information to them:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 游戏用户还需要来自 Chris 的文件和信息。为了方便他们，Terry 可能会将这些信息转发给他们：
+- en: the signed JAR File `hs.jar`,
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 签名的 JAR 文件 `hs.jar`,
+- en: the public key certificate file `Chris.cer`, and
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 公钥证书文件 `Chris.cer`, 和
+- en: information as to the permissions the `HighScore` and `HighScorePermission`
+    classes must be granted in a policy file in order to work. This could be the exact
+    grant entry needed.
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 有关 `HighScore` 和 `HighScorePermission` 类在策略文件中必须被授予的权限的信息，以便其正常工作。这可能是所需的确切授权条目。

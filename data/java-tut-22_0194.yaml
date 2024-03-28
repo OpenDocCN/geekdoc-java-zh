@@ -1,0 +1,58 @@
+- en: Summary
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 摘要
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/summary.html](https://docs.oracle.com/javase/tutorial/essential/io/summary.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/summary.html](https://docs.oracle.com/javase/tutorial/essential/io/summary.html)
+- en: 'The `java.io` package contains many classes that your programs can use to read
+    and write data. Most of the classes implement sequential access streams. The sequential
+    access streams can be divided into two groups: those that read and write bytes
+    and those that read and write Unicode characters. Each sequential access stream
+    has a speciality, such as reading from or writing to a file, filtering data as
+    its read or written, or serializing an object.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.io` 包包含许多类，您的程序可以使用这些类来读取和写入数据。大多数类实现顺序访问流。顺序访问流可以分为两组：那些读取和写入字节的流以及读取和写入
+    Unicode 字符的流。每个顺序访问流都有其特长，例如从文件中读取或写入数据，过滤读取或写入的数据，或者序列化对象。'
+- en: 'The `java.nio.file` package provides extensive support for file and file system
+    I/O. This is a very comprehensive API, but the key entry points are as follows:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.nio.file` 包提供了广泛的文件和文件系统 I/O 支持。这是一个非常全面的 API，但关键入口点如下：'
+- en: The `Path` class has methods for manipulating a path.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Path` 类具有操作路径的方法。'
+- en: The `Files` class has methods for file operations, such as moving, copy, deleting,
+    and also methods for retrieving and setting file attributes.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Files` 类具有文件操作的方法，例如移动、复制、删除，以及检索和设置文件属性的方法。'
+- en: The `FileSystem` class has a variety of methods for obtaining information about
+    the file system.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`FileSystem` 类具有各种方法用于获取有关文件系统的信息。'
+- en: 'More information on NIO.2 can be found on the [OpenJDK: NIO](http://openjdk.java.net/projects/nio/)
+    project website. This site includes resources for features provided by NIO.2 that
+    are beyond the scope of this tutorial, such as multicasting, asynchronous I/O,
+    and creating your own file system implementation.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '关于 NIO.2 的更多信息可以在 [OpenJDK: NIO](http://openjdk.java.net/projects/nio/) 项目网站上找到。该网站包括
+    NIO.2 提供的超出本教程范围的功能资源，例如多播、异步 I/O 和创建自己的文件系统实现。'

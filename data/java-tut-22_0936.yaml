@@ -1,0 +1,61 @@
+- en: What Is a Datagram?
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 什么是数据报？
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/datagrams/definition.html](https://docs.oracle.com/javase/tutorial/networking/datagrams/definition.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/datagrams/definition.html](https://docs.oracle.com/javase/tutorial/networking/datagrams/definition.html)
+- en: Clients and servers that communicate via a reliable channel, such as a TCP socket,
+    have a dedicated point-to-point channel between themselves, or at least the illusion
+    of one. To communicate, they establish a connection, transmit the data, and then
+    close the connection. All data sent over the channel is received in the same order
+    in which it was sent. This is guaranteed by the channel.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 客户端和服务器通过可靠的通道（如TCP套接字）进行通信，它们之间有一个专用的点对点通道，或者至少有这种幻觉。为了通信，它们建立连接，传输数据，然后关闭连接。所有通过通道发送的数据都按照发送顺序接收。这由通道保证。
+- en: In contrast, applications that communicate via datagrams send and receive completely
+    independent packets of information. These clients and servers do not have and
+    do not need a dedicated point-to-point channel. The delivery of datagrams to their
+    destinations is not guaranteed. Nor is the order of their arrival.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相反，通过数据报通信的应用程序发送和接收完全独立的信息包。这些客户端和服务器没有也不需要专用的点对点通道。数据报的传递到目的地不被保证。它们的到达顺序也不被保证。
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Definition:**'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义：**'
+- en: A *datagram* is an independent, self-contained message sent over the network
+    whose arrival, arrival time, and content are not guaranteed.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个*数据报*是独立的、自包含的消息，通过网络发送，其到达、到达时间和内容都不被保证。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The `java.net` package contains three classes to help you write Java programs
+    that use datagrams to send and receive packets over the network: [`DatagramSocket`](https://docs.oracle.com/javase/8/docs/api/java/net/DatagramSocket.html),
+    [`DatagramPacket`](https://docs.oracle.com/javase/8/docs/api/java/net/DatagramPacket.html),
+    and [`MulticastSocket`](https://docs.oracle.com/javase/8/docs/api/java/net/MulticastSocket.html)An
+    application can send and receive `DatagramPacket`s through a `DatagramSocket`.
+    In addition, `DatagramPacket`s can be broadcast to multiple recipients all listening
+    to a `MulticastSocket`.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.net`包含三个类，帮助你编写使用数据报在网络上传输和接收数据包的Java程序：[`DatagramSocket`](https://docs.oracle.com/javase/8/docs/api/java/net/DatagramSocket.html)、[`DatagramPacket`](https://docs.oracle.com/javase/8/docs/api/java/net/DatagramPacket.html)和[`MulticastSocket`](https://docs.oracle.com/javase/8/docs/api/java/net/MulticastSocket.html)。一个应用程序可以通过`DatagramSocket`发送和接收`DatagramPacket`。此外，`DatagramPacket`可以广播到多个接收者，所有接收者都监听`MulticastSocket`。'

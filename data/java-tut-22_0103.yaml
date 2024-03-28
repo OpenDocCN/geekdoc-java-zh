@@ -1,0 +1,393 @@
+- en: Beyond Basic Arithmetic
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 超出基本算术
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/data/beyondmath.html](https://docs.oracle.com/javase/tutorial/java/data/beyondmath.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/data/beyondmath.html](https://docs.oracle.com/javase/tutorial/java/data/beyondmath.html)
+- en: 'The Java programming language supports basic arithmetic with its arithmetic
+    operators: +, -, *, /, and %. The [`Math`](https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html)
+    class in the `java.lang` package provides methods and constants for doing more
+    advanced mathematical computation.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编程语言支持基本算术运算，使用算术运算符：+，-，*，/和%。`java.lang`包中的[`Math`](https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html)类提供了更高级数学计算的方法和常量。
+- en: 'The methods in the `Math` class are all static, so you call them directly from
+    the class, like this:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Math`类中的方法都是静态的，因此您可以直接从类中调用它们，如下所示：'
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Using the [`static import`](../package/usepkgs.html#staticimport)
+    language feature, you don''t have to write `Math` in front of every math function:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 使用[`static import`](../package/usepkgs.html#staticimport)语言特性，您不必在每个数学函数前面写`Math`：'
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'This allows you to invoke the `Math` class methods by their simple names. For
+    example:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这使您可以通过简单名称调用`Math`类的方法。例如：
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Constants and Basic Methods
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 常量和基本方法
+- en: 'The `Math` class includes two constants:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Math`类包括两个常量：'
+- en: '`Math.E`, which is the base of natural logarithms, and'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Math.E`，即自然对数的底数，以及'
+- en: '`Math.PI`, which is the ratio of the circumference of a circle to its diameter.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Math.PI`，即圆周与直径的比值。'
+- en: The `Math` class also includes more than 40 static methods. The following table
+    lists a number of the basic methods.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Math`类还包括40多个静态方法。以下表格列出了一些基本方法。'
+- en: Basic Math Methods
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基本数学方法
+- en: '| Method | Description |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| --- | --- |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `double abs(double d) float abs(float f)'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `double abs(double d) float abs(float f)'
+- en: int abs(int i)
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: int abs(int i)
+- en: long abs(long lng)` | Returns the absolute value of the argument. |
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`long abs(long lng)` | 返回参数的绝对值。 |'
+- en: '| `double ceil(double d)` | Returns the smallest integer that is greater than
+    or equal to the argument. Returned as a double. |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double ceil(double d)` | 返回大于或等于参数的最小整数。返回为double类型。 |'
+- en: '| `double floor(double d)` | Returns the largest integer that is less than
+    or equal to the argument. Returned as a double. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double floor(double d)` | 返回小于或等于参数的最大整数。返回为double类型。 |'
+- en: '| `double rint(double d)` | Returns the integer that is closest in value to
+    the argument. Returned as a double. |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double rint(double d)` | 返回与参数最接近的整数值。返回为double类型。 |'
+- en: '| `long round(double d) int round(float f)` | Returns the closest long or int,
+    as indicated by the method''s return type, to the argument. |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| `long round(double d) int round(float f)` | 返回最接近参数的long或int，如方法的返回类型所示。
+    |'
+- en: '| `double min(double arg1, double arg2) float min(float arg1, float arg2)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `double min(double arg1, double arg2) float min(float arg1, float arg2)'
+- en: int min(int arg1, int arg2)
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: int min(int arg1, int arg2)
+- en: long min(long arg1, long arg2)` | Returns the smaller of the two arguments.
+    |
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`long min(long arg1, long arg2)` | 返回两个参数中较小的值。 |'
+- en: '| `double max(double arg1, double arg2) float max(float arg1, float arg2)'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `double max(double arg1, double arg2) float max(float arg1, float arg2)'
+- en: int max(int arg1, int arg2)
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: int max(int arg1, int arg2)
+- en: long max(long arg1, long arg2)` | Returns the larger of the two arguments. |
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`long max(long arg1, long arg2)` | 返回两个参数中较大的值。 |'
+- en: 'The following program, [`BasicMathDemo`](examples/BasicMathDemo.java) , illustrates
+    how to use some of these methods:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序，[`BasicMathDemo`](examples/BasicMathDemo.java)，演示了如何使用其中一些方法：
+- en: '[PRE3]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Here''s the output from this program:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个程序的输出如下：
+- en: '[PRE4]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Exponential and Logarithmic Methods
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指数和对数方法
+- en: The next table lists exponential and logarithmic methods of the `Math` class.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了`Math`类的指数和对数方法。
+- en: Exponential and Logarithmic Methods
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指数和对数方法
+- en: '| Method | Description |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `double exp(double d)` | Returns the base of the natural logarithms, e, to
+    the power of the argument. |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double exp(double d)` | 返回自然对数的底数e的参数次幂。 |'
+- en: '| `double log(double d)` | Returns the natural logarithm of the argument. |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double log(double d)` | 返回参数的自然对数。 |'
+- en: '| `double pow(double base, double exponent)` | Returns the value of the first
+    argument raised to the power of the second argument. |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double pow(double base, double exponent)` | 返回第一个参数的值的第二个参数的幂。 |'
+- en: '| `double sqrt(double d)` | Returns the square root of the argument. |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double sqrt(double d)` | 返回参数的平方根。 |'
+- en: 'The following program, [`ExponentialDemo`](examples/ExponentialDemo.java),
+    displays the value of `e`, then calls each of the methods listed in the previous
+    table on arbitrarily chosen numbers:'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的程序，[`指数演示`](examples/ExponentialDemo.java)，显示了`e`的值，然后对任意选择的数字调用前面表中列出的每个方法：
+- en: '[PRE5]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'Here''s the output you''ll see when you run `ExponentialDemo`:'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你运行`指数演示`时，你将看到以下输出：
+- en: '[PRE6]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Trigonometric Methods
+  id: totrans-48
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 三角函数方法
+- en: The `Math` class also provides a collection of trigonometric functions, which
+    are summarized in the following table. The value passed into each of these methods
+    is an angle expressed in radians. You can use the `toRadians` method to convert
+    from degrees to radians.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Math`类还提供了一系列三角函数，总结在下表中。传递给这些方法的值是以弧度表示的角度。你可以使用`toRadians`方法将角度转换为弧度。'
+- en: Trigonometric Methods
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 三角函数方法
+- en: '| Method | Description |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `double sin(double d)` | Returns the sine of the specified double value.
+    |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double sin(double d)` | 返回指定双精度值的正弦值。 |'
+- en: '| `double cos(double d)` | Returns the cosine of the specified double value.
+    |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double cos(double d)` | 返回指定双精度值的余弦值。 |'
+- en: '| `double tan(double d)` | Returns the tangent of the specified double value.
+    |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double tan(double d)` | 返回指定双精度值的正切值。 |'
+- en: '| `double asin(double d)` | Returns the arcsine of the specified double value.
+    |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double asin(double d)` | 返回指定双精度值的反正弦值。 |'
+- en: '| `double acos(double d)` | Returns the arccosine of the specified double value.
+    |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double acos(double d)` | 返回指定双精度值的反余弦值。 |'
+- en: '| `double atan(double d)` | Returns the arctangent of the specified double
+    value. |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double atan(double d)` | 返回指定双精度值的反正切值。 |'
+- en: '| `double atan2(double y, double x)` | Converts rectangular coordinates `(x,
+    y)` to polar coordinate `(r, theta)` and returns `theta`. |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double atan2(double y, double x)` | 将直角坐标`(x, y)`转换为极坐标`(r, theta)`并返回`theta`。
+    |'
+- en: '| `double toDegrees(double d) double toRadians(double d)` | Converts the argument
+    to degrees or radians. |'
+  id: totrans-59
+  prefs: []
+  type: TYPE_TB
+  zh: '| `double toDegrees(double d) double toRadians(double d)` | 将参数转换为度或弧度。 |'
+- en: 'Here''s a program, [`TrigonometricDemo`](examples/TrigonometricDemo.java),
+    that uses each of these methods to compute various trigonometric values for a
+    45-degree angle:'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个程序，[`三角函数演示`](examples/TrigonometricDemo.java)，使用每个方法来计算45度角的各种三角函数值：
+- en: '[PRE7]'
+  id: totrans-61
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'The output of this program is as follows:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序的输出如下：
+- en: '[PRE8]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Random Numbers
+  id: totrans-64
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 随机数
+- en: 'The `random()` method returns a pseudo-randomly selected number between 0.0
+    and 1.0\. The range includes 0.0 but not 1.0\. In other words: `0.0 <= Math.random()
+    < 1.0`. To get a number in a different range, you can perform arithmetic on the
+    value returned by the random method. For example, to generate an integer between
+    0 and 9, you would write:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`random()`方法返回一个在0.0和1.0之间伪随机选择的数字。范围包括0.0但不包括1.0。换句话说：`0.0 <= Math.random()
+    < 1.0`。要获得不同范围的数字，可以对随机方法返回的值进行算术运算。例如，要生成0到9之间的整数，你可以这样写：'
+- en: '[PRE9]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: By multiplying the value by 10, the range of possible values becomes `0.0 <=
+    number < 10.0`.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过将值乘以10，可能值的范围变为`0.0 <= number < 10.0`。
+- en: Using `Math.random` works well when you need to generate a single random number.
+    If you need to generate a series of random numbers, you should create an instance
+    of `java.util.Random` and invoke methods on that object to generate numbers.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`Math.random`在需要生成单个随机数时效果很好。如果需要生成一系列随机数，应该创建一个`java.util.Random`的实例，并在该对象上调用方法来生成数字。

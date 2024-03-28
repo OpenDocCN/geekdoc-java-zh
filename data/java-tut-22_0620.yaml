@@ -1,0 +1,104 @@
+- en: About the BreakIterator Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 关于BreakIterator类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/about.html](https://docs.oracle.com/javase/tutorial/i18n/text/about.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/about.html](https://docs.oracle.com/javase/tutorial/i18n/text/about.html)
+- en: 'The `BreakIterator` class is locale-sensitive, because text boundaries vary
+    with language. For example, the syntax rules for line breaks are not the same
+    for all languages. To determine which locales the `BreakIterator` class supports,
+    invoke the `getAvailableLocales` method, as follows:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`BreakIterator`类是区域敏感的，因为文本边界随语言而变化。例如，换行的语法规则并非所有语言都相同。要确定`BreakIterator`类支持哪些区域设置，请调用`getAvailableLocales`方法，如下所示：'
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'You can analyze four kinds of boundaries with the `BreakIterator` class: character,
+    word, sentence, and potential line break. When instantiating a `BreakIterator`,
+    you invoke the appropriate factory method:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用`BreakIterator`类分析四种边界类型：字符、单词、句子和潜在的换行符。在实例化`BreakIterator`时，调用适当的工厂方法：
+- en: '`getCharacterInstance`'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getCharacterInstance`'
+- en: '`getWordInstance`'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getWordInstance`'
+- en: '`getSentenceInstance`'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getSentenceInstance`'
+- en: '`getLineInstance`'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getLineInstance`'
+- en: Each instance of `BreakIterator` can detect just one type of boundary. If you
+    want to locate both character and word boundaries, for example, you create two
+    separate instances.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个`BreakIterator`实例只能检测一种类型的边界。例如，如果您想定位字符和单词边界，您需要创建两个单独的实例。
+- en: 'A `BreakIterator` has an imaginary cursor that points to the current boundary
+    in a string of text. You can move this cursor within the text with the `previous`
+    and the `next` methods. For example, if you''ve created a `BreakIterator` with
+    `getWordInstance`, the cursor moves to the next word boundary in the text every
+    time you invoke the `next` method. The cursor-movement methods return an integer
+    indicating the position of the boundary. This position is the index of the character
+    in the text string that would follow the boundary. Like string indexes, the boundaries
+    are zero-based. The first boundary is at 0, and the last boundary is the length
+    of the string. The following figure shows the word boundaries detected by the
+    `next` and `previous` methods in a line of text:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`BreakIterator`具有一个想象的光标，指向文本字符串中的当前边界。您可以使用`previous`和`next`方法在文本中移动此光标。例如，如果您使用`getWordInstance`创建了一个`BreakIterator`，每次调用`next`方法时，光标都会移动到文本中的下一个单词边界。光标移动方法返回一个整数，指示边界的位置。此位置是文本字符串中将跟随边界的字符的索引。与字符串索引一样，边界是从零开始的。第一个边界在0处，最后一个边界是字符串的长度。以下图显示了`next`和`previous`方法在文本行中检测到的单词边界：'
+- en: '[![The text ''Hope is the thing with feathers'', with the boundaries indicated.](../Images/91bfcce1f285d04f123833e2b7593d19.png)](../../figures/i18n/i18n-4.gif)'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![带有边界指示的文本“希望是羽毛的东西”。](../Images/91bfcce1f285d04f123833e2b7593d19.png)](../../figures/i18n/i18n-4.gif)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击图像以查看其自然大小。*
+- en: You should use the `BreakIterator` class only with natural-language text. To
+    tokenize a programming language, use the `StreamTokenizer` class.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您应该仅将`BreakIterator`类与自然语言文本一起使用。要对编程语言进行标记化，请使用`StreamTokenizer`类。
+- en: The sections that follow give examples for each type of boundary analysis. The
+    coding examples are from the source code file named [`BreakIteratorDemo.java`](examples/BreakIteratorDemo.java).
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的部分为每种边界分析类型提供示例。编码示例来自名为[`BreakIteratorDemo.java`](examples/BreakIteratorDemo.java)的源代码文件。

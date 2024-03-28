@@ -1,0 +1,416 @@
+- en: PATH and CLASSPATH
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: PATH和CLASSPATH
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/environment/paths.html](https://docs.oracle.com/javase/tutorial/essential/environment/paths.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/environment/paths.html](https://docs.oracle.com/javase/tutorial/essential/environment/paths.html)
+- en: This section explains how to use the `PATH` and `CLASSPATH` environment variables
+    on Microsoft Windows, Solaris, and Linux. Consult the installation instructions
+    included with your installation of the Java Development Kit (JDK) software bundle
+    for current information.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节解释了如何在Microsoft Windows、Solaris和Linux上使用`PATH`和`CLASSPATH`环境变量。请查阅随Java开发工具包（JDK）软件包安装包含的安装说明以获取最新信息。
+- en: After installing the software, the JDK directory will have the structure shown
+    below.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 安装软件后，JDK目录将具有如下结构。
+- en: '![JDK directory structure](../Images/5cf035e0d9f655a41545e2f82574ca42.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![JDK目录结构](../Images/5cf035e0d9f655a41545e2f82574ca42.png)'
+- en: The `bin` directory contains both the compiler and the launcher.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`bin`目录包含编译器和启动器。'
+- en: Update the PATH Environment Variable (Microsoft Windows)
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更新PATH环境变量（Microsoft Windows）
+- en: You can run Java applications just fine without setting the `PATH` environment
+    variable. Or, you can optionally set it as a convenience.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 没有设置`PATH`环境变量也可以正常运行Java应用程序。或者，您可以选择性地设置它以方便使用。
+- en: 'Set the `PATH` environment variable if you want to be able to conveniently
+    run the executables (`javac.exe`, `java.exe`, `javadoc.exe`, and so on) from any
+    directory without having to type the full path of the command. If you do not set
+    the `PATH` variable, you need to specify the full path to the executable every
+    time you run it, such as:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果要方便地从任何目录运行可执行文件（`javac.exe`、`java.exe`、`javadoc.exe`等），而不必键入命令的完整路径，则设置`PATH`环境变量。如果不设置`PATH`变量，每次运行时都需要指定可执行文件的完整路径，例如：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `PATH` environment variable is a series of directories separated by semicolons
+    (`;`). Microsoft Windows looks for programs in the `PATH` directories in order,
+    from left to right. You should have only one `bin` directory for the JDK in the
+    path at a time (those following the first are ignored), so if one is already present,
+    you can update that particular entry.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`PATH`环境变量是一系列由分号（`;`）分隔的目录。Microsoft Windows按照从左到右的顺序在`PATH`目录中查找程序。每次只能在路径中有一个JDK的`bin`目录（第一个之后的将被忽略），因此如果已经存在一个，可以更新该特定条目。'
+- en: 'The following is an example of a `PATH` environment variable:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是一个`PATH`环境变量的示例：
+- en: '[PRE1]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'It is useful to set the `PATH` environment variable permanently so it will
+    persist after rebooting. To make a permanent change to the `PATH` variable, use
+    the **System** icon in the Control Panel. The precise procedure varies depending
+    on the version of Windows:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将`PATH`环境变量永久设置是有用的，这样在重新启动后它将保留。要对`PATH`变量进行永久更改，请使用控制面板中的**系统**图标。具体的操作步骤因Windows版本而异：
+- en: '**Windows XP**'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**Windows XP**'
+- en: Select **Start**, select **Control Panel**. double click **System**, and select
+    the **Advanced** tab.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 选择**开始**，选择**控制面板**。双击**系统**，选择**高级**选项卡。
+- en: Click **Environment Variables**. In the section **System Variables**, find the
+    `PATH` environment variable and select it. Click **Edit**. If the `PATH` environment
+    variable does not exist, click `New`.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击**环境变量**。在**系统变量**部分，找到`PATH`环境变量并选择它。点击**编辑**。如果`PATH`环境变量不存在，点击`新建`。
+- en: In the **Edit System Variable** (or **New System Variable**) window, specify
+    the value of the `PATH` environment variable. Click **OK**. Close all remaining
+    windows by clicking **OK**.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在**编辑系统变量**（或**新建系统变量**）窗口中，指定`PATH`环境变量的值。点击**确定**。通过点击**确定**关闭所有剩余窗口。
+- en: '**Windows Vista:**'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**Windows Vista:**'
+- en: From the desktop, right click the **My Computer** icon.
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从桌面上右键单击**我的电脑**图标。
+- en: Choose **Properties** from the context menu.
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从上下文菜单中选择**属性**。
+- en: Click the **Advanced** tab (**Advanced system settings** link in Vista).
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击**高级**选项卡（在Vista中点击**高级系统设置**链接）。
+- en: Click **Environment Variables**. In the section **System Variables**, find the
+    `PATH` environment variable and select it. Click **Edit**. If the `PATH` environment
+    variable does not exist, click `New`.
+  id: totrans-22
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击**环境变量**。在**系统变量**部分，找到`PATH`环境变量并选择它。点击**编辑**。如果`PATH`环境变量不存在，点击`新建`。
+- en: In the **Edit System Variable** (or **New System Variable**) window, specify
+    the value of the `PATH` environment variable. Click **OK**. Close all remaining
+    windows by clicking **OK**.
+  id: totrans-23
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在**编辑系统变量**（或**新建系统变量**）窗口中，指定`PATH`环境变量的值。点击**确定**。通过点击**确定**关闭所有剩余窗口。
+- en: '**Windows 7:**'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**Windows 7:**'
+- en: From the desktop, right click the **Computer** icon.
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从桌面上右键单击**计算机**图标。
+- en: Choose **Properties** from the context menu.
+  id: totrans-26
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从上下文菜单中选择**属性**。
+- en: Click the **Advanced system settings** link.
+  id: totrans-27
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击**高级系统设置**链接。
+- en: Click **Environment Variables**. In the section **System Variables**, find the
+    `PATH` environment variable and select it. Click **Edit**. If the `PATH` environment
+    variable does not exist, click `New`.
+  id: totrans-28
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击**环境变量**。在**系统变量**部分，找到`PATH`环境变量并选择它。点击**编辑**。如果`PATH`环境变量不存在，点击`新建`。
+- en: In the **Edit System Variable** (or **New System Variable**) window, specify
+    the value of the `PATH` environment variable. Click **OK**. Close all remaining
+    windows by clicking **OK**.
+  id: totrans-29
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在**编辑系统变量**（或**新建系统变量**）窗口中，指定`PATH`环境变量的值。点击**确定**。通过点击**确定**关闭所有剩余窗口。
+- en: '* * *'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** You may see a `PATH` environment variable similar to the following
+    when editing it from the Control Panel:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**在从控制面板编辑`PATH`环境变量时，可能会看到类似以下内容的环境变量：'
+- en: '[PRE2]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Variables enclosed in percentage signs (`%`) are existing environment variables.
+    If one of these variables is listed in the **Environment Variables** window from
+    the Control Panel (such as `JAVA_HOME`), then you can edit its value. If it does
+    not appear, then it is a special environment variable that the operating system
+    has defined. For example, `SystemRoot` is the location of the Microsoft Windows
+    system folder. To obtain the value of a environment variable, enter the following
+    at a command prompt. (This example obtains the value of the `SystemRoot` environment
+    variable):'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用百分号（`%`）括起来的变量是现有的环境变量。如果这些变量中的一个在控制面板的**环境变量**窗口中列出（如`JAVA_HOME`），则可以编辑其值。如果未显示，则是操作系统定义的特殊环境变量。例如，`SystemRoot`是Microsoft
+    Windows系统文件夹的位置。要获取环境变量的值，请在命令提示符下输入以下内容。（此示例获取`SystemRoot`环境变量的值）：
+- en: '[PRE3]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '* * *'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Update the PATH Variable (Solaris and Linux)
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更新PATH变量（Solaris和Linux）
+- en: 'You can run the JDK just fine without setting the `PATH` variable, or you can
+    optionally set it as a convenience. However, you should set the path variable
+    if you want to be able to run the executables (`javac`, `java`, `javadoc`, and
+    so on) from any directory without having to type the full path of the command.
+    If you do not set the `PATH` variable, you need to specify the full path to the
+    executable every time you run it, such as:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以很好地运行JDK而不设置`PATH`变量，或者可以选择设置它作为便利。但是，如果要能够从任何目录运行可执行文件（`javac`、`java`、`javadoc`等），而不必键入命令的完整路径，则应该设置路径变量。如果不设置`PATH`变量，每次运行时都需要指定可执行文件的完整路径，例如：
+- en: '[PRE4]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'To find out if the path is properly set, execute:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要查看路径是否正确设置，请执行：
+- en: '[PRE5]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'This will print the version of the `java` tool, if it can find it. If the version
+    is old or you get the error **java: Command not found**, then the path is not
+    properly set.'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果可以找到，这将打印`java`工具的版本。如果版本过旧或者出现错误**java: Command not found**，则路径未正确设置。'
+- en: To set the path permanently, set the path in your startup file.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要永久设置路径，请在启动文件中设置路径。
+- en: 'For C shell (`csh`), edit the startup file `(~/.cshrc`):'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于C shell（`csh`），编辑启动文件（`~/.cshrc`）：
+- en: '[PRE6]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'For `bash`, edit the startup file (`~/.bashrc`):'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于`bash`，编辑启动文件（`~/.bashrc`）：
+- en: '[PRE7]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'For `ksh`, the startup file is named by the environment variable, `ENV`. To
+    set the path:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于`ksh`，启动文件由环境变量`ENV`命名。要设���路径：
+- en: '[PRE8]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'For `sh`, edit the profile file (`~/.profile`):'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于`sh`，编辑配置文件（`~/.profile`）：
+- en: '[PRE9]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'Then load the startup file and verify that the path is set by repeating the
+    `java` command:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后加载启动文件，并通过重复`java`命令验证路径是否设置：
+- en: 'For C shell (`csh`):'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于C shell（`csh`）：
+- en: '[PRE10]'
+  id: totrans-53
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'For `ksh`, `bash`, or `sh`:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于`ksh`、`bash`或`sh`：
+- en: '[PRE11]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: Checking the CLASSPATH variable (All platforms)
+  id: totrans-56
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检查CLASSPATH变量（所有平台）
+- en: The `CLASSPATH` variable is one way to tell applications, including the JDK
+    tools, where to look for user classes. (Classes that are part of the JRE, JDK
+    platform, and extensions should be defined through other means, such as the bootstrap
+    class path or the extensions directory.)
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CLASSPATH`变量是告诉应用程序，包括JDK工具，在哪里查找用户类的一种方式。（作为JRE、JDK平台和扩展的一部分的类应该通过其他方式定义，比如引导类路径或扩展目录。）'
+- en: The preferred way to specify the class path is by using the `-cp` command line
+    switch. This allows the `CLASSPATH` to be set individually for each application
+    without affecting other applications. *Setting the `CLASSPATH` can be tricky and
+    should be performed with care.*
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定类路径的首选方式是使用`-cp`命令行开关。这允许为每个应用程序单独设置`CLASSPATH`，而不影响其他应用程序。*设置`CLASSPATH`可能有些棘手，应谨慎执行。*
+- en: The default value of the class path is ".", meaning that only the current directory
+    is searched. Specifying either the CLASSPATH variable or the `-cp` command line
+    switch overrides this value.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类路径的默认值为“.”，意味着只搜索当前目录。指定`CLASSPATH`变量或`-cp`命令行开关会覆盖此值。
+- en: 'To check whether `CLASSPATH` is set on Microsoft Windows NT/2000/XP, execute
+    the following:'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要检查在Microsoft Windows NT/2000/XP上是否设置了`CLASSPATH`，执行以下操作：
+- en: '[PRE12]'
+  id: totrans-61
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'On Solaris or Linux, execute the following:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Solaris或Linux上，执行以下操作：
+- en: '[PRE13]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: 'If `CLASSPATH` is not set you will get a **CLASSPATH: Undefined variable**
+    error (Solaris or Linux) or simply **%CLASSPATH%** (Microsoft Windows NT/2000/XP).'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '如果未设置`CLASSPATH`，将会出现**CLASSPATH: Undefined variable**错误（Solaris或Linux）或者简单显示**%CLASSPATH%**（Microsoft
+    Windows NT/2000/XP）。'
+- en: To modify the `CLASSPATH`, use the same procedure you used for the `PATH` variable.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要修改`CLASSPATH`，使用与修改`PATH`变量相同的过程。
+- en: Class path wildcards allow you to include an entire directory of `.jar` files
+    in the class path without explicitly naming them individually. For more information,
+    including an explanation of class path wildcards, and a detailed description on
+    how to clean up the `CLASSPATH` environment variable, see the [Setting the Class
+    Path](https://docs.oracle.com/javase/8/docs/technotes/tools/windows/classpath.html)
+    technical note.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类路径通配符允许您在类路径中包含整个目录的`.jar`文件，而无需逐个命名它们。有关更多信息，包括类路径通配符的解释以及如何清理`CLASSPATH`环境变量的详细说明，请参阅[设置类路径](https://docs.oracle.com/javase/8/docs/technotes/tools/windows/classpath.html)技术说明。

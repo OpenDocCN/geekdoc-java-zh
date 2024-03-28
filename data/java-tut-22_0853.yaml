@@ -1,0 +1,81 @@
+- en: Import the Certificate as a Trusted Certificate
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 将证书导入为受信任的证书
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolfilex/rstep1.html](https://docs.oracle.com/javase/tutorial/security/toolfilex/rstep1.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/toolfilex/rstep1.html](https://docs.oracle.com/javase/tutorial/security/toolfilex/rstep1.html)
+- en: Suppose that you are Ruth and have received from Stan Smith
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您是Ruth，并已从Stan Smith那里收到
+- en: The signed JAR file `sContract.jar` containing a contract
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 签名的JAR文件`sContract.jar`包含一个合同
+- en: The file `StanSmith.cer` containing the public key certificate for the public
+    key corresponding to the private key used to sign the JAR file
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 文件`StanSmith.cer`包含与用于签署JAR文件的私钥对应的公钥证书
+- en: Before you can use the `jarsigner` tool to check the authenticity of the JAR
+    file's signature, you need to import Stan's certificate into your keystore.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在您可以使用`jarsigner`工具检查JAR文件签名的真实性之前，您需要将Stan的证书导入您的密钥库。
+- en: Even though you (acting as Stan) created these files and they haven't actually
+    been transported anywhere, you can simulate being someone other than the creator
+    and sender, Stan. Acting as Ruth, type the following command to create a keystore
+    named `exampleruthstore` and import the certificate into an entry with an alias
+    of `stan`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使您（扮演Stan）创建了这些文件，它们实际上还没有被传输到任何地方，您可以模拟成除创建者和发送者Stan之外的其他人。作为Ruth，输入以下命令创建一个名为`exampleruthstore`的密钥库，并将证书导入到别名为`stan`的条目中。
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Since the keystore doesn't yet exist, `keytool` will create it for you. It will
+    prompt you for a keystore password.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于密钥库尚不存在，`keytool`将为您创建它。它会提示您输入密钥库密码。
+- en: The `keytool` prints the certificate information and asks you to verify it;
+    For example, by comparing the displayed certificate fingerprints with those obtained
+    from another (trusted) source of information. (Each fingerprint is a relatively
+    short number that uniquely and reliably identifies the certificate.) For example,
+    in the real world you can phone Stan and ask him what the fingerprints should
+    be. He can get the fingerprints of the `StanSmith.cer` file he created by executing
+    the command
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`keytool`打印证书信息并要求您验证它；例如，通过将显示的证书指纹与从另一个（受信任的）信息源获得的指纹进行比较。（每个指纹是一个相对较短的数字，可以唯一且可靠地识别证书。）例如，在现实世界中，您可以打电话给Stan并询问他应该是什么指纹。他可以通过执行命令获取他创建的`StanSmith.cer`文件的指纹'
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: If the fingerprints he sees are the same as the ones reported to you by `keytool`,
+    then you both can assume that the certificate has not been modified in transit.
+    You can safely let `keytool` proceed to place a "trusted certificate" entry into
+    your keystore. This entry contains the public key certificate data from the file
+    `StanSmith.cer`. `keytool` assigns the alias `stan` to this new entry.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果他看到的指纹与`keytool`向您报告的指纹相同，则您都可以假定证书在传输过程中未被修改。您可以放心地让`keytool`继续将一个“受信任的证书”条目放入您的密钥库中。该条目包含来自文件`StanSmith.cer`的公钥证书数据。`keytool`为这个新条目分配别名`stan`。

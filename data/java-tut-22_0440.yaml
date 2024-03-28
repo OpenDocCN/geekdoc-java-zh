@@ -1,0 +1,673 @@
+- en: How to Use GroupLayout
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用 GroupLayout
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/group.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/group.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/group.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/group.html)
+- en: '`GroupLayout` is a layout manager that was developed for GUI builders such
+    as Matisse, the GUI builder provided with the NetBeans IDE. Although the layout
+    manager was originally designed to suit the GUI builder needs, it also works well
+    for manual coding. This discussion will teach you how `GroupLayout` works and
+    show you how you can use `GroupLayout` to build GUIs, whether you choose to use
+    a GUI builder like Matisse or write your own code.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GroupLayout` 是为 GUI 构建器（如 NetBeans IDE 提供的 GUI 构建器 Matisse）开发的布局管理器。尽管布局管理器最初是为适应
+    GUI 构建器的需求而设计的，但它也适用于手动编码。本讨论将教你`GroupLayout`的工作原理，并向你展示如何使用`GroupLayout`构建 GUI，无论你选择使用像
+    Matisse 这样的 GUI 构建器还是编写自己的代码。'
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程涵盖了手动编写布局代码，这可能具有挑战性。如果您对学习布局管理的所有细节不感兴趣，您可能更喜欢使用`GroupLayout`布局管理器结合构建工具来布局您的GUI。其中一个构建工具是[NetBeans
+    IDE](../learn/index.html)。否则，如果您想手动编写代码而不想使用`GroupLayout`，那么推荐使用`GridBagLayout`作为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有兴趣使用 JavaFX 创建 GUI，请参阅[JavaFX 中的布局](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: 'Design Principle: Independent Dimensions'
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设计原则：独立维度
+- en: '`GroupLayout` works with the horizontal and vertical layouts separately. The
+    layout is defined for each dimension independently. You do not need to worry about
+    the *vertical* dimension when defining the *horizontal* layout, and vice versa,
+    as the layout along each axis is totally independent of the layout along the other
+    axis.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GroupLayout` 分别处理水平和垂直布局。每个维度的布局都是独立定义的。在定义*水平*布局时，你不需要担心*垂直*维度，反之亦然，因为沿着每个轴的布局完全独立于沿着另一个轴的布局。'
+- en: When focusing on just one dimension, you only have to solve half the problem
+    at one time. This is easier than handling both dimensions at once. This means,
+    of course, that each component needs to be defined twice in the layout. If you
+    forget to do this, `GroupLayout` will generate an exception.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当只关注一个维度时，你只需一次解决一半的问题。这比同时处理两个维度要容易。这意味着，当然，每个组件在布局中需要定义两次。如果忘记这样做，`GroupLayout`
+    将生成异常。
+- en: 'Layout Organization: Hierarchical Groups'
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 布局组织：分层组
+- en: '`GroupLayout` uses two types of arrangements -- sequential and parallel, combined
+    with hierarchical composition.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GroupLayout` 使用两种类型的布局——顺序和并行，结合了分层组合。'
+- en: With **sequential** arrangement, the components are simply placed one after
+    another, just like `BoxLayout` or `FlowLayout` would do along one axis. The position
+    of each component is defined as being relative to the preceding component.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 采用**顺序**排列，组件就像`BoxLayout`或`FlowLayout`沿一个轴一样简单地一个接一个地放置。每个组件的位置都是相对于前一个组件定义的。
+- en: The second way places the components in **parallel**—on top of each other in
+    the same space. They can be baseline-, top-, or bottom-aligned along the vertical
+    axis. Along the horizontal axis, they can be left-, right-, or center-aligned
+    if the components are not all the same size.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 第二种方式将组件**并排**放置——在同一空间中叠加。它们可以沿垂直轴基线对齐、顶部对齐或底部对齐。沿水平轴，如果组件大小不同，它们可以左对齐、右对齐或居中对齐。
+- en: Usually, components placed in parallel in one dimension are in a sequence in
+    the other, so that they do not overlap.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，沿一个维度并排放置的组件在另一个维度上是顺序排列的，以避免重叠。
+- en: What makes these two arrangements powerful is that they can be nested hierarchically.
+    For this purpose `GroupLayout` defines **layout groups**. A group is either sequential
+    or parallel and may contain components, other groups, and gaps (discussed below).
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这两种布局之所以强大，是因为它们可以被嵌套层次化。为此，`GroupLayout` 定义了**布局组**。一个组可以是顺序的或并行的，并且可以包含组件、其他组和间隙（下面讨论）。
+- en: The size of a sequential group is the sum of the sizes of the contained elements,
+    and the size of a parallel group corresponds to the size of the largest element
+    (although, depending on the elements and where the baseline lands, the size of
+    a baseline-aligned group may be a bit larger than the largest element).
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 顺序组的大小是包含元素的大小之和，而并行组的大小对应于最大元素的大小（尽管，根据元素和基线的位置，基线对齐组的大小可能比最大元素稍大一些）。
+- en: Defining a layout means defining how the components should be grouped by combining
+    the sequential and parallel arrangements.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定义布局意味着定义组件如何通过组合顺序和并行排列进行分组。
+- en: Let us use a simple example to see how it works in practice.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们用一个简单的例子来看看它在实践中是如何工作的。
+- en: An Example
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个例子
+- en: 'Let us start with something simple, just three components in a row:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们从一些简单的东西开始，只有一排中的三个组件：
+- en: '![Three components in a row.](../Images/c0364203d2c614f1ed99fbff31523fd5.png)'
+  id: totrans-21
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一排中的三个组件。](../Images/c0364203d2c614f1ed99fbff31523fd5.png)'
+- en: 'We will express this layout using groups. Starting with the horizontal axis
+    it is easy to see there is a *sequential group* of 3 components arranged from
+    left to right. Along the vertical axis there is a *parallel group* of the same
+    3 components with the same location, size, and baseline:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将使用组来表示此布局。从水平轴开始，很容易看到有一个从左到右排列的*顺序组*，包含3个组件。沿着垂直轴，有一个相同位置、大小和基线的*并行组*，包含相同的3个组件：
+- en: '![groups1a.](../Images/7a88ae2eebefccbb96a565088e01677b.png)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_IMG
+  zh: '![groups1a.](../Images/7a88ae2eebefccbb96a565088e01677b.png)'
+- en: 'In pseudo code, the layout specification might look like this (the real code
+    is in the *Writing Code* section below):'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在伪代码中，布局规范可能看起来像这样（真正的代码在下面的*编写代码*部分）：
+- en: '[PRE0]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This illustrates a principle mentioned earlier: components grouped sequentially
+    in one dimension usually form a parallel group in the other dimension.'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这说明了前面提到的一个原则：在一个维度上顺序组合的组件通常在另一个维度上形成并行组。
+- en: 'Now let us add one more component, C4, left-aligned with C3:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们再添加一个组件C4，与C3左对齐：
+- en: '![example1b.](../Images/3a8111ee5d4c25aafde664b4a06f97dd.png)'
+  id: totrans-28
+  prefs: []
+  type: TYPE_IMG
+  zh: '![example1b.](../Images/3a8111ee5d4c25aafde664b4a06f97dd.png)'
+- en: Along the horizontal axis the new component occupies the same horizontal space
+    as C3 so that it forms a parallel group with C3\. Along the vertical axis C4 forms
+    a sequential group with the original parallel group of the three components.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 沿着水平轴，新组件占据与C3相同的水平空间，以便与C3形成并行组。沿着垂直轴，C4与最初的三个组件的并行组形成顺序组。
+- en: '![groups1b.](../Images/ed97726aed81daa2a4cb00710b37463e.png)'
+  id: totrans-30
+  prefs: []
+  type: TYPE_IMG
+  zh: '![groups1b.](../Images/ed97726aed81daa2a4cb00710b37463e.png)'
+- en: 'In pseudo code, the layout specification now looks like this:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在伪代码中，布局规范现在看起来像这样：
+- en: '[PRE1]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Now you understand the most important aspects of designing layouts with `GroupLayout`.
+    There are just a few more details to explain: how to add gaps, how to define size
+    and resize behavior, how to define justified layout, and how to write real code.'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您了解了使用`GroupLayout`设计布局的最重要方面。还有一些细节需要解释：如何添加间隙，如何定义大小和调整大小行为，如何定义对齐布局，以及如何编写真实代码。
+- en: Gaps
+  id: totrans-34
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 间隙
+- en: A gap can be thought of as an invisible component of a certain size. Gaps of
+    arbitrary size can be added to groups just like components or other groups. Using
+    gaps you can precisely control the distance between components or from the container
+    border.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 间隙可以被视为具有特定大小的不可见组件。可以像组件或其他组件一样向组中添加任意大小的间隙。使用间隙，您可以精确控制组件之间的距离或与容器边框的距离。
+- en: '`GroupLayout` also defines *automatic* gaps that correspond to *preferred distances*
+    between neighboring components (or between a component and container border).
+    The size of such a gap is computed dynamically based on the look and feel the
+    application is using (the `LayoutStyle` class is used for this). There are two
+    advantages to using automatic (preferred) gaps: you do not have to specify the
+    pixel sizes of the gaps, and they automatically adjust to the look and feel the
+    UI runs with, reflecting the actual look and feel guidelines.'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GroupLayout`还定义了*自动*间隙，这些间隙对应于相邻组件之间（或组件与容器边框之间）的*首选距离*。这样的间隙的大小是动态计算的，基于应用程序使用的外观和感觉（`LayoutStyle`类用于此）。使用自动（首选）间隙有两个优点：您不必指定间隙的像素大小，它们会自动调整到UI运行的外观和感觉，反映实际的外观和感觉指南。'
+- en: '`GroupLayout` distinguishes between (a) the preferred gap between two components
+    and (b) the preferred gap between a component and the container border. There
+    are corresponding methods in the `GroupLayout` API for adding these gaps (`addPreferredGap`
+    and `addContainerGap`). There are three types of component gaps: **related**,
+    **unrelated** and **indented**. The `LayoutStyle.ComponentPlacement` enum defines
+    corresponding constants to be used as parameters of the `addPreferredGap` method:
+    `RELATED`, `UNRELATED` and `INDENT`. The difference between related and unrelated
+    gaps is just in size—the distance between unrelated components is a bit bigger.
+    *Indented* represents a preferred horizontal distance of two components when one
+    of them is positioned underneath the second with an indent.'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GroupLayout`区分两个组件之间的首选间隙和组件与容器边框之间的首选间隙。在`GroupLayout` API中有相应的方法用于添加这些间隙（`addPreferredGap`和`setContainerGap`）。有三种类型的组件间隙：**相关**，**不相关**和**缩进**。`LayoutStyle.ComponentPlacement`枚举定义了用作`addPreferredGap`方法参数的相应常量：`RELATED`，`UNRELATED`和`INDENT`。相关和不相关间隙之间的区别仅在于大小
+    - 不相关组件之间的距离稍大一些。*缩进*表示当一个组件位于另一个组件下方并带有缩进时，两个组件之间的首选水平距离。'
+- en: '![gaps.](../Images/da454e742a56286d4a4ebf0973b33a40.png)'
+  id: totrans-38
+  prefs: []
+  type: TYPE_IMG
+  zh: '![gaps.](../Images/da454e742a56286d4a4ebf0973b33a40.png)'
+- en: As mentioned above, `GroupLayout` can insert gaps automatically—if you do not
+    add your own gaps explicitly, it adds the *related* preferred gaps for you. This
+    is not the default behavior, however. You have to turn this feature on by invoking
+    `setAutoCreateGaps(true)` and `setAutoCreateContainerGaps(true)` on the `GroupLayout`.
+    Then you will get correct spacing automatically.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如上所述，`GroupLayout`可以自动插入间隙 - 如果您没有显式添加自己的间隙，它会为您添加*相关*的首选间隙。但这不是默认行为。您必须通过在`GroupLayout`上调用`setAutoCreateGaps(true)`和`setAutoCreateContainerGaps(true)`来打开此功能。然后您将自动获得正确的间距。
+- en: Writing Code
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编写代码
+- en: Now, let us take a look at the actual code to create the layout described above.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，让我们看一下创建上述布局的实际代码。
+- en: 'Let us assume we have a container named `panel` and the same four components
+    already presented (`c1`, `c2`, `c3`, and `c4`). First, we create a new `GroupLayout`
+    object and associate it with the panel:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设我们有一个名为`panel`的容器和已经呈现的相同四个组件（`c1`，`c2`，`c3`和`c4`）。首先，我们创建一个新的`GroupLayout`对象并将其与面板关联：
+- en: '[PRE2]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'We specify automatic gap insertion:'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们指定自动插入间隙：
+- en: '[PRE3]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Then, we define the groups and add the components. We establish a root group
+    for each dimension using the `setHorizontalGroup` and `setVerticalGroup` methods.
+    Groups are created via `createSequentialGroup` and `createParallelGroup` methods.
+    Components are added to groups by using the `addComponent` method.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，我们定义组并添加组件。我们使用`setHorizontalGroup`和`setVerticalGroup`方法为每个维度建立根组。通过`createSequentialGroup`和`createParallelGroup`方法创建组。使用`addComponent`方法将组件添加到组中。
+- en: '[PRE4]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'You can specify the alignment for parallel groups. It can be one of the following
+    constants defined in the `GroupLayout.Alignment` enum: `LEADING`, `TRAILING`,
+    `CENTER`, and `BASELINE`. These constants are used for both dimensions and depend
+    on whether the component orientation is left-to-right or right-to-left (top-to-bottom
+    or bottom-to-top). For example, if the horizontal (vertical) component orientation
+    is left-to-right (top-to-bottom) `LEADING` means left (top) while `TRAILING` means
+    right (bottom). `CENTER` means "centered" in both dimensions. If you do not specify
+    the alignment, `LEADING` will be used. The `BASELINE` alignment is valid only
+    in the vertical dimension.'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以为平行组指定对齐方式。它可以是`GroupLayout.Alignment`枚举中定义的以下常量之一：`LEADING`，`TRAILING`，`CENTER`和`BASELINE`。这些常量用于两个维度，并取决于组件方向是从左到右还是从右到左（从上到下还是从下到上）。例如，如果水平（垂直）组件方向是从左到右（从上到下），`LEADING`表示左（上），而`TRAILING`表示右（下）。`CENTER`表示在两个维度上“居中”。如果不指定对齐方式，将使用`LEADING`。`BASELINE`对齐方式仅在垂直维度上有效。
+- en: '* * *'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: Alignment in the layout of a group only has meaning for components of different
+    sizes. Components of the same size will be automatically aligned for each of the
+    `GroupLayout.Alignment` constants.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组布局中的对齐仅对不同大小的组件有意义。相同大小的组件将自动对齐到每个`GroupLayout.Alignment`常量。
+- en: '* * *'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Some comments about the code:'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关代码的一些注释：
+- en: You do not need to add the component directly to the container—that is done
+    for you implicitly when using one of the addComponent methods.
+  id: totrans-54
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您不需要直接将组件添加到容器中 - 当使用其中一个addComponent方法时，这将隐式完成。
+- en: Note the chained calls of the `addComponent` methods used to fill the groups.
+    The `addComponent` method always returns the group on which it is called. Thanks
+    to this you do not need to use local variables to hold the groups.
+  id: totrans-55
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 注意`addComponent`方法的链式调用用于填充组。`addComponent`方法总是返回调用它的组。由于这一点，你不需要使用局部变量来保存组。
+- en: It is a good idea to indent the code so it is easy to see the hierarchical structure
+    of the groups. Give each component a new line, add one level of indent for each
+    new group in the hierarchy. A good source editor will help you with pairing the
+    parenthesis to close the `createXXXGroup` methods. By following these simple rules,
+    it is easier to add a new component or remove an existing one.
+  id: totrans-56
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 缩进代码是个好主意，这样可以更容易看到组的层次结构。给每个组件一个新行，在层次结构中的每个新组添加一个缩进级别。一个好的源代码编辑器会帮助你匹配括号来关闭`createXXXGroup`方法。遵循这些简单规则，更容易添加新组件或移除现有组件。
+- en: Component Size and Resizability
+  id: totrans-57
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 组件大小和可调整性
+- en: There is no limit on the number of resizable components in a layout.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在布局中可调整大小的组件数量没有限制。
+- en: The size of each component in a `GroupLayout` is constrained by three values;
+    minimum size, preferred size and maximum size. These sizes control how the component
+    resizes within the layout. The `GroupLayout.addComponent(...)` method allows the
+    size constraints to be specified.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`GroupLayout`中，每个组件的大小受到三个值的限制；最小大小、首选大小和最大大小。这些大小控制组件在布局中的调整大小。`GroupLayout.addComponent(...)`方法允许指定大小约束。
+- en: If not specified explicitly, the layout asks the component for its default sizes
+    (by using the component's `getMinimumSize()`, `getPreferredSize()` and `getMaximumSize()`
+    methods). You do not need to specify anything for most of the components, like
+    making `JTextField` resizable or `JButton` fixed, because the components themselves
+    have the desired resizing behavior as default. On the other hand you can override
+    the default behavior. For example you can make a `JTextField` fixed or `JButton`
+    resizable.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果没有明确指定，布局会通过使用组件的`getMinimumSize()`、`getPreferredSize()`和`getMaximumSize()`方法来询问组件的默认大小。对于大多数组件，比如使`JTextField`可调整大小或`JButton`固定大小，你不需要指定任何内容，因为这些组件本身具有默认的调整大小行为。另一方面，你可以覆盖默认行为。例如，你可以使`JTextField`固定大小或`JButton`可调整大小。
+- en: '`GroupLayout` defines constants that provide precise control over resize behavior.
+    They can be used as parameters in the `addComponent(Component comp, int min, int
+    pref, int max)`  method. Here are two examples:'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GroupLayout`定义了提供对调整大小行为精确控制的常量。它们可以作为`addComponent(Component comp, int min,
+    int pref, int max)`方法的参数使用。以下是两个示例：'
+- en: 'To force a component to be resizable (allow shrinking and growing):'
+  id: totrans-62
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 强制组件可调整大小（允许缩小和增长）：
+- en: '[PRE5]'
+  id: totrans-63
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: This allows the component to resize between zero size (minimum) to any size
+    (`Short.MAX_VALUE` as maximum size means "infinite"). If we wanted the component
+    not to shrink below its default minimum size, we would use `GroupLayout.DEFAULT_SIZE`
+    instead of `0` in the second parameter.
+  id: totrans-64
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这允许组件在零大小（最小）到任意大小（`Short.MAX_VALUE`作为最大大小表示“无限”）之间调整大小。如果我们不希望组件在其默认最小大小以下缩小，我们会在第二个参数中使用`GroupLayout.DEFAULT_SIZE`而不是`0`。
+- en: 'To make a component fixed size (suppress resizing):'
+  id: totrans-65
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 要使组件固定大小（禁止调整大小）：
+- en: '[PRE6]'
+  id: totrans-66
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: In these examples the initial size of the component is not altered, its default
+    size is the component's preferred size. If we wanted a specific size for the component,
+    we would specify it in the second parameter instead of using `GroupLayout.DEFAULT_SIZE`.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这些示例中，组件的初始大小不会改变，其默认大小是组件的首选大小。如果我们想要为组件指定特定大小，我们会在第二个参数中指定，而不是使用`GroupLayout.DEFAULT_SIZE`。
+- en: Resizable gaps
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可调整大小的间隙
+- en: 'Specifying size and resizability applies to gaps as well, including the preferred
+    ones. For example, you can specify a preferred gap between two components that
+    acts like a *spring* pushing the components away from each other (to the opposite
+    sides of the container). The preferred distance of the two components is only
+    used as the minimum size of the gap. See the following snippet:'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定大小和可调整性也适用于间隙，包括首选间隙。例如，你可以指定两个组件之间的首选间隙，它就像一个*弹簧*，将组件推开（到容器的相反侧）。两个组件的首选距离仅用作间隙的最小大小。请看下面的代码片段：
+- en: '[PRE7]'
+  id: totrans-70
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Sizing in Parallel Groups
+  id: totrans-71
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 并排组大小
+- en: Resizable elements placed in a parallel group are stretched to fill the space
+    of the group determined by the largest element in the group, so they end up aligned
+    with the same size. `GroupLayout` also provides control over whether the enclosing
+    parallel group itself should resize. If group resizing is suppressed, it prevents
+    the contained elements from growing over the preferred size of the group. This
+    way you can make a block of components align on both sides, or constrain individual
+    components to have the same size.
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 放置在平行组中的可调整大小的元素被拉伸以填充由组中最大元素确定的空间，因此它们最终以相同大小对齐。`GroupLayout`还提供了控制是否应调整封闭平行组本身的功能。如果组调整大小被抑制，它会阻止包含的元素超过组的首选大小。这样，您可以使一组组件在两侧对齐，或者限制单个组件具有相同的大小。
+- en: 'Let us try to achieve the same size for two components from our example (`c3`
+    and `c4` in the horizontal dimension):'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们尝试使我们的例子中的两个组件（水平维度上的`c3`和`c4`）大小相同：
+- en: '[PRE8]'
+  id: totrans-74
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'The underlying mechanism works as follows:'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 底层机制的工作方式如下：
+- en: The size of the parallel group is set to the preferred size of the largest element;
+    so to the preferred size of `c4` in our example.
+  id: totrans-76
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 平行组的大小设置为最大元素的首选大小；因此在我们的例子中是`c4`的首选大小。
+- en: Resizable elements are stretched to the size of the group. In our example, only
+    `c3` is effectively stretched, the size of `c4` already corresponds to the size
+    of the group.
+  id: totrans-77
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 可调整大小的元素被拉伸到组的大小。在我们的例子中，只有`c3`被有效地拉伸，`c4`的大小已经对应于组的大小。
+- en: As a result, `c3` and `c4` would have the same width. The components would not
+    resize further because the parallel group itself is not resizable (the second
+    parameter of the `createParallelGroup` method, above, is `false`).
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 结果，`c3`和`c4`将具有相同的宽度。组件不会进一步调整大小，因为平行组本身不可调整大小（上面`createParallelGroup`方法的第二个参数为`false`）。
+- en: '![stretched.](../Images/f146a1e610e5d651cb483c491cf2adae.png)'
+  id: totrans-79
+  prefs: []
+  type: TYPE_IMG
+  zh: '![stretched.](../Images/f146a1e610e5d651cb483c491cf2adae.png)'
+- en: 'Question for attentive readers: Why do we define both components in the parallel
+    group as resizable in this example? It seems enough to have just `c3` resizable
+    since `c4` is not stretched anyway...'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 给细心读者的问题：为什么在这个例子中我们将平行组中的两个组件都定义为可调整大小？似乎只有`c3`可调整大小就足够了，因为`c4`无论如何都不会被拉伸...
+- en: 'The answer is: because of platform and localization independence. Otherwise
+    we would have to rely on that `c4` component always being bigger than `c3`. But
+    this may change when the application runs on different platform or is translated
+    to another language. By having both components resizeable they adjust to each
+    other, no matter which one is bigger at a given moment.'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 答案是：由于平台和本地化的独立性。否则，我们将不得不依赖于`c4`组件始终比`c3`大。但是当应用程序在不同平台上运行或被翻译成另一种语言时，这可能会发生变化。通过使两个组件都可调整大小，它们会相互调整，无论哪一个在特定时刻更大。
+- en: Making Components the Same Size
+  id: totrans-82
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使组件大小相同
+- en: 'The previous case is special because the components are in the same parallel
+    group. But what if we wanted unrelated components to have the same size? Clearly,
+    the same size cannot always be ensured by grouping. The OK and Cancel buttons
+    in a row at the bottom of a dialog are a good example. For this purpose `GroupLayout`
+    provides a `linkSize` method. This method allows the size of arbitrary components
+    to be linked regardless of where they are placed. The resulting size of the linked
+    components is set according to the largest component. For example:'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的情况是特殊的，因为组件在同一个平行组中。但是如果我们希望不相关的组件具有相同的大小怎么办？显然，通过分组不能始终保证相同的大小。对话框底部一行中的“确定”和“取消”按钮就是一个很好的例子。为此，`GroupLayout`提供了一个`linkSize`方法。该方法允许将任意组件的大小链接在一起，而不管它们放置在何处。链接组件的结果大小根据最大组件设置。例如：
+- en: '[PRE9]'
+  id: totrans-84
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: In this example, the size is linked selectively for the horizontal dimension.
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，尺寸在水平维度上是有选择性地链接的。
+- en: Runtime Changes to Your GUI
+  id: totrans-86
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行时更改您的 GUI
+- en: There are two important methods that you can use to make changes to your GUI
+    at runtime, `replace()` and `setHonorsVisibility()`. Using these two methods,
+    you can exchange components or change the visibility of components at runtime
+    and have the GUI rearrange itself accordingly.
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两个重要的方法可以在运行时对 GUI 进行更改，`replace()` 和 `setHonorsVisibility()`。使用这两种方法，您可以在运行时交换组件或更改组件的可见性，并使
+    GUI 相应地重新排列。
+- en: '`replace(Component existingComponent, Component newComponent)` replaces an
+    existing component with a new one. One of the common operations needed for dynamic
+    layouts is the ability to replace components like this. For example, perhaps a
+    check box toggles between a component displaying a graph or a tree. `GroupLayout`
+    makes this scenario simple with the `replace()` method. You can swap components
+    without recreating all the groups.'
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`replace(Component existingComponent, Component newComponent)` 用新组件替换现有组件。动态布局所需的常见操作之一是能够像这样替换组件。例如，也许复选框在显示图形或树的组件之间切换。
+    `GroupLayout` 通过 `replace()` 方法使这种情况变得简单。您可以在不重新创建所有组的情况下交换组件。'
+- en: Another common operation in user interfaces is to dynamically change the visibility
+    of components. Perhaps components are shown only as a user completes earlier portions
+    of a form. To avoid components shuffling around in such a scenario, space should
+    be taken up regardless of the visibility of the components. `GroupLayout` offers
+    two ways to configure how invisible components are treated. The `setHonorsVisibility(boolean)`
+    method globally sets how invisible components are handled. A value of true, the
+    default, indicates invisible components are treated as if they are not there.
+    On the other hand, a value of false provides space for invisible components, treating
+    them as though they were visible. The `setHonorsVisibility(Component,Boolean)`
+    method can be used to configure the behavior at the level of a specific component.
+    To determine how visibility is handled, `GroupLayout` first checks if a value
+    has been specified for the Component, if not, it checks the setting of the global
+    property.
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户界面中的另一个常见操作是动态更改组件的可见性。也许组件只有在用户完成表单的早期部分时才显示。为了避免在这种情况下组件移动，应该占用空间，无论组件的可见性如何。
+    `GroupLayout` 提供了两种配置不可见组件处理方式的方法。 `setHonorsVisibility(boolean)` 方法全局设置了不可见组件的处理方式。默认值为
+    true，表示不可见组件被视为不存在。另一方面，值为 false 为不可见组件提供空间，将其视为可见。 `setHonorsVisibility(Component,Boolean)`
+    方法可用于在特定组件级别配置行为。为了确定如何处理可见性，`GroupLayout` 首先检查组件是否已指定值，如果没有，则检查全局属性的设置。
+- en: '* * *'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Some history:**'
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**一些历史：**'
+- en: '`GroupLayout` in the Java Standard Edition 6 consists of three distinct bodies
+    of work: the ability to get the baseline for a component, the ability to get the
+    preferred gap between components (`LayoutStyle`), and `GroupLayout`. This work
+    was originally done as an open source project at [http://java.net/projects/swing-layout/](http://java.net/projects/swing-layout/)'
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java标准版6中的 `GroupLayout` 由三个不同的工作部分组成：获取组件基线的能力，获取组件之间首选间隔的能力（`LayoutStyle`），以及
+    `GroupLayout`。这项工作最初是作为一个开源项目在 [http://java.net/projects/swing-layout/](http://java.net/projects/swing-layout/)
+    上完成的。
+- en: NetBeans 5.0 supports `GroupLayout` by way of the swing-layout project. Because
+    of the success of this work, all three portions have been rolled into `GroupLayout`
+    in Java Standard Edition version 6\. The main difference between the `GroupLayout`
+    in Java SE 6 and swing-layout is in the package name and method names. NetBeans
+    5.5 provides the ability to target either the `GroupLayout` in Java SE 6, or the
+    `GroupLayout` in swing-layout. Which version NetBeans targets is determined by
+    the version of the Java platform your project targets. A project targeting Java
+    SE 6 uses the `GroupLayout` in Java SE, otherwise `GroupLayout` in swing-layout
+    is used.
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: NetBeans 5.0通过 swing-layout 项目支持 `GroupLayout`。由于这项工作的成功，所有三个部分都已合并到了Java标准版6中的
+    `GroupLayout` 中。Java SE 6中的 `GroupLayout` 与 swing-layout 中的主要区别在于包名称和方法名称。NetBeans
+    5.5提供了针对Java SE 6中的 `GroupLayout` 或 swing-layout 中的 `GroupLayout` 的定位能力。NetBeans定位的版本取决于项目定位的Java平台版本。定位Java
+    SE 6的项目使用Java SE中的 `GroupLayout`，否则使用 swing-layout 中的 `GroupLayout`。
+- en: '* * *'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

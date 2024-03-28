@@ -1,0 +1,361 @@
+- en: Trouble Shooting Tips
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 故障排除提示
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/faq.html](https://docs.oracle.com/javase/tutorial/jndi/ops/faq.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/faq.html](https://docs.oracle.com/javase/tutorial/jndi/ops/faq.html)
+- en: Here are the most common problems that you might encounter when you try to run
+    a successfully compiled program that uses the JNDI classes.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行成功编译的使用 JNDI 类的程序时可能遇到的最常见问题如下。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[No Initial Context](#1)'
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[没有初始上下文](#1)'
+- en: '[Connection Refused](#2)'
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[连接被拒绝](#2)'
+- en: '[Connection Fails](#3)'
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[连接失败](#3)'
+- en: '[Program Hangs](#4)'
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[程序挂起](#4)'
+- en: '[Name Not Found](#5)'
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[找不到名称](#5)'
+- en: '[Cannot Connect to Arbitrary Hosts](#6)'
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[无法连接到任意主机](#6)'
+- en: '[Cannot Access System Properties for Configuration](#7)'
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[无法访问系统属性进行配置](#7)'
+- en: '[Cannot Authenticate by Using CRAM-MD5](#8)'
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[无法使用 CRAM-MD5 进行身份验证](#8)'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 1\. You get a `NoInitialContextException`.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. 您收到了`NoInitialContextException`。
+- en: '*Cause*: You did not specify which implementation to use for the initial context.
+    Specifically, the [`Context.INITIAL_CONTEXT_FACTORY`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#INITIAL_CONTEXT_FACTORY)
+    environment property was not set to the class name of the factory that will create
+    the initial context. Or, you did not make available to the program the classes
+    of the service provider named by `Context.INITIAL_CONTEXT_FACTORY`.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*原因*：您没有指定用于初始上下文的实现。具体来说，[`Context.INITIAL_CONTEXT_FACTORY`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#INITIAL_CONTEXT_FACTORY)
+    环境属性未设置为将创建初始上下文的工厂类名。或者，您没有使程序可用于服务提供者类（由`Context.INITIAL_CONTEXT_FACTORY`命名）。'
+- en: '*Solution*: Set the `Context.INITIAL_CONTEXT_FACTORY` environment property
+    to the class name of the initial context implementation that you are using. See
+    [Configuration](index.html) section for details.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*解决方案*：将`Context.INITIAL_CONTEXT_FACTORY`环境属性设置为您正在使用的初始上下文实现的类名。有关详细信息，请参阅[配置](index.html)部分。'
+- en: If the property was set, then make sure that the class name was not mistyped,
+    and that the class named is available to your program (either in its classpath
+    or installed in the `jre/lib/ext` directory of the JRE). The Java Platform includes
+    service providers for LDAP, COS naming, DNS, and the RMI registry. All other service
+    providers must be installed and added to the execution environment.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果已设置属性，请确保类名未拼写错误，并且所命名的类对您的程序可用（在其类路径中或安装在 JRE 的 `jre/lib/ext` 目录中）。Java 平台包括用于
+    LDAP、COS 命名、DNS 和 RMI 注册表的服务提供者。所有其他服务提供者必须安装并添加到执行环境中。
+- en: 2\. You get a `CommunicationException`, indicating "connection refused."
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. 您收到了`CommunicationException`，指示“连接被拒绝”。
+- en: '*Cause*: The server and port identified by the `Context.PROVIDER_URL` environment
+    property is not being served by the server. Perhaps someone has disabled or turned
+    off the machine on which the server is running. Or, maybe you mistyped the server''s
+    name or port number.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*原因*：由`Context.PROVIDER_URL`环境属性标识的服务器和端口未被服务器提供。也许有人已禁用或关闭了运行服务器的机器。或者，您可能拼写错误了服务器的名称或端口号。'
+- en: '*Solution*: Check that there is indeed a server running on that port, and restart
+    the server if necessary. The way that you perform this check depends on the LDAP
+    server that you are using. Usually, an administrative console or tool is available
+    that you can use to administer the server. You may use that tool to verify the
+    server''s status.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*解决方案*：检查该端口上确实有服务器在运行，并在必要时重新启动服务器。您执行此检查的方式取决于您使用的 LDAP 服务器。通常，可用管理控制台或工具来管理服务器。您可以使用该工具验证服务器的状态。'
+- en: 3\. The LDAP server responds to other utilities (such as its administration
+    console) but does not seem to respond to your program's requests.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 3\. LDAP 服务器对其他实用程序（如其管理控制台）做出响应，但似乎没有对您程序的请求做出响应。
+- en: '*Cause*: The server does not respond to LDAP v3 connection requests. Some servers
+    (especially public servers) do not respond correctly to the LDAP v3, ignoring
+    the requests instead of rejecting them. Also, some LDAP v3 servers have problems
+    handling a control that Oracle''s LDAP service provider automatically sends and
+    often return a server-specific failure code.'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*原因*：服务器未对 LDAP v3 连接请求做出响应。一些服务器（特别是公共服务器）未正确响应 LDAP v3，而是忽略请求而不是拒绝它们。此外，一些
+    LDAP v3 服务器在处理 Oracle 的 LDAP 服务提供者自动发送的控件时存在问题，并经常返回服务器特定的失败代码。'
+- en: '*Solution*. Try setting the environment property `"java.naming.ldap.version"`
+    to `"2"`. The LDAP service provider by default attempts to connect to an LDAP
+    server using the LDAP v3; if that fails, then it uses the LDAP v2\. If the server
+    silently ignores the v3 request, then the provider will assume that the request
+    worked. To work around such servers, you must explicitly set the protocol version
+    to ensure proper behavior by the server.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*解决方案*。尝试将环境属性`"java.naming.ldap.version"`设置为`"2"`。LDAP服务提供程序默认尝试使用LDAP v3连接到LDAP服务器；如果失败，则使用LDAP
+    v2。如果服务器悄悄忽略了v3请求，则提供程序将假定请求成功。为了解决这样的服务器问题，您必须显式设置协议版本以确保服务器的正确行为。'
+- en: 'If the server is a v3 server, then try setting the following environment property
+    before creating the initial context:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果服务器是一个v3服务器，那么在创建初始上下文之前尝试设置以下环境属性：
+- en: '[PRE0]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This will turn off the control that the LDAP provider sends automatically. (Check
+    out the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/referral/index.html)
+    for details.)
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将关闭LDAP提供程序自动发送的控制。（查看[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/referral/index.html)获取详细信息。）
+- en: 4\. The program hangs.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 4\. 程序挂起。
+- en: '*Causes*: Some servers (especially public ones) won''t respond (not even with
+    a negative answer) if you attempt to perform a search that would generate too
+    many results or that would require the server to examine too many entries in order
+    to generate the answer. Such servers are trying to limit the amount of resources
+    that they expend on a per-request basis.'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*原因*：一些服务器（特别是公共服务器）在尝试执行会生成太多结果或需要服务器检查太多条目才能生成答案的搜索时，不会响应（甚至不会给出负面答复）。这些服务器试图限制它们在每个请求基础上消耗的资源量。'
+- en: Or, you tried to use Secure Socket Layer (SSL) against a server/port that does
+    not support it, and vice versa (that is, you tried to use a plain socket to talk
+    to an SSL port).
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，您尝试使用安全套接字层（SSL）与不支持它的服务器/端口进行通信，反之亦然（也就是说，您尝试使用普通套接字与SSL端口进行通信）。
+- en: And lastly, the server is either responding very slowly due to heavy load or
+    is not responding at all for some reason.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，服务器要么由于负载过重而响应非常缓慢，要么由于某种原因根本不响应。
+- en: '*Solution*: If your program is hanging because the server is trying to restrict
+    the use of its resources, then retry your request using a query that will return
+    a single result or only a few results. This will help you to determine whether
+    the server is alive. If it is, then you can broaden your initial query and resubmit
+    it.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*解决方案*：如果您的程序因服务器试图限制其资源的使用而挂起，则重试您的请求，使用将返回单个结果或仅返回少量结果的查询。这将帮助您确定服务器是否存活。如果是，则可以扩大您的初始查询并重新提交。'
+- en: If your program is hanging because of SSL problems, then you need to find out
+    whether the port is an SSL port and then set the [`Context.SECURITY_PROTOCOL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PROTOCOL)
+    environment property appropriately. If the port is an SSL port, then this property
+    should be set to `"ssl"`. If it is not an SSL port, then this property should
+    not be set.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您的程序因SSL问题而挂起，则需要找出端口是否为SSL端口，然后适当设置[`Context.SECURITY_PROTOCOL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PROTOCOL)环境属性。如果端口是SSL端口，则应将此属性设置为`"ssl"`。如果不是SSL端口，则不应设置此属性。
+- en: If you program is hanging for none of the above reasons the property `com.sun.jndi.ldap.read.timeout`
+    comes in handy to specify the read timeout. The value of this property is the
+    string representation of an integer representing the read timeout in milliseconds
+    for LDAP operations. If the LDAP provider cannot get a LDAP response within that
+    period, it aborts the read attempt. The integer should be greater than zero. An
+    integer less than or equal to zero means no read timeout is specified which is
+    equivalent to waiting for the response infinitely until it is received.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您的程序因为以上原因之一而挂起，属性`com.sun.jndi.ldap.read.timeout`就派上用场了，用于指定读取超时。该属性的值是表示LDAP操作的毫秒级读取超时的整数的字符串表示。如果LDAP提供程序在该时间段内无法获得LDAP响应，则会中止读取尝试。整数应大于零。小于或等于零的整数表示未指定读取超时，相当于一直等待响应直到收到。
+- en: If this property is not specified, the default is to wait for the response until
+    it is received.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果未指定此属性，则默认是等待响应直到收到为止。
+- en: For example,
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，
+- en: '`env.put("com.sun.jndi.ldap.read.timeout", "5000");` causes the LDAP service
+    provider to abort the read attempt if the server does not respond with a reply
+    within 5 seconds.'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`env.put("com.sun.jndi.ldap.read.timeout", "5000");`会导致LDAP服务提供程序在服务器在5秒内没有回复时中止读取尝试。'
+- en: 5\. You get a `NameNotFoundException`.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 5\. 您收到`NameNotFoundException`。
+- en: '*Causes*: When you initialized the initial context for the LDAP, you supply
+    a root-distinguished name. For example, if you set the `Context.PROVIDER_URL`
+    environment property for the initial context to `"ldap://ldapserver:389/o=JNDITutorial"`
+    and subsequently supplied a name such as `"cn=Joe,c=us"`, then the full name that
+    you passed to the LDAP service was `"cn=Joe,c=us,o=JNDITutorial"`. If this was
+    really the name that you intended, then you should check your server to make sure
+    that it contains such an entry.'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*原因*：当您为LDAP初始化初始上下文时，您提供了根专有名称。例如，如果您为初始上下文设置`Context.PROVIDER_URL`环境属性为`"ldap://ldapserver:389/o=JNDITutorial"`，然后提供了一个名称，如`"cn=Joe,c=us"`，那么您传递给LDAP服务的完整名称将是`"cn=Joe,c=us,o=JNDITutorial"`。如果这确实是您打算的名称，请检查您的服务器，确保它包含这样的条目。'
+- en: Also, the Oracle Directory Server returns this error if you supply an incorrect
+    distinguished name for authentication purposes. For example, the LDAP provider
+    will throw a [`NameNotFoundException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameNotFoundException.html)
+    if you set the [`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL)
+    environment property to `"cn=Admin, o=Tutorial"`, and `"cn=Admin, o=Tutorial"`
+    is not an entry on the LDAP server. The correct error for the Oracle Directory
+    Server to return actually should be something related to authentication, rather
+    than "name not found."
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，如果您为认证目的提供了不正确的专有名称，Oracle目录服务器也会返回此错误。例如，如果您将[`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL)环境属性设置为`"cn=Admin,
+    o=Tutorial"`，而`"cn=Admin, o=Tutorial"`不是LDAP服务器上的条目，那么LDAP提供程序将抛出[`NameNotFoundException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameNotFoundException.html)。实际上，Oracle目录服务器应返回与认证相关的错误，而不是“未找到名称”。
+- en: '*Solution*: Verify the name that you supplied is that of an entry existing
+    on the server. You can do this by listing the entry''s parent context or using
+    some other tool such as the directory server''s administration console.'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*解决方案*：验证您提供的名称是否是服务器上已存在的条目。您可以通过列出条目的父上下文或使用其他工具（如目录服务器的管理控制台）来实现这一点。'
+- en: '* * *'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Here are some problems that you might encounter when trying to deploy an applet
+    that uses the JNDI classes.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在尝试部署使用JNDI类的小程序时，您可能会遇到一些问题。
+- en: 6\. You get an `AppletSecurityException` when your applet attempts to communicate
+    with a directory server that is running on a machine different from the one from
+    which the applet was loaded
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 6\. 当您的小程序尝试与在与加载小程序的机器不同的机器上运行的目录服务器通信时，您会收到`AppletSecurityException`。
+- en: '*Cause*: Your applet was not signed, so it can connect only to the machine
+    from which it was loaded. Or, if the applet was signed, the browser has not granted
+    the applet permission to connect to the directory server machine.'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*原因*：您的小程序未经签名，因此只能连接到加载它的机器。或者，如果小程序已经签名，浏览器尚未授予小程序连接到目录服务器机器的权限。'
+- en: '*Solution*: If you want to allow the applet to connect to directory servers
+    running on arbitrary machines, then you need to sign *both* your applet *and*
+    all of the JNDI JARs that your applet will be using. For information on signing
+    jars, see [Signing and Verifying JAR files](../../deployment/jar/signindex.html)
+    .'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*解决方案*：如果您希望允许小程序连接到运行在任意机器上的目录服务器，则需要对您的小程序和小程序将使用的所有JNDI JAR文件进行签名。有关签署jar文件的信息，请参见[签署和验证JAR文件](../../deployment/jar/signindex.html)。'
+- en: 7\. You get an `AppletSecurityException` when your applet attempts to set up
+    the environment properties using system properties.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 7\. 当您的小程序尝试使用系统属性设置环境属性时，您会收到`AppletSecurityException`。
+- en: '*Cause*: Web browsers limit access to system properties and throw a `SecurityException`
+    if you attempt to read them.'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*原因*：Web浏览器限制对系统属性的访问，并且如果您尝试读取它们，则会抛出`SecurityException`。'
+- en: '*Solution*: If you need to obtain input for your applet, then try using applet
+    params instead.'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*解决方案*：如果您需要为您的小程序获取输入，则尝试使用小程序参数。'
+- en: 8\. You get an `AppletSecurityException` when an applet running inside Firefox
+    attempts to authenticate using CRAM-MD5 to the LDAP server.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 8\. 当在Firefox中运行的小程序尝试使用CRAM-MD5对LDAP服务器进行身份验证时，您会收到`AppletSecurityException`。
+- en: '*Cause*: Firefox disables access to the `java.security` packages. The LDAP
+    provider used the message digest functionality provided by `java.security.MessageDigest`
+    for implementing CRAM-MD5.'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*原因*: Firefox 禁用对 `java.security` 包的访问。LDAP 提供程序使用了 `java.security.MessageDigest`
+    提供的消息摘要功能来实现 CRAM-MD5。'
+- en: '*Solution*: Use the Java Plug-in.'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*解决方案*: 使用 Java 插件。'
+- en: '* * *'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

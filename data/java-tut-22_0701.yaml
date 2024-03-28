@@ -1,0 +1,216 @@
+- en: Properties
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 属性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/writing/properties.html](https://docs.oracle.com/javase/tutorial/javabeans/writing/properties.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/writing/properties.html](https://docs.oracle.com/javase/tutorial/javabeans/writing/properties.html)
+- en: 'To define a property in a bean class, supply public getter and setter methods.
+    For example, the following methods define an `int` property called `mouthWidth`:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在bean类中定义属性，请提供公共的getter和setter方法。例如，以下方法定义了一个名为`mouthWidth`的`int`属性：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: A builder tool like NetBeans recognizes the method names and shows the `mouthWidth`
+    property in its list of properties. It also recognizes the type, `int`, and provides
+    an appropriate editor so the property can be manipulated at design time.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 像NetBeans这样的构建工具识别方法名，并在其属性列表中显示`mouthWidth`属性。它还识别类型`int`，并提供一个适当的编辑器，以便在设计时操作属性。
+- en: This example shows a property than can be read and written. Other combinations
+    are also possible. A read-only property, for example, has a getter method but
+    no setter. A write-only property has a setter method only.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例显示了一个可读写的属性。还有其他组合也是可能的。例如，只读属性具有getter方法但没有setter。只写属性只有setter方法。
+- en: 'A special case for `boolean` properties allows the accessor method to be defined
+    using `is` instead of `get`. For example, the accessor for a `boolean` property
+    `running` could be as follows:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`boolean`属性的特殊情况允许使用`is`而不是`get`来定义访问方法。例如，`boolean`属性`running`的访问器可以如下所示：'
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Various specializations of basic properties are available and described in the
+    following sections.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可用并在以下部分描述基本属性的各种特殊化。
+- en: Indexed Properties
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 索引属性
+- en: 'An *indexed* property is an array instead of a single value. In this case,
+    the bean class provides a method for getting and setting the entire array. Here
+    is an example for an `int[]` property called `testGrades`:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*索引*属性是一个数组而不是单个值。在这种情况下，bean类提供了一个用于获取和设置整个数组的方法。以下是一个名为`testGrades`的`int[]`属性的示例：'
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: For indexed properties, the bean class also provides methods for getting and
+    setting a specific element of the array.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于索引属性，bean类还提供了用于获取和设置数组特定元素的方法。
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Bound Properties
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 绑定属性
+- en: 'A *bound* property notifies listeners when its value changes. This has two
+    implications:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*绑定*属性在其值更改时通知监听器。这有两个含义：'
+- en: The bean class includes `addPropertyChangeListener()` and `removePropertyChangeListener()`
+    methods for managing the bean's listeners.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: bean类包括用于管理bean监听器的`addPropertyChangeListener()`和`removePropertyChangeListener()`方法。
+- en: When a bound property is changed, the bean sends a `PropertyChangeEvent` to
+    its registered listeners.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 当绑定属性更改时，bean向其注册的监听器发送`PropertyChangeEvent`。
+- en: '`PropertyChangeEvent` and `PropertyChangeListener` live in the `java.beans`
+    package.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`PropertyChangeEvent`和`PropertyChangeListener`位于`java.beans`包中。'
+- en: The `java.beans` package also includes a class, `PropertyChangeSupport`, that
+    takes care of most of the work of bound properties. This handy class keeps track
+    of property listeners and includes a convenience method that fires property change
+    events to all registered listeners.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.beans`包还包括一个名为`PropertyChangeSupport`的类，它负责大部分绑定属性的工作。这个方便的类跟踪属性监听器，并包含一个方便的方法，向所有注册的监听器触发属性更改事件。'
+- en: The following example shows how you could make the `mouthWidth` property a bound
+    property using `PropertyChangeSupport`. The necessary additions for the bound
+    property are shown in bold.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例显示了如何使用`PropertyChangeSupport`使`mouthWidth`属性成为绑定属性。绑定属性的必要添加部分用粗体显示。
+- en: '[PRE4]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Bound properties can be tied directly to other bean properties using a builder
+    tool like NetBeans. You could, for example, take the `value` property of a slider
+    component and bind it to the `mouthWidth` property shown in the example. NetBeans
+    allows you to do this without writing any code.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 绑定属性可以直接与其他bean属性绑定，使用像NetBeans这样的构建工具。例如，您可以将滑块组件的`value`属性绑定到示例中显示的`mouthWidth`属性。NetBeans允许您在不编写任何代码的情况下执行此操作。
+- en: Constrained Properties
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 约束属性
+- en: A *constrained* property is a special kind of bound property. For a constrained
+    property, the bean keeps track of a set of *veto* listeners. When a constrained
+    property is about to change, the listeners are consulted about the change. Any
+    one of the listeners has a chance to veto the change, in which case the property
+    remains unchanged.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*约束*属性是一种特殊类型的绑定属性。对于约束属性，bean跟踪一组*否决*监听器。当约束属性即将更改时，监听器会就更改进行协商。任何一个监听器都有机会否决更改，此时属性保持不变。'
+- en: The veto listeners are separate from the property change listeners. Fortunately,
+    the `java.beans` package includes a `VetoableChangeSupport` class that greatly
+    simplifies constrained properties.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 否决监听器与属性更改监听器是分开的。幸运的是，`java.beans`包中包含一个`VetoableChangeSupport`类，大大简化了受限属性。
+- en: 'Changes to the `mouthWidth` example are shown in bold:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对`mouthWidth`示例的更改显示为粗体：
+- en: '[PRE5]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Development Support in NetBeans
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: NetBeans 中的开发支持
+- en: The coding patterns for creating bean properties are straightforward, but sometimes
+    it's hard to tell if you are getting everything correct. NetBeans has support
+    for property patterns so you can immediately see results as you are writing code.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建 bean 属性的编码模式很简单，但有时很难确定是否一切都正确。NetBeans 支持属性模式，因此您在编写代码时可以立即看到结果。
+- en: To take advantage of this feature, look at the **Navigator** pane, which is
+    typically in the lower left corner of the NetBeans window. Normally, this pane
+    is in **Members View** mode, which shows all the methods and fields defined in
+    the current class.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要利用此功能，请查看**Navigator**窗格，通常位于NetBeans窗口的左下角。通常，此窗格处于**Members View**模式，显示当前类中定义的所有方法和字段。
+- en: Click on the combo box to switch to **Bean Patterns** view. You will see a list
+    of the properties that NetBeans can infer from your method definitions. NetBeans
+    updates this list as you type, making it a handy way to check your work.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击组合框切换到**Bean Patterns**视图。您将看到一个属性列表，其中列出了NetBeans可以从您的方法定义中推断出的属性。随着您的输入，NetBeans会更新此列表，这是检查您工作的方便方式。
+- en: In the following example, NetBeans has found the read-write `mouthWidth` property
+    and the read-write indexed `testGrades` property. In addition, NetBeans has recognized
+    that `FaceBean` allows registration of both `PropertyChangeListener`s and `VetoableChangeListener`s.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在下面的示例中，NetBeans 发现了可读写的`mouthWidth`属性和可读写的索引`testGrades`属性。此外，NetBeans 还意识到`FaceBean`允许注册`PropertyChangeListener`和`VetoableChangeListener`。
+- en: '![NetBeans bean patterns Navigator](../Images/e87292778b9ae0ce172d1ff96489d9c4.png)'
+  id: totrans-33
+  prefs: []
+  type: TYPE_IMG
+  zh: '![NetBeans bean patterns Navigator](../Images/e87292778b9ae0ce172d1ff96489d9c4.png)'

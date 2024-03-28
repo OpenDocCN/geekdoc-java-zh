@@ -1,0 +1,109 @@
+- en: Providing Constructors for Your Classes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 为你的类提供构造函数
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/constructors.html](https://docs.oracle.com/javase/tutorial/java/javaOO/constructors.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/constructors.html](https://docs.oracle.com/javase/tutorial/java/javaOO/constructors.html)
+- en: "A class contains constructors that are invoked to create objects from the class\
+    \ blueprint. Constructor declarations look like method declarations\x97except\
+    \ that they use the name of the class and have no return type. For example, `Bicycle`\
+    \ has one constructor:"
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个类包含用于从类蓝图创建对象的构造函数。构造函数声明看起来像方法声明，只是它们使用类的名称并且没有返回类型。例如，`Bicycle`有一个构造函数：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To create a new `Bicycle` object called `myBike`, a constructor is called by
+    the `new` operator:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建一个名为`myBike`的新`Bicycle`对象，需要通过`new`运算符调用构造函数：
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '`new Bicycle(30, 0, 8)` creates space in memory for the object and initializes
+    its fields.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`new Bicycle(30, 0, 8)`在内存中为对象创建空间并初始化其字段。'
+- en: 'Although `Bicycle` only has one constructor, it could have others, including
+    a no-argument constructor:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管`Bicycle`只有一个构造函数，但它可以有其他构造函数，包括无参数构造函数：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '`Bicycle yourBike = new Bicycle();` invokes the no-argument constructor to
+    create a new `Bicycle` object called `yourBike`.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Bicycle yourBike = new Bicycle();`调用无参数构造函数以创建一个名为`yourBike`的新`Bicycle`对象。'
+- en: Both constructors could have been declared in `Bicycle` because they have different
+    argument lists. As with methods, the Java platform differentiates constructors
+    on the basis of the number of arguments in the list and their types. You cannot
+    write two constructors that have the same number and type of arguments for the
+    same class, because the platform would not be able to tell them apart. Doing so
+    causes a compile-time error.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于它们具有不同的参数列表，两个构造函数都可以在`Bicycle`中声明。与方法一样，Java平台根据参数列表中参数的数量和类型区分构造函数。你不能为同一个类编写具有相同数量和类型参数的两个构造函数，因为平台无法区分它们。这样做会导致编译时错误。
+- en: You don't have to provide any constructors for your class, but you must be careful
+    when doing this. The compiler automatically provides a no-argument, default constructor
+    for any class without constructors. This default constructor will call the no-argument
+    constructor of the superclass. In this situation, the compiler will complain if
+    the superclass doesn't have a no-argument constructor so you must verify that
+    it does. If your class has no explicit superclass, then it has an implicit superclass
+    of `Object`, which *does* have a no-argument constructor.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你不必为你的类提供任何构造函数，但在这样做时必须小心。编译器会自动为没有构造函数的任何类提供一个无参数默认构造函数。这个默认构造函数将调用超类的无参数构造函数。在这种情况下，如果超类没有无参数构造函数，编译器会报错，因此你必须验证它是否有。如果你的类没有显式的超类，那么它有一个隐式的超类`Object`，它有一个无参数构造函数。
+- en: You can use a superclass constructor yourself. The `MountainBike` class at the
+    beginning of this lesson did just that. This will be discussed later, in the lesson
+    on interfaces and inheritance.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以自己使用超类构造函数。本课程开头的`MountainBike`类就是这样做的。这将在后面关于接口和继承的课程中讨论。
+- en: You can use access modifiers in a constructor's declaration to control which
+    other classes can call the constructor.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在构造函数的声明中使用访问修饰符来控制哪些其他类可以调用该构造函数。
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** If another class cannot call a `MyClass` constructor, it cannot directly
+    create `MyClass` objects.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**如果另一个类无法调用`MyClass`构造函数，则无法直接创建`MyClass`对象。'
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

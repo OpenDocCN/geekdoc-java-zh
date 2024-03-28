@@ -1,0 +1,138 @@
+- en: 'Questions and Exercises: Nested Classes'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习：嵌套类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/QandE/nested-questions.html](https://docs.oracle.com/javase/tutorial/java/javaOO/QandE/nested-questions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/QandE/nested-questions.html](https://docs.oracle.com/javase/tutorial/java/javaOO/QandE/nested-questions.html)
+- en: Questions
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 问题
+- en: The program [`Problem.java`](Problem.java) doesn't compile. What do you need
+    to do to make it compile? Why?
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 程序[`Problem.java`](Problem.java)无法编译。你需要做什么才能使其编译？为什么？
+- en: Use the Java API documentation for the [`Box`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Box.html)
+    class (in the `javax.swing` package) to help you answer the following questions.
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用Java API文档中`Box`类（位于`javax.swing`包中）的文档来帮助回答以下问题。
+- en: What static nested class does `Box` define?
+  id: totrans-5
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`Box`定义了哪个静态嵌套类？'
+- en: What inner class does `Box` define?
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`Box`定义了哪个内部类？'
+- en: What is the superclass of `Box`'s inner class?
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`Box`的内部类的超类是什么？'
+- en: Which of `Box`'s nested classes can you use from any class?
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从任何类中可以使用`Box`的哪些嵌套类？
+- en: How do you create an instance of `Box`'s `Filler` class?
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如何创建`Box`的`Filler`类的实例？
+- en: Exercises
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 练习
+- en: Get the file [`Class1.java`](Class1.java). Compile and run `Class1`. What is
+    the output?
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 获取文件[`Class1.java`](Class1.java)。编译并运行`Class1`。输出是什么？
+- en: The following exercises involve modifying the class [`DataStructure.java`](../examples/DataStructure.java),
+    which the section [Inner Class Example](../../../java/javaOO/innerclasses.html)
+    discusses.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 以下练习涉及修改类[`DataStructure.java`](../examples/DataStructure.java)，该类在[内部类示例](../../../java/javaOO/innerclasses.html)部分讨论。
+- en: Define a method named `print(DataStructureIterator iterator)`. Invoke this method
+    with an instance of the class `EvenIterator` so that it performs the same function
+    as the method `printEven`.
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 定义一个名为`print(DataStructureIterator iterator)`的方法。使用`EvenIterator`类的实例调用此方法，使其执行与`printEven`方法相同的功能。
+- en: Invoke the method `print(DataStructureIterator iterator)` so that it prints
+    elements that have an odd index value. Use an anonymous class as the method's
+    argument instead of an instance of the interface `DataStructureIterator`.
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调用方法`print(DataStructureIterator iterator)`，使其打印具有奇数索引值的元素。使用匿名类作为方法的参数，而不是接口`DataStructureIterator`的实例。
+- en: Define a method named `print(java.util.function.Function<Integer, Boolean> iterator)`
+    that performs the same function as `print(DataStructureIterator iterator)`. Invoke
+    this method with a lambda expression to print elements that have an even index
+    value. Invoke this method again with a lambda expression to print elements that
+    have an odd index value.
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 定义一个名为`print(java.util.function.Function<Integer, Boolean> iterator)`的方法，执行与`print(DataStructureIterator
+    iterator)`相同的功能。使用lambda表达式调用此方法，以打印具有偶数索引值的元素。再次使用lambda表达式调用此方法，以打印具有奇数索引值的元素。
+- en: 'Define two methods so that the following two statements print elements that
+    have an even index value and elements that have an odd index value:'
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 定义两个方法，使得以下两个语句打印具有偶数索引值和具有奇数索引值的元素：
+- en: '[PRE0]'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[Check your answers.](nested-answers.html)'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[检查你的答案。](nested-answers.html)'

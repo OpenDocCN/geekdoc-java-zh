@@ -1,0 +1,92 @@
+- en: 'Lesson: Introducing MBeans'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：介绍 MBeans
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jmx/mbeans/index.html](https://docs.oracle.com/javase/tutorial/jmx/mbeans/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jmx/mbeans/index.html](https://docs.oracle.com/javase/tutorial/jmx/mbeans/index.html)
+- en: This lesson introduces the fundamental concept of the JMX API, namely managed
+    beans, or *MBeans*.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程介绍了 JMX API 的基本概念，即受管理的 bean，或*MBeans*。
+- en: 'An MBean is a managed Java object, similar to a JavaBeans component, that follows
+    the design patterns set forth in the JMX specification. An MBean can represent
+    a device, an application, or any resource that needs to be managed. MBeans expose
+    a management interface that consists of the following:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个 MBean 是一个受管理的 Java 对象，类似于 JavaBeans 组件，遵循 JMX 规范中设定的设计模式。一个 MBean 可以代表一个设备、一个应用程序或任何需要被管理的资源。MBeans
+    公开一个由以下内容组成的管理接口：
+- en: A set of readable or writable attributes, or both.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一组可读或可写的属性，或两者兼有。
+- en: A set of invokable operations.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一组可调用的操作。
+- en: A self-description.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 自我描述。
+- en: The management interface does not change throughout the life of an MBean instance.
+    MBeans can also emit notifications when certain predefined events occur.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 管理接口在 MBean 实例的整个生命周期中不会改变。当发生某些预定义事件时，MBeans 也可以发出通知。
+- en: 'The JMX specification defines five types of MBean:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JMX 规范定义了五种类型的 MBean：
+- en: Standard MBeans
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 标准 MBeans
+- en: Dynamic MBeans
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 动态 MBeans
+- en: Open MBeans
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 开放 MBeans
+- en: Model MBeans
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 模型 MBeans
+- en: MXBeans
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: MXBeans
+- en: The examples in this trail demonstrate only the simplest types of MBean, namely
+    standard MBeans and MXBeans.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程中的示例仅演示了最简单的 MBean 类型，即标准 MBeans 和 MXBeans。

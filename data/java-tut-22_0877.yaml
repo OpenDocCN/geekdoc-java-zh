@@ -1,0 +1,104 @@
+- en: Steps for a User Running ExampleGame (Kim)
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 运行ExampleGame（Kim）的用户步骤
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/userperm/kim.html](https://docs.oracle.com/javase/tutorial/security/userperm/kim.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/userperm/kim.html](https://docs.oracle.com/javase/tutorial/security/userperm/kim.html)
+- en: 'The steps a user, such as Kim, would take, are:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户（比如Kim）需要执行的步骤包括：
+- en: Import the Certificates as Trusted Certificates
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将证书导入为受信任的证书
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Set Up a Policy File With the Required Permissions
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置具有所需权限的策略文件
+- en: Here's the complete [`kim.policy`](examples/kim.policy) policy file, as described
+    in [A Sample Policy File](policy.html).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是完整的[`kim.policy`](examples/kim.policy)策略文件，如[A Sample Policy File](policy.html)中所述。
+- en: Run ExampleGame
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行ExampleGame
+- en: 'To set the high score:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置高分：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'To get the high score:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 获取高分：
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Notes:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意：
+- en: If you don't specify `-Djava.security.manager`, the application will run unrestricted
+    (policy files and permissions won't be checked).
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果不指定`-Djava.security.manager`，应用程序将无限制地运行（策略文件和权限不会被检查）。
+- en: 'The `-Djava.security.policy=kim.policy` tells where the policy file is. Note:
+    There are other ways of specifying the policy file. For example, you can add an
+    entry in the security properties file that specifies the inclusion of `kim.policy`,
+    as discussed at the end of the [See the Policy File Effects](../tour2/step4.html)
+    lesson.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`-Djava.security.policy=kim.policy`指定了策略文件的位置。注意：还有其他指定策略文件的方法。例如，你可以在安全属性文件中添加一个条目，指定包含`kim.policy`，如在[查看策略文件效果](../tour2/step4.html)课程末尾讨论的那样。'
+- en: '`-classpath hs.jar;terry.jar` specifies the JAR files that contain the class
+    files needed. For Windows, use a semicolon (";") to separate JAR files; for UNIX,
+    use a colon (":").'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`-classpath hs.jar;terry.jar`指定了包含所需类文件的JAR文件。对于Windows，使用分号（";"）分隔JAR文件；对于UNIX，使用冒号（":"）。'
+- en: The policy file `kim.policy` specifies the keystore `kim.keystore`. Since it
+    does not provide an absolute URL location for the keystore, the keystore is assumed
+    to be in the same directory as the policy file.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 策略文件`kim.policy`指定了密钥库`kim.keystore`。由于未提供密钥库的绝对URL位置，因此假定密钥库与策略文件位于同一目录中。

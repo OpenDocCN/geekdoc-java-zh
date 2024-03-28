@@ -1,0 +1,104 @@
+- en: Customizing Collation Rules
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 定制整理规则
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/rule.html](https://docs.oracle.com/javase/tutorial/i18n/text/rule.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/rule.html](https://docs.oracle.com/javase/tutorial/i18n/text/rule.html)
+- en: The previous section discussed how to use the predefined rules for a locale
+    to compare strings. These collation rules determine the sort order of strings.
+    If the predefined collation rules do not meet your needs, you can design your
+    own rules and assign them to a `RuleBasedCollator` object.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前一节讨论了如何使用区域设置的预定义规则来比较字符串。这些整理规则确定字符串的排序顺序。如果预定义的整理规则不符合您的需求，您可以设计自己的规则并将其分配给`RuleBasedCollator`对象。
+- en: 'Customized collation rules are contained in a `String` object that is passed
+    to the `RuleBasedCollator` constructor. Here''s a simple example:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定制的整理规则包含在传递给`RuleBasedCollator`构造函数的`String`对象中。这里是一个简单的例子：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: For the `simpleCollator` object in the previous example, `a` is less than `b`,
+    which is less that `c`, and so forth. The `simpleCollator.compare` method references
+    these rules when comparing strings. The full syntax used to construct a collation
+    rule is more flexible and complex than this simple example. For a full description
+    of the syntax, refer to the API documentation for the [`RuleBasedCollator`](https://docs.oracle.com/javase/8/docs/api/java/text/RuleBasedCollator.html)
+    class.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于前面示例中的`simpleCollator`对象，`a`小于`b`，`b`小于`c`，依此类推。当比较字符串时，`simpleCollator.compare`方法引用这些规则。用于构造整理规则的完整语法比这个简单示例更灵活和复杂。有关语法的完整描述，请参考[`RuleBasedCollator`](https://docs.oracle.com/javase/8/docs/api/java/text/RuleBasedCollator.html)类的API文档。
+- en: The example that follows sorts a list of Spanish words with two collators. Full
+    source code for this example is in [`RulesDemo.java`](examples/RulesDemo.java).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的示例使用两个整理器对一组西班牙语单词进行排序。此示例的完整源代码在[`RulesDemo.java`](examples/RulesDemo.java)中。
+- en: 'The `RulesDemo` program starts by defining collation rules for English and
+    Spanish. The program will sort the Spanish words in the traditional manner. When
+    sorting by the traditional rules, the letters ch and ll and their uppercase equivalents
+    each have their own positions in the sort order. These character pairs compare
+    as if they were one character. For example, ch sorts as a single letter, following
+    cz in the sort order. Note how the rules for the two collators differ:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`RulesDemo`程序首先定义了英语和西班牙语的整理规则。该程序将按传统方式对西班牙语单词进行排序。按照传统规则排序时，字母ch和ll及其大写形式各自在排序顺序中有自己的位置。这些字符对比较就好像它们是一个字符一样。例如，ch按照一个字母排序，在排序顺序中紧随cz。请注意两个整理器的规则如何不同：'
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The following lines of code create the collators and invoke the sort routine:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码行创建整理器并调用排序例程：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The sort routine, called `sortStrings`, is generic. It will sort any array
+    of words according to the rules of any `Collator` object:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 名为`sortStrings`的排序例程是通用的。它将根据任何`Collator`对象的规则对任何单词数组进行排序：
+- en: '[PRE3]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'When sorted with the English collation rules, the array of words is as follows:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用英语整理规则排序时，单词数组如下：
+- en: '[PRE4]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Compare the preceding list with the following, which is sorted according to
+    the traditional Spanish rules of collation:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将前面的列表与以下按照传统西班牙整理规则排序的列表进行比较：
+- en: '[PRE5]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'

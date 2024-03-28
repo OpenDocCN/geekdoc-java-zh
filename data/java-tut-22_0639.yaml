@@ -1,0 +1,170 @@
+- en: Geometric Primitives
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 几何基元
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/primitives.html](https://docs.oracle.com/javase/tutorial/2d/overview/primitives.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/primitives.html](https://docs.oracle.com/javase/tutorial/2d/overview/primitives.html)
+- en: The Java 2D API provides a useful set of standard shapes such as points, lines,
+    rectangles, arcs, ellipses, and curves. The most important package to define common
+    geometric primitives is the `java.awt.geom` package. Arbitrary shapes can be represented
+    by combinations of straight geometric primitives.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D API提供了一组有用的标准形状，如点、线、矩形、弧、椭圆和曲线。定义常见几何基元的最重要的包是`java.awt.geom`包。任意形状可以由直线几何基元的组合表示。
+- en: The `Shape` interface represents a geometric shape, which has an outline and
+    an interior. This interface provides a common set of methods for describing and
+    inspecting two-dimensional geometric objects and supports curved line segments
+    and multiple sub-shapes. The [`Graphics`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html)
+    class supports only straight line segments. The [`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)
+    interface can support curves segments.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Shape`接口表示具有轮廓和内部的几何形状。此接口提供了一组用于描述和检查二维几何对象的常见方法，并支持曲线线段和多个子形状。[`Graphics`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html)类仅支持直线段。[`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)接口可以支持曲线段。'
+- en: For more details about how to draw and fill shapes, see the [Working with Geometry](../geometry/index.html)
+    lesson.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于如何绘制和填充形状的更多详细信息，请参阅[几何处理](../geometry/index.html)课程。
+- en: Points
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 点
+- en: The `Point2D` class defines a point representing a location in (x, y) coordinate
+    space. The term “point” in the Java 2D API is not the same as a pixel. A point
+    has no area, does not contain a color, and cannot be rendered.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Point2D`类定义了表示(x, y)坐标空间中位置的点。Java 2D API中的术语“点”与像素不同。点没有面积，不包含颜色，也不能呈现。'
+- en: Points are used to create other shapes. The`Point2D` class also includes a method
+    for calculating the distance between two points.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点用于创建其他形状。`Point2D`类还包括一种计算两点之间距离的方法。
+- en: Lines
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 线
+- en: The `Line2D` class is an abstract class that represents a line. A line’s coordinates
+    can be retrieved as double. The `Line2D` class includes several methods for setting
+    a line’s endpoints.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Line2D`类是表示一条线的抽象类。线的坐标可以作为双精度数检索。`Line2D`类包括几种设置线端点的方法。'
+- en: You can also create a straight line segment by using the `GeneralPath` class
+    described below.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以使用下面描述的`GeneralPath`类创建直线段。
+- en: Rectangular Shapes
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 矩形形状
+- en: The `Rectangle2D`, `RoundRectangle2D`, `Arc2D`, and `Ellipse2D` primitives are
+    all derived from the `RectangularShape` class. This class defines methods for
+    `Shape` objects that can be described by a rectangular bounding box. The geometry
+    of a `RectangularShape` object can be extrapolated from a rectangle that completely
+    encloses the outline of the `Shape`.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Rectangle2D`、`RoundRectangle2D`、`Arc2D`和`Ellipse2D`基元都是从`RectangularShape`类派生的。此类定义了可以由矩形边界框描述的`Shape`对象的方法。`RectangularShape`对象的几何形状可以从完全包围`Shape`轮廓的矩形中推断出来。'
+- en: '![Rectangular shape](../Images/4168aadfc4d3fb949bd927a1786d2856.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_IMG
+  zh: '![矩形形状](../Images/4168aadfc4d3fb949bd927a1786d2856.png)'
+- en: Quadratic and Cubic Curves
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 二次和三次曲线
+- en: The `QuadCurve2D` enables you to create quadratic parametric curve segments.
+    A quadratic curve is defined by two endpoints and one control point.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`QuadCurve2D`使您能够创建二次参数曲线段。二次曲线由两个端点和一个控制点定义。'
+- en: The `CubicCurve2D` class enables you to create cubic parametric curve segments.
+    A cubic curve is defined by two endpoints and two control points. The following
+    are examples of quadratic and cubic curves. See [Stroking and Filling Graphics
+    Primitives](../geometry/strokeandfill.html)for implementations of cubic and quadratic
+    curves.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CubicCurve2D`类使您能够创建三次参数曲线段。三次曲线由两个端点和两个控制点定义。以下是二次和三次曲线的示例。请参阅[描边和填充图形基元](../geometry/strokeandfill.html)以获取三次和二次曲线的实现。'
+- en: This figure represents a quadratic curve.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此图表示一个二次曲线。
+- en: '![Quadratic parametric curve](../Images/4aff022b5ac38a79a030237eb89ff7dd.png)'
+  id: totrans-18
+  prefs: []
+  type: TYPE_IMG
+  zh: '![二次参数曲线](../Images/4aff022b5ac38a79a030237eb89ff7dd.png)'
+- en: This figure represents a cubic curve.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此图表示一个三次曲线。
+- en: '![Cubic parametric curve](../Images/925508c1dfdd7ee4d6060ee052918cfd.png)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_IMG
+  zh: '![三次参数曲线](../Images/925508c1dfdd7ee4d6060ee052918cfd.png)'
+- en: Arbitrary Shapes
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 任意形状
+- en: The `GeneralPath` class enables you to construct an arbitrary shape by specifying
+    a series of positions along the shape’s boundary. These positions can be connected
+    by line segments, quadratic curves, or cubic (Bézier) curves. The following shape
+    can be created with three line segments and a cubic curve. See [Stroking and Filling
+    Graphics Primitives](../geometry/strokeandfill.html)for more information about
+    the implementation of this shape.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GeneralPath`类使您能够通过指定沿着形状边界的一系列位置来构造任意形状。这些位置可以通过线段、二次曲线或三次（贝塞尔）曲线连接。以下形状可以通过三条线段和一条三次曲线创建。有关此形状实现的更多信息，请参见[描边和填充图形基元](../geometry/strokeandfill.html)。'
+- en: '![This figure represents a polyshape created by using the GeneralPath class](../Images/9ef73ad9533010d8b5020022e260db4c.png)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_IMG
+  zh: '![这个图表示通过使用GeneralPath类创建的多边形](../Images/9ef73ad9533010d8b5020022e260db4c.png)'
+- en: Areas
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 区域
+- en: With the `Area` class, you can perform boolean operations, such as union, intersection,
+    and subtraction, on any two `Shape` objects. This technique, often referred to
+    as *constructive area geometry*, enables you to quickly create complex `Shape`
+    objects without having to describe each line segment or curve.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`Area`类，您可以对任意两个`Shape`对象执行布尔运算，如并集、交集和差集。这种技术通常被称为*构造性区域几何*，使您能够快速创建复杂的`Shape`对象，而无需描述每条线段或曲线。

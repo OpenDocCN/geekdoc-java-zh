@@ -1,0 +1,36 @@
+- en: Relationship with the SecurityManager
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 与安全管理器的关系
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/security.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/security.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/security.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/security.html)
+- en: The JAXP properties will be checked first before a connection is attempted whether
+    or not a `SecurityManager` is present. This means that a connection may be blocked
+    even if it is granted permission by the `SecurityManager`. For example, if the
+    JAXP properties are set to disallow the http protocol, they will effectively block
+    any connection attempt even when an application has `SocketPermission`.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在尝试连接之前，将首先检查JAXP属性，无论是否存在`SecurityManager`。这意味着即使`SecurityManager`授予权限，连接也可能被阻止。例如，如果JAXP属性被设置为禁止http协议，它们将有效地阻止任何连接尝试，即使应用程序具有`SocketPermission`。
+- en: For the purpose of restricting connections, the `SecurityManager` can be views
+    as being at a lower level. Permissions will be checked after the JAXP properties
+    are evaluated. If an application does not have `SocketPermission` for example,
+    then a `SecurityException` will be thrown even if the JAXP properties are set
+    to allow a http connection.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了限制连接，`SecurityManager`可以被视为处于较低级别。在评估JAXP属性之后，权限将被检查。例如，如果一个应用程序没有`SocketPermission`，即使JAXP属性被设置为允许http连接，也会抛出`SecurityException`。
+- en: When `SecurityManager` is present, the `JAXP FEATURE_SECURE_PROCESSING` is set
+    to true. This behavior will not turn on the new restrictions.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当存在`SecurityManager`时，`JAXP FEATURE_SECURE_PROCESSING`被设置为true。这种行为不会启用新的限制。

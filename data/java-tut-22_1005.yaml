@@ -1,0 +1,91 @@
+- en: Authentication Mechanisms
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 身份验证机制
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/auth_mechs.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/auth_mechs.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/auth_mechs.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/auth_mechs.html)
+- en: 'Different versions of the LDAP support different types of authentication. The
+    LDAP v2 defines three types of authentication: anonymous, simple (clear-text password),
+    and Kerberos v4.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不同版本的LDAP支持不同类型的身份验证。LDAP v2定义了三种身份验证类型：匿名、简单（明文密码）和Kerberos v4。
+- en: The LDAP v3 supports anonymous, simple, and SASL authentication. SASL is the
+    Simple Authentication and Security Layer ( [RFC 2222](http://www.ietf.org/rfc/rfc2222.txt)).
+    It specifies a challenge-response protocol in which data is exchanged between
+    the client and the server for the purposes of authentication and establishment
+    of a security layer on which to carry out subsequent communication. By using SASL,
+    the LDAP can support any type of authentication agreed upon by the LDAP client
+    and server.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP v3支持匿名、简单和SASL身份验证。SASL是简单身份验证和安全层（[RFC 2222](http://www.ietf.org/rfc/rfc2222.txt)）的缩写。它指定了一种挑战-响应协议，客户端和服务器之间交换数据以进行身份验证，并建立安全层以进行后续通信。通过使用SASL，LDAP可以支持LDAP客户端和服务器协商的任何类型的身份验证。
+- en: This lesson contains descriptions of how to authenticate by using [Anonymous](anonymous.html),
+    [Simple](simple.html), and [SASL](sasl.html) authentication.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程包含了如何使用[匿名](anonymous.html)、[简单](simple.html)和[SASL](sasl.html)身份验证进行身份验证的描述。
+- en: Specifying the Authentication Mechanism
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定身份验证机制
+- en: The authentication mechanism is specified by using the [`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION)
+    environment property. The property may have one of the following values.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 身份验证机制是通过使用[`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION)环境属性来指定的。该属性可以具有以下值之一。
+- en: '| Property Name | Property Value |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性名称 | 属性值 |'
+- en: '| *sasl_mech* | A space-separated list of SASL mechanism names. Use one of
+    the SASL mechanisms listed (such as `"CRAM-MD5"` means to use the CRAM-MD5 SASL
+    mechanism described in [RFC 2195](http://www.ietf.org/rfc/rfc2195.txt)). |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| *sasl_mech* | 一个以空格分隔的SASL机制名称列表。使用列出的SASL机制之一（例如，`"CRAM-MD5"`表示使用[RFC 2195](http://www.ietf.org/rfc/rfc2195.txt)中描述的CRAM-MD5
+    SASL机制）。 |'
+- en: '| `none` | Use no authentication (anonymous) |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `none` | 不使用身份验证（匿名） |'
+- en: '| `simple` | Use weak authentication (clear-text password) |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `simple` | 使用弱身份验证（明文密码） |'
+- en: The Default Mechanism
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 默认机制
+- en: If the client does not specify any authentication environment properties, then
+    the default authentication mechanism is `"none"`. The client will then be treated
+    as an anonymous client.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果客户端没有指定任何身份验证环境属性，则默认身份验证机制为`"none"`。然后客户端将被视为匿名客户端。
+- en: If the client specifies authentication information without explicitly specifying
+    the `Context.SECURITY_AUTHENTICATION` property, then the default authentication
+    mechanism is `"simple"`.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果客户端在不显式指定`Context.SECURITY_AUTHENTICATION`属性的情况下指定身份验证信息，则默认身份验证机制为`"simple"`。

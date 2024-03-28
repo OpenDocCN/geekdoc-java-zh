@@ -1,0 +1,166 @@
+- en: Running JAR-Packaged Software
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 运行JAR打包的软件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/run.html](https://docs.oracle.com/javase/tutorial/deployment/jar/run.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/run.html](https://docs.oracle.com/javase/tutorial/deployment/jar/run.html)
+- en: 'Now that you have learned how to create JAR files, how do you actually run
+    the code you packaged? Consider these scenarios:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您已经学会了如何创建JAR文件，那么您如何实际运行您打包的代码呢？考虑以下情况：
+- en: Your JAR file contains an applet that is to be run inside a browser.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您的JAR文件包含一个应该在浏览器中运行的小程序。
+- en: Your JAR file contains an application that is to be started from the command
+    line.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您的JAR文件包含一个应该从命令行启动的应用程序。
+- en: Your JAR file contains code that you want to use as an extension.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您的JAR文件包含您想要用作扩展的代码。
+- en: This section will cover the first two situations. A separate trail in the tutorial
+    on the [extension mechanism](../../ext/index.html) covers the use of JAR files
+    as extensions.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节将涵盖前两种情况。教程中关于[扩展机制](../../ext/index.html)的单独路径涵盖了JAR文件作为扩展的使用。
+- en: Applets Packaged in JAR Files
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 打包在JAR文件中的小程序
+- en: To start any applet from an HTML file for running inside a browser, you use
+    the `applet` tag. For more information, see the [Java Applets](../applet/index.html)
+    lesson. If the applet is bundled as a JAR file, the only thing you need to do
+    differently is to use the *archive* parameter to specify the relative path to
+    the JAR file.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要从HTML文件中启动任何小程序以在浏览器中运行，您可以使用`applet`标签。欲了解更多信息，请参阅[Java小程序](../applet/index.html)课程。如果小程序被打包为JAR文件，您唯一需要做的不同之处就是使用*archive*参数来指定JAR文件的相对路径。
+- en: 'As an example, use the TicTacToe demo applet. The `applet` tag in the HTML
+    file that displays the applet can be marked up like this:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为示例，使用TicTacToe演示小程序。在显示小程序的HTML文件中，`applet`标签可以标记如下：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'If the TicTacToe demo was packaged in a JAR file named `TicTacToe.jar`, you
+    can modify the `applet` tag with the addition of an `archive` parameter:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果TicTacToe演示被打包在名为`TicTacToe.jar`的JAR文件中，您可以通过添加一个`archive`参数修改`applet`标签：
+- en: '[PRE1]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The `archive` parameter specifies the relative path to the JAR file that contains
+    `TicTacToe.class`. For this example it is assumed that the JAR file and the HTML
+    file are in the same directory. If they are not, you must include the JAR file''s
+    relative path in the `archive` parameter''s value. For example, if the JAR file
+    was one directory below the HTML file in a directory called `applets`, the `applet`
+    tag would look like this:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`archive`参数指定包含`TicTacToe.class`的JAR文件的相对路径。在此示例中，假定JAR文件和HTML文件在同一目录中。如果它们不在同一目录中，您必须在`archive`参数的值中包含JAR文件的相对路径。例如，如果JAR文件在HTML文件的下一个目录中，名为`applets`的目录中，那么`applet`标签将如下所示：'
+- en: '[PRE2]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: JAR Files as Applications
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: JAR文件作为应用程序
+- en: 'You can run JAR packaged applications with the Java launcher (`java` command).
+    The basic command is:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用Java启动器（`java`命令）运行JAR打包的应用程序。基本命令如下：
+- en: '[PRE3]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The `-jar` flag tells the launcher that the application is packaged in the JAR
+    file format. You can only specify one JAR file, which must contain all of the
+    application-specific code.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`-jar`标志告诉启动器应用程序以JAR文件格式打包。您只能指定一个JAR文件，其中必须包含所有特定于应用程序的代码。'
+- en: Before you execute this command, make sure that the runtime environment has
+    information about which class within the JAR file is the application's entry point.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在执行此命令之前，请确保运行时环境已经了解JAR文件中哪个类是应用程序的入口点。
+- en: 'To indicate which class is the application''s entry point, you must add a `Main-Class`
+    header to the JAR file''s manifest. The header takes the form:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要指示哪个类是应用程序的入口点，您必须向JAR文件的清单中添加一个`Main-Class`头部。该头部的格式如下：
+- en: '[PRE4]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The header's value, `classname`, is the name of the class that is the application's
+    entry point.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 头部的数值，`classname`，是应用程序的入口类的名称。
+- en: For more information, see the [Setting an Application's Entry Point](appman.html)
+    section.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 欲了解更多信息，请参阅[设置应用程序的入口点](appman.html)部分。
+- en: 'When the `Main-Class` is set in the manifest file, you can run the application
+    from the command line:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当在清单文件中设置了`Main-Class`时，您可以从命令行运行应用程序：
+- en: '[PRE5]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'To run the application from the JAR file that is in another directory, you
+    must specify the path of that directory: `java -jar path/app.jar`'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要从位于另一个目录中的JAR文件运行应用程序，您必须指定该目录的路径：`java -jar path/app.jar`

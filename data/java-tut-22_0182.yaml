@@ -1,0 +1,96 @@
+- en: Copying a File or Directory
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 复制文件或目录
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/copy.html](https://docs.oracle.com/javase/tutorial/essential/io/copy.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/copy.html](https://docs.oracle.com/javase/tutorial/essential/io/copy.html)
+- en: You can copy a file or directory by using the [`copy(Path, Path, CopyOption...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#copy-java.nio.file.Path-java.nio.file.Path-java.nio.file.CopyOption...-)
+    method. The copy fails if the target file exists, unless the `REPLACE_EXISTING`
+    option is specified.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用[`copy(Path, Path, CopyOption...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#copy-java.nio.file.Path-java.nio.file.Path-java.nio.file.CopyOption...-)方法复制文件或目录。如果目标文件存在，则复制将失败，除非指定了`REPLACE_EXISTING`选项。
+- en: Directories can be copied. However, files inside the directory are not copied,
+    so the new directory is empty even when the original directory contains files.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 目录可以被复制。但是，目录内的文件不会被复制，因此即使原始目录包含文件，新目录也是空的。
+- en: When copying a symbolic link, the target of the link is copied. If you want
+    to copy the link itself, and not the contents of the link, specify either the
+    `NOFOLLOW_LINKS` or `REPLACE_EXISTING` option.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 复制符号链接时，会复制链接的目标。如果要复制链接本身而不是链接的内容，请指定`NOFOLLOW_LINKS`或`REPLACE_EXISTING`选项。
+- en: 'This method takes a varargs argument. The following `StandardCopyOption` and
+    `LinkOption` enums are supported:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种方法接受可变参数。支持以下`StandardCopyOption`和`LinkOption`枚举：
+- en: '`REPLACE_EXISTING` – Performs the copy even when the target file already exists.
+    If the target is a symbolic link, the link itself is copied (and not the target
+    of the link). If the target is a non-empty directory, the copy fails with the
+    `DirectoryNotEmptyException` exception.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`REPLACE_EXISTING` – 即使目标文件已经存在，也执行复制。如果目标是符号链接，则复制链接本身（而不是链接的目标）。如果目标是非空目录，则复制将失败，并显示`DirectoryNotEmptyException`异常。'
+- en: '`COPY_ATTRIBUTES` – Copies the file attributes associated with the file to
+    the target file. The exact file attributes supported are file system and platform
+    dependent, but `last-modified-time` is supported across platforms and is copied
+    to the target file.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`COPY_ATTRIBUTES` – 复制与文件关联的文件属性到目标文件。支持的确切文件属性取决于文件系统和平台，但`last-modified-time`在各个平台上都受支持，并且会被复制到目标文件。'
+- en: '`NOFOLLOW_LINKS` – Indicates that symbolic links should not be followed. If
+    the file to be copied is a symbolic link, the link is copied (and not the target
+    of the link).'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`NOFOLLOW_LINKS` – 表示不应跟随符号链接。如果要复制的文件是符号链接，则复制链接本身（而不是链接的目标）。'
+- en: If you are not familiar with `enums`, see [Enum Types](../../java/javaOO/enum.html).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您不熟悉`enums`，请参见[枚举类型](../../java/javaOO/enum.html)。
+- en: 'The following shows how to use the `copy` method:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下显示了如何使用`copy`方法：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: In addition to file copy, the `Files` class also defines methods that may be
+    used to copy between a file and a stream. The [`copy(InputStream, Path, CopyOptions...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#copy-java.io.InputStream-java.nio.file.Path-java.nio.file.CopyOption...-)
+    method may be used to copy all bytes from an input stream to a file. The [`copy(Path,
+    OutputStream)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#copy-java.nio.file.Path-java.io.OutputStream-)
+    method may be used to copy all bytes from a file to an output stream.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了文件复制外，`Files`类还定义了可用于文件和流之间复制的方法。[`copy(InputStream, Path, CopyOptions...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#copy-java.io.InputStream-java.nio.file.Path-java.nio.file.CopyOption...-)方法可用于将输入流的所有字节复制到文件。[`copy(Path,
+    OutputStream)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#copy-java.nio.file.Path-java.io.OutputStream-)方法可用于将文件的所有字节复制到输出流。
+- en: The [``Copy``](examples/Copy.java) example uses the `copy` and `Files.walkFileTree`
+    methods to support a recursive copy. See [Walking the File Tree](walk.html) for
+    more information.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``Copy``](examples/Copy.java)示例使用`copy`和`Files.walkFileTree`方法支持递归复制。有关更多信息，请参见[遍历文件树](walk.html)。'

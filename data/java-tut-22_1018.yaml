@@ -1,0 +1,154 @@
+- en: Pooling
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 连接池
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/pool.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/pool.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 译文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/pool.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/pool.html)
+- en: The [Connection Creation](create.html) section described when connections are
+    created. It described how several `Context` instances can share the same connection.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[连接创建](create.html)部分描述了何时创建连接。它描述了多个`Context`实例如何共享相同的连接。'
+- en: 'Another type of connection sharing supported by the LDAP service provider is
+    called *connection pooling*. In this type of sharing, the LDAP service provider
+    maintains a pool of (possibly) previously used connections and assigns them to
+    a `Context` instance as needed. When a `Context` instance is done with a connection
+    (closed or garbage collected), the connection is returned to the pool for future
+    use. Note that this form of sharing is sequential: a connection is retrieved from
+    the pool, used, returned to the pool, and then, retrieved again from the pool
+    for another `Context` instance.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP 服务提供程序支持的另一种连接共享类型称为*连接池*。在这种共享类型中，LDAP 服务提供程序维护一组（可能是）先前使用过的连接，并根据需要将它们分配给`Context`实例。当`Context`实例完成连接（关闭或垃圾回收）时，连接将被返回到池中以供将来使用。请注意，这种共享形式是顺序的：从池中检索连接，使用连接，将连接返回到池中，然后再次从池中检索连接以供另一个`Context`实例使用。
+- en: The pool of connections is maintained per Java runtime system. For some situations,
+    connection pooling can improve performance significantly. For example, only one
+    connection is required for processing a search response that contains four referral
+    references to the same LDAP server if connection pooling is used. Without connection
+    pooling, such a scenario would require four separate connections.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 连接池是针对每个 Java 运行时系统进行维护的。在某些情况下，使用连接池可以显著提高性能。例如，如果使用连接池，则处理包含对同一 LDAP 服务器的四个引用引用的搜索响应仅需要一个连接。如果没有使用连接池，这种情况将需要四个单独的连接。
+- en: The rest of this lesson describes in more detail how to use connection pooling.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程的其余部分将更详细地描述如何使用连接池。
+- en: How to Use Connection Pooling
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 如何使用连接池
+- en: You request connection pooling by adding the property, `"com.sun.jndi.ldap.connect.pool"`
+    to the environment properties passed to the initial context constructor. Here
+    is [`an example`](examples/UsePool.java) .
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过向传递给初始上下文构造函数的环境属性添加属性`"com.sun.jndi.ldap.connect.pool"`来请求连接池。这里是[`一个示例`](examples/UsePool.java)。
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This example creates two initial contexts in succession. The second initial
+    context will reuse the connection used by the first. To run this program and observe
+    how the connections are retrieved and returned to the pool, use the following
+    command line.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例连续创建两个初始上下文。第二个初始上下文将重用第一个使用的连接。要运行此程序并观察如何检索连接并将其返回到池中，请使用以下命令行。
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This should produce output that looks as follows.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这应该产生以下输出。
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: You can decide when and where to use pooling by including or omitting the `"com.sun.jndi.ldap.connect.pool"`
+    property, and thus control pooling on a *per-context* basis. In the previous example,
+    if you removed this property from the environment properties before creating the
+    second initial context, the second initial context would not use a pooled connection.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过包含或省略`"com.sun.jndi.ldap.connect.pool"`属性，您可以决定何时何地使用连接池，从而在*每个上下文*的基础上控制连接池。在前面的示例中，如果在创建第二个初始上下文之前从环境属性中删除此属性，则第二个初始上下文将不使用池化连接。
+- en: The LDAP provider keeps track of whether a connection is being used through
+    indications from the application. It assumes that an application that is maintaining
+    an open context handle is using the connection. Therefore, in order for the LDAP
+    provider to properly manage the pooled connections, you must be diligent about
+    invoking `Context.close()` on contexts that you no longer need.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP 提供程序通过应用程序的指示来跟踪连接是否正在使用。它假定维护打开上下文句柄的应用程序正在使用连接。因此，为了使 LDAP 提供程序正确管理池化连接，您必须勤于在不再需要的上下文上调用`Context.close()`。
+- en: Bad connections are automatically detected and removed from the pool by the
+    LDAP provider. The probability of a context ending up with a bad connection is
+    the same regardless of whether connection pooling is used.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 坏连接会被 LDAP 提供程序自动检测并从池中移除。无论是否使用连接池，上下文最终使用坏连接的概率是相同的。
+- en: Creation Timeout
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建超时
+- en: The pool of connections maintained by the LDAP service provider may be limited
+    in size; this is described in detail in the [Connection Pooling Configuration](config.html)
+    section. When connection pooling has been enabled and no pooled connection is
+    available, the client application will block, waiting for an available connection.
+    You can use the `"com.sun.jndi.ldap.connect.timeout"` environment property to
+    specify how long to wait for a pooled connection. If you omit this property, the
+    application will wait indefinitely.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP服务提供程序维护的连接池可能具有限制的大小；这在[连接池配置](config.html)部分有详细描述。当启用连接池并且没有可用的池化连接时，客户端应用程序将被阻塞，等待可用连接。您可以使用`"com.sun.jndi.ldap.connect.timeout"`环境属性来指定等待池化连接的时间。如果省略此属性，应用程序将无限期等待。
+- en: This same property is also used to specify a timeout period for establishment
+    of the LDAP connection, as described in the [Connection Creation](create.html#TIMEOUT)
+    section.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此属性还用于指定建立LDAP连接的超时期限，如[连接创建](create.html#TIMEOUT)部分所述。
+- en: When Not to Use Pooling!!
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 何时不使用池化！！
+- en: Pooled connections are intended to be reused. Therefore, if you plan to perform
+    operations on a `Context` instance that might alter the underlying connection's
+    state, then you should not use connection pooling for that `Context` instance.
+    For example, if you plan to invoke the Start TLS extended operation on a `Context`
+    instance, or plan to change security-related properties (such as `"java.naming.security.principal"`
+    or `"java.naming.security.protocol"`) after the initial context has been created,
+    you should not use connection pooling for that `Context` instance because the
+    LDAP provider does not track any such state changes. If you use connection pooling
+    in such situations, you might be compromising the security of your application.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 池化连接旨在被重复使用。因此，如果您计划对可能改变底层连接状态的`Context`实例执行操作，则不应该对该`Context`实例使用连接池。例如，如果您计划在`Context`实例上调用Start
+    TLS扩展操作，或者计划在创建初始上下文后更改安全相关属性（如`"java.naming.security.principal"`或`"java.naming.security.protocol"`），则不应该对该`Context`实例使用连接池，因为LDAP提供程序不会跟踪任何此类状态更改。在这种情况下使用连接池，可能会
+    compromise您的应用程序的安全性。

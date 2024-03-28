@@ -1,0 +1,381 @@
+- en: Walking the File Tree
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 遍历文件树
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/walk.html](https://docs.oracle.com/javase/tutorial/essential/io/walk.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/walk.html](https://docs.oracle.com/javase/tutorial/essential/io/walk.html)
+- en: Do you need to create an application that will recursively visit all the files
+    in a file tree? Perhaps you need to delete every `.class` file in a tree, or find
+    every file that hasn't been accessed in the last year. You can do so with the
+    [`FileVisitor`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitor.html)
+    interface.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您是否需要创建一个应用程序，递归访问文件树中的所有文件？也许您需要删除树中的每个`.class`文件，或者找到在过去一年中未被访问的每个文件。您可以通过[`FileVisitor`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitor.html)接口实现这一点。
+- en: 'This section covers the following:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下内容：
+- en: '[The FileVisitor Interface](#filevisitor)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[FileVisitor接口](#filevisitor)'
+- en: '[Kickstarting the Process](#invoke)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[启动过程](#invoke)'
+- en: '[Considerations When Creating a FileVisitor](#order)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建FileVisitor时的注意事项](#order)'
+- en: '[Controlling the Flow](#return)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[控制流程](#return)'
+- en: '[Examples](#ex)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[示例](#ex)'
+- en: The FileVisitor Interface
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: FileVisitor接口
+- en: 'To walk a file tree, you first need to implement a `FileVisitor`. A `FileVisitor`
+    specifies the required behavior at key points in the traversal process: when a
+    file is visited, before a directory is accessed, after a directory is accessed,
+    or when a failure occurs. The interface has four methods that correspond to these
+    situations:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要遍历文件树，首先需要实现一个`FileVisitor`。`FileVisitor`指定了在遍历过程的关键点上所需的行为：当访问文件时，在访问目录之前，在访问目录之后，或者当发生故障时。该接口有四个方法对应于这些情况：
+- en: '[`preVisitDirectory`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitor.html#preVisitDirectory-T-java.nio.file.attribute.BasicFileAttributes-)
+    – Invoked before a directory''s entries are visited.'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`preVisitDirectory`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitor.html#preVisitDirectory-T-java.nio.file.attribute.BasicFileAttributes-)
+    – 在访问目录条目之前调用。'
+- en: '[`postVisitDirectory`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitor.html#postVisitDirectory-T-java.io.IOException-)
+    – Invoked after all the entries in a directory are visited. If any errors are
+    encountered, the specific exception is passed to the method.'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`postVisitDirectory`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitor.html#postVisitDirectory-T-java.io.IOException-)
+    – 在访问目录中的所有条目之后调用。如果遇到任何错误，特定异常将传递给该方法。'
+- en: '[`visitFile`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitor.html#visitFile-T-java.nio.file.attribute.BasicFileAttributes-)
+    – Invoked on the file being visited. The file''s `BasicFileAttributes` is passed
+    to the method, or you can use the [file attributes](fileAttr.html) package to
+    read a specific set of attributes. For example, you can choose to read the file''s
+    `DosFileAttributeView` to determine if the file has the "hidden" bit set.'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`visitFile`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitor.html#visitFile-T-java.nio.file.attribute.BasicFileAttributes-)
+    – 在访问文件时调用。文件的`BasicFileAttributes`被传递给该方法，或者您可以使用[file attributes](fileAttr.html)包来读取特定的属性集。例如，您可以选择读取文件的`DosFileAttributeView`来确定文件是否设置了“hidden”位。'
+- en: '[`visitFileFailed`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitor.html#visitFileFailedy-T-java.io.IOException-)
+    – Invoked when the file cannot be accessed. The specific exception is passed to
+    the method. You can choose whether to throw the exception, print it to the console
+    or a log file, and so on.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`visitFileFailed`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitor.html#visitFileFailedy-T-java.io.IOException-)
+    – 当无法访问文件时调用。特定异常被传递给该方法。您可以选择是否抛出异常，将其打印到控制台或日志文件等。'
+- en: If you don't need to implement all four of the `FileVisitor` methods, instead
+    of implementing the `FileVisitor` interface, you can extend the [`SimpleFileVisitor`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/SimpleFileVisitor.html)
+    class. This class, which implements the `FileVisitor` interface, visits all files
+    in a tree and throws an `IOError` when an error is encountered. You can extend
+    this class and override only the methods that you require.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您不需要实现所有四个`FileVisitor`方法，而是扩展[`SimpleFileVisitor`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/SimpleFileVisitor.html)类，而不是实现`FileVisitor`接口。这个类实现了`FileVisitor`接口，访问树中的所有文件，并在遇到错误时抛出`IOError`。您可以扩展这个类，并仅覆盖您需要的方法。
+- en: Here is an example that extends `SimpleFileVisitor` to print all entries in
+    a file tree. It prints the entry whether the entry is a regular file, a symbolic
+    link, a directory, or some other "unspecified" type of file. It also prints the
+    size, in bytes, of each file. Any exception that is encountered is printed to
+    the console.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个扩展`SimpleFileVisitor`以打印文件树中所有条目的示例。它打印条目，无论条目是常规文件、符号链接、目录还是其他类型的“未指定”文件。它还打印每个文件的字节大小。遇到的任何异常都会打印到控制台。
+- en: 'The `FileVisitor` methods are shown in bold:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`FileVisitor`方法以粗体显示：'
+- en: '[PRE0]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Kickstarting the Process
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 启动过程
+- en: Once you have implemented your `FileVisitor`, how do you initiate the file walk?
+    There are two `walkFileTree` methods in the `Files` class.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦您实现了您的`FileVisitor`，如何启动文件遍历？`Files`类中有两个`walkFileTree`方法。
+- en: '[`walkFileTree(Path, FileVisitor)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#walkFileTree-java.nio.file.Path-java.nio.file.FileVisitor-)'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`walkFileTree(Path, FileVisitor)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#walkFileTree-java.nio.file.Path-java.nio.file.FileVisitor-)'
+- en: '[`walkFileTree(Path, Set<FileVisitOption>, int, FileVisitor)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#walkFileTree-java.nio.file.Path-java.util.Set-int-java.nio.file.FileVisitor-)'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`walkFileTree(Path, Set<FileVisitOption>, int, FileVisitor)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#walkFileTree-java.nio.file.Path-java.util.Set-int-java.nio.file.FileVisitor-)'
+- en: 'The first method requires only a starting point and an instance of your `FileVisitor`.
+    You can invoke the `PrintFiles` file visitor as follows:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个方法只需要一个起始点和您的`FileVisitor`的实例。您可以按以下方式调用`PrintFiles`文件访问者：
+- en: '[PRE1]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The second `walkFileTree` method enables you to additionally specify a limit
+    on the number of levels visited and a set of [`FileVisitOption`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitOption.html)
+    enums. If you want to ensure that this method walks the entire file tree, you
+    can specify `Integer.MAX_VALUE` for the maximum depth argument.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二个`walkFileTree`方法还允许您额外指定访问级别的限制和一组[`FileVisitOption`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitOption.html)枚举。如果您希望确保此方法遍历整个文件树，您可以为最大深度参数指定`Integer.MAX_VALUE`。
+- en: You can specify the `FileVisitOption` enum, `FOLLOW_LINKS`, which indicates
+    that symbolic links should be followed.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以指定`FileVisitOption`枚举`FOLLOW_LINKS`，表示应该跟随符号链接。
+- en: 'This code snippet shows how the four-argument method can be invoked:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码片段显示了如何调用四参数方法：
+- en: '[PRE2]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Considerations When Creating a FileVisitor
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建`FileVisitor`时的注意事项
+- en: A file tree is walked depth first, but you cannot make any assumptions about
+    the iteration order that subdirectories are visited.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件树以深度优先方式遍历，但不能假设子目录的访问顺序。
+- en: If your program will be changing the file system, you need to carefully consider
+    how you implement your `FileVisitor`.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您的程序将更改文件系统，您需要仔细考虑如何实现您的`FileVisitor`。
+- en: For example, if you are writing a recursive delete, you first delete the files
+    in a directory before deleting the directory itself. In this case, you delete
+    the directory in `postVisitDirectory`.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，如果您正在编写递归删除，您首先删除目录中的文件，然后再删除目录本身。在这种情况下，您在`postVisitDirectory`中删除目录。
+- en: If you are writing a recursive copy, you create the new directory in `preVisitDirectory`
+    before attempting to copy the files to it (in `visitFiles`). If you want to preserve
+    the attributes of the source directory (similar to the UNIX `cp -p` command),
+    you need to do that *after* the files have been copied, in `postVisitDirectory`.
+    The [``Copy``](examples/Copy.java) example shows how to do this.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在编写递归复制，您需要在`preVisitDirectory`中创建新目录，然后尝试将文件复制到其中（在`visitFiles`中）。如果您想要保留源目录的属性（类似于UNIX的`cp
+    -p`命令），您需要在文件被复制后，在`postVisitDirectory`中执行此操作。[``Copy``](examples/Copy.java)示例展示了如何做到这一点。
+- en: If you are writing a file search, you perform the comparison in the `visitFile`
+    method. This method finds all the files that match your criteria, but it does
+    not find the directories. If you want to find both files and directories, you
+    must also perform the comparison in either the `preVisitDirectory` or `postVisitDirectory`
+    method. The [``Find``](examples/Find.java) example shows how to do this.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在编写文件搜索，您可以在`visitFile`方法中执行比较。此方法找到所有符合您条件的文件，但不会找到目录。如果您想要找到文件和目录，您还必须在`preVisitDirectory`或`postVisitDirectory`方法中执行比较。[``Find``](examples/Find.java)示例展示了如何做到这一点。
+- en: You need to decide whether you want symbolic links to be followed. If you are
+    deleting files, for example, following symbolic links might not be advisable.
+    If you are copying a file tree, you might want to allow it. By default, `walkFileTree`
+    does not follow symbolic links.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你需要决定是否要遵循符号链接。例如，如果你正在删除文件，跟随符号链接可能不明智。如果你正在复制文件树，你可能希望允许它。默认情况下，`walkFileTree`不会遵循符号链接。
+- en: 'The `visitFile` method is invoked for files. If you have specified the `FOLLOW_LINKS`
+    option and your file tree has a circular link to a parent directory, the looping
+    directory is reported in the `visitFileFailed` method with the `FileSystemLoopException`.
+    The following code snippet shows how to catch a circular link and is from the
+    [``Copy``](examples/Copy.java) example:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于文件，会调用`visitFile`方法。如果你指定了`FOLLOW_LINKS`选项，并且你的文件树有一个指向父目录的循环链接，循环目录将在`visitFileFailed`方法中报告，带有`FileSystemLoopException`。以下代码片段显示了如何捕获循环链接，并来自于[``Copy``](examples/Copy.java)示例：
+- en: '[PRE3]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: This case can occur only when the program is following symbolic links.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种情况只会在程序遵循符号链接时发生。
+- en: Controlling the Flow
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 控制流程
+- en: Perhaps you want to walk the file tree looking for a particular directory and,
+    when found, you want the process to terminate. Perhaps you want to skip specific
+    directories.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也许你想要遍历文件树查找特定目录，并且在找到后希望进程终止。也许你想要跳过特定目录。
+- en: 'The `FileVisitor` methods return a [`FileVisitResult`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitResult.html)
+    value. You can abort the file walking process or control whether a directory is
+    visited by the values you return in the `FileVisitor` methods:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`FileVisitor`方法返回一个[`FileVisitResult`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitResult.html)值。你可以通过在`FileVisitor`方法中返回的值来中止文件遍历过程或控制是否访问目录：'
+- en: '`CONTINUE` – Indicates that the file walking should continue. If the `preVisitDirectory`
+    method returns `CONTINUE`, the directory is visited.'
+  id: totrans-42
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CONTINUE` – 表示文件遍历应该继续。如果`preVisitDirectory`方法返回`CONTINUE`，则会访问该目录。'
+- en: '`TERMINATE` – Immediately aborts the file walking. No further file walking
+    methods are invoked after this value is returned.'
+  id: totrans-43
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`TERMINATE` – 立即中止文件遍历。在返回此值后不会调用更多的文件遍历方法。'
+- en: '`SKIP_SUBTREE` – When `preVisitDirectory` returns this value, the specified
+    directory and its subdirectories are skipped. This branch is "pruned out" of the
+    tree.'
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SKIP_SUBTREE` – 当`preVisitDirectory`返回此值时，指定的目录及其子目录将被跳过。这个分支将从树中“剪掉”。'
+- en: '`SKIP_SIBLINGS` – When `preVisitDirectory` returns this value, the specified
+    directory is not visited, `postVisitDirectory` is not invoked, and no further
+    unvisited siblings are visited. If returned from the `postVisitDirectory` method,
+    no further siblings are visited. Essentially, nothing further happens in the specified
+    directory.'
+  id: totrans-45
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SKIP_SIBLINGS` – 当`preVisitDirectory`返回此值时，指定的目录不会被访问，`postVisitDirectory`不会被调用，也不会访问更多未访问的兄弟节点。如果从`postVisitDirectory`方法返回，不会访问更多的兄弟节点。基本上，在指定的目录中不会发生更多的事情。'
+- en: 'In this code snippet, any directory named `SCCS` is skipped:'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这段代码片段中，任何名为`SCCS`的目录都会被跳过：
+- en: '[PRE4]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'In this code snippet, as soon as a particular file is located, the file name
+    is printed to standard output, and the file walking terminates:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这段代码片段中，一旦找到特定文件，文件名就会被打印到标准输出，并且文件遍历会终止：
+- en: '[PRE5]'
+  id: totrans-49
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Examples
+  id: totrans-50
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例
+- en: 'The following examples demonstrate the file walking mechanism:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例演示了文件遍历机制：
+- en: '[``Find``](examples/Find.java) – Recurses a file tree looking for files and
+    directories that match a particular glob pattern. This example is discussed in
+    [Finding Files](find.html).'
+  id: totrans-52
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``Find``](examples/Find.java) – 递归查找符合特定通配符模式的文件和目录。此示例在[查找文件](find.html)中讨论。'
+- en: '[``Chmod``](examples/Chmod.java) – Recursively changes permissions on a file
+    tree (for POSIX systems only).'
+  id: totrans-53
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``Chmod``](examples/Chmod.java) – 递归更改文件树上的权限（仅适用于POSIX系统）。'
+- en: '[``Copy``](examples/Copy.java) – Recursively copies a file tree.'
+  id: totrans-54
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``Copy``](examples/Copy.java) – 递归复制文件树。'
+- en: '[``WatchDir``](examples/WatchDir.java) – Demonstrates the mechanism that watches
+    a directory for files that have been created, deleted or modified. Calling this
+    program with the `-r` option watches an entire tree for changes. For more information
+    about the file notification service, see [Watching a Directory for Changes](notification.html).'
+  id: totrans-55
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[``WatchDir``](examples/WatchDir.java) – 演示了监视目录中已创建、删除或修改的文件的机制。使用`-r`选项调用此程序会监视整个树的更改。有关文件通知服务的更多信息，请参见[监视目录的更改](notification.html)。'

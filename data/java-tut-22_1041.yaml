@@ -1,0 +1,101 @@
+- en: Supported Java APIs
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 支持的 Java API
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/supported.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/supported.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/supported.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/supported.html)
+- en: 'All of the APIs that use TCP can use SDP, specifically including the following
+    classes:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有使用 TCP 的 API 都可以使用 SDP，特别包括以下类：
+- en: '`java.net` package'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.net` 包'
+- en: '`Socket`'
+  id: totrans-4
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Socket`'
+- en: '`ServerSocket`'
+  id: totrans-5
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ServerSocket`'
+- en: '`java.nio.channels` package:'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.nio.channels` 包：'
+- en: '`SocketChannel`'
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SocketChannel`'
+- en: '`ServerSocketChannel`'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ServerSocketChannel`'
+- en: '`AsynchronousSocketChannel`'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`AsynchronousSocketChannel`'
+- en: '`AsynchronousServerSocketChannel`'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`AsynchronousServerSocketChannel`'
+- en: When SDP support is enabled, it just works without any change to your code.
+    Compiling is not necessary. However, it is important to know that a socket is
+    bound only once. A connection is an implicit bind. So, if the socket hasn't been
+    previously bound and `connect` is invoked, the binding occurs at that time.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当启用 SDP 支持时，它会在不需要对您的代码进行任何更改的情况下正常工作。不需要编译。然而，重要的是要知道套接字只绑定一次。连接是隐式绑定。因此，如果套接字之前没有绑定并且调用了
+    `connect`，则绑定将在那个时候发生。
+- en: 'For example, consider the following code snippet:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，考虑以下代码片段：
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: In this snippet, the asynchronous socket channel is bound to a local TCP address
+    when `bind` is invoked on the socket. Then, the code attempts to connect to a
+    remote address by using the same socket. If the remote address uses InfiniBand,
+    as specified in the configuration file, the connection will not be converted to
+    SDP because the socket was previously bound.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此代码片段中，当在套接字上调用 `bind` 时，异步套接字通道将绑定到本地 TCP 地址。然后，代码尝试使用相同的套接字连接到远程地址。如果远程地址使用配置文件中指定的
+    InfiniBand，则连接不会转换为 SDP，因为套接字先前已绑定。

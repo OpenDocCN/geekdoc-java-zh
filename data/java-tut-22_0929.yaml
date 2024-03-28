@@ -1,0 +1,54 @@
+- en: Connecting to a URL
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 连接到URL
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/connecting.html](https://docs.oracle.com/javase/tutorial/networking/urls/connecting.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/connecting.html](https://docs.oracle.com/javase/tutorial/networking/urls/connecting.html)
+- en: After you've successfully created a `URL` object, you can call the `URL` object's
+    `openConnection` method to get a `URLConnection` object, or one of its protocol
+    specific subclasses, for example [`java.net.HttpURLConnection`](https://docs.oracle.com/javase/8/docs/api/java/net/HttpURLConnection.html)
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 成功创建`URL`对象后，您可以调用`URL`对象的`openConnection`方法获取一个`URLConnection`对象，或者其协议特定的子类之一，例如[`java.net.HttpURLConnection`](https://docs.oracle.com/javase/8/docs/api/java/net/HttpURLConnection.html)
+- en: 'You can use this `URLConnection` object to setup parameters and general request
+    properties that you may need before connecting. Connection to the remote object
+    represented by the URL is only initiated when the `URLConnection.connect` method
+    is called. When you do this you are initializing a communication link between
+    your Java program and the URL over the network. For example, the following code
+    opens a connection to the site `example.com`:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用此`URLConnection`对象在连接之前设置参数和一般请求属性。仅当调用`URLConnection.connect`方法时才会启动与URL表示的远程对象的连接。这样做时，您正在初始化您的Java程序与网络上的URL之间的通信链接。例如，以下代码打开到`example.com`站点的连接：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: A new `URLConnection` object is created every time by calling the `openConnection`
+    method of the protocol handler for this URL.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每次调用此URL的协议处理程序的`openConnection`方法都会创建一个新的`URLConnection`对象。
+- en: You are not always required to explicitly call the `connect` method to initiate
+    the connection. Operations that depend on being connected, like `getInputStream`,
+    `getOutputStream`, etc, will implicitly perform the connection, if necessary.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您并不总是需要显式调用`connect`方法来启动连接。依赖于连接的操作，如`getInputStream`、`getOutputStream`等，将在必要时隐式执行连接。
+- en: Now that you've successfully connected to your URL, you can use the `URLConnection`
+    object to perform actions such as reading from or writing to the connection. The
+    next section shows you how.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您已成功连接到您的URL，您可以使用`URLConnection`对象执行诸如从连接中读取或写入的操作。接下来的部分将向您展示如何操作。

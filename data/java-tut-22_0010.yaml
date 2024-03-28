@@ -1,0 +1,226 @@
+- en: 'Lesson: A Closer Look at the "Hello World!" Application'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：深入了解 "Hello World!" 应用程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/application/index.html](https://docs.oracle.com/javase/tutorial/getStarted/application/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/application/index.html](https://docs.oracle.com/javase/tutorial/getStarted/application/index.html)
+- en: 'Now that you''ve seen the "Hello World!" application (and perhaps even compiled
+    and run it), you might be wondering how it works. Here again is its code:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你已经看到了 "Hello World!" 应用程序（甚至可能已经编译并运行了它），你可能想知道它是如何工作的。这里再次是它的代码：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The "Hello World!" application consists of three primary components: [source
+    code comments](#COMMENTS), [the `HelloWorldApp` class definition](#CLASS_DEF),
+    and [the `main` method](#MAIN). The following explanation will provide you with
+    a basic understanding of the code, but the deeper implications will only become
+    apparent after you''ve finished reading the rest of the tutorial.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '"Hello World!" 应用程序由三个主要组件组成：[源代码注释](#COMMENTS)、[`HelloWorldApp` 类定义](#CLASS_DEF)
+    和 [`main` 方法](#MAIN)。以下解释将为您提供对代码的基本理解，但更深层次的含义只有在您完成阅读本教程的其余部分后才会显现。'
+- en: Source Code Comments
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 源代码注释
+- en: 'The following bold text defines the *comments* of the "Hello World!" application:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的加粗文本定义了 "Hello World!" 应用程序的*注释*：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Comments are ignored by the compiler but are useful to other programmers. The
+    Java programming language supports three kinds of comments:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注释被编译器忽略，但对其他程序员有用。Java 编程语言支持三种类型的注释：
+- en: '`/* *text* */`'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`/* *文本* */`'
+- en: The compiler ignores everything from `/*` to `*/`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编译器忽略从 `/*` 到 `*/` 的所有内容。
+- en: '`/** *documentation* */`'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`/** *文档* */`'
+- en: This indicates a documentation comment (*doc comment*, for short). The compiler
+    ignores this kind of comment, just like it ignores comments that use `/*` and
+    `*/`. The `javadoc` tool uses doc comments when preparing automatically generated
+    documentation. For more information on `javadoc`, see the [Javadoc™ tool documentation](https://docs.oracle.com/javase/8/docs/technotes/guides/javadoc/index.html)
+    .
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这表示一个文档注释（*doc comment*）。编译器忽略这种类型的注释，就像它忽略使用 `/*` 和 `*/` 的注释一样。`javadoc` 工具在准备自动生成的文档时使用文档注释。有关
+    `javadoc` 的更多信息，请参阅[Javadoc™ 工具文档](https://docs.oracle.com/javase/8/docs/technotes/guides/javadoc/index.html)。
+- en: '`// *text*`'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`// *文本*`'
+- en: The compiler ignores everything from `//` to the end of the line.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编译器忽略从 `//` 到行尾的所有内容。
+- en: The `HelloWorldApp` Class Definition
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`HelloWorldApp` 类定义'
+- en: 'The following bold text begins the class definition block for the "Hello World!"
+    application:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的加粗文本开始了 "Hello World!" 应用程序的类定义块：
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'As shown above, the most basic form of a class definition is:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如上所示，类定义的最基本形式是：
+- en: '[PRE3]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The keyword `class` begins the class definition for a class named `name`, and
+    the code for each class appears between the opening and closing curly braces marked
+    in bold above. Chapter 2 provides an overview of classes in general, and Chapter
+    4 discusses classes in detail. For now it is enough to know that every application
+    begins with a class definition.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关键字 `class` 开始了名为 `name` 的类的类定义，每个类的代码都出现在上面加粗的大括号之间。第 2 章概述了一般的类，第 4 章详细讨论了类。现在知道每个应用程序都以类定义开始就足够了。
+- en: The `main` Method
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`main` 方法'
+- en: 'The following bold text begins the definition of the `main` method:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的加粗文本开始了 `main` 方法的定义：
+- en: '[PRE4]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'In the Java programming language, every application must contain a `main` method
+    whose signature is:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 Java 编程语言中，每个应用程序必须包含一个签名为 `main` 的方法：
+- en: '[PRE5]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The modifiers `public` and `static` can be written in either order (`public
+    static` or `static public`), but the convention is to use `public static` as shown
+    above. You can name the argument anything you want, but most programmers choose
+    "args" or "argv".
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 修饰符 `public` 和 `static` 可以以任何顺序编写（`public static` 或 `static public`），但约定是使用如上所示的
+    `public static`。你可以将参数命名为任何你想要的东西，但大多数程序员选择 "args" 或 "argv"。
+- en: The `main` method is similar to the `main` function in C and C++; it's the entry
+    point for your application and will subsequently invoke all the other methods
+    required by your program.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`main` 方法类似于 C 和 C++ 中的 `main` 函数；它是应用程序的入口点，并随后将调用程序所需的所有其他方法。'
+- en: 'The `main` method accepts a single argument: an array of elements of type `String`.'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`main` 方法接受一个参数：类型为 `String` 的元素数组。'
+- en: '[PRE6]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'This array is the mechanism through which the runtime system passes information
+    to your application. For example:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个数组是运行时系统向你的应用程序传递信息的机制。例如：
+- en: '[PRE7]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Each string in the array is called a *command-line argument*. Command-line
+    arguments let users affect the operation of the application without recompiling
+    it. For example, a sorting program might allow the user to specify that the data
+    be sorted in descending order with this command-line argument:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 数组中的每个字符串被称为*命令行参数*。命令行参数让用户在不重新编译应用程序的情况下影响其操作。例如，一个排序程序可能允许用户通过以下命令行参数指定按降序排序数据：
+- en: '[PRE8]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: The "Hello World!" application ignores its command-line arguments, but you should
+    be aware of the fact that such arguments do exist.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '"Hello World!" 应用程序忽略了它的命令行参数，但你应该意识到这些参数确实存在。'
+- en: 'Finally, the line:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，这行代码：
+- en: '[PRE9]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: uses the `System` class from the core library to print the "Hello World!" message
+    to standard output. Portions of this library (also known as the "Application Programming
+    Interface", or "API") will be discussed throughout the remainder of the tutorial.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用核心库中的`System`类将"Hello World!"消息打印到标准输出。本教程的其余部分将讨论该库的部分内容（也称为"应用程序编程接口"或"API"）。

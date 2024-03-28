@@ -1,0 +1,116 @@
+- en: Changing Date Format Symbols
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 更改日期格式符号
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/dateFormatSymbols.html](https://docs.oracle.com/javase/tutorial/i18n/format/dateFormatSymbols.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/dateFormatSymbols.html](https://docs.oracle.com/javase/tutorial/i18n/format/dateFormatSymbols.html)
+- en: '* * *'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Version note:** This Date and Time section uses the date and time APIs in
+    the `java.util` package. The `java.time` APIs, available in the JDK 8 release,
+    provides a comprehensive date and time model that offers significant improvements
+    over the `java.util` classes. The `java.time` APIs are described in the [Date
+    Time](../../datetime/index.html) trail. The [Legacy Date-Time Code](../../datetime/iso/legacy.html)
+    page might be of particular interest.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**版本说明：** 此日期和时间部分使用`java.util`包中的日期和时间API。在JDK 8发布的`java.time` API提供了一个全面的日期和时间模型，相比`java.util`类有显著改进。`java.time`
+    API在[日期时间](../../datetime/index.html)教程中有详细描述。[传统日期时间代码](../../datetime/iso/legacy.html)页面可能会引起特别关注。'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The `format` method of the `SimpleDateFormat` class returns a `String` composed
+    of digits and symbols. For example, in the `String` "Friday, April 10, 2009,"
+    the symbols are "Friday" and "April." If the symbols encapsulated in `SimpleDateFormat`
+    don''t meet your needs, you can change them with the [`DateFormatSymbols`](https://docs.oracle.com/javase/8/docs/api/java/text/DateFormatSymbols.html).
+    You can change symbols that represent names for months, days of the week, and
+    time zones, among others. The following table lists the `DateFormatSymbols` methods
+    that allow you to modify the symbols:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SimpleDateFormat`类的`format`方法返回由数字和符号组成的`String`。例如，在`String` "Friday, April
+    10, 2009"中，符号是"Friday"和"April"。如果`SimpleDateFormat`封装的符号不符合您的需求，您可以使用[`DateFormatSymbols`](https://docs.oracle.com/javase/8/docs/api/java/text/DateFormatSymbols.html)进行更改。您可以更改代表月份、星期几和时区等的符号。以下表列出了允许您修改符号的`DateFormatSymbols`方法：'
+- en: '`DateFormatSymbol` Methods'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DateFormatSymbol` 方法'
+- en: '| Setter Method | Example of a Symbol the Method Modifies |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| 设置方法 | 方法修改的符号示例 |'
+- en: '| `setAmPmStrings` | PM |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| `setAmPmStrings` | 下午 |'
+- en: '| `setEras` | AD |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `setEras` | 公元 |'
+- en: '| `setMonths` | December |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `setMonths` | 十二月 |'
+- en: '| `setShortMonths` | Dec |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| `setShortMonths` | 十二月 |'
+- en: '| `setShortWeekdays` | Tue |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `setShortWeekdays` | 星期二 |'
+- en: '| `setWeekdays` | Tuesday |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| `setWeekdays` | 星期二 |'
+- en: '| `setZoneStrings` | PST |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| `setZoneStrings` | PST |'
+- en: 'The following example invokes `setShortWeekdays` to change the short names
+    of the days of the week from lowercase to uppercase characters. The full source
+    code for this example is in [`DateFormatSymbolsDemo`](examples/DateFormatSymbolsDemo.java).
+    The first element in the array argument of `setShortWeekdays` is a null `String`.
+    Therefore the array is one-based rather than zero-based. The `SimpleDateFormat`
+    constructor accepts the modified `DateFormatSymbols` object as an argument. Here
+    is the source code:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例调用`setShortWeekdays`将星期几的简称从小写更改为大写字符。此示例的完整源代码在[`DateFormatSymbolsDemo`](examples/DateFormatSymbolsDemo.java)中。`setShortWeekdays`的数组参数中的第一个元素是一个空`String`。因此，数组是基于一的而不是零的。`SimpleDateFormat`构造函数接受修改后的`DateFormatSymbols`对象作为参数。以下是源代码：
+- en: '[PRE0]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The preceding code generates this output:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以上代码生成以下输出：
+- en: '[PRE1]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

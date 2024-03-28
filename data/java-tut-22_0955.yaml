@@ -1,0 +1,175 @@
+- en: Generic Methods
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 通用方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/methods.html](https://docs.oracle.com/javase/tutorial/extra/generics/methods.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/methods.html](https://docs.oracle.com/javase/tutorial/extra/generics/methods.html)
+- en: 'Consider writing a method that takes an array of objects and a collection and
+    puts all objects in the array into the collection. Here''s a first attempt:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑编写一个方法，该方法接受一个对象数组和一个集合，并将数组中的所有对象放入集合中。以下是第一次尝试：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: By now, you will have learned to avoid the beginner's mistake of trying to use
+    `Collection<Object>` as the type of the collection parameter. You may or may not
+    have recognized that using `Collection<?>` isn't going to work either. Recall
+    that you cannot just shove objects into a collection of unknown type.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，您已经学会了避免初学者的错误，即尝试将`Collection<Object>`用作集合参数的类型。您可能已经意识到，使用`Collection<?>`也行不通。请记住，您不能将对象随意放入未知类型的集合中。
+- en: "The way to do deal with these problems is to use *generic methods*. Just like\
+    \ type declarations, method declarations can be generic\x97that is, parameterized\
+    \ by one or more type parameters."
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "处理这些问题的方法是使用*通用方法*。就像类型声明一样，方法声明也可以是通用的\x97即，由一个或多个类型参数参数化。"
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: We can call this method with any kind of collection whose element type is a
+    supertype of the element type of the array.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以使用任何元素类型为数组元素类型的超类型的任何类型的集合调用此方法。
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Notice that we don't have to pass an actual type argument to a generic method.
+    The compiler infers the type argument for us, based on the types of the actual
+    arguments. It will generally infer the most specific type argument that will make
+    the call type-correct.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，我们不必向通用方法传递实际类型参数。编译器根据实际参数的类型为我们推断类型参数。它通常会推断使调用类型正确的最具体的类型参数。
+- en: 'One question that arises is: when should I use generic methods, and when should
+    I use wildcard types? To understand the answer, let''s examine a few methods from
+    the `Collection` libraries.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个问题是：何时应该使用通用方法，何时应该使用通配符类型？为了理解答案，让我们来看看`Collection`库中的一些方法。
+- en: '[PRE3]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'We could have used generic methods here instead:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以在这里使用通用方法：
+- en: '[PRE4]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: However, in both `containsAll` and `addAll`, the type parameter `T` is used
+    only once. The return type doesn't depend on the type parameter, nor does any
+    other argument to the method (in this case, there simply is only one argument).
+    This tells us that the type argument is being used for polymorphism; its only
+    effect is to allow a variety of actual argument types to be used at different
+    invocation sites. If that is the case, one should use wildcards. Wildcards are
+    designed to support flexible subtyping, which is what we're trying to express
+    here.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，在`containsAll`和`addAll`中，类型参数`T`仅使用一次。返回类型不依赖于类型参数，方法的任何其他参数也不依赖于类型参数（在这种情况下，只有一个参数）。这告诉我们，类型参数用于多态性；它的唯一效果是允许在不同的调用站点使用各种实际参数类型。如果是这种情况，应该使用通配符。通配符旨在支持灵活的子类型化，这正是我们要表达的。
+- en: Generic methods allow type parameters to be used to express dependencies among
+    the types of one or more arguments to a method and/or its return type. If there
+    isn't such a dependency, a generic method should not be used.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通用方法允许使用类型参数来表示方法的一个或多个参数以及/或其返回类型之间的依赖关系。如果没有这样的依赖关系，则不应使用通用方法。
+- en: 'It is possible to use both generic methods and wildcards in tandem. Here is
+    the method `Collections.copy()`:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以同时使用通用方法和通配符。以下是`Collections.copy()`方法的使用方法：
+- en: '[PRE5]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: "Note the dependency between the types of the two parameters. Any object copied\
+    \ from the source list, `src`, must be assignable to the element type `T` of the\
+    \ destination list, `dst`. So the element type of `src` can be any subtype of\
+    \ `T`\x97we don't care which. The signature of `copy` expresses the dependency\
+    \ using a type parameter, but uses a wildcard for the element type of the second\
+    \ parameter."
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "注意两个参数类型之间的依赖关系。从源列表`src`复制的任何对象必须可分配给目标列表`dst`的元素类型`T`。因此，`src`的元素类型可以是`T`的任何子类型\x97\
+    我们不关心是哪种类型。`copy`的签名使用类型参数表达依赖关系，但对第二个参数的元素类型使用通配符。"
+- en: 'We could have written the signature for this method another way, without using
+    wildcards at all:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以以另一种方式编写此方法的签名，而根本不使用通配符：
+- en: '[PRE6]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: "This is fine, but while the first type parameter is used both in the type of\
+    \ `dst` and in the bound of the second type parameter, `S`, `S` itself is only\
+    \ used once, in the type of `src`\x97nothing else depends on it. This is a sign\
+    \ that we can replace `S` with a wildcard. Using wildcards is clearer and more\
+    \ concise than declaring explicit type parameters, and should therefore be preferred\
+    \ whenever possible."
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "这是可以的，但是第一个类型参数既用于`dst`的类型，也用于第二个类型参数`S`的边界，而`S`本身只在`src`的类型中使用了一次\x97没有其他地方依赖于它。这表明我们可以用通配符替换`S`。使用通配符比声明显式类型参数更清晰、更简洁，因此在可能的情况下应优先使用通配符。"
+- en: Wildcards also have the advantage that they can be used outside of method signatures,
+    as the types of fields, local variables and arrays. Here is an example.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通配符还有一个优点，就是它们可以在方法签名之外使用，比如字段、局部变量和数组的类型。这里是一个例子。
+- en: Returning to our shape drawing problem, suppose we want to keep a history of
+    drawing requests. We can maintain the history in a static variable inside class
+    `Shape`, and have `drawAll()` store its incoming argument into the history field.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 回到我们的形状绘制问题，假设我们想要保留绘制请求的历史记录。我们可以在`Shape`类内部的静态变量中维护历史记录，并让`drawAll()`将其传入的参数存储到历史字段中。
+- en: '[PRE7]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Finally, again let's take note of the naming convention used for the type parameters.
+    We use `T` for type, whenever there isn't anything more specific about the type
+    to distinguish it. This is often the case in generic methods. If there are multiple
+    type parameters, we might use letters that neighbor `T` in the alphabet, such
+    as `S`. If a generic method appears inside a generic class, it's a good idea to
+    avoid using the same names for the type parameters of the method and class, to
+    avoid confusion. The same applies to nested generic classes.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，让我们再次注意一下用于类型参数的命名约定。我们在没有更具体的类型来区分时使用`T`表示类型。这在泛型方法中经常发生。如果有多个类型参数，我们可能会使用字母来区分`T`在字母表中的邻居，比如`S`。如果泛型方法出现在泛型类中，最好避免在方法和类的类型参数中使用相同的名称，以避免混淆。嵌套泛型类也适用相同的规则。

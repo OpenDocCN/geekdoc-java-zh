@@ -1,0 +1,311 @@
+- en: Checklist
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 检查表
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/intro/checklist.html](https://docs.oracle.com/javase/tutorial/i18n/intro/checklist.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/intro/checklist.html](https://docs.oracle.com/javase/tutorial/i18n/intro/checklist.html)
+- en: 'Many programs are not internationalized when first written. These programs
+    may have started as prototypes, or perhaps they were not intended for international
+    distribution. If you must internationalize an existing program, take the following
+    steps:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多程序在最初编写时并未国际化。这些程序可能最初是原型，或者可能并非用于国际分发。如果你必须国际化现有程序，请执行以下步骤：
+- en: Identify Culturally Dependent Data
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 识别文化相关数据
+- en: 'Text messages are the most obvious form of data that varies with culture. However,
+    other types of data may vary with region or language. The following list contains
+    examples of culturally dependent data:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文本消息是随文化变化最明显的数据形式。然而，其他类型的数据可能会随地区或语言而变化。以下列表包含了文化相关数据的例子：
+- en: Messages
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 消息
+- en: Labels on GUI components
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: GUI组件上的标签
+- en: Online help
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在线帮助
+- en: Sounds
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 声音
+- en: Colors
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 颜色
+- en: Graphics
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 图形
+- en: Icons
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 图标
+- en: Dates
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 日期
+- en: Times
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 时间
+- en: Numbers
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 数字
+- en: Currencies
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 货币
+- en: Measurements
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 测量
+- en: Phone numbers
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 电话号码
+- en: Honorifics and personal titles
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 敬语和个人头衔
+- en: Postal addresses
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 邮政地址
+- en: Page layouts
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 页面布局
+- en: Isolate Translatable Text in Resource Bundles
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在资源包中隔离可翻译文本
+- en: 'Translation is costly. You can help reduce costs by isolating the text that
+    must be translated in `ResourceBundle` objects. Translatable text includes status
+    messages, error messages, log file entries, and GUI component labels. This text
+    is included into programs that haven''t been internationalized. You need to locate
+    all occurrences of included text that is displayed to end users. For example,
+    you should clean up code like this:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 翻译是昂贵的。你可以通过将必须翻译的文本隔离在`ResourceBundle`对象中来帮助降低成本。可翻译的文本包括状态消息、错误消息、日志文件条目和GUI组件标签。这些文本包含在尚未国际化的程序中。你需要找到所有显示给最终用户的包含文本的出现。例如，你应该清理这样的代码：
+- en: '[PRE0]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: See the section [Isolating Locale-Specific Data](../resbundle/index.html) for
+    details.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 详细信息请参见[隔离特定区域数据](../resbundle/index.html)部分。
+- en: Deal with Compound Messages
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理复合消息
+- en: 'Compound messages contain variable data. In the message "The disk contains
+    1100 files." the integer 1100 may vary. This message is difficult to translate
+    because the position of the integer in the sentence is not the same in all languages.
+    The following message is not translatable, because the order of the sentence elements
+    is fixed by concatenation:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 复合消息包含可变数据。在消息"The disk contains 1100 files."中，整数1100可能会变化。这个消息很难翻译，因为整数在句子中的位置在所有语言中都不相同。下面的消息是不可翻译的，因为句子元素的顺序是由串联固定的：
+- en: '[PRE1]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Whenever possible, you should avoid constructing compound messages, because
+    they are difficult to translate. However, if your application requires compound
+    messages, you can handle them with the techniques described in the section [Messages](../format/messageintro.html).
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽可能避免构建复合消息，因为它们很难翻译。然而，如果你的应用程序需要复合消息，你可以使用[消息](../format/messageintro.html)部分中描述的技术来处理它们。
+- en: Format Numbers and Currencies
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 格式化数字和货币
+- en: 'If your application displays numbers and currencies, you must format them in
+    a locale-independent manner. The following code is not yet internationalized,
+    because it will not display the number correctly in all countries:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你的应用程序显示数字和货币，你必须以与地区无关的方式格式化它们。以下代码尚未国际化，因为它在所有国家中都不会正确显示数字：
+- en: '[PRE2]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: You should replace the preceding code with a routine that formats the number
+    correctly. The Java programming language provides several classes that format
+    numbers and currencies. These classes are discussed in the section [Numbers and
+    Currencies](../format/numberintro.html).
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你应该用一个能正确格式化数字的例程替换前面的代码。Java编程语言提供了几个格式化数字和货币的类。这些类在[数字和货币](../format/numberintro.html)部分有讨论。
+- en: Format Dates and Times
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 格式化日期和时间
+- en: 'Date and time formats differ with region and language. If your code contains
+    statements like the following, you need to change it:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期和时间格式因地区和语言而异。如果你的代码包含如下语句，你需要进行更改：
+- en: '[PRE3]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: If you use the date-formatting classes, your application can display dates and
+    times correctly around the world. For examples and instructions, see the section
+    [Dates and Times](../format/dateintro.html).
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你使用日期格式化类，你的应用程序可以在全球范围内正确显示日期和时间。有关示例和说明，请参见[日期和时间](../format/dateintro.html)部分。
+- en: Use Unicode Character Properties
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用Unicode字符属性
+- en: 'The following code tries to verify that a character is a letter:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码尝试验证一个字符是否为字母：
+- en: '[PRE4]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Watch out for code like this, because it won't work with languages other than
+    English. For example, the `if` statement misses the character ü in the German
+    word Grün.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意类似这样的代码，因为它在除英语以外的语言中无法正常工作。例如，`if`语句在德语单词Grün中漏掉了字符ü。
+- en: 'The `Character` comparison methods use the Unicode standard to identify character
+    properties. Thus you should replace the previous code with the following:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Character`比较方法使用Unicode标准来识别字符属性。因此，您应该用以下代码替换先前的代码：'
+- en: '[PRE5]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: For more information on the `Character` comparison methods, see the section
+    [Checking Character Properties](../text/charintro.html).
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关`Character`比较方法的更多信息，请参阅[检查字符属性](../text/charintro.html)部分。
+- en: Compare Strings Properly
+  id: totrans-44
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 正确比较字符串
+- en: 'When sorting text you often compare strings. If the text is displayed, you
+    shouldn''t use the comparison methods of the `String` class. A program that hasn''t
+    been internationalized might compare strings as follows:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在对文本进行排序时，通常需要比较字符串。如果文本是显示的，您不应该使用`String`类的比较方法。一个未国际化的程序可能会这样比较字符串：
+- en: '[PRE6]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The `String.equals` and `String.compareTo` methods perform binary comparisons,
+    which are ineffective when sorting in most languages. Instead you should use the
+    `Collator` class, which is described in the section [Comparing Strings](../text/collationintro.html).
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`String.equals`和`String.compareTo`方法执行二进制比较，在大多数语言中排序时效率低下。相反，您应该使用`Collator`类，该类在[比较字符串](../text/collationintro.html)部分有描述。'
+- en: Convert Non-Unicode Text
+  id: totrans-48
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 转换非Unicode文本
+- en: Characters in the Java programming language are encoded in Unicode. If your
+    application handles non-Unicode text, you might need to translate it into Unicode.
+    For more information, see the section [Converting Non-Unicode Text](../text/convertintro.html).
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编程语言中的字符是以Unicode编码的。如果您的应用程序处理非Unicode文本，您可能需要将其转换为Unicode。有关更多信息，请参阅[转换非Unicode文本](../text/convertintro.html)部分。

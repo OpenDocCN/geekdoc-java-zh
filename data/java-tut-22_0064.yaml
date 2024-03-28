@@ -1,0 +1,235 @@
+- en: Local Classes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 本地类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/localclasses.html](https://docs.oracle.com/javase/tutorial/java/javaOO/localclasses.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/localclasses.html](https://docs.oracle.com/javase/tutorial/java/javaOO/localclasses.html)
+- en: Local classes are classes that are defined in a *block*, which is a group of
+    zero or more statements between balanced braces. You typically find local classes
+    defined in the body of a method.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本地类是在*块*中定义的类，块是在平衡大括号之间的零个或多个语句组成的组。通常在方法体中定义本地类。
+- en: 'This section covers the following topics:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下主题：
+- en: '[Declaring Local Classes](#declaring-local-classes)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[声明本地类](#declaring-local-classes)'
+- en: '[Accessing Members of an Enclosing Class](#accessing-members-of-an-enclosing-class)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[访问封闭类的成员](#accessing-members-of-an-enclosing-class)'
+- en: '[Shadowing and Local Classes](#shadowing-and-local-classes)'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[遮蔽和本地类](#shadowing-and-local-classes)'
+- en: '[Local Classes Are Similar To Inner Classes](#local-classes-are-similar-to-inner-classes)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[本地类类似于内部类](#local-classes-are-similar-to-inner-classes)'
+- en: Declaring Local Classes
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 声明本地类
+- en: You can define a local class inside any block (see [Expressions, Statements,
+    and Blocks](../../java/nutsandbolts/expressions.html) for more information). For
+    example, you can define a local class in a method body, a `for` loop, or an `if`
+    clause.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在任何块中定义本地类（请参阅[表达式、语句和块](../../java/nutsandbolts/expressions.html)了解更多信息）。例如，您可以在方法体、`for`循环或`if`子句中定义本地类。
+- en: 'The following example, [`LocalClassExample`](examples/LocalClassExample.java),
+    validates two phone numbers. It defines the local class `PhoneNumber` in the method
+    `validatePhoneNumber`:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例，[`LocalClassExample`](examples/LocalClassExample.java)，验证两个电话号码。它在方法`validatePhoneNumber`中定义了本地类`PhoneNumber`：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The example validates a phone number by first removing all characters from
+    the phone number except the digits 0 through 9\. After, it checks whether the
+    phone number contains exactly ten digits (the length of a phone number in North
+    America). This example prints the following:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例通过首先从电话号码中删除除数字0到9之外的所有字符来验证电话号码。然后，它检查电话号码是否恰好包含十个数字（北美电话号码的长度）。该示例打印如下内容：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Accessing Members of an Enclosing Class
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 访问封闭类的成员
+- en: A local class has access to the members of its enclosing class. In the previous
+    example, the `PhoneNumber` constructor accesses the member `LocalClassExample.regularExpression`.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本地类可以访问其封闭类的成员。在前面的示例中，`PhoneNumber`构造函数访问成员`LocalClassExample.regularExpression`。
+- en: In addition, a local class has access to local variables. However, a local class
+    can only access local variables that are declared final. When a local class accesses
+    a local variable or parameter of the enclosing block, it *captures* that variable
+    or parameter. For example, the `PhoneNumber` constructor can access the local
+    variable `numberLength` because it is declared final; `numberLength` is a *captured
+    variable*.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，本地类可以访问局部变量。但是，本地类只能访问声明为final的局部变量。当本地类访问封闭块的局部变量或参数时，它会*捕获*该变量或参数。例如，`PhoneNumber`构造函数可以访问局部变量`numberLength`，因为它声明为final；`numberLength`是一个*捕获的变量*。
+- en: 'However, starting in Java SE 8, a local class can access local variables and
+    parameters of the enclosing block that are final or *effectively final*. A variable
+    or parameter whose value is never changed after it is initialized is effectively
+    final. For example, suppose that the variable `numberLength` is not declared final,
+    and you add the highlighted assignment statement in the `PhoneNumber` constructor
+    to change the length of a valid phone number to 7 digits:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，从Java SE 8开始，本地类可以访问封闭块中的局部变量和参数，这些变量是final或*有效地final*。一旦初始化后值不会改变的变量或参数是有效地final。例如，假设变量`numberLength`没有声明为final，并且您在`PhoneNumber`构造函数中添加了突出显示的赋值语句以将有效电话号码的长度更改为7位：
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Because of this assignment statement, the variable `numberLength` is not effectively
+    final anymore. As a result, the Java compiler generates an error message similar
+    to "local variables referenced from an inner class must be final or effectively
+    final" where the inner class `PhoneNumber` tries to access the `numberLength`
+    variable:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于这个赋值语句，变量`numberLength`不再是有效地final。因此，当内部类`PhoneNumber`尝试访问`numberLength`变量时，Java编译器生成类似于"从内部类引用的局部变量必须是final或有效地final"的错误消息：
+- en: '[PRE3]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Starting in Java SE 8, if you declare the local class in a method, it can access
+    the method''s parameters. For example, you can define the following method in
+    the `PhoneNumber` local class:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从Java SE 8开始，如果你在方法中声明局部类，它可以访问方法的参数。例如，你可以在`PhoneNumber`局部类中定义以下方法：
+- en: '[PRE4]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The method `printOriginalNumbers` accesses the parameters `phoneNumber1` and
+    `phoneNumber2` of the method `validatePhoneNumber`.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`printOriginalNumbers`访问方法`validatePhoneNumber`的参数`phoneNumber1`和`phoneNumber2`。
+- en: Shadowing and Local Classes
+  id: totrans-24
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 遮蔽和局部类
+- en: Declarations of a type (such as a variable) in a local class shadow declarations
+    in the enclosing scope that have the same name. See [Shadowing](../../java/javaOO/nested.html#shadowing)
+    for more information.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在局部类中声明的类型（如变量）会遮蔽在外部作用域中具有相同名称的声明。更多信息请参见[Shadowing](../../java/javaOO/nested.html#shadowing)。
+- en: Local Classes Are Similar To Inner Classes
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 局部类类似于内部类
+- en: Local classes are similar to inner classes because they cannot define or declare
+    any static members. Local classes in static methods, such as the class `PhoneNumber`,
+    which is defined in the static method `validatePhoneNumber`, can only refer to
+    static members of the enclosing class. For example, if you do not define the member
+    variable `regularExpression` as static, then the Java compiler generates an error
+    similar to "non-static variable `regularExpression` cannot be referenced from
+    a static context."
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 局部类类似于内部类，因为它们不能定义或声明任何静态成员。在静态方法中的局部类，比如在静态方法`validatePhoneNumber`中定义的`PhoneNumber`类，只能引用封闭类的静态成员。例如，如果你没有将成员变量`regularExpression`定义为静态的，那么Java编译器会生成类似“非静态变量`regularExpression`无法从静态上下文中引用”的错误。
+- en: Local classes are non-static because they have access to instance members of
+    the enclosing block. Consequently, they cannot contain most kinds of static declarations.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 局部类是非静态的，因为它们可以访问封闭块的实例成员。因此，它们不能包含大多数类型的静态声明。
+- en: 'You cannot declare an interface inside a block; interfaces are inherently static.
+    For example, the following code excerpt does not compile because the interface
+    `HelloThere` is defined inside the body of the method `greetInEnglish`:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你不能在块内部声明接口；接口本质上是静态的。例如，以下代码摘录不会编译，因为接口`HelloThere`是在方法`greetInEnglish`的主体内定义的：
+- en: '[PRE5]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'You cannot declare static initializers or member interfaces in a local class.
+    The following code excerpt does not compile because the method `EnglishGoodbye.sayGoodbye`
+    is declared `static`. The compiler generates an error similar to "modifier ''static''
+    is only allowed in constant variable declaration" when it encounters this method
+    definition:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你不能在局部类中声明静态初始化程序或成员接口。以下代码摘录不会编译，因为方法`EnglishGoodbye.sayGoodbye`被声明为`static`。当编译器遇到这个方法定义时，会生成类似“修饰符'static'仅允许在常量变量声明中使用”的错误：
+- en: '[PRE6]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'A local class can have static members provided that they are constant variables.
+    (A *constant variable* is a variable of primitive type or type `String` that is
+    declared final and initialized with a compile-time constant expression. A compile-time
+    constant expression is typically a string or an arithmetic expression that can
+    be evaluated at compile time. See [Understanding Class Members](classvars.html)
+    for more information.) The following code excerpt compiles because the static
+    member `EnglishGoodbye.farewell` is a constant variable:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 局部类可以拥有静态成员，前提是它们是常量变量。（*常量变量*是指声明为final并用编译时常量表达式初始化的原始类型或`String`类型的变量。编译时常量表达式通常是一个可以在编译时评估的字符串或算术表达式。更多信息请参见[理解类成员](classvars.html)。）以下代码摘录可以编译，因为静态成员`EnglishGoodbye.farewell`是一个常量变量：
+- en: '[PRE7]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'

@@ -1,0 +1,235 @@
+- en: What Applets Can and Cannot Do
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 小程序可以和不能做什么
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/security.html](https://docs.oracle.com/javase/tutorial/deployment/applet/security.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/security.html](https://docs.oracle.com/javase/tutorial/deployment/applet/security.html)
+- en: Java applets are loaded on a client when the user visits a page containing an
+    applet. The security model behind Java applets has been designed with the goal
+    of protecting the user from malicious applets.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户访问包含小程序的页面时，Java小程序将加载到客户端。Java小程序背后的安全模型旨在保护用户免受恶意小程序的侵害。
+- en: Applets are either sandbox applets or privileged applets. Sandbox applets are
+    run in a security sandbox that allows only a set of safe operations. Privileged
+    applets can run outside the security sandbox and have extensive capabilities to
+    access the client.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 小程序可以是沙箱小程序或特权小程序。沙箱小程序在仅允许一组安全操作的安全沙箱中运行。特权小程序可以在安全沙箱之外运行，并具有广泛的访问客户端的能力。
+- en: Applets that are not signed are restricted to the security sandbox, and run
+    only if the user accepts the applet. Applets that are signed by a certificate
+    from a recognized certificate authority can either run only in the sandbox, or
+    can request permission to run outside the sandbox. In either case, the user must
+    accept the applet's security certificate, otherwise the applet is blocked from
+    running.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 未签名的小程序受限于安全沙箱，仅在用户接受小程序时才运行。由认可的证书颁发机构签名的小程序可以在安全沙箱中运行，或者可以请求权限在安全沙箱之外运行。在任何情况下，用户必须接受小程序的安全证书，否则小程序将被阻止运行。
+- en: It is recommended that you launch your applet using Java Network Launch Protocol
+    (JNLP) to leverage expanded capabilities and improve user experience. See [Deploying
+    an Applet](deployingApplet.html) for step by step instructions on applet deployment.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 建议您使用Java网络启动协议（JNLP）启动您的小程序，以利用扩展功能并改善用户体验。有关逐步说明小程序部署的详细信息，请参阅[部署小程序](deployingApplet.html)。
+- en: It is recommended that you deploy your applets to a web server, even for testing.
+    To run applets locally, add the applets to the exception site list, which is managed
+    from the Security tab of the Java Control Panel.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 建议您将您的小程序部署到Web服务器上，即使是用于测试。要在本地运行小程序，请将小程序添加到例外站点列表中，该列表可以从Java控制面板的安全选项卡中管理。
+- en: In this topic we will discuss the security restrictions and capabilities of
+    applets.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本主题中，我们将讨论小程序的安全限制和功能。
+- en: Sandbox Applets
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 沙箱小程序
+- en: 'Sandbox applets are restricted to the security sandbox and *can* perform the
+    following operations:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 沙箱小程序受限于安全沙箱，*可以*执行以下操作：
+- en: They can make network connections to the host and port they came from. Protocols
+    must match, and if a domain name is used to load the applet, the domain name must
+    be used to connect back to the host, not the IP address.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它们可以与它们来自的主机和端口建立网络连接。协议必须匹配，如果使用域名加载小程序，则必须使用域名连接回主机，而不是IP地址。
+- en: They can easily display HTML documents using the `showDocument` method of the
+    `java.applet.AppletContext` class.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`java.applet.AppletContext`类的`showDocument`方法，它们可以轻松显示HTML文档。
+- en: They can invoke public methods of other applets on the same page.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它们可以调用同一页面上其他小程序的公共方法。
+- en: Applets that are loaded from the local file system (from a directory in the
+    user's `CLASSPATH`) have none of the restrictions that applets loaded over the
+    network do.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 从本地文件系统（用户的`CLASSPATH`中的目录）加载的小程序没有网络加载的小程序所具有的任何限制。
+- en: They can read secure system properties. See [System Properties](../doingMoreWithRIA/properties.html)
+    for a list of secure system properties.
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它们可以读取安全系统属性。有关安全系统属性列表，请参阅[System Properties](../doingMoreWithRIA/properties.html)。
+- en: 'When launched by using JNLP, sandbox applets can also perform the following
+    operations:'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用JNLP启动时，沙箱小程序还可以执行以下操作：
+- en: They can open, read, and save files on the client.
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它们可以在客户端打开、读取和保存文件。
+- en: They can access the shared system-wide clipboard.
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它们可以访问共享的系统剪贴板。
+- en: They can access printing functions.
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它们可以访问打印功能。
+- en: They can store data on the client, decide how applets should be downloaded and
+    cached, and much more. See [JNLP API](../doingMoreWithRIA/jnlpAPI.html) for more
+    information about developing applets by using the JNLP API.
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它们可以在客户端存储数据，决定如何下载和缓存小程序等。有关使用JNLP API开发小程序的更多信息，请参阅[JNLP API](../doingMoreWithRIA/jnlpAPI.html)。
+- en: 'Sandbox applets *cannot* perform the following operations:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 沙箱小程序*无法*执行以下操作：
+- en: They cannot access client resources such as the local filesystem, executable
+    files, system clipboard, and printers.
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们无法访问客户端资源，如本地文件系统、可执行文件、系统剪贴板和打印机。
+- en: They cannot connect to or retrieve resources from any third party server (any
+    server other than the server it originated from).
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们无法连接或从任何第三方服务器检索资源（任何不同于其来源服务器的服务器）。
+- en: They cannot load native libraries.
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们无法加载本地库。
+- en: They cannot change the SecurityManager.
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们无法更改SecurityManager。
+- en: They cannot create a ClassLoader.
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们无法创建一个ClassLoader。
+- en: They cannot read certain system properties. See [System Properties](../doingMoreWithRIA/properties.html)
+    for a list of forbidden system properties.
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 他们无法读取某些系统属性。请参见[系统属性](../doingMoreWithRIA/properties.html)以获取被禁止的系统属性列表。
+- en: Privileged applets
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 特权小程序
+- en: Privileged applets do not have the security restrictions that are imposed on
+    sandbox applets and can run outside the security sandbox.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 特权小程序不受强制执行在沙盒小程序上的安全限制，可以在安全沙箱之外运行。
+- en: '* * *'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  JavaScript code is treated like unsigned code. When a privileged
+    applet is accessed from JavaScript code in an HTML page, the applet is executed
+    *within* the security sandbox. This implies that the privileged applet essentially
+    behaves likes a sandbox applet.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** JavaScript代码被视为未签名代码。当特权小程序从HTML页面中的JavaScript代码访问时，该小程序在安全沙箱内执行。这意味着特权小程序基本上表现得像一个沙盒小程序。'
+- en: '* * *'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: See [Security in Rich Internet Applications](../doingMoreWithRIA/security.html)
+    for information on how to work with applets.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参见[富互联网应用程序中的安全性](../doingMoreWithRIA/security.html)以了解如何处理小程序。
+- en: Additional Information
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 附加信息
+- en: For more information about applet security dialog boxes, see [Exploring Security
+    Warning Functionality](http://www.oracle.com/technetwork/articles/javase/appletwarning-135102.html)
+    (article on oracle.com/technetwork)
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关小程序安全性警告框的更多信息，请参见[探索安全警告功能](http://www.oracle.com/technetwork/articles/javase/appletwarning-135102.html)（oracle.com/technetwork上的文章）

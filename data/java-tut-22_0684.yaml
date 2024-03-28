@@ -1,0 +1,485 @@
+- en: Overview of the MIDI Package
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: MIDI包概述
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sound/overview-MIDI.html](https://docs.oracle.com/javase/tutorial/sound/overview-MIDI.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sound/overview-MIDI.html](https://docs.oracle.com/javase/tutorial/sound/overview-MIDI.html)
+- en: 'The [introduction](index.html) gave a glimpse into the MIDI capabilities of
+    the Java Sound API. The discussion that follows provides a more detailed introduction
+    to the Java Sound API''s MIDI architecture, which is accessed through the `javax.sound.midi`
+    package. Some basic features of MIDI itself are explained, as a refresher or introduction,
+    to place the Java Sound API''s MIDI features in context. It then goes on to discuss
+    the Java Sound API''s approach to MIDI, as a preparation for the programming tasks
+    that are explained in subsequent sections. The following discussion of the MIDI
+    API is divided into two main areas: data and devices.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[介绍](index.html)简要介绍了Java Sound API的MIDI功能。接下来的讨论更详细地介绍了通过`javax.sound.midi`包访问的Java
+    Sound API的MIDI架构。解释了一些MIDI本身的基本特性，作为一个复习或介绍，以便将Java Sound API的MIDI功能放入上下文中。然后继续讨论Java
+    Sound API对MIDI的处理，为后续部分中解释的编程任务做准备。对MIDI API的讨论分为两个主要领域：数据和设备。'
+- en: 'A MIDI Refresher: Wires and Files'
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: MIDI复习：线缆和文件
+- en: The Musical Instrument Digital Interface (MIDI) standard defines a communication
+    protocol for electronic music devices, such as electronic keyboard instruments
+    and personal computers. MIDI data can be transmitted over special cables during
+    a live performance, and can also be stored in a standard type of file for later
+    playback or editing.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 音乐器数字接口（MIDI）标准定义了一种用于电子音乐设备（如电子键盘乐器和个人计算机）的通信协议。MIDI数据可以在现场表演期间通过特殊电缆传输，并且还可以存储在标准类型的文件中以供以后播放或编辑。
+- en: This section reviews some MIDI basics, without reference to the Java Sound API.
+    The discussion is intended as a refresher for readers acquainted with MIDI, and
+    as a brief introduction for those who are not, to provide background for the subsequent
+    discussion of the Java Sound API's MIDI package. If you have a thorough understanding
+    of MIDI, you can safely skip this section. Before writing substantial MIDI applications,
+    programmers who are unfamiliar with MIDI will probably need a fuller description
+    of MIDI than can be included in this tutorial. See the Complete MIDI 1.0 Detailed
+    Specification, which is available only in hard copy from [http://www.midi.org](http://www.midi.org)
+    (although you might find paraphrased or summarized versions on the Web).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节回顾了一些MIDI基础知识，不涉及Java Sound API。这个讨论旨在为熟悉MIDI的读者提供一个复习，为不熟悉的读者提供一个简要介绍，为随后讨论Java
+    Sound API的MIDI包提供背景。如果您对MIDI有深入了解，可以安全地跳过本节。在编写大量MIDI应用程序之前，不熟悉MIDI的程序员可能需要比本教程中包含的更详细的MIDI描述。请参阅仅在硬拷贝中提供的完整MIDI
+    1.0详细规范，可从[http://www.midi.org](http://www.midi.org)获取（尽管您可能会在网上找到改写或摘要版本）。
+- en: MIDI is both a hardware specification and a software specification. To understand
+    MIDI's design, it helps to understand its history. MIDI was originally designed
+    for passing musical events, such as key depressions, between electronic keyboard
+    instruments such as synthesizers. Hardware devices known as sequencers stored
+    sequences of notes that could control a synthesizer, allowing musical performances
+    to be recorded and subsequently played back. Later, hardware interfaces were developed
+    that connected MIDI instruments to a computer's serial port, allowing sequencers
+    to be implemented in software. More recently, computer sound cards have incorporated
+    hardware for MIDI I/O and for synthesizing musical sound. Today, many users of
+    MIDI deal only with sound cards, never connecting to external MIDI devices. CPUs
+    have become fast enough that synthesizers, too, can be implemented in software.
+    A sound card is needed only for audio I/O and, in some applications, for communicating
+    with external MIDI devices.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MIDI既是硬件规范，也是软件规范。要理解MIDI的设计，了解其历史是有帮助的。MIDI最初是为了在电子键盘乐器（如合成器）之间传递音乐事件（如按键）而设计的。被称为音序器的硬件设备存储了可以控制合成器的音符序列，允许音乐表演被录制并随后播放。后来，开发了连接MIDI乐器与计算机串口的硬件接口，允许音序器在软件中实现。最近，计算机声卡已经整合了用于MIDI
+    I/O和合成音乐声音的硬件。如今，许多MIDI用户只使用声卡，从不连接外部MIDI设备。CPU已经足够快，以至于合成器也可以在软件中实现。只有在音频I/O和在某些应用中与外部MIDI设备通信时才需要声卡。
+- en: The brief hardware portion of the MIDI specification prescribes the pinouts
+    for MIDI cables and the jacks into which these cables are plugged. This portion
+    need not concern us. Because devices that originally required hardware, such as
+    sequencers and synthesizers, are now implementable in software, perhaps the only
+    reason for most programmers to know anything about MIDI hardware devices is simply
+    to understand the metaphors in MIDI. However, external MIDI hardware devices are
+    still essential for some important music applications, and so the Java Sound API
+    supports input and output of MIDI data.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MIDI规范的简要硬件部分规定了MIDI电缆的引脚排列方式以及这些电缆插入的插孔。这部分内容不需要我们关心。因为最初需要硬件的设备，如音序器和合成器，现在可以在软件中实现，也许大多数程序员需要了解MIDI硬件设备的唯一原因只是为了理解MIDI中的隐喻。然而，外部MIDI硬件设备对于一些重要的音乐应用仍然至关重要，因此Java
+    Sound API支持MIDI数据的输入和输出。
+- en: 'The software portion of the MIDI specification is extensive. This portion concerns
+    the structure of MIDI data and how devices such as synthesizers should respond
+    to that data. It is important to understand that MIDI data can be *streamed* or
+    *sequenced*. This duality reflects two different parts of the Complete MIDI 1.0
+    Detailed Specification:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MIDI规范的软件部分非常广泛。这部分内容涉及MIDI数据的结构以及合成器等设备应如何响应该数据。重要的是要理解MIDI数据可以*流式传输*或*序列化*。这种二元性反映了Complete
+    MIDI 1.0详细规范的两个不同部分：
+- en: MIDI 1.0
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: MIDI 1.0
+- en: Standard MIDI Files
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 标准MIDI文件
+- en: We'll explain what's meant by streaming and sequencing by examining the purpose
+    of each of these two parts of the MIDI specification.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过检查MIDI规范的这两个部分的目的，我们将解释流式传输和序列化的含义。
+- en: Streaming Data in the MIDI Wire Protocol
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: MIDI线协议中的流数据
+- en: The first of these two parts of the MIDI specification describes what is known
+    informally as "MIDI wire protocol." MIDI wire protocol, which is the original
+    MIDI protocol, is based on the assumption that the MIDI data is being sent over
+    a MIDI cable (the "wire"). The cable transmits digital data from one MIDI device
+    to another. Each of the MIDI devices might be a musical instrument or a similar
+    device, or it might be a general-purpose computer equipped with a MIDI-capable
+    sound card or a MIDI-to-serial-port interface.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MIDI规范的这两个部分中的第一个描述了非正式称为“MIDI线协议”的内容。 MIDI线协议，即原始MIDI协议，基于这样一个假设，即MIDI数据正在通过MIDI电缆（“线”）发送。电缆将数字数据从一个MIDI设备传输到另一个MIDI设备。每个MIDI设备可能是乐器或类似设备，也可能是配备有MIDI功能的声卡或MIDI到串口接口的通用计算机。
+- en: 'MIDI data, as defined by MIDI wire protocol, is organized into messages. The
+    different kinds of message are distinguished by the first byte in the message,
+    known as the *status byte*. (Status bytes are the only bytes that have the highest-order
+    bit set to 1.) The bytes that follow the status byte in a message are known as
+    *data bytes*. Certain MIDI messages, known as *channel* messages, have a status
+    byte that contains four bits to specify the kind of channel message and another
+    four bits to specify the channel number. There are therefore 16 MIDI channels;
+    devices that receive MIDI messages can be set to respond to channel messages on
+    all or only one of these virtual channels. Often each MIDI channel (which shouldn''t
+    be confused with a channel of audio) is used to send the notes for a different
+    instrument. As an example, two common channel messages are Note On and Note Off,
+    which start a note sounding and then stop it, respectively. These two messages
+    each take two data bytes: the first specifies the note''s pitch and the second
+    its "velocity" (how fast the key is depressed or released, assuming a keyboard
+    instrument is playing the note).'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MIDI数据，根据MIDI线协议定义，被组织成消息。不同类型的消息由消息中的第一个字节区分，称为*状态字节*。（状态字节是唯一一个最高位设置为1的字节。）在消息中跟随状态字节的字节称为*数据字节*。某些MIDI消息，称为*通道*消息，具有包含四位用于指定通道消息类型和另外四位用于指定通道号的状态字节。因此有16个MIDI通道；接收MIDI消息的设备可以设置为响应所有或仅一个这些虚拟通道上的通道消息。通常，每个MIDI通道（不应与音频通道混淆）用于发送不同乐器的音符。例如，两个常见的通道消息是Note
+    On和Note Off，分别启动音符发声并停止它。这两个消息各自需要两个数据字节：第一个指定音符的音高，第二个指定其“速度”（假设键盘乐器正在演奏音符时按下或释放键的速度）。
+- en: MIDI wire protocol defines a streaming model for MIDI data. A central feature
+    of this protocol is that the bytes of MIDI data are delivered in real time—in
+    other words, they are streamed. The data itself contains no timing information;
+    each event is processed as it's received, and it's assumed that it arrives at
+    the correct time. That model is fine if the notes are being generated by a live
+    musician, but it's insufficient if you want to store the notes for later playback,
+    or if you want to compose them out of real time. This limitation is understandable
+    when you realize that MIDI was originally designed for musical performance, as
+    a way for a keyboard musician to control more than one synthesizer, back in the
+    days before many musicians used computers. (The first version of the specification
+    was released in 1984.)
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MIDI 传输协议为 MIDI 数据定义了一个流模型。该协议的一个核心特点是 MIDI 数据的字节是实时传递的，换句话说，它们是流式传输的。数据本身不包含时间信息；每个事件在接收时被处理，并假定它在正确的时间到达。如果音符是由现场音乐家生成的，那么这种模型是可以接受的，但如果您想要存储音符以便以后播放，或者想要在实时之外进行组合，那么这是不够的。当您意识到
+    MIDI 最初是为音乐表演而设计的，作为键盘音乐家在许多音乐家使用计算机之前控制多个合成器的一种方式时，这种限制是可以理解的。（规范的第一个版本于 1984
+    年发布。）
+- en: Sequenced Data in Standard MIDI Files
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 标准 MIDI 文件中的序列化数据
+- en: The Standard MIDI Files part of the MIDI specification addresses the timing
+    limitation in MIDI wire protocol. A standard MIDI file is a digital file that
+    contains MIDI *events*. An event is simply a MIDI message, as defined in the MIDI
+    wire protocol, but with an additional piece of information that specifies the
+    event's timing. (There are also some events that don't correspond to MIDI wire
+    protocol messages, as we'll see in the next section.) The additional timing information
+    is a series of bytes that indicates when to perform the operation described by
+    the message. In other words, a standard MIDI file specifies not just which notes
+    to play, but exactly when to play each of them. It's a bit like a musical score.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MIDI 规范的标准 MIDI 文件部分解决了 MIDI 传输协议中的时间限制。标准 MIDI 文件是一个包含 MIDI *事件* 的数字文件。一个事件简单地是一个
+    MIDI 消息，如 MIDI 传输协议中定义的，但附加了一个指定事件时间的额外信息。（还有一些事件不对应 MIDI 传输协议消息，我们将在下一节中看到。）额外的时间信息是一系列字节，指示何时执行消息描述的操作。换句话说，标准
+    MIDI 文件不仅指定要播放哪些音符，而且确切地指定何时播放每一个音符。这有点像一个乐谱。
+- en: 'The information in a standard MIDI file is referred to as a *sequence*. A standard
+    MIDI file contains one or more *tracks*. Each track typically contains the notes
+    that a single instrument would play if the music were performed by live musicians.
+    A sequencer is a software or hardware device that can read a sequence and deliver
+    the MIDI messages contained in it at the right time. A sequencer is a bit like
+    an orchestra conductor: it has the information for all the notes, including their
+    timings, and it tells some other entity when to perform the notes.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 标准 MIDI 文件中的信息被称为*序列*。标准 MIDI 文件包含一个或多个*轨道*。每个轨道通常包含一个乐器会演奏的音符，如果音乐由现场音乐家演奏。一个序列器是一个可以读取序列并在正确时间传递其中包含的
+    MIDI 消息的软件或硬件设备。一个序列器有点像一个管弦乐队指挥：它拥有所有音符的信息，包括它们的时间，然后告诉其他实体何时演奏这些音符。
+- en: The Java Sound API's Representation of MIDI Data
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Java Sound API 对 MIDI 数据的表示
+- en: Now that we've sketched the MIDI specification's approach to streamed and sequenced
+    musical data, let's examine how the Java Sound API represents that data.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们已经勾勒出 MIDI 规范对流式和序列化音乐数据的处理方式，让我们来看看 Java Sound API 如何表示这些数据。
+- en: MIDI Messages
+  id: totrans-21
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: MIDI 消息
+- en: '[`MidiMessage`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiMessage.html)
+    is an abstract class that represents a "raw" MIDI message. A "raw" MIDI message
+    is usually a message defined by the MIDI wire protocol. It can also be one of
+    the events defined by the Standard MIDI Files specification, but without the event''s
+    timing information. There are three categories of raw MIDI message, represented
+    in the Java Sound API by these three respective `MidiMessage` subclasses:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`MidiMessage`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiMessage.html)
+    是表示“原始” MIDI 消息的抽象类。一个“原始” MIDI 消息通常是由 MIDI 传输协议定义的消息。它也可以是标准 MIDI 文件规范中定义的事件之一，但没有事件的时间信息。在
+    Java Sound API 中，有三类原始 MIDI 消息，分别由这三个相应的 `MidiMessage` 子类表示：'
+- en: '[`ShortMessages`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/ShortMessage.html)
+    are the most common messages and have at most two data bytes following the status
+    byte. The channel messages, such as Note On and Note Off, are all short messages,
+    as are some other messages.'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`ShortMessages`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/ShortMessage.html)是最常见的消息，状态字节后最多有两个数据字节。通道消息，如Note
+    On和Note Off，都是短消息，还有一些其他消息也是短消息。'
+- en: '[`SysexMessages`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/SysexMessage.html)
+    contain *system-exclusive* MIDI messages. They may have many bytes, and generally
+    contain manufacturer-specific instructions.'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`SysexMessages`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/SysexMessage.html)包含*系统专用*的MIDI消息。它们可能有许多字节，并且通常包含制造商特定的指令。'
+- en: '[`MetaMessages`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MetaMessage.html)
+    occur in MIDI files, but not in MIDI wire protocol. Meta messages contain data,
+    such as lyrics or tempo settings, that might be useful to sequencers but that
+    are usually meaningless for synthesizers.'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`MetaMessages`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MetaMessage.html)出现在MIDI文件中，但不出现在MIDI线协议中。元消息包含数据，例如歌词或速度设置，这对于音序器可能很有用，但通常对合成器没有意义。'
+- en: MIDI Events
+  id: totrans-26
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: MIDI事件
+- en: As we've seen, standard MIDI files contain events that are wrappers for "raw"
+    MIDI messages along with timing information. An instance of the Java Sound API's
+    [`MidiEvent`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiEvent.html)
+    class represents an event such as might be stored in a standard MIDI file.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如我们所见，标准MIDI文件包含用于包装“原始”MIDI消息以及时间信息的事件。Java Sound API的[`MidiEvent`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiEvent.html)类的实例代表了一个类似于标准MIDI文件中存储的事件。
+- en: The API for `MidiEvent` includes methods to set and get the event's timing value.
+    There's also a method to retrieve its embedded raw MIDI message, which is an instance
+    of a subclass of `MidiMessage`, discussed next. (The embedded raw MIDI message
+    can be set only when constructing the `MidiEvent`.)
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MidiEvent`的API包括设置和获取事件的时间值的方法。还有一个方法用于检索其嵌入的原始MIDI消息，这是`MidiMessage`子类的实例，接下来会讨论。（嵌入的原始MIDI消息只能在构造`MidiEvent`时设置。）'
+- en: Sequences and Tracks
+  id: totrans-29
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 序列和轨道
+- en: 'As mentioned earlier, a standard MIDI file stores events that are arranged
+    into tracks. Usually the file represents one musical composition, and usually
+    each track represents a part such as might have been played by a single instrumentalist.
+    Each note that the instrumentalist plays is represented by at least two events:
+    a Note On that starts the note, and a Note Off that ends it. The track may also
+    contain events that don''t correspond to notes, such as meta-events (which were
+    mentioned above).'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，标准MIDI文件存储被安排到轨道中的事件。通常文件代表一个音乐作品，通常每个轨道代表一个部分，例如可能由单个乐器演奏。乐器演奏的每个音符至少由两个事件表示：开始音符的Note
+    On和结束音符的Note Off。轨道还可能包含不对应音符的事件，例如元事件（如上所述）。
+- en: 'The Java Sound API organizes MIDI data in a three-part hierarchy:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API将MIDI数据组织成三部分层次结构：
+- en: '[`Sequence`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Sequence.html)'
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Sequence`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Sequence.html)'
+- en: '[`Track`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Track.html)'
+  id: totrans-33
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Track`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Track.html)'
+- en: '[`MidiEvent`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiEvent.html)'
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`MidiEvent`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiEvent.html)'
+- en: 'A `Track` is a collection of `MidiEvents`, and a `Sequence` is a collection
+    of `Tracks`. This hierarchy reflects the files, tracks, and events of the Standard
+    MIDI Files specification. (Note: this is a hierarchy in terms of containment and
+    ownership; it''s *not* a class hierarchy in terms of inheritance. Each of these
+    three classes inherits directly from `java.lang.Object`.)'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Track`是`MidiEvents`的集合，`Sequence`是`Tracks`的集合。这种层次结构反映了标准MIDI文件规范中的文件、轨道和事件。（注意：这是一种包含和拥有的层次结构；这不是一种继承的类层次结构。这三个类直接继承自`java.lang.Object`。）'
+- en: '`Sequences` can be read from MIDI files, or created from scratch and edited
+    by adding `Tracks` to the `Sequence` (or removing them). Similarly, `MidiEvents`
+    can be added to or removed from the tracks in the sequence.'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Sequences`可以从MIDI文件中读取，也可以从头开始创建并通过向`Sequence`添加`Tracks`（或删除它们）进行编辑。同样，`MidiEvents`可以添加到序列中的轨道中，也可以从中删除。'
+- en: The Java Sound API's Representation of MIDI Devices
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Java Sound API对MIDI设备的表示
+- en: The previous section explained how MIDI messages are represented in the Java
+    Sound API. However, MIDI messages don't exist in a vacuum. They're typically sent
+    from one device to another. A program that uses the Java Sound API can generate
+    MIDI messages from scratch, but more often the messages are instead created by
+    a software device, such as a sequencer, or received from outside the computer
+    through a MIDI input port. Such a device usually sends these messages to another
+    device, such as a synthesizer or a MIDI output port.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前一节解释了 MIDI 消息在 Java Sound API 中的表示方式。然而，MIDI 消息并不是独立存在的。它们通常从一个设备发送到另一个设备。使用
+    Java Sound API 的程序可以从头开始生成 MIDI 消息，但更常见的情况是这些消息是由软件设备（如序列器）创建的，或者通过 MIDI 输入端口从计算机外部接收。这样的设备通常会将这些消息发送到另一个设备，比如合成器或
+    MIDI 输出端口。
+- en: The MidiDevice Interface
+  id: totrans-39
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: MidiDevice 接口
+- en: 'In the world of external MIDI hardware devices, many devices can transmit MIDI
+    messages to other devices and also receive messages from other devices. Similarly,
+    in the Java Sound API, software objects that implement the [`MidiDevice`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiDevice.html)
+    interface can transmit and receive messages. Such an object can be implemented
+    purely in software, or it can serve as an interface to hardware such as a sound
+    card''s MIDI capabilities. The base `MidiDevice` interface provides all the functionality
+    generally required by a MIDI input or output port. Synthesizers and sequencers,
+    however, further implement one of the subinterfaces of `MidiDevice`: [`Synthesizer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Synthesizer.html)
+    or [`Sequencer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Sequencer.html)
+    , respectively.'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在外部 MIDI 硬件设备的世界中，许多设备可以将 MIDI 消息传输到其他设备，并从其他设备接收消息。同样，在 Java Sound API 中，实现[`MidiDevice`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiDevice.html)接口的软件对象可以传输和接收消息。这样的对象可以纯粹在软件中实现，也可以作为硬件的接口，比如声卡的
+    MIDI 功能。基本的`MidiDevice`接口提供了 MIDI 输入或输出端口通常所需的所有功能。然而，合成器和序列器进一步实现了`MidiDevice`的子接口之一：[`Synthesizer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Synthesizer.html)或[`Sequencer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Sequencer.html)。
+- en: The `MidiDevice` interface includes an API for opening and closing a device.
+    It also includes an inner class called `MidiDevice.Info` that provides textual
+    descriptions of the device, including its name, vendor, and version. If you've
+    read the sampled-audio portion of this tutorial, this API will probably sound
+    familiar, because its design is similar to that of the `javax.sampled.Mixer` interface,
+    which represents an audio device and which has an analogous inner class, `Mixer.Info`.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MidiDevice`接口包括用于打开和关闭设备的 API。它还包括一个名为`MidiDevice.Info`的内部类，提供设备的文本描述，包括其名称、供应商和版本。如果您已经阅读了本教程的采样音频部分，那么这个
+    API 可能会听起来很熟悉，因为其设计类似于`javax.sampled.Mixer`接口，代表音频设备，并且具有类似的内部类`Mixer.Info`。'
+- en: Transmitters and Receivers
+  id: totrans-42
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 发送器和接收器
+- en: Most MIDI devices are capable of sending `MidiMessages`, receiving them, or
+    both. The way a device sends data is via one or more transmitter objects that
+    it "owns." Similarly, the way a device receives data is via one or more of its
+    receiver objects. The transmitter objects implement the [`Transmitter`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Transmitter.html)
+    interface, and the receivers implement the [`Receiver`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Receiver.html)
+    interface.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数 MIDI 设备都能够发送`MidiMessages`、接收它们，或两者兼而有之。设备发送数据的方式是通过它“拥有”的一个或多个发送器对象。同样，设备接收数据的方式是通过一个或多个接收器对象。发送器对象实现了[`Transmitter`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Transmitter.html)接口，而接收器实现了[`Receiver`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Receiver.html)接口。
+- en: Each transmitter can be connected to only one receiver at a time, and vice versa.
+    A device that sends its MIDI messages to multiple other devices simultaneously
+    does so by having multiple transmitters, each connected to a receiver of a different
+    device. Similarly, a device that can receive MIDI messages from more than one
+    source at a time must do so via multiple receivers.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个发送器一次只能连接到一个接收器，反之亦然。一个设备如果同时向多个其他设备发送其 MIDI 消息，则通过拥有多个发送器，每个发送器连接到不同设备的接收器来实现。同样，一个设备如果要同时从多个来源接收
+    MIDI 消息，则必须通过多个接收器来实现。
+- en: Sequencers
+  id: totrans-45
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 序列器
+- en: A sequencer is a device for capturing and playing back sequences of MIDI events.
+    It has transmitters, because it typically sends the MIDI messages stored in the
+    sequence to another device, such as a synthesizer or MIDI output port. It also
+    has receivers, because it can capture MIDI messages and store them in a sequence.
+    To its superinterface, `MidiDevice`, `Sequencer` adds methods for basic MIDI sequencing
+    operations. A sequencer can load a sequence from a MIDI file, query and set the
+    sequence's tempo, and synchronize other devices to it. An application program
+    can register an object to be notified when the sequencer processes certain kinds
+    of events.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个序列器是一种捕获和播放MIDI事件序列的设备。它具有发射器，因为它通常将存储在序列中的MIDI消息发送到另一个设备，例如合成器或MIDI输出端口。它还具有接收器，因为它可以捕获MIDI消息并将其存储在序列中。在其超接口`MidiDevice`中，`Sequencer`添加了用于基本MIDI序列操作的方法。序列器可以从MIDI文件加载序列，查询和设置序列的速度，并将其他设备与其同步。应用程序可以注册一个对象，以便在序列器处理某些类型的事件时收到通知。
+- en: Synthesizers
+  id: totrans-47
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 合成器
+- en: A `Synthesizer` is a device for generating sound. It's the only object in the
+    `javax.sound.midi` package that produces audio data. A synthesizer device controls
+    a set of MIDI channel objects — typically 16 of them, since the MIDI specification
+    calls for 16 MIDI channels. These MIDI channel objects are instances of a class
+    that implements the [`MidiChannel`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiChannel.html)
+    interface, whose methods represent the MIDI specification's "channel voice messages"
+    and "channel mode messages."
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Synthesizer`是一种产生声音的设备。它是`javax.sound.midi`包中唯一产生音频数据的对象。合成器设备控制一组MIDI通道对象
+    - 通常是16个，因为MIDI规范要求有16个MIDI通道。这些MIDI通道对象是实现[`MidiChannel`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiChannel.html)接口的类的实例，其方法代表MIDI规范的“通道音频消息”和“通道模式消息”。'
+- en: An application program can generate sound by directly invoking methods of a
+    synthesizer's MIDI channel objects. More commonly, though, a synthesizer generates
+    sound in response to messages sent to one or more of its receivers. These messages
+    might be sent by a sequencer or MIDI input port, for example. The synthesizer
+    parses each message that its receivers get, and usually dispatches a corresponding
+    command (such as `noteOn` or `controlChange`) to one of its `MidiChannel` objects,
+    according to the MIDI channel number specified in the event.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序可以通过直接调用合成器的MIDI通道对象的方法来生成声音。然而，更常见的情况是，合成器响应发送到其一个或多个接收器的消息而生成声音。例如，这些消息可能是由序列器或MIDI输入端口发送的。合成器解析其接收器接收到的每条消息，并通常根据事件中指定的MIDI通道号将相应的命令（如`noteOn`或`controlChange`）发送到其一个`MidiChannel`对象。
+- en: The `MidiChannel` uses the note information in these messages to synthesize
+    music. For example, a `noteOn` message specifies the note's pitch and "velocity"
+    (volume). However, the note information is insufficient; the synthesizer also
+    requires precise instructions on how to create the audio signal for each note.
+    These instructions are represented by an [`Instrument`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Instrument.html).
+    Each `Instrument` typically emulates a different real-world musical instrument
+    or sound effect. The `Instruments` might come as presets with the synthesizer,
+    or they might be loaded from soundbank files. In the synthesizer, the `Instruments`
+    are arranged by bank number (these can be thought of as rows) and program number
+    (columns).
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MidiChannel`使用这些消息中的音符信息来合成音乐。例如，`noteOn`消息指定了音符的音高和“速度”（音量）。然而，音符信息是不够的；合成器还需要关于如何为每个音符创建音频信号的精确指令。这些指令由一个[`Instrument`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Instrument.html)表示。每个`Instrument`通常模拟不同的真实乐器或音效。`Instruments`可能作为合成器的预设提供，也可能从声音库文件中加载。在合成器中，`Instruments`按照银行号（可以将其视为行）和程序号（列）进行排列。'
+- en: This section has provided a background for understanding MIDI data, and it has
+    introduced some of the important interfaces and classes related to MIDI in the
+    Java Sound API. Subsequent sections show how you can access and use these objects
+    in your application programs.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节为理解MIDI数据提供了背景，并介绍了与Java Sound API中的MIDI相关的一些重要接口和类。后续章节将展示如何在应用程序中访问和使用这些对象。

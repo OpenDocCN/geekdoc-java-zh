@@ -1,0 +1,88 @@
+- en: 'Questions and Exercises: Concurrency in Swing'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习：Swing中的并发
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-concurrency.html](https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-concurrency.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-concurrency.html](https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-concurrency.html)
+- en: Questions
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 问题
+- en: For each of the following tasks, specify which thread it should be executed
+    in and why.
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对于以下每个任务，请指定应在哪个线程中执行以及原因。
+- en: Initializing the GUI.
+  id: totrans-4
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 初始化GUI。
+- en: Loading a large file.
+  id: totrans-5
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 加载一个大文件。
+- en: Invoking [`javax.swing.JComponent.setFont`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#setFont-java.awt.Font-)
+    to change the font of a component.
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用[`javax.swing.JComponent.setFont`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#setFont-java.awt.Font-)来更改组件的字体。
+- en: Invoking [`javax.swing.text.JTextComponent.setText`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setText-java.lang.String-)
+    to change the text of a component.
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用[`javax.swing.text.JTextComponent.setText`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setText-java.lang.String-)来更改组件的文本。
+- en: One set of threads is not used for any of the tasks mentioned in the previous
+    question. Name this thread and explain why its applications are so limited.
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 一组线程不用于前面问题中提到的任何任务。命名此线程并解释为什么其应用如此有限。
+- en: '`SwingWorker` has two type parameters. Explain how these type parameters are
+    used, and why it often doesn''t matter what they are.'
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`SwingWorker`有两个类型参数。解释这些类型参数如何使用，以及为什么通常不重要。'
+- en: Exercises
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 练习
+- en: Modify the [``Flipper``](../examples/concurrency/FlipperProject/src/concurrency/Flipper.java)
+    example so that it pauses 5 seconds between "coin flips." If the user clicks the
+    "Cancel", the coin-flipping loop terminates immediately.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 修改[``Flipper``](../examples/concurrency/FlipperProject/src/concurrency/Flipper.java)示例，使其在“抛硬币”之间暂停5秒。如果用户点击“取消”，则立即终止抛硬币循环。
+- en: '[Check your answers.](answers-concurrency.html)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[检查你的答案。](answers-concurrency.html)'

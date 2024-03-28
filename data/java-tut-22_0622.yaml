@@ -1,0 +1,106 @@
+- en: Word Boundaries
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 单词边界
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/word.html](https://docs.oracle.com/javase/tutorial/i18n/text/word.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/word.html](https://docs.oracle.com/javase/tutorial/i18n/text/word.html)
+- en: 'You invoke the `getWordIterator` method to instantiate a `BreakIterator` that
+    detects word boundaries:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您调用`getWordIterator`方法来实例化一个检测单词边界的`BreakIterator`：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: You'll want to create such a `BreakIterator` when your application needs to
+    perform operations on individual words. These operations might be common word-
+    processing functions, such as selecting, cutting, pasting, and copying. Or, your
+    application may search for words, and it must be able to distinguish entire words
+    from simple strings.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您的应用程序需要对单词执行操作时，您会想要创建这样一个`BreakIterator`。这些操作可能是常见的单词处理功能，如选择、剪切、粘贴和复制。或者，您的应用程序可能会搜索单词，并且必须能够区分整个单词和简单字符串。
+- en: When a `BreakIterator` analyzes word boundaries, it differentiates between words
+    and characters that are not part of words. These characters, which include spaces,
+    tabs, punctuation marks, and most symbols, have word boundaries on both sides.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当`BreakIterator`分析单词边界时，它区分单词和不属于单词的字符。这些字符包括空格、制表符、标点符号和大多数符号，在两侧都有单词边界。
+- en: 'The example that follows, which is from the program [`BreakIteratorDemo`](examples/BreakIteratorDemo.java),
+    marks the word boundaries in some text. The program creates the `BreakIterator`
+    and then calls the `markBoundaries` method:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的示例来自程序[`BreakIteratorDemo`](examples/BreakIteratorDemo.java)，标记了一些文本中的单词边界。该程序创建了`BreakIterator`，然后调用`markBoundaries`方法：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The `markBoundaries` method is defined in `BreakIteratorDemo.java`. This method
+    marks boundaries by printing carets (^) beneath the target string. In the code
+    that follows, notice the `while` loop where `markBoundaries` scans the string
+    by calling the `next` method:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`markBoundaries`方法在`BreakIteratorDemo.java`中定义。该方法通过在目标字符串下方打印插入符号(^)来标记边界。在接下来的代码中，请注意`while`循环，其中`markBoundaries`通过调用`next`方法扫描字符串：'
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The output of the `markBoundaries` method follows. Note where the carets (^)
+    occur in relation to the punctuation marks and spaces:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`markBoundaries`方法的输出如下。请注意插入符号(^)相对于标点符号和空格的位置：'
+- en: '[PRE3]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The `BreakIterator` class makes it easy to select words from within text. You
+    don't have to write your own routines to handle the punctuation rules of various
+    languages; the `BreakIterator` class does this for you.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`BreakIterator`类使得从文本中选择单词变得容易。您不必编写自己的处理各种语言标点规则的例程；`BreakIterator`类会为您处理这些。'
+- en: The `extractWords` method in the following example extracts and prints words
+    for a given string. Note that this method uses `Character.isLetterOrDigit` to
+    avoid printing "words" that contain space characters.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例中的`extractWords`方法提取并打印给定字符串的单词。请注意，该方法使用`Character.isLetterOrDigit`来避免打印包含空格字符的“单词”。
+- en: '[PRE4]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The `BreakIteratorDemo` program invokes `extractWords`, passing it the same
+    target string used in the previous example. The `extractWords` method prints out
+    the following list of words:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`BreakIteratorDemo`程序调用`extractWords`，将其传递给前面示例中使用的相同目标字符串。`extractWords`方法打印出以下单词列表：'
+- en: '[PRE5]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'

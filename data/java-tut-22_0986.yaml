@@ -1,0 +1,122 @@
+- en: Create and Destroy Subcontexts
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建和销毁子上下文
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/create.html](https://docs.oracle.com/javase/tutorial/jndi/ops/create.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/create.html](https://docs.oracle.com/javase/tutorial/jndi/ops/create.html)
+- en: The `Context` interface contains methods for [creating](#CREATE) and [destroying](#DESTROY)
+    a *subcontext*, a context that is bound in another context of the same type.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Context`接口包含用于[创建](#CREATE)和[销毁](#DESTROY) *子上下文* 的方法，即绑定在同一类型的另一个上下文中的上下文。'
+- en: The example described here use an object that has *attributes* and create a
+    subcontext in the directory. You can use these `DirContext` methods to associate
+    attributes with the object at the time that the binding or subcontext is added
+    to the namespace. For example, you might create a `Person` object and bind it
+    to the namespace and at the same time associate attributes about that `Person`
+    object. The naming equivalent will have no attributes.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此处描述的示例使用具有*属性*的对象，并在目录中创建一个子上下文。您可以使用这些`DirContext`方法在将绑定或子上下文添加到命名空间时将属性与对象关联起来。例如，您可以创建一个`Person`对象并将其绑定到命名空间，并同时关联有关该`Person`对象的属性。命名等效项将没有属性。
+- en: The createSubcontext() differs from bind() in that it creates a new Object,
+    that is, a new Context to be bound to the directory while as bind() binds the
+    given Object in the directory.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: createSubcontext()与bind()的不同之处在于它创建一个新对象，即一个新的上下文，将其绑定到目录，而bind()将给定对象绑定到目录。
+- en: Creating a Context
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建上下文
+- en: To create a naming context, you supply to [`createSubcontext()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#createSubcontext-javax.naming.Name-)
+    the name of the context that you want to create. To create a context that has
+    attributes, you supply to [`DirContext.createSubcontext()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#createSubcontext-javax.naming.Name-javax.naming.directory.Attributes-)
+    the name of the context that you want to create and its attributes.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建命名上下文，您需要向[`createSubcontext()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#createSubcontext-javax.naming.Name-)
+    提供要创建的上下文的名称。要创建具有属性的上下文，您需要向[`DirContext.createSubcontext()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#createSubcontext-javax.naming.Name-javax.naming.directory.Attributes-)
+    提供要创建的上下文的名称和其属性。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Before you go on:** The examples in this lesson require that you make additions
+    to the schema. You must either turn off schema-checking in the LDAP server or
+    add [`the schema`](../software/config/java.schema) that accompanies this tutorial
+    to the server. Both of these tasks are typically performed by the directory server''s
+    administrator. See the [LDAP Setup](../software/content.html) lesson.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**在继续之前：** 本课程中的示例需要您对模式进行添加。您必须在LDAP服务器中关闭模式检查，或者将伴随本教程的[`模式`](../software/config/java.schema)添加到服务器中。这两项任务通常由目录服务器的管理员执行。请参阅[LDAP设置](../software/content.html)课程。'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[`This example`](examples/Create.java) creates a new context called `"ou=NewOu"`
+    that has an attribute `"objectclass"` with two values, `"top"` and `"organizationalUnit"`,
+    in the context `ctx`.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`This example`](examples/Create.java) 创建了一个名为`"ou=NewOu"`的新上下文，在上下文`ctx`中有一个属性`"objectclass"`，其值为`"top"`和`"organizationalUnit"`。'
+- en: '[PRE1]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '[`This example`](examples/Create.java) creates a new context, called `"NewOu"`,
+    that is a child of `ctx`.'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`This example`](examples/Create.java) 创建了一个名为`"NewOu"`的新上下文，它是`ctx`的子上下文。'
+- en: '![Diagram shows new subcontext.](../Images/43a29c3d0357cec519291d7ba248ef50.png)'
+  id: totrans-14
+  prefs: []
+  type: TYPE_IMG
+  zh: '![图表显示新子上下文。](../Images/43a29c3d0357cec519291d7ba248ef50.png)'
+- en: Destroying a Context
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 销毁上下文
+- en: To destroy a context, you supply to [`destroySubcontext()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#destroySubcontext-javax.naming.Name-)
+    the name of the context to destroy.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要销毁一个上下文，您需要向[`destroySubcontext()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#destroySubcontext-javax.naming.Name-)
+    提供要销毁的上下文的名称。
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '[`This example`](examples/Destroy.java) destroys the context `"NewOu"` in the
+    context `ctx`.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`This example`](examples/Destroy.java) 在上下文`ctx`中销毁了上下文`"NewOu"`。'

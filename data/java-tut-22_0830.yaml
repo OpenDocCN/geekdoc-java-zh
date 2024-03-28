@@ -1,0 +1,141 @@
+- en: 'Lesson: Signing Code and Granting It Permissions'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：签署代码并授予权限
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/index.html](https://docs.oracle.com/javase/tutorial/security/toolsign/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/index.html](https://docs.oracle.com/javase/tutorial/security/toolsign/index.html)
+- en: This lesson shows how to use `keytool`, `jarsigner`, `Policy Tool` and `jar`
+    to place files into JAR (Java ARchive) files for subsequent signing by the `jarsigner`
+    tool.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程展示如何使用`keytool`、`jarsigner`、`策略工具`和`jar`将文件放入JAR（Java ARchive）文件，以便后续由`jarsigner`工具进行签名。
+- en: This lesson has two parts. First, you will create and deploy an application.
+    Second; you will act as the recipient of a signed application.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程分为两部分。首先，您将创建和部署一个应用程序。其次，您将作为签名应用程序的接收者。
+- en: 'Here are the steps to create and deploy an application:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是创建和部署应用程序的步骤：
+- en: '**Note:**  For convenience, you pretend to be a user/developer named Susan
+    Jones. You need to define Susan Jones when you generate the keys.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 为方便起见，您假装是一个名为Susan Jones的用户/开发者。您需要在生成密钥时定义Susan Jones。'
+- en: Put Java class files comprising your application into a JAR file
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将包含应用程序的Java类文件放入JAR文件中
+- en: Sign the JAR file
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对JAR文件进行签名
+- en: Export the public key certificate corresponding to the private key used to sign
+    the JAR file
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 导出与用于签署JAR文件的私钥对应的公钥证书
+- en: Here are the steps to grant permissions to an application
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是向应用程序授予权限的步骤
+- en: '**Note:**  For convenience, you pretend to be a user named Ray.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 为方便起见，您假装是一个名为Ray的用户。'
+- en: You see how the signed application cannot normally read a file when it is run
+    under a security manager.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以看到，当在安全管理器下运行时，签名应用程序通常无法读取文件。
+- en: Use `keytool` to import a certificate into Ray's keystore in an entry aliased
+    by `susan`
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`keytool`将证书导入Ray的密钥库中，别名为`susan`
+- en: Use the Policy Tool to create an entry in Ray's policy file to permit code signed
+    by `susan` to read the specified file.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用策略工具在Ray的策略文件中创建一个条目，以允许由`susan`签名的代码读取指定文件。
+- en: Finally, you see how the application running under a security manager can now
+    read the file, since it has been granted permission to do so.
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 最后，您将看到在安全管理器下运行的应用程序现在可以读取文件，因为已经被授予了相应的权限。
+- en: For more information about digital signatures, certificates, keystores, and
+    the tools, see the [API and Tools Use for Secure Code and File Exchanges](../sigcert/index.html)
+    lesson.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关数字签名、证书、密钥库和工具的更多信息，请参阅[用于安全代码和文件交换的API和工具使用](../sigcert/index.html)课程。
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Important:** You need to perform the tasks in this lesson while working in
+    the directory in which you store the sample application, but you should store
+    the data file needed by the application in a different directory. All examples
+    in this trail assume that you are working in the `C:\Test` directory, and that
+    the data file is in the `C:\TestData` directory.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**重要：** 您需要在存储示例应用程序的目录中执行本课程中的任务，但应将应用程序所需的数据文件存储在不同的目录中。本教程中的所有示例都假定您正在`C:\Test`目录中工作，并且数据文件位于`C:\TestData`目录中。'
+- en: If you are working on a UNIX system, substitute your own directory names.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您在UNIX系统上工作，请用您自己的目录名称替换。
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Here are the steps:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是步骤：
+- en: '[Steps for the Code Signer](signer.html)'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[代码签署者的步骤](signer.html)'
+- en: '[Steps for the Code Receiver](receiver.html)'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[代码接收者的步骤](receiver.html)'

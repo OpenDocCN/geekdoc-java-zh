@@ -1,0 +1,42 @@
+- en: Reading Directly from a URL
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 直接从URL读取
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/readingURL.html](https://docs.oracle.com/javase/tutorial/networking/urls/readingURL.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/readingURL.html](https://docs.oracle.com/javase/tutorial/networking/urls/readingURL.html)
+- en: After you've successfully created a `URL`, you can call the `URL`'s `openStream()`
+    method to get a stream from which you can read the contents of the URL. The `openStream()`
+    method returns a [`java.io.InputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html)
+    object, so reading from a URL is as easy as reading from an input stream.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 成功创建`URL`后，您可以调用`URL`的`openStream()`方法来获取一个流，从中可以读取URL的内容。`openStream()`方法返回一个[`java.io.InputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html)对象，因此从URL读取就像从输入流读取一样简单。
+- en: 'The following small Java program uses `openStream()` to get an input stream
+    on the URL `http://www.oracle.com/`. It then opens a `BufferedReader` on the input
+    stream and reads from the `BufferedReader` thereby reading from the URL. Everything
+    read is copied to the standard output stream:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下的小型Java程序使用`openStream()`来在URL `http://www.oracle.com/`上获取输入流。然后在输入流上打开一个`BufferedReader`，并从`BufferedReader`读取，从而从URL读取。所有读取的内容都被复制到标准输出流：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: When you run the program, you should see, scrolling by in your command window,
+    the HTML commands and textual content from the HTML file located at `http://www.oracle.com/`.
+    Alternatively, the program might hang or you might see an exception stack trace.
+    If either of the latter two events occurs, you may have to [set the proxy host](_setProxy.html)
+    so that the program can find the Oracle server.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您运行该程序时，您应该在命令窗口中看到从`http://www.oracle.com/`位置的HTML文件中滚动显示的HTML命令和文本内容。或者，程序可能会挂起，或者您可能会看到异常堆栈跟踪。如果出现后两种情况中的任何一种，您可能需要[设置代理主机](_setProxy.html)以便程序可以找到Oracle服务器。

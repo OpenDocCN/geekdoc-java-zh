@@ -1,0 +1,874 @@
+- en: Using Stored Procedures
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用存储过程
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/storedprocedures.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/storedprocedures.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/storedprocedures.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/storedprocedures.html)
+- en: A stored procedure is a group of SQL statements that form a logical unit and
+    perform a particular task, and they are used to encapsulate a set of operations
+    or queries to execute on a database server. For example, operations on an employee
+    database (hire, fire, promote, lookup) could be coded as stored procedures executed
+    by application code. Stored procedures can be compiled and executed with different
+    parameters and results, and they can have any combination of input, output, and
+    input/output parameters.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 存储过程是一组SQL语句，形成一个逻辑单元并执行特定任务，它们用于封装一组操作或查询以在数据库服务器上执行。例如，对员工数据库的操作（雇佣、解雇、晋升、查找）可以编码为应用程序代码执行的存储过程。存储过程可以编译并使用不同的参数和结果执行，并且可以具有任何组合的输入、输出和输入/输出参数。
+- en: Note that stored procedures are supported by most DBMSs, but there is a fair
+    amount of variation in their syntax and capabilities. Consequently, the tutorial
+    contains two samples, [`StoredProcedureJavaDBSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java)
+    and [`StoredProcedureMySQLSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java),
+    that demonstrate how to create stored procedures in Java DB and MySQL, respectively.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，大多数DBMS都支持存储过程，但它们的语法和功能有相当多的变化。因此，本教程包含两个示例，[`StoredProcedureJavaDBSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java)
+    和 [`StoredProcedureMySQLSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java)，分别演示如何在Java
+    DB和MySQL中创建存储过程。
+- en: 'This page covers the following topics:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页涵盖以下主题：
+- en: '[Overview of Stored Procedures Examples](#overview_stored_procedures_examples)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[存储过程示例概述](#overview_stored_procedures_examples)'
+- en: '[Parameter Modes](#parameter_modes)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[参数模式](#parameter_modes)'
+- en: '[Creating Stored Procedures in Java DB](#creating_stored_procedures_java_db)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在Java DB中创建存储过程](#creating_stored_procedures_java_db)'
+- en: '[Creating Stored Procedures in Java DB with SQL Scripts or JDBC API](#creating_javadb_sql_jdbc)'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用SQL脚本或JDBC API在Java DB中创建存储过程](#creating_javadb_sql_jdbc)'
+- en: '[Creating Stored Procedures in Java DB](#creating_stored_procedures_java_db)'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用SQL脚本或JDBC API在Java DB中创建存储过程](#creating_javadb_sql_jdbc)'
+- en: '[Calling Stored Procedures in Java DB](#calling_javadb)'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在Java DB中调用存储过程](#calling_javadb)'
+- en: '[Package Java Class in JAR File](#package_java_class_in_jar_file)'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将Java类打包到JAR文件中](#package_java_class_in_jar_file)'
+- en: '[Creating Stored Procedure in MySQL](#creating_stored_procedure_mysql)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在MySQL中创建存储过程](#creating_stored_procedure_mysql)'
+- en: '[Creating Stored Procedure in MySQL with SQL Scripts or JDBC API](#create_jdbc_mysql)'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用SQL脚本或JDBC API在MySQL中创建存储过程](#create_jdbc_mysql)'
+- en: '[Calling Stored Procedures in MySQL](#calling_mysql)'
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在MySQL中调用存储过程](#calling_mysql)'
+- en: Overview of Stored Procedures Examples
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 存储过程示例概述
+- en: 'The examples [`StoredProcedureJavaDBSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java)
+    and [`StoredProcedureMySQLSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java)
+    create and call the following stored procedures:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例[`StoredProcedureJavaDBSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java)
+    和 [`StoredProcedureMySQLSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java)
+    创建并调用以下存储过程：
+- en: '`SHOW_SUPPLIERS`: Prints a result set that contains the names of coffee suppliers
+    and the coffees they supply to The Coffee Break. This stored procedure does not
+    require any parameters. When the example calls this stored procedure, the example
+    produces output similar to the following:'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SHOW_SUPPLIERS`: 打印一个包含咖啡供应商名称和他们向The Coffee Break供应的咖啡的结果集。此存储过程不需要任何参数。当示例调用此存储过程时，示例产生类似以下内容的输出：'
+- en: '[PRE0]'
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '`GET_SUPPLIER_OF_COFFEE`: Prints the name of the supplier `supplierName` for
+    the coffee `coffeeName`. It requires the following parameters:'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`GET_SUPPLIER_OF_COFFEE`: 打印供应商`supplierName`为咖啡`coffeeName`的名称。它需要以下参数：'
+- en: '`IN coffeeName varchar(32)`: The name of the coffee'
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`IN coffeeName varchar(32)`: 咖啡的名称'
+- en: '`OUT supplierName varchar(40)`: The name of the coffee supplier'
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`OUT supplierName varchar(40)`: 咖啡供应商的名称'
+- en: 'When the example calls this stored procedure with `Colombian` as the value
+    for `coffeeName`, the example produces output similar to the following:'
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 当示例以`Colombian`作为`coffeeName`的值调用此存储过程时，示例产生类似以下内容的输出：
+- en: '[PRE1]'
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '`RAISE_PRICE`: Raises the price of the coffee `coffeeName` to the price `newPrice`.
+    If the price increase is greater than the percentage `maximumPercentage`, then
+    the price is raised by that percentage. This procedure will not change the price
+    if the price `newPrice` is lower than the original price of the coffee. It requires
+    the following parameters:'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`RAISE_PRICE`：将咖啡`coffeeName`的价格提高到价格`newPrice`。如果价格增加大于百分比`maximumPercentage`，则价格将按该百分比提高。如果价格`newPrice`低于咖啡的原始价格，则此过程不会更改价格。它需要以下参数：'
+- en: '`IN coffeeName varchar(32)`: The name of the coffee'
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`IN coffeeName varchar(32)`：咖啡的名称'
+- en: '`IN maximumPercentage float`: The maximum percentage to raise the coffee''s
+    price'
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`IN maximumPercentage float`：提高咖啡价格的最大百分比'
+- en: '`INOUT newPrice numeric(10,2)`: The new price of the coffee. After the `RAISE_PRICE`
+    stored procedure has been called, this parameter will contain the current price
+    of the coffee `coffeeName`.'
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`INOUT newPrice numeric(10,2)`：咖啡的新价格。调用`RAISE_PRICE`存储过程后，此参数将包含咖啡`coffeeName`的当前价格。'
+- en: 'When the example calls this stored procedure with `Colombian` as the value
+    for `coffeeName`, `0.10` as the value for `maximumPercentage`, and `19.99` as
+    the value for `newPrice`, the example produces output similar to the following:'
+  id: totrans-28
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 当示例以`Colombian`作为`coffeeName`的值，`0.10`作为`maximumPercentage`的值，`19.99`作为`newPrice`的值调用此存储过程时，示例会产生类似以下输出：
+- en: '[PRE2]'
+  id: totrans-29
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Parameter Modes
+  id: totrans-30
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 参数模式
+- en: The parameter attributes `IN` (the default), `OUT`, and `INOUT` are parameter
+    modes. They define the action of formal parameters. The following table summarizes
+    the information about parameter modes.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参数属性`IN`（默认值）、`OUT`和`INOUT`是参数模式。它们定义形式参数的操作。以下表总结了有关参数模式的信息。
+- en: '| Characteristic of Parameter Mode | IN | OUT | INOUT |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| 参数模式的特征 | IN | OUT | INOUT |'
+- en: '| --- | --- | --- | --- |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- | --- | --- |'
+- en: '| Must it be specified in the stored procedure definition? | No; if omitted,
+    then the parameter mode of the formal parameter is `IN`. | Must be specified.
+    | Must be specified. |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| 必须在存储过程定义中指定吗？ | 不需要；如果省略，则形式参数的参数模式为`IN`。 | 必须指定。 | 必须指定。 |'
+- en: '| Does the parameter pass a value to the stored procedure or return a value?
+    | Passes values to a stored procedure. | Returns values to the caller. | Both;
+    passes initial values to a stored procedure; returns updated values to the caller.
+    |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| 参数是否向存储过程传递值或返回值？ | 向存储过程传递值。 | 返回值给调用者。 | 两者都是；向存储过程传递初始值；返回更新后的值给调用者。 |'
+- en: '| Does the formal parameter act as a constant or a variable in the stored procedure?
+    | Formal parameter acts like a constant. | Formal parameter acts like an uninitialized
+    variable. | Formal parameter acts like an initialized variable. |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| 形式参数在存储过程中是作为常量还是变量？ | 形式参数像常量一样起作用。 | 形式参数像未初始化的变量一样起作用。 | 形式参数像初始化的变量一样起作用。
+    |'
+- en: '| Can the formal parameter be assigned a value in the stored procedure? | Formal
+    parameter cannot be assigned a value. | Formal parameter cannot be used in an
+    expression; must be assigned a value. | Formal parameter must be assigned a value.
+    |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| 形式参数是否可以在存储过程中分配值？ | 形式参数不能分配值。 | 形式参数不能在表达式中使用；必须分配值。 | 形式参数必须分配值。 |'
+- en: '| What kinds of actual parameters (arguments) can be passed to the stored procedure?
+    | Actual parameter can be a constant, initialized variable, literal, or expression.
+    | Actual parameter must be a variable. | Actual parameter must be a variable.
+    |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| 可以传递给存储过程的实际参数（参数）有哪些？ | 实际参数可以是常量、初始化变量、文字常量或表达式。 | 实际参数必须是一个变量。 | 实际参数必须是一个变量。
+    |'
+- en: Creating Stored Procedures in Java DB
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在Java DB中创建存储过程
+- en: '**Note**: See the section "CREATE PROCEDURE statement" in [*Java DB Reference
+    Manual*](https://docs.oracle.com/javadb/index_jdk8.html) for more information
+    about creating stored procedures in Java DB.'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：有关在Java DB中创建存储过程的更多信息，请参阅[*Java DB参考手册*](https://docs.oracle.com/javadb/index_jdk8.html)中的“CREATE
+    PROCEDURE语句”部分。'
+- en: 'Creating and using a stored procedure in Java DB involves the following steps:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java DB中创建和使用存储过程涉及以下步骤：
+- en: '[Create a public static Java method in a Java class](#creating_public_static_java_method):
+    This method performs the required task of the stored procedure.'
+  id: totrans-42
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[在Java类中创建一个公共静态Java方法](#creating_public_static_java_method)：此方法执行存储过程所需的任务。'
+- en: '[Create the stored procedure](#creating_javadb_sql_jdbc): This stored procedure
+    calls the Java method you created.'
+  id: totrans-43
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[创建存储过程](#creating_javadb_sql_jdbc)：此存储过程调用您创建的Java方法。'
+- en: '[Call the stored procedure](#calling_javadb)'
+  id: totrans-44
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[调用存储过程](#calling_javadb)'
+- en: '[Package the Java class (that contains the public static Java method you created
+    earlier) in a JAR file.](#package_java_class_in_jar_file)'
+  id: totrans-45
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[将包含您之前创建的公共静态Java方法的Java类打包到一个JAR文件中。](#package_java_class_in_jar_file)'
+- en: Creating Public Static Java Method
+  id: totrans-46
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建公共静态Java方法
+- en: 'The following method, [`StoredProcedureJavaDBSample.showSuppliers`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java),
+    contains the SQL statements that the stored procedure `SHOW_SUPPLIERS` calls:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的方法，[`StoredProcedureJavaDBSample.showSuppliers`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java)，包含存储过程`SHOW_SUPPLIERS`调用的SQL语句：
+- en: '[PRE3]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The `SHOW_SUPPLIERS` stored procedure takes no arguments. You can specify arguments
+    in a stored procedure by defining them in the method signature of your public
+    static Java method. Note that the method `showSuppliers` contains a parameter
+    of type `ResultSet[]`. If your stored procedure returns any number of `ResultSet`
+    objects, specify one parameter of type `ResultSet[]` in your Java method. In addition,
+    ensure that this Java method is public and static.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SHOW_SUPPLIERS`存储过程不接受任何参数。您可以通过在公共静态Java方法的方法签名中定义参数来指定存储过程中的参数。请注意，方法`showSuppliers`包含一个类型为`ResultSet[]`的参数。如果您的存储过程返回任意数量的`ResultSet`对象，请在您的Java方法中指定一个类型为`ResultSet[]`的参数。此外，请确保此Java方法是公共的和静态的。'
+- en: Retrieve the `Connection` object from the URL `jdbc:default:connection`. This
+    is a convention in Java DB to indicate that the stored procedure will use the
+    currently existing `Connection` object.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从URL `jdbc:default:connection` 中检索`Connection`对象。这是Java DB中的一种约定，表示存储过程将使用当前存在的`Connection`对象。
+- en: Note that the `Statement` object is not closed in this method. Do not close
+    any `Statement` objects in the Java method of your stored procedure; if you do
+    so, the `ResultSet` object will not exist when you issue the `CALL` statement
+    when you call your stored procedure.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，在此方法中未关闭`Statement`对象。不要在存储过程的Java方法中关闭任何`Statement`对象；如果这样做，当您调用存储过程时，`ResultSet`对象将不存在。
+- en: In order for the stored procedure to return a generated result set, you must
+    assign the result set to an array component of the `ResultSet[]` parameter. In
+    this example, the generated result set is assigned to the array component `rs[0]`.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了使存储过程返回一个生成的结果集，您必须将结果集分配给`ResultSet[]`参数的一个数组组件。在本例中，生成的结果集分配给了数组组件`rs[0]`。
+- en: Creating Stored Procedures in Java DB with SQL Scripts or JDBC API
+  id: totrans-53
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用SQL脚本或JDBC API在Java DB中创建存储过程
+- en: Java DB uses the Java programming language for its stored procedures. Consequently,
+    when you define a stored procedure, you specify which Java class to call and where
+    Java DB can find it.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java DB使用Java编程语言进行存储过程。因此，当您定义存储过程时，您需要指定要调用的Java类以及Java DB可以找到它的位置。
+- en: 'The following excerpt from [`StoredProcedureJavaDBSample.createProcedures`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java)
+    creates a stored procedure named `SHOW_SUPPLIERS`:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下摘录自[`StoredProcedureJavaDBSample.createProcedures`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java)创建了一个名为`SHOW_SUPPLIERS`的存储过程：
+- en: '[PRE4]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The following list describes the procedure elements you can specify in the
+    `CREATE PROCEDURE` statement:'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下列表描述了您可以在`CREATE PROCEDURE`语句中指定的过程元素：
+- en: '`PARAMETER STYLE`: Identifies the convention used to pass parameters to the
+    stored procedure. The following options are valid:'
+  id: totrans-58
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`PARAMETER STYLE`：标识用于将参数传递给存储过程的约定。以下选项有效：'
+- en: '`JAVA`: Specifies that the stored procedure uses a parameter-passing convention
+    that conforms to the Java language and the SQL routines specification.'
+  id: totrans-59
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JAVA`：指定存储过程使用符合Java语言和SQL例程规范的参数传递约定。'
+- en: '`DERBY`: Specifies that the stored procedure supports a vararg as the final
+    argument in the parameter list.'
+  id: totrans-60
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DERBY`：指定存储过程支持参数列表中的最后一个参数作为可变参数。'
+- en: '`LANGUAGE JAVA`: Specifies the programming language of the stored procedure
+    (currently, `JAVA` is the only option).'
+  id: totrans-61
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LANGUAGE JAVA`：指定存储过程的编程语言（目前，`JAVA`是唯一的选项）。'
+- en: '`DYNAMIC RESULT SETS 1`: Specifies the maximum number of result sets retrieved;
+    in this case, it is `1`.'
+  id: totrans-62
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DYNAMIC RESULT SETS 1`：指定检索的最大结果集数量；在本例中为`1`。'
+- en: '`EXTERNAL NAME ''com.oracle.tutorial.jdbc.StoredProcedureJavaDBSample.showSuppliers''`
+    specifies the fully qualified Java method that this stored procedure calls. **Note**:
+    Java DB must be able to find the method specified here in your class path or in
+    a JAR file directly added to the database. See the following step, [Package Java
+    Class in JAR File](#package_java_class_in_jar_file).'
+  id: totrans-63
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`EXTERNAL NAME ''com.oracle.tutorial.jdbc.StoredProcedureJavaDBSample.showSuppliers''`
+    指定了此存储过程调用的完全限定的 Java 方法。**注意**：Java DB 必须能够在类路径或直接添加到数据库的 JAR 文件中找到此处指定的方法。请参阅以下步骤，[将
+    Java 类打包到 JAR 文件中](#package_java_class_in_jar_file)。'
+- en: 'The following statement (which is found in `StoredProcedureJavaDBSample.createProcedures`)
+    creates a stored procedure named `GET_SUPPLIERS_OF_COFFEE` (line breaks have been
+    added for clarity):'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下语句（位于 `StoredProcedureJavaDBSample.createProcedures` 中）创建了一个名为 `GET_SUPPLIERS_OF_COFFEE`
+    的存储过程（为了清晰起见添加了换行符）：
+- en: '[PRE5]'
+  id: totrans-65
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: This stored procedure has two formal parameters, `coffeeName` and `supplierName`.
+    The parameter specifiers `IN` and `OUT` are called parameter modes. They define
+    the action of formal parameters. See [Parameter Modes](#parameter_modes) for more
+    information. This stored procedure does not retrieve a result set, so the procedure
+    element `DYNAMIC RESULT SETS` is `0`.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此存储过程有两个形式参数，`coffeeName` 和 `supplierName`。参数说明符 `IN` 和 `OUT` 被称为参数模式。它们定义了形式参数的操作。有关更多信息，请参阅[参数模式](#parameter_modes)。此存储过程不检索结果集，因此过程元素
+    `DYNAMIC RESULT SETS` 为 `0`。
+- en: 'The following statement creates a stored procedure named `RAISE_PRICE` (line
+    breaks have been added for clarity):'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下语句创建了一个名为 `RAISE_PRICE` 的存储过程（为了清晰起见添加了换行符）：
+- en: '[PRE6]'
+  id: totrans-68
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: You can use SQL scripts to create stored procedures in Java DB. See the script
+    [`javadb/create-procedures.sql`](examples/JDBCTutorial/sql/javadb/create-procedures.sql)
+    and the Ant target `javadb-create-procedure` in the [`build.xml`](examples/JDBCTutorial/build.xml)
+    Ant build script.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用 SQL 脚本在 Java DB 中创建存储过程。查看脚本 [`javadb/create-procedures.sql`](examples/JDBCTutorial/sql/javadb/create-procedures.sql)
+    和 [`build.xml`](examples/JDBCTutorial/build.xml) Ant 构建脚本中的 Ant 目标 `javadb-create-procedure`。
+- en: Calling Stored Procedures in Java DB
+  id: totrans-70
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 在 Java DB 中调用存储过程
+- en: 'The following excerpt from the method [`StoredProcedureJavaDBSample.runStoredProcedures`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java)
+    calls the stored procedure `SHOW_SUPPLIERS` and prints the generated result set:'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下摘录自方法[`StoredProcedureJavaDBSample.runStoredProcedures`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java)
+    调用存储过程 `SHOW_SUPPLIERS` 并打印生成的结果集：
+- en: '[PRE7]'
+  id: totrans-72
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '**Note**: As with `Statement` objects, to call the stored procedure, you can
+    call `execute`, `executeQuery`, or `executeUpdate` depending on how many `ResultSet`
+    objects the procedure returns. However, if you are not sure how many `ResultSet`
+    objects the procedure returns, call `execute`.'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：与 `Statement` 对象一样，要调用存储过程，可以根据过程返回多少个 `ResultSet` 对象来调用 `execute`、`executeQuery`
+    或 `executeUpdate`。但是，如果不确定过程返回多少个 `ResultSet` 对象，请调用 `execute`。'
+- en: 'The following excerpt from the method `StoredProcedureJavaDBSample.runStoredProcedures`
+    calls the stored procedure `GET_SUPPLIER_OF_COFFEE`:'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下摘录自方法 `StoredProcedureJavaDBSample.runStoredProcedures` 调用存储过程 `GET_SUPPLIER_OF_COFFEE`：
+- en: '[PRE8]'
+  id: totrans-75
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: The interface `CallableStatement` extends `PreparedStatement`. It is used to
+    call stored procedures. Specify values for `IN` parameters (such as `coffeeName`
+    in this example) just like you would with a `PreparedStatement` object by calling
+    the appropriate setter method. However, if a stored procedure contains an `OUT`
+    parameter, you must register it with the `registerOutParameter` method.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接口 `CallableStatement` 扩展了 `PreparedStatement`。它用于调用存储过程。像使用 `PreparedStatement`
+    对象一样，通过调用适当的 setter 方法为 `IN` 参数（例如本例中的 `coffeeName`）指定值。但是，如果存储过程包含 `OUT` 参数，则必须使用
+    `registerOutParameter` 方法进行注册。
+- en: 'The following excerpt from the method `StoredProcedureJavaDBSample.runStoredProcedures`
+    calls the stored procedure `RAISE_PRICE`:'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下摘录自方法 `StoredProcedureJavaDBSample.runStoredProcedures` 调用存储过程 `RAISE_PRICE`：
+- en: '[PRE9]'
+  id: totrans-78
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Because the parameter `newPrice` (the third parameter in the procedure `RAISE_PRICE`)
+    has the parameter mode `INOUT`, you must both specify its value by calling the
+    appropriate setter method and register it with the `registerOutParameter` method.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为参数 `newPrice`（过程 `RAISE_PRICE` 中的第三个参数）具有参数模式 `INOUT`，您必须通过调用适当的 setter 方法指定其值，并使用
+    `registerOutParameter` 方法进行注册。
+- en: Package Java Class in JAR File
+  id: totrans-80
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 将 Java 类打包到 JAR 文件中
+- en: 'The Ant build script [`build.xml`](examples/JDBCTutorial/build.xml) contains
+    targets to compile and package the tutorial in a JAR file. At a command prompt,
+    change the current directory to `*<JDBC tutorial directory>*`. From this directory,
+    run the following command to compile and package the tutorial in a JAR file:'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Ant 构建脚本 [`build.xml`](examples/JDBCTutorial/build.xml) 包含编译和打包教程为 JAR 文件的目标。在命令提示符下，将当前目录更改为
+    `*<JDBC tutorial directory>*`。从该目录运行以下命令编译并打包教程为 JAR 文件：
+- en: '`ant jar`'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ant jar`'
+- en: The name of the JAR file is `*<JDBC tutorial directory>*/lib/JDBCTutorial.jar`.
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAR 文件的名称是 `*<JDBC tutorial directory>*/lib/JDBCTutorial.jar`。
+- en: The Ant build script adds the file `JDBCTutorial.jar` to the class path. You
+    can also specify the location of the JAR file in your `CLASSPATH` environment
+    variable. This enables Java DB to find the Java method that the stored procedure
+    calls.
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Ant 构建脚本将文件 `JDBCTutorial.jar` 添加到类路径中。您还可以在 `CLASSPATH` 环境变量中指定 JAR 文件的位置。这样可以使
+    Java DB 找到存储过程调用的 Java 方法。
+- en: Adding JAR File Directly to Database
+  id: totrans-85
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+  zh: 直接向数据库添加 JAR 文件
+- en: Java DB looks first in your class path for any required classes, and then in
+    the database. This section shows you how to add JAR files directly to the database.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java DB 首先在类路径中查找所需的类，然后在数据库中查找。本节展示了如何直接向数据库添加 JAR 文件。
+- en: 'Use the following system procedures to add the `JDBCTutorial.jar` JAR file
+    to the database (line breaks have been added for clarity):'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用以下系统存储过程将 `JDBCTutorial.jar` JAR 文件添加到数据库中（为了清晰起见已添加换行符）：
+- en: '[PRE10]'
+  id: totrans-88
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: '**Note**: The method [`StoredProcedureJavaDBSample.registerJarFile`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java)
+    demonstrates how to call these system procedures. If you call this method, ensure
+    that you have modified [`javadb-sample-properties.xml`](examples/JDBCTutorial/properties/javadb-sample-properties.xml)
+    so that the value of the property `jar_file` is set to the full path name of `JDBCTutorial.jar`.'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：方法 [`StoredProcedureJavaDBSample.registerJarFile`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureJavaDBSample.java)
+    演示了如何调用这些系统存储过程。如果调用此方法，请确保已修改 [`javadb-sample-properties.xml`](examples/JDBCTutorial/properties/javadb-sample-properties.xml)，使属性
+    `jar_file` 的值设置为 `JDBCTutorial.jar` 的完整路径名。'
+- en: The `install_jar` procedure in the `SQL` schema adds a JAR file to the database.
+    The first argument of this procedure is the full path name of the JAR file on
+    the computer from which this procedure is run. The second argument is an identifier
+    that Java DB uses to refer to the JAR file. (The identifier `APP` is the Java
+    DB default schema.) The `replace_jar` procedure replaces a JAR file already in
+    the database.
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SQL` 模式中的 `install_jar` 过程向数据库添加 JAR 文件。此过程的第一个参数是在运行此过程的计算机上 JAR 文件的完整路径名。第二个参数是
+    Java DB 用于引用 JAR 文件的标识符。（标识符 `APP` 是 Java DB 默认模式。）`replace_jar` 过程替换数据库中已有的 JAR
+    文件。'
+- en: The system procedure `SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY` sets or deletes
+    the value of a property of the database on the current connection. This method
+    sets the property `derby.database.classpath` to the identifier specified in the
+    `install_jar` file. Java DB first looks in your Java class path for a class, then
+    it looks in `derby.database.classpath`.
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 系统存储过程 `SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY` 在当前连接上设置或删除数据库属性的值。此方法将属性 `derby.database.classpath`
+    设置为 `install_jar` 文件中指定的标识符。Java DB 首先在 Java 类路径中查找类，然后查找 `derby.database.classpath`。
+- en: Creating Stored Procedure in MySQL
+  id: totrans-92
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在 MySQL 中创建存储过程
+- en: 'Creating and using a stored procedure in Java DB involves the following steps:'
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 Java DB 中创建和使用存储过程涉及以下步骤：
+- en: '[Create the stored procedure with an SQL script or JDBC API](#create_jdbc_mysql).'
+  id: totrans-94
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[使用 SQL 脚本或 JDBC API 创建存储过程](#create_jdbc_mysql)。'
+- en: Call the stored procedure with the `CALL` SQL statement. See the section [Calling
+    Stored Procedures in MySQL](#calling_mysql).
+  id: totrans-95
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用 `CALL` SQL 语句调用存储过程。参见 [在 MySQL 中调用存储过程](#calling_mysql) 部分。
+- en: Creating Stored Procedure in MySQL with SQL Scripts or JDBC API
+  id: totrans-96
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用 SQL 脚本或 JDBC API 在 MySQL 中创建存储过程
+- en: 'MySQL uses a SQL-based syntax for its stored procedures. The following excerpt
+    from the SQL script [`mysql/create-procedures.sql`](examples/JDBCTutorial/sql/mysql/create-procedures.sql)
+    creates a stored procedure named `SHOW_SUPPLIERS`:'
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MySQL 使用基于 SQL 的语法来编写存储过程。以下摘录来自 SQL 脚本 [`mysql/create-procedures.sql`](examples/JDBCTutorial/sql/mysql/create-procedures.sql)
+    创建了名为 `SHOW_SUPPLIERS` 的存储过程：
+- en: '[PRE11]'
+  id: totrans-98
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'The `DROP PROCEDURE` statement deletes that procedure `SHOW_SUPPLIERS` if it
+    exists. In MySQL, statements in a stored procedure are separated by semicolons.
+    However, a different delimiter is required to end the `create procedure` statement.
+    This example uses the pipe (`|`) character; you can use another character (or
+    more than one character). This character that separates statements is defined
+    in the `delimiter` attribute in the Ant target that calls this script. This excerpt
+    is from the Ant build file [`build.xml`](examples/JDBCTutorial/build.xml) (line
+    breaks have been inserted for clarity):'
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DROP PROCEDURE` 语句会删除存储过程 `SHOW_SUPPLIERS`（如果存在的话）。在 MySQL 中，存储过程中的语句用分号分隔。然而，结束
+    `create procedure` 语句需要一个不同的分隔符。这个示例使用了竖线（`|`）字符；你可以使用其他字符（或多个字符）。分隔语句的字符在调用这个脚本的
+    Ant 目标中的 `delimiter` 属性中定义。这段摘录来自 Ant 构建文件 [`build.xml`](examples/JDBCTutorial/build.xml)（为了清晰起见插入了换行符）：'
+- en: '[PRE12]'
+  id: totrans-100
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: Alternatively, you can use the `DELIMITER` SQL statement to specify a different
+    delimiter character.
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，你可以使用 `DELIMITER` SQL 语句来指定一个不同的分隔符字符。
+- en: The `CREATE PROCEDURE` statement consists of the name of the procedure, a comma-separated
+    list of parameters in parentheses, and SQL statements within the `BEGIN` and `END`
+    keywords.
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CREATE PROCEDURE` 语句由过程的名称、括号中以逗号分隔的参数列表以及 `BEGIN` 和 `END` 关键字内的 SQL 语句组成。'
+- en: 'You can use the JDBC API to create a stored procedure. The following method,
+    [`StoredProcedureMySQLSample.createProcedureShowSuppliers`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java),
+    performs the same tasks as the previous script:'
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用 JDBC API 来创建存储过程。下面的方法 [`StoredProcedureMySQLSample.createProcedureShowSuppliers`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java)
+    执行了与前面脚本相同的任务：
+- en: '[PRE13]'
+  id: totrans-104
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Note that the delimiter has not been changed in this method.
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，在这个方法中分隔符没有被改变。
+- en: 'The stored procedure `SHOW_SUPPLIERS` generates a result set, even though the
+    return type of the method `createProcedureShowSuppliers` is `void` and the method
+    does not contain any parameters. A result set is returned when the stored procedure
+    `SHOW_SUPPLIERS` is called with the method `CallableStatement.executeQuery`:'
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 存储过程 `SHOW_SUPPLIERS` 生成一个结果集，尽管方法 `createProcedureShowSuppliers` 的返回类型是 `void`，并且该方法不包含任何参数。当使用方法
+    `CallableStatement.executeQuery` 调用存储过程 `SHOW_SUPPLIERS` 时，会返回一个结果集：
+- en: '[PRE14]'
+  id: totrans-107
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: 'The following excerpt from the method [`StoredProcedureMySQLSample.createProcedureGetSupplierOfCoffee`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java)
+    contains the SQL query that creates a stored procedure named `GET_SUPPLIER_OF_COFFEE`:'
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面从方法 [`StoredProcedureMySQLSample.createProcedureGetSupplierOfCoffee`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java)
+    中提取的内容包含了创建名为 `GET_SUPPLIER_OF_COFFEE` 的存储过程的 SQL 查询：
+- en: '[PRE15]'
+  id: totrans-109
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: This stored procedure has two formal parameters, `coffeeName` and `supplierName`.
+    The parameter specifiers `IN` and `OUT` are called parameter modes. They define
+    the action of formal parameters. See [Parameter Modes](#parameter_modes) for more
+    information. The formal parameters are defined in the SQL query, not in the method
+    `createProcedureGetSupplierOfCoffee`. To assign a value to the `OUT` parameter
+    `supplierName`, this stored procedure uses a `SELECT` statement.
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个存储过程有两个形式参数，`coffeeName` 和 `supplierName`。参数说明符 `IN` 和 `OUT` 被称为参数模式。它们定义了形式参数的作用。更多信息请参见
+    [参数模式](#parameter_modes)。形式参数在 SQL 查询中定义，而不是在方法 `createProcedureGetSupplierOfCoffee`
+    中。为了给 `OUT` 参数 `supplierName` 赋值，这个存储过程使用了一个 `SELECT` 语句。
+- en: 'The following excerpt from the method [`StoredProcedureMySQLSample.createProcedureRaisePrice`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java)
+    contains the SQL query that creates a stored procedure named `RAISE_PRICE`:'
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面从方法 [`StoredProcedureMySQLSample.createProcedureRaisePrice`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java)
+    中提取的内容包含了创建名为 `RAISE_PRICE` 的存储过程的 SQL 查询：
+- en: '[PRE16]'
+  id: totrans-112
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: The stored procedure assigns a value to the `INOUT` parameter `newPrice` with
+    the `SET` and `SELECT` statements. To exit the stored procedure, the stored procedure
+    first encloses the statements in a `BEGIN ... END` block labeled `main`. To exit
+    the procedure, the method uses the statement `leave main`.
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 存储过程使用 `SET` 和 `SELECT` 语句给 `INOUT` 参数 `newPrice` 赋值。为了退出存储过程，存储过程首先将语句封装在一个标记为
+    `main` 的 `BEGIN ... END` 块中。为了退出过程，方法使用语句 `leave main`。
+- en: Calling Stored Procedures in MySQL
+  id: totrans-114
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 在 MySQL 中调用存储过程
+- en: Calling stored procedures in MySQL is the same as calling them in Java DB.
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 MySQL 中调用存储过程与在 Java DB 中调用它们相同。
+- en: 'The following excerpt from the method [`StoredProcedureMySQLSample.runStoredProcedures`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java)
+    calls the stored procedure `SHOW_SUPPLIERS` and prints the generated result set:'
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是从方法[`StoredProcedureMySQLSample.runStoredProcedures`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StoredProcedureMySQLSample.java)中调用存储过程`SHOW_SUPPLIERS`并打印生成的结果集：
+- en: '[PRE17]'
+  id: totrans-117
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: '**Note**: As with `Statement` objects, to call the stored procedure, you can
+    call `execute`, `executeQuery`, or `executeUpdate` depending on how many `ResultSet`
+    objects the procedure returns. However, if you are not sure how many `ResultSet`
+    objects the procedure returns, call `execute`.'
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：与`Statement`对象一样，要调用存储过程，可以根据过程返回的`ResultSet`对象数量调用`execute`、`executeQuery`或`executeUpdate`。但是，如果不确定过程返回多少个`ResultSet`对象，请调用`execute`。'
+- en: 'The following excerpt from the method `StoredProcedureMySQLSample.runStoredProcedures`
+    calls the stored procedure `GET_SUPPLIER_OF_COFFEE`:'
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是从方法`StoredProcedureMySQLSample.runStoredProcedures`中调用存储过程`GET_SUPPLIER_OF_COFFEE`的摘录：
+- en: '[PRE18]'
+  id: totrans-120
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: The interface `CallableStatement` extends `PreparedStatement`. It is used to
+    call stored procedures. Specify values for `IN` parameters (such as `coffeeName`
+    in this example) just like you would with a `PreparedStatement` object by calling
+    the appropriate setter method. However, if a stored procedure contains an `OUT`
+    parameter, you must register it with the `registerOutParameter` method.
+  id: totrans-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接口`CallableStatement`扩展了`PreparedStatement`。它用于调用存储过程。像使用`PreparedStatement`对象一样，通过调用适当的setter方法为`IN`参数（例如本例中的`coffeeName`）指定值。但是，如果存储过程包含`OUT`参数，必须使用`registerOutParameter`方法注册它。
+- en: 'The following excerpt from the method `StoredProcedureMySQLSample.runStoredProcedures`
+    calls the stored procedure `RAISE_PRICE`:'
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是从方法`StoredProcedureMySQLSample.runStoredProcedures`中调用存储过程`RAISE_PRICE`的摘录：
+- en: '[PRE19]'
+  id: totrans-123
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: Because the parameter `newPrice` (the third parameter in the procedure `RAISE_PRICE`)
+    has the parameter mode `INOUT`, you must both specify its value by calling the
+    appropriate setter method and register it with the `registerOutParameter` method.
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为参数`newPrice`（过程`RAISE_PRICE`中的第三个参数）具有参数模式`INOUT`，您必须通过调用适当的setter方法指定其值，并使用`registerOutParameter`方法注册它。

@@ -1,0 +1,511 @@
+- en: Using FilteredRowSet Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用FilteredRowSet对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/filteredrowset.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/filteredrowset.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/filteredrowset.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/filteredrowset.html)
+- en: A `FilteredRowSet` object lets you cut down the number of rows that are visible
+    in a `RowSet` object so that you can work with only the data that is relevant
+    to what you are doing. You decide what limits you want to set on your data (how
+    you want to "filter" the data) and apply that filter to a `FilteredRowSet` object.
+    In other words, the `FilteredRowSet` object makes visible only the rows of data
+    that fit within the limits you set. A `JdbcRowSet` object, which always has a
+    connection to its data source, can do this filtering with a query to the data
+    source that selects only the columns and rows you want to see. The query's `WHERE`
+    clause defines the filtering criteria. A `FilteredRowSet` object provides a way
+    for a disconnected `RowSet` object to do this filtering without having to execute
+    a query on the data source, thus avoiding having to get a connection to the data
+    source and sending queries to it.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`FilteredRowSet`对象允许您减少在`RowSet`对象中可见的行数，以便您只处理与您正在进行的工作相关的数据。您决定要对数据设置什么限制（如何“过滤”数据），并将该过滤器应用到`FilteredRowSet`对象上。换句话说，`FilteredRowSet`对象只显示符合您设置限制的数据行。`JdbcRowSet`对象始终与其数据源连接，可以通过向数据源发送仅选择您想要查看的列和行的查询来进行此过滤。查询的`WHERE`子句定义了过滤条件。`FilteredRowSet`对象提供了一种让断开连接的`RowSet`对象进行此过滤的方法，而无需在数据源上执行查询，从而避免必须连接到数据源并向其发送查询。'
+- en: For example, assume that the Coffee Break chain of coffee houses has grown to
+    hundreds of stores throughout the United States of America, and all of them are
+    listed in a table called `COFFEE_HOUSES`. The owner wants to measure the success
+    of only the stores in California with a coffee house comparison application that
+    does not require a persistent connection to the database system. This comparison
+    will look at the profitability of selling merchandise versus selling coffee drinks
+    plus various other measures of success, and it will rank California stores by
+    coffee drink sales, merchandise sales, and total sales. Because the table `COFFEE_HOUSES`
+    has hundreds of rows, these comparisons will be faster and easier if the amount
+    of data being searched is cut down to only those rows where the value in the column
+    `STORE_ID` indicates California.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设咖啡休息连锁店已经在美利坚合众国各地发展到数百家店铺，并且所有店铺都列在名为`COFFEE_HOUSES`的表中。业主希望通过一款不需要与数据库系统保持持久连接的咖啡店比较应用程序来衡量仅加利福尼亚州的店铺的成功。这种比较将关注销售商品与销售咖啡饮料的盈利能力以及其他各种成功指标，并将按照咖啡饮料销售额、商品销售额和总销售额对加利福尼亚州的店铺进行排名。由于`COFFEE_HOUSES`表有数百行数据，如果将搜索的数据量减少到仅包含`STORE_ID`列中指示加利福尼亚州的行，这些比较将更快更容易进行。
+- en: 'This is exactly the kind of problem that a `FilteredRowSet` object addresses
+    by providing the following capabilities:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这正是`FilteredRowSet`对象通过提供以下功能来解决的问题：
+- en: Ability to limit the rows that are visible according to set criteria
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 能够根据设定的条件限制可见的行
+- en: Ability to select which data is visible without being connected to a data source
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 能够选择哪些数据可见而无需连接到数据源
+- en: 'The following topics are covered:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的主题包括：
+- en: '[Defining Filtering Criteria in Predicate Objects](#defining-filtering-criteria-in-predicate-object)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在谓词对象中定义过滤条件](#defining-filtering-criteria-in-predicate-object)'
+- en: '[Creating FilteredRowSet Objects](#creating-filteredrowset-object)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建FilteredRowSet对象](#creating-filteredrowset-object)'
+- en: '[Creating and Setting Predicate Objects](#creating-and-setting-predicate-object)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建和设置谓词对象](#creating-and-setting-predicate-object)'
+- en: '[Setting FilteredRowSet Objects with New Predicate Objects to Filter Data Further](#filter-data-further)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用新的谓词对象设置FilteredRowSet对象以进一步过滤数据](#filter-data-further)'
+- en: '[Updating FilteredRowSet Objects](#updating-filteredrowset-object)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[更新FilteredRowSet对象](#updating-filteredrowset-object)'
+- en: '[Inserting or Updating Rows](#inserting-or-updating-row)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[插入或更新行](#inserting-or-updating-row)'
+- en: '[Removing All Filters so All Rows Are Visible](#removing-all-filters)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[删除所有过滤器以使所有行可见](#removing-all-filters)'
+- en: '[Deleting Rows](#deleting-row)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[删除行](#deleting-row)'
+- en: Defining Filtering Criteria in Predicate Objects
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在谓词对象中定义过滤条件
+- en: 'To set the criteria for which rows in a `FilteredRowSet` object will be visible,
+    you define a class that implements the `Predicate` interface. An object created
+    with this class is initialized with the following:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要设置`FilteredRowSet`对象中哪些行可见的条件，您需要定义一个实现`Predicate`接口的类。使用此类创建的对象将初始化为以下内容：
+- en: The high end of the range within which values must fall
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 值必须落在的范围的高端
+- en: The low end of the range within which values must fall
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 值必须落在的范围的低端
+- en: The column name or column number of the column with the value that must fall
+    within the range of values set by the high and low boundaries
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 列名或列号是必须落在高低边界设置的值范围内的值所在的列的列名或列号
+- en: Note that the range of values is inclusive, meaning that a value at the boundary
+    is included in the range. For example, if the range has a high of 100 and a low
+    of 50, a value of 50 is considered to be within the range. A value of 49 is not.
+    Likewise, 100 is within the range, but 101 is not.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，值范围是包容的，这意味着边界处的值包括在范围内。例如，如果范围的高端为100，低端为50，则50的值被视为在范围内。49不在范围内。同样，100在范围内，但101不在范围内。
+- en: In line with the scenario where the owner wants to compare California stores,
+    an implementation of the `Predicate` interface that filters for Coffee Break coffee
+    houses located in California must be written. There is no one right way to do
+    this, which means there is a lot of latitude in how the implementation is written.
+    For example, you could name the class and its members whatever you want and implement
+    a constructor and the three evaluate methods in any way that accomplishes the
+    desired results.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 符合业主想要比较加利福尼亚店铺的情景，必须编写一个实现`Predicate`接口的过滤位于加利福尼亚的Coffee Break咖啡店的类。没有一种正确的方法来做这件事，这意味着在编写实现的方式上有很大的自由度。例如，您可以随意命名类及其成员，并以任何实现方式编写构造函数和三个评估方法，以实现所需的结果。
+- en: The table listing all of the coffee houses, named `COFFEE_HOUSES`, has hundreds
+    of rows. To make things more manageable, this example uses a table with far fewer
+    rows, which is enough to demonstrate how filtering is done.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列出所有咖啡店的表名为`COFFEE_HOUSES`，有数百行。为了使事情更易管理，此示例使用了少得多的行数的表，足以演示如何进行过滤。
+- en: A value in the column `STORE_ID` is an `int` value that indicates, among other
+    things, the state in which the coffee house is located. A value beginning with
+    10, for example, means that the state is California. `STORE_ID` values beginning
+    with 32 indicate Oregon, and those beginning with 33 indicate the state of Washington.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列`STORE_ID`中的值是一个`int`值，表示咖啡店所在的州等信息。例如，以10开头的值表示该州是加利福尼亚。以32开头的`STORE_ID`值表示俄勒冈州，以33开头的表示华盛顿州。
+- en: 'The following class, [`StateFilter`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StateFilter.java),
+    implements the `Predicate` interface:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下类，[`StateFilter`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/StateFilter.java)，实现了`Predicate`接口：
+- en: '[PRE0]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This is a very simple implementation that checks the value in the column specified
+    by either `colName` or `colNumber` to see if it is in the range of `lo` to `hi`,
+    inclusive. The following line of code, from [`FilteredRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/FilteredRowSetSample.java),
+    creates a filter that allows only the rows where the `STORE_ID` column value indicates
+    a value between 10000 and 10999, which indicates a California location:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个非常简单的实现，检查由`colName`或`colNumber`指定的列中的值是否在`lo`到`hi`的范围内，包括边界。以下代码行，来自[`FilteredRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/FilteredRowSetSample.java)，创建了一个过滤器，仅允许`STORE_ID`列值指示介于10000和10999之间的行，这表示加利福尼亚位置：
+- en: '[PRE1]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Note that the `StateFilter` class just defined applies to one column. It is
+    possible to have it apply to two or more columns by making each of the parameters
+    arrays instead of single values. For example, the constructor for a `Filter` object
+    could look like the following:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，刚刚定义的`StateFilter`类仅适用于一列。可以通过将每个参数数组而不是单个值来使其适用于两个或更多列。例如，`Filter`对象的构造函数可能如下所示：
+- en: '[PRE2]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The first element in the `colNumber` object gives the first column in which
+    the value will be checked against the first element in `lo` and the first element
+    in `hi`. The value in the second column indicated by `colNumber` will be checked
+    against the second elements in `lo` and `hi`, and so on. Therefore, the number
+    of elements in the three arrays should be the same. The following code is what
+    an implementation of the method `evaluate(RowSet rs)` might look like for a `Filter2`
+    object, in which the parameters are arrays:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`colNumber`对象中的第一个元素表示将根据其在`lo`和`hi`中的第一个元素进行检查的第一列。由`colNumber`指示的第二列中的值将与`lo`和`hi`中的第二个元素进行检查，依此类推。因此，这三个数组中的元素数量应该相同。下面的代码是`evaluate(RowSet
+    rs)`方法的一个实现示例，用于`Filter2`对象，其中参数是数组：'
+- en: '[PRE3]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The advantage of using a `Filter2` implementation is that you can use parameters
+    of any `Object` type and can check one column or multiple columns without having
+    to write another implementation. However, you must pass an `Object` type, which
+    means that you must convert a primitive type to its `Object` type. For example,
+    if you use an `int` value for `lo` and `hi`, you must convert the `int` value
+    to an `Integer` object before passing it to the constructor. `String` objects
+    are already `Object` types, so you do not have to convert them.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`Filter2`实现的优势在于可以使用任何`Object`类型的参数，并且可以检查一个或多个列，而无需编写另一个实现。但是，您必须传递一个`Object`类型，这意味着您必须将原始类型转换为其`Object`类型。例如，如果您使用`int`值作为`lo`和`hi`，则必须在将其传递给构造函数之前将`int`值转换为`Integer`对象。`String`对象已经是`Object`类型，因此您无需转换它们。
+- en: Creating FilteredRowSet Objects
+  id: totrans-34
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建FilteredRowSet对象
+- en: 'Use an instance of `RowSetFactory`, which is created from the class `RowSetProvider`,
+    to create a `FilteredRowSet` object. The following is from [`FilteredRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/FilteredRowSetSample.java):'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用从`RowSetProvider`类创建的`RowSetFactory`实例来创建`FilteredRowSet`对象。以下是来自[`FilteredRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/FilteredRowSetSample.java)的示例：
+- en: '[PRE4]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Like other disconnected `RowSet` objects, the `frs` object must populate itself
+    with data from a tabular data source, which is a relational database in the reference
+    implementation. The following code fragment from `FilteredRowSetSample.java` sets
+    the properties necessary to connect to a database to execute its command. Note
+    that this code uses the `DriverManager` class to make a connection, which is done
+    for convenience. Usually, it is better to use a `DataSource` object that has been
+    registered with a naming service that implements the Java Naming and Directory
+    Interface (JNDI).
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与其他断开连接的`RowSet`对象一样，`frs`对象必须从表格数据源（在参考实现中是关系数据库）中填充自身数据。下面来自`FilteredRowSetSample.java`的代码片段设置了连接到数据库以执行其命令所需的属性。请注意，此代码使用`DriverManager`类建立连接，这是为了方便起见。通常情况下，最好使用已在实现了Java命名和目录接口（JNDI）的命名服务中注册的`DataSource`对象。
+- en: '[PRE5]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The following line of code populates the `frs` object with the data stored
+    in the `COFFEE_HOUSE` table:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的代码行将`frs`对象填充了存储在`COFFEE_HOUSE`表中的数据：
+- en: '[PRE6]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The method `execute` does all kinds of things in the background by calling on
+    the `RowSetReader` object for `frs`, which creates a connection, executes the
+    command for `frs`, populates `frs` with the data from the `ResultSet` object that
+    is produced, and closes the connection. Note that if the table `COFFEE_HOUSES`
+    had more rows than the `frs` object could hold in memory at one time, the `CachedRowSet`
+    paging methods would have been used.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`execute`方法通过调用`frs`的`RowSetReader`对象在后台执行各种操作，该对象创建连接，执行`frs`的命令，将`frs`填充为从生成的`ResultSet`对象中获取的数据，并关闭连接。请注意，如果`COFFEE_HOUSES`表的行数超过了`frs`对象一次性内存中可以容纳的行数，将使用`CachedRowSet`的分页方法。'
+- en: In the scenario, the Coffee Break owner would have done the preceding tasks
+    in the office and then imported or downloaded the information stored in the `frs`
+    object to the coffee house comparison application. From now on, the `frs` object
+    will operate independently without the benefit of a connection to the data source.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，Coffee Break的所有者将在办公室完成前述任务，然后导入或下载存储在`frs`对象中的信息到咖啡馆比较应用程序中。从现在开始，`frs`对象将独立运行，不再依赖于与数据源的连接。
+- en: Creating and Setting Predicate Objects
+  id: totrans-43
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建和设置谓词对象
+- en: Now that the `FilteredRowSet` object `frs` contains the list of Coffee Break
+    establishments, you can set selection criteria for narrowing down the number of
+    rows in the `frs` object that are visible.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在`FilteredRowSet`对象`frs`包含了Coffee Break商店的列表，您可以为`frs`对象中可见的行数设置选择条件以缩小范围。
+- en: 'The following line of code uses the `StateFilter` class defined previously
+    to create the object `myStateFilter`, which checks the column `STORE_ID` to determine
+    which stores are in California (a store is in California if its ID number is between
+    10000 and 10999, inclusive):'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码行使用先前定义的`StateFilter`类来创建对象`myStateFilter`，该对象检查`STORE_ID`列以确定哪些商店位于加利福尼亚（如果其ID号在10000到10999之间，则商店位于加利福尼亚）：
+- en: '[PRE7]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The following line sets `myStateFilter` as the filter for `frs`.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下行将`myStateFilter`设置为`frs`的过滤器。
+- en: '[PRE8]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: To do the actual filtering, you call the method `next`, which in the reference
+    implementation calls the appropriate version of the `Predicate.evaluate` method
+    that you have implemented previously.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要进行实际过滤，您调用`next`方法，该方法在参考实现中调用您先前实现的`Predicate.evaluate`方法的适当版本。
+- en: If the return value is `true`, the row will be visible; if the return value
+    is `false`, the row will not be visible.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果返回值为`true`，则该行将可见；如果返回值为`false`，则该行将不可见。
+- en: Setting FilteredRowSet Objects with New Predicate Objects to Filter Data Further
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用新的`Predicate`对象设置FilteredRowSet对象以进一步过滤数据
+- en: You set multiple filters serially. The first time you call the method `setFilter`
+    and pass it a `Predicate` object, you have applied the filtering criteria in that
+    filter. After calling the method `next` on each row, which makes visible only
+    those rows that satisfy the filter, you can call `setFilter` again, passing it
+    a different `Predicate` object. Even though only one filter is set at a time,
+    the effect is that both filters apply cumulatively.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以串行设置多个过滤器。第一次调用`setFilter`方法并传递一个`Predicate`对象时，您已经应用了该过滤器中的过滤条件。在对每一行调用`next`方法后，只有满足过滤条件的行才会可见，然后您可以再次调用`setFilter`，传递不同的`Predicate`对象。尽管一次只设置一个过滤器，但效果是两个过滤器都会累积应用。
+- en: 'For example, the owner has retrieved a list of the Coffee Break stores in California
+    by setting `stateFilter` as the `Predicate` object for `frs`. Now the owner wants
+    to compare the stores in two California cities, San Francisco (SF in the table
+    `COFFEE_HOUSES`) and Los Angeles (LA in the table). The first thing to do is to
+    write a `Predicate` implementation that filters for stores in either SF or LA:'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，所有者通过将`stateFilter`设置为`frs`的`Predicate`对象来检索加利福尼亚的Coffee Break商店列表。现在所有者想要比较加利福尼亚的两个城市中的商店，旧金山（表`COFFEE_HOUSES`中的SF）和洛杉矶（表中的LA）。首先要做的是编写一个`Predicate`实现，用于过滤旧金山或洛杉矶的商店：
+- en: '[PRE9]'
+  id: totrans-54
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'The following code fragment from `FilteredRowSetSample.java` sets the new filter
+    and iterates through the rows in `frs`, printing out the rows where the `CITY`
+    column contains either SF or LA. Note that `frs` currently contains only rows
+    where the store is in California, so the criteria of the `Predicate` object `state`
+    are still in effect when the filter is changed to another `Predicate` object.
+    The code that follows sets the filter to the `CityFilter` object `city`. The `CityFilter`
+    implementation uses arrays as parameters to the constructors to illustrate how
+    that can be done:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 来自`FilteredRowSetSample.java`的以下代码片段设置了新的过滤器，并遍历`frs`中的行，打印出`CITY`列包含旧金山或洛杉矶的行。请注意，`frs`当前仅包含商店位于加利福尼亚的行，因此当将过滤器更改为另一个`Predicate`对象时，`state`对象的条件仍然有效。接下来的代码将过滤器设置为`CityFilter`对象`city`。`CityFilter`实现使用数组作为构造函数的参数，以说明可以如何完成：
+- en: '[PRE10]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: The output should contain a row for each store that is in San Francisco, California
+    or Los Angeles, California. If there were a row in which the `CITY` column contained
+    LA and the `STORE_ID` column contained 40003, it would not be included in the
+    list because it had already been filtered out when the filter was set to `state`.
+    (40003 is not in the range of 10000 to 10999.)
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出应包含每个位于加利福尼亚旧金山或洛杉矶的商店的行。如果有一行中`CITY`列包含LA且`STORE_ID`列包含40003，则不会包含在列表中，因为在将过滤器设置为`state`时已经被过滤掉（40003不在10000到10999的范围内）。
+- en: Updating FilteredRowSet Objects
+  id: totrans-58
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更新FilteredRowSet对象
+- en: You can make a change to a `FilteredRowSet` object but only if that change does
+    not violate any of the filtering criteria currently in effect. For example, you
+    can insert a new row or change one or more values in an existing row if the new
+    value or values are within the filtering criteria.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以对`FilteredRowSet`对象进行更改，但前提是该更改不违反当前生效的任何过滤条件。例如，如果新值或值在过滤条件内，则可以插入新行或更改现有行中的一个或多个值。
+- en: Inserting or Updating Rows
+  id: totrans-60
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 插入或更新行
+- en: Assume that two new Coffee Break coffee houses have just opened and the owner
+    wants to add them to the list of all coffee houses. If a row to be inserted does
+    not meet the cumulative filtering criteria in effect, it will be blocked from
+    being added.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设两家新的Coffee Break咖啡馆刚刚开业，所有者希望将它们添加到所有咖啡馆的列表中。如果要插入的行不符合当前累积的过滤条件，则将阻止其添加。
+- en: 'The current state of the `frs` object is that the `StateFilter` object was
+    set and then the `CityFilter` object was set. As a result, `frs` currently makes
+    visible only those rows that satisfy the criteria for both filters. And, equally
+    important, you cannot add a row to the `frs` object unless it satisfies the criteria
+    for both filters. The following code fragment attempts to insert two new rows
+    into the `frs` object, one row in which the values in the `STORE_ID` and `CITY`
+    columns both meet the criteria, and one row in which the value in `STORE_ID` does
+    not pass the filter but the value in the `CITY` column does:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`frs`对象的当前状态是设置了`StateFilter`对象，然后设置了`CityFilter`对象。因此，`frs`目前仅显示符合两个过滤器条件的行。同样重要的是，除非符合两个过滤器的条件，否则无法向`frs`对象添加行。以下代码片段尝试向`frs`对象插入两行新行，其中一个行中的`STORE_ID`和`CITY`列的值都符合条件，另一个行中的`STORE_ID`的值不符合过滤条件，但`CITY`列的值符合：'
+- en: '[PRE11]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: If you were to iterate through the `frs` object using the method `next`, you
+    would find a row for the new coffee house in San Francisco, California, but not
+    for the store in San Francisco, Washington.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果使用方法`next`迭代`frs`对象，你会发现旧金山、加利福尼亚州的新咖啡馆的行，但不会看到华盛顿州旧金山的商店的行。
+- en: Removing All Filters so All Rows Are Visible
+  id: totrans-65
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 删除所有过滤器以使所有行可见
+- en: The owner can add the store in Washington by nullifying the filter. With no
+    filter set, all rows in the `frs` object are once more visible, and a store in
+    any location can be added to the list of stores. The following line of code unsets
+    the current filter, effectively nullifying both of the `Predicate` implementations
+    previously set on the `frs` object.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有者可以通过取消过滤器来添加华盛顿州的商店。没有设置过滤器，`frs`对象中的所有行再次可见，任何位置的商店都可以添加到商店列表中。以下代码行取消当前过滤器，有效地使先前在`frs`对象上设置的两个`Predicate`实现无效。
+- en: '[PRE12]'
+  id: totrans-67
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: Deleting Rows
+  id: totrans-68
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 删除行
+- en: If the owner decides to close down or sell one of the Coffee Break coffee houses,
+    the owner will want to delete it from the `COFFEE_HOUSES` table. The owner can
+    delete the row for the under-performing coffee house as long as the row is visible.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果所有者决定关闭或出售其中一家Coffee Break咖啡馆，所有者将希望从`COFFEE_HOUSES`表中删除它。只要行可见，所有者就可以删除表现不佳的咖啡馆的行。
+- en: For example, given that the method `setFilter` has just been called with the
+    argument null, there is no filter set on the `frs` object. This means that all
+    rows are visible and can therefore be deleted. However, after the `StateFilter`
+    object `myStateFilter` was set, which filtered out any state other than California,
+    only stores located in California could be deleted. When the `CityFilter` object
+    `myCityFilter` was set for the `frs` object, only coffee houses in San Francisco,
+    California or Los Angeles, California could be deleted because they were in the
+    only rows visible.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设刚刚使用参数null调用了方法`setFilter`，则`frs`对象上没有设置任何过滤器。这意味着所有行都是可见的，因此可以删除。然而，在设置了过滤掉除加利福尼亚州以外任何州的`StateFilter`对象`myStateFilter`之后，只有位于加利福尼亚州的商店才能被删除。当为`frs`对象设置了`CityFilter`对象`myCityFilter`时，只有旧金山、加利福尼亚州或洛杉矶、加利福尼亚州的咖啡馆可以被删除，因为它们是唯一可见的行。

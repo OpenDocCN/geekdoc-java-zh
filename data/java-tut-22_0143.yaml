@@ -1,0 +1,197 @@
+- en: Managing Source and Class Files
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 管理源文件和类文件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/package/managingfiles.html](https://docs.oracle.com/javase/tutorial/java/package/managingfiles.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/package/managingfiles.html](https://docs.oracle.com/javase/tutorial/java/package/managingfiles.html)
+- en: Many implementations of the Java platform rely on hierarchical file systems
+    to manage source and class files, although *The Java Language Specification* does
+    not require this. The strategy is as follows.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台的许多实现依赖于分层文件系统来管理源文件和类文件，尽管*Java语言规范*并不要求这样做。策略如下。
+- en: 'Put the source code for a class, interface, enumeration, or annotation type
+    in a text file whose name is the simple name of the type and whose extension is
+    `.java`. For example:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将一个类、接口、枚举或注解类型的源代码放在一个文本文件中，文件名为类型的简单名称，扩展名为`.java`。例如：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Then, put the source file in a directory whose name reflects the name of the
+    package to which the type belongs:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，将源文件放在一个反映类型所属包名的目录中：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The qualified name of the package member and the path name to the file are parallel,
+    assuming the Microsoft Windows file name separator backslash (for UNIX, use the
+    forward slash).
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 包成员的限定名称和文件的路径名称是平行的，假设使用Microsoft Windows文件名分隔符反斜杠（对于UNIX，请使用正斜杠）。
+- en: '**class name** – `graphics.Rectangle`'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**类名** – `graphics.Rectangle`'
+- en: '**pathname to file** – `graphics\Rectangle.java`'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**文件路径** – `graphics\Rectangle.java`'
+- en: 'As you should recall, by convention a company uses its reversed Internet domain
+    name for its package names. The Example company, whose Internet domain name is
+    `example.com`, would precede all its package names with `com.example`. Each component
+    of the package name corresponds to a subdirectory. So, if the Example company
+    had a `com.example.graphics` package that contained a `Rectangle.java` source
+    file, it would be contained in a series of subdirectories like this:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你应该记得的那样，按照惯例，公司使用其反转的互联网域名作为其包名。例如，其互联网域名为`example.com`的Example公司将在其所有包名之前加上`com.example`。包名的每个组件对应一个子目录。因此，如果Example公司有一个包含`Rectangle.java`源文件的`com.example.graphics`包，它将包含在一系列子目录中，如下所示：
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: When you compile a source file, the compiler creates a different output file
+    for each type defined in it. The base name of the output file is the name of the
+    type, and its extension is `.class`. For example, if the source file is like this
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你编译一个源文件时，编译器为其中定义的每个类型创建一个不同的输出文件。输出文件的基本名称是类型的名称，其扩展名是`.class`。例如，如果源文件如下所示
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'then the compiled files will be located at:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后编译后的文件将位于：
+- en: '[PRE4]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Like the `.java` source files, the compiled `.class` files should be in a series
+    of directories that reflect the package name. However, the path to the `.class`
+    files does not have to be the same as the path to the `.java` source files. You
+    can arrange your source and class directories separately, as:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`.java`源文件一样，编译后的`.class`文件应该在反映包名的一系列目录中。然而，`.class`文件的路径不一定要与`.java`源文件的路径相同。你可以将源文件和类文件目录分开管理，如：
+- en: '[PRE5]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: By doing this, you can give the `classes` directory to other programmers without
+    revealing your sources. You also need to manage source and class files in this
+    manner so that the compiler and the Java Virtual Machine (JVM) can find all the
+    types your program uses.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过这样做，你可以将`classes`目录提供给其他程序员，而不会泄露你的源代码。你还需要以这种方式管理源文件和类文件，以便编译器和Java虚拟机（JVM）可以找到程序中使用的所有类型。
+- en: The full path to the `classes` directory, `<path_two>\classes`, is called the
+    *class path*, and is set with the `CLASSPATH` system variable. Both the compiler
+    and the JVM construct the path to your `.class` files by adding the package name
+    to the class path. For example, if
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`classes`目录的完整路径，`<path_two>\classes`，被称为*类路径*，并通过`CLASSPATH`系统变量设置。编译器和JVM都会通过将包名添加到类路径来构建到你的`.class`文件的路径。例如，如果'
+- en: '[PRE6]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: is your class path, and the package name is
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是你的类路径，包名是
+- en: '[PRE7]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: then the compiler and JVM look for `.class files` in
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后编译器和JVM会在以下位置查找`.class`文件
+- en: '[PRE8]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: A class path may include several paths, separated by a semicolon (Windows) or
+    colon (UNIX). By default, the compiler and the JVM search the current directory
+    and the JAR file containing the Java platform classes so that these directories
+    are automatically in your class path.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类路径可以包括多个路径，用分号（Windows）或冒号（UNIX）分隔。默认情况下，编译器和JVM会搜索当前目录和包含Java平台类的JAR文件，因此这些目录会自动包含在你的类路径中。
+- en: Setting the CLASSPATH System Variable
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置CLASSPATH系统变量
+- en: 'To display the current `CLASSPATH` variable, use these commands in Windows
+    and UNIX (Bourne shell):'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在Windows和UNIX（Bourne shell）中显示当前的`CLASSPATH`变量，请使用以下命令：
+- en: '[PRE9]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'To delete the current contents of the `CLASSPATH` variable, use these commands:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要删除当前`CLASSPATH`变量的内容，请使用以下命令：
+- en: '[PRE10]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'To set the `CLASSPATH` variable, use these commands (for example):'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要设置`CLASSPATH`变量，请使用以下命令（例如）：
+- en: '[PRE11]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'

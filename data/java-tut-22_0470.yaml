@@ -1,0 +1,156 @@
+- en: Empty Table Drop
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 空表格拖放
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/emptytable.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/emptytable.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/emptytable.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/emptytable.html)
+- en: 'Dragging and dropping into an empty table presents a unique challenge. When
+    adhering to the proper steps:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将内容拖放到空表格中会带来独特的挑战。遵循正确的步骤：
+- en: Creating the empty table.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建空表格。
+- en: Creating and attaching a `TransferHandler`.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建并附加`TransferHandler`。
+- en: Enabling data transfer by calling `setDragEnabled(true)`.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过调用`setDragEnabled(true)`启用数据传输。
+- en: Creating a scroll pane and adding the table to the scroll pane.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建滚动窗格并将表格添加到滚动窗格中。
+- en: You run the application and try to drag valid data into the table but it rejects
+    the drop. What gives?
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行应用程序并尝试将有效数据拖放到表格中，但它拒绝了拖放。怎么回事？
+- en: The reason is that the empty table (unlike an empty list or an empty tree) does
+    not occupy any space in the scroll pane. The `JTable` does not automatically stretch
+    to fill the height of a `JScrollPane`'s viewport — it only takes up as much vertical
+    room as needed for the rows that it contains. So, when you drag over the empty
+    table, you are not actually over the table and the drop fails.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 原因在于空表格（不像空列表或空树）不占据滚动窗格中的任何空间。`JTable`不会自动拉伸以填充`JScrollPane`视口的高度 — 它只会占据所需的垂直空间以容纳其中的行。因此，当您拖动到空表格上时，实际上并不在表格上，因此拖放失败。
+- en: You can configure the table to allow drop anywhere in the view port by calling
+    [`JTable.setFillsViewportHeight(boolean)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setFillsViewportHeight-boolean-).
+    The default for this property is false to ensure backwards compatibility.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过调用[`JTable.setFillsViewportHeight(boolean)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setFillsViewportHeight-boolean-)来配置表格，以允许在视口中的任何位置进行拖放。此属性的默认值为
+    false，以确保向后兼容性。
+- en: The following example, `FillViewportHeightDemo`, allows you to experiment with
+    dropping onto an empty table. The demo contains an empty table with five columns
+    that has its drop mode set to insert rows and a drag source that provides five
+    comma-delimited values that automatically increment.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例`FillViewportHeightDemo`允许您尝试将数据拖放到空表格中。该演示包含一个具有五列的空表格，其拖放模式设置为插入行，并提供五个逗号分隔值的拖动源，这些值会自动递增。
+- en: '![A snapshot of the FillViewportHeightDemo.](../Images/201be1a34bb447bd1b28cd74507529df.png)'
+  id: totrans-11
+  prefs: []
+  type: TYPE_IMG
+  zh: '![FillViewportHeightDemo的快照。](../Images/201be1a34bb447bd1b28cd74507529df.png)'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run `FillViewportHeightDemo` using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/dnd/index.html#FillViewportHeightDemo).[![Launches
+    the FillViewportHeightDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/FillViewportHeightDemoProject/FillViewportHeightDemo.jnlp)
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行`FillViewportHeightDemo`（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/dnd/index.html#FillViewportHeightDemo)。
+- en: Drag from the text field labeled "Drag from here" to the table.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从标有“从这里拖动”的文本字段拖动到表格中。
+- en: Drop onto the table. The drop is rejected.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 拖放到表格上。拖放被拒绝。
+- en: Double-click on the drag source. It deposits the current values (0, 0, 0, 0,
+    0) into the table and increments the values in the text field.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 双击拖动源。它会将当前值（0, 0, 0, 0, 0）放入表格中，并递增文本字段中的值。
+- en: Once again, drag from the text field to the table. You can insert above or below
+    the row, but not in the area underneath.
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次从文本字段拖动到表格中。您可以在行的上方或下方插入，但不能在下方的区域内插入。
+- en: From the Options menu, choose "Fill Viewport Height" to enable the "fillsViewportHeight"
+    property.
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从“选项”菜单中选择“填充视口高度”以启用“fillsViewportHeight”属性。
+- en: From the Options menu, choose "Reset" to empty the table.
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从“选项”菜单中选择“重置”以清空表格。
+- en: Drag from the text component to the table. You can now drop anywhere on the
+    view port and it inserts the data at row 0.
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从文本组件拖动到表格中。现在您可以在视口的任何位置放置数据，并将其插入到第 0 行。
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: You can examine the source for [``FillViewportHeightDemo.java``](../examples/dnd/FillViewportHeightDemoProject/src/dnd/FillViewportHeightDemo.java),
+    but the primary point to remember is that you should generally invoke `setFillsViewportHeight(true)`
+    on any table that will accept dropped data.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以查看[``FillViewportHeightDemo.java``](../examples/dnd/FillViewportHeightDemoProject/src/dnd/FillViewportHeightDemo.java)的源代码，但要记住的主要观点是，通常应该在任何接受拖放数据的表格上调用`setFillsViewportHeight(true)`。

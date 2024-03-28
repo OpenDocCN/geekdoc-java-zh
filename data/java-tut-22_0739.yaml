@@ -1,0 +1,496 @@
+- en: Using JDBC with GUI API
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用GUI API的JDBC
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/jdbcswing.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/jdbcswing.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/jdbcswing.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/jdbcswing.html)
+- en: 'The sample [`CoffeesFrame.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesFrame.java)
+    demonstrates how to integrate JDBC with a GUI API, in particular, the Swing API.
+    It displays the contents of the `COFFEES` database table in a table and contains
+    fields and buttons that enable you to add rows to the table. The following is
+    a screenshot of this sample:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例[`CoffeesFrame.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesFrame.java)演示了如何将JDBC与GUI
+    API集成，特别是Swing API。它在表中显示了`COFFEES`数据库表的内容，并包含字段和按钮，使您可以向表中添加行。以下是此示例的屏幕截图：
+- en: '![Screenshot of Sample CoffeeFrames.java](../Images/0aa9481f190e558e0681a592a736f94b.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![示例CoffeeFrames.java的屏幕截图](../Images/0aa9481f190e558e0681a592a736f94b.png)'
+- en: 'The sample contains five text fields that correspond to each of the columns
+    in the `COFFEES` table. It also contains three buttons:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例包含五个文本字段，对应于`COFFEES`表中的每一列。它还包含三个按钮：
+- en: '**Add row to table**: Adds a row to the sample''s table based on the data entered
+    in the text fields.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**向表中添加行**：根据文本字段中输入的数据向示例表中添加一行。'
+- en: '**Update database**: Updates the table `COFFEES` based on the data in the sample''s
+    table.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**更新数据库**：根据示例表中的数据更新`COFFEES`表。'
+- en: '**Discard changes**: Retrieves the contents of the `COFFEES` table, replacing
+    the existing data in the sample''s table.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**放弃更改**：检索`COFFEES`表的内容，替换示例表中的现有数据。'
+- en: 'This sample (which requires [`CoffeesTableModel.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTableModel.java))
+    demonstrates the following general steps to integrate JDBC with the Swing API:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例（需要[`CoffeesTableModel.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTableModel.java)）演示了将JDBC与Swing
+    API集成的一般步骤：
+- en: '[Implementing the `TableModel` interface](#implementing_tablemodel)'
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[实现`TableModel`接口](#implementing_tablemodel)'
+- en: '[Implementing the `RowSetListener` interface](#implemeting_rowsetlistener)'
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[实现`RowSetListener`接口](#implemeting_rowsetlistener)'
+- en: '[Laying out the Swing components](#laying_out_swing)'
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[布局Swing组件](#laying_out_swing)'
+- en: '[Adding listeners for the buttons in the sample](#adding_listeners)'
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[为示例中的按钮添加监听器](#adding_listeners)'
+- en: Implementing javax.swing.event.TableModel
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 实现javax.swing.event.TableModel
+- en: The `TableModel` interface enables a Java Swing application to manage data in
+    a `JTable` object. The sample, [`CoffeesTableModel.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTableModel.java),
+    implements this interface. It specifies how a `JTable` object should retrieve
+    data from a `RowSet` object and display it in a table.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TableModel`接口使得Java Swing应用程序能够管理`JTable`对象中的数据。示例[`CoffeesTableModel.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTableModel.java)实现了这个接口。它指定了`JTable`对象应该如何从`RowSet`对象中检索数据并在表中显示。'
+- en: '**Note**: Although this sample displays the contents of the `COFFEES` table
+    in a Swing application, the class `CoffeesTableModel` should work for any SQL
+    table provided that its data can be represented with `String` objects. (However,
+    the fields that enable users to add rows to `COFFEES`, which are specified in
+    the class `CoffeesFrame`, would have to be modified for other SQL tables.)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：尽管此示例在Swing应用程序中显示了`COFFEES`表的内容，但`CoffeesTableModel`类应该适用于任何SQL表，只要它的数据可以用`String`对象表示。（但是，用于向`COFFEES`添加行的字段，这些字段在`CoffeesFrame`类中指定，必须针对其他SQL表进行修改。）'
+- en: 'Before implementing the methods of the interface `TableModel`, the constructor
+    of the class `CoffeeTableModel` initializes various member variables required
+    for these implemented methods as follows:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在实现`TableModel`接口的方法之前，`CoffeeTableModel`类的构造函数初始化了为这些实现方法所需的各种成员变量，如下所示：
+- en: '[PRE0]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following describes the member variables initialized in this constructor:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下描述了在这个构造函数中初始化的成员变量：
+- en: '`CachedRowSet coffeesRowSet`: Stores the contents of the table `COFFEES`.'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CachedRowSet coffeesRowSet`：存储`COFFEES`表的内容。'
+- en: This sample uses a `RowSet` object, in particular, a `CachedRowSet` object,
+    rather than a `ResultSet` object for two reasons. A `CachedRowSet` object enables
+    the user of the application to make changes to the data contained in it without
+    being connected to the database. In addition, because a `CachedRowSet` object
+    is a JavaBeans component, it can notify other components when certain things happen
+    to it. In this sample, when a new row is added to the `CachedRowSet` object, it
+    notifies the Swing component that is rendering its data in a table to refresh
+    itself and display the new row.
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 本示例使用`RowSet`对象，特别是`CachedRowSet`对象，而不是`ResultSet`对象，有两个原因。`CachedRowSet`对象使应用程序的用户能够对其中包含的数据进行更改，而无需连接到数据库。此外，因为`CachedRowSet`对象是一个JavaBeans组件，它可以在发生某些事情时通知其他组件。在本示例中，当向`CachedRowSet`对象添加新行时，它会通知渲染表中数据的Swing组件刷新自身并显示新行。
+- en: '`ResultSetMetaData metadata`: Retrieves the number of columns in the table
+    `COFFEES` as well as the names of each of them.'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ResultSetMetaData metadata`: 检索表`COFFEES`中的列数以及每个列的名称。'
+- en: '`int numcols, numrows`: Stores the number of columns and rows, respectively,
+    in the table `COFFEES`.'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`int numcols, numrows`: 分别存储表`COFFEES`中的列数和行数。'
+- en: 'The `CoffeesTableModel.java` sample implements the following methods from `TableModel`
+    interface:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CoffeesTableModel.java`示例实现了`TableModel`接口中的以下方法：'
+- en: '`Class<?> getColumnClass(int columnIndex)`: Returns the most specific superclass
+    for all the cell values in the column.'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Class<?> getColumnClass(int columnIndex)`: 返回列中所有单元格值的最具体的超类。'
+- en: '`int getColumnCount()`: Returns the number of columns in the model.'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`int getColumnCount()`: 返回模型中的列数。'
+- en: '`String getColumnName(int columnIndex)`: Returns the name of the column specified
+    by the parameter `columnIndex`.'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`String getColumnName(int columnIndex)`: 返回由参数`columnIndex`指定的列的名称。'
+- en: '`int getRowCount()`: Returns the number of rows in the model.'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`int getRowCount()`: 返回模型中的行数。'
+- en: '`Object getValueAt(int rowIndex, int columnIndex)`: Returns the value for the
+    cell at intersection of the column `columnIndex` and the row `rowIndex`.'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Object getValueAt(int rowIndex, int columnIndex)`: 返回交叉点处的单元格的值，该单元格位于列`columnIndex`和行`rowIndex`的交叉点处。'
+- en: '`boolean isCellEditable(int rowIndex, int columnIndex)`: Returns true if the
+    cell at the intersection of the column `rowIndex` and the row `columnIndex` can
+    be edited.'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`boolean isCellEditable(int rowIndex, int columnIndex)`: 如果列`rowIndex`和行`columnIndex`的交叉点处的单元格可以编辑，则返回true。'
+- en: 'The following methods have not been implemented because this sample does not
+    allow users to directly edit the contents of the table:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下方法未实现，因为此示例不允许用户直接编辑表的内容：
+- en: '`void addTableModelListener(TableModelListener l)`: Adds a listener to the
+    list that is notified each time a change to the data model occurs.'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`void addTableModelListener(TableModelListener l)`: 向列表中添加一个侦听器，每当数据模型发生更改时通知该侦听器。'
+- en: '`void removeTableModelListener(TableModelListener l)`: Removes a listener from
+    the list that is notified each time a change to the data model occurs.'
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`void removeTableModelListener(TableModelListener l)`: 从列表中移除一个侦听器，每当数据模型发生更改时通知该侦听器。'
+- en: '`void setValueAt(Object aValue, int rowIndex, int columnIndex)`: Sets the value
+    in the cell at the intersection of the column `columnIndex` and the row `rowIndex`
+    to the object `aValue`.'
+  id: totrans-33
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`void setValueAt(Object aValue, int rowIndex, int columnIndex)`: 将交叉点处的单元格中的值设置为对象`aValue`，该单元格位于列`columnIndex`和行`rowIndex`的交叉点处。'
+- en: Implementing getColumnCount and getRowCount
+  id: totrans-34
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 实现 getColumnCount 和 getRowCount
+- en: 'The methods `getColumnCount` and `getRowCount` return the value of the member
+    variables `numcols` and `numrows`, respectively:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getColumnCount`和`getRowCount`方法分别返回成员变量`numcols`和`numrows`的值：'
+- en: '[PRE1]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Implementing getColumnClass
+  id: totrans-37
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 实现 getColumnClass
+- en: The `getColumnClass` method returns the data type of the specified column. To
+    keep things simple, this method returns the `String` class, thereby converting
+    all data in the table into `String` objects. The `JTable` class uses this method
+    to determine how to render data in the GUI application.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getColumnClass`方法返回指定列的数据类型。为了保持简单，此方法返回`String`类，从而将表中的所有数据转换为`String`对象。`JTable`类使用此方法确定如何在GUI应用程序中呈现数据。'
+- en: '[PRE2]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Implementing getColumnName
+  id: totrans-40
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 实现 getColumnName
+- en: The `getColumnName` method returns the name of the specified column. The `JTable`
+    class uses this method to label each of its columns.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getColumnName`方法返回指定列的名称。`JTable`类使用此方法为其每一列加上标签。'
+- en: '[PRE3]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Implementing getColumnAt
+  id: totrans-43
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 实现 getColumnAt
+- en: The `getColumnAt` method retrieves the value at the specified row and column
+    in the row set `coffeesRowSet`. The `JTable` class uses this method to populate
+    its table. Note that SQL starts numbering its rows and columns at 1, but the `TableModel`
+    interface starts at 0; this is the reason why the `rowIndex` and `columnIndex`
+    values are incremented by 1.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getColumnAt`方法检索行集`coffeesRowSet`中指定行和列的值。`JTable`类使用此方法来填充其表格。请注意，SQL从1开始对其行和列进行编号，但`TableModel`接口从0开始；这就是为什么`rowIndex`和`columnIndex`的值要增加1的原因。'
+- en: '[PRE4]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Implementing isCellEditable
+  id: totrans-46
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 实现isCellEditable
+- en: 'Because this sample does not allow users to directly edit the contents of the
+    table (rows are added by another window control), this method returns `false`
+    regardless of the values of `rowIndex` and `columnIndex`:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为此示例不允许用户直接编辑表的内容（行是由另一个窗口控件添加的），所以无论`rowIndex`和`columnIndex`的值如何，此方法都返回`false`：
+- en: '[PRE5]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Implementing javax.sql.RowSetListener
+  id: totrans-49
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 实现javax.sql.RowSetListener
+- en: The class `CoffeesFrame` implements only one method from the interface `RowSetListener`,
+    `rowChanged`. This method is called when a user adds a row to the table.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类`CoffeesFrame`仅实现接口`RowSetListener`中的一个方法`rowChanged`。当用户向表中添加行时，将调用此方法。
+- en: '[PRE6]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: This method updates the table in the GUI application.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此方法更新GUI应用程序中的表格。
+- en: Laying Out Swing Components
+  id: totrans-53
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 布置Swing组件
+- en: 'The constructor of the class `CoffeesFrame` initializes and lays out the Swing
+    components. The following statement retrieves the contents of the `COFFEES` table,
+    stores the contents in the `CachedRowSet` object `myCachedRowSet`, and initializes
+    the `JTable` Swing component:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类`CoffeesFrame`的构造函数初始化并布置Swing组件。以下语句检索`COFFEES`表的内容，将内容存储在`CachedRowSet`对象`myCachedRowSet`中，并初始化`JTable`
+    Swing组件：
+- en: '[PRE7]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: As mentioned previously, instead of a `ResultSet` object to represent the contents
+    of the `COFFEES` table, this sample uses a `RowSet` object, notably a `CachedRowSet`
+    object.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，此示例使用`RowSet`对象（特别是`CachedRowSet`对象）而不是`ResultSet`对象来表示`COFFEES`表的内容。
+- en: The method `CoffeesFrame.getContentsOfCoffeesTable` retrieves the contents of
+    the table `COFFEES`.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`CoffeesFrame.getContentsOfCoffeesTable`检索表`COFFEES`的内容。
+- en: The method `CoffeesTableModel.addEventHandlersToRowSet` adds the event handler
+    defined in the `CoffeesFrame` class, which is the method `rowChanged`, to the
+    row set member variable `CoffeesTableModel.coffeesRowSet`. This enables the class
+    `CoffeesFrame` to notify the row set `coffeesRowSet` of any events, in particular,
+    when a user clicks the button **Add row to table**, **Update database**, or **Discard
+    changes**. When the row set `coffeesRowSet` is notified of one of these changes,
+    the method `CoffeesFrame.rowChanged` is called.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`CoffeesTableModel.addEventHandlersToRowSet`将在`CoffeesFrame`类中定义的事件处理程序添加到行集成员变量`CoffeesTableModel.coffeesRowSet`中。这使得`CoffeesFrame`类能够通知行集`coffeesRowSet`任何事件，特别是当用户点击按钮**Add
+    row to table**、**Update database**或**Discard changes**时。当行集`coffeesRowSet`被通知到这些变化之一时，方法`CoffeesFrame.rowChanged`被调用。
+- en: The statement `table.setModel(myCoffeesTableModel)` specifies that it use the
+    `CoffeesTableModel` object `myCoffeesTableModel` to populate the `JTable` Swing
+    component `table`.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 语句`table.setModel(myCoffeesTableModel)`指定使用`CoffeesTableModel`对象`myCoffeesTableModel`来填充`JTable`
+    Swing组件`table`。
+- en: 'The following statements specify that the `CoffeesFrame` class use the layout
+    `GridBagLayout` to lay out its Swing components:'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下语句指定`CoffeesFrame`类使用布局`GridBagLayout`来布置其Swing组件：
+- en: '[PRE8]'
+  id: totrans-61
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: See [How to Use GridBagLayout](../../uiswing/layout/gridbag.html) in the [Creating
+    a GUI With JFC/Swing](../../uiswing/index.html) for more information about using
+    the layout `GridBagLayout`.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关使用布局`GridBagLayout`的更多信息，请参见[如何使用GridBagLayout](../../uiswing/layout/gridbag.html)中的[JFC/Swing创建GUI](../../uiswing/index.html)。
+- en: See the source code for [`CoffeesFrame.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesFrame.java)
+    to see how the Swing components of this sample are added to the layout `GridBagLayout`.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[`CoffeesFrame.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesFrame.java)的源代码，了解如何将此示例的Swing组件添加到布局`GridBagLayout`中。
+- en: Adding Listeners for Buttons
+  id: totrans-64
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为按钮添加监听器
+- en: 'The following statement adds a listener to the button **Add row to table**:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下语句向按钮**Add row to table**添加了一个监听器：
+- en: '[PRE9]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'When a user clicks this button, it performs the following:'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户点击此按钮时，它执行以下操作：
+- en: Creates a message dialog box that displays the row to be added to the table.
+  id: totrans-68
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建一个消息对话框，显示要添加到表中的行。
+- en: Calls the method `CoffeesTableModel.insertRow`, which adds the row to the member
+    variable `CoffeesTableModel.coffeesRowSet`.
+  id: totrans-69
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用方法`CoffeesTableModel.insertRow`，将行添加到成员变量`CoffeesTableModel.coffeesRowSet`中。
+- en: If an `SQLException` is thrown, then the method `CoffeesFrame.displaySQLExceptionDialog`
+    creates a message dialog box that displays the content of the `SQLException`.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果抛出`SQLException`，则方法`CoffeesFrame.displaySQLExceptionDialog`将创建一个消息对话框，显示`SQLException`的内容。
+- en: 'The following statement adds a listener to the button **Update database**:'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下语句向按钮**更新数据库**添加了一个监听器：
+- en: '[PRE10]'
+  id: totrans-72
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: When a user clicks this button, the table `COFFEES` is updated with the contents
+    of the row set `myCoffeesTableModel.coffeesRowSet`.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户点击此按钮时，将使用行集`myCoffeesTableModel.coffeesRowSet`的内容更新表`COFFEES`。
+- en: 'The following statement adds a listener to the button **Discard changes**:'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下语句向按钮**放弃更改**添加了一个监听器：
+- en: '[PRE11]'
+  id: totrans-75
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: When a user clicks this button, the method `CoffeesFrame.createNewTableModel`
+    is called, which repopulates the `JTable` component with the contents of the `COFFEES`
+    table.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户点击此按钮时，将调用方法`CoffeesFrame.createNewTableModel`，该方法重新填充`JTable`组件，其中包含`COFFEES`表的内容。

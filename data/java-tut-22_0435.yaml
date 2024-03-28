@@ -1,0 +1,1000 @@
+- en: How to Use BoxLayout
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用BoxLayout
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/box.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/box.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/box.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/box.html)
+- en: '* * *'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程涵盖了手动编写布局代码，这可能具有挑战性。如果你不想学习布局管理的所有细节，可以选择使用`GroupLayout`布局管理器结合构建工具来布局你的GUI。其中一个构建工具是[NetBeans
+    IDE](../learn/index.html)。否则，如果你想手动编码而不想使用`GroupLayout`，那么推荐使用`GridBagLayout`作为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你有兴趣使用JavaFX来创建你的GUI，请查看[JavaFX布局教程](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: "The Swing packages include a general purpose layout manager named [`BoxLayout`](https://docs.oracle.com/javase/8/docs/api/javax/swing/BoxLayout.html).\
+    \ `BoxLayout` either stacks its components on top of each other or places them\
+    \ in a row \x97 your choice. You might think of it as a version of [`FlowLayout`](flow.html),\
+    \ but with greater functionality. Here is a picture of an application that demonstrates\
+    \ using `BoxLayout` to display a centered column of components:"
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing包含一个名为[`BoxLayout`](https://docs.oracle.com/javase/8/docs/api/javax/swing/BoxLayout.html)的通用布局管理器。`BoxLayout`可以将其组件堆叠在一起或者按行排列
+    - 由你选择。你可以将其视为[`FlowLayout`](flow.html)的一个版本，但功能更强大。这里是一个应用程序的图片，演示了如何使用`BoxLayout`来显示一个居中的组件列：
+- en: '![A snapshot of BoxLayoutDemo](../Images/8e510cc5e929290b39de89731eb49bb4.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![BoxLayoutDemo的快照](../Images/8e510cc5e929290b39de89731eb49bb4.png)'
+- en: Click the Launch button to run BoxLayoutDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/layout/index.html#BoxLayoutDemo).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行BoxLayoutDemo（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/layout/index.html#BoxLayoutDemo)。
+- en: '[![Launches the BoxLayoutDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BoxLayoutDemoProject/BoxLayoutDemo.jnlp)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动BoxLayoutDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BoxLayoutDemoProject/BoxLayoutDemo.jnlp)'
+- en: You can see the code in [`BoxLayoutDemo.java`](../examples/layout/BoxLayoutDemoProject/src/layout/BoxLayoutDemo.java).
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在[`BoxLayoutDemo.java`](../examples/layout/BoxLayoutDemoProject/src/layout/BoxLayoutDemo.java)中查看代码。
+- en: The following figure shows a GUI that uses two instances of `BoxLayout`. In
+    the top part of the GUI, a top-to-bottom box layout places a label above a scroll
+    pane. In the bottom part of the GUI, a left-to-right box layout places two buttons
+    next to each other. A `BorderLayout` combines the two parts of the GUI and ensures
+    that any excess space is given to the scroll pane.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图片展示了一个使用两个`BoxLayout`实例的GUI。在GUI的顶部，一个从上到下的盒式布局将一个标签放在滚动窗格上方。在GUI的底部，一个从左到右的盒式布局将两个按钮并排放置。`BorderLayout`结合了GUI的两部分，并确保任何多余的空间都给了滚动窗格。
+- en: '![Uses both left-to-right and top-to-bottom box layouts](../Images/11491b0f144226d3cb985d36a0d5c168.png)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_IMG
+  zh: '![同时使用从左到右和从上到下的盒式布局](../Images/11491b0f144226d3cb985d36a0d5c168.png)'
+- en: You can find links for running ListDialog and for its source files in the [example
+    index](../components/../examples/components/index.html#ListDialog) for Using Swing
+    Components.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在[示例索引](../components/../examples/components/index.html#ListDialog)中找到运行ListDialog以及其源文件的链接，用于使用Swing组件。
+- en: The following code, taken from [``ListDialog.java``](../examples/components/ListDialogRunnerProject/src/components/ListDialog.java),
+    lays out the GUI. This code is in the constructor for the dialog, which is implemented
+    as a `JDialog` subclass. The bold lines of code set up the box layouts and add
+    components to them.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码取自[``ListDialog.java``](../examples/components/ListDialogRunnerProject/src/components/ListDialog.java)，布局了
+    GUI。这段代码位于对话框的构造函数中，该对话框是作为`JDialog`子类实现的。粗体代码设置了 Box 布局并向其中添加了组件。
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The first bold line creates a top-to-bottom box layout and sets it up as the
+    layout manager for `listPane`. The two arguments to the `BoxLayout` constructor
+    are the container that it manages and the axis along which the components will
+    be laid out. The `PAGE_AXIS` constant specifies that components should be laid
+    out in the direction that lines flow across a page as determined by the target
+    container's `ComponentOrientation` property. The `LINE_AXIS` constant specifies
+    that components should be laid out in the direction of a line of text as determined
+    by the target container's `ComponentOrientation` property. These constants allow
+    for internationalization, by laying out components in their container with the
+    correct left-to-right, right-to-left or top-to-bottom orientation for the language
+    being used.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一行粗体代码创建了一个从上到下的 Box 布局，并将其设置为`listPane`的布局管理器。`BoxLayout` 构造函数的两个参数是它管理的容器和组件将被布局的轴。`PAGE_AXIS`
+    常量指定组件应该按照页面上行流动的方向进行布局，由目标容器的`ComponentOrientation`属性确定。`LINE_AXIS` 常量指定组件应该按照文本行的方向进行布局，由目标容器的`ComponentOrientation`属性确定。这些常量允许通过以正确的从左到右、从右到左或从上到下的方向为所用语言的容器中的组件进行布局来进行国际化。
+- en: "The next three bold lines add the label and scroll pane to the container, separating\
+    \ them with a *rigid area* \x97 an invisible component used to add space between\
+    \ components. In this case, the rigid area has no width and puts exactly 5 pixels\
+    \ between the label and scroll pane. Rigid areas are discussed later, in [Using\
+    \ Invisible Components as Filler](#filler)."
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "接下来的三行粗体代码将标签和滚动窗格添加到容器中，并使用一个*刚性区域*分隔它们 \x97 一个用于在组件之间添加空间的不可见组件。在这种情况下，刚性区域没有宽度，并在标签和滚动窗格之间放置了确切的`5像素`。稍后在[使用不可见组件作为填充](#filler)中讨论了刚性区域。"
+- en: The next chunk of bold code creates a left-to-right box layout and sets it up
+    for the `buttonPane` container. Then the code adds two buttons to the container,
+    using a rigid area to put 10 pixels between the buttons. To place the buttons
+    at the right side of their container, the first component added to the container
+    is *glue*. This glue is an invisible component that grows as necessary to absorb
+    any extra space in its container. Glue is discussed in [Using Invisible Components
+    as Filler](#filler).
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一块粗体代码创建了一个从左到右的 Box 布局，并为`buttonPane`容器设置了布局。然后代码向容器添加了两个按钮，使用一个刚性区域在按钮之间放置了`10像素`。为了将按钮放置在其容器的右侧，添加到容器的第一个组件是*glue*。这个
+    glue 是一个不可见组件，根据需要增长以吸收其容器中的任何额外空间。在[使用不可见组件作为填充](#filler)中讨论了 glue。
+- en: As an alternative to using invisible components, you can sometimes use empty
+    borders to create space around components, most particularly panels. For example,
+    the preceding code snippet uses empty borders to put 10 pixels between all sides
+    of the dialog and its contents, and between the two parts of the contents. Borders
+    are completely independent of layout managers. They are simply how Swing components
+    draw their edges and provide padding between the content of the component and
+    the edge. See [How to Use Borders](../components/border.html) for more information.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为使用不可见组件的替代方案，有时可以使用空边框来在组件周围创建空间，尤其是面板。例如，前面的代码片段使用空边框在对话框及其内容的所有边缘之间以及内容的两个部分之间放置了`10像素`。边框完全独立于布局管理器。它们只是
+    Swing 组件如何绘制其边缘并在组件内容和边缘之间提供填充的方式。更多信息请参见[如何使用边框](../components/border.html)。
+- en: 'The following sections discuss `BoxLayout` in more detail:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下部分更详细地讨论了`BoxLayout`：
+- en: '[Box layout features](#features)'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Box 布局特性](#features)'
+- en: '[Using invisible components as filler](#filler)'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用不可见组件作为填充](#filler)'
+- en: '[Fixing alignment problems](#alignment)'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[修复对齐问题](#alignment)'
+- en: '[Specifying component sizes](#size)'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[指定组件大小](#size)'
+- en: '[The box layout API](#api)'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Box 布局 API](#api)'
+- en: '[Examples that use box layouts](#eg)'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 Box 布局的示例](#eg)'
+- en: Do not let the length of the `BoxLayout` discussion scare you! You can probably
+    use `BoxLayout` with the information you already have. If you run into trouble
+    or you want to take advantage of `BoxLayout`'s power, read on.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不要让`BoxLayout`讨论的长度吓到你！你可能已经可以使用`BoxLayout`了。如果遇到问题或想利用`BoxLayout`的功能，继续阅读。
+- en: Box Layout Features
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Box Layout 特点
+- en: As said before, `BoxLayout` arranges components either on top of each other
+    or in a row. As the box layout arranges components, it takes the components' alignments
+    and minimum, preferred, and maximum sizes into account. In this section, we will
+    talk about top-to-bottom layout. The same concepts apply to left-to-right or right-to-left
+    layout. You simply substitute X for Y, height for width, and so on.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，`BoxLayout`将组件排列在彼此上方或一行中。在安排组件时，BoxLayout会考虑组件的对齐方式以及最小、首选和最大尺寸。在本节中，我们将讨论从上到下的布局。相同的概念适用于从左到右或从右到左的布局。只需用Y替换X，宽度替换高度等。
+- en: '* * *'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Version note:** Before JDK version 1.4, no constants existed for specifying
+    the box layout''s axis in a localizable way. Instead, you specified `X_AXIS` (left
+    to right) or `Y_AXIS` (top to bottom) when creating the `BoxLayout`. Our examples
+    now use the constants `LINE_AXIS` and `PAGE_AXIS`, which are preferred because
+    they enable programs to adjust to languages that have different orientations.
+    In the default, left-to-right orientation, `LINE_AXIS` specifies left-to-right
+    layout and `PAGE_AXIS` specifies top-to-bottom layout.'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**版本说明：**在JDK版本1.4之前，没有为以本地化方式指定框布局轴的常量。相反，在创建`BoxLayout`时，您指定`X_AXIS`（从左到右）或`Y_AXIS`（从上到下）。我们的示例现在使用常量`LINE_AXIS`和`PAGE_AXIS`，因为它们可以使程序适应具有不同方向的语言。在默认的从左到右方向中，`LINE_AXIS`指定从左到右的布局，`PAGE_AXIS`指定从上到下的布局。'
+- en: '* * *'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: When a `BoxLayout` lays out components from top to bottom, it tries to size
+    each component at the component's preferred height. If the vertical space of the
+    layout does not match the sum of the preferred heights, then `BoxLayout` tries
+    to resize the components to fill the space. The components either grow or shrink
+    to fill the space, with `BoxLayout` honoring the minimum and maximum sizes of
+    each of the components. Any extra space appears at the bottom of the container.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当`BoxLayout`从上到下布局组件时，它会尝试将每个组件的大小设置为组件的首选高度。如果布局的垂直空间与首选高度之和不匹配，那么`BoxLayout`会尝试调整组件的大小以填充空间。组件会增长或缩小以填充空间，`BoxLayout`会遵守每个组件的最小和最大尺寸。任何额外的空间都会出现在容器的底部。
+- en: For a top-to-bottom box layout, the preferred width of the container is that
+    of the maximum preferred width of the children. If the container is forced to
+    be wider than that, `BoxLayout` attempts to size the width of each component to
+    that of the container's width (minus insets). If the maximum size of a component
+    is smaller than the width of the container, then X alignment comes into play.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于从上到下的框布局，容器的首选宽度是子组件的最大首选宽度。如果容器被强制变宽，`BoxLayout`会尝试将每个组件的宽度调整为容器的宽度（减去插入）。如果组件的最大尺寸小于容器的宽度，则X对齐会起作用。
+- en: The X alignments affect not only the components' positions relative to each
+    other, but also the location of the components (as a group) within their container.
+    The following figures illustrate alignment of components that have restricted
+    maximum widths.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: X对齐不仅影响组件相对位置，还影响组件（作为一组）在容器中的位置。以下图示说明了具有受限制最大宽度的组件的对齐方式。
+- en: '![Three left-aligned components](../Images/a39c55ff67b8f944818856194716ae98.png) 
+    ![Three center-aligned components](../Images/9003b0e3d8008e2669bbfb7b6e633d79.png) 
+    ![Three right-aligned components](../Images/98d5b90ee9bc4a2020bfa18a9aa4573b.png)'
+  id: totrans-36
+  prefs: []
+  type: TYPE_IMG
+  zh: '![三个左对齐的组件](../Images/a39c55ff67b8f944818856194716ae98.png)  ![三个居中对齐的组件](../Images/9003b0e3d8008e2669bbfb7b6e633d79.png) 
+    ![三个右对齐的组件](../Images/98d5b90ee9bc4a2020bfa18a9aa4573b.png)'
+- en: In the first figure, all three components have an X alignment of 0.0 (`Component.LEFT_ALIGNMENT`).
+    This means that the components' left sides should be aligned. Furthermore, it
+    means that all three components are positioned as far left in their container
+    as possible.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第一个图中，所有三个组件的X对齐为0.0（`Component.LEFT_ALIGNMENT`）。这意味着组件的左侧应对齐。此外，这意味着所有三个组件在容器中尽可能靠左位置。
+- en: In the second figure, all three components have an X alignment of 0.5 (`Component.CENTER_ALIGNMENT`).
+    This means that the components' centers should be aligned, and that the components
+    should be positioned in the horizontal center of their container.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第二个图中，所有三个组件的X对齐为0.5（`Component.CENTER_ALIGNMENT`）。这意味着组件的中心应该对齐，并且组件应该位于其容器的水平中心。
+- en: In the third figure, the components have an X alignment of 1.0 (`Component.RIGHT_ALIGNMENT`).
+    You can guess what that means for the components' alignment and position relative
+    to their container.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第三个图中，组件的X对齐为1.0（`Component.RIGHT_ALIGNMENT`）。您可以猜测这对于组件的对齐和位置相对于其容器意味着什么。
+- en: 'You might be wondering what happens when the components have both restricted
+    maximum sizes and different X alignments. The next figure shows an example of
+    this:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能想知道当组件具有受限制的最大尺寸和不同的X对齐方式时会发生什么。下一个图显示了一个示例：
+- en: '![Three components with mixed X alignments](../Images/5e97920b11aaf89f32dee91e20ae8993.png)'
+  id: totrans-41
+  prefs: []
+  type: TYPE_IMG
+  zh: '![具有混合X对齐的三个组件](../Images/5e97920b11aaf89f32dee91e20ae8993.png)'
+- en: As you can see, the left side of the component with an X alignment of 0.0 (`Component.LEFT_ALIGNMENT`)
+    is aligned with the center of the component that has the 0.5 X alignment (`Component.CENTER_ALIGNMENT`),
+    which is aligned with the right side of the component that has an X alignment
+    of 1.0 (`Component.RIGHT_ALIGNMENT`). Mixed alignments like this are further discussed
+    in [Fixing Alignment Problems](#alignment).
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，具有X对齐为0.0（`Component.LEFT_ALIGNMENT`）的组件的左侧与具有0.5 X对齐（`Component.CENTER_ALIGNMENT`）的组件的中心对齐，后者与具有X对齐为1.0（`Component.RIGHT_ALIGNMENT`）的组件的右侧对齐。这种混合对齐方式在[修复对齐问题](#alignment)中进一步讨论。
+- en: 'What if none of the components has a maximum width? In this case, if all the
+    components have identical X alignment, then all components are made as wide as
+    their container. If the X alignments are different, then any component with an
+    X alignment of 0.0 (left) or 1.0 (right) will be smaller. All components with
+    an intermediate X alignment (such as center) will be as wide as their container.
+    Here are two examples:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果没有任何组件具有最大宽度会怎么样？在这种情况下，如果所有组件具有相同的X对齐方式，则所有组件将与其容器一样宽。如果X对齐方式不同，则具有X对齐为0.0（左）或1.0（右）的任何组件将较小。所有具有中间X对齐方式（例如中心）的组件将与其容器一样宽。以下是两个示例：
+- en: '![Three components with mixed X alignments and no maximum size](../Images/9d9f69688070b598c5e769ab005fbe9e.png) 
+    ![Three components with mixed X alignments and no maximum size](../Images/f239c601d34a8f28b5c86419499a20c6.png)'
+  id: totrans-44
+  prefs: []
+  type: TYPE_IMG
+  zh: '![具有混合X对齐和无最大尺寸的三个组件](../Images/9d9f69688070b598c5e769ab005fbe9e.png)  ![具有混合X对齐和无最大尺寸的三个组件](../Images/f239c601d34a8f28b5c86419499a20c6.png)'
+- en: To get to know `BoxLayout` better, you can run your own experiments with BoxLayoutDemo2.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要更好地了解`BoxLayout`，您可以运行自己的BoxLayoutDemo2实验。
+- en: '* * *'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run BoxLayoutDemo2 using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/layout/index.html#BoxLayoutDemo2).[![Launches
+    the BoxLayoutDemo2 example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BoxLayoutDemo2Project/BoxLayoutDemo2.jnlp)
+  id: totrans-48
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行BoxLayoutDemo2（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/layout/index.html#BoxLayoutDemo2)。[![启动BoxLayoutDemo2示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BoxLayoutDemo2Project/BoxLayoutDemo2.jnlp)
+- en: You can see the code in [`BoxLayoutDemo2.java`](../examples/layout/BoxLayoutDemo2Project/src/layout/BoxLayoutDemo2.java).
+  id: totrans-49
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 您可以在[`BoxLayoutDemo2.java`](../examples/layout/BoxLayoutDemo2Project/src/layout/BoxLayoutDemo2.java)中查看代��。
+- en: You will see a window like the one above that contains three rectangles. Each
+    rectangle is an instance of `BLDComponent`, which is a `JComponent` subclass.
+  id: totrans-50
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 您将看到一个类似上面的窗口，其中包含三个矩形。每个矩形都是`BLDComponent`的一个实例，它是`JComponent`的子类。
+- en: Click inside one of the rectangles.
+  id: totrans-51
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击其中一个矩形内部。
+- en: This is how you change the rectangle's X alignment.
+  id: totrans-52
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这是如何更改矩形的X对齐方式。
+- en: Click the check box at the bottom of the window.
+  id: totrans-53
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击窗口底部的复选框。
+- en: This turns off restricted sizing for all the rectangles.
+  id: totrans-54
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这将关闭所有矩形的限制尺寸。
+- en: Make the window taller.
+  id: totrans-55
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使窗口变得更高。
+- en: This makes the rectangles' container larger than the sum of the rectangles'
+    preferred sizes. The container is a `JPanel` that has a red outline, so that you
+    can tell where the container's edges are.
+  id: totrans-56
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这使得矩形的容器比矩形的首选大小之和更大。容器是一个带有红色轮廓的`JPanel`，这样您就可以知道容器的边缘在哪里。
+- en: '* * *'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Using Invisible Components as Filler
+  id: totrans-58
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用不可见组件作为填充器
+- en: Each component controlled by a box layout butts up against its neighboring components.
+    If you want to have space between components, you can either add an empty [border](border.html)
+    to one or both components, or insert invisible components to provide the space.
+    You can create invisible components with the help of the `Box` class.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由框布局控制的每个组件都与其相邻组件紧密相连。如果您希望在组件之间有空间，可以向一个或两个组件添加空的[边框](border.html)，或插入不可见组件来提供空间。您可以借助`Box`类创建不可见组件。
+- en: The [`Box`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Box.html)
+    class defines a nested class, [`Box.Filler`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Box.Filler.html),
+    that is a transparent component that paints nothing, and is used to provide space
+    between other components. However, `Filler` is not actually invisible, because
+    `setVisible(false)` is not invoked. The `Box` class provides convenience methods
+    to help you create common kinds of filler. The following table gives details about
+    creating invisible components with `Box` and `Box.Filler`.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Box`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Box.html)类定义了一个嵌套类[`Box.Filler`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Box.Filler.html)，这是一个透明的组件，不绘制任何内容，用于在其他组件之间提供空间。然而，`Filler`实际上并不是不可见的，因为没有调用`setVisible(false)`。`Box`类提供了便利方法来帮助您创建常见类型的填充器。以下表格详细介绍了如何使用`Box`和`Box.Filler`创建不可见组件。'
+- en: '| Type | Size Constraints | How to Create |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类型 | 大小约束 | 创建方式 |'
+- en: '| [rigid area](#rigidarea) | ![Three components with mixed X alignments and
+    no maximum size](../Images/a3b613f1839a933817c8904d680b3c01.png)  | `Box.createRigidArea(size)`
+    |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_TB
+  zh: '| [刚性区域](#rigidarea) | ![三个具有混合X对齐和无最大大小的组件](../Images/a3b613f1839a933817c8904d680b3c01.png)  |
+    `Box.createRigidArea(size)` |'
+- en: '| [glue](#glue), horizontal | ![Three components with mixed X alignments and
+    no maximum size](../Images/f6466d8e57bac71da28a57f13fa434fc.png)  | `Box.createHorizontalGlue()`
+    |'
+  id: totrans-63
+  prefs: []
+  type: TYPE_TB
+  zh: '| [粘合剂](#glue)，水平 | ![三个具有混合X对齐和无最大大小的组件](../Images/f6466d8e57bac71da28a57f13fa434fc.png)  |
+    `Box.createHorizontalGlue()` |'
+- en: '| [glue](#glue), vertical | ![Three components with mixed X alignments and
+    no maximum size](../Images/e4673cffb02525c5d5d5396d2046c681.png)  | `Box.createVerticalGlue()`
+    |'
+  id: totrans-64
+  prefs: []
+  type: TYPE_TB
+  zh: '| [粘合剂](#glue)，垂直 | ![三个具有混合X对齐和无最大大小的组件](../Images/e4673cffb02525c5d5d5396d2046c681.png)  |
+    `Box.createVerticalGlue()` |'
+- en: '| [custom `Box.Filler`](#box.filler) | *(as specified)* | `new Box.Filler(minSize,
+    prefSize, maxSize)` |'
+  id: totrans-65
+  prefs: []
+  type: TYPE_TB
+  zh: '| [自定义`Box.Filler`](#box.filler) | *(如指定)* | `new Box.Filler(minSize, prefSize,
+    maxSize)` |'
+- en: 'Here is how you generally use each type of filler:'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是您通常如何使用每种类型的填充器：
+- en: '**Rigid area**'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**刚性区域**'
+- en: 'Use this when you want a fixed-size space between two components. For example,
+    to put 5 pixels between two components in a left-to-right box, you can use this
+    code:'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您希望在两个组件之间有固定大小的空间时，请使用此选项。例如，在从左到右的框中在两个组件之间放置5像素，您可以使用以下代码：
+- en: '[PRE1]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '![Without rigid area](../Images/eb152a933f7eda3a0f0f11d00878ed3e.png)![With
+    rigid area](../Images/db13de4d3e24d4d00847dc7400bb0951.png)'
+  id: totrans-70
+  prefs: []
+  type: TYPE_IMG
+  zh: '![没有刚性区域](../Images/eb152a933f7eda3a0f0f11d00878ed3e.png)![有刚性区域](../Images/db13de4d3e24d4d00847dc7400bb0951.png)'
+- en: '* * *'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The `Box` class provides another kind of filler for putting fixed
+    space between components: a vertical or horizontal strut. Unfortunately, struts
+    have unlimited maximum heights or widths (for horizontal and vertical struts,
+    respectively). This means that if you use a horizontal box within a vertical box,
+    for example, the horizontal box can sometimes become too tall. For this reason,
+    we recommend that you use rigid areas instead of struts.'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** `Box`类提供了另一种用于在组件之间放置固定空间的填充器：垂直或水平支柱。不幸的是，支柱具有无限的最大高度或宽度（分别用于水平和垂直支柱）。这意味着，如果您在垂直框内使用水平框，水平框有时可能会变得太高。因此，我们建议您使用刚性区域而不是支柱。'
+- en: '* * *'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Glue**'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**粘合剂**'
+- en: "Use this to specify where excess space in a layout should go. Think of it as\
+    \ a kind of elastic glue \x97 stretchy and expandable, yet taking up no space\
+    \ unless you pull apart the components that it is sticking to. For example, by\
+    \ putting horizontal glue between two components in a left-to-right box, you make\
+    \ any extra space go between those components, instead of to the right of all\
+    \ the components. Here is an example of making the space in a left-to-right box\
+    \ go between two components, instead of to the right of the components:"
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "使用这个方法可以指定布局中多余的空间应该去哪里。将其视为一种弹性胶水 \x97 有弹性和可伸缩性，但除非你拉开它粘附的组件，否则不占用空间。例如，在一个从左到右的盒式布局中，在两个组件之间放置水平粘合剂，可以使任何额外的空间都在这些组件之间，而不是在所有组件的右侧。以下是一个示例，使得从左到右的盒式布局中的空间在两个组件之间，而不是在组件的右侧："
+- en: '[PRE2]'
+  id: totrans-76
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '![Without horizontal glue](../Images/908f3d7d712bf6ce23d9b84c0795c4c5.png)![With
+    glue](../Images/67e65bc366141c5c56434b33a0819e1b.png)'
+  id: totrans-77
+  prefs: []
+  type: TYPE_IMG
+  zh: '![没有水平粘合剂](../Images/908f3d7d712bf6ce23d9b84c0795c4c5.png)![有粘合剂](../Images/67e65bc366141c5c56434b33a0819e1b.png)'
+- en: '**Custom `Box.Filler`**'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**自定义`Box.Filler`**'
+- en: 'Use this to specify a component with whatever minimum, preferred, and maximum
+    sizes you want. For example, to create some filler in a left-to-right layout that
+    puts at least 5 pixels between two components and ensures that the container has
+    a minimum height of 100 pixels, you could use this code:'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用这个方法可以指定组件的最小、首选和最大尺寸。例如，要在一个从左到右的布局中创建一些填充物，使得两个组件之间至少有5像素的间距，并确保容器的最小高度为100像素，你可以使用以下代码：
+- en: '[PRE3]'
+  id: totrans-80
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '![Without custom filler](../Images/6da613f8fdfbf61fe8a22fc9376cdee3.png) ![With
+    custom filler](../Images/996ce1a8dc26f5dff4e38e2fedbdd033.png)'
+  id: totrans-81
+  prefs: []
+  type: TYPE_IMG
+  zh: '![没有自定义填充物](../Images/6da613f8fdfbf61fe8a22fc9376cdee3.png) ![有自定义填充物](../Images/996ce1a8dc26f5dff4e38e2fedbdd033.png)'
+- en: Fixing Alignment Problems
+  id: totrans-82
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 修复对齐问题
+- en: 'Two types of alignment problems sometimes occur with `BoxLayout`:'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时候`BoxLayout`会出现两种类型的对齐问题：
+- en: 'A group of components all have the same alignment, but you want to change their
+    alignment to make them look better. For example, instead of having the centers
+    of a group of left-to-right buttons all in a line, you might want the bottoms
+    of the buttons to be aligned. Here is an example:'
+  id: totrans-84
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一组组件都具有相同的对齐方式，但你想要改变它们的对齐方式以使它们看起来更好。例如，你可能希望一组从左到右的按钮的底部对齐，而不是它们的中心对齐。以下是一个示例：
+- en: '![Customizing alignment](../Images/e90250e621ecbb94a8f15ce6176f0f6b.png)'
+  id: totrans-85
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![自定义对齐](../Images/e90250e621ecbb94a8f15ce6176f0f6b.png)'
+- en: Two or more components controlled by a `BoxLayout` have different default alignments,
+    which causes them to be mis-aligned. For example, as the following shows, if a
+    label and a panel are in a top-to-bottom box layout, the label's left edge is,
+    by default, aligned with the center of the panel.
+  id: totrans-86
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 由`BoxLayout`控制的两个或更多组件具有不同的默认对齐方式，导致它们对齐不正确。例如，如下所示，如果一个标签和一个面板在一个从上到下的盒式布局中，标签的左边缘默认与面板的中心对齐。
+- en: '![X alignment mismatch](../Images/b55fd9fdb0b07a4f983b7faad5cbcd72.png)'
+  id: totrans-87
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![X对齐不匹配](../Images/b55fd9fdb0b07a4f983b7faad5cbcd72.png)'
+- en: In general, all the components controlled by a top-to-bottom `BoxLayout` object
+    should have the same X alignment. Similarly, all the components controlled by
+    a left-to-right `Boxlayout` should generally have the same Y alignment. You can
+    set a `JComponent`'s X alignment by invoking its `setAlignmentX` method. An alternative
+    available to all components is to override the `getAlignmentX` method in a custom
+    subclass of the component class. Similarly, you set the Y alignment of a component
+    by invoking the `setAlignmentY` method or by overriding `getAlignmentY`.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一般来说，由从上到下的`BoxLayout`对象控制的所有组件应该具有相同的X对齐方式。同样，由从左到右的`BoxLayout`控制的所有组件通常应该具有相同的Y对齐方式。你可以通过调用其`setAlignmentX`方法来设置`JComponent`的X对齐方式。所有组件都可以选择的另一种方法是在组件类的自定义子类中覆盖`getAlignmentX`方法。类似地，你可以通过调用`setAlignmentY`方法或覆盖`getAlignmentY`来设置组件的Y对齐方式。
+- en: 'Here is an example, taken from an application called [`BoxAlignmentDemo`](../examples/layout/index.html#BoxAlignmentDemo),
+    of changing the Y alignments of two buttons so that the bottoms of the buttons
+    are aligned:'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个示例，取自一个名为[`BoxAlignmentDemo`](../examples/layout/index.html#BoxAlignmentDemo)的应用程序，将两个按钮的Y对齐方式更改为底部对齐：
+- en: '[PRE4]'
+  id: totrans-90
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Click the Launch button to run BoxAlignmentDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/layout/index.html#BoxAlignmentDemo).
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行BoxAlignmentDemo（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/layout/index.html#BoxAlignmentDemo)。
+- en: '[![Launches the BoxAlignmentDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BoxAlignmentDemoProject/BoxAlignmentDemo.jnlp)'
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动BoxAlignmentDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BoxAlignmentDemoProject/BoxAlignmentDemo.jnlp)'
+- en: 'By default, most components have center X and Y alignment. However, buttons,
+    combo boxes, labels, and menu items have a different default X alignment value:
+    `LEFT_ALIGNMENT`. The previous picture shows what happens if you put a left-aligned
+    component such as a label together with a center-aligned component in a container
+    controlled by a top-to-bottom `BoxLayout`.'
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，大多数组件都具有中心X和Y对齐。然而，按钮、组合框、标签和菜单项具有不同的默认X对齐值：`LEFT_ALIGNMENT`。前面的图片展示了如果将一个左对齐的组件（如标签）与一个在由上至下控制的容器中的中心对齐组件放在一起会发生什么。
+- en: 'The [`BoxAlignmentDemo`](../examples/layout/index.html#BoxAlignmentDemo) program
+    gives examples of fixing mismatched alignment problems. Usually, it is as simple
+    as making an offending button or label be center aligned. For example:'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`BoxAlignmentDemo`](../examples/layout/index.html#BoxAlignmentDemo)程序提供了修复不匹配对齐问题的示例。通常，只需将有问题的按钮或标签设置为中心对齐即可。例如：'
+- en: '[PRE5]'
+  id: totrans-95
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Specifying Component Sizes
+  id: totrans-96
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定组件尺寸
+- en: As mentioned before, `BoxLayout` pays attention to a component's requested minimum,
+    preferred, and maximum sizes. While you are fine-tuning the layout, you might
+    need to adjust these sizes.
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如之前提到的，`BoxLayout`会关注组件的请求的最小、首选和最大尺寸。在微调布局时，你可能需要调整这些尺寸。
+- en: Sometimes the need to adjust the size is obvious. For example, a button's maximum
+    size is generally the same as its preferred size. If you want the button to be
+    drawn wider when additional space is available, then you need to change its maximum
+    size.
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时需要调整尺寸是显而易见的。例如，按钮的最大尺寸通常与其首选尺寸相同。如果希望在有额外空间时将按钮绘制得更宽，那么需要更改其最大尺寸。
+- en: Sometimes, however, the need to adjust size is not so obvious. You might be
+    getting unexpected results with a box layout, and you might not know why. In this
+    case, it is usually best to treat the problem as an [alignment problem](#alignment)
+    first. If adjusting the alignments does not help, then you might have a size problem.
+    We'll discuss this further a bit later.
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，有时需要调整尺寸并不那么明显。你可能会在框布局中得到意想不到的结果，而不知道原因。在这种情况下，通常最好首先将问题视为[对齐问题](#alignment)。如果调整对齐方式没有帮助，那么可能存在尺寸问题。我们稍后会进一步讨论这个问题。
+- en: '* * *'
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Although `BoxLayout` pays attention to a component''s maximum size,
+    many layout managers do not. For example, if you put a button in the bottom part
+    of a `BorderLayout`, the button will probably be wider than its preferred width,
+    no matter what the button''s maximum size is. `BoxLayout`, on the other hand,
+    never makes a button wider than its maximum size.'
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 虽然`BoxLayout`会关注组件的最大尺寸，但许多布局管理器不会。例如，如果你将一个按钮放在`BorderLayout`的底部，那么按钮的宽度可能会超过其首选宽度，无论按钮的最大尺寸是多少。另一方面，`BoxLayout`永远不会使按钮的宽度超过其最大尺寸。'
+- en: '* * *'
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'You can change the minimum, preferred, and maximum sizes in two ways:'
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以通过两种方式更改最小、首选和最大尺寸：
+- en: 'By invoking the appropriate `set*Xxx*Size` method (which is defined by the
+    `JComponent` class). For example:'
+  id: totrans-104
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过调用适当的`set*Xxx*Size`方法（由`JComponent`类定义）。例如：
+- en: '[PRE6]'
+  id: totrans-105
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'By overriding the appropriate `get*Xxx*Size` method. For example:'
+  id: totrans-106
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过覆盖适当的`get*Xxx*Size`方法。例如：
+- en: '[PRE7]'
+  id: totrans-107
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: If you are running into trouble with a box layout and you have ruled out alignment
+    problems, then the trouble might well be size-related. For example, if the container
+    controlled by the box layout is taking up too much space, then one or more of
+    the components in the container probably needs to have its maximum size restricted.
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你在使用框布局时遇到问题，并且已经排除了对齐问题，那么问题很可能与尺寸有关。例如，如果由框布局控制的容器占用了太多空间，那么容器中的一个或多个组件可能需要限制其最大尺寸。
+- en: 'You can use two techniques to track down size trouble in a box layout:'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用两种技术来追踪箱式布局中的尺寸问题：
+- en: 'Add a garish line [border](border.html) to the outside of the Swing components
+    in question. This lets you see what size they really are. For example:'
+  id: totrans-110
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在问题的Swing组件外部添加花哨的线条[边框](border.html)。这样你就可以看到它们的真实大小。例如：
+- en: '[PRE8]'
+  id: totrans-111
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Use `System.out.println` to print the components' minimum, preferred, and maximum
+    sizes, and perhaps their bounds.
+  id: totrans-112
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`System.out.println`来打印组件的最小、首选和最大尺寸，也许还有它们的边界。
+- en: The Box Layout API
+  id: totrans-113
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Box布局API
+- en: 'The following tables list the commonly used `BoxLayout` and `Box` constructors
+    and methods. The API for using box layouts falls into these categories:'
+  id: totrans-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的`BoxLayout`和`Box`构造函数和方法。使用箱式布局的API分为以下几类：
+- en: '[Creating `BoxLayout` objects](#construct)'
+  id: totrans-115
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建`BoxLayout`对象](#construct)'
+- en: '[Creating space fillers](#fillerapi)'
+  id: totrans-116
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建空间填充器](#fillerapi)'
+- en: '[Other useful methods](#other)'
+  id: totrans-117
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[其他有用的方法](#other)'
+- en: Creating `BoxLayout` Objects
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建`BoxLayout`对象
+- en: '| Constructor or Method | Purpose |'
+  id: totrans-119
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数或方法 | 目的 |'
+- en: '| `BoxLayout(Container, int)` | Creates a `BoxLayout` instance that controls
+    the specified `Container`. The integer argument specifies the axis along which
+    the container''s components should be laid out. When the container has the default
+    component orientation, `BoxLayout.LINE_AXIS` specifies that the components be
+    laid out from left to right, and `BoxLayout.PAGE_AXIS` specifies that the components
+    be laid out from top to bottom. |'
+  id: totrans-120
+  prefs: []
+  type: TYPE_TB
+  zh: '| `BoxLayout(Container, int)` | 创建一个控制指定`Container`的`BoxLayout`实例。整数参数指定容器的组件应该沿着哪个轴布局。当容器具有默认组件方向时，`BoxLayout.LINE_AXIS`指定组件从左到右布局，`BoxLayout.PAGE_AXIS`指定组件从上到下布局。
+    |'
+- en: "| `Box(int)` | Creates a `Box` \x97 a container that uses a `BoxLayout` with\
+    \ the specified axis. |"
+  id: totrans-121
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Box(int)` | 创建一个`Box` - 使用指定轴的`BoxLayout`的容器。 |'
+- en: '| `static Box createHorizontalBox()` *(in `Box`)* | Creates a `Box` that lays
+    out its components from left to right. |'
+  id: totrans-122
+  prefs: []
+  type: TYPE_TB
+  zh: '| `static Box createHorizontalBox()` *(在`Box`中)* | 创建一个从左到右布局其组件的`Box`。 |'
+- en: '| `static Box createVerticalBox()` *(in `Box`)* | Creates a `Box` that lays
+    out its components from top to bottom. |'
+  id: totrans-123
+  prefs: []
+  type: TYPE_TB
+  zh: '| `static Box createVerticalBox()` *(在`Box`中)* | 创建一个从上到下布局其组件的`Box`。 |'
+- en: Creating Space Fillers
+  id: totrans-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建空间填充器
+- en: '*These methods are defined in the `Box` class.*'
+  id: totrans-125
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*这些方法在`Box`类中定义。*'
+- en: '| Constructor or Method | Purpose |'
+  id: totrans-126
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数或方法 | 目的 |'
+- en: '| `Component createRigidArea(Dimension)` | Create a [rigid](#rigidarea) component.
+    |'
+  id: totrans-127
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Component createRigidArea(Dimension)` | 创建一个[刚性](#rigidarea)组件。 |'
+- en: '| `Component createHorizontalGlue() Component createVerticalGlue()'
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `Component createHorizontalGlue() Component createVerticalGlue()`'
+- en: Component createGlue()` | Create a [glue](#glue) component. Horizontal glue
+    and vertical glue can be very useful. |
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `Component createGlue()` | 创建一个[粘合剂](#glue)组件。水平粘合剂和垂直粘合剂非常有用。 |'
+- en: '| `Component createHorizontalStrut() Component createVerticalStrut()` | Create
+    a "strut" component. We recommend using rigid areas instead of struts. |'
+  id: totrans-130
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Component createHorizontalStrut() Component createVerticalStrut()` | 创建一个“支柱”组件。我们建议使用刚性区域而不是支柱。
+    |'
+- en: '| `Box.Filler(Dimension, Dimension, Dimension)` | Creates a component with
+    the specified minimum, preferred, and maximum sizes (with the arguments specified
+    in that order). See the [custom `Box.Filler`](#box.filler) discussion, earlier
+    in this section, for details. |'
+  id: totrans-131
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Box.Filler(Dimension, Dimension, Dimension)` | 创建一个具有指定最小、首选和最大尺寸的组件（参数按照指定顺序提供）。有关详细信息，请参阅本节前面的[自定义`Box.Filler`](#box.filler)讨论。
+    |'
+- en: Other Useful Methods
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其他有用的方法
+- en: '| Method | Purpose |'
+  id: totrans-133
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| `void changeShape(Dimension, Dimension, Dimension)` *(in `Box.Filler`)* |
+    Change the minimum, preferred, and maximum sizes of the recipient `Box.Filler`
+    object. The layout changes accordingly. |'
+  id: totrans-134
+  prefs: []
+  type: TYPE_TB
+  zh: '| `void changeShape(Dimension, Dimension, Dimension)` *(在`Box.Filler`中)* |
+    更改接收者`Box.Filler`对象的最小、首选和最大尺寸。布局会相应更改。 |'
+- en: Examples that Use Box Layouts
+  id: totrans-135
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用Box布局的示例
+- en: The following table lists some of the many examples that use box layouts.
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了使用箱式布局的许多示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-137
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [BoxLayoutDemo2](../examples/layout/index.html#BoxLayoutDemo2) | This page
+    | Uses a box layout to create a centered column of components. |'
+  id: totrans-138
+  prefs: []
+  type: TYPE_TB
+  zh: '| [BoxLayoutDemo2](../examples/layout/index.html#BoxLayoutDemo2) | 本页 | 使用箱式布局创建一个居中的列组件。
+    |'
+- en: '| [BoxAlignmentDemo](../examples/layout/index.html#BoxAlignmentDemo) | This
+    page | Demonstrates how to fix common alignment problems. |'
+  id: totrans-139
+  prefs: []
+  type: TYPE_TB
+  zh: '| [BoxAlignmentDemo](../examples/layout/index.html#BoxAlignmentDemo) | 本页 |
+    演示如何解决常见的对齐问题。 |'
+- en: '| [BoxLayoutDemo](../examples/layout/index.html#BoxLayoutDemo) | This page
+    | Lets you play with alignments and maximum sizes. |'
+  id: totrans-140
+  prefs: []
+  type: TYPE_TB
+  zh: '| [BoxLayoutDemo](../examples/layout/index.html#BoxLayoutDemo) | 本页面 | 让您尝试对齐和最大尺寸。'
+- en: '| [ListDialog](../components/../examples/components/index.html#ListDialog)
+    | This page | A simple yet realistic example of using both a top-to-bottom box
+    layout and a left-to-right one. Uses horizontal glue, rigid areas, and empty borders.
+    Also sets the X alignment of a component. |'
+  id: totrans-141
+  prefs: []
+  type: TYPE_TB
+  zh: '| [ListDialog](../components/../examples/components/index.html#ListDialog)
+    | 本页面 | 一个简单但逼真的例子，展示了如何同时使用自顶向下箱式布局和左右箱式布局。使用水平粘合剂、刚性区域和空边框。还设置了组件的X对齐方式。'
+- en: '| [InternalFrameEventDemo](../events/../examples/events/index.html#InternalFrameEventDemo)
+    | [How to Write an Internal Frame Listener](../events/internalframelistener.html)
+    | Uses a top-to-bottom layout to center buttons and a scroll pane in an internal
+    frame. |'
+  id: totrans-142
+  prefs: []
+  type: TYPE_TB
+  zh: '| [InternalFrameEventDemo](../events/../examples/events/index.html#InternalFrameEventDemo)
+    | [如何编写内部框架监听器](../events/internalframelistener.html) | 使用自顶向下布局来将按钮和滚动窗格居中放置在内部框架中。'
+- en: '| [MenuGlueDemo](../components/../examples/components/index.html#MenuGlueDemo)
+    | [Customizing Menu Layout](../components/menu.html#custom) | Shows how to right-align
+    a menu in the menu bar, using a glue component. |'
+  id: totrans-143
+  prefs: []
+  type: TYPE_TB
+  zh: '| [MenuGlueDemo](../components/../examples/components/index.html#MenuGlueDemo)
+    | [自定义菜单布局](../components/menu.html#custom) | 展示如何使用粘合组件将菜单右对齐在菜单栏中。'
+- en: '| [MenuLayoutDemo](../components/../examples/components/index.html#MenuLayoutDemo)
+    | [Customizing Menu Layout](../components/menu.html#custom) | Shows how to customize
+    menu layout by changing the menu bar to use a top-to-bottom box layout, and the
+    context menu to use a left-to-right box layout. |'
+  id: totrans-144
+  prefs: []
+  type: TYPE_TB
+  zh: '| [MenuLayoutDemo](../components/../examples/components/index.html#MenuLayoutDemo)
+    | [自定义菜单布局](../components/menu.html#custom) | 展示如何通过将菜单栏更改为使用自顶向下的箱式布局，以及上下文菜单更改为使用左右的箱式布局来自定义菜单布局。'
+- en: '| `ConversionPanel.java` in the [Converter](../components/../examples/components/index.html#Converter)
+    demo | [How to Use Panels](../components/panel.html) | Aligns two components in
+    different box-layout-controlled containers by setting the components'' widths
+    to be the same, and their containers'' widths to be the same. |'
+  id: totrans-145
+  prefs: []
+  type: TYPE_TB
+  zh: '| `ConversionPanel.java` 在 [Converter](../components/../examples/components/index.html#Converter)
+    演示中 | [如何使用面板](../components/panel.html) | 通过将组件的宽度设置为相同，以及它们容器的宽度设置为相同，来在不同的箱式布局控制容器中对齐两个组件。'

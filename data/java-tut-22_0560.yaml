@@ -1,0 +1,157 @@
+- en: Date Classes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 日期类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/date.html](https://docs.oracle.com/javase/tutorial/datetime/iso/date.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/date.html](https://docs.oracle.com/javase/tutorial/datetime/iso/date.html)
+- en: 'The Date-Time API provides four classes that deal exclusively with date information,
+    without respect to time or time zone. The use of these classes are suggested by
+    the class names: `LocalDate`, `YearMonth`, `MonthDay`, and `Year`.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间API提供了四个专门处理日期信息的类，不考虑时间或时区。这些类的使用建议由类名决定：`LocalDate`、`YearMonth`、`MonthDay`和`Year`。
+- en: LocalDate
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: LocalDate
+- en: 'A [`LocalDate`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html)
+    represents a year-month-day in the ISO calendar and is useful for representing
+    a date without a time. You might use a `LocalDate` to track a significant event,
+    such as a birth date or wedding date. The following examples use the `of` and
+    `with` methods to create instances of `LocalDate`:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`LocalDate`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html)表示ISO日历中的年-月-日，用于表示没有时间的日期。您可以使用`LocalDate`来跟踪重要事件，如出生日期或结婚日期。以下示例使用`of`和`with`方法创建`LocalDate`实例：'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: For more information about the `TemporalAdjuster` interface, see [Temporal Adjuster](adjusters.html).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关`TemporalAdjuster`接口的更多信息，请参见[时间调整器](adjusters.html)。
+- en: 'In addition to the usual methods, the `LocalDate` class offers getter methods
+    for obtaining information about a given date. The [`getDayOfWeek`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#getDayOfWeek--)
+    method returns the day of the week that a particular date falls on. For example,
+    the following line of code returns "MONDAY":'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了通常的方法外，`LocalDate`类还提供了用于获取有关给定日期信息的getter方法。[`getDayOfWeek`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#getDayOfWeek--)方法返回特定日期所在的星期几。例如，以下代码返回"MONDAY"：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The following example uses a `TemporalAdjuster` to retrieve the first Wednesday
+    after a specific date.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用`TemporalAdjuster`来获取特定日期后的第一个星期三。
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Running the code produces the following:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行代码会产生以下结果：
+- en: '[PRE3]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The [Period and Duration](period.html) section also has examples using the `LocalDate`
+    class.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Period and Duration](period.html)部分还有使用`LocalDate`类的示例。'
+- en: YearMonth
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: YearMonth
+- en: The [`YearMonth`](https://docs.oracle.com/javase/8/docs/api/java/time/YearMonth.html)
+    class represents the month of a specific year. The following example uses the
+    `YearMonth.lengthOfMonth()` method to determine the number of days for several
+    year and month combinations.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`YearMonth`](https://docs.oracle.com/javase/8/docs/api/java/time/YearMonth.html)类表示特定年份的月份。以下示例使用`YearMonth.lengthOfMonth()`方法来确定几个年份和月份组合的天数。'
+- en: '[PRE4]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The output from this code looks like the following:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码的输出如下：
+- en: '[PRE5]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: MonthDay
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: MonthDay
+- en: The [`MonthDay`](https://docs.oracle.com/javase/8/docs/api/java/time/MonthDay.html)
+    class represents the day of a particular month, such as New Year's Day on January
+    1.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`MonthDay`](https://docs.oracle.com/javase/8/docs/api/java/time/MonthDay.html)类表示特定月份的某一天，例如1月1日的元旦。'
+- en: The following example uses the [`MonthDay.isValidYear`](https://docs.oracle.com/javase/8/docs/api/java/time/MonthDay.html#isValidYear-int-)
+    method to determine if February 29 is valid for the year 2010\. The call returns
+    `false`, confirming that 2010 is not a leap year.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用[`MonthDay.isValidYear`](https://docs.oracle.com/javase/8/docs/api/java/time/MonthDay.html#isValidYear-int-)方法来确定2010年2月29日是否有效。调用返回`false`，确认2010年不是闰年。
+- en: '[PRE6]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Year
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Year
+- en: The [`Year`](https://docs.oracle.com/javase/8/docs/api/java/time/Year.html)
+    class represents a year. The following example uses the [`Year.isLeap`](https://docs.oracle.com/javase/8/docs/api/java/time/Year.html#isLeap--)
+    method to determine if the given year is a leap year. The call returns `true`,
+    confirming that 2012 is a leap year.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Year`](https://docs.oracle.com/javase/8/docs/api/java/time/Year.html)类表示一年。以下示例使用[`Year.isLeap`](https://docs.oracle.com/javase/8/docs/api/java/time/Year.html#isLeap--)方法来确定给定年份是否是闰年。调用返回`true`，确认2012年是闰年。'
+- en: '[PRE7]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'

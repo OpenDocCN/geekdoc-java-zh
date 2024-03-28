@@ -1,0 +1,79 @@
+- en: Defining and Starting a Thread
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 定义和启动线程
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/runthread.html)
+- en: 'An application that creates an instance of `Thread` must provide the code that
+    will run in that thread. There are two ways to do this:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建 `Thread` 实例的应用程序必须提供将在该线程中运行的代码。 有两种方法可以做到这一点：
+- en: '*Provide a `Runnable` object.* The [`Runnable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html)
+    interface defines a single method, `run`, meant to contain the code executed in
+    the thread. The `Runnable` object is passed to the `Thread` constructor, as in
+    the [``HelloRunnable``](examples/HelloRunnable.java) example:'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*提供一个 `Runnable` 对象.* [`Runnable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html)
+    接口定义了一个名为 `run` 的方法，用于包含在线程中执行的代码。 `Runnable` 对象被传递给 `Thread` 构造函数，就像 [``HelloRunnable``](examples/HelloRunnable.java)
+    示例中那样：'
+- en: '[PRE0]'
+  id: totrans-4
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '*Subclass `Thread`.* The `Thread` class itself implements `Runnable`, though
+    its `run` method does nothing. An application can subclass `Thread`, providing
+    its own implementation of `run`, as in the [``HelloThread``](examples/HelloThread.java)
+    example:'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*子类 `Thread`.* `Thread` 类本身实现了 `Runnable`，尽管它的 `run` 方法什么也不做。 应用程序可以子类化 `Thread`，提供自己的
+    `run` 实现，就像 [``HelloThread``](examples/HelloThread.java) 示例中那样：'
+- en: '[PRE1]'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Notice that both examples invoke `Thread.start` in order to start the new thread.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，这两个示例都调用了 `Thread.start` 来启动新线程。
+- en: Which of these idioms should you use? The first idiom, which employs a `Runnable`
+    object, is more general, because the `Runnable` object can subclass a class other
+    than `Thread`. The second idiom is easier to use in simple applications, but is
+    limited by the fact that your task class must be a descendant of `Thread`. This
+    lesson focuses on the first approach, which separates the `Runnable` task from
+    the `Thread` object that executes the task. Not only is this approach more flexible,
+    but it is applicable to the high-level thread management APIs covered later.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你应该使用哪种习语？第一个习语使用了一个 `Runnable` 对象，更通用，因为 `Runnable` 对象可以是 `Thread` 以外的类的子类。
+    第二个习语在简单应用程序中更容易使用，但受到任务类必须是 `Thread` 的后代的限制。 本课程重点介绍第一种方法，它将 `Runnable` 任务与执行任务的
+    `Thread` 对象分开。 这种方法不仅更灵活，而且适用于后面介绍的高级线程管理 API。
+- en: The `Thread` class defines a number of methods useful for thread management.
+    These include `static` methods, which provide information about, or affect the
+    status of, the thread invoking the method. The other methods are invoked from
+    other threads involved in managing the thread and `Thread` object. We'll examine
+    some of these methods in the following sections.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Thread` 类定义了一些对线程管理有用的方法。 这些方法包括 `static` 方法，提供有关调用方法的线程的信息或影响其状态。 其他方法是从参与管理线程和
+    `Thread` 对象的其他线程调用的。 我们将在以下部分中检查其中一些方法。'

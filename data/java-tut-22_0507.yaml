@@ -1,0 +1,484 @@
+- en: Listener API Table
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 监听器 API 表
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/api.html](https://docs.oracle.com/javase/tutorial/uiswing/events/api.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/api.html](https://docs.oracle.com/javase/tutorial/uiswing/events/api.html)
+- en: In the table that follows, the first column gives the name of the listener interface,
+    with either a link to the tutorial page that discusses the listener or, if the
+    tutorial doesn't discuss the listener, a link to the API docs. The second column
+    names the corresponding adapter class, if any. (For a discussion of using adapters,
+    see [Using Adapters and Inner Classes to Handle Events](generalrules.html#innerClasses).)
+    The third column lists the methods that the listener interface contains and shows
+    the type of the event object passed into the method. Typically, the listener,
+    the adapter, and the event type have the same name prefix, but this is not always
+    the case.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在下表中，第一列给出了监听器接口的名称，其中包含指向讨论该监听器的教程页面的链接，或者如果教程未讨论该监听器，则包含指向 API 文档的链接。第二列列出了相应的适配器类（如果有）。（有关使用适配器的讨论，请参见[使用适配器和内部类处理事件](generalrules.html#innerClasses)。）第三列列出了监听器接口包含的方法，并显示传递到方法中的事件对象的类型。通常，监听器、适配器和事件类型具有相同的名称前缀，但并非总是如此。
+- en: To see which Swing components can fire which kinds of events, see [Listeners
+    Supported by Swing Components](eventsandcomponents.html).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要查看哪些 Swing 组件可以触发哪些类型的事件，请参见[Swing 组件支持的监听器](eventsandcomponents.html)。
+- en: '| Listener Interface | Adapter Class | Listener Methods |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| 监听器接口 | 适配器类 | 监听器方法 |'
+- en: '| [`ActionListener`](actionlistener.html) | *none* | `actionPerformed(ActionEvent)`
+    |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`动作监听器`](actionlistener.html) | *无* | `actionPerformed(ActionEvent)` |'
+- en: '| [`AncestorListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/AncestorListener.html)
+    | *none* | `ancestorAdded(AncestorEvent)` `ancestorMoved(AncestorEvent)`'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`祖先监听器`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/AncestorListener.html)
+    | *无* | `ancestorAdded(AncestorEvent)` `ancestorMoved(AncestorEvent)`'
+- en: '`ancestorRemoved(AncestorEvent)` |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ancestorRemoved(AncestorEvent)` |'
+- en: '| [`CaretListener`](caretlistener.html) | *none* | `caretUpdate(CaretEvent)`
+    |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`插入符监听器`](caretlistener.html) | *无* | `caretUpdate(CaretEvent)` |'
+- en: '| [`CellEditorListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/CellEditorListener.html)
+    | *none* | `editingStopped(ChangeEvent)` `editingCanceled(ChangeEvent)` |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`单元编辑器监听器`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/CellEditorListener.html)
+    | *无* | `editingStopped(ChangeEvent)` `editingCanceled(ChangeEvent)` |'
+- en: '| [`ChangeListener`](changelistener.html) | *none* | `stateChanged(ChangeEvent)`
+    |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`变更监听器`](changelistener.html) | *无* | `stateChanged(ChangeEvent)` |'
+- en: '| [`ComponentListener`](componentlistener.html) | `ComponentAdapter` | `componentHidden(ComponentEvent)`
+    `componentMoved(ComponentEvent)`'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`组件监听器`](componentlistener.html) | `组件适配器` | `componentHidden(ComponentEvent)`
+    `componentMoved(ComponentEvent)`'
+- en: '`componentResized(ComponentEvent)`'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`componentResized(ComponentEvent)`'
+- en: '`componentShown(ComponentEvent)` |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`componentShown(ComponentEvent)` |'
+- en: '| [`ContainerListener`](containerlistener.html) | `ContainerAdapter` | `componentAdded(ContainerEvent)`
+    `componentRemoved(ContainerEvent)` |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`容器监听器`](containerlistener.html) | `容器适配器` | `componentAdded(ContainerEvent)`
+    `componentRemoved(ContainerEvent)` |'
+- en: '| [`DocumentListener`](documentlistener.html) | *none* | `changedUpdate(DocumentEvent)`
+    `insertUpdate(DocumentEvent)`'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`文档监听器`](documentlistener.html) | *无* | `changedUpdate(DocumentEvent)` `insertUpdate(DocumentEvent)`'
+- en: '`removeUpdate(DocumentEvent)` |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`removeUpdate(DocumentEvent)` |'
+- en: '| [`ExceptionListener`](https://docs.oracle.com/javase/8/docs/api/java/beans/ExceptionListener.html)
+    | *none* | `exceptionThrown(Exception)` |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`异常监听器`](https://docs.oracle.com/javase/8/docs/api/java/beans/ExceptionListener.html)
+    | *无* | `exceptionThrown(Exception)` |'
+- en: '| [`FocusListener`](focuslistener.html) | `FocusAdapter` | `focusGained(FocusEvent)`
+    `focusLost(FocusEvent)` |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`焦点监听器`](focuslistener.html) | `焦点适配器` | `focusGained(FocusEvent)` `focusLost(FocusEvent)`
+    |'
+- en: '| [`HierarchyBoundsListener`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/HierarchyBoundsListener.html)
+    | `HierarchyBoundsAdapter` | `ancestorMoved(HierarchyEvent)` `ancestorResized(HierarchyEvent)`
+    |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`层次边界监听器`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/HierarchyBoundsListener.html)
+    | `层次边界适配器` | `ancestorMoved(HierarchyEvent)` `ancestorResized(HierarchyEvent)`
+    |'
+- en: '| [`HierarchyListener`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/HierarchyListener.html)
+    | *none* | `hierarchyChanged(HierarchyEvent)` |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`层次监听器`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/HierarchyListener.html)
+    | *无* | `hierarchyChanged(HierarchyEvent)` |'
+- en: '| [`HyperlinkListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/HyperlinkListener.html)
+    | *none* | `hyperlinkUpdate(HyperlinkEvent)` |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`超链接监听器`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/HyperlinkListener.html)
+    | *无* | `hyperlinkUpdate(HyperlinkEvent)` |'
+- en: '| [`InputMethodListener`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/InputMethodListener.html)
+    | *none* | `caretPositionChanged(InputMethodEvent)` `inputMethodTextChanged(InputMethodEvent)`
+    |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`InputMethodListener`](https://docs.oracle.com/javase/8/docs/api/java/awt/event/InputMethodListener.html)
+    | *none* | `caretPositionChanged(InputMethodEvent)` `inputMethodTextChanged(InputMethodEvent)`
+    |'
+- en: '| [`InternalFrameListener`](internalframelistener.html) | `InternalFrameAdapter`
+    | `internalFrameActivated(InternalFrameEvent)` `internalFrameClosed(InternalFrameEvent)`'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`InternalFrameListener`](internalframelistener.html) | `InternalFrameAdapter`
+    | `internalFrameActivated(InternalFrameEvent)` `internalFrameClosed(InternalFrameEvent)`'
+- en: '`internalFrameClosing(InternalFrameEvent)`'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`internalFrameClosing(InternalFrameEvent)`'
+- en: '`internalFrameDeactivated(InternalFrameEvent)`'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`internalFrameDeactivated(InternalFrameEvent)`'
+- en: '`internalFrameDeiconified(InternalFrameEvent)`'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`internalFrameDeiconified(InternalFrameEvent)`'
+- en: '`internalFrameIconified(InternalFrameEvent)`'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`internalFrameIconified(InternalFrameEvent)`'
+- en: '`internalFrameOpened(InternalFrameEvent)` |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`internalFrameOpened(InternalFrameEvent)` |'
+- en: '| [`ItemListener`](itemlistener.html) | *none* | `itemStateChanged(ItemEvent)`
+    |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ItemListener`](itemlistener.html) | *none* | `itemStateChanged(ItemEvent)`
+    |'
+- en: '| [`KeyListener`](keylistener.html) | `KeyAdapter` | `keyPressed(KeyEvent)`
+    `keyReleased(KeyEvent)`'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`KeyListener`](keylistener.html) | `KeyAdapter` | `keyPressed(KeyEvent)`
+    `keyReleased(KeyEvent)`'
+- en: '`keyTyped(KeyEvent)` |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`keyTyped(KeyEvent)` |'
+- en: '| [`ListDataListener`](listdatalistener.html) | *none* | `contentsChanged(ListDataEvent)`
+    `intervalAdded(ListDataEvent)`'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`ListDataListener`](listdatalistener.html) | *none* | `contentsChanged(ListDataEvent)`
+    `intervalAdded(ListDataEvent)`'
+- en: '`intervalRemoved(ListDataEvent)` |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`intervalRemoved(ListDataEvent)` |'
+- en: '| [`ListSelectionListener`](listselectionlistener.html) | *none* | `valueChanged(ListSelectionEvent)`
+    |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ListSelectionListener`](listselectionlistener.html) | *none* | `valueChanged(ListSelectionEvent)`
+    |'
+- en: '| [`MenuDragMouseListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuDragMouseListener.html)
+    | *none* | `menuDragMouseDragged(MenuDragMouseEvent)` `menuDragMouseEntered(MenuDragMouseEvent)`'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`MenuDragMouseListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuDragMouseListener.html)
+    | *none* | `menuDragMouseDragged(MenuDragMouseEvent)` `menuDragMouseEntered(MenuDragMouseEvent)`'
+- en: '`menuDragMouseExited(MenuDragMouseEvent)`'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`menuDragMouseExited(MenuDragMouseEvent)`'
+- en: '`menuDragMouseReleased(MenuDragMouseEvent)` |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`menuDragMouseReleased(MenuDragMouseEvent)` |'
+- en: '| [`MenuKeyListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuKeyListener.html)
+    | *none* | `menuKeyPressed(MenuKeyEvent)` `menuKeyReleased(MenuKeyEvent)`'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`MenuKeyListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuKeyListener.html)
+    | *none* | `menuKeyPressed(MenuKeyEvent)` `menuKeyReleased(MenuKeyEvent)`'
+- en: '`menuKeyTyped(MenuKeyEvent)` |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`menuKeyTyped(MenuKeyEvent)` |'
+- en: '| [`MenuListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuListener.html)
+    | *none* | `menuCanceled(MenuEvent)` `menuDeselected(MenuEvent)`'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`MenuListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/MenuListener.html)
+    | *none* | `menuCanceled(MenuEvent)` `menuDeselected(MenuEvent)`'
+- en: '`menuSelected(MenuEvent)` |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`menuSelected(MenuEvent)` |'
+- en: '| `MouseInputListener` (extends [`MouseListener`](mouselistener.html) and [`MouseMotionListener`](mousemotionlistener.html)
+    | `MouseInputAdapter` `MouseAdapter` | `mouseClicked(MouseEvent)` `mouseEntered(MouseEvent)`'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `MouseInputListener` (extends [`MouseListener`](mouselistener.html) and [`MouseMotionListener`](mousemotionlistener.html)
+    | `MouseInputAdapter` `MouseAdapter` | `mouseClicked(MouseEvent)` `mouseEntered(MouseEvent)`'
+- en: '`mouseExited(MouseEvent)`'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`mouseExited(MouseEvent)`'
+- en: '`mousePressed(MouseEvent)`'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`mousePressed(MouseEvent)`'
+- en: '`mouseReleased(MouseEvent)`'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`mouseReleased(MouseEvent)`'
+- en: '`mouseDragged(MouseEvent)`'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`mouseDragged(MouseEvent)`'
+- en: '`mouseMoved(MouseEvent)`'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`mouseMoved(MouseEvent)`'
+- en: '`MouseAdapter(MouseEvent)` |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MouseAdapter(MouseEvent)` |'
+- en: '| [`MouseListener`](mouselistener.html) | `MouseAdapter`, `MouseInputAdapter`
+    | `mouseClicked(MouseEvent)` `mouseEntered(MouseEvent)`'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`MouseListener`](mouselistener.html) | `MouseAdapter`, `MouseInputAdapter`
+    | `mouseClicked(MouseEvent)` `mouseEntered(MouseEvent)`'
+- en: '`mouseExited(MouseEvent)`'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`mouseExited(MouseEvent)`'
+- en: '`mousePressed(MouseEvent)`'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`mousePressed(MouseEvent)`'
+- en: '`mouseReleased(MouseEvent)` |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`mouseReleased(MouseEvent)` |'
+- en: '| [`MouseMotionListener`](mousemotionlistener.html) | `MouseMotionAdapter`,
+    `MouseInputAdapter` | `mouseDragged(MouseEvent)` `mouseMoved(MouseEvent)` |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`MouseMotionListener`](mousemotionlistener.html) | `MouseMotionAdapter`,
+    `MouseInputAdapter` | `mouseDragged(MouseEvent)` `mouseMoved(MouseEvent)` |'
+- en: '| [`MouseWheelListener`](mousewheellistener.html) | `MouseAdapter` | `mouseWheelMoved(MouseWheelEvent)`
+    `MouseAdapter<MouseEvent>` |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`MouseWheelListener`](mousewheellistener.html) | `MouseAdapter` | `mouseWheelMoved(MouseWheelEvent)`
+    `MouseAdapter<MouseEvent>` |'
+- en: '| [`PopupMenuListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/PopupMenuListener.html)
+    | *none* | `popupMenuCanceled(PopupMenuEvent)` `popupMenuWillBecomeInvisible(PopupMenuEvent)`'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`PopupMenuListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/PopupMenuListener.html)
+    | *none* | `popupMenuCanceled(PopupMenuEvent)` `popupMenuWillBecomeInvisible(PopupMenuEvent)`'
+- en: '`popupMenuWillBecomeVisible(PopupMenuEvent)` |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`popupMenuWillBecomeVisible(PopupMenuEvent)` |'
+- en: '| [`PropertyChangeListener`](propertychangelistener.html) | *none* | `propertyChange(PropertyChangeEvent)`
+    |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`属性更改监听器`](propertychangelistener.html) | *无* | `propertyChange(PropertyChangeEvent)`
+    |'
+- en: '| [`TableColumnModelListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableColumnModelListener.html)
+    | *none* | `columnAdded(TableColumnModelEvent)` `columnMoved(TableColumnModelEvent)`'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`表列模型监听器`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableColumnModelListener.html)
+    | *无* | `columnAdded(TableColumnModelEvent)` `columnMoved(TableColumnModelEvent)`'
+- en: '`columnRemoved(TableColumnModelEvent)`'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`columnRemoved(TableColumnModelEvent)`'
+- en: '`columnMarginChanged(ChangeEvent)`'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`columnMarginChanged(ChangeEvent)`'
+- en: '`columnSelectionChanged(ListSelectionEvent)` |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`columnSelectionChanged(ListSelectionEvent)` |'
+- en: '| [`TableModelListener`](tablemodellistener.html) | *none* | `tableChanged(TableModelEvent)`
+    |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`表模型监听器`](tablemodellistener.html) | *无* | `tableChanged(TableModelEvent)`
+    |'
+- en: '| [`TreeExpansionListener`](treeexpansionlistener.html) | *none* | `treeCollapsed(TreeExpansionEvent)`
+    `treeExpanded(TreeExpansionEvent)` |'
+  id: totrans-63
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`树展开监听器`](treeexpansionlistener.html) | *无* | `treeCollapsed(TreeExpansionEvent)`
+    `treeExpanded(TreeExpansionEvent)` |'
+- en: '| [`TreeModelListener`](treemodellistener.html) | *none* | `treeNodesChanged(TreeModelEvent)`
+    `treeNodesInserted(TreeModelEvent)`'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`树模型监听器`](treemodellistener.html) | *无* | `treeNodesChanged(TreeModelEvent)`
+    `treeNodesInserted(TreeModelEvent)`'
+- en: '`treeNodesRemoved(TreeModelEvent)`'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`treeNodesRemoved(TreeModelEvent)`'
+- en: '`treeStructureChanged(TreeModelEvent)` |'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`treeStructureChanged(TreeModelEvent)` |'
+- en: '| [`TreeSelectionListener`](treeselectionlistener.html) | *none* | `valueChanged(TreeSelectionEvent)`
+    |'
+  id: totrans-67
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`树选择监听器`](treeselectionlistener.html) | *无* | `valueChanged(TreeSelectionEvent)`
+    |'
+- en: '| [`TreeWillExpandListener`](treewillexpandlistener.html) | *none* | `treeWillCollapse(TreeExpansionEvent)`
+    `treeWillExpand(TreeExpansionEvent)` |'
+  id: totrans-68
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`树将展开监听器`](treewillexpandlistener.html) | *无* | `treeWillCollapse(TreeExpansionEvent)`
+    `treeWillExpand(TreeExpansionEvent)` |'
+- en: '| [`UndoableEditListener`](undoableeditlistener.html) | *none* | `undoableEditHappened(UndoableEditEvent)`
+    |'
+  id: totrans-69
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`可撤销编辑监听器`](undoableeditlistener.html) | *无* | `undoableEditHappened(UndoableEditEvent)`
+    |'
+- en: '| [`VetoableChangeListener`](https://docs.oracle.com/javase/8/docs/api/java/beans/VetoableChangeListener.html)
+    | *none* | `vetoableChange(PropertyChangeEvent)` |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`可否更改监听器`](https://docs.oracle.com/javase/8/docs/api/java/beans/VetoableChangeListener.html)
+    | *无* | `vetoableChange(PropertyChangeEvent)` |'
+- en: '| [`WindowFocusListener`](windowlistener.html) | `WindowAdapter` | `windowGainedFocus(WindowEvent)`
+    `windowLostFocus(WindowEvent)` |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`窗口焦点监听器`](windowlistener.html) | `窗口适配器` | `windowGainedFocus(WindowEvent)`
+    `windowLostFocus(WindowEvent)` |'
+- en: '| [`WindowListener`](windowlistener.html) | `WindowAdapter` | `windowActivated(WindowEvent)`
+    `windowClosed(WindowEvent)`'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [`窗口监听器`](windowlistener.html) | `窗口适配器` | `windowActivated(WindowEvent)`
+    `windowClosed(WindowEvent)`'
+- en: '`windowClosing(WindowEvent)`'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`windowClosing(WindowEvent)`'
+- en: '`windowDeactivated(WindowEvent)`'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`windowDeactivated(WindowEvent)`'
+- en: '`windowDeiconified(WindowEvent)`'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`windowDeiconified(WindowEvent)`'
+- en: '`windowIconified(WindowEvent)`'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`windowIconified(WindowEvent)`'
+- en: '`windowOpened(WindowEvent)` |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`windowOpened(WindowEvent)` |'
+- en: '| [`WindowStateListener`](windowlistener.html) | `WindowAdapter` | `windowStateChanged(WindowEvent)`
+    |'
+  id: totrans-78
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`窗口状态监听器`](windowlistener.html) | `窗口适配器` | `windowStateChanged(WindowEvent)`
+    |'

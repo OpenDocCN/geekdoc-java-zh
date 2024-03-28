@@ -1,0 +1,95 @@
+- en: 'Lesson: Creating and Using Extensions'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：创建和使用扩展
+- en: 原文：[https://docs.oracle.com/javase/tutorial/ext/basics/index.html](https://docs.oracle.com/javase/tutorial/ext/basics/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/ext/basics/index.html](https://docs.oracle.com/javase/tutorial/ext/basics/index.html)
+- en: 'Any set of packages or classes can easily be made to play the role of an extension.
+    The first step in turning a set of classes into an extension is to bundle them
+    in a JAR file. Once that''s done, you can turn the software into an extension
+    in two ways:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何一组包或类都可以轻松地扮演扩展的角色。将一组类转变为扩展的第一步是将它们打包在一个JAR文件中。完成这一步后，您可以通过两种方式将软件转变为扩展：
+- en: by placing the JAR file in a special location in the directory structure of
+    the Java Runtime Environment, in which case it's called an *installed* extension.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过将JAR文件放置在Java运行时环境目录结构的特定位置，这种情况下称为*已安装*扩展。
+- en: by referencing the JAR file in a specified way from the manifest of the another
+    JAR file, in which case it's called a *download* extension.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过以特定方式从另一个JAR文件的清单中引用JAR文件，这种情况下称为*下载*扩展。
+- en: This lesson shows you how the extension mechanism works by using a simple "toy"
+    extension as an example.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课将通过使用一个简单的“玩具”扩展作为示例来展示扩展机制的工作原理。
+- en: '[Installed Extensions](install.html)'
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[已安装扩展](install.html)'
+- en: In this section, you'll create a simple installed extension and see how extension
+    software is treated as part of the platform by the runtime environment.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本节中，您将创建一个简单的已安装扩展，并看到扩展软件如何被运行时环境视为平台的一部分。
+- en: '[Download Extensions](download.html)'
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[下载扩展](download.html)'
+- en: This section will show you how modify a JAR file's manifest so that the JAR-bundled
+    software can make use of download extensions.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节将向您展示如何修改JAR文件的清单，以便JAR打包的软件可以利用下载扩展。
+- en: '[Understanding Extension Class Loading](load.html)'
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[理解扩展类加载](load.html)'
+- en: This section is a short detour that summarizes the Java platform's delegation
+    model for loading classes, and shows how it relates to loading classes in extensions.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节是一个简短的插曲，总结了Java平台的类加载委托模型，并展示了它与扩展中类加载的关系。
+- en: '[Creating Extensible Applications](spi.html)'
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[创建可扩展应用程序](spi.html)'
+- en: This section discusses the mechanism used to extend an application, via plug-ins
+    or modules, without modifying its original code base.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节讨论了用于扩展应用程序的机制，通过插件或模块，而无需修改其原始代码库。
+- en: The next lesson, [Making Extensions Secure](../security/index.html) uses the
+    same extension to show how the Java platform controls the security permissions
+    that are granted to extensions.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一课，[使扩展安全](../security/index.html) 使用相同的扩展来展示Java平台如何控制授予扩展的安全权限。

@@ -1,0 +1,192 @@
+- en: 'Lesson: Implementations'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教训：实现
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/implementations/index.html](https://docs.oracle.com/javase/tutorial/collections/implementations/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/implementations/index.html](https://docs.oracle.com/javase/tutorial/collections/implementations/index.html)
+- en: 'Implementations are the data objects used to store collections, which implement
+    the interfaces described in [the Interfaces section](../interfaces/index.html).
+    This lesson describes the following kinds of implementations:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现是用于存储集合的数据对象，实现了[接口部分](../interfaces/index.html)中描述的接口。本课程描述了以下类型的实现：
+- en: '**General-purpose implementations** are the most commonly used implementations,
+    designed for everyday use. They are summarized in the table titled General-purpose-implementations.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**通用实现**是最常用的实现，设计用于日常使用。它们在标题为通用实现的表中总结。'
+- en: '**Special-purpose implementations** are designed for use in special situations
+    and display nonstandard performance characteristics, usage restrictions, or behavior.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**特殊用途实现**设计用于特殊情况，并显示非标准性能特征、使用限制或行为。'
+- en: '**Concurrent implementations** are designed to support high concurrency, typically
+    at the expense of single-threaded performance. These implementations are part
+    of the `java.util.concurrent` package.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**并发实现**旨在支持高并发性，通常以牺牲单线程性能为代价。这些实现是`java.util.concurrent`包的一部分。'
+- en: '**Wrapper implementations** are used in combination with other types of implementations,
+    often the general-purpose ones, to provide added or restricted functionality.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**包装实现**通常与其他类型的实现结合使用，通常是通用实现，以提供附加或受限功能。'
+- en: '**Convenience implementations** are mini-implementations, typically made available
+    via static factory methods, that provide convenient, efficient alternatives to
+    general-purpose implementations for special collections (for example, singleton
+    sets).'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**便利实现**是迷你实现，通常通过静态工厂方法提供，为特殊集合提供方便、高效的替代方案（例如，单例集合）。'
+- en: "**Abstract implementations** are skeletal implementations that facilitate the\
+    \ construction of custom implementations \x97 described later in the [Custom Collection\
+    \ Implementations](../custom-implementations/index.html) section. An advanced\
+    \ topic, it's not particularly difficult, but relatively few people will need\
+    \ to do it."
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**抽象实现**是骨架实现，有助于构建自定义实现，稍后在[自定义集合实现](../custom-implementations/index.html)部分中描述。这是一个高级主题，不是特别困难，但相对较少的人会需要这样做。'
+- en: The general-purpose implementations are summarized in the following table.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通用实现总结如下表所示。
+- en: '**General-purpose Implementations**'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**通用实现**'
+- en: '| Interfaces | Hash table Implementations | Resizable array Implementations
+    | Tree Implementations | Linked list Implementations | Hash table + Linked list
+    Implementations |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| 接口 | 哈希表实现 | 可调整大小数组实现 | 树实现 | 链表实现 | 哈希表 + 链表实现 |'
+- en: '| `Set` | `HashSet` |   | `TreeSet` |   | `LinkedHashSet` |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Set` | `HashSet` |   | `TreeSet` |   | `LinkedHashSet` |'
+- en: '| `List` |   | `ArrayList` |   | `LinkedList` |   |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| `List` |   | `ArrayList` |   | `LinkedList` |   |'
+- en: '| `Queue` |   |   |   |   |   |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Queue` |   |   |   |   |   |'
+- en: '| `Deque` |   | `ArrayDeque` |   | `LinkedList` |   |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Deque` |   | `ArrayDeque` |   | `LinkedList` |   |'
+- en: '| `Map` | `HashMap` |   | `TreeMap` |   | `LinkedHashMap` |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Map` | `HashMap` |   | `TreeMap` |   | `LinkedHashMap` |'
+- en: "As you can see from the table, the Java Collections Framework provides several\
+    \ general-purpose implementations of the [`Set`](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html),\
+    \ [`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html) , and\
+    \ [`Map`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html) interfaces.\
+    \ In each case, one implementation \x97 [`HashSet`](https://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html),\
+    \ [`ArrayList`](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html),\
+    \ and [`HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html)\
+    \ \x97 is clearly the one to use for most applications, all other things being\
+    \ equal. Note that the [`SortedSet`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedSet.html)\
+    \ and the [`SortedMap`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html)\
+    \ interfaces do not have rows in the table. Each of those interfaces has one implementation\
+    \ [(`TreeSet`](https://docs.oracle.com/javase/8/docs/api/java/util/TreeSet.html)\
+    \ and [`TreeMap`](https://docs.oracle.com/javase/8/docs/api/java/util/TreeMap.html))\
+    \ and is listed in the `Set` and the `Map` rows. There are two general-purpose\
+    \ `Queue` implementations \x97 [`LinkedList`](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html),\
+    \ which is also a `List` implementation, and [`PriorityQueue`](https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html),\
+    \ which is omitted from the table. These two implementations provide very different\
+    \ semantics: `LinkedList` provides FIFO semantics, while `PriorityQueue` orders\
+    \ its elements according to their values."
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您从表中所看到的，Java集合框架提供了几个通用实现的[`Set`](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html)、[`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html)和[`Map`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html)接口。在每种情况下，一个实现——[`HashSet`](https://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html)、[`ArrayList`](https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html)和[`HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html)——显然是大多数应用程序中要使用的实现，其他条件相等。请注意，[`SortedSet`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedSet.html)和[`SortedMap`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html)接口在表中没有行。每个接口都有一个实现（[`TreeSet`](https://docs.oracle.com/javase/8/docs/api/java/util/TreeSet.html)和[`TreeMap`](https://docs.oracle.com/javase/8/docs/api/java/util/TreeMap.html)），并列在`Set`和`Map`行中。有两个通用的`Queue`实现——[`LinkedList`](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html)，也是`List`实现，和[`PriorityQueue`](https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html)，在表中被省略。这两个实现提供非常不同的语义：`LinkedList`提供FIFO语义，而`PriorityQueue`根据其值对元素进行排序。
+- en: Each of the general-purpose implementations provides all optional operations
+    contained in its interface. All permit `null` elements, keys, and values. None
+    are synchronized (thread-safe). All have *fail-fast iterators*, which detect illegal
+    concurrent modification during iteration and fail quickly and cleanly rather than
+    risking arbitrary, non-deterministic behavior at an undetermined time in the future.
+    All are `Serializable` and all support a public `clone` method.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个通用实现都提供其接口中包含的所有可选操作。所有允许`null`元素、键和值。没有同步（线程安全）。所有都有*快速失败迭代器*，在迭代期间检测到非法并发修改，并快速干净地失败，而不是在未来的某个不确定时间冒险出现任意、非确定性的行为。所有都是`Serializable`，并支持公共`clone`方法。
+- en: 'The fact that these implementations are unsynchronized represents a break with
+    the past: The legacy collections `Vector` and `Hashtable` are synchronized. The
+    present approach was taken because collections are frequently used when the synchronization
+    is of no benefit. Such uses include single-threaded use, read-only use, and use
+    as part of a larger data object that does its own synchronization. In general,
+    it is good API design practice not to make users pay for a feature they don''t
+    use. Furthermore, unnecessary synchronization can result in deadlock under certain
+    circumstances.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些实现不同步的事实代表了与过去的断裂：传统集合`Vector`和`Hashtable`是同步的。采取当前方法是因为在同步没有好处时集合经常被使用。这些用途包括单线程使用、只读使用以及作为执行自身同步的较大数据对象的一部分使用。一般来说，良好的API设计实践是不让用户为他们不使用的功能付费。此外，不必要的同步可能在某些情况下导致死锁。
+- en: If you need thread-safe collections, the synchronization wrappers, described
+    in the [Wrapper Implementations](wrapper.html) section, allow *any* collection
+    to be transformed into a synchronized collection. Thus, synchronization is optional
+    for general-purpose implementations, whereas it is mandatory for legacy implementations.
+    Moreover, the `java.util.concurrent` package provides concurrent implementations
+    of the `BlockingQueue` interface, which extends `Queue`, and of the `ConcurrentMap`
+    interface, which extends `Map`. These implementations offer much higher concurrency
+    than mere synchronized implementations.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你需要线程安全的集合，[包装器实现](wrapper.html)部分描述的同步包装器允许*任何*集合转换为同步集合。因此，同步对于通用实现是可选的，而对于传统实现是强制的。此外，`java.util.concurrent`包提供了`BlockingQueue`接口的并发实现，它扩展了`Queue`，以及`ConcurrentMap`接口的并发实现，它扩展了`Map`。这些实现比单纯的同步实现具有更高的并发性。
+- en: As a rule, you should be thinking about the interfaces, *not* the implementations.
+    That is why there are no programming examples in this section. For the most part,
+    the choice of implementation affects only performance. The preferred style, as
+    mentioned in the [Interfaces](../interfaces/index.html) section, is to choose
+    an implementation when a `Collection` is created and to immediately assign the
+    new collection to a variable of the corresponding interface type (or to pass the
+    collection to a method expecting an argument of the interface type). In this way,
+    the program does not become dependent on any added methods in a given implementation,
+    leaving the programmer free to change implementations anytime that it is warranted
+    by performance concerns or behavioral details.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，你应该考虑接口，*而不是*实现。这就是为什么本节中没有编程示例。在很大程度上，实现的选择只影响性能。如[接口](../interfaces/index.html)部分所述，首选的风格是在创建`Collection`时选择一个实现，并立即将新集合分配给相应接口类型的变量（或将集合传递给期望接口类型参数的方法）。通过这种方式，程序不会依赖于给定实现中添加的任何方法，使程序员可以自由更改实现，只要性能或行为细节需要。
+- en: The sections that follow briefly discuss the implementations. The performance
+    of the implementations is described using words such as *constant-time*, *log*,
+    *linear*, *n log(n)*, and *quadratic* to refer to the asymptotic upper-bound on
+    the time complexity of performing the operation. All this is quite a mouthful,
+    and it doesn't matter much if you don't know what it means. If you're interested
+    in knowing more, refer to any good algorithms textbook. One thing to keep in mind
+    is that this sort of performance metric has its limitations. Sometimes, the nominally
+    slower implementation may be faster. When in doubt, measure the performance!
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的部分简要讨论了实现。使用诸如*常数时间*、*对数*、*线性*、*n log(n)*和*二次*等词语描述了实现的性能，以指代执行操作的时间复杂度的渐近上界。所有这些都是相当复杂的术语，如果你不知道它们的含义也没关系。如果你对更多信息感兴趣，请参考任何一本优秀的算法教材。要记住的一件事是，这种性能指标有其局限性。有时，名义上更慢的实现可能更快。如果有疑问，就要测量性能！

@@ -1,0 +1,194 @@
+- en: Returning a Value from a Method
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 从方法返回一个值
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/returnvalue.html](https://docs.oracle.com/javase/tutorial/java/javaOO/returnvalue.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/returnvalue.html](https://docs.oracle.com/javase/tutorial/java/javaOO/returnvalue.html)
+- en: A method returns to the code that invoked it when it
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当方法达到`return`语句时返回到调用它的代码处
+- en: completes all the statements in the method,
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 完成方法中的所有语句，
+- en: reaches a `return` statement, or
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 或者达到`return`语句，
+- en: throws an exception (covered later),
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 抛出异常（稍后讨论），
+- en: whichever occurs first.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 先发生的那个。
+- en: You declare a method's return type in its method declaration. Within the body
+    of the method, you use the `return` statement to return the value.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在方法声明中声明方法的返回类型。在方法体内，使用`return`语句返回值。
+- en: 'Any method declared `void` doesn''t return a value. It does not need to contain
+    a `return` statement, but it may do so. In such a case, a `return` statement can
+    be used to branch out of a control flow block and exit the method and is simply
+    used like this:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何声明为`void`的方法不返回值。它不需要包含`return`语句，但可以包含。在这种情况下，`return`语句可用于跳出控制流块并退出方法，简单地像这样使用：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If you try to return a value from a method that is declared `void`, you will
+    get a compiler error.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果尝试从声明为`void`的方法返回值，将会得到编译器错误。
+- en: 'Any method that is not declared `void` must contain a `return` statement with
+    a corresponding return value, like this:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何未声明为`void`的方法必须包含一个带有相应返回值的`return`语句，就像这样：
+- en: '[PRE1]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The data type of the return value must match the method's declared return type;
+    you can't return an integer value from a method declared to return a boolean.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回值的数据类型必须与方法声明的返回类型匹配；你不能从声明为返回布尔值的方法中返回整数值。
+- en: 'The `getArea()` method in the `Rectangle` [`Rectangle`](examples/Rectangle.java)
+    class that was discussed in the sections on objects returns an integer:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在关于对象的部分讨论的`Rectangle` [`Rectangle`](examples/Rectangle.java)类中的`getArea()`方法返回一个整数：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: This method returns the integer that the expression `width*height` evaluates
+    to.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个方法返回表达式`width*height`求值的整数。
+- en: 'The `getArea` method returns a primitive type. A method can also return a reference
+    type. For example, in a program to manipulate `Bicycle` objects, we might have
+    a method like this:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getArea`方法返回一个基本类型。一个方法也可以返回一个引用类型。例如，在一个操作`Bicycle`对象的程序中，我们可能有这样一个方法：'
+- en: '[PRE3]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Returning a Class or Interface
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 返回一个类或接口
+- en: If this section confuses you, skip it and return to it after you have finished
+    the lesson on interfaces and inheritance.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果这一部分让你困惑，可以跳过它，在完成关于接口和继承的课程后再回来阅读。
+- en: When a method uses a class name as its return type, such as `whosFastest` does,
+    the class of the type of the returned object must be either a subclass of, or
+    the exact class of, the return type. Suppose that you have a class hierarchy in
+    which `ImaginaryNumber` is a subclass of `java.lang.Number`, which is in turn
+    a subclass of `Object`, as illustrated in the following figure.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当一个方法使用类名作为返回类型，比如`whosFastest`这样做时，返回对象的类型的类必须是返回类型的子类，或者是返回类型的确切类。假设你有一个类层次结构，其中`ImaginaryNumber`是`java.lang.Number`的子类，而`java.lang.Number`又是`Object`的子类，如下图所示。
+- en: '![The class hierarchy for ImaginaryNumber](../Images/49bca86334db63fe98889c652cc8885e.png)'
+  id: totrans-22
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ImaginaryNumber的类层次结构](../Images/49bca86334db63fe98889c652cc8885e.png)'
+- en: The class hierarchy for ImaginaryNumber
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ImaginaryNumber的类层次结构
+- en: 'Now suppose that you have a method declared to return a `Number`:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在假设你有一个声明为返回`Number`的方法：
+- en: '[PRE4]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: "The `returnANumber` method can return an `ImaginaryNumber` but not an `Object`.\
+    \ `ImaginaryNumber` is a `Number` because it's a subclass of `Number`. However,\
+    \ an `Object` is not necessarily a `Number` \x97 it could be a `String` or another\
+    \ type."
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "`returnANumber`方法可以返回一个`ImaginaryNumber`但不能返回一个`Object`。`ImaginaryNumber`是一个`Number`，因为它是`Number`的子类。然而，一个`Object`不一定是一个`Number`\
+    \ \x97 它可能是一个`String`或其他类型。"
+- en: 'You can override a method and define it to return a subclass of the original
+    method, like this:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以重写一个方法并定义它返回原方法的子类，就像这样：
+- en: '[PRE5]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: This technique, called *covariant return type*, means that the return type is
+    allowed to vary in the same direction as the subclass.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种技术称为*协变返回类型*，意味着返回类型允许与子类相同方向变化。
+- en: '* * *'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** You also can use interface names as return types. In this case, the
+    object returned must implement the specified interface.'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 你也可以使用接口名称作为返回类型。在这种情况下，返回的对象必须实现指定的接口。'
+- en: '* * *'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

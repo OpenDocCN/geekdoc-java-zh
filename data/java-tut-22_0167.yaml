@@ -1,0 +1,145 @@
+- en: Character Streams
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 字符流
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/charstreams.html](https://docs.oracle.com/javase/tutorial/essential/io/charstreams.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/charstreams.html](https://docs.oracle.com/javase/tutorial/essential/io/charstreams.html)
+- en: The Java platform stores character values using Unicode conventions. Character
+    stream I/O automatically translates this internal format to and from the local
+    character set. In Western locales, the local character set is usually an 8-bit
+    superset of ASCII.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台使用Unicode约定存储字符值。字符流I/O会自动将内部格式与本地字符集进行转换。在西方区域，本地字符集通常是ASCII的8位超集。
+- en: "For most applications, I/O with character streams is no more complicated than\
+    \ I/O with byte streams. Input and output done with stream classes automatically\
+    \ translates to and from the local character set. A program that uses character\
+    \ streams in place of byte streams automatically adapts to the local character\
+    \ set and is ready for internationalization \x97 all without extra effort by the\
+    \ programmer."
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于大多数应用程序，使用字符流进行I/O与使用字节流进行I/O并无太大区别。使用流类进行的输入和输出会自动转换为本地字符集。使用字符流而不是字节流的程序会自动适应本地字符集，并且为国际化做好准备，而无需程序员额外努力。
+- en: If internationalization isn't a priority, you can simply use the character stream
+    classes without paying much attention to character set issues. Later, if internationalization
+    becomes a priority, your program can be adapted without extensive recoding. See
+    the [Internationalization](../../i18n/index.html) trail for more information.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果国际化不是首要任务，您可以简单地使用字符流类，而不必过多关注字符集问题。稍后，如果国际化成为首要任务，您的程序可以在不进行大量重编码的情况下进行调整。查看[国际化](../../i18n/index.html)教程以获取更多信息。
+- en: Using Character Streams
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用字符流
+- en: 'All character stream classes are descended from [`Reader`](https://docs.oracle.com/javase/8/docs/api/java/io/Reader.html)
+    and [`Writer`](https://docs.oracle.com/javase/8/docs/api/java/io/Writer.html).
+    As with byte streams, there are character stream classes that specialize in file
+    I/O: [`FileReader`](https://docs.oracle.com/javase/8/docs/api/java/io/FileReader.html)
+    and [`FileWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/FileWriter.html).
+    The [`CopyCharacters`](examples/CopyCharacters.java) example illustrates these
+    classes.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有字符流类都是从[`Reader`](https://docs.oracle.com/javase/8/docs/api/java/io/Reader.html)和[`Writer`](https://docs.oracle.com/javase/8/docs/api/java/io/Writer.html)继承而来。与字节流一样，有专门用于文件I/O的字符流类：[`FileReader`](https://docs.oracle.com/javase/8/docs/api/java/io/FileReader.html)和[`FileWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/FileWriter.html)。[`CopyCharacters`](examples/CopyCharacters.java)示例演示了这些类。
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '`CopyCharacters` is very similar to `CopyBytes`. The most important difference
+    is that `CopyCharacters` uses `FileReader` and `FileWriter` for input and output
+    in place of `FileInputStream` and `FileOutputStream`. Notice that both `CopyBytes`
+    and `CopyCharacters` use an `int` variable to read to and write from. However,
+    in `CopyCharacters`, the `int` variable holds a character value in its last 16
+    bits; in `CopyBytes`, the `int` variable holds a `byte` value in its last 8 bits.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CopyCharacters`与`CopyBytes`非常相似。最重要的区别在于，`CopyCharacters`使用`FileReader`和`FileWriter`进行输入和输出，而不是`FileInputStream`和`FileOutputStream`。请注意，`CopyBytes`和`CopyCharacters`都使用一个`int`变量进行读取和写入。但是，在`CopyCharacters`中，`int`变量在其最后16位中保存字符值；而在`CopyBytes`中，`int`变量在其最后8位中保存`byte`值。'
+- en: Character Streams that Use Byte Streams
+  id: totrans-9
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用字节流的字符流
+- en: Character streams are often "wrappers" for byte streams. The character stream
+    uses the byte stream to perform the physical I/O, while the character stream handles
+    translation between characters and bytes. `FileReader`, for example, uses `FileInputStream`,
+    while `FileWriter` uses `FileOutputStream`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字符流通常是字节流的“包装器”。字符流使用字节流执行物理I/O，而字符流处理字符和字节之间的转换。例如，`FileReader`使用`FileInputStream`，而`FileWriter`使用`FileOutputStream`。
+- en: 'There are two general-purpose byte-to-character "bridge" streams: [`InputStreamReader`](https://docs.oracle.com/javase/8/docs/api/java/io/InputStreamReader.html)
+    and [`OutputStreamWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/OutputStreamWriter.html).
+    Use them to create character streams when there are no prepackaged character stream
+    classes that meet your needs. The [sockets lesson](../../networking/sockets/readingWriting.html)
+    in the [networking trail](../../networking/index.html) shows how to create character
+    streams from the byte streams provided by socket classes.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两个通用的字节到字符的“桥梁”流：[`InputStreamReader`](https://docs.oracle.com/javase/8/docs/api/java/io/InputStreamReader.html)和[`OutputStreamWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/OutputStreamWriter.html)。当没有符合您需求的预打包字符流类时，请使用它们来创建字符流。[网络教程](../../networking/sockets/readingWriting.html)中的[套接字课程](../../networking/index.html)展示了如何从套接字类提供的字节流创建字符流。
+- en: Line-Oriented I/O
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 面向行的I/O
+- en: 'Character I/O usually occurs in bigger units than single characters. One common
+    unit is the line: a string of characters with a line terminator at the end. A
+    line terminator can be a carriage-return/line-feed sequence (`"\r\n"`), a single
+    carriage-return (`"\r"`), or a single line-feed (`"\n"`). Supporting all possible
+    line terminators allows programs to read text files created on any of the widely
+    used operating systems.'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字符I/O通常以比单个字符更大的单位进行。一个常见的单位是行：一串带有行终止符的字符。行终止符可以是回车/换行序列(`"\r\n"`)，单个回车(`"\r"`)或单个换行(`"\n"`)。支持所有可能的行终止符允许程序读取在任何广泛使用的操作系统上创建的文本文件。
+- en: Let's modify the `CopyCharacters` example to use line-oriented I/O. To do this,
+    we have to use two classes we haven't seen before, [`BufferedReader`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html)
+    and [`PrintWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintWriter.html).
+    We'll explore these classes in greater depth in [Buffered I/O](buffers.html) and
+    [Formatting](formatting.html). Right now, we're just interested in their support
+    for line-oriented I/O.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们修改`CopyCharacters`示例以使用面向行的I/O。为此，我们必须使用两个以前未见过的类，[`BufferedReader`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html)和[`PrintWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintWriter.html)。我们将在[缓冲I/O](buffers.html)和[格式化](formatting.html)中更深入地探讨这些类。现在，我们只关注它们对面向行的I/O的支持。
+- en: The [`CopyLines`](examples/CopyLines.java) example invokes `BufferedReader.readLine`
+    and `PrintWriter.println` to do input and output one line at a time.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`CopyLines`](examples/CopyLines.java)示例调用`BufferedReader.readLine`和`PrintWriter.println`来逐行进行输入和输出。'
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Invoking `readLine` returns a line of text with the line. `CopyLines` outputs
+    each line using `println`, which appends the line terminator for the current operating
+    system. This might not be the same line terminator that was used in the input
+    file.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调用`readLine`返回带有行的文本。`CopyLines`使用`println`输出每一行，该方法会附加当前操作系统的行终止符。这可能与输入文件中使用的行终止符不同。
+- en: There are many ways to structure text input and output beyond characters and
+    lines. For more information, see [Scanning and Formatting](scanfor.html).
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了字符和行之外，还有许多结构化文本输入和输出的方式。更多信息，请参见[扫描和格式化](scanfor.html)。

@@ -1,0 +1,185 @@
+- en: Introduction to Event Listeners
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 事件监听器简介
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/intro.html](https://docs.oracle.com/javase/tutorial/uiswing/events/intro.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/intro.html](https://docs.oracle.com/javase/tutorial/uiswing/events/intro.html)
+- en: If you have read any of the component how-to pages, you probably already know
+    the basics of event listeners.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你已经阅读了任何组件的操作指南页面，你可能已经了解了事件监听器的基础知识。
+- en: Let us look at one of the simplest event handling examples possible. It is called
+    Beeper, and it features a button that beeps when you click it.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看一个可能的最简单的事件处理示例。它被称为蜂鸣器，当你点击按钮时会发出蜂鸣声。
+- en: Click the Launch button to run Beeper using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/events/index.html#Beeper).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行蜂鸣器（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/events/index.html#Beeper)。
+- en: '[![Launches the Beeper example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BeeperProject/Beeper.jnlp)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动蜂鸣器示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BeeperProject/Beeper.jnlp)'
+- en: '![A Click Me Beeper Button](../Images/d32222565074768546aa3ee411bacdb9.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个点击我蜂鸣器按钮](../Images/d32222565074768546aa3ee411bacdb9.png)'
+- en: 'You can find the entire program in [`Beeper.java`](../examples/events/BeeperProject/src/events/Beeper.java).
+    Here is the code that implements the event handling for the button:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在[`Beeper.java`](../examples/events/BeeperProject/src/events/Beeper.java)中找到整个程序。以下是实现按钮事件处理的代码：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The `Beeper` class implements the [`ActionListener`](actionlistener.html) interface,
+    which contains one method: `actionPerformed`. Since `Beeper` implements `ActionListener`,
+    a `Beeper` object can register as a listener for the action events that buttons
+    fire. Once the `Beeper` has been registered using the `Button` `addActionListener`
+    method, the `Beeper`''s `actionPerformed` method is called every time the button
+    is clicked.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Beeper`类实现了[`ActionListener`](actionlistener.html)接口，其中包含一个方法：`actionPerformed`。由于`Beeper`实现了`ActionListener`，一个`Beeper`对象可以注册为按钮触发的动作事件的监听器。一旦`Beeper`使用`Button`的`addActionListener`方法注册，每次点击按钮时都会调用`Beeper`的`actionPerformed`方法。'
+- en: A More Complex Example
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更复杂的示例
+- en: The event model, which you saw at its simplest in the preceding example, is
+    quite powerful and flexible. Any number of event listener objects can listen for
+    all kinds of events from any number of event source objects. For example, a program
+    might create one listener per event source. Or a program might have a single listener
+    for all events from all sources. A program can even have more than one listener
+    for a single kind of event from a single event source.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事件模型在前面的示例中展示得很简单，但非常强大和灵活。任意数量的事件监听器对象可以监听来自任意数量的事件源对象的各种事件。例如，一个程序可以为每个事件源创建一个监听器。或者一个程序可以对来自所有源的所有事件拥有一个单一的监听器。一个程序甚至可以对来自单个事件源的单一类型的事件拥有多个监听器。
+- en: '![Event source with multiple listeners](../Images/fc22018d59de96099a96b840fcb501a0.png)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_IMG
+  zh: '![具有多个监听器的事件源](../Images/fc22018d59de96099a96b840fcb501a0.png)'
+- en: Multiple listeners can register to be notified of events of a particular type
+    from a particular source. Also, the same listener can listen to notifications
+    from different objects.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 多个监听器可以注册以接收特定类型的事件来自特定来源。此外，同一个监听器可以监听来自不同对象的通知。
+- en: Each event is represented by an object that gives information about the event
+    and identifies the event source. Event sources are often components or models,
+    but other kinds of objects can also be event sources.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个事件都由一个对象表示，该对象提供有关事件的信息并标识事件源。事件源通常是组件或模型，但其他类型的对象也可以是事件源。
+- en: Whenever you want to detect events from a particular component, first check
+    the how-to section for that component. A list of the component how-to sections
+    is [here](../components/componentlist.html). The how-to sections give examples
+    of handling the events that you are most likely to care about. In [How to Use
+    Color Choosers](../components/colorchooser.html), for instance, you will find
+    an example of writing a change listener to track when the color changes in the
+    color chooser.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当你想要检测特定组件的事件时，请首先查看该组件的操作指南部分。组件操作指南部分的列表在[这里](../components/componentlist.html)。操作指南部分提供了处理你可能关心的事件的示例。例如，在[如何使用颜色选择器](../components/colorchooser.html)中，你会找到一个编写更改监听器以跟踪颜色选择器中颜色更改的示例。
+- en: The following example demonstrates that event listeners can be registered on
+    multiple objects and that the same event can be sent to multiple listeners. The
+    example contains two event sources (`JButton` instances) and two event listeners.
+    One of the event listeners (an instance of a class called `MultiListener`) listens
+    for events from both buttons. When it receives an event, it adds the event's "action
+    command" (which is set to the text on the button's label) to the top text area.
+    The second event listener (an instance of a class called `Eavesdropper`) listens
+    for events on only one of the buttons. When it receives an event, it adds the
+    action command to the bottom text area.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例演示了事件监听器可以注册在多个对象上，并且相同的事件可以发送给多个监听器。该示例包含两个事件源（`JButton`实例）和两个事件监听器。其中一个事件监听器（名为`MultiListener`的类的实例）监听来自两个按钮的事件。当它接收到事件时，它将事件的“动作命令”（设置为按钮标签上的文本）添加到顶部文本区域。第二个事件监听器（名为`Eavesdropper`的类的实例）仅监听一个按钮上的事件。当它接收到事件时，它将动作命令添加到底部文本区域。
+- en: '![MultiListener and Eavesdropper responses to buttons](../Images/dfa0492f3ac52441ebe7df70791787ae.png)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_IMG
+  zh: '![MultiListener和Eavesdropper对按钮的响应](../Images/dfa0492f3ac52441ebe7df70791787ae.png)'
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run MultiListener using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/events/index.html#MultiListener).[![Launches
+    the MultiListener example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/MultiListenerProject/MultiListener.jnlp)
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行MultiListener（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/events/index.html#MultiListener)。[![启动MultiListener示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/MultiListenerProject/MultiListener.jnlp)
+- en: Click the *Blah blah blah* button. Only the `MultiListener` object is registered
+    to listen to this button.
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击*Blah blah blah*按钮。只有`MultiListener`对象被注册来监听这个按钮。
+- en: Click the *You do not say!* button. Both the `MultiListener` object and the
+    `Eavesdropper` object are registered to listen to this button.
+  id: totrans-22
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击*You do not say!*按钮。`MultiListener`对象和`Eavesdropper`对象都被注册来监听这个按钮。
+- en: '* * *'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'You can find the entire program in [`MultiListener.java`](../examples/events/MultiListenerProject/src/events/MultiListener.java).
+    Here is the code that implements the event handling for the button:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在[`MultiListener.java`](../examples/events/MultiListenerProject/src/events/MultiListener.java)中找到整个程序。这里是实现按钮事件处理的代码：
+- en: '[PRE1]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'In the above code, both `MultiListener` and `Eavesdropper` implement the `ActionListener`
+    interface and register as action listeners using the `JButton` `addActionListener`
+    method. Both classes'' implementations of the `actionPerformed` method are similar:
+    they simply add the event''s action command to a text area.'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上述代码中，`MultiListener`和`Eavesdropper`都实现了`ActionListener`接口，并使用`JButton`的`addActionListener`方法注册为动作监听器。这两个类的`actionPerformed`方法的实现类似：它们只是将事件的动作命令添加到文本区域中。

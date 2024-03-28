@@ -1,0 +1,40 @@
+- en: Deadlock
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 死锁
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/deadlock.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/deadlock.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/deadlock.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/deadlock.html)
+- en: '*Deadlock* describes a situation where two or more threads are blocked forever,
+    waiting for each other. Here''s an example.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*死锁* 描述了两个或更多线程永远被阻塞，彼此等待的情况。这里有一个例子。'
+- en: 'Alphonse and Gaston are friends, and great believers in courtesy. A strict
+    rule of courtesy is that when you bow to a friend, you must remain bowed until
+    your friend has a chance to return the bow. Unfortunately, this rule does not
+    account for the possibility that two friends might bow to each other at the same
+    time. This example application, [``Deadlock``](examples/Deadlock.java), models
+    this possibility:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 阿方索和加斯顿是朋友，也是极信奉礼貌的人。一个严格的礼貌规则是，当你向朋友鞠躬时，你必须保持鞠躬的姿势，直到你的朋友有机会回礼。不幸的是，这个规则没有考虑到两个朋友可能同时向对方鞠躬的可能性。这个示例应用程序，[``死锁``](examples/Deadlock.java)，模拟了这种可能性：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: When `Deadlock` runs, it's extremely likely that both threads will block when
+    they attempt to invoke `bowBack`. Neither block will ever end, because each thread
+    is waiting for the other to exit `bow`.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当 `死锁` 运行时，当它们尝试调用 `bowBack` 时，两个线程都很可能被阻塞。由于每个线程都在等待另一个线程退出 `bow`，因此这两个阻塞永远不会结束。

@@ -1,0 +1,84 @@
+- en: 'Questions and Exercises: Writing Event Listeners'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习：编写事件监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch5.html](https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch5.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 译文：[https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch5.html](https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch5.html)
+- en: Use this lesson’s tables, the [component how-to sections](../components/index.html)
+    and the [event listeners how-to sections](../events/handling.html) to complete
+    these questions and exercises.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用本课程的表格，[组件操作部分](../components/index.html)和[事件监听器操作部分](../events/handling.html)来完成这些问题和练习。
+- en: Questions
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 问题
+- en: 1\. What listener would you implement to be notified when a particular component
+    has appeared on screen? What method tells you this information?
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. 当特定组件出现在屏幕上时，你会实现哪个监听器以便得到通知？哪个方法告诉你这个信息？
+- en: 2\. What listener would you implement to be notified when the user has finished
+    editing a text field by pressing Enter? What listener would you implement to be
+    notified as each character is typed into a text field? Note that you should not
+    implement a general- purpose key listener, but a listener specific to text.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. 当用户通过按 Enter 键完成编辑文本字段时，你会实现哪个监听器以便得到通知？当每个字符输入到文本字段时，你会实现哪个监听器以便得到通知？请注意，你不应该实现一个通用的键监听器，而是一个特定于文本的监听器。
+- en: 3\. What listener would you implement to be notified when a spinner’s value
+    has changed? How would you get the spinner’s new value?
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 3\. 当微调器的值发生变化时，你会实现哪个监听器以便得到通知？你会如何获取微调器的新值？
+- en: 4\. The default behavior for the focus subsystem is to consume the focus traversal
+    keys, such as Tab and Shift Tab. Say you want to prevent this from happening in
+    one of your application’s components. How would you accomplish this?
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 4\. 焦点子系统的默认行为是消耗焦点遍历键，比如 Tab 和 Shift Tab。假设你想要阻止这种情况发生在你应用程序的某个组件中。你会如何实现？
+- en: Exercises
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 练习
+- en: 1\. Take the [`Beeper.java`](../examples/events/BeeperProject/src/events/Beeper.java)[![(in
+    a .java source file)](../Images/2599ef5640d6dce179697fb8d79599b4.png)](../examples/events/BeeperProject/src/events/Beeper.java)
+    example and add a text field. Implement it so that when the user has finishing
+    entering data, the system beeps.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. 取出[`Beeper.java`](../examples/events/BeeperProject/src/events/Beeper.java)[![(在一个
+    .java 源文件中)](../Images/2599ef5640d6dce179697fb8d79599b4.png)](../examples/events/BeeperProject/src/events/Beeper.java)示例并添加一个文本字段。实现当用户完成输入数据时，系统发出蜂鸣声。
+- en: 2\. Take the [`Beeper.java`](../examples/events/BeeperProject/src/events/Beeper.java)[![(in
+    a .java source file)](../Images/2599ef5640d6dce179697fb8d79599b4.png)](../examples/events/BeeperProject/src/events/Beeper.java)
+    example and add a selectable component that allows the user to enter a number
+    from 1 to 10\. For example, you can use a combo box, a set of radio buttons, or
+    a spinner. Implement it so that when the user has selected the number, the system
+    beeps that many times.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. 取出[`Beeper.java`](../examples/events/BeeperProject/src/events/Beeper.java)[![(在一个
+    .java 源文件中)](../Images/2599ef5640d6dce179697fb8d79599b4.png)](../examples/events/BeeperProject/src/events/Beeper.java)示例并添加一个可选择的组件，允许用户输入从
+    1 到 10 的数字。例如，你可以使用一个组合框，一组单选按钮或一个微调器。实现当用户选择数字后，系统发出相应次数的蜂鸣声。
+- en: '[Check your answers.](answers-ch5.html)'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[检查你的答案。](answers-ch5.html)'

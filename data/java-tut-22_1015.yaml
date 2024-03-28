@@ -1,0 +1,62 @@
+- en: Connection Management
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 连接管理
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/connect.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/connect.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/connect.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/connect.html)
+- en: JNDI provides a high-level interface for accessing naming and directory services.
+    The mapping between a JNDI [`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)
+    instance and an underlying network connection might not be one-to-one. The service
+    provider is free to share and reuse connections as long as the interface semantics
+    are preserved. The application developer usually does not need to know the details
+    of how `Context` instances create and use connections. These details are useful
+    when the developer needs to tune his program.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JNDI为访问命名和目录服务提供了高级接口。JNDI [`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)实例与底层网络连接之间的映射可能不是一对一的。只要保留接口语义，服务提供者就可以自由共享和重用连接。应用程序开发人员通常不需要了解`Context`实例如何创建和使用连接的细节。当开发人员需要调整程序时，这些细节是有用的。
+- en: This lesson describes how the LDAP service provider uses connections. It describes
+    [when connections are created](create.html) and how to specify special connection
+    parameters, such as multiple servers and connection timeouts. This lesson also
+    shows how to dynamically discover and use LDAP servers in network environments
+    that support it.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程描述了LDAP服务提供者如何使用连接。它描述了[何时创建连接](create.html)以及如何指定特殊的连接参数，例如多个服务器和连接超时。本课程还展示了如何在支持的网络环境中动态发现和使用LDAP服务器。
+- en: A connection that is created must eventually be closed. This lesson contains
+    a section that describes [connection closures](close.html) by the client and the
+    server.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建的连接最终必须关闭。本课程包含一个描述客户端和服务器如何进行[连接关闭](close.html)的部分。
+- en: Finally, this lesson shows you how to use [connection pooling](pool.html) to
+    make applications that use many short-lived connections more efficient.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，本课程向您展示如何使用[连接池](pool.html)使使用许多短暂连接的应用程序更有效率。
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Information presented in this lesson are specific to LDAP service
+    provider in the JDK. LDAP service providers from other vendors might not use the
+    same policies for managing connections.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程中提供的信息仅适用于JDK中的LDAP服务提供者。其他供应商的LDAP服务提供者可能不使用相同的连接管理策略。'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

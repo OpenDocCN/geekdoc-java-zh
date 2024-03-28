@@ -1,0 +1,42 @@
+- en: The Event Dispatch Thread
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 事件分发线程
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/concurrency/dispatch.html](https://docs.oracle.com/javase/tutorial/uiswing/concurrency/dispatch.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/concurrency/dispatch.html](https://docs.oracle.com/javase/tutorial/uiswing/concurrency/dispatch.html)
+- en: 'Swing event handling code runs on a special thread known as the event dispatch
+    thread. Most code that invokes Swing methods also runs on this thread. This is
+    necessary because most Swing object methods are not "thread safe": invoking them
+    from multiple threads risks [thread interference](../../essential/concurrency/interfere.html)
+    or [memory consistency errors](../../essential/concurrency/memconsist.html). Some
+    Swing component methods are labelled "thread safe" in the API specification; these
+    can be safely invoked from any thread. All other Swing component methods must
+    be invoked from the event dispatch thread. Programs that ignore this rule may
+    function correctly most of the time, but are subject to unpredictable errors that
+    are difficult to reproduce.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing事件处理代码在一个称为事件分发线程的特殊线程上运行。大多数调用Swing方法的代码也在此线程上运行。这是必要的，因为大多数Swing对象方法都不是“线程安全”的：从多个线程调用它们会导致[线程干扰](../../essential/concurrency/interfere.html)或[内存一致性错误](../../essential/concurrency/memconsist.html)。API规范中标记为“线程安全”的一些Swing组件方法可以从任何线程安全地调用。所有其他Swing组件方法必须从事件分发线程中调用。忽略此规则的程序可能大部分时间都能正常运行，但会出现难以复现的不可预测错误。
+- en: It's useful to think of the code running on the event dispatch thread as a series
+    of short tasks. Most tasks are invocations of event-handling methods, such as
+    `ActionListener.actionPerformed`. Other tasks can be scheduled by application
+    code, using `invokeLater` or `invokeAndWait`. Tasks on the event dispatch thread
+    must finish quickly; if they don't, unhandled events back up and the user interface
+    becomes unresponsive.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有用的是将在事件分发线程上运行的代码视为一系列短任务。大多数任务是调用事件处理方法，例如`ActionListener.actionPerformed`。其他任务可以由应用程序代码使用`invokeLater`或`invokeAndWait`调度。事件分发线程上的任务必须快速完成；如果不这样做，未处理的事件会积压，用户界面会变得无响应。
+- en: If you need to determine whether your code is running on the event dispatch
+    thread, invoke [`javax.swing.SwingUtilities.isEventDispatchThread`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingUtilities.html#isEventDispatchThread--).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您需要确定您的代码是否在事件分发线程上运行，请调用[`javax.swing.SwingUtilities.isEventDispatchThread`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingUtilities.html#isEventDispatchThread--)。

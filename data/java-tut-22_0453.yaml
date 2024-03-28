@@ -1,0 +1,73 @@
+- en: Resizing a Component
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 调整组件大小
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/size.html](https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/size.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/size.html](https://docs.oracle.com/javase/tutorial/uiswing/lookandfeel/size.html)
+- en: 'Have you ever needed a smaller version of a component to place on a tool palette
+    or tool bar, or in a status bar? You can resize a component by setting a client
+    property on the component. Three sizes are supported in addition to the "regular"
+    size: mini, small, and large.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您是否曾经需要一个较小版本的组件放置在工具面板、工具栏或状态栏中？您可以通过在组件上设置客户属性来调整组件的大小。除了“常规”大小外，还支持三种大小：迷你、小和大。
+- en: The one component that does not support the size variants property is `JLabel`.
+    However, you can change the size of a label by changing the size of its font.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 唯一不支持大小变体属性的组件是`JLabel`。但是，您可以通过更改其字体大小来更改标签的大小。
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: Other look and feel implementations, such as Apple's Aqua, might also honor
+    the size variants client property. Nimbus is currently the only Sun look and feel
+    that supports size variants.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其他外观实现，如苹果的Aqua，也可能支持大小变体客户属性。Nimbus目前是唯一支持大小变体的Sun外观。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'You can set the size of a component with one line of code, before the component
+    is displayed. The following snippet shows how to use each size:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过一行代码设置组件的大小，在组件显示之前。以下代码片段显示了如何使用每个大小：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'If you have set the size variants property correctly but the component displays
+    in its "regular" size, you might need to force an update to the UI. You can do
+    so by invoking the [`SwingUtilities.updateComponentTreeUI(Component)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingUtilities.html#updateComponentTreeUI-java.awt.Component-)
+    method before the window is displayed. The following code snippet updates the
+    window and all the components it contains:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您已正确设置大小变体属性，但组件显示为其“常规”大小，则可能需要强制更新UI。您可以在窗口显示之前通过调用[`SwingUtilities.updateComponentTreeUI(Component)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingUtilities.html#updateComponentTreeUI-java.awt.Component-)方法来执行此操作。以下代码片段更新窗口及其包含的所有组件：
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

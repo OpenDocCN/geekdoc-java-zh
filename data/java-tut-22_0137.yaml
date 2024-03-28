@@ -1,0 +1,173 @@
+- en: 'Questions and Exercises: Generics'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习：泛型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/QandE/generics-questions.html](https://docs.oracle.com/javase/tutorial/java/generics/QandE/generics-questions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/QandE/generics-questions.html](https://docs.oracle.com/javase/tutorial/java/generics/QandE/generics-questions.html)
+- en: Write a generic method to count the number of elements in a collection that
+    have a specific property (for example, odd integers, prime numbers, palindromes).
+  id: totrans-2
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编写一个通用方法来计算集合中具有特定属性的元素数量（例如，奇数、质数、回文数）。
+- en: Will the following class compile? If not, why?
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 以下类会编译吗？如果不会，为什么？
+- en: '[PRE0]'
+  id: totrans-4
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Write a generic method to exchange the positions of two different elements in
+    an array.
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编写一个通用方法来交换数组中两个不同元素的位置。
+- en: If the compiler erases all type parameters at compile time, why should you use
+    generics?
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果编译器在编译时擦除所有类型参数，为什么应该使用泛型？
+- en: What is the following class converted to after type erasure?
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在类型擦除后，以下类被转换为什么？
+- en: '[PRE1]'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: What is the following method converted to after type erasure?
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 以下方法在类型擦除后会转换为什么？
+- en: '[PRE2]'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Will the following method compile? If not, why?
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 以下方法会编译吗？如果不会，为什么？
+- en: '[PRE3]'
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Write a generic method to find the maximal element in the range `[begin, end)`
+    of a list.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编写一个通用方法来查找列表范围`[begin, end)`中的最大元素。
+- en: Will the following class compile? If not, why?
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 以下类会编译吗？如果不会，为什么？
+- en: '[PRE4]'
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Given the following classes:'
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 给定以下类：
+- en: '[PRE5]'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Will the following code compile? If not, why?
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 以下代码会编译吗？如果不会，为什么？
+- en: '[PRE6]'
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'Consider this class:'
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 考虑这个类：
+- en: '[PRE7]'
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Will the following code compile? If not, why?
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 以下代码会编译吗？如果不会，为什么？
+- en: '[PRE8]'
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: How do you invoke the following method to find the first integer in a list that
+    is relatively prime to a list of specified integers?
+  id: totrans-24
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如何调用以下方法来找到列表中与指定整数列表互质的第一个整数？
+- en: '[PRE9]'
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Note that two integers *a* and *b* are relatively prime if gcd(*a, b*) = 1,
+    where gcd is short for greatest common divisor.
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 注意，两个整数*a*和*b*互质，如果gcd(*a, b*) = 1，其中gcd是最大公约数的缩写。
+- en: '[Check your answers.](generics-answers.html)'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[检查你的答案。](generics-answers.html)'

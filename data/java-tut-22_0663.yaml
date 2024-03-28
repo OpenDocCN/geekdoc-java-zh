@@ -1,0 +1,94 @@
+- en: 'Lesson: Printing'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：打印
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/printing/index.html](https://docs.oracle.com/javase/tutorial/2d/printing/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/printing/index.html](https://docs.oracle.com/javase/tutorial/2d/printing/index.html)
+- en: Since the Java 2D API enables you to draw on any surface, a natural extension
+    of that is the ability to print Java 2D graphics. A printer can be considered
+    a graphics device just like a display.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于Java 2D API使您能够在任何表面上绘制，因此其自然扩展是能够打印Java 2D图形。打印机可以被视为与显示器一样的图形设备。
+- en: The Java 2D printing API is not limited to printing graphics. It enables you
+    to print the content of an application's user interface as well. Content can be
+    printed by sending raw data to the printer under the formatting control of the
+    Java 2D printing API, or by using the Java 2D Graphics API.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D打印API不仅限于打印图形。它还使您能够打印应用程序用户界面的内容。内容可以通过将原始数据发送到打印机并在Java 2D打印API的格式控制下进行打印，或者使用Java
+    2D图形API来打印。
+- en: In this lesson you will explore the printer and job control functions of the
+    Java 2D printing API which are complements to the rendering elements. You will
+    learn how to look up printers configured on the system or network and discover
+    information about these printers such as the paper sizes it supports, and selecting
+    these attributes for printing, and user dialogs.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这节课中，您将探索Java 2D打印API的打印机和作业控制功能，这些功能是对渲染元素的补充。您将学习如何查找系统或网络上配置的打印机，并发现有关这些打印机的信息，例如支持的纸张尺寸，并选择这些属性进行打印和用户对话框。
+- en: The main classes and interfaces involved in printing are represented in the
+    [`java.awt.print`](https://docs.oracle.com/javase/8/docs/api/java/awt/print/package-frame.html)
+    and [`javax.print`](https://docs.oracle.com/javase/8/docs/api/javax/print/package-frame.html)
+    packages (the last package allows you to get access to the printing services).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参与打印的主要类和接口在[`java.awt.print`](https://docs.oracle.com/javase/8/docs/api/java/awt/print/package-frame.html)和[`javax.print`](https://docs.oracle.com/javase/8/docs/api/javax/print/package-frame.html)包中（最后一个包允许您访问打印服务）。
+- en: 'The basic printing operations are represented in the following sections:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基本的打印操作在以下部分中表示：
+- en: '[A Basic Printing Program](../printing/printable.html) – this section describes
+    the `Printable` interface and presents a basic printing program.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[一个基本的打印程序](../printing/printable.html) – 本节描述了`Printable`接口并呈现了一个基本的打印程序。'
+- en: '[Using Print Setup Dialogs](../printing/dialog.html)– this sections explains
+    how to display the Print Setup Dialog.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用打印设置对话框](../printing/dialog.html)– 本节解释了如何显示打印设置对话框。'
+- en: '[Printing a Multiple Page Document](../printing/set.html) – this section explains
+    how to use pagination for printing a multiple page document.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[打印多页文档](../printing/set.html) – 本节解释了如何使用分页打印多页文档。'
+- en: '[Working with Print Services and Attributes](../printing/services.html) ndash;
+    this section teaches you about print services, how to specify the print data format,
+    and how to create print job using the `javax.print` package.'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用打印服务和属性](../printing/services.html) – 本节教您有关打印服务的知识，如何指定打印数据格式，以及如何使用`javax.print`包创建打印作业。'
+- en: '[Printing the Contents of a User Interface](../printing/gui.html) – this section
+    explains how to print the contents of a window or a frame.'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[打印用户界面的内容](../printing/gui.html) – 本节解释了如何打印窗口或框架的内容。'
+- en: '[Printing Support in Swing Components](../printing/swing.html) – this section
+    provides a brief description of the related printing functionality in `Swing`
+    and refers to specific `Swing` classes and interfaces.'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Swing组件中的打印支持](../printing/swing.html) – 本节简要描述了`Swing`中相关打印功能，并引用了特定的`Swing`类和接口。'

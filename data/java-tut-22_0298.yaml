@@ -1,0 +1,129 @@
+- en: Accessing Cookies
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 访问 Cookies
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/accessingCookies.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/accessingCookies.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/accessingCookies.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/accessingCookies.html)
+- en: You can set and retrieve cookies in your rich Internet application (RIA). Cookies
+    can enhance the capabilities of your RIA. For example, consider the scenario where
+    you have applets on various web pages. An applet on a web page cannot directly
+    access or share information with an applet on another web page. In this scenario,
+    cookies provide an important connection between applets and help one applet pass
+    information to another applet on a different web page. Java Web Start applications
+    can also use cookies to store information on the client.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在富互联网应用程序（RIA）中设置和检索 Cookies。Cookies 可以增强您的 RIA 的功能。例如，考虑这样的情况：您在各种网页上有小程序。一个网页上的小程序不能直接访问或共享另一个网页上的小程序的信息。在这种情况下，Cookies
+    提供了小程序之间的重要连接，并帮助一个小程序将信息传递给另一个不同网页上的小程序。Java Web Start 应用程序也可以使用 Cookies 在客户端存储信息。
+- en: The Cookie Applet example has a [`CookieAccessor`](examples/applet_AccessingCookies/src/CookieAccessor.java
+    ) class that retrieves and sets cookies.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Cookie 小程序示例有一个[`CookieAccessor`](examples/applet_AccessingCookies/src/CookieAccessor.java)类，用于检索和设置
+    Cookies。
+- en: Retrieving Cookies
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检索 Cookies
+- en: 'The following code snippet shows the `getCookieUsingCookieHandler` method of
+    the `CookieAccessor` class:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段显示了`CookieAccessor`类的`getCookieUsingCookieHandler`方法：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The [`CookieManager`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieManager.html)
+    class is the main entry point for cookie management. Create an instance of the
+    `CookieManager` class and set its [`CookiePolicy`](https://docs.oracle.com/javase/8/docs/api/java/net/CookiePolicy.html).
+    Set this instance of the `CookieManager` as the default [`CookieHandler`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieHandler.html).
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`CookieManager`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieManager.html)类是管理
+    Cookie 的主要入口点。创建`CookieManager`类的实例，并设置其[`CookiePolicy`](https://docs.oracle.com/javase/8/docs/api/java/net/CookiePolicy.html)。将此`CookieManager`类的实例设置为默认的[`CookieHandler`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieHandler.html)。'
+- en: Open a [`URLConnection`](https://docs.oracle.com/javase/8/docs/api/java/net/URLConnection.html)
+    to the website of your choice.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 打开到您选择的网站的[`URLConnection`](https://docs.oracle.com/javase/8/docs/api/java/net/URLConnection.html)。
+- en: Next, retrieve cookies from the underlying [`CookieStore`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieStore.html)
+    by using the `getCookies` method.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，使用`getCookies`方法从底层的[`CookieStore`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieStore.html)中检索
+    Cookies。
+- en: Setting Cookies
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置 Cookies
+- en: 'The following code snippet shows the `setCookieUsingCookieHandler` method of
+    the `CookieAccessor` class:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段显示了`CookieAccessor`类的`setCookieUsingCookieHandler`方法：
+- en: '[PRE1]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: As shown in [Retrieving Cookies](#retrieving), the [`CookieManager`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieManager.html)
+    class is the main entry point for cookie management. Create an instance of the
+    `CookieManager` class and set the instance as the default [`CookieHandler`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieHandler.html).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[检索 Cookies](#retrieving)所示，[`CookieManager`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieManager.html)类是管理
+    Cookie 的主要入口点。创建`CookieManager`类的实例，并将该实例设置为默认的[`CookieHandler`](https://docs.oracle.com/javase/8/docs/api/java/net/CookieHandler.html)。
+- en: Create the desired [`HttpCookie`](https://docs.oracle.com/javase/8/docs/api/java/net/HttpCookie.html)
+    with the necessary information. In our example, we have created a new `HttpCookie`
+    that sets the `UserName` as `John Doe`.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用所需信息创建[`HttpCookie`](https://docs.oracle.com/javase/8/docs/api/java/net/HttpCookie.html)。在我们的示例中，我们创建了一个将`UserName`设置为`John
+    Doe`的新`HttpCookie`。
+- en: Next, add the cookie to the underlying cookie store.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，将 Cookie 添加到底层的 Cookie 存储中。
+- en: Running the Cookie Applet Example
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行 Cookie 小程序示例
+- en: To access cookies, you must sign your RIA JAR file and request permission to
+    run outside of the security sandbox. See the documentation for the [`jarsigner`](https://docs.oracle.com/javase/8/docs/technotes/tools/index.html#security)
+    tool to learn how to sign JAR files. See [Security in Rich Internet Applications](../doingMoreWithRIA/security.html)
+    for information on requesting permissions.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要访问 Cookies，您必须对您的 RIA JAR 文件进行签名，并请求在安全沙箱之外运行的权限。请参阅[`jarsigner`](https://docs.oracle.com/javase/8/docs/technotes/tools/index.html#security)工具的文档，了解如何对
+    JAR 文件进行签名。有关请求权限的信息，请参阅[富互联网应用程序中的安全性](../doingMoreWithRIA/security.html)。
+- en: '[Download source code](examplesIndex.html#AccessingCookies) for the *Cookie
+    Applet* example to experiment further.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#AccessingCookies)以进一步实验*Cookie Applet*示例。'

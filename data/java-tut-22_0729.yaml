@@ -1,0 +1,387 @@
+- en: Using Advanced Data Types
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用高级数据类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqltypes.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqltypes.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqltypes.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqltypes.html)
+- en: The advanced data types introduced in this section give a relational database
+    more flexibility in what can be used as a value for a table column. For example,
+    a column can be used to store `BLOB` (binary large object) values, which can store
+    very large amounts of data as raw bytes. A column can also be of type `CLOB` (character
+    large object), which is capable of storing very large amounts of data in character
+    format.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍的高级数据类型使关系数据库在表列值方面更加灵活。例如，列可以用于存储 `BLOB`（二进制大对象）值，可以以原始字节形式存储非常大量的数据。列也可以是
+    `CLOB`（字符大对象）类型，能够以字符格式存储非常大量的数据。
+- en: 'The latest version of the ANSI/ISO SQL standard is commonly referred to as
+    SQL:2003\. This standard specifies the following data types:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 'ANSI/ISO SQL 标准的最新版本通常被称为 SQL:2003。该标准指定了以下数据类型:'
+- en: SQL92 built-in types, which consist of the familiar SQL column types such as
+    `CHAR`, `FLOAT`, and `DATE`
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: SQL92 内置类型，包括熟悉的 SQL 列类型，如 `CHAR`、`FLOAT` 和 `DATE`
+- en: 'SQL99 built-in types, which consist of types added by SQL99:'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 'SQL99 内置类型，包括 SQL99 添加的类型:'
+- en: '`BOOLEAN`: Boolean (true or false) value'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`BOOLEAN`: 布尔（真或假）值'
+- en: '`BLOB`: Binary large Bobject'
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`BLOB`: 二进制大对象'
+- en: '`CLOB`: Character large object'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CLOB`: 字符大对象'
+- en: 'New built-in types added by SQL:2003:'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 'SQL:2003 添加的新内置类型:'
+- en: '`XML`: XML object'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`XML`: XML 对象'
+- en: 'User defined types:'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '用户定义类型:'
+- en: 'Structured type: User-defined type; for example:'
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '结构化类型: 用户定义类型; 例如:'
+- en: '[PRE0]'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '`DISTINCT` type: User-defined type based on a built-in type; for example:'
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DISTINCT` 类型: 基于内置类型的用户定义类型; 例如:'
+- en: '[PRE1]'
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Constructed types: New types based on a given base type:'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '构造类型: 基于给定基本类型的新类型:'
+- en: '`REF(*structured-type*)`: Pointer that persistently denotes an instance of
+    a structured type that resides in the database'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`REF(*structured-type*)`: 持久地指示驻留在数据库中的结构化类型实例的指针'
+- en: '`*base-type* ARRAY[*n*]`: Array of *n* base-type elements'
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`*base-type* ARRAY[*n*]`: *n* 个基本类型元素的数组'
+- en: 'Locators: Entities that are logical pointers to data that resides on the database
+    server. A *locator* exists in the client computer and is a transient, logical
+    pointer to data on the server. A locator typically refers to data that is too
+    large to materialize on the client, such as images or audio. (*Materialized views*
+    are query results that have been stored or "materialized" in advance as schema
+    objects.) There are operators defined at the SQL level to retrieve randomly accessed
+    pieces of the data denoted by the locator:'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '定位器: 逻辑指针，指向驻留在数据库服务器上的数据。*定位器* 存在于客户端计算机上，是对服务器上数据的瞬时、逻辑指针。定位器通常指向无法在客户端上具体化的数据，如图像或音频。(*具体化视图*
+    是事先存储或“具体化”为模式对象的查询结果。) 在 SQL 级别定义了操作符，用于检索由定位器指示的数据的随机访问部分:'
+- en: '`LOCATOR(*structured-type*)`: Locator to a structured instance in the server'
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LOCATOR(*structured-type*)`: 服务器中结构化实例的定位器'
+- en: '`LOCATOR(*array*)`: Locator to an array in the server'
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LOCATOR(*array*)`: 服务器中数组的定位器'
+- en: '`LOCATOR(*blob*)`: Locator to a binary large object in the server'
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LOCATOR(*blob*)`: 服务器中二进制大对象的定位器'
+- en: '`LOCATOR(*clob*)`: Locator to a character large object in the server'
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LOCATOR(*clob*)`: 服务器中字符大对象的定位器'
+- en: '`Datalink`: Type for managing data external to the data source. `Datalink`
+    values are part of SQL MED (Management of External Data), a part of the SQL ANSI/ISO
+    standard specification.'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Datalink`: 用于管理数据源外部数据的类型。`Datalink` 值是 SQL MED（管理外部数据）的一部分，是 SQL ANSI/ISO
+    标准规范的一部分。'
+- en: Mapping Advanced Data Types
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 映射高级数据类型
+- en: 'The JDBC API provides default mappings for advanced data types specified by
+    the SQL:2003 standard. The following list gives the data types and the interfaces
+    or classes to which they are mapped:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 'JDBC API 为 SQL:2003 标准指定的高级数据类型提供了默认映射。以下列表列出了数据类型及其映射到的接口或类:'
+- en: '`BLOB`: `Blob` interface'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`BLOB`: `Blob` 接口'
+- en: '`CLOB`: `Clob` interface'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CLOB`: `Clob` 接口'
+- en: '`NCLOB`: `NClob` interface'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`NCLOB`: `NClob` 接口'
+- en: '`ARRAY`: `Array` interface'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ARRAY`: `Array` 接口'
+- en: '`XML`: `SQLXML` interface'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`XML`: `SQLXML` 接口'
+- en: 'Structured types: `Struct` interface'
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '结构化类型: `Struct` 接口'
+- en: '`REF(structured type)`: `Ref` interface'
+  id: totrans-33
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`REF(structured type)`: `Ref` 接口'
+- en: '`ROWID`: `RowId` interface'
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ROWID`: `RowId` 接口'
+- en: '`DISTINCT`: Type to which the base type is mapped. For example, a `DISTINCT`
+    value based on a SQL `NUMERIC` type maps to a `java.math.BigDecimal` type because
+    `NUMERIC` maps to `BigDecimal` in the Java programming language.'
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DISTINCT`: 基础类型映射的类型。例如，基于 SQL `NUMERIC` 类型的 `DISTINCT` 值映射到 `java.math.BigDecimal`
+    类型，因为在 Java 编程语言中，`NUMERIC` 映射到 `BigDecimal`。'
+- en: '`DATALINK`: `java.net.URL` object'
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DATALINK`：`java.net.URL` 对象'
+- en: Using Advanced Data Types
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用高级数据类型
+- en: 'You retrieve, store, and update advanced data types the same way you handle
+    other data types. You use either `ResultSet.get*DataType*` or `CallableStatement.get*DataType*`
+    methods to retrieve them, `PreparedStatement.set*DataType*` methods to store them,
+    and `ResultSet.update*DataType*` methods to update them. (The variable `*DataType*`
+    is the name of a Java interface or class mapped to an advanced data type.) Probably
+    90 percent of the operations performed on advanced data types involve using the
+    `get*DataType*`, `set*DataType*`, and `update*DataType*` methods. The following
+    table shows which methods to use:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检索、存储和更新高级数据类型的方式与处理其他数据类型的方式相同。您可以使用 `ResultSet.get*DataType*` 或 `CallableStatement.get*DataType*`
+    方法来检索它们，`PreparedStatement.set*DataType*` 方法来存储它们，以及 `ResultSet.update*DataType*`
+    方法来更新它们。（变量 `*DataType*` 是映射到高级数据类型的 Java 接口或类的名称。）大概有 90% 的高级数据类型操作涉及使用 `get*DataType*`、`set*DataType*`
+    和 `update*DataType*` 方法。以下表格显示了要使用哪些方法：
+- en: '| **Advanced Data Type** | **`get*DataType*` Method** | **`set*DataType*` method**
+    | **`update*DataType*` Method** |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| **高级数据类型** | **`get*DataType*` 方法** | **`set*DataType*` 方法** | **`update*DataType*`
+    方法** |'
+- en: '| `BLOB` | `getBlob` | `setBlob` | `updateBlob` |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| `BLOB` | `getBlob` | `setBlob` | `updateBlob` |'
+- en: '| `CLOB` | `getClob` | `setClob` | `updateClob` |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| `CLOB` | `getClob` | `setClob` | `updateClob` |'
+- en: '| `NCLOB` | `getNClob` | `setNClob` | `updateNClob` |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| `NCLOB` | `getNClob` | `setNClob` | `updateNClob` |'
+- en: '| `ARRAY` | `getArray` | `setArray` | `updateArray` |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| `ARRAY` | `getArray` | `setArray` | `updateArray` |'
+- en: '| `XML` | `getSQLXML` | `setSQLXML` | `updateSQLXML` |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| `XML` | `getSQLXML` | `setSQLXML` | `updateSQLXML` |'
+- en: '| `Structured type` | `getObject` | `setObject` | `updateObject` |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Structured type` | `getObject` | `setObject` | `updateObject` |'
+- en: '| `REF(structured type)` | `getRef` | `setRef` | `updateRef` |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| `REF(structured type)` | `getRef` | `setRef` | `updateRef` |'
+- en: '| `ROWID` | `getRowId` | `setRowId` | `updateRowId` |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| `ROWID` | `getRowId` | `setRowId` | `updateRowId` |'
+- en: '| `DISTINCT` | `getBigDecimal` | `setBigDecimal` | `updateBigDecimal` |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DISTINCT` | `getBigDecimal` | `setBigDecimal` | `updateBigDecimal` |'
+- en: '| `DATALINK` | `getURL` | `setURL` | `updateURL` |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DATALINK` | `getURL` | `setURL` | `updateURL` |'
+- en: '**Note**: The `DISTINCT` data type behaves differently from other advanced
+    SQL data types. Being a user-defined type that is based on an already existing
+    built-in types, it has no interface as its mapping in the Java programming language.
+    Consequently, you use the method that corresponds to the Java type on which the
+    `DISTINCT` data type is based. See [Using DISTINCT Data Type](distinct.html) for
+    more information.'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：`DISTINCT` 数据类型与其他高级 SQL 数据类型的行为不同。作为一个基于已存在内置类型的用户定义类型，它在 Java 编程语言中没有接口。因此，您需要使用与
+    `DISTINCT` 数据类型基础的 Java 类型对应的方法。请参阅[使用 DISTINCT 数据类型](distinct.html)获取更多信息。'
+- en: For example, the following code fragment retrieves a SQL `ARRAY` value. For
+    this example, suppose that the column `SCORES` in the table `STUDENTS` contains
+    values of type `ARRAY`. The variable `*stmt*` is a `Statement` object.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，以下代码片段检索了一个 SQL `ARRAY` 值。在此示例中，假设表 `STUDENTS` 中的列 `SCORES` 包含 `ARRAY` 类型的值。变量
+    `*stmt*` 是一个 `Statement` 对象。
+- en: '[PRE2]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The variable `*scores*` is a logical pointer to the SQL `ARRAY` object stored
+    in the table `STUDENTS` in the row for student `002238`.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 变量 `*scores*` 是指向存储在表 `STUDENTS` 中学生 `002238` 行中的 SQL `ARRAY` 对象的逻辑指针。
+- en: 'If you want to store a value in the database, you use the appropriate `set`
+    method. For example, the following code fragment, in which `*rs*` is a `ResultSet`
+    object, stores a `Clob` object:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果要将值存储在数据库中，可以使用相应的 `set` 方法。例如，以下代码片段中，`*rs*` 是一个 `ResultSet` 对象，存储了一个 `Clob`
+    对象：
+- en: '[PRE3]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: This code sets `*notes*` as the first parameter in the update statement being
+    sent to the database. The `Clob` value designated by `*notes*` will be stored
+    in the table `MARKETS` in column `COMMENTS` in every row where the value in the
+    column `SALES` is less than one million.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码将 `*notes*` 设置为发送到数据库的更新语句的第一个参数。由 `*notes*` 指定的 `Clob` 值将存储在表 `MARKETS`
+    的 `COMMENTS` 列中，在该列中的值小于一百万的每一行中。

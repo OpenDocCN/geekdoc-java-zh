@@ -1,0 +1,46 @@
+- en: Writing an RMI Server
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 编写一个RMI服务器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/rmi/server.html](https://docs.oracle.com/javase/tutorial/rmi/server.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/rmi/server.html](https://docs.oracle.com/javase/tutorial/rmi/server.html)
+- en: The compute engine server accepts tasks from clients, runs the tasks, and returns
+    any results. The server code consists of an interface and a class. The interface
+    defines the methods that can be invoked from the client. Essentially, the interface
+    defines the client's view of the remote object. The class provides the implementation.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 计算引擎服务器接受来自客户端的任务，运行这些任务，并返回任何结果。服务器代码由一个接口和一个类组成。接口定义了可以从客户端调用的方法。实质上，接口定义了客户端对远程对象的视图。类提供了实现。
+- en: '[Designing a Remote Interface](designing.html)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[设计一个远程接口](designing.html)'
+- en: This section explains the `Compute` interface, which provides the connection
+    between the client and the server. You will also learn about the RMI API, which
+    supports this communication.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分解释了`Compute`接口，它提供了客户端和服务器之间的连接。您还将了解支持此通信的RMI API。
+- en: '[Implementing a Remote Interface](implementing.html)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[实现一个远程接口](implementing.html)'
+- en: This section explores the class that implements the `Compute` interface, thereby
+    implementing a remote object. This class also provides the rest of the code that
+    makes up the server program, including a `main` method that creates an instance
+    of the remote object, registers it with the RMI registry, and sets up a security
+    manager.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分探讨了实现`Compute`接口的类，从而实现了一个远程对象。这个类还提供了组成服务器程序的其余代码，包括一个创建远程对象实例的`main`方法，将其注册到RMI注册表，并设置安全管理器。

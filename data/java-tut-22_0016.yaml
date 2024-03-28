@@ -1,0 +1,71 @@
+- en: What Is a Class?
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 什么是类？
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/concepts/class.html](https://docs.oracle.com/javase/tutorial/java/concepts/class.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/concepts/class.html](https://docs.oracle.com/javase/tutorial/java/concepts/class.html)
+- en: In the real world, you'll often find many individual objects all of the same
+    kind. There may be thousands of other bicycles in existence, all of the same make
+    and model. Each bicycle was built from the same set of blueprints and therefore
+    contains the same components. In object-oriented terms, we say that your bicycle
+    is an *instance* of the *class of objects* known as bicycles. A *class* is the
+    blueprint from which individual objects are created.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在现实世界中，你经常会发现许多同类的个体对象。可能存在成千上万其他同款同型号的自行车。每辆自行车都是根据相同的蓝图构建的，因此包含相同的组件。在面向对象的术语中，我们说你的自行车是已知为自行车的对象类的*实例*。一个*类*是创建个体对象的蓝图。
+- en: 'The following [`Bicycle`](examples/Bicycle.java) class is one possible implementation
+    of a bicycle:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下的[`Bicycle`](examples/Bicycle.java)类是自行车的一种可能实现：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The syntax of the Java programming language will look new to you, but the design
+    of this class is based on the previous discussion of bicycle objects. The fields
+    `cadence`, `speed`, and `gear` represent the object's state, and the methods (`changeCadence`,
+    `changeGear`, `speedUp` etc.) define its interaction with the outside world.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编程语言的语法对你来说可能是新的，但这个类的设计是基于之前讨论的自行车对象的。字段`cadence`、`speed`和`gear`代表对象的状态，而方法（`changeCadence`、`changeGear`、`speedUp`等）定义了它与外部世界的交互。
+- en: You may have noticed that the `Bicycle` class does not contain a `main` method.
+    That's because it's not a complete application; it's just the blueprint for bicycles
+    that might be *used* in an application. The responsibility of creating and using
+    new `Bicycle` objects belongs to some other class in your application.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能已经注意到`Bicycle`类中没有包含`main`方法。那是因为它不是一个完整的应用程序；它只是可能在应用程序中*使用*的自行车的蓝图。创建和使用新的`Bicycle`对象的责任属于你的应用程序中的某个其他类。
+- en: 'Here''s a [`BicycleDemo`](examples/BicycleDemo.java) class that creates two
+    separate `Bicycle` objects and invokes their methods:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个[`BicycleDemo`](examples/BicycleDemo.java)类，它创建了两个独立的`Bicycle`对象并调用它们的方法：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The output of this test prints the ending pedal cadence, speed, and gear for
+    the two bicycles:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个测试的输出打印了两辆自行车的结束踏板节奏、速度和档位：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'

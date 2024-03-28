@@ -1,0 +1,273 @@
+- en: Understanding Signing and Verification
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 理解签署和验证
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/intro.html](https://docs.oracle.com/javase/tutorial/deployment/jar/intro.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/intro.html](https://docs.oracle.com/javase/tutorial/deployment/jar/intro.html)
+- en: The Java™ platform enables you to digitally sign JAR files. You digitally sign
+    a file for the same reason you might sign a paper document with pen and ink --
+    to let readers know that you wrote the document, or at least that the document
+    has your approval.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java™ 平台使你能够数字签名 JAR 文件。你数字签名一个文件的原因与你可能用钢笔在纸上签署文件的原因相同--让读者知道你写了这个文件，或者至少这个文件得到了你的批准。
+- en: When you sign a letter, for example, everyone who recognizes your signature
+    can confirm that you wrote the letter. Similarly when you digitally sign a file,
+    anyone who "recognizes" your digital signature knows that the file came from you.
+    The process of "recognizing" electronic signatures is called *verification*.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你签署一封信时，例如，所有认识你签名的人都可以确认你写了这封信。同样地，当你数字签名一个文件时，任何“认识”你数字签名的人都知道这个文件来自你。识别电子签名的过程称为*验证*。
+- en: When the JAR file is signed, you also have the option of time stamping the signature.
+    Similar to putting a date on a paper document, time stamping the signature identifies
+    when the JAR file was signed. The time stamp can be used to verify that the certificate
+    used to sign the JAR file was valid at the time of signing.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当 JAR 文件被签名时，你还可以选择给签名加上时间戳。类似于在纸质文件上写日期，时间戳签名标识了 JAR 文件签名的时间。时间戳可用于验证签署 JAR
+    文件时使用的证书在签署时是有效的。
+- en: The ability to sign and verify files is an important part of the Java platform's
+    security architecture. Security is controlled by the security *policy* that's
+    in force at runtime. You can configure the policy to grant security privileges
+    to applets and to applications. For example, you could grant permission to an
+    applet to perform normally forbidden operations such as reading and writing local
+    files or running local executable programs. If you have downloaded some code that's
+    signed by a trusted entity, you can use that fact as a criterion in deciding which
+    security permissions to assign to the code.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 签署和验证文件的能力是 Java 平台安全架构的重要组成部分。安全性由运行时生效的安全*策略*控制。你可以配置策略以授予小程序和应用程序安全权限。例如，你可以授予小程序执行通常被禁止的操作的权限，如读写本地文件或运行本地可执行程序。如果你下载了由受信任实体签名的代码，你可以将这一事实作为决定为代码分配哪些安全权限的标准之一。
+- en: Once you (or your browser) have verified that an applet is from a trusted source,
+    you can have the platform relax security restrictions to let the applet perform
+    operations that would ordinarily be forbidden. A trusted applet can have freedoms
+    as specified by the *policy file* in force.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦你（或你的浏览器）验证了一个小程序来自受信任的来源，你可以让平台放宽安全限制，让小程序执行通常被禁止的操作。一个受信任的小程序可以根据运行时生效的*策略文件*拥有特定的自由。
+- en: The Java platform enables signing and verification by using special numbers
+    called public and private *keys*. Public keys and private keys come in pairs,
+    and they play complementary roles.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 平台通过使用称为公钥和私钥的特殊数字来实现签署和验证。公钥和私钥是成对出现的，它们扮演互补的角色。
+- en: The private key is the electronic "pen" with which you can sign a file. As its
+    name implies, your private key is known only to you so that no one else can "forge"
+    your signature. A file signed with your private key can be verified only by the
+    corresponding public key.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 私钥是你可以用来签署文件的电子“笔”。顾名思义，你的私钥只有你知道，这样别人就无法“伪造”你的签名。用你的私钥签署的文件只能通过相应的公钥进行验证。
+- en: Public and private keys alone, however, aren't enough to truly verify a signature.
+    Even if you've verified that a signed file contains a matching key pair, you still
+    need some way to confirm that the public key actually comes from the signer that
+    it purports to come from.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，仅有公钥和私钥还不足以真正验证一个签名。即使你已经验证了一个签名文件包含匹配的密钥对，你仍然需要一种方式来确认公钥确实来自它所声称来自的签署者。
+- en: One more element, therefore, is required to make signing and verification work.
+    That additional element is the *certificate* that the signer includes in a signed
+    JAR file. A certificate is a digitally signed statement from a recognized *certification
+    authority* that indicates who owns a particular public key. Certification authorities
+    are entities (typically firms specializing in digital security) that are trusted
+    throughout the industry to sign and issue certificates for keys and their owners.
+    In the case of signed JAR files, the certificate indicates who owns the public
+    key contained in the JAR file.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，要使签名和验证工作，还需要另一个元素。这个额外的元素是签名者在签名的JAR文件中包含的*证书*。证书是来自被认可的*认证机构*的数字签名声明，指示谁拥有特定的公钥。认证机构是受到行业信任的实体（通常是专门从事数字安全的公司），它们负责为密钥及其所有者签署和发布证书。在签名的JAR文件中，证书指示谁拥有JAR文件中包含的公钥。
+- en: When you sign a JAR file your public key is placed inside the archive along
+    with an associated certificate so that it's easily available for use by anyone
+    wanting to verify your signature.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您签署一个JAR文件时，您的公钥将与相关证书一起放置在存档中，以便任何想要验证您签名的人可以轻松使用。
+- en: 'To summarize digital signing:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 总结数字签名：
+- en: The signer signs the JAR file using a private key.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 签名者使用私钥对JAR文件进行签名。
+- en: The corresponding public key is placed in the JAR file, together with its certificate,
+    so that it is available for use by anyone who wants to verify the signature.
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 相应的公钥与其证书一起放置在JAR文件中，以便任何想要验证签名的人可以使用。
+- en: Digests and the Signature File
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 摘要和签名文件
+- en: 'When you sign a JAR file, each file in the archive is given a digest entry
+    in the archive''s [manifest](manifestindex.html). Here''s an example of what such
+    an entry might look like:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您签署一个JAR文件时，存档中的每个文件都会在存档的[清单](manifestindex.html)中给出一个摘要条目。以下是这样一个条目可能看起来的示例：
+- en: '[PRE0]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The digest values are hashes or encoded representations of the contents of the
+    files as they were at the time of signing. A file's digest will change if and
+    only if the file itself changes.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 摘要值是文件内容的哈希值或编码表示，这些值是在签名时文件的内容。只有当文件本身发生变化时，文件的摘要值才会改变。
+- en: 'When a JAR file is signed, a *signature* file is automatically generated and
+    placed in the JAR file''s `META-INF` directory, the same directory that contains
+    the archive''s manifest. Signature files have filenames with an `.SF` extension.
+    Here is an example of the contents of a signature file:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当对JAR文件进行签名时，会自动生成一个*签名*文件，并将其放置在JAR文件的`META-INF`目录中，该目录与存档的清单文件位于同一目录中。签名文件的文件名具有`.SF`扩展名。以下是签名文件内容的示例：
+- en: '[PRE1]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: As you can see, the signature file contains digest entries for the archive's
+    files that look similar to the digest-value entries in the manifest. However,
+    while the digest values in the manifest are computed from the files themselves,
+    the digest values in the signature file are computed from the corresponding entries
+    in the manifest. Signature files also contain a digest value for the entire manifest
+    (see the `SHA1-Digest-Manifest` header in the above example).
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，签名文件包含存档文件的摘要条目，这些条目看起来类似于清单中的摘要值条目。然而，清单中的摘要值是从文件本身计算出来的，而签名文件中的摘要值是从清单中的相应条目计算出来的。签名文件还包含整个清单的摘要值（请参见上面示例中的`SHA1-Digest-Manifest`头）。
+- en: When a signed JAR file is being verified, the digests of each of its files are
+    re-computed and compared with the digests recorded in the manifest to ensure that
+    the contents of the JAR file haven't changed since it was signed. As an additional
+    check, digest values for the manifest file itself are re-computed and compared
+    against the values recorded in the signature file.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当验证已签名的JAR文件时，将重新计算每个文件的摘要，并将其与清单中记录的摘要进行比较，以确保JAR文件的内容自签名以来没有发生变化。作为额外的检查，还将重新计算清单文件本身的摘要值，并将其与签名文件中记录的值进行比较。
+- en: You can read additional information about signature files on the [Manifest Format](https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html#JAR_Manifest)
+    page of the JDK™ documentation.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在JDK™文档的[清单格式](https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html#JAR_Manifest)页面上阅读有关签名文件的其他信息。
+- en: The Signature Block File
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 签名块文件
+- en: In addition to the signature file, a *signature block* file is automatically
+    placed in the `META-INF` directory when a JAR file is signed. Unlike the manifest
+    file or the signature file, signature block files are not human-readable.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了签名文件外，当对JAR文件进行签名时，*签名块*文件会自动放置在`META-INF`目录中。与清单文件或签名文件不同，签名块文件不是人类可读的。
+- en: 'The signature block file contains two elements essential for verification:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 签名块文件包含两个用于验证的关键元素：
+- en: The digital signature for the JAR file that was generated with the signer's
+    private key
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用签名者的私钥生成的JAR文件的数字签名
+- en: The certificate containing the signer's public key, to be used by anyone wanting
+    to verify the signed JAR file
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 包含签名者公钥的证书，供任何想要验证已签名JAR文件的人使用
+- en: Signature block filenames typically will have a `.DSA` extension indicating
+    that they were created by the default Digital Signature Algorithm. Other filename
+    extensions are possible if keys associated with some other standard algorithm
+    are used for signing.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 签名块文件的文件名通常会有一个`.DSA`扩展名，表示它们是由默认数字签名算法创建的。如果使用与其他标准算法相关的密钥进行签名，则可能会有其他文件扩展名。
+- en: '* * *'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Related Documentation
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 相关文档
+- en: For additional information about keys, certificates, and certification authorities,
+    see
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关密钥、证书和认证机构的其他信息，请参见
+- en: '[The JDK Security Tools](https://docs.oracle.com/javase/8/docs/technotes/tools/index.html#security)'
+  id: totrans-33
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[JDK安全工具](https://docs.oracle.com/javase/8/docs/technotes/tools/index.html#security)'
+- en: '[X.509 Certificates](https://docs.oracle.com/javase/8/docs/technotes/guides/security/cert3.html)'
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[X.509证书](https://docs.oracle.com/javase/8/docs/technotes/guides/security/cert3.html)'
+- en: 'For more information about the Java platform''s security architecture, see
+    this related documentation:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关Java平台安全架构的更多信息，请参阅此相关文档：
+- en: '[Security Features in Java SE](../../security/index.html)'
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Java SE中的安全功能](../../security/index.html)'
+- en: '[Java SE Security](http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136007.html)'
+  id: totrans-37
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Java SE安全性](http://www.oracle.com/technetwork/java/javase/tech/index-jsp-136007.html)'
+- en: '[Security Tools](https://docs.oracle.com/javase/8/docs/technotes/tools/index.html#security)'
+  id: totrans-38
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[安全工具](https://docs.oracle.com/javase/8/docs/technotes/tools/index.html#security)'

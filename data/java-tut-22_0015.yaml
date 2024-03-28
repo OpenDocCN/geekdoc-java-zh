@@ -1,0 +1,130 @@
+- en: What Is an Object?
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 什么是对象？
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/concepts/object.html](https://docs.oracle.com/javase/tutorial/java/concepts/object.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/concepts/object.html](https://docs.oracle.com/javase/tutorial/java/concepts/object.html)
+- en: 'Objects are key to understanding *object-oriented* technology. Look around
+    right now and you''ll find many examples of real-world objects: your dog, your
+    desk, your television set, your bicycle.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对象是理解*面向对象*技术的关键。现在看看周围，你会发现许多现实世界的对象：你的狗，你的桌子，你的电视机，你的自行车。
+- en: 'Real-world objects share two characteristics: They all have *state* and *behavior*.
+    Dogs have state (name, color, breed, hungry) and behavior (barking, fetching,
+    wagging tail). Bicycles also have state (current gear, current pedal cadence,
+    current speed) and behavior (changing gear, changing pedal cadence, applying brakes).
+    Identifying the state and behavior for real-world objects is a great way to begin
+    thinking in terms of object-oriented programming.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现实世界的对象共享两个特征：它们都有*状态*和*行为*。狗有状态（名字、颜色、品种、饥饿）和行为（叫、取东西、摇尾巴）。自行车也有状态（当前档位、当前踏板速度、当前速度）和行为（换档、改变踏板速度、刹车）。识别现实世界对象的状态和行为是开始以面向对象编程思考的好方法。
+- en: 'Take a minute right now to observe the real-world objects that are in your
+    immediate area. For each object that you see, ask yourself two questions: "What
+    possible states can this object be in?" and "What possible behavior can this object
+    perform?". Make sure to write down your observations. As you do, you''ll notice
+    that real-world objects vary in complexity; your desktop lamp may have only two
+    possible states (on and off) and two possible behaviors (turn on, turn off), but
+    your desktop radio might have additional states (on, off, current volume, current
+    station) and behavior (turn on, turn off, increase volume, decrease volume, seek,
+    scan, and tune). You may also notice that some objects, in turn, will also contain
+    other objects. These real-world observations all translate into the world of object-oriented
+    programming.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在花一分钟观察你周围的现实世界对象。对于每个你看到的对象，问自己两个问题：“这个对象可能处于什么状态？”和“这个对象可能执行什么行为？”。确保写下你的观察。当你这样做时，你会注意到现实世界的对象在复杂性上有所不同；你的台灯可能只有两种可能的状态（开和关）和两种可能的行为（打开、关闭），但你的收音机可能有额外的状态（开、关、当前音量、当前频道）和行为（打开、关闭、增加音量、减小音量、搜索、扫描和调谐）。你还可能注意到一些对象反过来也会包含其他对象。这些现实世界的观察都可以转化为面向对象编程的世界。
+- en: '![A circle with an inner circle filled with items, surrounded by gray wedges
+    representing methods that allow access to the inner circle.](../Images/75a7ec901c2832f3570a21c3be4c807b.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个内部填充有项目的圆圈，周围被灰色楔形包围，代表允许访问内部圆圈的方法。](../Images/75a7ec901c2832f3570a21c3be4c807b.png)'
+- en: A software object.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个软件对象。
+- en: "Software objects are conceptually similar to real-world objects: they too consist\
+    \ of state and related behavior. An object stores its state in *fields* (variables\
+    \ in some programming languages) and exposes its behavior through *methods* (functions\
+    \ in some programming languages). Methods operate on an object's internal state\
+    \ and serve as the primary mechanism for object-to-object communication. Hiding\
+    \ internal state and requiring all interaction to be performed through an object's\
+    \ methods is known as *data encapsulation* \x97 a fundamental principle of object-oriented\
+    \ programming."
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 软件对象在概念上类似于现实世界的对象：它们也由状态和相关行为组成。对象将其状态存储在*字段*（某些编程语言中的变量）中，并通过*方法*（某些编程语言中的函数）公开其行为。方法操作对象的内部状态，并作为对象间通信的主要机制。隐藏内部状态并要求所有交互通过对象的方法执行被称为*数据封装*——这是面向对象编程的基本原则。
+- en: 'Consider a bicycle, for example:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以自行车为例：
+- en: '![A picture of an object, with bicycle methods and instance variables.](../Images/a64baab64d5ef7c3f903c317c0f20de8.png)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个对象的图片，带有自行车方法和实例变量。](../Images/a64baab64d5ef7c3f903c317c0f20de8.png)'
+- en: A bicycle modeled as a software object.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以软件对象建模的自行车。
+- en: By attributing state (current speed, current pedal cadence, and current gear)
+    and providing methods for changing that state, the object remains in control of
+    how the outside world is allowed to use it. For example, if the bicycle only has
+    6 gears, a method to change gears could reject any value that is less than 1 or
+    greater than 6.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过赋予状态（当前速度、当前踏板速度和当前档位）并提供改变该状态的方法，对象保持控制外部世界如何使用它。例如，如果自行车只有6个档位，一个改变档位的方法可以拒绝任何小于1或大于6的值。
+- en: 'Bundling code into individual software objects provides a number of benefits,
+    including:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将代码捆绑到单独的软件对象中提供了许多好处，包括：
+- en: 'Modularity: The source code for an object can be written and maintained independently
+    of the source code for other objects. Once created, an object can be easily passed
+    around inside the system.'
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 模块化：一个对象的源代码可以独立编写和维护，与其他对象的源代码无关。一旦创建，一个对象可以在系统内轻松传递。
+- en: 'Information-hiding: By interacting only with an object''s methods, the details
+    of its internal implementation remain hidden from the outside world.'
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 信息隐藏：通过仅与对象的方法交互，其内部实现的细节对外部世界保持隐藏。
+- en: 'Code re-use: If an object already exists (perhaps written by another software
+    developer), you can use that object in your program. This allows specialists to
+    implement/test/debug complex, task-specific objects, which you can then trust
+    to run in your own code.'
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 代码重用：如果一个对象已经存在（可能是由另一个软件开发人员编写），你可以在你的程序中使用该对象。这使得专家可以实现/测试/调试复杂的、任务特定的对象，然后你可以相信这些对象在你自己的代码中运行。
+- en: 'Pluggability and debugging ease: If a particular object turns out to be problematic,
+    you can simply remove it from your application and plug in a different object
+    as its replacement. This is analogous to fixing mechanical problems in the real
+    world. If a bolt breaks, you replace *it*, not the entire machine.'
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 可插拔性和调试便利性：如果一个特定对象出现问题，你可以简单地将其从应用程序中移除，并插入一个不同的对象作为替代。这类似于在现实世界中修复机械问题。如果一个螺栓断了，你只替换*它*，而不是整个机器。

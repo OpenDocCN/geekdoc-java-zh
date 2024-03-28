@@ -1,0 +1,1331 @@
+- en: How to Use Trees
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用树
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/tree.html](https://docs.oracle.com/javase/tutorial/uiswing/components/tree.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/tree.html](https://docs.oracle.com/javase/tutorial/uiswing/components/tree.html)
+- en: 'With the [`JTree`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html)
+    class, you can display hierarchical data. A `JTree` object does not actually contain
+    your data; it simply provides a view of the data. Like any non-trivial Swing component,
+    the tree gets data by querying its data model. Here is a picture of a tree:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[`JTree`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html)类，您可以显示分层数据。`JTree`对象实际上不包含您的数据；它只是提供数据的视图。以下是一棵树的图片：
+- en: '![A tree](../Images/10d7e03195ae6386edd3cc62539c07cd.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一棵树](../Images/10d7e03195ae6386edd3cc62539c07cd.png)'
+- en: "As the preceding figure shows, `JTree` displays its data vertically. Each row\
+    \ displayed by the tree contains exactly one item of data, which is called a *node*.\
+    \ Every tree has a *root* node from which all nodes descend. By default, the tree\
+    \ displays the root node, but you can decree otherwise. A node can either have\
+    \ children or not. We refer to nodes that can have children \x97 whether or not\
+    \ they currently *have* children \x97 as *branch* nodes. Nodes that can not have\
+    \ children are *leaf* nodes."
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "如前图所示，`JTree`垂直显示其数据。树显示的每一行都包含一个数据项，称为*节点*。每棵树都有一个*根*节点，所有节点都是从根节点派生的。默认情况下，树显示根节点，但您可以另行规定。节点可以有子节点，也可以没有。我们将可以有子节点的节点\
+    \ \x97 无论它们当前是否*有*子节点 \x97 称为*分支*节点。不能有子节点的节点称为*叶*节点。"
+- en: "Branch nodes can have any number of children. Typically, the user can expand\
+    \ and collapse branch nodes \x97 making their children visible or invisible \x97\
+    \ by clicking them. By default, all branch nodes except the root node start out\
+    \ collapsed. A program can detect changes in branch nodes' expansion state by\
+    \ listening for tree expansion or tree-will-expand events, as described in [How\
+    \ to Write a Tree Expansion Listener](../events/treeexpansionlistener.html) and\
+    \ [How to Write a Tree-Will-Expand Listener](../events/treewillexpandlistener.html)."
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "分支节点可以有任意数量的子节点。通常，用户可以通过单击来展开和折叠分支节点 \x97 使其子节点可见或不可见。默认情况下，除了根节点外，所有分支节点都是折叠的。程序可以通过监听树展开或树将展开事件来检测分支节点展开状态的变化，如[如何编写树展开监听器](../events/treeexpansionlistener.html)和[如何编写树将展开监听器](../events/treewillexpandlistener.html)中所述。"
+- en: A specific node in a tree can be identified either by a TreePath, an object
+    that encapsulates a node and all of its ancestors, or by its display row, where
+    each row in the display area displays one node.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 树中的特定节点可以通过TreePath标识，TreePath是一个封装节点及其所有祖先的对象，或者通过其显示行标识，其中显示区域中的每一行显示一个节点。
+- en: An expanded node is a non-leaf node that will display its children when all
+    its ancestors are expanded.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 展开的节点是一个非叶节点，当其所有祖先都展开时，将显示其子节点。
+- en: A collapsed node is one which hides them.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 折叠的节点是隐藏的节点。
+- en: A hidden node is one which is under a collapsed ancestor.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 隐藏的节点是位于折叠祖先下的节点。
+- en: 'The rest of this section discusses the following topics:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的其余部分讨论以下主题：
+- en: '[Creating a Tree](#create)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建一棵树](#create)'
+- en: '[Responding to Node Selection](#select)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[响应节点选择](#select)'
+- en: '[Customizing a Tree''s Display](#display)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[自定义树的显示](#display)'
+- en: '[Dynamically Changing a Tree](#dynamic)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[动态更改树](#dynamic)'
+- en: '[Creating a Data Model](#data)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建数据模型](#data)'
+- en: '[The Tree API](#api)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[树 API](#api)'
+- en: '[Examples that Use Trees](#eg)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用树的示例](#eg)'
+- en: Creating a Tree
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建一棵树
+- en: Here is a picture of an application, the top half of which displays a tree in
+    a scroll pane.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个应用程序的图片，其顶部显示了一个在滚动窗格中的树。
+- en: '![TreeDemo](../Images/82af768b5940c6a5f483d8b306f33122.png)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TreeDemo](../Images/82af768b5940c6a5f483d8b306f33122.png)'
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: Click the Launch button to run the Tree Demo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TreeDemo).[![Launches
+    the TreeDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TreeDemoProject/TreeDemo.jnlp)
+  id: totrans-23
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用 [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    运行树演示（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者���要自行编译和运行���例，请参考[示例索引](../examples/components/index.html#TreeDemo)。[![启动
+    TreeDemo 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TreeDemoProject/TreeDemo.jnlp)
+- en: Expand one or more nodes.
+  id: totrans-24
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 展开一个或多个节点。
+- en: You can do this by clicking the circle to the left of the item.
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 通过点击项目左侧的圆圈来执行此操作。
+- en: Collapse a node.
+  id: totrans-26
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 折叠一个节点。
+- en: You do this by clicking the circle to the left of an expanded node.
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 通过点击已展开节点左侧的圆圈来执行此操作。
+- en: '* * *'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The following code, taken from [`TreeDemo.java`](../examples/components/TreeDemoProject/src/components/TreeDemo.java),
+    creates the `JTree` object and puts it in a scroll pane:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的代码取自 [`TreeDemo.java`](../examples/components/TreeDemoProject/src/components/TreeDemo.java)，创建了
+    `JTree` 对象并将其放入滚动窗格中：
+- en: '[PRE0]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The code creates an instance of [`DefaultMutableTreeNode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultMutableTreeNode.html)
+    to serve as the root node for the tree. It then creates the rest of the nodes
+    in the tree. After that, it creates the tree, specifying the root node as an argument
+    to the `JTree` constructor. Finally, it puts the tree in a scroll pane, a common
+    tactic because showing the full, expanded tree would otherwise require too much
+    space.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 代码创建了一个 [`DefaultMutableTreeNode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultMutableTreeNode.html)
+    的实例作为树的根节点。然后创建树中的其余节点。之后，创建树，将根节点作为参数传递给 `JTree` 构造函数。最后，将树放入滚动窗格中，这是一个常见的策略，因为显示完整展开的树会占用太多空间。
+- en: 'Here is the code that creates the nodes under the root node:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是创建根节点下节点的代码：
+- en: '[PRE1]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The argument to the `DefaultMutableTreeNode` constructor is the *user object*
+    which is an object that contains or points to the data associated with the tree
+    node. The user object can be a string, or it can be a custom object. If you implement
+    a custom object, you should implement its `toString` method so that it returns
+    the string to be displayed for that node. JTree, by default, renders each node
+    using the value returned from toString, so it is important that `toString` returns
+    something meaningful. Sometimes, it is not feasible to override `toString`; in
+    such a scenario you can override the convertValueToText of JTree to map the object
+    from the model into a string that gets displayed.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DefaultMutableTreeNode` 构造函数的参数是*用户对象*，它是一个包含或指向与树节点关联数据的对象。用户对象可以是一个字符串，也可以是一个自定义对象。如果你实现了一个自定义对象，你应该实现它的
+    `toString` 方法，以便返回要为该节点显示的字符串。JTree 默认使用从 `toString` 返回的值来渲染每个节点，因此 `toString`
+    返回有意义的内容很重要。有时，重写 `toString` 是不可行的；在这种情况下，你可以重写 JTree 的 `convertValueToText` 方法，将模型中的对象映射为要显示的字符串。'
+- en: 'For example, the `BookInfo` class used in the previous code snippet is a custom
+    class that holds two pieces of data: the name of a book, and the URL for an HTML
+    file describing the book. The `toString` method is implemented to return the book
+    name. Thus, each node associated with a `BookInfo` object displays a book name.'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，前面代码片段中使用的 `BookInfo` 类是一个自定义类，保存了两个数据：一本书的名称和描述该书的 HTML 文件的 URL。`toString`
+    方法被实现为返回书名。因此，与 `BookInfo` 对象关联的每个节点显示一个书名。
+- en: '* * *'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** You can specify text formatting in a tree node by putting HTML tags
+    in the string for the node. See [Using HTML in Swing Components](html.html) for
+    details.'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 你可以通过在节点的字符串中放置 HTML 标签来指定树节点中的文本格式。有关详细信息，请参阅[在 Swing 组件中使用 HTML](html.html)。'
+- en: '* * *'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: "To summarize, you can create a tree by invoking the `JTree` constructor, specifying\
+    \ the class that implements TreeNode as an argument. You should probably put the\
+    \ tree inside a scroll pane, so that the tree would not take up too much space.\
+    \ You do not have to do anything to make the tree nodes expand and collapse in\
+    \ response to user clicks. However, you do have to add some code to make the tree\
+    \ respond when the user selects a node \x97 by clicking the node, for example."
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "总结一下，您可以通过调用`JTree`构造函数来创建一棵树，指定实现TreeNode的类作为参数。您可能应该将树放在滚动窗格中，以便树不会占用太多空间。您不必做任何事情来使树节点在用户点击时展开和折叠。但是，您必须添加一些代码，以使树在用户选择节点时做出响应\
+    \ \x97 例如，通过点击节点。"
+- en: Responding to Node Selection
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 响应节点选择
+- en: 'Responding to tree node selections is simple. You implement a tree selection
+    listener and register it on the tree. The following code shows the selection-related
+    code from the `TreeDemo` program:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 响应树节点选择很简单。您实现一个树选择监听器并在树上注册它。以下代码显示了`TreeDemo`程序中与选择相关的代码：
+- en: '[PRE2]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The preceding code performs these tasks:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的代码执行以下任务：
+- en: Gets the default [`TreeSelectionModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeSelectionModel.html)
+    for the tree, and then sets it up so that at most one tree node at a time can
+    be selected.
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取树的默认[`TreeSelectionModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeSelectionModel.html)，然后设置它，以便一次最多只能选择一个树节点。
+- en: Registers an event handler on the tree. The event handler is an object that
+    implements the [`TreeSelectionListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionListener.html)
+    interface.
+  id: totrans-45
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在树上注册一个事件处理程序。事件处理程序是一个实现[`TreeSelectionListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionListener.html)接口的对象。
+- en: In the event handler, determines which node is selected by invoking the tree's
+    `getLastSelectedPathComponent` method.
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在事件处理程序中，通过调用树的`getLastSelectedPathComponent`方法确定哪个节点被选中。
+- en: Uses the `getUserObject` method to get the data associated with the node.
+  id: totrans-47
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`getUserObject`方法获取与节点关联的数据。
+- en: For more details about handling tree selection events, see [How to Write a Tree
+    Selection Listener](../events/treeselectionlistener.html).
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关处理树选择事件的更多详细信息，请参见[如何编写树选择监听器](../events/treeselectionlistener.html)。
+- en: Customizing a Tree's Display
+  id: totrans-49
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 自定义树的显示
+- en: Here is a picture of some tree nodes, as drawn by the Java, Windows, and Mac
+    OS look and feel implementations.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一些树节点的图片，由Java、Windows和Mac OS外观实现绘制。
+- en: '| ![TreeDemo with angled lines](../Images/06edee99b7ade44044cc40a8b8f2f7a5.png)
+    | ![A tree in the Windows look and feel](../Images/4f477b736250a1b9802eed44a2af0ce8.png)
+    | ![A tree in the MacOS look and feel](../Images/6bfc8c282311241d75e3212152c7311d.png)
+    |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![带有倾斜线的TreeDemo](../Images/06edee99b7ade44044cc40a8b8f2f7a5.png) | ![Windows外观下的树](../Images/4f477b736250a1b9802eed44a2af0ce8.png)
+    | ![Mac OS外观下的树](../Images/6bfc8c282311241d75e3212152c7311d.png) |'
+- en: '| Java look and feel | Windows look and feel | Mac OS look and feel |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| Java外观 | Windows外观 | Mac OS外观 |'
+- en: As the preceding figures show, a tree conventionally displays an icon and some
+    text for each node. You can customize these, as we will show shortly.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前面的图所示，树通常为每个节点显示一个图标和一些文本。您可以自定义这些内容，我们将很快展示。
+- en: "A tree typically also performs some look-and-feel-specific painting to indicate\
+    \ relationships between nodes. You can customize this painting in a limited way.\
+    \ First, you can use `tree.setRootVisible(true)` to show the root node or `tree.setRootVisible(false)`\
+    \ to hide it. Second, you can use `tree.setShowsRootHandles(true)` to request\
+    \ that a tree's top-level nodes \x97 the root node (if it is visible) or its children\
+    \ (if not) \x97 have handles that let them be expanded or collapsed."
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "一棵树通常还会执行一些特定外观的绘制，以指示节点之间的关系。您可以以有限的方式自定义这种绘制。首先，您可以使用`tree.setRootVisible(true)`来显示根节点，或者使用`tree.setRootVisible(false)`来隐藏它。其次，您可以使用`tree.setShowsRootHandles(true)`来请求树的顶层节点\
+    \ \x97 根节点（如果可见）或其子节点（如果不可见） \x97 具有可展开或折叠的手柄。"
+- en: 'If you are using the Java look and feel, you can customize whether lines are
+    drawn to show relationships between tree nodes. By default, the Java look and
+    feel draws angled lines between nodes. By setting the `JTree.lineStyle` client
+    property of a tree, you can specify a different convention. For example, to request
+    that the Java look and feel use only horizontal lines to group nodes, use the
+    following code:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你正在使用Java外观，你可以自定义是否绘制线条以显示树节点之间的关系。默认情况下，Java外观在节点之间绘制倾斜线。通过设置树的`JTree.lineStyle`客户端属性，你可以指定不同的约定。例如，要请求Java外观仅使用水平线来分组节点，请使用以下代码：
+- en: '[PRE3]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'To specify that the Java look and feel should draw no lines, use this code:'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要指定Java外观不绘制线条，请使用以下代码：
+- en: '[PRE4]'
+  id: totrans-58
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The following snapshots show the results of setting the `JTree.lineStyle` property,
+    when using the Java look and feel.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下快照显示了在使用Java外观时设置`JTree.lineStyle`属性的结果。
+- en: '| ![TreeDemo with angled lines](../Images/06edee99b7ade44044cc40a8b8f2f7a5.png)
+    | ![TreeDemo with horizontal lines](../Images/6a9ce6396365a884be7abbfec4287134.png)
+    | ![TreeDemo with no lines](../Images/8f2fbfeda7848f3702a3b4794e189b9e.png) |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![带有倾斜线的TreeDemo](../Images/06edee99b7ade44044cc40a8b8f2f7a5.png) | ![带有水平线的TreeDemo](../Images/6a9ce6396365a884be7abbfec4287134.png)
+    | ![没有线条的TreeDemo](../Images/8f2fbfeda7848f3702a3b4794e189b9e.png) |'
+- en: '| `"Angled"` (default) | `"Horizontal"` | `"None"` |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '| `"倾斜"`（默认） | `"水平"` | `"无"` |'
+- en: No matter what the look and feel, the default icon displayed by a node is determined
+    by whether the node is a leaf and, if not, whether it is expanded. For example,
+    in the Windows and Motif look and feel implementations, the default icon for each
+    leaf node is a dot; in the Java look and feel, the default leaf icon is a paper-like
+    symbol. In all the look-and-feel implementations we have shown, branch nodes are
+    marked with folder-like symbols. Some look and feels might have different icons
+    for expanded branches versus collapsed branches.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 无论外观如何，节点显示的默认图标是由节点是否为叶子以及如果不是叶子，则是否展开决定的。例如，在Windows和Motif外观实现中，每个叶子节点的默认图标是一个点；在Java外观中，默认叶子图标是一个类似纸张的符号。在我们展示的所有外观实现中，分支节点都用类似文件夹的符号标记。一些外观可能对展开的分支和折叠的分支有不同的图标。
+- en: 'You can easily change the default icon used for leaf, expanded branch, or collapsed
+    branch nodes. To do so, you first create an instance of [`DefaultTreeCellRenderer`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeCellRenderer.html).
+    You could always create your own TreeCellRenderer implementation from scratch,
+    reusing whatever components you like. Next, specify the icons to use by invoking
+    one or more of the following methods on the renderer: `setLeafIcon` (for leaf
+    nodes), `setOpenIcon` (for expanded branch nodes), `setClosedIcon` (for collapsed
+    branch nodes). If you want the tree to display no icon for a type of node, then
+    specify `null` for the icon. Once you have set up the icons, use the tree''s `setCellRenderer`
+    method to specify that the `DefaultTreeCellRenderer` paint its nodes. Here is
+    an example, taken from [`TreeIconDemo.java`](../examples/components/TreeIconDemoProject/src/components/TreeIconDemo.java):'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以轻松更改用于叶子节点、展开的分支节点或折叠的分支节点的默认图标。要做到这一点，首先创建一个[`DefaultTreeCellRenderer`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeCellRenderer.html)的实例。你总是可以从头开始创建自己的TreeCellRenderer实现，重用你喜欢的任何组件。接下来，通过调用渲染器上的以下一个或多个方法来指定要使用的图标：`setLeafIcon`（用于叶子节点）、`setOpenIcon`（用于展开的分支节点）、`setClosedIcon`（用于折叠的分支节点）。如果你希望树不显示某种类型节点的图标，那么为图标指定`null`。设置好图标后，使用树的`setCellRenderer`方法指定`DefaultTreeCellRenderer`绘制其节点。以下是一个示例，取自[`TreeIconDemo.java`](../examples/components/TreeIconDemoProject/src/components/TreeIconDemo.java)：
+- en: '[PRE5]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'Here is the screenshot of TreeIconDemo:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是TreeIconDemo的屏幕截图：
+- en: '![TreeIconDemo](../Images/65afb714d2c355726bf8ca7fc279a0c5.png)'
+  id: totrans-66
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TreeIconDemo](../Images/65afb714d2c355726bf8ca7fc279a0c5.png)'
+- en: '* * *'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: Click the Launch button to run the TreeIconDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TreeIconDemo).[![Launches
+    the TreeIconDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TreeIconDemoProject/TreeIconDemo.jnlp)
+  id: totrans-69
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TreeIconDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TreeIconDemo)。[![启动TreeIconDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TreeIconDemoProject/TreeIconDemo.jnlp)
+- en: '* * *'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: "If you want finer control over the node icons or you want to provide tool tips,\
+    \ you can do so by creating a subclass of `DefaultTreeCellRenderer` and overriding\
+    \ the `getTreeCellRendererComponent` method. Because `DefaultTreeCellRenderer`\
+    \ is a subclass of `JLabel`, you can use any `JLabel` method \x97 such as `setIcon`\
+    \ \x97 to customize the `DefaultTreeCellRenderer`."
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "如果要更精细地控制节点图标或提供工具提示，可以通过创建`DefaultTreeCellRenderer`的子类并重写`getTreeCellRendererComponent`方法来实现。因为`DefaultTreeCellRenderer`是`JLabel`的子类，可以使用任何`JLabel`方法\
+    \ \x97 例如`setIcon` \x97 来自定义`DefaultTreeCellRenderer`。"
+- en: The following code, from [`TreeIconDemo2.java`](../examples/components/TreeIconDemo2Project/src/components/TreeIconDemo2.java),
+    creates a cell renderer that varies the leaf icon depending on whether the word
+    "Tutorial" is in the node's text data. The renderer also specifies tool-tip text,
+    as the bold lines show.
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的代码来自[`TreeIconDemo2.java`](../examples/components/TreeIconDemo2Project/src/components/TreeIconDemo2.java)，创建了一个单元格渲染器，根据节点文本数据中是否包含“教程”一词来变化叶图标。该渲染器��指定了工具提示文本，如粗体行所示。
+- en: '* * *'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run the TreeIconDemo2 using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TreeIconDemo2).[![Launches
+    the TreeDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TreeIconDemo2Project/TreeIconDemo2.jnlp)
+  id: totrans-75
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TreeIconDemo2（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TreeIconDemo2)。[![启动TreeDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TreeIconDemo2Project/TreeIconDemo2.jnlp)
+- en: '* * *'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[PRE6]'
+  id: totrans-77
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'Here is the result:'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是结果：
+- en: '![TreeIconDemo2](../Images/25e38bf3522688303c088fc678a03838.png)'
+  id: totrans-79
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TreeIconDemo2](../Images/25e38bf3522688303c088fc678a03838.png)'
+- en: You might be wondering how a cell renderer works. When a tree paints each node,
+    neither the `JTree` nor its look-and-feel-specific implementation actually contains
+    the code that paints the node. Instead, the tree uses the cell renderer's painting
+    code to paint the node. For example, to paint a leaf node that has the string
+    "The Java Programming Language", the tree asks its cell renderer to return a component
+    that can paint a leaf node with that string. If the cell renderer is a `DefaultTreeCellRenderer`,
+    then it returns a label that paints the default leaf icon followed by the string.
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能想知道单元格渲染器是如何工作的。当树绘制每个节点时，`JTree`及其外观特定实现实际上都不包含绘制节点的代码。相反，树使用单元格渲染器的绘制代码来绘制节点。例如，要绘制一个具有字符串“Java编程语言”的叶节点，树会要求其单元格渲染器返回一个可以绘制带有该字符串的叶节点的组件。如果单元格渲染器是`DefaultTreeCellRenderer`，那么它会返回一个标签，该标签绘制默认叶图标，然后是字符串。
+- en: 'A cell renderer only paints; it cannot handle events. If you want to add event
+    handling to a tree, you need to register your handler on either the tree or, if
+    the handling occurs only when a node is selected, the tree''s *cell editor*. For
+    information about cell editors, see [Concepts: Editors and Renderers](table.html#editrender).
+    That section discusses table cell editors and renderers, which are similar to
+    tree cell editors and renderers.'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单元格渲染器只负责绘制；它无法处理事件。如果要向树添加事件处理程序，需要在树或者仅在选择节点时发生处理时在树的*单元格编辑器*上注册处理程序。有关单元格编辑器的信息，请参阅[概念：编辑器和渲染器](table.html#editrender)。该部分讨论了类似于树单元格编辑器和渲染器的表单元格编辑器和渲染器。
+- en: Dynamically Changing a Tree
+  id: totrans-82
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 动态更改树
+- en: The following figure shows an application called DynamicTreeDemo that lets you
+    add nodes to and remove nodes from a visible tree. You can also edit the text
+    in each node.
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图显示了一个名为DynamicTreeDemo的应用程序，允许您向可见树添加节点并删除节点。您还可以编辑每个节点中的文本。
+- en: '![DynamicTreeDemo](../Images/4337418c2ea563dbb29f736a27ffd826.png)'
+  id: totrans-84
+  prefs: []
+  type: TYPE_IMG
+  zh: '![DynamicTreeDemo](../Images/4337418c2ea563dbb29f736a27ffd826.png)'
+- en: The application is based on an example provided by tutorial reader Richard Stanford.
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该应用程序基于教程读者Richard Stanford提供的示例。
+- en: '* * *'
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run the DynamicTreeDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#DynamicTreeDemo).[![Launches
+    the TreeDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/DynamicTreeDemoProject/DynamicTreeDemo.jnlp)
+  id: totrans-88
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行DynamicTreeDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#DynamicTreeDemo)。[![启动
+    TreeDemo 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/DynamicTreeDemoProject/DynamicTreeDemo.jnlp)
+- en: '* * *'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Here is the code that initializes the tree:'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是初始化树的代码：
+- en: '[PRE7]'
+  id: totrans-91
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: By explicitly creating the tree's model, the code guarantees that the tree's
+    model is an instance of [`DefaultTreeModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeModel.html).
+    That way, we know all the methods that the tree model supports. For example, we
+    know that we can invoke the model's `insertNodeInto` method, even though that
+    method is not required by the `TreeModel` interface.
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过显式创建树的模型，代码确保树的模型是[`DefaultTreeModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeModel.html)的一个实例。这样，我们知道树模型支持的所有方法。例如，我们知道可以调用模型的`insertNodeInto`方法，即使该方法不是`TreeModel`接口所必需的。
+- en: "To make the text in the tree's nodes editable, we invoke `setEditable(true)`\
+    \ on the tree. When the user has finished editing a node, the model generates\
+    \ a tree model event that tells any listeners \x97 including the `JTree` \x97\
+    \ that tree nodes have changed. Note that although `DefaultMutableTreeNode` has\
+    \ methods for changing a node's content, changes should go through the `DefaultTreeModel`\
+    \ cover methods. Otherwise, the tree model events would not be generated, and\
+    \ listeners such as the tree would not know about the updates."
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使树节点中的文本可编辑，我们在树上调用`setEditable(true)`。当用户完成编辑节点时，模型会生成一个树模型事件，告诉任何监听器，包括`JTree`，树节点已更改。请注意，虽然`DefaultMutableTreeNode`有用于更改节点内容的方法，但更改应通过`DefaultTreeModel`的封装方法进行。否则，将不会生成树模型事件，监听器如树也不会知道更新。
+- en: 'To be notified of node changes, we can implement a [`TreeModelListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html).
+    Here is an example of a tree model listener that detects when the user has typed
+    in a new name for a tree node:'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要通知节点更改，我们可以实现一个[`TreeModelListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html)。以下是一个检测用户何时为树节点键入新名称的树模型监听器示例：
+- en: '[PRE8]'
+  id: totrans-95
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'Here is the code that the **Add** button''s event handler uses to add a new
+    node to the tree:'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是**Add**按钮的事件处理程序使用的代码，用于向树中添加新节点：
+- en: '[PRE9]'
+  id: totrans-97
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: The code creates a node, inserts it into the tree model, and then, if appropriate,
+    requests that the nodes above it be expanded and the tree scrolled so that the
+    new node is visible. To insert the node into the model, the code uses the `insertNodeInto`
+    method provided by the `DefaultTreeModel` class.
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该代码创建一个节点，将其插入到树模型中，然后（如果适用）请求展开其上方的节点，并滚动树，以便新节点可见。要将节点插入模型中，代码使用`DefaultTreeModel`类提供的`insertNodeInto`方法。
+- en: Creating a Data Model
+  id: totrans-99
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建数据模型
+- en: If `DefaultTreeModel` does not suit your needs, then you will need to write
+    a custom data model. Your data model must implement the [`TreeModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeModel.html)
+    interface. `TreeModel` specifies methods for getting a particular node of the
+    tree, getting the number of children of a particular node, determining whether
+    a node is a leaf, notifying the model of a change in the tree, and adding and
+    removing tree model listeners.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`DefaultTreeModel`不符合您的需求，则需要编写自定义数据模型。您的数据模型必须实现[`TreeModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeModel.html)接口。`TreeModel`指定了获取树的特定节点、获取特定节点的子节点数量、确定节点是否为叶子节点、通知模型树变化以及添加和移除树模型侦听器的方法。
+- en: Interestingly, the `TreeModel` interface accepts any kind of object as a tree
+    node. It does not require that nodes be represented by `DefaultMutableTreeNode`
+    objects, or even that nodes implement the [`TreeNode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeNode.html)
+    interface. Thus, if the `TreeNode` interface is not suitable for your tree model,
+    feel free to devise your own representation for tree nodes. For example, if you
+    have a pre-existing hierarchical data structure, you do not need to duplicate
+    it or force it into the `TreeNode` mold. You just need to implement your tree
+    model so that it uses the information in the existing data structure.
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有趣的是，`TreeModel`接口接受任何类型的对象作为树节点。它不要求节点由`DefaultMutableTreeNode`对象表示，甚至不要求节点实现[`TreeNode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeNode.html)接口。因此，如果`TreeNode`接口不适合您的树模型，可以自行设计树节点的表示。例如，如果您有一个现有的分层数据结构，您不需要复制它或强制将其转换为`TreeNode`模式。您只需实现您的树模型，使其使用现有数据结构中的信息即可。
+- en: The following figure shows an application called GenealogyExample that displays
+    the descendants or ancestors of a particular person. (Thanks to tutorial reader
+    Olivier Berlanger for providing this example.)
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图显示了一个名为GenealogyExample的应用程序，显示了特定人的后代或祖先。（感谢教程读者Olivier Berlanger提供此示例。）
+- en: '* * *'
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: Click the Launch button to run the Genealogy Example using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#GenealogyExample).[![Launches
+    the TreeDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/GenealogyExampleProject/GenealogyExample.jnlp)
+  id: totrans-105
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行Genealogy示例（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#GenealogyExample)。[![启动TreeDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/GenealogyExampleProject/GenealogyExample.jnlp)
+- en: '* * *'
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '![GenealogyExample](../Images/e228bfdee5f4c140666c89d27e83c897.png)'
+  id: totrans-107
+  prefs: []
+  type: TYPE_IMG
+  zh: '![GenealogyExample](../Images/e228bfdee5f4c140666c89d27e83c897.png)'
+- en: You can find the custom tree model implementation in [`GenealogyModel.java`](../examples/components/GenealogyExampleProject/src/components/GenealogyModel.java).
+    Because the model is implemented as an `Object` subclass instead of, say, a subclass
+    of `DefaultTreeModel`, it must implement the `TreeModel` interface directly. This
+    requires implementing methods for getting information about nodes, such as which
+    is the root and what are the children of a particular node. In the case of `GenealogyModel`,
+    each node is represented by an object of type `Person`, a custom class that does
+    not implement `TreeNode`.
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在[`GenealogyModel.java`](../examples/components/GenealogyExampleProject/src/components/GenealogyModel.java)中找到自定义树模型实现。因为该模型是作为`Object`子类而不是`DefaultTreeModel`子类实现的，所以必须直接实现`TreeModel`接口。这需要实现获取节点信息的方法，例如根节点是哪个以及特定节点的子节点是什么。在`GenealogyModel`的情况下，每个节点由`Person`类型的对象表示，这是一个不实现`TreeNode`的自定义类。
+- en: A tree model must also implement methods for adding and removing tree model
+    listeners, and must fire `TreeModelEvent`s to those listeners when the tree's
+    structure or data changes. For example, when the user instructs GenealogyExample
+    to switch from showing ancestors to showing descendants, the tree model makes
+    the change and then fires an event to inform its listeners (such as the tree component).
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 树模型还必须实现用于添加和移除树模型监听器的方法，并且在树的结构或数据发生变化时向这些监听器发出`TreeModelEvent`。例如，当用户指示`GenealogyExample`从显示祖先切换到显示后代时，树模型进行更改，然后向其监听器（如树组件）发出事件以通知它们。
+- en: How to Load Children Lazily
+  id: totrans-110
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 如何懒加载子节点
+- en: Lazy loading is a characteristic of an application when the actual loading and
+    instantiation of a class is delayed until the point just before the instance is
+    actually used.
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 懒加载是应用程序的一个特征，当类的实际加载和实例化延迟到实际使用实例之前的时刻。
+- en: Do we gain anything by loading them lazily? Yes, this would definitely add to
+    the performance of an application. By lazily loading, you can dedicate the memory
+    resources to load and instantiate an object only when it is actually used. You
+    can also speed up the initial loading time of an application.
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过懒加载它们我们能获得什么？是的，这绝对会增加应用程序的性能。通过懒加载，你可以将内存资源专门用于在实际使用时加载和实例化对象。你还可以加快应用程序的初始加载时间。
+- en: 'One of the ways you can lazily load children of a Tree is by utilizing the
+    TreeWillExpandListener interface. For example, you can declare and load root,
+    grandparent and parent of a Tree along with the application as shown in the following
+    code:'
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以利用`TreeWillExpandListener`接口懒加载树的子节点之一的方法是。例如，你可以在应用程序中声明并加载树的根、祖父和父节点，如下面的代码所示：
+- en: 'Let us declare the root, grandparent and parent as shown below:'
+  id: totrans-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们将根、祖父和父节点声明如下：
+- en: '[PRE10]'
+  id: totrans-115
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'You can load above declared nodes to the tree as shown in the following code:'
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以像下面的代码所示将上述声明的节点加载到树中：
+- en: '[PRE11]'
+  id: totrans-117
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'Now, you can load children lazily to the application whenever the parent node
+    `Restaurants` is visible in the application. To do this, let us declare two children
+    in a separate method and call that method as shown in the following code:'
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，每当应用程序中可见父节点`Restaurants`时，你可以懒加载子节点到应用程序中。为此，让我们在一个单独的方法中声明两个子节点，并按照下面的代码调用该方法：
+- en: '[PRE12]'
+  id: totrans-119
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: See [How to Write a Tree-Will-Expand Listener](../events/treewillexpandlistener.html)
+    for a description of Tree-Will-Expand listeners.
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请参阅[如何编写Tree-Will-Expand监听器](../events/treewillexpandlistener.html)以获取Tree-Will-Expand监听器的描述。
+- en: The Tree API
+  id: totrans-121
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 树API
+- en: 'The tree API is quite extensive. The following tables list just a bit of the
+    API, concentrating on the following categories:'
+  id: totrans-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 树API非常广泛。以下表格列出了API的一部分，重点关注以下类别：
+- en: '[Tree-Related Classes and Interfaces](#overviewapi)'
+  id: totrans-123
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[与树相关的类和接口](#overviewapi)'
+- en: '[Creating and Setting Up a Tree](#creatingapi)'
+  id: totrans-124
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建和设置树](#creatingapi)'
+- en: '[Implementing Selection](#selectionapi)'
+  id: totrans-125
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[实现选择](#selectionapi)'
+- en: '[Showing and Hiding Nodes](#expandapi)'
+  id: totrans-126
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[显示和隐藏节点](#expandapi)'
+- en: For more information about the tree API, see the API documentation for [`JTree`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html)
+    and for the various classes and interfaces in the [tree package](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/package-summary.html).
+    Also refer to [The JComponent Class](jcomponent.html) for information on the API
+    `JTree` inherits from its superclass.
+  id: totrans-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关树API的更多信息，请参阅[`JTree`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html)的API文档，以及[tree
+    package](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/package-summary.html)中各个类和接口的文档。还请参阅[JComponent类](jcomponent.html)以获取有关`JTree`继承自其超类的API的信息。
+- en: '**Tree-Related Classes and Interfaces**'
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**与树相关的类和接口**'
+- en: '| Class or Interface | Purpose |'
+  id: totrans-129
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类或接口 | 目的 |'
+- en: '| [JTree](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html)
+    | The component that presents the tree to the user. |'
+  id: totrans-130
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JTree](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html)
+    | 向用户展示树的组件。 |'
+- en: '| [TreePath](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreePath.html)
+    | Represents a path to a node. |'
+  id: totrans-131
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreePath](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreePath.html)
+    | 表示到节点的路径。 |'
+- en: '| [TreeNode](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeNode.html)
+    [MutableTreeNode](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/MutableTreeNode.html)'
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [TreeNode](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeNode.html)
+    [MutableTreeNode](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/MutableTreeNode.html)'
+- en: '[DefaultMutableTreeNode](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultMutableTreeNode.html)
+    | The interfaces that the default tree model expects its tree nodes to implement,
+    and the implementation used by the default tree model. |'
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[DefaultMutableTreeNode](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultMutableTreeNode.html)
+    | 默认树模型期望其树节点实现的接口，以及默认树模型使用的实现。'
+- en: '| [TreeModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeModel.html)
+    [DefaultTreeModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeModel.html)
+    | Respectively, the interface that a tree model must implement and the usual implementation
+    used. |'
+  id: totrans-134
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreeModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeModel.html)
+    [DefaultTreeModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeModel.html)
+    | 分别是树模型必须实现的接口和通常使用的实现。'
+- en: '| [TreeCellRenderer](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeCellRenderer.html)
+    [DefaultTreeCellRenderer](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeCellRenderer.html)
+    | Respectively, the interface that a tree cell renderer must implement and the
+    usual implementation used. |'
+  id: totrans-135
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreeCellRenderer](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeCellRenderer.html)
+    [DefaultTreeCellRenderer](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeCellRenderer.html)
+    | 分别是树单元渲染器必须实现的接口和通常使用的实现。'
+- en: '| [TreeCellEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeCellEditor.html)
+    [DefaultTreeCellEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeCellEditor.html)
+    | Respectively, the interface that a tree cell editor must implement and the usual
+    implementation used. |'
+  id: totrans-136
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreeCellEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeCellEditor.html)
+    [DefaultTreeCellEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeCellEditor.html)
+    | 分别是树单元编辑器必须实现的接口和通常使用的实现。'
+- en: '| [TreeSelectionModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeSelectionModel.html)
+    [DefaultTreeSelectionModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeSelectionModel.html)
+    | Respectively, the interface that the tree''s selection model must implement
+    and the usual implementation used. |'
+  id: totrans-137
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreeSelectionModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeSelectionModel.html)
+    [DefaultTreeSelectionModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/DefaultTreeSelectionModel.html)
+    | 分别是树选择模型必须实现的接口和通常使用的实现。'
+- en: '| [TreeSelectionListener](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionListener.html)
+    [TreeSelectionEvent](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html)
+    | The interface and event type used for detecting tree selection changes. For
+    more information, see [Getting Started](../events/treeselectionlistener.html ).
+    |'
+  id: totrans-138
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreeSelectionListener](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionListener.html)
+    [TreeSelectionEvent](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeSelectionEvent.html)
+    | 用于检测树选择更改的接口和事件类型。有关更多信息，请参见[入门指南](../events/treeselectionlistener.html)。'
+- en: '| [TreeModelListener](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html)
+    [TreeModelEvent](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelEvent.html)
+    | The interface and event type used for detecting tree model changes. For more
+    information, see [How to Write a Tree Model Listener](../events/treemodellistener.html).
+    |'
+  id: totrans-139
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreeModelListener](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html)
+    [TreeModelEvent](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelEvent.html)
+    | 用于检测树模型更改的接口和事件类型。有关更多信息，请参见[如何编写树模型监听器](../events/treemodellistener.html)。'
+- en: '| [TreeExpansionListener](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeExpansionListener.html)
+    [TreeWillExpandListener](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeWillExpandListener.html)'
+  id: totrans-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [TreeExpansionListener](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeExpansionListener.html)
+    [TreeWillExpandListener](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeWillExpandListener.html)'
+- en: '[TreeExpansionEvent](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeExpansionEvent.html)
+    | The interfaces and event type used for detecting tree expansion and collapse.
+    For more information, see [How to Write a Tree Expansion Listener](../events/treeexpansionlistener.html)
+    and [How to Write a Tree-Will-Expand Listener](../events/treewillexpandlistener.html).
+    |'
+  id: totrans-141
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[TreeExpansionEvent](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeExpansionEvent.html)
+    | 用于检测树展开和折叠的接口和事件类型。有关更多信息，请参见[如何编写树展开监听器](../events/treeexpansionlistener.html)和[如何编写树将展开监听器](../events/treewillexpandlistener.html)。'
+- en: '| [ExpandVetoException](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/ExpandVetoException.html)
+    | An exception that a `TreeWillExpandListener` can throw to indicate that the
+    impending expansion/collapse should not happen. For more information, see [How
+    to Write a Tree-Will-Expand Listener](../events/treewillexpandlistener.html).
+    |'
+  id: totrans-142
+  prefs: []
+  type: TYPE_TB
+  zh: '| [ExpandVetoException](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/ExpandVetoException.html)
+    | `TreeWillExpandListener` 可以抛出的异常，指示即将发生的展开/折叠不应发生。有关更多信息，请参阅[如何编写 Tree-Will-Expand
+    监听器](../events/treewillexpandlistener.html)。 |'
+- en: '**Creating and Setting Up a Tree**'
+  id: totrans-143
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**创建和设置树**'
+- en: '| Constructor or Method | Purpose |'
+  id: totrans-144
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数或方法 | 目的 |'
+- en: '| [JTree(TreeNode)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-javax.swing.tree.TreeNode-)
+    [JTree(TreeNode, boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-javax.swing.tree.TreeNode-boolean-)'
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [JTree(TreeNode)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-javax.swing.tree.TreeNode-)
+    [JTree(TreeNode, boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-javax.swing.tree.TreeNode-boolean-)'
+- en: '[JTree(TreeModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-javax.swing.tree.TreeModel-)'
+  id: totrans-146
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JTree(TreeModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-javax.swing.tree.TreeModel-) '
+- en: '[JTree()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree--)'
+  id: totrans-147
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JTree()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree--)'
+- en: '[JTree(Hashtable)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-java.util.Hashtable-)'
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JTree(Hashtable)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-java.util.Hashtable-)'
+- en: '[JTree(Object[])](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-java.lang.Object:A-)'
+  id: totrans-149
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JTree(Object[])](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-java.lang.Object:A-)'
+- en: '[JTree(Vector)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-java.util.Vector-)
+    | Create a tree. The `TreeNode` argument specifies the root node, to be managed
+    by the default tree model. The `TreeModel` argument specifies the model that provides
+    the data to the table. The no-argument version of this constructor is for use
+    in builders; it creates a tree that contains some sample data. If you specify
+    a `Hashtable`, array of objects, or `Vector` as an argument, then the argument
+    is treated as a list of nodes under the root node (which is not displayed), and
+    a model and tree nodes are constructed accordingly.The `boolean` argument, if
+    present, specifies how the tree should determine whether a node should be displayed
+    as a leaf. If the argument is false (the default), any node without children is
+    displayed as a leaf. If the argument is true, a node is a leaf only if its [`getAllowsChildren`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeNode.html#getAllowsChildren--)
+    method returns false. |'
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JTree(Vector)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#JTree-java.util.Vector-)
+    | 创建一棵树。`TreeNode` 参数指定根节点，由默认树模型管理。`TreeModel` 参数指定提供数据给表格的模型。此构造函数的无参数版本用于构建器中；它创建包含一些示例数据的树。如果您将`Hashtable`、对象数组或`Vector`作为参数指定，则参数将被视为根节点下的节点列表（不显示），并相应地构建模型和树节点。`boolean`
+    参数（如果存在）指定树应如何确定节点是否应显示为叶节点。如果参数为 false（默认值），任何没有子节点的节点都会显示为叶节点。如果参数为 true，则只有当其[`getAllowsChildren`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeNode.html#getAllowsChildren--)方法返回
+    false 时，节点才是叶节点。 |'
+- en: '| [void setCellRenderer(TreeCellRenderer)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setCellRenderer-javax.swing.tree.TreeCellRenderer-)
+    | Set the renderer that draws each node. |'
+  id: totrans-151
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setCellRenderer(TreeCellRenderer)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setCellRenderer-javax.swing.tree.TreeCellRenderer-)
+    | 设置绘制每个节点的渲染器。 |'
+- en: '| [void setEditable(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setEditable-boolean-)
+    [void setCellEditor(TreeCellEditor)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setCellEditor-javax.swing.tree.TreeCellEditor-)
+    | The first method sets whether the user can edit tree nodes. By default, tree
+    nodes are not editable. The second sets which customized editor to use. |'
+  id: totrans-152
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setEditable(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setEditable-boolean-)
+    [void setCellEditor(TreeCellEditor)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setCellEditor-javax.swing.tree.TreeCellEditor-)
+    | 第一个方法设置用户是否可以编辑树节点。默认情况下，树节点不可编辑。第二个方法设置使用哪个自定义编辑器。 |'
+- en: '| [void setRootVisible(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setRootVisible-boolean-)
+    | Set whether the tree shows the root node. The default value is false if the
+    tree is created using one of the constructors that takes a data structure, and
+    true otherwise. |'
+  id: totrans-153
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setRootVisible(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setRootVisible-boolean-)
+    | 设置树是否显示根节点。如果树是使用一个接受数据结构的构造函数创建的，则默认值为false，否则为true。'
+- en: '| [void setShowsRootHandles(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setShowsRootHandles-boolean-)
+    | Set whether the tree shows handles for its leftmost nodes, letting you expand
+    and collapse the nodes. The default is false. If the tree does not show the root
+    node, then you should invoke `setShowsRootHandles(true)`. |'
+  id: totrans-154
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setShowsRootHandles(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setShowsRootHandles-boolean-)
+    | 设置树是否显示其最左侧节点的句柄，让您可以展开和折叠节点。默认值为false。如果树不显示根节点，则应调用`setShowsRootHandles(true)`。'
+- en: '| [void setDragEnabled(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setDragEnabled-boolean-)
+    [boolean getDragEnabled()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getDragEnabled--)
+    | Set or get the `dragEnabled` property, which must be true to enable drag handling
+    on this component. The default value is false. See [Drag and Drop and Data Transfer](../dnd/index.html)
+    for more details. |'
+  id: totrans-155
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setDragEnabled(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setDragEnabled-boolean-)
+    [boolean getDragEnabled()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getDragEnabled--)
+    | 设置或��取`dragEnabled`属性，该属性必须为true才能在此组件上启用拖放处理。默认值为false。有关更多详细信息，请参阅[拖放和数据传输](../dnd/index.html)。'
+- en: '**Implementing Selection**'
+  id: totrans-156
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**实现选择**'
+- en: '| Method | Purpose |'
+  id: totrans-157
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void addTreeSelectionListener(TreeSelectionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#addTreeSelectionListener-javax.swing.event.TreeSelectionListener-)
+    | Register a listener to detect when the a node is selected or deselected. |'
+  id: totrans-158
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void addTreeSelectionListener(TreeSelectionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#addTreeSelectionListener-javax.swing.event.TreeSelectionListener-)
+    | 注册一个监听器以检测节点何时被选中或取消选中。'
+- en: '| [void setSelectionModel(TreeSelectionModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setSelectionModel-javax.swing.tree.TreeSelectionModel-)
+    [TreeSelectionModel getSelectionModel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getSelectionModel--)
+    | Set or get the model used to control node selections. You can turn off node
+    selection completely using `setSelectionModel(null)`. |'
+  id: totrans-159
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setSelectionModel(TreeSelectionModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setSelectionModel-javax.swing.tree.TreeSelectionModel-)
+    [TreeSelectionModel getSelectionModel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getSelectionModel--)
+    | 设置或获取用于控制节点选择的模型。您可以使用`setSelectionModel(null)`完全关闭节点选择。'
+- en: '| [void setSelectionMode(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeSelectionModel.html#setSelectionMode-int-)
+    [int getSelectionMode()](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeSelectionModel.html#getSelectionMode--)'
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setSelectionMode(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeSelectionModel.html#setSelectionMode-int-)
+    [int getSelectionMode()](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreeSelectionModel.html#getSelectionMode--)
+    | 设置或获取当前选定节点的路径。'
+- en: '*(in `TreeSelectionModel`)* | Set or get the selection mode. The value can
+    be `CONTIGUOUS_TREE_SELECTION`, `DISCONTIGUOUS_TREE_SELECTION`, or `SINGLE_TREE_SELECTION`
+    (all defined in `TreeSelectionModel`). |'
+  id: totrans-161
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`TreeSelectionModel`中)* | 设置或获取选择模式。该值可以是`CONTIGUOUS_TREE_SELECTION`、`DISCONTIGUOUS_TREE_SELECTION`或`SINGLE_TREE_SELECTION`（均在`TreeSelectionModel`中定义）。'
+- en: '| [Object getLastSelectedPathComponent()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getLastSelectedPathComponent--)
+    | Get the object representing the currently selected node. This is equivalent
+    to invoking `getLastPathComponent` on the value returned by `tree.getSelectionPath()`.
+    |'
+  id: totrans-162
+  prefs: []
+  type: TYPE_TB
+  zh: '| [获取最后选定的组件对象](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getLastSelectedPathComponent--)
+    | 获取代表当前选定节点的对象。这相当于在`tree.getSelectionPath()`返回的值上调用`getLastPathComponent`。'
+- en: '| [void setSelectionPath(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setSelectionPath-javax.swing.tree.TreePath-)
+    [TreePath getSelectionPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getSelectionPath--)
+    | Set or get the path to the currently selected node. |'
+  id: totrans-163
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setSelectionPath(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setSelectionPath-javax.swing.tree.TreePath-)
+    [TreePath getSelectionPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getSelectionPath--)
+    | 设置或获取当前选定节点的路径。'
+- en: '| [void setSelectionPaths(TreePath[])](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setSelectionPaths-javax.swing.tree.TreePath:A-)
+    [TreePath[] getSelectionPaths()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getSelectionPaths--)
+    | Set or get the paths to the currently selected nodes. |'
+  id: totrans-164
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setSelectionPaths(TreePath[])](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setSelectionPaths-javax.swing.tree.TreePath:A-)
+    [TreePath[] getSelectionPaths()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getSelectionPaths--)
+    | 设置或获取当前选定节点的路径。 |'
+- en: '| [void setSelectionPath(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setSelectionPath-javax.swing.tree.TreePath-)
+    [TreePath getSelectionPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getSelectionPath--)
+    | Set or get the path to the currently selected node. |'
+  id: totrans-165
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setSelectionPath(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setSelectionPath-javax.swing.tree.TreePath-)
+    [TreePath getSelectionPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getSelectionPath--)
+    | 设置或获取当前选定节点的路径。 |'
+- en: '**Showing and Hiding Nodes**'
+  id: totrans-166
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**显示和隐藏节点**'
+- en: '| Method | Purpose |'
+  id: totrans-167
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void addTreeExpansionListener(TreeExpansionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#addTreeExpansionListener-javax.swing.event.TreeExpansionListener-)
+    [void addTreeWillExpandListener(TreeWillExpandListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#addTreeWillExpandListener-javax.swing.event.TreeWillExpandListener-)
+    | Register a listener to detect when the tree nodes *have* expanded or collapsed,
+    or *will be* expanded or collapsed, respectively. To veto an impending expansion
+    or collapse, a `TreeWillExpandListener` can throw a `ExpandVetoException`. |'
+  id: totrans-168
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void addTreeExpansionListener(TreeExpansionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#addTreeExpansionListener-javax.swing.event.TreeExpansionListener-)
+    [void addTreeWillExpandListener(TreeWillExpandListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#addTreeWillExpandListener-javax.swing.event.TreeWillExpandListener-)
+    | 注册监听器以检测树节点何时已展开或折叠，或将要展开或折叠。要否决即将发生的展开或折叠，`TreeWillExpandListener`可以抛出`ExpandVetoException`。
+    |'
+- en: '| [void expandPath(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#expandPath-javax.swing.tree.TreePath-)
+    [void collapsePath(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#collapsePath-javax.swing.tree.TreePath-)
+    | Expand or collapse the specified tree path. |'
+  id: totrans-169
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void expandPath(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#expandPath-javax.swing.tree.TreePath-)
+    [void collapsePath(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#collapsePath-javax.swing.tree.TreePath-)
+    | 展开或折叠指定的树路径。 |'
+- en: "| [void scrollPathToVisible(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#scrollPathToVisible-javax.swing.tree.TreePath-)\
+    \ | Ensure that the node specified by the path is visible \x97 that the path leading\
+    \ up to it is expanded and the node is in the scroll pane's viewing area. |"
+  id: totrans-170
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void scrollPathToVisible(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#scrollPathToVisible-javax.swing.tree.TreePath-)
+    | 确保指定路径的节点可见 - 该路径前面的节点已展开，并且节点在滚动窗格的可视区域内。 |'
+- en: "| [void makeVisible(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#makeVisible-javax.swing.tree.TreePath-)\
+    \ | Ensure that the node specified by the path is viewable \x97 that the path\
+    \ leading up to it is expanded. The node might not end up within the viewing area.\
+    \ |"
+  id: totrans-171
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void makeVisible(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#makeVisible-javax.swing.tree.TreePath-)
+    | 确保指定路径的节点可见 - 该路径前面的节点已展开。该节点可能不会在可视区域内。 |'
+- en: '| [void setScrollsOnExpand(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setScrollsOnExpand-boolean-)
+    [boolean getScrollsOnExpand()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getScrollsOnExpand--)
+    | Set or get whether the tree attempts to scroll to show previous hidden nodes.
+    The default value is true. |'
+  id: totrans-172
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setScrollsOnExpand(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setScrollsOnExpand-boolean-)
+    [boolean getScrollsOnExpand()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getScrollsOnExpand--)
+    | 设置或获取树是否尝试滚动以显示先前隐藏的节点。默认值���true。 |'
+- en: '| [void setToggleClickCount(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setToggleClickCount-int-)
+    [int getToggleClickCount()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getToggleClickCount--)
+    | Set or get the number of mouse clicks before a node will expand or close. The
+    default is two. |'
+  id: totrans-173
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setToggleClickCount(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setToggleClickCount-int-)
+    [int getToggleClickCount()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getToggleClickCount--)
+    | 设置或获取节点展开或关闭前的鼠标点击次数。默认值为两次。 |'
+- en: '| [TreePath getNextMatch(String, int, Position.Bias)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getNextMatch-java.lang.String-int-javax.swing.text.Position.Bias-)
+    | Return the `TreePath` to the next tree element that begins with the specific
+    prefix. |'
+  id: totrans-174
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TreePath getNextMatch(String, int, Position.Bias)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getNextMatch-java.lang.String-int-javax.swing.text.Position.Bias-)
+    | 返回下一个以特定前缀开头的树元素的`TreePath`。 |'
+- en: Examples that Use Trees
+  id: totrans-175
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用树的示例
+- en: This table lists examples that use `JTree` and where those examples are described.
+  id: totrans-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此表列出了使用`JTree`的示例以及这些示例的描述位置。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-177
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [TreeDemo](../examples/components/index.html#TreeDemo) | [Creating a Tree](#create),
+    [Responding to Node Selection](#select), [Customizing a Tree''s Display](#display)
+    | Creates a tree that responds to user selections. It also has code for customizing
+    the line style for the Java look and feel. |'
+  id: totrans-178
+  prefs: []
+  type: TYPE_TB
+  zh: '| [树演示](../examples/components/index.html#TreeDemo) | [创建树](#create), [响应节点选择](#select),
+    [自定义树的显示](#display) | 创建一个响应用户选择的树。还包含用于自定义Java外观和感觉线条样式的代码。 |'
+- en: '| [TreeIconDemo](../examples/components/index.html#TreeIconDemo) | [Customizing
+    a Tree''s Display](#display) | Adds a custom leaf icon to TreeDemo. |'
+  id: totrans-179
+  prefs: []
+  type: TYPE_TB
+  zh: '| [树图标演示](../examples/components/index.html#TreeIconDemo) | [自定义树的显示](#display)
+    | 为TreeDemo添加自定义叶子图标。 |'
+- en: '| [TreeIconDemo2](../examples/components/index.html#TreeIconDemo2) | [Customizing
+    a Tree''s Display](#display) | Customizes certain leaf icons and also provides
+    tool tips for certain tree nodes. |'
+  id: totrans-180
+  prefs: []
+  type: TYPE_TB
+  zh: '| [树图标演示2](../examples/components/index.html#TreeIconDemo2) | [自定义树的显示](#display)
+    | 自定义某些叶子节点图标，并为某些树节点提供工具提示。 |'
+- en: '| [DynamicTreeDemo](../examples/components/index.html#DynamicTreeDemo) | [Dynamically
+    Changing a Tree](#dynamic) | Illustrates adding and removing nodes from a tree.
+    Also allows editing of node text. |'
+  id: totrans-181
+  prefs: []
+  type: TYPE_TB
+  zh: '| [动态树演示](../examples/components/index.html#DynamicTreeDemo) | [动态更改树结构](#dynamic)
+    | 演示如何向树中添加和移除节点。还允许编辑节点文本。 |'
+- en: '| [GenealogyExample](../examples/components/index.html#GenealogyExample) |
+    [Creating a Data Model](#data) | Implements a custom tree model and custom node
+    type. |'
+  id: totrans-182
+  prefs: []
+  type: TYPE_TB
+  zh: '| [家谱示例](../examples/components/index.html#GenealogyExample) | [创建数据模型](#data)
+    | 实现自定义树模型和自定义节点类型。 |'
+- en: '| [TreeExpandEventDemo](../examples/events/index.html#TreeExpandEventDemo)
+    | [How to Write a Tree Expansion Listener](../events/treeexpansionlistener.html)
+    | Shows how to detect node expansions and collapses. |'
+  id: totrans-183
+  prefs: []
+  type: TYPE_TB
+  zh: '| [树展开事件演示](../examples/events/index.html#TreeExpandEventDemo) | [如何编写树展开监听器](../events/treeexpansionlistener.html)
+    | 展示如何检测节点的展开和折叠。 |'
+- en: '| [TreeExpandEventDemo2](../examples/events/index.html#TreeExpandEventDemo2)
+    | [How to Write a Tree-Will-Expand Listener](../events/treewillexpandlistener.html)
+    | Shows how to veto node expansions. |'
+  id: totrans-184
+  prefs: []
+  type: TYPE_TB
+  zh: '| [树展开事件演示2](../examples/events/index.html#TreeExpandEventDemo2) | [如何编写树将展开监听器](../events/treewillexpandlistener.html)
+    | 展示如何否决节点的展开。 |'
+- en: If you are programming in JavaFX, see [Tree View](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/tree-view.htm).
+  id: totrans-185
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您在JavaFX中编程，请参阅[树视图](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/tree-view.htm)。

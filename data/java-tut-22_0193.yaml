@@ -1,0 +1,330 @@
+- en: Legacy File I/O Code
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 传统文件 I/O 代码
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/legacy.html](https://docs.oracle.com/javase/tutorial/essential/io/legacy.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/legacy.html](https://docs.oracle.com/javase/tutorial/essential/io/legacy.html)
+- en: Interoperability With Legacy Code
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 与旧代码的互操作性
+- en: Prior to the Java SE 7 release, the `java.io.File` class was the mechanism used
+    for file I/O, but it had several drawbacks.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 Java SE 7 发布之前，`java.io.File` 类是文件 I/O 的机制，但它有一些缺点。
+- en: Many methods didn't throw exceptions when they failed, so it was impossible
+    to obtain a useful error message. For example, if a file deletion failed, the
+    program would receive a "delete fail" but wouldn't know if it was because the
+    file didn't exist, the user didn't have permissions, or there was some other problem.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 许多方法在失败时不会抛出异常，因此无法获得有用的错误消息。例如，如果文件删除失败，程序将收到“删除失败”，但不知道是因为文件不存在、用户没有权限还是其他问题。
+- en: The `rename` method didn't work consistently across platforms.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`rename` 方法在各个平台上的工作不一致。'
+- en: There was no real support for symbolic links.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 没有对符号链接的真正支持。
+- en: More support for metadata was desired, such as file permissions, file owner,
+    and other security attributes.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 需要更多对元数据的支持，如文件权限、文件所有者和其他安全属性。
+- en: Accessing file metadata was inefficient.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 访问文件元数据效率低下。
+- en: Many of the `File` methods didn't scale. Requesting a large directory listing
+    over a server could result in a hang. Large directories could also cause memory
+    resource problems, resulting in a denial of service.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 许多 `File` 方法不具备可扩展性。在服务器上请求大型目录列表可能导致挂起。大型目录也可能导致内存资源问题，导致拒绝服务。
+- en: It was not possible to write reliable code that could recursively walk a file
+    tree and respond appropriately if there were circular symbolic links.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 不可能编写可靠的代码，可以递归遍历文件树，并在存在循环符号链接时做出适当响应。
+- en: Perhaps you have legacy code that uses `java.io.File` and would like to take
+    advantage of the `java.nio.file.Path` functionality with minimal impact to your
+    code.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也许您有使用 `java.io.File` 的旧代码，并希望最小影响地利用 `java.nio.file.Path` 功能。
+- en: 'The `java.io.File` class provides the [`toPath`](https://docs.oracle.com/javase/8/docs/api/java/io/File.html#toPath--)
+    method, which converts an old style `File` instance to a `java.nio.file.Path`
+    instance, as follows:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.io.File` 类提供了 [`toPath`](https://docs.oracle.com/javase/8/docs/api/java/io/File.html#toPath--)
+    方法，将旧式 `File` 实例转换为 `java.nio.file.Path` 实例，如下所示：'
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: You can then take advantage of the rich feature set available to the `Path`
+    class.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，您可以利用 `Path` 类提供的丰富功能集。
+- en: 'For example, assume you had some code that deleted a file:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设您有一些删除文件的代码：
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'You could modify this code to use the `Files.delete` method, as follows:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以修改此代码以使用 `Files.delete` 方法，如下所示：
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Conversely, the [`Path.toFile`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#toFile--)
+    method constructs a `java.io.File` object for a `Path` object.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相反，[`Path.toFile`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#toFile--)
+    方法为 `Path` 对象构造一个 `java.io.File` 对象。
+- en: Mapping java.io.File Functionality to java.nio.file
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将 java.io.File 功能映射到 java.nio.file
+- en: Because the Java implementation of file I/O has been completely re-architected
+    in the Java SE 7 release, you cannot swap one method for another method. If you
+    want to use the rich functionality offered by the `java.nio.file` package, your
+    easiest solution is to use the [`File.toPath`](https://docs.oracle.com/javase/8/docs/api/java/io/File.html#toPath--)
+    method as suggested in the previous section. However, if you do not want to use
+    that approach or it is not sufficient for your needs, you must rewrite your file
+    I/O code.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于 Java SE 7 发布中的文件 I/O 实现已完全重新架构，因此不能将一个方法替换为另一个方法。如果您想使用 `java.nio.file` 包提供的丰富功能，最简单的解决方案是使用前一节中建议的
+    [`File.toPath`](https://docs.oracle.com/javase/8/docs/api/java/io/File.html#toPath--)
+    方法。但是，如果您不想使用该方法或该方法不符合您的需求，您必须重写文件 I/O 代码。
+- en: There is no one-to-one correspondence between the two APIs, but the following
+    table gives you a general idea of what functionality in the `java.io.File` API
+    maps to in the `java.nio.file` API and tells you where you can obtain more information.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两个 API 之间没有一对一对应关系，但以下表格给出了 `java.io.File` API 中的功能在 `java.nio.file` API 中的映射，并告诉您可以在哪里获取更多信息。
+- en: '| java.io.File Functionality | java.nio.file Functionality | Tutorial Coverage
+    |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| java.io.File 功能 | java.nio.file 功能 | 教程覆盖范围 |'
+- en: '| `java.io.File` | `java.nio.file.Path` | [The Path Class](pathClass.html)
+    |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.io.File` | `java.nio.file.Path` | [Path 类](pathClass.html) |'
+- en: '| `java.io.RandomAccessFile` | The `SeekableByteChannel` functionality. | [Random
+    Access Files](rafs.html) |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.io.RandomAccessFile` | `SeekableByteChannel` 功能。 | [随机访问文件](rafs.html)
+    |'
+- en: '| `File.canRead`, `canWrite`, `canExecute` | `Files.isReadable`, `Files.isWritable`,
+    and `Files.isExecutable`. On UNIX file systems, the [Managing Metadata (File and
+    File Store Attributes)](fileAttr.html) package is used to check the nine file
+    permissions. | [Checking a File or Directory](check.html) [Managing Metadata](fileAttr.html)
+    |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.canRead`、`canWrite`、`canExecute` | `Files.isReadable`、`Files.isWritable`
+    和 `Files.isExecutable`。在 UNIX 文件系统上，使用 [管理元数据（文件和文件存储属性）](fileAttr.html) 包来检查九个文件权限。
+    | [检查文件或目录](check.html) [管理元数据](fileAttr.html) |'
+- en: '| `File.isDirectory()`, `File.isFile()`, and `File.length()` | `Files.isDirectory(Path,
+    LinkOption...)`, `Files.isRegularFile(Path, LinkOption...)`, and `Files.size(Path)`
+    | [Managing Metadata](fileAttr.html) |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.isDirectory()`、`File.isFile()` 和 `File.length()` | `Files.isDirectory(Path,
+    LinkOption...)`、`Files.isRegularFile(Path, LinkOption...)` 和 `Files.size(Path)`
+    | [管理元数据](fileAttr.html) |'
+- en: '| `File.lastModified()` and `File.setLastModified(long)` | `Files.getLastModifiedTime(Path,
+    LinkOption...)` and `Files.setLastMOdifiedTime(Path, FileTime)` | [Managing Metadata](fileAttr.html)
+    |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.lastModified()` 和 `File.setLastModified(long)` | `Files.getLastModifiedTime(Path,
+    LinkOption...)` 和 `Files.setLastMOdifiedTime(Path, FileTime)` | [管理元数据](fileAttr.html)
+    |'
+- en: '| The `File` methods that set various attributes: `setExecutable`, `setReadable`,
+    `setReadOnly`, `setWritable` | These methods are replaced by the `Files` method
+    `setAttribute(Path, String, Object, LinkOption...)`. | [Managing Metadata](fileAttr.html)
+    |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| 设置各种属性的 `File` 方法：`setExecutable`、`setReadable`、`setReadOnly`、`setWritable`
+    | 这些方法被 `Files` 方法 `setAttribute(Path, String, Object, LinkOption...)` 替代。 | [管理元数据](fileAttr.html)
+    |'
+- en: '| `new File(parent, "newfile")` | `parent.resolve("newfile")` | [Path Operations](pathOps.html)
+    |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| `new File(parent, "newfile")` | `parent.resolve("newfile")` | [路径操作](pathOps.html)
+    |'
+- en: '| `File.renameTo` | `Files.move` | [Moving a File or Directory](move.html)
+    |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.renameTo` | `Files.move` | [移动文件或目录](move.html) |'
+- en: '| `File.delete` | `Files.delete` | [Deleting a File or Directory](delete.html)
+    |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.delete` | `Files.delete` | [删除文件或目录](delete.html) |'
+- en: '| `File.createNewFile` | `Files.createFile` | [Creating Files](file.html#createFile)
+    |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.createNewFile` | `Files.createFile` | [创建文件](file.html#createFile)
+    |'
+- en: '| `File.deleteOnExit` | Replaced by the `DELETE_ON_CLOSE` option specified
+    in the `createFile` method. | [Creating Files](file.html#createFile) |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.deleteOnExit` | 由 `createFile` 方法中指定的 `DELETE_ON_CLOSE` 选项替代。 | [创建文件](file.html#createFile)
+    |'
+- en: '| `File.createTempFile` | `Files.createTempFile(Path, String, FileAttributes<?>)`,
+    `Files.createTempFile(Path, String, String, FileAttributes<?>)` | [Creating Files](file.html#createFile)
+    [Creating and Writing a File by Using Stream I/O](file.html#createStream)'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `File.createTempFile` | `Files.createTempFile(Path, String, FileAttributes<?>)`、`Files.createTempFile(Path,
+    String, String, FileAttributes<?>)` | [创建文件](file.html#createFile) [通过流 I/O 创建和写入文件](file.html#createStream)'
+- en: '[Reading and Writing Files by Using Channel I/O](file.html#channelio) |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[通过通道 I/O 读写文件](file.html#channelio) |'
+- en: '| `File.exists` | `Files.exists` and `Files.notExists` | [Verifying the Existence
+    of a File or Directory](check.html) |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.exists` | `Files.exists` 和 `Files.notExists` | [验证文件或目录的存在性](check.html)
+    |'
+- en: '| `File.compareTo` and `equals` | `Path.compareTo` and `equals` | [Comparing
+    Two Paths](pathOps.html#compare) |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.compareTo` and `equals` | `Path.compareTo` and `equals` | [比较两个路径](pathOps.html#compare)
+    |'
+- en: '| `File.getAbsolutePath` and `getAbsoluteFile` | `Path.toAbsolutePath` | [Converting
+    a Path](pathOps.html#convert) |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.getAbsolutePath` and `getAbsoluteFile` | `Path.toAbsolutePath` | [转换路径](pathOps.html#convert)
+    |'
+- en: '| `File.getCanonicalPath` and `getCanonicalFile` | `Path.toRealPath` or `normalize`
+    | [Converting a Path (`toRealPath`)](pathOps.html#convert) [Removing Redundancies
+    From a Path (`normalize`)](pathOps.html#normal)'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `File.getCanonicalPath` and `getCanonicalFile` | `Path.toRealPath` 或 `normalize`
+    | [转换路径 (`toRealPath`)](pathOps.html#convert) [从路径中删除冗余部分 (`normalize`)](pathOps.html#normal)'
+- en: '|'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| `File.toURI` | `Path.toURI` | [Converting a Path](pathOps.html#convert) |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.toURI` | `Path.toURI` | [转换路径](pathOps.html#convert) |'
+- en: '| `File.isHidden` | `Files.isHidden` | [Retrieving Information About the Path](pathOps.html#info)
+    |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.isHidden` | `Files.isHidden` | [检索路径信息](pathOps.html#info) |'
+- en: '| `File.list` and `listFiles` | `Path.newDirectoryStream` | [Listing a Directory''s
+    Contents](dirs.html#listdir) |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.list` and `listFiles` | `Path.newDirectoryStream` | [列出目录内容](dirs.html#listdir)
+    |'
+- en: '| `File.mkdir` and `mkdirs` | `Files.createDirectory` | [Creating a Directory](dirs.html#create)
+    |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.mkdir` 和 `mkdirs` | `Files.createDirectory` | [创建目录](dirs.html#create)
+    |'
+- en: '| `File.listRoots` | `FileSystem.getRootDirectories` | [Listing a File System''s
+    Root Directories](dirs.html#listall) |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.listRoots` | `FileSystem.getRootDirectories` | [列出文件系统的根目录](dirs.html#listall)
+    |'
+- en: '| `File.getTotalSpace`, `File.getFreeSpace`, `File.getUsableSpace` | `FileStore.getTotalSpace`,
+    `FileStore.getUnallocatedSpace`, `FileStore.getUsableSpace`, `FileStore.getTotalSpace`
+    | [File Store Attributes](fileAttr.html#store) |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| `File.getTotalSpace`、`File.getFreeSpace`、`File.getUsableSpace` | `FileStore.getTotalSpace`、`FileStore.getUnallocatedSpace`、`FileStore.getUsableSpace`、`FileStore.getTotalSpace`
+    | [文件存储属性](fileAttr.html#store) |'

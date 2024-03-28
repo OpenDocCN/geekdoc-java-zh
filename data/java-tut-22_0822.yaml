@@ -1,0 +1,61 @@
+- en: Observe Application Freedom
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 观察应用程序自由
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/tour2/step1.html](https://docs.oracle.com/javase/tutorial/security/tour2/step1.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/tour2/step1.html](https://docs.oracle.com/javase/tutorial/security/tour2/step1.html)
+- en: A security manager is *not* automatically installed when an *application* is
+    running. In the [next step](step3.html), you'll see how to apply the same security
+    policy to an application found on the local file system as to downloaded sandbox
+    applets. But first, let's demonstrate that a security manager is by default not
+    installed for an application, and thus the application has full access to resources.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当*应用程序*运行时，*不会*自动安装安全管理器。在[下一步](step3.html)中，您将看到如何将相同的安全策略应用于在本地文件系统上找到的应用程序和下载的沙箱小程序。但首先，让我们证明默认情况下未安装安全管理器用于应用程序，因此应用程序可以完全访问资源。
+- en: Create a file named `GetProps.java` on your computer by either copying or downloading
+    the [`GetProps.java`](examples/GetProps.java) source code.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在您的计算机上创建一个名为`GetProps.java`的文件，可以通过复制或下载[`GetProps.java`](examples/GetProps.java)源代码来实现。
+- en: The examples in this lesson assume that you put `GetProps.java` in the `C:\Test`
+    directory if you're using a Windows system or in the `~/test` directory on UNIX.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程中的示例假定您将`GetProps.java`放在`C:\Test`目录中（如果您使用Windows系统）或在UNIX上的`~/test`目录中。
+- en: As you can see if you examine the source file, this program tries to get (read)
+    the property values, whose names are `"os.name"` , `"java.version"`, `"user.home"`,
+    and `"java.home"`.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您所见，如果检查源文件，此程序尝试获取（读取）属性值，其名称为`"os.name"`，`"java.version"`，`"user.home"`和`"java.home"`。
+- en: 'Now compile and run `GetProps.java`. You should see output like the following:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在编译并运行`GetProps.java`。您应该看到类似以下的输出：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This shows that the application was allowed to access all the property values,
+    as shown in the following figure.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这表明应用程序被允许访问所有属性值，如下图所示。
+- en: '![Applicaton can read property values](../Images/f93c88329aaff084fee70bf8b14fea05.png)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_IMG
+  zh: '![应用程序可以读取属性值](../Images/f93c88329aaff084fee70bf8b14fea05.png)'

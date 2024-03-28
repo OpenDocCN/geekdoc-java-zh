@@ -1,0 +1,82 @@
+- en: Cookies
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Cookie
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/cookies.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/cookies.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/cookies.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/cookies.html)
+- en: Web applications are typically a series of Hypertext Transfer Protocol (HTTP)
+    requests and responses. As HTTP is a stateless protocol, information is not automatically
+    saved between HTTP requests. Web applications use cookies to store state information
+    on the client. Cookies can be used to store information about the user, the user's
+    shopping cart, and so on.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Web应用程序通常是一系列的超文本传输协议（HTTP）请求和响应。由于HTTP是一个无状态协议，信息不会在HTTP请求之间自动保存。Web应用程序使用cookie在客户端上存储状态信息。Cookie可用于存储有关用户、用户的购物车等信息。
+- en: Types of Cookies
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Cookie的类型
+- en: 'The two types of cookies follow:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两种类型的cookie如下：
+- en: Session cookies – Session cookies are stored in memory and are accessible as
+    long as the user is using the web application. Session cookies are lost when the
+    user exits the web application. Such cookies are identified by a session ID and
+    are most commonly used to store details of a shopping cart.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 会话cookie – 会话cookie存储在内存中，只要用户在使用Web应用程序，就可以访问。用户退出Web应用程序时，会话cookie会丢失。这些cookie由会话ID标识，最常用于存储购物车的详细信息。
+- en: Permanent cookies – Permanent cookies are used to store long-term information
+    such as user preferences and user identification information. Permanent cookies
+    are stored in persistent storage and are not lost when the user exits the application.
+    Permanent cookies are lost when they expire.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 永久cookie – 永久cookie用于存储长期信息，如用户偏好和用户识别信息。永久cookie存储在持久存储中，用户退出应用程序时不会丢失。永久cookie在过期时会丢失。
+- en: Cookie Support in Rich Internet Applications
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 富互联网应用程序中的Cookie支持
+- en: Rich Internet applications (applets and Java Web Start applications) support
+    session and permanent cookies. The underlying cookie store depends on the browser
+    and the operating system on the client.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 富互联网应用程序（小程序和Java Web Start应用程序）支持会话和永久cookie。底层的cookie存储取决于客户端的浏览器和操作系统。
+- en: 'To learn more about cookies, see the following:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解更多关于cookie的信息，请参阅以下内容：
+- en: '[Working With Cookies](../../networking/cookies/index.html) lesson in the Java
+    Tutorial'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在Java教程中的[处理Cookie](../../networking/cookies/index.html)课程
+- en: '[API Documentation for CookieManager](https://docs.oracle.com/javase/8/docs/api/java/net/CookieManager.html)
+    and related classes'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[CookieManager的API文档](https://docs.oracle.com/javase/8/docs/api/java/net/CookieManager.html)和相关类'

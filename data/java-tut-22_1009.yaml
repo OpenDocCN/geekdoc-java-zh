@@ -1,0 +1,182 @@
+- en: Digest-MD5
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Digest-MD5
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/digest.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/digest.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/digest.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/digest.html)
+- en: '*Digest-MD5 authentication* is the required authentication mechanism for LDAP
+    v3 servers ( [RFC 2829](http://www.ietf.org/rfc/rfc2829.txt)). Because the use
+    of SASL is part of the LDAP v3 ( [RFC 2251](http://www.ietf.org/rfc/rfc2251.txt)),
+    servers that support only the LDAP v2 do not support Digest-MD5.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*Digest-MD5 认证*是 LDAP v3 服务器所需的认证机制（[RFC 2829](http://www.ietf.org/rfc/rfc2829.txt)）。因为
+    SASL 的使用是 LDAP v3 的一部分（[RFC 2251](http://www.ietf.org/rfc/rfc2251.txt)），仅支持 LDAP
+    v2 的服务器不支持 Digest-MD5。'
+- en: The Digest-MD5 mechanism is described in [RFC 2831](http://www.ietf.org/rfc/rfc2831.txt).
+    It is based on the HTTP Digest Authentication ( [RFC 2251](http://www.ietf.org/rfc/rfc2251.txt)).
+    In Digest-MD5, the LDAP server sends data that includes various authentication
+    options that it is willing to support plus a special token to the LDAP client.
+    The client responds by sending an encrypted response that indicates the authentication
+    options that it has selected. The response is encrypted in such a way that proves
+    that the client knows its password. The LDAP server then decrypts and verifies
+    the client's response.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Digest-MD5 机制在 [RFC 2831](http://www.ietf.org/rfc/rfc2831.txt) 中有描述。它基于 HTTP
+    摘要认证（[RFC 2251](http://www.ietf.org/rfc/rfc2251.txt)）。在 Digest-MD5 中，LDAP 服务器发送包含各种认证选项以及一个特殊令牌给
+    LDAP 客户端的数据。客户端通过发送加密响应来回应，该响应指示其选择的认证选项。响应被加密以证明客户端知道其密码。LDAP 服务器然后解密并验证客户端的响应。
+- en: To use the Digest-MD5 authentication mechanism, you must set the authentication
+    environment properties as follows.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用 Digest-MD5 认证机制，必须设置认证环境属性如下。
+- en: '[`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION).'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION)。'
+- en: Set to the string `"DIGEST-MD5"`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置为字符串`"DIGEST-MD5"`。
+- en: '[`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL).'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL)。'
+- en: 'Set to the principal name. This is a server-specific format. Some servers support
+    a login user id format, such as that defined for UNIX or Windows login screens.
+    Others accept a distinguished name. Yet others use the authorization id formats
+    defined in [RFC 2829](http://www.ietf.org/rfc/rfc2829.txt). In that RFC, the name
+    should be either the string `"dn:"`, followed by the fully qualified DN of the
+    entity being authenticated, or the string `"u:"`, followed by the user id. Some
+    servers accept multiple formats. Examples of some of these formats are `"cuser"`,
+    `"dn: cn=C. User, ou=NewHires, o=JNDITutorial"`, and `"u: cuser"` The data type
+    of this property must be `java.lang.String`.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '设置为主体名称。这是一个特定于服务器的格式。一些服务器支持登录用户 id 格式，例如 UNIX 或 Windows 登录屏幕中定义的格式。其他服务器接受专有名称。还有一些使用
+    [RFC 2829](http://www.ietf.org/rfc/rfc2829.txt) 中定义的授权 id 格式。在该 RFC 中，名称应为字符串`"dn:"`，后跟被认证实体的完全限定
+    DN，或者字符串`"u:"`，后跟用户 id。一些服务器接受多种格式。一些格式的示例是`"cuser"`，`"dn: cn=C. User, ou=NewHires,
+    o=JNDITutorial"`，和`"u: cuser"`。此属性的数据类型必须是`java.lang.String`。'
+- en: '[`Context.SECURITY_CREDENTIALS`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS).'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Context.SECURITY_CREDENTIALS`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS)。'
+- en: Set to the password of the principal (for example, `"mysecret"`). It is of type
+    `java.lang.String`, `char` array (`char[]`), or `byte` array (`byte[]`). If the
+    password is a `java.lang.String` or `char[]`, then it is encoded by using UTF-8
+    for transmission to the server. If the password is a `byte[]`, then it is transmitted
+    as is to the server.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置为主体的密码（例如，`"mysecret"`）。它的类型可以是`java.lang.String`，`char` 数组（`char[]`），或`byte`
+    数组（`byte[]`）。如果密码是`java.lang.String`或`char[]`，则使用 UTF-8 进行编码以传输到服务器。如果密码是`byte[]`，则原样传输到服务器。
+- en: The [`following example`](examples/Digest.java) shows how a client performs
+    authentication using Digest-MD5 to an LDAP server.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`以下示例`](examples/Digest.java)展示了客户端如何使用 Digest-MD5 对 LDAP 服务器进行认证。'
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The [Oracle Directory Server, v5.2](http://www.oracle.com/technetwork/testcontent/index-085178.html)
+    supports the Digest-MD5 authentication mechanism for users that have clear-text
+    passwords. You must set the password encryption mode *before* you create the user.
+    If you have already created the user, delete it and recreate it. To set the password
+    encryption mode using the Administration Console, select the Configuration tab
+    and the Data node. In the Passwords pane, select the "No encryption (CLEAR)" option
+    for "Password encryption." The server accepts simple user names (that is, the
+    value of the `"uid"` attribute for entries that have one) and the "dn:" format
+    of user names. See the server''s documentation for detailed information.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** [Oracle Directory Server, v5.2](http://www.oracle.com/technetwork/testcontent/index-085178.html)
+    支持具有明文密码的用户的 Digest-MD5 认证机制。您必须在创建用户之前设置密码加密模式。如果您已经创建了用户，请删除并重新创建。要使用管理控制台设置密码加密模式，请选择“配置”选项卡和“数据”节点。在“密码”窗格中，选择“无加密（CLEAR）”选项以进行“密码加密”。服务器接受简单的用户名（即具有一个条目的“uid”属性的值）和用户名称的“dn:”格式。有关详细信息，请参阅服务器的文档。'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Specifying the Realm
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定领域
+- en: A *realm* defines the namespace from which the authentication entity (the value
+    of the `Context.SECURITY_PRINCIPAL` property) is selected. A server might have
+    multiple realms. For example, a server for a university might be configured to
+    have two realms, one for its student users and another for faculty users. Realm
+    configuration is done by the directory administrator. Some directories have a
+    default single realm. For example, the Oracle Directory Server, v5.2, uses the
+    fully qualified host name of the machine as the default realm.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*领域* 定义了选择身份验证实体（`Context.SECURITY_PRINCIPAL` 属性的值）的命名空间。服务器可能有多个领域。例如，大学的服务器可能配置为具有两个领域，一个用于学生用户，另一个用于教师用户。领域配置由目录管理员完成。一些目录具有默认的单个领域。例如，Oracle
+    Directory Server, v5.2，使用机器的完全限定主机名作为默认领域。'
+- en: In Digest-MD5 authentication, you must authenticate to a specific realm. You
+    may use the following authentication environment property to specify the realm.
+    If you do not specify a realm, then any one of the realms offered by the server
+    will be used.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 Digest-MD5 认证中，您必须对特定领域进行身份验证。您可以使用以下身份验证环境属性来指定领域。如果您不指定领域，则服务器提供的任何一个领域都将被使用。
+- en: '`java.naming.security.sasl.realm`'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.naming.security.sasl.realm`'
+- en: Set to the realm of the principal. This is a deployment-specific and/or server-specific
+    case-sensitive string. It identifies the realm or domain from which the principal
+    name (`Context.SECURITY_PRINCIPAL`) should be chosen. If this realm does not match
+    one of the realms offered by the server, then the authentication fails.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置为主体的领域。这是一个部署特定和/或服务器特定的区分大小写的字符串。它标识应选择主体名称（`Context.SECURITY_PRINCIPAL`）的领域或域。如果此领域与服务器提供的领域之一不匹配，则身份验证失败。
+- en: The [`following example`](examples/DigestRealm.java) shows how to set the environment
+    properties for performing authentication using Digest-MD5 and a specified realm.
+    To make this example work in your environment, you must change the source code
+    so that the realm value reflects what has been configured on your directory server.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`以下示例`](examples/DigestRealm.java) 显示了如何设置环境属性以使用 Digest-MD5 进行身份验证并指定领域。要使此示例在您的环境中起作用，您必须更改源代码，以便领域值反映在您的目录服务器上的配置。'
+- en: '[PRE1]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: If you need to use [privacy protection](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/digest.html)
+    and other SASL properties, these are discussed in the JNDI Tutorial.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您需要使用[隐私保护](https://docs.oracle.com/javase/jndi/tutorial/ldap/security/digest.html)和其他
+    SASL 属性，请参阅 JNDI 教程。

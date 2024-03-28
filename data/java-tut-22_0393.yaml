@@ -1,0 +1,1893 @@
+- en: How to Use Tables
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用表格
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/table.html](https://docs.oracle.com/javase/tutorial/uiswing/components/table.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/table.html](https://docs.oracle.com/javase/tutorial/uiswing/components/table.html)
+- en: 'With the [`JTable`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html)
+    class you can display tables of data, optionally allowing the user to edit the
+    data. `JTable` does not contain or cache data; it is simply a view of your data.
+    Here is a picture of a typical table displayed within a scroll pane:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[`JTable`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html)类可以显示数据表，可选择允许用户编辑数据。
+    `JTable`不包含或缓存数据；它只是您数据的一个视图。这里是一个典型表格在滚动窗格中显示的图片：
+- en: '![A snapshot of TableDemo, which displays a typical table.](../Images/83a01506ca7c1365f675c3b5c4322c3c.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TableDemo的快照，显示了一个典型的表格。](../Images/83a01506ca7c1365f675c3b5c4322c3c.png)'
+- en: 'The rest of this section shows you how to accomplish some common table-related
+    tasks. Here are the topics this section covers:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的其余部分将向您展示如何完成一些常见的与表格相关的任务。本节涵盖以下主题：
+- en: '[Creating a Simple Table](#simple)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建简单表格](#simple)'
+- en: '[Adding a Table to a Container](#show)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将表格添加到容器中](#show)'
+- en: '[Setting and Changing Column Widths](#width)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置和更改列宽](#width)'
+- en: '[User Selections](#selection)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[用户选择](#selection)'
+- en: '[Creating a Table Model](#data)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建表格模型](#data)'
+- en: '[Listening for Data Changes](#modelchange)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[监听数据更改](#modelchange)'
+- en: '[Firing Data Change Events](#fire)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[触发数据更改事件](#fire)'
+- en: '[Concepts: Editors and Renderers](#editrender)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[概念：编辑器和渲染器](#editrender)'
+- en: '[Using Custom Renderers](#renderer)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用自定义渲染器](#renderer)'
+- en: '[Specifying Tool Tips for Cells](#celltooltip)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[为单元格指定工具提示](#celltooltip)'
+- en: '[Specifying Tool Tips for Column Headers](#headertooltip)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[为列标题指定工具提示](#headertooltip)'
+- en: '[Sorting and Filtering](#sorting)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[排序和过滤](#sorting)'
+- en: '[Using a Combo Box as an Editor](#combobox)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用下拉框作为编辑器](#combobox)'
+- en: '[Using Other Editors](#editor)'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用其他编辑器](#editor)'
+- en: '[Using an Editor to Validate User-Entered Text](#validtext)'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用编辑器验证用户输入的文本](#validtext)'
+- en: '[Printing](#printing)'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[打印](#printing)'
+- en: '[Examples that Use Tables](#eg)'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用表格的示例](#eg)'
+- en: Creating a Simple Table
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建简单表格
+- en: '* * *'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run `SimpleTableDemo` using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/components/index.html#SimpleTableDemo).
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行`SimpleTableDemo`（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自己编译和运行示例，请参考[示例索引](../examples/components/index.html#SimpleTableDemo)。
+- en: '[![Launches the SimpleTableDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SimpleTableDemoProject/SimpleTableDemo.jnlp)'
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '[![启动SimpleTableDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SimpleTableDemoProject/SimpleTableDemo.jnlp)'
+- en: Click the cell that contains "Snowboarding".
+  id: totrans-27
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击包含“滑雪”的单元格。
+- en: The entire first row is selected, indicating that you have selected Kathy Smith's
+    data. A special highlight indicates that the "Snowboarding" cell is editable.
+    Generally, you begin editing a text cell by double-clicking it.
+  id: totrans-28
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 整个第一行被选中，表示您已选择了Kathy Smith的数据。特殊的高亮显示表示“滑雪”单元格可编辑。通常，双击文本单元格即可开始编辑。
+- en: Position the cursor over "First Name". Now press the mouse button and drag to
+    the right.
+  id: totrans-29
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将光标放在“名字”上。现在按下鼠标按钮并向右拖动。
+- en: As you can see, users can rearrange columns in tables.
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如您所见，用户可以重新排列表格中的列。
+- en: Position the cursor just to the right of a column header. Now press the mouse
+    button and drag to the right or left.
+  id: totrans-31
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将光标放在列标题的右侧。现在按下鼠标按钮并向右或向左拖动。
+- en: The column changes size, and the other columns adjust to fill the remaining
+    space.
+  id: totrans-32
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 列的大小会改变，其他列会调整以填充剩余空间。
+- en: Resize the window containing the table so that it's bigger than necessary to
+    display the whole table.
+  id: totrans-33
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调整包含表格的窗口大小，使其比显示整个表格所需的空间更大。
+- en: All the table cells become wider, expanding to fill the extra horizontal space.
+  id: totrans-34
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 所有表格单元格变宽，扩展以填充额外的水平空间。
+- en: '* * *'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The table in [`SimpleTableDemo.java`](../examples/components/SimpleTableDemoProject/src/components/SimpleTableDemo.java)
+    declares the column names in a String array:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[`SimpleTableDemo.java`](../examples/components/SimpleTableDemoProject/src/components/SimpleTableDemo.java)中的表格使用字符串数组声明列名：
+- en: '[PRE0]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Its data is initialized and stored in a two-dimensional Object array:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其数据被初始化并存储在二维对象数组中：
+- en: '[PRE1]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Then the Table is constructed using these data and columnNames:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后使用这些数据和列名构建表格：
+- en: '[PRE2]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'There are two `JTable` constructors that directly accept data (`SimpleTableDemo`
+    uses the first):'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两个直接接受数据的`JTable`构造函数（`SimpleTableDemo`使用第一个）：
+- en: '`JTable(Object[][] rowData, Object[] columnNames)`'
+  id: totrans-43
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTable(Object[][] rowData, Object[] columnNames)`'
+- en: '`JTable(Vector rowData, Vector columnNames)`'
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTable(Vector rowData, Vector columnNames)`'
+- en: 'The advantage of these constructors is that they are easy to use. However,
+    these constructors also have disadvantages:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些构造函数的优点是易于使用。但是，这些构造函数也有缺点：
+- en: They automatically make every cell editable.
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它们会自动使每个单元格可编辑。
+- en: They treat all data types the same (as strings). For example, if a table column
+    has `Boolean` data, the table can display the data in a check box. However, if
+    you use either of the two `JTable` constructors listed previously, your `Boolean`
+    data is displayed as a string. You can see this difference in the `Vegetarian`
+    column of the previous figure.
+  id: totrans-47
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它们将所有数据类型视为相同（字符串）。例如，如果表格列具有`Boolean`数据，表格可以将数据显示为复选框。但是，如果您使用前面列出的两个`JTable`构造函数之一，您的`Boolean`数据将显示为字符串。您可以在前一个图中的`Vegetarian`列中看到这种差异。
+- en: They require that you put all of the table's data in an array or vector, which
+    may not be appropriate for some data. For example, if you are instantiating a
+    set of objects from a database, you might want to query the objects directly for
+    their values, rather than copying all their values into an array or vector.
+  id: totrans-48
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它们要求您将所有表格数据放入数组或向量中，这对于某些数据可能不合适。例如，如果您正在从数据库实例化一组对象，您可能希望直接查询对象以获取其值，而不是将所有值复制到数组或向量中。
+- en: If you want to get around these restrictions, you need to implement your own
+    table model, as described in [Creating a Table Model](#data).
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想绕过这些限制，您需要实现自己的表格模型，如[创建表格模型](#data)中所述。
+- en: Adding a Table to a Container
+  id: totrans-50
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将表格添加到容器中
+- en: 'Here is typical code for creating a [scroll pane](scrollpane.html) that serves
+    as a container for a table:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是创建[滚动窗格](scrollpane.html)作为表格容器的典型代码：
+- en: '[PRE3]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The two lines in this snippet do the following:'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此片段中的两行代码执行以下操作：
+- en: The `JScrollPane` constructor is invoked with an argument that refers to the
+    table object. This creates a scroll pane as a container for the table; the table
+    is automatically added to the container.
+  id: totrans-54
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用引用表格对象的参数调用`JScrollPane`构造函数。这将创建一个作为表格容器的滚动窗格；表格会自动添加到容器中。
+- en: '`JTable.setFillsViewportHeight` is invoked to set the `fillsViewportHeight`
+    property. When this property is `true` the table uses the entire height of the
+    container, even if the table doesn''t have enough rows to use the whole vertical
+    space. This makes it easier to use the table as a drag-and-drop target.'
+  id: totrans-55
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用`JTable.setFillsViewportHeight`来设置`fillsViewportHeight`属性。当此属性为`true`时，表格将使用容器的整个高度，即使表格没有足够的行来使用整个垂直空间。这使得将表格用作拖放目标更容易。
+- en: The scroll pane automatically places the table header at the top of the viewport.
+    The column names remain visible at the top of the viewing area when the table
+    data is scrolled.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 滚动窗格会自动将表头放置在视口顶部。当表格数据滚动时，列名仍然可见在查看区域的顶部。
+- en: 'If you are using a table without a scroll pane, then you must get the table
+    header component and place it yourself. For example:'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您使用没有滚动窗格的表格，则必须自行获取表头组件并放置它。例如：
+- en: '[PRE4]'
+  id: totrans-58
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Setting and Changing Column Widths
+  id: totrans-59
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置和更改列宽度
+- en: By default, all columns in a table start out with equal width, and the columns
+    automatically fill the entire width of the table. When the table becomes wider
+    or narrower (which might happen when the user resizes the window containing the
+    table), all the column widths change appropriately.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，表格中的所有列都具有相等的宽度，并且列会自动填充表格的整个宽度。当表格变宽或变窄时（当用户调整包含表格的窗口大小时可能会发生），所有列宽度会相应地更改。
+- en: When the user resizes a column by dragging its right border, then either other
+    columns must change size, or the table's size must change. By default, the table's
+    size remains the same, and all columns to the right of the drag point resize to
+    accommodate space added to or removed from the column to the left of the drag
+    point.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户通过拖动列的右边框调整列的大小时，要么其他列的大小会改变，要么表格的大小会改变。默认情况下，表格的大小保持不变，拖动点左侧的列增加或减少的空间会导致拖动点右侧的所有列调整大小。
+- en: 'To customize initial column widths, you can invoke `setPreferredWidth` on each
+    of your table''s columns. This sets both the preferred widths of the columns and
+    their approximate relative widths. For example, adding the following code to `SimpleTableDemo`
+    makes its third column bigger than the other columns:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要自定义初始列宽度，您可以在表格的每一列上调用`setPreferredWidth`。这将设置列的首选宽度和它们的大致相对宽度。例如，将以下代码添加到`SimpleTableDemo`中会使其第三列比其他列更宽：
+- en: '[PRE5]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: As the preceding code shows, each column in a table is represented by a [`TableColumn`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableColumn.html)
+    object. `TableColumn` supplies getter and setter methods for the minimum, preferred,
+    and maximum widths of a column, as well as a method for getting the current width.
+    For an example of setting cell widths based on an approximation of the space needed
+    to draw the cells' contents, see the `initColumnSizes` method in [`TableRenderDemo.java`](../examples/components/TableRenderDemoProject/src/components/TableRenderDemo.java).
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如前面的代码所示，表格中的每一列都由一个[`TableColumn`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableColumn.html)对象表示。`TableColumn`提供了用于获取和设置列的最小、首选和最大宽度的方法，以及用于获取当前宽度的方法。有关根据绘制单元格内容所需空间的近似值设置单元格宽度的示例，请参见[`TableRenderDemo.java`](../examples/components/TableRenderDemoProject/src/components/TableRenderDemo.java)中的`initColumnSizes`方法。
+- en: "When the user explicitly resizes columns, the columns' *preferred* widths are\
+    \ set such that the user-specified sizes become the columns' new *current* widths.\
+    \ However, when table itself is resized \x97 typically because the window has\
+    \ resized \x97; the columns' preferred widths do not change. Instead, the existing\
+    \ preferred widths are used to calculate new column widths to fill the available\
+    \ space."
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "当用户明确调整列宽时，列的*首选*宽度会被设置为用户指定的大小，成为列的新*当前*宽度。然而，当表格本身被调整大小时 \x97 通常是因为窗口大小调整\
+    \ \x97；列的首选宽度不会改变。相反，现有的首选宽度会被用来计算新的列宽以填充可用空间。"
+- en: You can change a table's resize behavior by invoking [`setAutoResizeMode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setAutoResizeMode-int-).
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过调用[`setAutoResizeMode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setAutoResizeMode-int-)来更改表格的调整大小行为。
+- en: User Selections
+  id: totrans-67
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 用户选择
+- en: In its default configuration, a table supports a selection that consists of
+    one or more rows. The user can select a contiguous range of rows or an arbitrary
+    set of rows. The last cell that the user indicated gets a special indication;
+    in the Metal look and feel, the cell is outlined. This cell is known as the *lead
+    selection*; it is sometimes called "the cell with the focus" or "the current cell".
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在其默认配置中，表格支持由一个或多个行组成的选择。用户可以选择一系列连续的行或任意一组行。用户指示的最后一个单元格会得到特殊的指示；在Metal外观中，该单元格会被勾勒出来。这个单元格被称为*主要选择*；有时被称为“焦点单元格”或“当前单元格”。
+- en: 'The user uses the mouse and/or keyboard to make selections, as described in
+    the following table:'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户使用鼠标和/或键盘进行选择，如下表所述：
+- en: '| Operation | Mouse Action | Keyboard Action |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '| 操作 | 鼠标操作 | 键盘操作 |'
+- en: '| Select single row. | Click. | Up Arrow or Down Arrow. |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| 选择单行。 | 点击。 | 上箭头或下箭头。 |'
+- en: '| Extend contiguous selection. | Shift-Click or Drag over rows. | Shift-Up
+    Arrow or Shift-Down Arrow. |'
+  id: totrans-72
+  prefs: []
+  type: TYPE_TB
+  zh: '| 扩展连续选择。 | Shift-Click 或拖动行。 | Shift-Up Arrow 或 Shift-Down Arrow。 |'
+- en: '| Add row to selection/toggle row selection. | Control-Click | Move lead selection
+    with Control-Up Arrow or Control-Down Arrow, then use Space Bar to add to selection
+    or Control-Space Bar to toggle row selection. |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '| 将行添加到选择/切换行选择。 | Control-Click | 使用Control-Up Arrow或Control-Down Arrow移动主要选择，然后使用空格键添加到选择或使用Control-Space键切换行选择。
+    |'
+- en: To see how selections work, click the Launch button to run `TableSelectionDemo`
+    using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TableSelectionDemo).
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要查看选择是如何工作的，请单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行`TableSelectionDemo`（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TableSelectionDemo)。
+- en: '[![Launches the TableSelectionDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableSelectionDemoProject/TableSelectionDemo.jnlp)'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TableSelectionDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableSelectionDemoProject/TableSelectionDemo.jnlp)'
+- en: This example program presents the familiar table, and allows the user to manipulate
+    certain JTable options. There is also a text pane that logs selection events.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例程序呈现了熟悉的表格，并允许用户操作某些JTable选项。还有一个文本窗格记录选择事件。
+- en: In the screenshot below, a user has run the program, clicked in the first row,
+    then control-clicked in the third row. Notice the outline around the last cell
+    clicked; this is how the Metal look and feel highlights the lead selection.
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在下面的截图中，用户运行了程序，在第一行单击，然后在第三行按住控制键单击。注意最后单击的单元格周围的轮廓；这是Metal外观如何突出显示主要选择。
+- en: '![TableSelectionDemo with a non-contiguous row selection.](../Images/888391cc6e29ab01adfee57b1ec4832b.png)'
+  id: totrans-78
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TableSelectionDemo显示非连续行选择。](../Images/888391cc6e29ab01adfee57b1ec4832b.png)'
+- en: Under "Selection Mode" there are a set of radio buttons. Click the one labelled
+    "Single Selection". Now you can only select one row at a time. If you click on
+    the "Single Interval Selection" radio button, you can select a set of rows that
+    must be contiguous.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在“选择模式”下有一组单选按钮。单击标记为“单一选择”的按钮。现在您只能一次选择一行。如果单击“单一间隔选择”单选按钮，则可以选择必须是连续的一组行。
+- en: 'All of the radio buttons under "Selection Mode" invoke [`JTable.setSelectionMode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setSelectionMode-int-).
+    This method takes a single argument, which must be one of the following constants
+    defined in `javax.swing.ListSelectionModel`: `MULTIPLE_INTERVAL_SELECTION`, `SINGLE_INTERVAL_SELECTION`,
+    and `SINGLE_SELECTION`.'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: “选择模式”下的所有单选按钮都调用[`JTable.setSelectionMode`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setSelectionMode-int-)。此方法接受一个参数，必须是`javax.swing.ListSelectionModel`中定义的以下常量之一：`MULTIPLE_INTERVAL_SELECTION`，`SINGLE_INTERVAL_SELECTION`和`SINGLE_SELECTION`。
+- en: 'Returning to `TableSelectionDemo`, notice the three option check boxes under
+    "Selection Options." Each of check box controls the state of a `boolean` bound
+    variable defined by `JTable`:'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 回到`TableSelectionDemo`，注意“选择选项”下的三个选项复选框。每个复选框控制由`JTable`定义的`boolean`绑定变量的状态：
+- en: '"Row Selection" controls `rowSelectionAllowed` which has setter method `setRowSelectionAllowed`
+    and getter method `getRowSelectionAllowed`. When this bound property is `true`
+    (and the `columnSelectionAllowed` property is `false`), the user can select by
+    row.'
+  id: totrans-82
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: “行选择”控制`rowSelectionAllowed`，其具有setter方法`setRowSelectionAllowed`和getter方法`getRowSelectionAllowed`。当此绑定属性为`true`（且`columnSelectionAllowed`属性为`false`）时，用户可以按行选择。
+- en: '"Column Selection" controls `columnSelectionAllowed` which has setter method
+    `setColumnSelectionAllowed` and getter method `getColumnSelectionAllowed`. When
+    this bound property is `true` (and the `rowSelectionAllowed` bound property is
+    `false`), the user can select by column.'
+  id: totrans-83
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: “列选择”控制`columnSelectionAllowed`，其具有setter方法`setColumnSelectionAllowed`和getter方法`getColumnSelectionAllowed`。当此绑定属性为`true`（且`rowSelectionAllowed`绑定属性为`false`）时，用户可以按列选择。
+- en: '"Cell Selection" controls `cellSelectionEnabled`, which has setter method `setCellSelectionEnabled`
+    and getter method `getCellSelectionEnabled`. When this bound property is `true`,
+    the user can select a single cell or rectangular block of cells.'
+  id: totrans-84
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: “单元格选择”控制`cellSelectionEnabled`，其具有setter方法`setCellSelectionEnabled`和getter方法`getCellSelectionEnabled`。当此绑定属性为`true`时，用户可以选择单个单元格或矩形块的单元格。
+- en: '* * *'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**NOTE:** `JTable` uses a very simple concept of selection, managed as an intersection
+    of rows and columns. It was not designed to handle fully independent cell selections.'
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** `JTable`使用非常简单的选择概念，作为行和列的交集进行管理。它不是设计为处理完全独立的单元格选择。'
+- en: '* * *'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you clear all three check boxes (setting all three bound properties to `false`),
+    there is no selection; only the lead selection is shown.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果清除所有三个复选框（将所有三个绑定属性设置为`false`），则没有选择；只显示主要选择。
+- en: You may notice that the "Cell Selection" check box is disabled in multiple interval
+    selection mode. This is because cell selection is not supported in this mode in
+    the demo. You can specify selection by cell in multiple interval selection mode,
+    but the result is a table that does not produce useful selections.
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能注意到在多个间隔选择模式下，“单元格选择”复选框被禁用。这是因为在演示中不支持单元格选择。您可以在多个间隔选择模式下指定按单元格选择，但结果是产生不实用的选择的表格。
+- en: You may also notice that changing any of the three selection options can affect
+    the others. This is because allowing both row selection and column selection is
+    exactly the same as enabling cell selection. `JTable` automatically updates the
+    three bound variables as necessary to keep them consistent.
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能还注意到，更改三个选择选项中的任何一个都可能影响其他选项。这是因为允许行选择和列选择与启用单元格选择完全相同。`JTable`会根据需要自动更新三个绑定变量，以保持它们一致。
+- en: '* * *'
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**NOTE:** Setting `cellSelectionEnabled` to a value has the side effect of
+    also setting both `rowSelectionEnabled` and `columnSelectionEnabled` to that value.
+    Setting both `rowSelectionEnabled` and `columnSelectionEnabled` to a value has
+    the side effect of also setting `cellSelectionEnabled` to that value. Setting
+    `rowSelectionEnabled` and `columnSelectionEnabled` to different values has the
+    side effect of also setting `cellSelectionEnabled` to `false`.'
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 将`cellSelectionEnabled`设置为一个值会同时将`rowSelectionEnabled`和`columnSelectionEnabled`设置为该值。将`rowSelectionEnabled`和`columnSelectionEnabled`都设置为一个值会同时将`cellSelectionEnabled`设置为该值。将`rowSelectionEnabled`和`columnSelectionEnabled`设置为不同的值会同时将`cellSelectionEnabled`设置为`false`。'
+- en: '* * *'
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'To retrieve the current selection, use [`JTable.getSelectedRows`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#getSelectedRows--)
+    which returns an array of row indexes, and [`JTable.getSelectedColumns`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#getSelectedColumns--)
+    which returns an array of column indexes. To retrieve the coordinates of the lead
+    selection, refer to the selection models for the table itself and for the table''s
+    column model. The following code formats a string containing the row and column
+    of the lead selection:'
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要检索当前选择，请使用[`JTable.getSelectedRows`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#getSelectedRows--)返回一个行索引数组，以及[`JTable.getSelectedColumns`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#getSelectedColumns--)返回一个列索引数组。要检索主选择的坐标，请参考表本身和表的列模型的选择模型。以下代码格式化一个包含主选择行和列的字符串：
+- en: '[PRE6]'
+  id: totrans-95
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: User selections generate a number of events. For information on these, refer
+    to [How to Write a List Selection Listener](../events/listselectionlistener.html)
+    in the [Writing Event Listeners](../events/index.html) lesson.
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户选择会生成多个事件。有关这些事件的信息，请参考[如何编写列表选择监听器](../events/listselectionlistener.html)中的[编写事件监听器](../events/index.html)课程。
+- en: '* * *'
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**NOTE:** Selection data actually describes selected cells in the "view" (table
+    data as it appears after any sorting or filtering) rather than in the table model.
+    This distinction does not matter unless your viewed data has been rearranged by
+    sorting, filtering, or user manipulation of columns. In that case, you must convert
+    selection coordinates using the conversion methods described in [Sorting and Filtering](#sorting).'
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 选择数据实际上描述了在“视图”中选择的单元格（表数据在任何排序或过滤后的外观），而不是在表模型中的单元格。除非您查看的数据已通过排序、过滤或用户操作列重新排列，否则此区别并不重要。在这种情况下，您必须使用[排序和过滤](#sorting)中描述的转换方法转换选择坐标。'
+- en: '* * *'
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Creating a Table Model
+  id: totrans-100
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建表模型
+- en: Every table object uses a *table model object* to manage the actual table data.
+    A table model object must implement the [`TableModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableModel.html)
+    interface. If the programmer does not provide a table model object, `JTable` automatically
+    creates an instance of [`DefaultTableModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/DefaultTableModel.html).
+    This relationship is illustrated below.
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个表对象都使用一个*表模型对象*来管理实际的表数据。表模型对象必须实现[`TableModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableModel.html)接口。如果程序员没有提供表模型对象，`JTable`会自动创建一个[`DefaultTableModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/DefaultTableModel.html)实例。下面展示了这种关系。
+- en: '![Relation between table, table object, model object](../Images/d13dc5ee108d9a200acb4a4d5031c767.png)'
+  id: totrans-102
+  prefs: []
+  type: TYPE_IMG
+  zh: '![表、表对象、模型对象之间的关系](../Images/d13dc5ee108d9a200acb4a4d5031c767.png)'
+- en: 'The `JTable` constructor used by `SimpleTableDemo` creates its table model
+    with code like this:'
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SimpleTableDemo`使用的`JTable`构造函数会使用以下代码创建其表模型：'
+- en: '[PRE7]'
+  id: totrans-104
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: As the preceding code shows, implementing a table model can be simple. Generally,
+    you implement your table model in a subclass of the [`AbstractTableModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/AbstractTableModel.html)
+    class.
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前面的代码所示，实现表模型可以很简单。通常，您会在[`AbstractTableModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/AbstractTableModel.html)类的子类中实现您的表模型。
+- en: Your model might hold its data in an array, vector, or hash map, or it might
+    get the data from an outside source such as a database. It might even generate
+    the data at execution time.
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您的模型可能将数据保存在数组、向量或哈希映射中，也可能从外部来源（如数据库）获取数据。甚至可能在执行时生成数据。
+- en: 'This table is different from the `SimpleTableDemo` table in the following ways:'
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个表格与`SimpleTableDemo`表格有以下不同之处：
+- en: '`TableDemo`''s custom table model, even though it is simple, can easily determine
+    the data''s type, helping the `JTable` display the data in the best format. `SimpleTableDemo`''s
+    automatically created table model, on the other hand, does not know that the **#
+    of Years** column contains numbers (which should generally be right aligned and
+    have a particular format). It also does not know that the `Vegetarian` column
+    contains boolean values, which can be represented by check boxes.'
+  id: totrans-108
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`TableDemo`的自定义表格模型虽然简单，但可以轻松确定数据的类型，帮助`JTable`以最佳格式显示数据。另一方面，`SimpleTableDemo`自动创建的表格模型并不知道**#
+    of Years**列包含数字（通常应右对齐并具有特定格式）。它也不知道`Vegetarian`列包含布尔值，可以用复选框表示。'
+- en: The custom table model implemented in `TableDemo` does not let you edit the
+    name columns; it does, however, let you edit the other columns. In `SimpleTableDemo`,
+    all cells are editable.
+  id: totrans-109
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在`TableDemo`中实现的自定义表格模型不允许您编辑名称列；但是，它允许您编辑其他列。在`SimpleTableDemo`中，所有单元格都是可编辑的。
+- en: See below the code taken from [`TableDemo.java`](../examples/components/TableDemoProject/src/components/TableDemo.java)
+    that is different from the [`SimpleTableDemo.java`](../examples/components/SimpleTableDemoProject/src/components/SimpleTableDemo.java).
+    Bold font indicates the code that makes this table's model different from the
+    table model defined automatically for `SimpleTableDemo`.
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请看下面从[`TableDemo.java`](../examples/components/TableDemoProject/src/components/TableDemo.java)中提取的代码，它与[`SimpleTableDemo.java`](../examples/components/SimpleTableDemoProject/src/components/SimpleTableDemo.java)不同。粗体字表示的代码表明了使该表格模型与`SimpleTableDemo`自动定义的表格模型不同的代码。
+- en: '[PRE8]'
+  id: totrans-111
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Listening for Data Changes
+  id: totrans-112
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 监听数据更改
+- en: A table model can have a set of listeners that are notified whenever the table
+    data changes. Listeners are instances of [`TableModelListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelListener.html).
+    In the following example code, `SimpleTableDemo` is extended to include such a
+    listener. New code is in bold.
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表格模型可以有一组监听器，每当表格数据发生变化时就会通知它们。监听器是[`TableModelListener`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelListener.html)的实例。在下面的示例代码中，`SimpleTableDemo`被扩展以包含这样一个监听器。新代码用粗体表示。
+- en: '[PRE9]'
+  id: totrans-114
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Firing Data Change Events
+  id: totrans-115
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 触发数据更改事件
+- en: In order to fire data change events the table model must know how to construct
+    a [`TableModelEvent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelEvent.html)
+    object. This can be a complex procedure, but is already implemented in `DefaultTableModel`.
+    You can either allow `JTable` to use its default instance of `DefaultTableModel`,
+    or create your own custom subclass of `DefaultTableModel`.
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了触发数据更改事件，表格模型必须知道如何构造一个[`TableModelEvent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelEvent.html)对象。这可能是一个复杂的过程，但已经在`DefaultTableModel`中实现。您可以允许`JTable`使用其默认的`DefaultTableModel`实例，或者创建自己的`DefaultTableModel`的自定义子类。
+- en: If `DefaultTableModel` is not a suitable base class for your custom table model
+    class, consider subclassing [`AbstractTableModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/AbstractTableModel.html).
+    This class implements a simple framework for constructing `TableModelEvent` objects.
+    Your custom class simply needs to invoke one the following `AbstractTableModel`
+    methods each time table data is changed by an external source.
+  id: totrans-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`DefaultTableModel`不适合作为您的自定义表格模型类的基类，请考虑子类化[`AbstractTableModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/AbstractTableModel.html)。这个类实现了一个简单的框架来构造`TableModelEvent`对象。您的自定义类只需在外部源更改表格数据时调用以下`AbstractTableModel`方法之一。
+- en: '| Method | Change |'
+  id: totrans-118
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 变更 |'
+- en: '| `fireTableCellUpdated` | Update of specified cell. |'
+  id: totrans-119
+  prefs: []
+  type: TYPE_TB
+  zh: '| `fireTableCellUpdated` | 更新指定单元格。 |'
+- en: '| `fireTableRowsUpdated` | Update of specified rows |'
+  id: totrans-120
+  prefs: []
+  type: TYPE_TB
+  zh: '| `fireTableRowsUpdated` | 更新指定行 |'
+- en: '| `fireTableDataChanged` | Update of entire table (data only). |'
+  id: totrans-121
+  prefs: []
+  type: TYPE_TB
+  zh: '| `fireTableDataChanged` | 更新整个表格（仅数据）。 |'
+- en: '| `fireTableRowsInserted` | New rows inserted. |'
+  id: totrans-122
+  prefs: []
+  type: TYPE_TB
+  zh: '| `fireTableRowsInserted` | 插入新行。 |'
+- en: '| `fireTableRowsDeleted` | Existing rows Deleted |'
+  id: totrans-123
+  prefs: []
+  type: TYPE_TB
+  zh: '| `fireTableRowsDeleted` | 删除现有行 |'
+- en: '| `fireTableStructureChanged`   | Invalidate entire table, both data and structure.
+    |'
+  id: totrans-124
+  prefs: []
+  type: TYPE_TB
+  zh: '| `fireTableStructureChanged`   | 使整个表格无效，包括数据和结构。 |'
+- en: 'Concepts: Editors and Renderers'
+  id: totrans-125
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 概念：编辑器和渲染器
+- en: Before you go on to the next few tasks, you need to understand how tables draw
+    their cells. You might expect each cell in a table to be a component. However,
+    for performance reasons, Swing tables are implemented differently.
+  id: totrans-126
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在继续下面的几项任务之前，您需要了解表格如何绘制其单元格。您可能期望表格中的每个单元格都是一个组件。然而，出于性能原因，Swing表格的实现方式不同。
+- en: Instead, a single *cell renderer* is generally used to draw all of the cells
+    that contain the same type of data. You can think of the renderer as a configurable
+    ink stamp that the table uses to stamp appropriately formatted data onto each
+    cell. When the user starts to edit a cell's data, a *cell editor* takes over the
+    cell, controlling the cell's editing behavior.
+  id: totrans-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相反，通常使用单个*单元格渲染器*来绘制包含相同类型数据的所有单元格。您可以将渲染器视为可配置的墨水印，表格用它来将适当格式的数据印在每个单元格上。当用户开始编辑单元格数据时，*单元格编辑器*接管单元格，控制单元格的编辑行为。
+- en: "For example, each cell in the **# of Years** column in `TableDemo` contains\
+    \ `Number` data \x97 specifically, an `Integer` object. By default, the cell renderer\
+    \ for a `Number`-containing column uses a single `JLabel` instance to draw the\
+    \ appropriate numbers, right-aligned, on the column's cells. If the user begins\
+    \ editing one of the cells, the default cell editor uses a right-aligned `JTextField`\
+    \ to control the cell editing."
+  id: totrans-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "例如，在`TableDemo`中**# of Years**列中的每个单元格都包含`Number`数据 \x97 具体来说，是一个`Integer`对象。默认情况下，包含`Number`的列的单元格渲染器使用单个`JLabel`实例在列的单元格上绘制适当的数字，右对齐。如果用户开始编辑其中一个单元格，默认单元格编辑器使用右对齐的`JTextField`来控制单元格编辑。"
+- en: 'To choose the renderer that displays the cells in a column, a table first determines
+    whether you specified a renderer for that particular column. If you did not, then
+    the table invokes the table model''s `getColumnClass` method, which gets the data
+    type of the column''s cells. Next, the table compares the column''s data type
+    with a list of data types for which cell renderers are registered. This list is
+    initialized by the table, but you can add to it or change it. Currently, tables
+    put the following types of data in the list:'
+  id: totrans-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要选择显示列中单元格的渲染器，表格首先确定您是否为该特定列指定了渲染器。如果没有，则表格调用表格模型的`getColumnClass`方法，该方法获取列单元格的数据类型。接下来，表格将列的数据类型与已注册单元格渲染器的数据类型列表进行比较。此列表由表格初始化，但您可以添加或更改。目前，表格将以下类型的数据放入列表中：
+- en: "`Boolean` \x97 rendered with a check box."
+  id: totrans-130
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Boolean` \x97 使用复选框渲染。"
+- en: "`Number` \x97 rendered by a right-aligned label."
+  id: totrans-131
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Number` \x97 由右对齐的标签渲染。"
+- en: "`Double`, `Float` \x97 same as `Number`, but the object-to-text translation\
+    \ is performed by a [`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)\
+    \ instance (using the default number format for the current locale)."
+  id: totrans-132
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Double`、`Float` \x97 与`Number`相同，但对象到文本的转换由[`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)实例执行（使用当前区域设置的默认数字格式）。"
+- en: "`Date` \x97 rendered by a label, with the object-to-text translation performed\
+    \ by a [`DateFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/DateFormat.html)\
+    \ instance (using a short style for the date and time)."
+  id: totrans-133
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Date` \x97 由一个标签渲染，对象到文本的转换由[`DateFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/DateFormat.html)实例执行（使用日期和时间的短格式）。"
+- en: "`ImageIcon`, `Icon` \x97 rendered by a centered label."
+  id: totrans-134
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`ImageIcon`、`Icon` \x97 由居中的标签渲染。"
+- en: "`Object` \x97 rendered by a label that displays the object's string value."
+  id: totrans-135
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Object` \x97 由显示对象字符串值的标签渲染。"
+- en: Cell editors are chosen using a similar algorithm.
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单元格编辑器是使用类似的算法选择的。
+- en: Remember that if you let a table create its own model, it uses `Object` as the
+    type of every column. To specify more precise column types, the table model must
+    define the `getColumnClass` method appropriately, as demonstrated by [`TableDemo.java`](../examples/components/TableDemoProject/src/components/TableDemo.java).
+  id: totrans-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，如果让表格创建自己的模型，它会将`Object`用作每列的类型。要指定更精确的列类型，表格模型必须适当定义`getColumnClass`方法，正如[`TableDemo.java`](../examples/components/TableDemoProject/src/components/TableDemo.java)所示。
+- en: 'Keep in mind that although renderers determine how each cell or column header
+    looks and can specify its tool tip text, a renderer does not handle events. If
+    you need to pick up the events that take place inside a table, the technique you
+    use varies by the sort of event you are interested in:'
+  id: totrans-138
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，尽管渲染器确定每个单元格或列标题的外观并可以指定其工具提示文本，但渲染器不处理事件。如果您需要捕获表格内发生的事件，您所使用的技术取决于您感兴趣的事件类型：
+- en: '| Situation | How to Get Events |'
+  id: totrans-139
+  prefs: []
+  type: TYPE_TB
+  zh: '| 情况 | 如何获取事件 |'
+- en: '| To detect events from a cell that is being edited... | Use the cell editor
+    (or register a listener on the cell editor). |'
+  id: totrans-140
+  prefs: []
+  type: TYPE_TB
+  zh: '| 要检测正在编辑的单元格的事件... | 使用单元格编辑器（或在单元格编辑器上注册监听器）。 |'
+- en: '| To detect row/column/cell selections and deselections... | Use a selection
+    listener as described in [Detecting User Selections](#selection). |'
+  id: totrans-141
+  prefs: []
+  type: TYPE_TB
+  zh: '| 要检测行/列/单元格的选择和取消选择... | 使用如[检测用户选择](#selection)中描述的选择监听器。 |'
+- en: '| To detect mouse events on a column header... | Register the appropriate type
+    of [mouse listener](../events/mouselistener.html ) on the table''s `JTableHeader`
+    object. (See [`TableSorter.java`](../examples/components/TableSorterDemoProject/src/components/TableSorter.java)
+    for an example.) |'
+  id: totrans-142
+  prefs: []
+  type: TYPE_TB
+  zh: '| 要在列标题上检测鼠标事件... | 在表的`JTableHeader`对象上注册适当类型的[鼠标监听器](../events/mouselistener.html
+    )。（参见[`TableSorter.java`](../examples/components/TableSorterDemoProject/src/components/TableSorter.java)的示例。）
+    |'
+- en: '| To detect other events... | Register the appropriate listener on the `JTable`
+    object. |'
+  id: totrans-143
+  prefs: []
+  type: TYPE_TB
+  zh: '| 要检测其他事件... | 在`JTable`对象上注册适当的监听器。 |'
+- en: The next few sections tell you how to customize display and editing by specifying
+    renderers and editors. You can specify cell renderers and editors either by column
+    or by data type.
+  id: totrans-144
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的几节告诉您如何通过指定渲染器和编辑器来自定义显示和编辑。您可以按列或数据类型指定单元格渲染器和编辑器。
+- en: Using Custom Renderers
+  id: totrans-145
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用自定义渲染器
+- en: This section tells you how to create and specify a cell renderer. You can set
+    a type-specific cell renderer using the `JTable` method `setDefaultRenderer`.
+    To specify that cells in a particular column should use a renderer, you use the
+    `TableColumn` method `setCellRenderer`. You can even specify a cell-specific renderer
+    by creating a `JTable` subclass.
+  id: totrans-146
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节告诉您如何创建和指定单元格渲染器。您可以使用`JTable`方法`setDefaultRenderer`设置特定类型的单元格渲染器。要指定特定列中的单元格应使用渲染器，可以使用`TableColumn`方法`setCellRenderer`。甚至可以通过创建`JTable`子类来指定特定单元格的渲染器。
+- en: 'It is easy to customize the text or image rendered by the default renderer,
+    `DefaultTableCellRenderer`. You just create a subclass and implement the `setValue`
+    method so that it invokes `setText` or `setIcon` with the appropriate string or
+    image. For example, here is how the default date renderer is implemented:'
+  id: totrans-147
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定制默认渲染器`DefaultTableCellRenderer`渲染的文本或图像很容易。只需创建一个子类并实现`setValue`方法，使其调用适当的字符串或图像的`setText`或`setIcon`。例如，这是默认日期渲染器的实现方式：
+- en: '[PRE10]'
+  id: totrans-148
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'If extending `DefaultTableCellRenderer` is insufficient, you can build a renderer
+    using another superclass. The easiest way is to create a subclass of an existing
+    component, making your subclass implement the [`TableCellRenderer`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableCellRenderer.html)
+    interface. `TableCellRenderer` requires just one method: `getTableCellRendererComponent`.
+    Your implementation of this method should set up the rendering component to reflect
+    the passed-in state, and then return the component.'
+  id: totrans-149
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果扩展`DefaultTableCellRenderer`不够，可以使用另一个超类构建渲染器。最简单的方法是创建一个现有组件的子类，使您的子类实现[`TableCellRenderer`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableCellRenderer.html)接口。`TableCellRenderer`只需要一个方法：`getTableCellRendererComponent`。您实现此方法应设置渲染组件以反映传入状态，然后返回组件。
+- en: In the [snapshot](#colorRenderer) of `TableDialogEditDemo`, the renderer used
+    for **Favorite Color** cells is a subclass of `JLabel` called `ColorRenderer`.
+    Here are excerpts from [`ColorRenderer.java`](../examples/components/TableDialogEditDemoProject/src/components/ColorRenderer.java)
+    that show how it is implemented.
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`TableDialogEditDemo`的[快照](#colorRenderer)中，用于**Favorite Color**单元格的渲染器是一个名为`ColorRenderer`的`JLabel`子类。以下是[`ColorRenderer.java`](../examples/components/TableDialogEditDemoProject/src/components/ColorRenderer.java)的摘录，展示了它的实现方式。
+- en: '[PRE11]'
+  id: totrans-151
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'Here is the code from [`TableDialogEditDemo.java`](../examples/components/TableDialogEditDemoProject/src/components/TableDialogEditDemo.java)
+    that registers a `ColorRenderer` instance as the default renderer for all `Color`
+    data:'
+  id: totrans-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是从[`TableDialogEditDemo.java`](../examples/components/TableDialogEditDemoProject/src/components/TableDialogEditDemo.java)中注册`ColorRenderer`实例作为所有`Color`数据的默认渲染器的代码：
+- en: '[PRE12]'
+  id: totrans-153
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'To specify a cell-specific renderer, you need to define a `JTable` subclass
+    that overrides the `getCellRenderer` method. For example, the following code makes
+    the first cell in the first column of the table use a custom renderer:'
+  id: totrans-154
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要指定特定单元格的渲染器，需要定义一个覆盖`getCellRenderer`方法的`JTable`子类。例如，以下代码使表格中第一列的第一个单元格使用自定义渲染器：
+- en: '[PRE13]'
+  id: totrans-155
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Specifying Tool Tips for Cells
+  id: totrans-156
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为单元格指定工具提示
+- en: By default, the tool tip text displayed for a table cell is determined by the
+    cell's renderer. However, sometimes it can be simpler to specify tool tip text
+    by overriding `JTable`'s implementation of the `getToolTipText(MouseEvent)` method.
+    This section shows you how to use both techniques.
+  id: totrans-157
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，表格单元格显示的工具提示文本由单元格的渲染器确定。然而，有时通过覆盖`JTable`的`getToolTipText(MouseEvent)`方法来指定工具提示文本可能更简单。本节将向您展示如何同时使用这两种技术。
+- en: To add a tool tip to a cell using its renderer, you first need to get or create
+    the cell renderer. Then, after making sure the rendering component is a `JComponent`,
+    invoke the `setToolTipText` method on it.
+  id: totrans-158
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要通过其渲染器为单元格添加工具提示，首先需要获取或创建单元格渲染器。然后，在确保渲染组件是`JComponent`后，在其上调用`setToolTipText`方法。
+- en: An example of setting tool tips for cells is in `TableRenderDemo`. Click the
+    Launch button to run it using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TableRenderDemo).
+  id: totrans-159
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`TableRenderDemo`中设置单元格工具提示的示例。点击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行它（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TableRenderDemo)。
+- en: '[![Launches the TableRenderDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableRenderDemoProject/TableRenderDemo.jnlp)'
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TableRenderDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableRenderDemoProject/TableRenderDemo.jnlp)'
+- en: 'The source code is in [`TableRenderDemo.java`](../examples/components/TableRenderDemoProject/src/components/TableRenderDemo.java).
+    It adds tool tips to the cells of the **Sport** column with the following code:'
+  id: totrans-161
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 源代码在[`TableRenderDemo.java`](../examples/components/TableRenderDemoProject/src/components/TableRenderDemo.java)中。它使用以下代码为**Sport**列的单元格添加工具提示：
+- en: '[PRE14]'
+  id: totrans-162
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: 'Although the tool tip text in the previous example is static, you can also
+    implement tool tips whose text changes depending on the state of the cell or program.
+    Here are a couple ways to do so:'
+  id: totrans-163
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管前面示例中的工具提示文本是静态的，但您也可以实现根据单元格或程序状态变化的工具提示。以下是几种实现方式：
+- en: Add a bit of code to the renderer's implementation of the `getTableCellRendererComponent`
+    method.
+  id: totrans-164
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在渲染器的`getTableCellRendererComponent`方法的实现中添加一点代码。
+- en: Override the `JTable` method `getToolTipText(MouseEvent)`.
+  id: totrans-165
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 覆盖`JTable`方法`getToolTipText(MouseEvent)`。
+- en: An example of adding code to a cell renderer is in `TableDialogEditDemo`. Click
+    the Launch button to run it using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TableDialogEditDemo).
+  id: totrans-166
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`TableDialogEditDemo`中添加代码到单元格渲染器的示例。点击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行它（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TableDialogEditDemo)。
+- en: '[![Launches the TableDialogEditDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableDialogEditDemoProject/TableDialogEditDemo.jnlp)'
+  id: totrans-167
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TableDialogEditDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableDialogEditDemoProject/TableDialogEditDemo.jnlp)'
+- en: '`TableDialogEditDemo` uses a renderer for colors, implemented in [`ColorRenderer.java`](../examples/components/TableDialogEditDemoProject/src/components/ColorRenderer.java),
+    that sets the tool tip text using the boldface code in the following snippet:'
+  id: totrans-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TableDialogEditDemo`使用了一个颜色渲染器，实现在[`ColorRenderer.java`](../examples/components/TableDialogEditDemoProject/src/components/ColorRenderer.java)中，使用粗体代码设置工具提示文本，如下所示：'
+- en: '[PRE15]'
+  id: totrans-169
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: 'Here is an example of what the tool tip looks like:'
+  id: totrans-170
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是工具提示的示例：
+- en: '![TableDialogEditDemo with a tool tip describing the moused-over cell''s RGB
+    value](../Images/70e55e165e249ba997c98a4d0c9c41b9.png)'
+  id: totrans-171
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TableDialogEditDemo中描述鼠标悬停在单元格上的RGB值的工具提示](../Images/70e55e165e249ba997c98a4d0c9c41b9.png)'
+- en: You can specify tool tip text by overriding `JTable`'s `getToolTipText(MouseEvent)`
+    method. The program `TableToolTipsDemo` shows how. Click the Launch button to
+    run it using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TableToolTipsDemo).
+  id: totrans-172
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过重写`JTable`的`getToolTipText(MouseEvent)`方法来指定工具提示文本。程序`TableToolTipsDemo`展示了如何操作。点击启动按钮以使用[Java™
+    Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行它（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TableToolTipsDemo)。
+- en: '[![Launches the TableToolTipsDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableToolTipsDemoProject/TableToolTipsDemo.jnlp)'
+  id: totrans-173
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TableToolTipsDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableToolTipsDemoProject/TableToolTipsDemo.jnlp)'
+- en: 'The cells with tool tips are in the **Sport** and **Vegetarian** columns. Here
+    is a picture of its tool tip:'
+  id: totrans-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 工具提示的单元格位于**Sport**和**Vegetarian**列中。这是其工具提示的图片：
+- en: '![TableToolTipsDemo with a tool tip for a cell in the Sport column](../Images/7553d2e3b3f629e23f4d3cd8ba013730.png)'
+  id: totrans-175
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TableToolTipsDemo中Sport列单元格的工具提示](../Images/7553d2e3b3f629e23f4d3cd8ba013730.png)'
+- en: 'Here is the code from [`TableToolTipsDemo.java`](../examples/components/TableToolTipsDemoProject/src/components/TableToolTipsDemo.java)
+    that implements tool tips for cells in the **Sport** and **Vegetarian** columns:'
+  id: totrans-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是[`TableToolTipsDemo.java`](../examples/components/TableToolTipsDemoProject/src/components/TableToolTipsDemo.java)中实现**Sport**和**Vegetarian**列单元格工具提示的代码：
+- en: '[PRE16]'
+  id: totrans-177
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: "The code is fairly straightforward, except perhaps for the call to `convertColumnIndexToModel`.\
+    \ That call is necessary because if the user moves the columns around, the view's\
+    \ index for the column will not match the model's index for the column. For example,\
+    \ the user might drag the **Vegetarian** column (which the model considers to\
+    \ be at index 4) so it is displayed as the first column \x97 at view index 0\\\
+    . Since `prepareRenderer` provides the view index, you need to translate the view\
+    \ index to a model index so you can be sure the intended column has been selected."
+  id: totrans-178
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 代码相当简单，除了`convertColumnIndexToModel`的调用可能有点复杂。这个调用是必要的，因为如果用户移动列，视图对于列的索引将不匹配模型对于列的索引。例如，用户可能会拖动**Vegetarian**列（模型认为在索引4处），使其显示为第一列
+    - 在视图索引0处。由于`prepareRenderer`提供了视图索引，您需要将视图索引转换为模型索引，以确保选择了预期的列。
+- en: Specifying Tool Tips for Column Headers
+  id: totrans-179
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为列标题指定工具提示
+- en: You can add a tool tip to a column header by setting the tool tip text for the
+    table's `JTableHeader`. Often, different column headers require different tool
+    tip text. You can change the text by overriding the table header's `getToolTipText`
+    method. Alternately, you can invoke `TableColumn.setHeaderRenderer` to provide
+    a custom renderer for the header.
+  id: totrans-180
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过为表的`JTableHeader`设置工具提示文本来向列标题添加工具提示。通常，不同的列标题需要不同的工具提示文本。您可以通过重写表头的`getToolTipText`方法来更改文本。或者，您可以调用`TableColumn.setHeaderRenderer`来为表头提供自定义渲染器。
+- en: 'An example of using the same tool tip text for all column headers is in [`TableSorterDemo.java`](../examples/components/TableSorterDemoProject/src/components/TableSorterDemo.java).
+    Here is how it sets the tool tip text:'
+  id: totrans-181
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[`TableSorterDemo.java`](../examples/components/TableSorterDemoProject/src/components/TableSorterDemo.java)中有一个示例，它为所有列标题使用相同的工具提示文本。以下是它设置工具提示文本的方式：
+- en: '[PRE17]'
+  id: totrans-182
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: '[`TableToolTipsDemo.java`](../examples/components/TableToolTipsDemoProject/src/components/TableToolTipsDemo.java)
+    has an example of implementing column header tool tips that vary by column. If
+    you run `TableToolTipsDemo` (click the Launch button) using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TableToolTipsDemo).'
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`TableToolTipsDemo.java`](../examples/components/TableToolTipsDemoProject/src/components/TableToolTipsDemo.java)有一个示例，实现了根据列变化的列标题工具提示。如果运行`TableToolTipsDemo`（点击启动按钮）使用[Java™
+    Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TableToolTipsDemo)。'
+- en: '[![Launches the TableToolTipsDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableToolTipsDemoProject/TableToolTipsDemo.jnlp)'
+  id: totrans-184
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TableToolTipsDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableToolTipsDemoProject/TableToolTipsDemo.jnlp)'
+- en: 'You will see the tool tips when you mouse over any column header except for
+    the first two. No tool tips were supplied for the name columns since they seemed
+    self-explanatory. Here is a picture of one of the column header tool tips:'
+  id: totrans-185
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您将鼠标悬停在除前两列之外的任何列标题上时，您将看到工具提示。对于名称列没有提供工具提示，因为它们似乎是不言自明的。这是其中一个列标题工具提示的图片：
+- en: '![TableToolTipsDemo with a tool tip for a column header](../Images/1dd90e41bbad88b162cb90e82eda6b7c.png)'
+  id: totrans-186
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TableToolTipsDemo带有列标题工具提示](../Images/1dd90e41bbad88b162cb90e82eda6b7c.png)'
+- en: The following code implements the tool tips. Basically, it creates a subclass
+    of `JTableHeader` that overrides the `getToolTipText(MouseEvent)` method so that
+    it returns the text for the current column. To associate the revised table header
+    with the table, the `JTable` method `createDefaultTableHeader` is overridden so
+    that it returns an instance of the `JTableHeader` subclass.
+  id: totrans-187
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码实现了工具提示。基本上，它创建了`JTableHeader`的一个子类，覆盖了`getToolTipText(MouseEvent)`方法，以便返回当前列的文本。为了将修改后的表头与表格关联起来，重写了`JTable`方法`createDefaultTableHeader`，使其返回`JTableHeader`子类的一个实例。
+- en: '[PRE18]'
+  id: totrans-188
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: Sorting and Filtering
+  id: totrans-189
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 排序和过滤
+- en: 'Table sorting and filtering is managed by a *sorter* object. The easiest way
+    to provide a sorter object is to set `autoCreateRowSorter` bound property to `true`:'
+  id: totrans-190
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表格排序和过滤由一个*sorter*对象管理。提供一个sorter对象的最简单方法是将`autoCreateRowSorter`绑定属性设置为`true`：
+- en: '[PRE19]'
+  id: totrans-191
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: 'This action defines a row sorter that is an instance of [`javax.swing.table.TableRowSorter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableRowSorter.html).
+    This provides a table that does a simple locale-specific sort when the user clicks
+    on a column header. This is demonstrated in [``TableSortDemo.java``](../examples/components/TableSortDemoProject/src/components/TableSortDemo.java),
+    as seen in this screen shot:'
+  id: totrans-192
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此操作定义了一个是[`javax.swing.table.TableRowSorter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableRowSorter.html)实例的行排序器。当用户单击列标题时，这提供了一个执行简单的区域特定排序的表格。这在[``TableSortDemo.java``](../examples/components/TableSortDemoProject/src/components/TableSortDemo.java)中演示，如下截图所示：
+- en: '![TableSortDemo after clicking Last Name](../Images/61a04647820bf9b58bca71907f38e0ec.png)'
+  id: totrans-193
+  prefs: []
+  type: TYPE_IMG
+  zh: '![点击姓氏后的TableSortDemo](../Images/61a04647820bf9b58bca71907f38e0ec.png)'
+- en: To have more control over sorting, you can construct an instance of `TableRowSorter`
+    and specify that it is the sorter object for your table.
+  id: totrans-194
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要更好地控制排序，您可以构造一个`TableRowSorter`的实例，并指定它是您表格的sorter对象。
+- en: '[PRE20]'
+  id: totrans-195
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: '`TableRowSorter` uses [`java.util.Comparator`](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html)
+    objects to sort its rows. A class that implements this interface must provide
+    a method called `compare` that defines how any two objects are compared for the
+    purpose of sorting. For example, the following code creates a `Comparator` that
+    sorts a set of strings by the last word in each string:'
+  id: totrans-196
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TableRowSorter`使用[`java.util.Comparator`](https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html)对象来对其行进行排序。实现此接口的类必须提供一个名为`compare`的方法，该方法定义了为排序目的比较任意两个对象的方式。例如，以下代码创建了一个`Comparator`，按每个字符串中的最后一个单词对一组字符串进行排序：'
+- en: '[PRE21]'
+  id: totrans-197
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: This example is fairly simplistic; more typically, a `Comparator` implementation
+    is a subclass of [`java.text.Collator`](https://docs.oracle.com/javase/8/docs/api/java/text/Collator.html).
+    You can define your own subclass, use the factory methods in `Collator` to obtain
+    a `Comparator` for a specific locale, or use [`java.text.RuleBasedCollator`](https://docs.oracle.com/javase/8/docs/api/java/text/RuleBasedCollator.html).
+  id: totrans-198
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个例子相当简单；更典型的情况是，`Comparator`实现是[`java.text.Collator`](https://docs.oracle.com/javase/8/docs/api/java/text/Collator.html)的子类。您可以定义自己的子类，使用`Collator`中的工厂方法获取特定区域设置的`Comparator`，或者使用[`java.text.RuleBasedCollator`](https://docs.oracle.com/javase/8/docs/api/java/text/RuleBasedCollator.html)。
+- en: To determine which `Comparator` to use for a column, `TableRowSorter` attempts
+    to apply each of the following rules in turn. Rules are followed in the order
+    listed below; the first rule that provides the sorter with a `Comparator` is used,
+    and the remaining rules ignored.
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要确定用于列的`Comparator`，`TableRowSorter`尝试依次应用以下规则。按照下面列出的顺序遵循规则；提供sorter的第一个规则使用`Comparator`，其余规则被忽略。
+- en: If a comparator has been specified by invoking [`setComparator`](https://docs.oracle.com/javase/8/docs/api/javax/swing/DefaultRowSorter.html#setComparator-int-java.util.Comparator-),
+    use that comparator.
+  id: totrans-200
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果通过调用[`setComparator`](https://docs.oracle.com/javase/8/docs/api/javax/swing/DefaultRowSorter.html#setComparator-int-java.util.Comparator-)指定了比较器，则使用该比较器。
+- en: If the table model reports that the column data consists of strings (`TableModel.getColumnClass`
+    returns `String.class` for that column), use a comparator that sorts the strings
+    based on the current locale.
+  id: totrans-201
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果表模型报告列数据由字符串组成（`TableModel.getColumnClass`为该列返回`String.class`），则使用一个根据当前区域设置对字符串进行排序的比较器。
+- en: If the column class returned by `TableModel.getColumnClass` implements `Comparable`,
+    use a comparator that sorts the strings based on the values returned by [`Comparable.compareTo`](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html#compareTo-T-).
+  id: totrans-202
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果`TableModel.getColumnClass`返回的列类实现了`Comparable`，则使用一个根据[`Comparable.compareTo`](https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html#compareTo-T-)返回的值对字符串进行排序的比较器。
+- en: If a string convertor has been specified for the table by invoking [`setStringConverter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableRowSorter.html#setStringConverter-javax.swing.table.TableStringConverter-),
+    use a comparator that sorts the resulting string representations based on the
+    current locale.
+  id: totrans-203
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果通过调用[`setStringConverter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableRowSorter.html#setStringConverter-javax.swing.table.TableStringConverter-)为表指定了字符串转换器，则使用一个根据当前区域设置对生成的字符串表示进行排序的比较器。
+- en: If none of the previous rules apply, use a comparator that invokes `toString`
+    on the column data and sorts the resulting strings based on the current locale.
+  id: totrans-204
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果前述规则都不适用，则使用一个调用列数据的`toString`并根据当前区域设置对生成的字符串进行排序的比较器。
+- en: For more sophisticated kinds of sorting, subclass `TableRowSorter` or its parent
+    class [`javax.swing.DefaultRowSorter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/DefaultRowSorter.html).
+  id: totrans-205
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于更复杂的排序类型，可以对`TableRowSorter`或其父类[`javax.swing.DefaultRowSorter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/DefaultRowSorter.html)进行子类化。
+- en: To specify the sort order and sort precedence for columns, invoke [`setSortKeys`](https://docs.oracle.com/javase/8/docs/api/javax/swing/DefaultRowSorter.html#setSortKeys-java.util.List-).
+    Here is an example that sorts the table used in the examples by the first two
+    columns. The precedence of the columns in the sort is indicated by the order of
+    the sort keys in the sort key list. In this case, the second column has the first
+    sort key, so they rows are sorted by first name, then last name.
+  id: totrans-206
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要为列指定排序顺序和排序优先级，请调用[`setSortKeys`](https://docs.oracle.com/javase/8/docs/api/javax/swing/DefaultRowSorter.html#setSortKeys-java.util.List-)。以下是一个示例，按照示例中使用的表的前两列进行排序。在排序键列表中排序键的顺序表示排序中列的优先级。在这种情况下，第二列具有第一个排序键，因此按照名字和姓氏的顺序对行进行排序。
+- en: '[PRE22]'
+  id: totrans-207
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: In addition to reordering the results, a table sorter can also specify which
+    rows will be displayed. This is known as *filtering*. `TableRowSorter` implements
+    filtering using [`javax.swing.RowFilter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/RowFilter.html)
+    objects. `RowFilter` implements several factory methods that create common kinds
+    of filters. For example, [`regexFilter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/RowFilter.html#regexFilter-java.lang.String-int...-)
+    returns a `RowFilter` that filters based on a [regular expression](../../essential/regex/).
+  id: totrans-208
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了重新排序结果，表排序器还可以指定将显示哪些行。这称为*过滤*。`TableRowSorter`使用[`javax.swing.RowFilter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/RowFilter.html)对象实现过滤。`RowFilter`实现了几个工厂方法，用于创建常见类型的过滤器。例如，[`regexFilter`](https://docs.oracle.com/javase/8/docs/api/javax/swing/RowFilter.html#regexFilter-java.lang.String-int...-)返回一个基于[正则表达式](../../essential/regex/)进行过滤的`RowFilter`。
+- en: 'In the following example code, you explicitly create a sorter object so you
+    can later use it to specify a filter:'
+  id: totrans-209
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在以下示例代码中，您明确创建一个排序器对象，以便稍后用于指定过滤器：
+- en: '[PRE23]'
+  id: totrans-210
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: 'Then you filter based on the current value of a text field:'
+  id: totrans-211
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，根据文本字段的当前值进行过滤：
+- en: '[PRE24]'
+  id: totrans-212
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: In a subsequent example, `newFilter()` is invoked every time the text field
+    changes. When the user enters complicated regular expressions, the `try...catch`
+    prevents the syntax exception from interfering with input.
+  id: totrans-213
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在下一个示例中，每次文本字段更改时都会调用`newFilter()`。当用户输入复杂的正则表达式时，`try...catch`会防止语法异常干扰输入。
+- en: "When a table uses a sorter, the data the users sees may be in a different order\
+    \ than that specified by the data model, and may not include all rows specified\
+    \ by the data model. The data the user actually sees is known as the *view*, and\
+    \ has its own set of coordinates. `JTable` provides methods that convert from\
+    \ model coordinates to view coordinates \x97 [`convertColumnIndexToView`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#convertColumnIndexToView-int-)\
+    \ and [`convertRowIndexToView`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#convertRowIndexToView-int-)\
+    \ \x97 and that convert from view coordinates to model coordinates \x97 [`convertColumnIndexToModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#convertColumnIndexToModel-int-)\
+    \ and [`convertRowIndexToModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#convertRowIndexToModel-int-)."
+  id: totrans-214
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "当表格使用排序器时，用户看到的数据可能与数据模型指定的顺序不同，并且可能不包括数据模型指定的所有行。用户实际看到的数据称为*视图*，并具有自己的坐标系。`JTable`提供了一些方法，用于将模型坐标转换为视图坐标\
+    \ \x97 [`convertColumnIndexToView`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#convertColumnIndexToView-int-)\
+    \ 和 [`convertRowIndexToView`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#convertRowIndexToView-int-)\
+    \ \x97 以及将视图坐标转换为模型坐标 \x97 [`convertColumnIndexToModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#convertColumnIndexToModel-int-)\
+    \ 和 [`convertRowIndexToModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#convertRowIndexToModel-int-)。"
+- en: '* * *'
+  id: totrans-215
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**NOTE:** When using a sorter, always remember to translate cell coordinates.'
+  id: totrans-216
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 使用排序器时，始终记得转换单元格坐标。'
+- en: '* * *'
+  id: totrans-217
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The following example brings together the ideas discussed in this section.
+    [``TableFilterDemo.java``](../examples/components/TableFilterDemoProject/src/components/TableFilterDemo.java)
+    adds a small number of changes to `TableDemo`. These include the code snippets
+    earlier in this section, which provide a sorter for the main table, and use a
+    text field to supply the filtering regular expression. The following screen shot
+    shows `TableFilterDemo` before any sorting or filtering has been done. Notice
+    that row 3 in the model is still the same as row 3 in the view:'
+  id: totrans-218
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例将本节讨论的思想汇集在一起。[`TableFilterDemo.java`](../examples/components/TableFilterDemoProject/src/components/TableFilterDemo.java)
+    对`TableDemo`进行了少量更改。这些包括本节前面的代码片段，为主表提供了排序器，并使用文本字段提供过滤正则表达式。以下屏幕截图显示在进行任何排序或过滤之前的`TableFilterDemo`。请注意，模型中的第3行仍然与视图中的第3行相同：
+- en: '![TableFilterDemo without sorting](../Images/63cbfba3d454fc690616135adf8c4520.png)'
+  id: totrans-219
+  prefs: []
+  type: TYPE_IMG
+  zh: '![没有排序的TableFilterDemo](../Images/63cbfba3d454fc690616135adf8c4520.png)'
+- en: "If the user clicks twice on the second column, the fourth row becomes the first\
+    \ row \x97 but only in the view:"
+  id: totrans-220
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "如果用户在第二列上点击两次，则第四行变为第一行 \x97 但仅在视图中："
+- en: '![TableFilterDemo with reverse sorting in second column](../Images/c2f801f9b1962c0b3b441ad81edc60df.png)'
+  id: totrans-221
+  prefs: []
+  type: TYPE_IMG
+  zh: '![在第二列中进行反向排序的TableFilterDemo](../Images/c2f801f9b1962c0b3b441ad81edc60df.png)'
+- en: 'As previously noted, the text the user enters in the "Filter Text" text field
+    defines a filter that determines which rows are shown. As with sorting, filtering
+    can cause view coordinates to diverge from model coordinates:'
+  id: totrans-222
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如前面所述，用户在“过滤文本”文本字段中输入的文本定义了一个过滤器，确定显示哪些行。与排序一样，过滤可能导致视图坐标与模型坐标不一致：
+- en: '![TableFilterDemo with filtering](../Images/1f68c405ebd399c5a0923b176da0a5af.png)'
+  id: totrans-223
+  prefs: []
+  type: TYPE_IMG
+  zh: '![带有过滤的TableFilterDemo](../Images/1f68c405ebd399c5a0923b176da0a5af.png)'
+- en: 'Here is the code that updates the status field to reflect the current selection:'
+  id: totrans-224
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是更新状态字段以反映当前选择的代码：
+- en: '[PRE25]'
+  id: totrans-225
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: Using a Combo Box as an Editor
+  id: totrans-226
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用组合框作为编辑器
+- en: Setting up a [combo box](combobox.html) as an editor is simple, as the following
+    example shows. The bold line of code sets up the combo box as the editor for a
+    specific column.
+  id: totrans-227
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置[组合框](combobox.html)作为编辑器很简单，如下例所示。粗体代码行设置了组合框作为特定列的编辑器。
+- en: '[PRE26]'
+  id: totrans-228
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: 'Here is a picture of the combo box editor in use:'
+  id: totrans-229
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是组合框编辑器的使用示例：
+- en: '![A combo box cell editor in use](../Images/d812e1840fb8662050efe4038fbab50d.png)'
+  id: totrans-230
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用中的组合框单元格编辑器](../Images/d812e1840fb8662050efe4038fbab50d.png)'
+- en: The preceding code is from [`TableRenderDemo.java`](../examples/components/TableRenderDemoProject/src/components/TableRenderDemo.java).
+    You can run `TableRenderDemo` (click the Launch button) using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TableRenderDemo).
+  id: totrans-231
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 上述代码来自[`TableRenderDemo.java`](../examples/components/TableRenderDemoProject/src/components/TableRenderDemo.java)。您可以运行`TableRenderDemo`（点击启动按钮）使用[Java™
+    Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TableRenderDemo)。
+- en: '[![Launches the TableRenderDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableRenderDemoProject/TableRenderDemo.jnlp)'
+  id: totrans-232
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TableRenderDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableRenderDemoProject/TableRenderDemo.jnlp)'
+- en: Using Other Editors
+  id: totrans-233
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用其他编辑器
+- en: Whether you are setting the editor for a single column of cells (using the `TableColumn`
+    `setCellEditor` method) or for a specific type of data (using the `JTable` `setDefaultEditor`
+    method), you specify the editor using an argument that adheres to the `TableCellEditor`
+    interface. Fortunately, the `DefaultCellEditor` class implements this interface
+    and provides constructors to let you specify an editing component that is a `JTextField`,
+    `JCheckBox`, or `JComboBox`. Usually you do not have to explicitly specify a check
+    box as an editor, since columns with `Boolean` data automatically use a check
+    box renderer and editor.
+  id: totrans-234
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 无论您是为单个单元格列设置编辑器（使用`TableColumn`的`setCellEditor`方法）还是为特定类型的数据设置编辑器（使用`JTable`的`setDefaultEditor`方法），您都需要使用符合`TableCellEditor`接口的参数来指定编辑器。幸运的是，`DefaultCellEditor`类实现了这个接口，并提供构造函数让您指定一个编辑组件，它可以是`JTextField`、`JCheckBox`或`JComboBox`。通常情况下，您不必显式指定复选框作为编辑器，因为具有`Boolean`数据的列会自动使用复选框渲染器和编辑器。
+- en: What if you want to specify an editor other than a text field, check box, or
+    combo box? As `DefaultCellEditor` does not support other types of components,
+    you must do a little more work. You need to create a class that implements the
+    [`TableCellEditor`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableCellEditor.html)
+    interface. The [`AbstractCellEditor`](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractCellEditor.html)
+    class is a good superclass to use. It implements `TableCellEditor`'s superinterface,
+    [`CellEditor`](https://docs.oracle.com/javase/8/docs/api/javax/swing/CellEditor.html),
+    saving you the trouble of implementing the event firing code necessary for cell
+    editors.
+  id: totrans-235
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想指定除文本字段、复选框或组合框之外的编辑器，该怎么办？由于`DefaultCellEditor`不支持其他类型的组件，您需要做更多的工作。您需要创建一个实现[`TableCellEditor`](https://docs.oracle.com/javase/8/docs/api/javax/swing/table/TableCellEditor.html)接口的类。[`AbstractCellEditor`](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractCellEditor.html)类是一个很好的超类。它实现了`TableCellEditor`的超级接口[`CellEditor`](https://docs.oracle.com/javase/8/docs/api/javax/swing/CellEditor.html)，省去了您实现单元格编辑器所需的事件触发代码的麻烦。
+- en: "Your cell editor class needs to define at least two methods \x97 `getCellEditorValue`\
+    \ and `getTableCellEditorComponent`. The `getCellEditorValue` method, required\
+    \ by `CellEditor`, returns the cell's current value. The `getTableCellEditorComponent`\
+    \ method, required by `TableCellEditor`, should configure and return the component\
+    \ that you want to use as the editor."
+  id: totrans-236
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "您的单元格编辑器类至少需要定义两个方法 \x97 `getCellEditorValue` 和 `getTableCellEditorComponent`。`getCellEditorValue`方法是`CellEditor`所需的，返回单元格的当前值。`getTableCellEditorComponent`方法是`TableCellEditor`所需的，应配置并返回您要用作编辑器的组件。"
+- en: Here is a picture of a table with a dialog that serves, indirectly, as a cell
+    editor. When the user begins editing a cell in the **Favorite Color** column,
+    a button (the true cell editor) appears and brings up the dialog, with which the
+    user can choose a different color.
+  id: totrans-237
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个带有对话框的表格图片，间接地作为单元格编辑器。当用户开始编辑**Favorite Color**列中的单元格时，会出现一个按钮（真正的单元格编辑器），并弹出对话框，用户可以选择不同的颜色。
+- en: '![The cell editor brings up a dialog](../Images/22a1ae32547bdf65bf39ade1f9940d54.png)'
+  id: totrans-238
+  prefs: []
+  type: TYPE_IMG
+  zh: '![单元格编辑器弹出对话框](../Images/22a1ae32547bdf65bf39ade1f9940d54.png)'
+- en: You can run `TableDialogEditDemo` (click the Launch button) using [Java™ Web
+    Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TableDialogEditDemo).
+  id: totrans-239
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以运行`TableDialogEditDemo`（点击启动按钮）使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自己编译和运行示例，请参考[示例索引](../examples/components/index.html#TableDialogEditDemo)。
+- en: '[![Launches the TableDialogEditDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableDialogEditDemoProject/TableDialogEditDemo.jnlp)'
+  id: totrans-240
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TableDialogEditDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableDialogEditDemoProject/TableDialogEditDemo.jnlp)'
+- en: Here is the code, taken from [`ColorEditor.java`](../examples/components/TableDialogEditDemoProject/src/components/ColorEditor.java),
+    that implements the cell editor.
+  id: totrans-241
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是代码，取自[`ColorEditor.java`](../examples/components/TableDialogEditDemoProject/src/components/ColorEditor.java)，用于实现单元格编辑器。
+- en: '[PRE27]'
+  id: totrans-242
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: As you can see, the code is pretty simple. The only part that is a bit tricky
+    is the call to `fireEditingStopped` at the end of the editor button's action handler.
+    Without this call, the editor would remain active, even though the modal dialog
+    is no longer visible. The call to `fireEditingStopped` lets the table know that
+    it can deactivate the editor, letting the cell be handled by the renderer again.
+  id: totrans-243
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你所看到的，代码非常简单。唯一有点棘手的部分是在编辑器按钮的动作处理程序末尾调用`fireEditingStopped`。如果没有这个调用，即使模态对话框不再可见，编辑器仍然会保持活动状态。调用`fireEditingStopped`让表格知道它可以停用编辑器，让单元格再次由渲染器处理。
+- en: Using an Editor to Validate User-Entered Text
+  id: totrans-244
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用编辑器验证用户输入的文本
+- en: If a cell's default editor allows text entry, you get some error checking for
+    free if the cell's type is specified as something other than `String` or `Object`.
+    The error checking is a side effect of converting the entered text into an object
+    of the proper type.
+  id: totrans-245
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果单元格的默认编辑器允许文本输入，如果单元格类型指定为`String`或`Object`之外的内容，则会获得一些免费的错误检查。错误检查是将输入的文本转换为正确类型对象的副作用。
+- en: The automatic checking of user-entered strings occurs when the default editor
+    attempts to create a new instance of the class associated with the cell's column.
+    The default editor creates this instance using a constructor that takes a `String`
+    as an argument. For example, in a column whose cells have type `Integer`, when
+    the user types in "123" the default editor creates the corresponding `Integer`
+    using code equivalent to `new Integer("123")`. If the constructor throws an exception,
+    the cell's outline turns red and refuses to let focus move out of the cell. If
+    you implement a class used as a column data type, you can use the default editor
+    if your class supplies a constructor that takes a single argument of type `String`.
+  id: totrans-246
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当默认编辑器尝试创建与单元格列关联的类的新实例时，会自动检查用户输入的字符串。默认编辑器使用以`String`为参数的构造函数创建此实例。例如，在单元格类型为`Integer`的列中，当用户输入"123"时，默认编辑器使用等效于`new
+    Integer("123")`的代码创建相应的`Integer`。如果构造函数抛出异常，则单元格的轮廓变为红色，并且拒绝让焦点移出单元格。如果您实现了用作列数据类型的类，如果您的类提供一个接受`String`类型单一参数的构造函数，您可以使用默认编辑器。
+- en: "If you like having a text field as the editor for a cell, but want to customize\
+    \ it \x97 perhaps to check user-entered text more strictly or to react differently\
+    \ when the text is invalid \x97 you can change the cell editor to use a [formatted\
+    \ text field](formattedtextfield.html). The formatted text field can check the\
+    \ value either continuously while the user is typing or after the user has indicated\
+    \ the end of typing (such as by pressing Enter)."
+  id: totrans-247
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "如果您喜欢将文本字段作为单元格的编辑器，但希望自定义它 \x97 也许更严格地检查用户输入的文本或在文本无效时做出不同反应 \x97 您可以更改单元格编辑器以使用[格式化文本字段](formattedtextfield.html)。格式化文本字段可以在用户输入时连续检查值，或在用户指示输入结束后（例如按下Enter键）检查值。"
+- en: The following code, taken from a demo named [`TableFTFEditDemo.java`](../examples/components/TableFTFEditDemoProject/src/components/TableFTFEditDemo.java),
+    sets up a formatted text field as an editor that limits all integer values to
+    be between 0 and 100\. You can run `TableFTFEditDemo` (click the Launch button)
+    using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TableFTFEditDemo).
+  id: totrans-248
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码取自名为[`TableFTFEditDemo.java`](../examples/components/TableFTFEditDemoProject/src/components/TableFTFEditDemo.java)的演示，设置了一个格式化文本字段作为编辑器，限制所有整数值在0和100之间。您可以运行`TableFTFEditDemo`（点击启动按钮）使用[Java™
+    Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TableFTFEditDemo)。
+- en: '[![Launches the TableFTFEditDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableFTFEditDemoProject/TableFTFEditDemo.jnlp)'
+  id: totrans-249
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TableFTFEditDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TableFTFEditDemoProject/TableFTFEditDemo.jnlp)'
+- en: The following code makes the formatted text field the editor for all columns
+    that contain data of type `Integer`.
+  id: totrans-250
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码使格式化文本字段成为包含`Integer`类型数据的所有列的编辑器。
+- en: '[PRE28]'
+  id: totrans-251
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: The `IntegerEditor` class is implemented as a subclass of [`DefaultCellEditor`](https://docs.oracle.com/javase/8/docs/api/javax/swing/DefaultCellEditor.html)
+    that uses a `JFormattedTextField` instead of the `JTextField` that `DefaultCellEditor`
+    supports. It accomplishes this by first setting up a formatted text field to use
+    an integer format and have the specified minimum and maximum values, using the
+    API described in [How to Use Formatted Text Fields](formattedtextfield.html).
+    It then overrides the `DefaultCellEditor` implementation of the `getTableCellEditorComponent`,
+    `getCellEditorValue`, and `stopCellEditing` methods, adding the operations that
+    are necessary for formatted text fields.
+  id: totrans-252
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`IntegerEditor`类是`DefaultCellEditor`的子类，它使用`JFormattedTextField`而不是`DefaultCellEditor`支持的`JTextField`。它首先设置一个格式化文本字段，使用整数格式并具有指定的最小和最大值，使用[如何使用格式化文本字段](formattedtextfield.html)中描述的API。然后，它重写了`DefaultCellEditor`的`getTableCellEditorComponent`、`getCellEditorValue`和`stopCellEditing`方法的实现，添加了格式化文本字段所需的操作。'
+- en: The override of `getTableCellEditorComponent` sets the formatted text field's
+    *value* property (and not just the *text* property it inherits from `JTextField`)
+    before the editor is shown. The override of `getCellEditorValue` keeps the cell
+    value as an `Integer`, rather than, say, the `Long` value that the formatted text
+    field's parser tends to return. Finally, overriding `stopCellEditing` lets you
+    check whether the text is valid, possibly stopping the editor from being dismissed.
+    If the text isn't valid, your implementation of `stopCellEditing` puts up a dialog
+    that gives the user the option of continuing to edit or reverting to the last
+    good value. The source code is a bit too long to include here, but you can find
+    it in [`IntegerEditor.java`](../examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java).
+  id: totrans-253
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getTableCellEditorComponent`的重写在编辑器显示之前设置格式化文本字段的*value*属性（而不仅仅是它从`JTextField`继承的*text*属性）。`getCellEditorValue`的重写保持单元格值为`Integer`，而不是格式化文本字段的解析器倾向于返回的`Long`值。最后，重写`stopCellEditing`让您检查文本是否有效，可能阻止编辑器被关闭。如果文本无效，您的`stopCellEditing`实现会弹出一个对话框，给用户选择继续编辑或恢复到上一个良好值的选项。源代码有点太长无法在此处包含，但您可以在[`IntegerEditor.java`](../examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java)中找到它。'
+- en: Printing
+  id: totrans-254
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 打印
+- en: '`JTable` provides a simple API for printing tables. The easiest way to print
+    out a table is to invoke [`JTable.print`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#print--)
+    with no arguments:'
+  id: totrans-255
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JTable`为打印表格提供了一个简单的API。打印表格的最简单方法是调用[`JTable.print`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#print--)而不带参数：'
+- en: '[PRE29]'
+  id: totrans-256
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: Invoking `print` on a normal Swing application brings up a standard printing
+    dialog box. (On a headless application, the table is simply printed.) The return
+    value indicates whether the user went ahead with the print job or cancelled it.
+    `JTable.print` can throw `java.awt.print.PrinterException`, which is a [checked
+    exception](../../essential/exceptions/catchOrDeclare.html); that's why the above
+    example uses a `try ... catch`.
+  id: totrans-257
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在普通的Swing应用程序上调用`print`会弹出一个标准的打印对话框。（在无头应用程序上，表格会直接打印。）返回值指示用户是否继续进行打印作业还是取消了。`JTable.print`可能会抛出`java.awt.print.PrinterException`，这是一个[受检异常](../../essential/exceptions/catchOrDeclare.html)；这就是为什么上面的示例使用了`try
+    ... catch`。
+- en: '`JTable` provides several overloads of `print` with various options. The following
+    code from [``TablePrintDemo.java``](../examples/components/TablePrintDemoProject/src/components/TablePrintDemo.java)
+    shows how to define a page header:'
+  id: totrans-258
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JTable`提供了几个带有各种选项的`print`重载。以下代码来自[``TablePrintDemo.java``](../examples/components/TablePrintDemoProject/src/components/TablePrintDemo.java)展示了如何定义页眉：'
+- en: '[PRE30]'
+  id: totrans-259
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: For more sophisticated printing applications, use [`JTable.getPrintable`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#getPrintable-javax.swing.JTable.PrintMode-java.text.MessageFormat-java.text.MessageFormat-)
+    to obtain a `Printable` object for the table. For more on `Printable`, refer to
+    the [Printing](../../2d/printing/index.html) lesson in the [2D Graphics](../../2d/index.html)
+    trail.
+  id: totrans-260
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于更复杂的打印应用程序，请使用[`JTable.getPrintable`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#getPrintable-javax.swing.JTable.PrintMode-java.text.MessageFormat-java.text.MessageFormat-)来获取表格的`Printable`对象。有关`Printable`的更多信息，请参考[2D图形](../../2d/index.html)路径中的[打印](../../2d/printing/index.html)课程。
+- en: Examples that Use Tables
+  id: totrans-261
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用表格的示例
+- en: This table lists examples that use `JTable` and where those examples are described.
+  id: totrans-262
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个表格列出了使用`JTable`的示例以及这些示例的描述位置。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-263
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`SimpleTableDemo`](../examples/components/index.html#SimpleTableDemo) |
+    [Creating a Simple Table](#simple) | A basic table with *no* custom model. Does
+    not include code to [specify column widths](#width) or [detect user editing](#modelchange).
+    |'
+  id: totrans-264
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SimpleTableDemo`](../examples/components/index.html#SimpleTableDemo) |
+    [创建简单表格](#simple) | 一个基本的表格，没有自定义模型。不包括用于[指定列宽度](#width)或[检测用户编辑](#modelchange)的代码。'
+- en: '| [`SimpleTable- SelectionDemo`](../examples/components/index.html#SimpleTableSelectionDemo)
+    | [Detecting User Selections](#selection) | Adds single selection and selection
+    detection to `SimpleTableDemo`. By modifying the program''s `ALLOW_COLUMN_SELECTION`
+    and `ALLOW_ROW_SELECTION` constants, you can experiment with alternatives to the
+    table default of allowing only rows to be selected. |'
+  id: totrans-265
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SimpleTable- SelectionDemo`](../examples/components/index.html#SimpleTableSelectionDemo)
+    | [检测用户选择](#selection) | 向`SimpleTableDemo`添加单选和选择检测。通过修改程序的`ALLOW_COLUMN_SELECTION`和`ALLOW_ROW_SELECTION`常量，您可以尝试替代只允许选择行的表格默认设置。'
+- en: '| [`TableDemo`](../examples/components/index.html#TableDemo) | [Creating a
+    Table Model](#data) | A basic table with a custom model. |'
+  id: totrans-266
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TableDemo`](../examples/components/index.html#TableDemo) | [创建表格模型](#data)
+    | 一个带有自定义模型的基本表格。'
+- en: '| [`TableFTFEditDemo`](../examples/components/index.html#TableFTFEditDemo)
+    | [Using an Editor to Validate User-Entered Text](#validtext) | Modifies `TableDemo`
+    to use a custom editor (a formatted text field variant) for all `Integer` data.
+    |'
+  id: totrans-267
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TableFTFEditDemo`](../examples/components/index.html#TableFTFEditDemo)
+    | [使用编辑器验证用户输入文本](#validtext) | 修改`TableDemo`以使用自定义编辑器（格式化文本字段变体）来处理所有`Integer`数据。'
+- en: '| [`TableRenderDemo`](../examples/components/index.html#TableRenderDemo) |
+    [Using a Combo Box as an Editor](#combobox) | Modifies `TableDemo` to use a custom
+    editor (a combo box) for all data in the **Sport** column. Also intelligently
+    picks column sizes. Uses renderers to display tool tips for the sport cells. |'
+  id: totrans-268
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TableRenderDemo`](../examples/components/index.html#TableRenderDemo) |
+    [使用下拉框作为编辑器](#combobox) | 修改`TableDemo`以使用自定义编辑器（下拉框）来处理**Sport**列中的所有数据。还智能选择列大小。使用渲染器为运动单元格显示工具提示。'
+- en: '| [`TableDialogEditDemo`](../examples/components/index.html#TableDialogEditDemo)
+    | [Using Other Editors](#editor) | Modifies `TableDemo` to have a cell renderer
+    and editor that display a color and let you choose a new one, using a color chooser
+    dialog. |'
+  id: totrans-269
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TableDialogEditDemo`](../examples/components/index.html#TableDialogEditDemo)
+    | [使用其他编辑器](#editor) | 修改`TableDemo`以具有显示颜色并让您选择新颜色的单元格渲染器和编辑器，使用颜色选择对话框。'
+- en: '| [`TableToolTipsDemo`](../examples/components/index.html#TableToolTipsDemo)
+    | [Specifying Tool Tips for Cells](#celltooltip), [Specifying Tool Tips for Column
+    Headers](#headertooltip), | Demonstrates how to use several techniques to set
+    tool tip text for cells and column headers. |'
+  id: totrans-270
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TableToolTipsDemo`](../examples/components/index.html#TableToolTipsDemo)
+    | [为单元格指定工具提示](#celltooltip), [为列标题指定工具提示](#headertooltip), | 展示了如何使用多种技巧为单元格和列标题设置工具提示文本。
+    |'
+- en: '| [`TableSortDemo`](../examples/components/index.html#TableSortDemo) | [Sorting
+    and Filtering](#sorting) | Demonstrates the default sorter, which allows the user
+    to sort columns by clicking on their headers. |'
+  id: totrans-271
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TableSortDemo`](../examples/components/index.html#TableSortDemo) | [排序和过滤](#sorting)
+    | 展示了默认的排序器，允许用户通过点击表头对列进行排序。 |'
+- en: '| [`TableFilterDemo`](../examples/components/index.html#TableFilterDemo) |
+    [Sorting and Filtering](#sorting) | Demonstrates sorting and filtering, and how
+    this can cause the view coordinates to diverge from the model coordinates. |'
+  id: totrans-272
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TableFilterDemo`](../examples/components/index.html#TableFilterDemo) |
+    [排序和过滤](#sorting) | 展示了排序和过滤的方法，以及这可能导致视图坐标与模型坐标不一致。 |'
+- en: '| [`TablePrintDemo`](../examples/components/index.html#TablePrintDemo) | [Printing](#printing)
+    | Demonstrates table printing. |'
+  id: totrans-273
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TablePrintDemo`](../examples/components/index.html#TablePrintDemo) | [打印](#printing)
+    | 展示了表格打印的方法。 |'
+- en: '| [`ListSelectionDemo`](../examples/events/index.html#ListSelectionDemo) |
+    [How to Write a List Selection Listener](../events/listselectionlistener.html)
+    | Shows how to use all list selection modes, using a list selection listener that''s
+    shared between a table and list. |'
+  id: totrans-274
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ListSelectionDemo`](../examples/events/index.html#ListSelectionDemo) |
+    [如何编写列表选择监听器](../events/listselectionlistener.html) | 展示了如何使用列表选择监听器来使用所有列表选择模式，该监听器在表格和列表之间共享。
+    |'
+- en: '| [`SharedModelDemo`](../examples/components/index.html#SharedModelDemo) |
+    Nowhere | Builds on `ListSelectionDemo` making the data model be shared between
+    the table and list. If you edit an item in the first column of the table, the
+    new value is reflected in the list. |'
+  id: totrans-275
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SharedModelDemo`](../examples/components/index.html#SharedModelDemo) |
+    现在不适用 | 在`ListSelectionDemo`的基础上构建，使数据模型在表格和列表之间共享。如果你编辑表格的第一列中的项目，新值将反映在列表中。
+    |'

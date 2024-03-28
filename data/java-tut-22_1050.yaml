@@ -1,0 +1,259 @@
+- en: Basic Examples
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 基本示例
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/basic.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/basic.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/basic.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/basic.html)
+- en: 'This section describes the Basic JAXB examples (Modify Marshal, Unmarshal Validate)
+    that demonstrate how to:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了基本的 JAXB 示例（修改 Marshal、Unmarshal Validate），演示了如何：
+- en: Unmarshal an XML document into a Java content tree and access the data contained
+    within it
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将 XML 文档解组为 Java 内容树，并访问其中包含的数据。
+- en: Modify a Java content tree
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 修改 Java 内容树。
+- en: Use the `ObjectFactory` class to create a Java content tree and then marshal
+    it to XML data
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用 `ObjectFactory` 类创建 Java 内容树，然后将其编组为 XML 数据。
+- en: Perform validation during unmarshalling
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在解组期间执行验证。
+- en: Validate a Java content tree at runtime
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在运行时验证 Java 内容树。
+- en: Modify Marshal Example
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 修改 Marshal 示例
+- en: The Modify Marshal example demonstrates how to modify a Java content tree.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 修改 Marshal 示例演示了如何修改 Java 内容树。
+- en: 'The *jaxb-ri-install*`/samples/modify-marshal/src/Main.java` class declares
+    importing of three standard Java classes, five JAXB binding framework classes
+    and the `primer.po` package:'
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '*jaxb-ri-install*`/samples/modify-marshal/src/Main.java` 类声明导入了三个标准 Java 类，五个
+    JAXB 绑定框架类和 `primer.po` 包：'
+- en: '[PRE0]'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: A `JAXBContext` instance is created for handling classes generated in the `primer.po`.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个用于处理在 `primer.po` 中生成的类的 `JAXBContext` 实例。
+- en: '[PRE1]'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: An `Unmarshaller` instance is created, and the `po.xml` file is unmarshalled.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个 `Unmarshaller` 实例，并解组 `po.xml` 文件。
+- en: '[PRE2]'
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '`set` methods are used to modify information in the `address` branch of the
+    content tree.'
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用 `set` 方法修改内容树中 `address` 分支中的信息。
+- en: '[PRE3]'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: A `Marshaller` instance is created, and the updated XML content is marshalled
+    to `system.out`. The `setProperty` API is used to specify output encoding; in
+    this case it is formatted (human readable) XML.
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个 `Marshaller` 实例，并将更新后的 XML 内容编组到 `system.out`。使用 `setProperty` API 指定输出编码；在本例中为格式化（易读）的
+    XML。
+- en: '[PRE4]'
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Building and Running the Modify Marshal Example Using Ant
+  id: totrans-20
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用 Ant 构建和运行修改 Marshal 示例
+- en: 'To compile and run the Modify Marshal example using Ant, in a terminal window,
+    go to the *jaxb-ri-install*`/samples/modify-marshal/` directory and type the following:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用 Ant 编译和运行修改 Marshal 示例，在终端窗口中，转到 *jaxb-ri-install*`/samples/modify-marshal/`
+    目录，并输入以下内容：
+- en: '[PRE5]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Unmarshal Validate Example
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Unmarshal Validate 示例
+- en: The Unmarshal Validate example demonstrates how to enable validation during
+    unmarshalling. Note that JAXB provides functions for validation during unmarshalling
+    but not during marshalling. Validation is explained in more detail in [More About
+    Validation](arch.html#bnazn).
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Unmarshal Validate 示例演示了如何在解组期间启用验证。请注意，JAXB 提供了在解组期间进行验证但不在编组期间进行验证的功能。有关验证的更多详细信息，请参阅[更多关于验证](arch.html#bnazn)。
+- en: 'The *jaxb-ri-install*`/samples/unmarshal-validate/src/Main.java` class declares
+    imports for one standard Java class, eleven JAXB binding framework classes, and
+    the `primer.po` package:'
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '*jaxb-ri-install*`/samples/unmarshal-validate/src/Main.java` 类声明导入了一个标准 Java
+    类，十一个 JAXB 绑定框架类和 `primer.po` 包：'
+- en: '[PRE6]'
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: A `JAXBContext` instance is created for handling classes generated in the `primer.po`
+    package.
+  id: totrans-27
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个用于处理在 `primer.po` 包中生成的类的 `JAXBContext` 实例。
+- en: '[PRE7]'
+  id: totrans-28
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: An `Unmarshaller` instance is created.
+  id: totrans-29
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个 `Unmarshaller` 实例。
+- en: '[PRE8]'
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: The default JAXB `Unmarshaller` `ValidationEventHandler` is enabled to send
+    validation warnings and errors to `system.out`. The default configuration causes
+    the unmarshal operation to fail upon encountering the first validation error.
+  id: totrans-31
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 默认的 JAXB `Unmarshaller` `ValidationEventHandler` 已启用，以将验证警告和错误发送到 `system.out`。默认配置导致在遇到第一个验证错误时解组操作失败。
+- en: '[PRE9]'
+  id: totrans-32
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: An attempt is made to unmarshal the `po.xml` file into a Java content tree.
+    For the purposes of this example, the `po.xml` file contains a deliberate error.
+  id: totrans-33
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 尝试将 `po.xml` 文件解组为 Java 内容树。在此示例中，`po.xml` 文件包含一个故意的错误。
+- en: '[PRE10]'
+  id: totrans-34
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: The default validation event handler processes a validation error, generates
+    output to `system.out`, and then an exception is thrown.
+  id: totrans-35
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 默认验证事件处理程序处理验证错误，生成输出到 `system.out`，然后抛出异常。
+- en: '[PRE11]'
+  id: totrans-36
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: Building and Running the Unmarshal Validate Example Using Ant
+  id: totrans-37
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用 Ant 构建和运行 Unmarshal Validate 示例。
+- en: 'To compile and run the Unmarshal Validate example using Ant, in a terminal
+    window, go to the *jaxb-ri-install*`/samples/unmarshal-validate/` directory and
+    type the following:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用 Ant 编译和运行 Unmarshal Validate 示例，在终端窗口中，转到 *jaxb-ri-install*`/samples/unmarshal-validate/`
+    目录，并输入以下内容：
+- en: '[PRE12]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'

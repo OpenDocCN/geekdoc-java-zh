@@ -1,0 +1,131 @@
+- en: Comparing Strings and Portions of Strings
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 比较字符串和字符串部分
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/data/comparestrings.html](https://docs.oracle.com/javase/tutorial/java/data/comparestrings.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/data/comparestrings.html](https://docs.oracle.com/javase/tutorial/java/data/comparestrings.html)
+- en: The `String` class has a number of methods for comparing strings and portions
+    of strings. The following table lists these methods.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`String`类有许多用于比较字符串和字符串部分的方法。以下表格列出了这些方法。'
+- en: Methods for Comparing Strings
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 比较字符串的方法
+- en: '| Method | Description |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `boolean endsWith(String suffix) boolean startsWith(String prefix)` | Returns
+    `true` if this string ends with or begins with the substring specified as an argument
+    to the method. |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| `boolean endsWith(String suffix) boolean startsWith(String prefix)` | 如果此字符串以指定为方法参数的子字符串结尾或以其开头，则返回`true`。
+    |'
+- en: '| `boolean startsWith(String prefix, int offset)` | Considers the string beginning
+    at the index `offset`, and returns `true` if it begins with the substring specified
+    as an argument. |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| `boolean startsWith(String prefix, int offset)` | 考虑从索引`offset`开始的字符串，并返回如果以指定为参数的子字符串开头则返回`true`。
+    |'
+- en: '| `int compareTo(String anotherString)` | Compares two strings lexicographically.
+    Returns an integer indicating whether this string is greater than (result is >
+    0), equal to (result is = 0), or less than (result is < 0) the argument. |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| `int compareTo(String anotherString)` | 按字典顺序比较两个字符串。返回一个整数，指示此字符串是否大于（结果为>
+    0）、等于（结果为= 0）或小于（结果为< 0）参数。 |'
+- en: '| `int compareToIgnoreCase(String str)` | Compares two strings lexicographically,
+    ignoring differences in case. Returns an integer indicating whether this string
+    is greater than (result is > 0), equal to (result is = 0), or less than (result
+    is < 0) the argument. |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| `int compareToIgnoreCase(String str)` | 按字典顺序比较两个字符串，忽略大小写差异。返回一个整数，指示此字符串是否大于（结果为>
+    0）、等于（结果为= 0）或小于（结果为< 0）参数。 |'
+- en: '| `boolean equals(Object anObject)` | Returns `true` if and only if the argument
+    is a `String` object that represents the same sequence of characters as this object.
+    |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `boolean equals(Object anObject)` | 如果参数是表示与此对象相同字符序列的`String`对象，则返回`true`。
+    |'
+- en: '| `boolean equalsIgnoreCase(String anotherString)` | Returns `true` if and
+    only if the argument is a `String` object that represents the same sequence of
+    characters as this object, ignoring differences in case. |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `boolean equalsIgnoreCase(String anotherString)` | 如果参数是表示与此对象相同字符序列的`String`对象，则返回`true`，忽略大小写差异。
+    |'
+- en: '| `boolean regionMatches(int toffset, String other, int ooffset, int len)`
+    | Tests whether the specified region of this string matches the specified region
+    of the String argument.Region is of length `len` and begins at the index `toffset`
+    for this string and `ooffset` for the other string. |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| `boolean regionMatches(int toffset, String other, int ooffset, int len)`
+    | 测试此字符串的指定区域是否与String参数的指定区域匹配。区域长度为`len`，从此字符串的索引`toffset`和另一个字符串的索引`ooffset`开始。
+    |'
+- en: '| `boolean regionMatches(boolean ignoreCase, int toffset, String other, int
+    ooffset, int len)` | Tests whether the specified region of this string matches
+    the specified region of the String argument.Region is of length `len` and begins
+    at the index `toffset` for this string and `ooffset` for the other string.The
+    boolean argument indicates whether case should be ignored; if true, case is ignored
+    when comparing characters. |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `boolean regionMatches(boolean ignoreCase, int toffset, String other, int
+    ooffset, int len)` | 测试此字符串的指定区域是否与String参数的指定区域匹配。区域长度为`len`，从此字符串的索引`toffset`和另一个字符串的索引`ooffset`开始。布尔参数指示是否应忽略大小写；如果为true，则在比较字符时忽略大小写。
+    |'
+- en: '| `boolean matches(String regex)` | Tests whether this string matches the specified
+    regular expression. Regular expressions are discussed in the lesson titled "Regular
+    Expressions." |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| `boolean matches(String regex)` | 测试此字符串是否与指定的正则表达式匹配。正则表达式在标题为“正则表达式”的课程中讨论。
+    |'
+- en: 'The following program, `RegionMatchesDemo`, uses the `regionMatches` method
+    to search for a string within another string:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序`RegionMatchesDemo`使用`regionMatches`方法在另一个字符串中搜索字符串：
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The output from this program is `Eggs`.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此程序的输出为`Eggs`。
+- en: The program steps through the string referred to by `searchMe` one character
+    at a time. For each character, the program calls the regionMatches method to determine
+    whether the substring beginning with the current character matches the string
+    the program is looking for.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序逐个字符遍历`searchMe`引用的字符串。对于每个字符，程序调用`regionMatches`方法来确定从当前字符开始的子字符串是否与程序正在查找的字符串匹配。

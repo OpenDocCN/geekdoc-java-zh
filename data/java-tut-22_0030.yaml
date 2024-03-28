@@ -1,0 +1,64 @@
+- en: Bitwise and Bit Shift Operators
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 位与位移操作符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op3.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op3.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op3.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/op3.html)
+- en: The Java programming language also provides operators that perform bitwise and
+    bit shift operations on integral types. The operators discussed in this section
+    are less commonly used. Therefore, their coverage is brief; the intent is to simply
+    make you aware that these operators exist.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编程语言还提供对整数类型执行位和位移操作的运算符。本节讨论的运算符很少使用。因此，它们的覆盖范围很简短；目的只是让您知道这些运算符存在。
+- en: The unary bitwise complement operator "`~`" inverts a bit pattern; it can be
+    applied to any of the integral types, making every "0" a "1" and every "1" a "0".
+    For example, a `byte` contains 8 bits; applying this operator to a value whose
+    bit pattern is "00000000" would change its pattern to "11111111".
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一元位取反运算符"`~`"反转位模式；它可以应用于任何整数类型，使每个"0"变为"1"，每个"1"变为"0"。例如，一个`byte`包含8位；将此运算符应用于位模式为"00000000"的值将使其模式变为"11111111"。
+- en: The signed left shift operator "`<<`" shifts a bit pattern to the left, and
+    the signed right shift operator "`>>`" shifts a bit pattern to the right. The
+    bit pattern is given by the left-hand operand, and the number of positions to
+    shift by the right-hand operand. The unsigned right shift operator "`>>>`" shifts
+    a zero into the leftmost position, while the leftmost position after `">>"` depends
+    on sign extension.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有符号左移位运算符"`<<`"将位模式向左移动，有符号右移位运算符"`>>`"将位模式向右移动。位模式由左操作数给出，要移动的位置数由右操作数给出。无符号右移位运算符"`>>>`"将零移入最左侧位置，而`">>"`后的最左侧位置取决于符号扩展。
+- en: The bitwise `&` operator performs a bitwise AND operation.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 位运算符`&`执行位按位与操作。
+- en: The bitwise `^` operator performs a bitwise exclusive OR operation.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 位运算符`^`执行位按位异或操作。
+- en: The bitwise `|` operator performs a bitwise inclusive OR operation.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 位运算符`|`执行位按位包含或操作。
+- en: The following program, [`BitDemo`](examples/BitDemo.java), uses the bitwise
+    AND operator to print the number "2" to standard output.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序，[`BitDemo`](examples/BitDemo.java)，使用位与运算符将数字"2"打印到标准输出。
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'

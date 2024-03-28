@@ -1,0 +1,54 @@
+- en: Overview
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 概述
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/overview.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/overview.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/overview.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/overview.html)
+- en: SDP support is essentially a TCP bypass technology.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SDP支持本质上是一种TCP绕过技术。
+- en: When SDP is enabled and an application attempts to open a TCP connection, the
+    TCP mechanism is bypassed and communication goes directly to the IB network. For
+    example, when your application attempts to bind to a TCP address, the underlying
+    software will decide, based on information in the configuration file, if it should
+    be rebound to an SDP protocol. This process can happen during the binding process
+    or the connecting process (but happens only once for each socket).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当启用SDP并且应用程序尝试打开TCP连接时，TCP机制将被绕过，通信直接传输到IB网络。例如，当您的应用程序尝试绑定到TCP地址时，基础软件将根据配置文件中的信息决定是否应重新绑定到SDP协议。此过程可以在绑定过程或连接过程中发生（但每个套接字仅发生一次）。
+- en: 'There are no API changes required in your code to take advantage of the SDP
+    protocol: the implementation is transparent and is supported by the classic networking
+    (`java.net`) and the New I/O (`java.nio.channels`) packages. See the [Supported
+    Java APIs](supported.html) section for a list of classes that support the SDP
+    protocol.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在您的代码中利用SDP协议无需进行API更改：实现是透明的，并受经典网络(`java.net`)和新I/O(`java.nio.channels`)包的支持。查看[支持的Java
+    API](supported.html)部分，了解支持SDP协议的类列表。
+- en: 'SDP support is disabled by default. The steps to enable SDP support are:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SDP支持默认情况下是禁用的。启用SDP支持的步骤如下：
+- en: Create an SDP configuration file.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建一个SDP配置文件。
+- en: Set the system property that specifies the location of the configuration file.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 设置指定配置文件位置的系统属性。

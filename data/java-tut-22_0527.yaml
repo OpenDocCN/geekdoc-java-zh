@@ -1,0 +1,544 @@
+- en: The Map Interface
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Map接口
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/map.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/map.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/map.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/map.html)
+- en: 'A [`Map`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html) is
+    an object that maps keys to values. A map cannot contain duplicate keys: Each
+    key can map to at most one value. It models the mathematical *function* abstraction.
+    The `Map` interface includes methods for basic operations (such as `put`, `get`,
+    `remove`, `containsKey`, `containsValue`, `size`, and `empty`), bulk operations
+    (such as `putAll` and `clear`), and collection views (such as `keySet`, `entrySet`,
+    and `values`).'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个[`Map`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html)是一个将键映射到值的对象。地图不能包含重复的键：每个键最多可以映射到一个值。它模拟了数学*函数*抽象。`Map`接口包括基本操作的方法（如`put`，`get`，`remove`，`containsKey`，`containsValue`，`size`和`empty`），批量操作（如`putAll`和`clear`），以及集合视图（如`keySet`，`entrySet`和`values`）。
+- en: 'The Java platform contains three general-purpose `Map` implementations: [`HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html),
+    [`TreeMap`](https://docs.oracle.com/javase/8/docs/api/java/util/TreeMap.html),
+    and [`LinkedHashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedHashMap.html).
+    Their behavior and performance are precisely analogous to `HashSet`, `TreeSet`,
+    and `LinkedHashSet`, as described in [The Set Interface](set.html) section.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台包含三种通用的`Map`实现：[`HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html)，[`TreeMap`](https://docs.oracle.com/javase/8/docs/api/java/util/TreeMap.html)，和[`LinkedHashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/LinkedHashMap.html)。它们的行为和性能与`HashSet`，`TreeSet`和`LinkedHashSet`完全类似，如[Set接口](set.html)部分所述。
+- en: 'The remainder of this page discusses the `Map` interface in detail. But first,
+    here are some more examples of collecting to `Map`s using JDK 8 aggregate operations.
+    Modeling real-world objects is a common task in object-oriented programming, so
+    it is reasonable to think that some programs might, for example, group employees
+    by department:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页的其余部分详细讨论了`Map`接口。但首先，这里有一些使用JDK 8聚合操作收集到`Map`的更多示例。在面向对象编程中，对现实世界对象进行建模是一项常见任务，因此合理地认为一些程序可能会，例如，按部门分组员工：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Or compute the sum of all salaries by department:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者按部门计算所有工资的总和：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Or perhaps group students by passing or failing grades:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者按及格或不及格分组学生：
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'You could also group people by city:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以按城市分组人员：
+- en: '[PRE3]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Or even cascade two collectors to classify people by state and city:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者甚至级联两个收集器，按州和城市对人员进行分类：
+- en: '[PRE4]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Again, these are but a few examples of how to use the new JDK 8 APIs. For in-depth
+    coverage of lambda expressions and aggregate operations see the lesson entitled
+    [Aggregate Operations](../../collections/streams/index.html).
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次强调，这些只是如何使用新的JDK 8 API的一些示例。有关lambda表达式和聚合操作的深入覆盖，请参阅名为[聚合操作](../../collections/streams/index.html)的课程。
+- en: Map Interface Basic Operations
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Map接口基本操作
+- en: The basic operations of `Map` (`put`, `get`, `containsKey`, `containsValue`,
+    `size`, and `isEmpty`) behave exactly like their counterparts in `Hashtable`.
+    The [`following program`](examples/Freq.java) generates a frequency table of the
+    words found in its argument list. The frequency table maps each word to the number
+    of times it occurs in the argument list.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Map`的基本操作（`put`，`get`，`containsKey`，`containsValue`，`size`和`isEmpty`）的行为与`Hashtable`中的对应操作完全相同。[`以下程序`](examples/Freq.java)生成其参数列表中找到的单词的频率表。频率表将每个单词映射到其在参数列表中出现的次数。'
+- en: '[PRE5]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The only tricky thing about this program is the second argument of the `put`
+    statement. That argument is a conditional expression that has the effect of setting
+    the frequency to one if the word has never been seen before or one more than its
+    current value if the word has already been seen. Try running this program with
+    the command:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于此程序唯一棘手的事情是`put`语句的第二个参数。该参数是一个条件表达式，如果单词以前从未见过，则将频率设置为一，或者如果单词已经被看到，则将频率设置为当前值加一。尝试使用以下命令运行此程序：
+- en: '[PRE6]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The program yields the following output.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序产生以下输出。
+- en: '[PRE7]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Suppose you'd prefer to see the frequency table in alphabetical order. All you
+    have to do is change the implementation type of the `Map` from `HashMap` to `TreeMap`.
+    Making this four-character change causes the program to generate the following
+    output from the same command line.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您希望按字母顺序查看频率表。您只需将`Map`的实现类型从`HashMap`更改为`TreeMap`即可。通过进行这四个字符的更改，程序将从相同的命令行生成以下输出。
+- en: '[PRE8]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Similarly, you could make the program print the frequency table in the order
+    the words first appear on the command line simply by changing the implementation
+    type of the map to `LinkedHashMap`. Doing so results in the following output.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，您可以通过将映射的实现类型更改为`LinkedHashMap`，使程序按照单词首次出现在命令行上的顺序打印频率表。这样做会产生以下输出。
+- en: '[PRE9]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: This flexibility provides a potent illustration of the power of an interface-based
+    framework.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种灵活性提供了一个接口为基础的框架强大的例证。
+- en: Like the [`Set`](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html)and
+    [`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html)interfaces,
+    `Map` strengthens the requirements on the `equals` and `hashCode` methods so that
+    two `Map` objects can be compared for logical equality without regard to their
+    implementation types. Two `Map` instances are equal if they represent the same
+    key-value mappings.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 像[`Set`](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html)和[`List`](https://docs.oracle.com/javase/8/docs/api/java/util/List.html)接口一样，`Map`加强了对`equals`和`hashCode`方法的要求，以便可以比较两个`Map`对象的逻辑相等性，而不考虑它们的实现类型。如果两个`Map`实例表示相同的键-值映射，则它们是相等的。
+- en: 'By convention, all general-purpose `Map` implementations provide constructors
+    that take a `Map` object and initialize the new `Map` to contain all the key-value
+    mappings in the specified `Map`. This standard `Map` conversion constructor is
+    entirely analogous to the standard `Collection` constructor: It allows the caller
+    to create a `Map` of a desired implementation type that initially contains all
+    of the mappings in another `Map`, regardless of the other `Map`''s implementation
+    type. For example, suppose you have a `Map`, named `m`. The following one-liner
+    creates a new `HashMap` initially containing all of the same key-value mappings
+    as `m`.'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 按照惯例，所有通用的`Map`实现都提供了接受`Map`对象并初始化新`Map`以包含指定`Map`中所有键-值映射的构造函数。这种标准的`Map`转换构造函数与标准的`Collection`构造函数完全类似：它允许调用者创建一个所需实现类型的`Map`，最初包含另一个`Map`中的所有映射，而不管另一个`Map`的实现类型如何。例如，假设您有一个名为`m`的`Map`。以下一行代码创建一个新的`HashMap`，最初包含与`m`相同的所有键-值映射。
+- en: '[PRE10]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: Map Interface Bulk Operations
+  id: totrans-30
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Map接口的批量操作
+- en: 'The `clear` operation does exactly what you would think it could do: It removes
+    all the mappings from the `Map`. The `putAll` operation is the `Map` analogue
+    of the `Collection` interface''s `addAll` operation. In addition to its obvious
+    use of dumping one `Map` into another, it has a second, more subtle use. Suppose
+    a `Map` is used to represent a collection of attribute-value pairs; the `putAll`
+    operation, in combination with the `Map` conversion constructor, provides a neat
+    way to implement attribute map creation with default values. The following is
+    a static factory method that demonstrates this technique.'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`clear`操作确切地做了你认为它能做的事情：它从`Map`中删除所有映射。`putAll`操作是`Map`接口的`Collection`接口的`addAll`操作的类比。除了明显的将一个`Map`倒入另一个`Map`的用途外，它还有第二个更微妙的用途。假设一个`Map`用于表示属性-值对的集合；`putAll`操作与`Map`转换构造函数结合使用，提供了一种实现带有默认值的属性映射创建的简洁方法。以下是演示这种技术的静态工厂方法。'
+- en: '[PRE11]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: Collection Views
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 集合视图
+- en: 'The `Collection` view methods allow a `Map` to be viewed as a `Collection`
+    in these three ways:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Collection`视图方法允许将`Map`以这三种方式视为`Collection`：'
+- en: "`keySet` \x97 the `Set` of keys contained in the `Map`."
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`keySet` \x97 包含在`Map`中的键的`Set`。"
+- en: "`values` \x97 The `Collection` of values contained in the `Map`. This `Collection`\
+    \ is not a `Set`, because multiple keys can map to the same value."
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`values` \x97 包含在`Map`中的值的`Collection`。这个`Collection`不是`Set`，因为多个键可以映射到相同的值。"
+- en: "`entrySet` \x97 the `Set` of key-value pairs contained in the `Map`. The `Map`\
+    \ interface provides a small nested interface called `Map.Entry`, the type of\
+    \ the elements in this `Set`."
+  id: totrans-37
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`entrySet` \x97 包含在`Map`中的键-值对的`Set`。`Map`接口提供了一个称为`Map.Entry`的小嵌套接口，这个`Set`中的元素的类型。"
+- en: 'The `Collection` views provide the *only* means to iterate over a `Map`. This
+    example illustrates the standard idiom for iterating over the keys in a `Map`
+    with a `for-each` construct:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Collection`视图提供了遍历`Map`的*唯一*方法。这个例子演示了使用`for-each`结构遍历`Map`中键的标准习语：'
+- en: '[PRE12]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'and with an `iterator`:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 并使用`iterator`：
+- en: '[PRE13]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: The idiom for iterating over values is analogous. Following is the idiom for
+    iterating over key-value pairs.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 遍历值的习语是类似的。以下是遍历键-值对的习语。
+- en: '[PRE14]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: 'At first, many people worry that these idioms may be slow because the `Map`
+    has to create a new `Collection` instance each time a `Collection` view operation
+    is called. Rest easy: There''s no reason that a `Map` cannot always return the
+    same object each time it is asked for a given `Collection` view. This is precisely
+    what all the `Map` implementations in `java.util` do.'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 起初，许多人担心这些习语可能会很慢，因为每次调用 `Collection` 视图操作时，`Map` 都必须创建一个新的 `Collection` 实例。放心：`Map`
+    每次被要求返回给定 `Collection` 视图时都可以返回相同的对象。这正是 `java.util` 中所有 `Map` 实现所做的。
+- en: With all three `Collection` views, calling an `Iterator`'s `remove` operation
+    removes the associated entry from the backing `Map`, assuming that the backing
+    `Map` supports element removal to begin with. This is illustrated by the preceding
+    filtering idiom.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于所有三个 `Collection` 视图，调用 `Iterator` 的 `remove` 操作会从支持的 `Map` 中删除关联的条目，假设支持的
+    `Map` 一开始支持元素的移除。这由前面的过滤习语所说明。
+- en: With the `entrySet` view, it is also possible to change the value associated
+    with a key by calling a `Map.Entry`'s `setValue` method during iteration (again,
+    assuming the `Map` supports value modification to begin with). Note that these
+    are the *only* safe ways to modify a `Map` during iteration; the behavior is unspecified
+    if the underlying `Map` is modified in any other way while the iteration is in
+    progress.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `entrySet` 视图，还可以在迭代期间通过调用 `Map.Entry` 的 `setValue` 方法更改与键关联的值（同样，假设 `Map`
+    一开始支持值的修改）。请注意，这些是*唯一*安全的在迭代期间修改 `Map` 的方式；如果在迭代进行中以任何其他方式修改底层 `Map`，行为是未指定的。
+- en: "The `Collection` views support element removal in all its many forms \x97 `remove`,\
+    \ `removeAll`, `retainAll`, and `clear` operations, as well as the `Iterator.remove`\
+    \ operation. (Yet again, this assumes that the backing `Map` supports element\
+    \ removal.)"
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "`Collection` 视图支持元素的各种形式的移除 \x97 `remove`、`removeAll`、`retainAll` 和 `clear`\
+    \ 操作，以及 `Iterator.remove` 操作。（再次强调，这假设支持的 `Map` 支持元素的移除。）"
+- en: The `Collection` views *do not* support element addition under any circumstances.
+    It would make no sense for the `keySet` and `values` views, and it's unnecessary
+    for the `entrySet` view, because the backing `Map`'s `put` and `putAll` methods
+    provide the same functionality.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Collection` 视图*不支持*在任何情况下添加元素。对于 `keySet` 和 `values` 视图来说是没有意义的，对于 `entrySet`
+    视图来说也是不必要的，因为支持的 `Map` 的 `put` 和 `putAll` 方法提供了相同的功能。'
+- en: 'Fancy Uses of Collection Views: Map Algebra'
+  id: totrans-49
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 集合视图的花式用法：Map 代数
+- en: "When applied to the `Collection` views, bulk operations (`containsAll`, `removeAll`,\
+    \ and `retainAll`) are surprisingly potent tools. For starters, suppose you want\
+    \ to know whether one `Map` is a submap of another \x97 that is, whether the first\
+    \ `Map` contains all the key-value mappings in the second. The following idiom\
+    \ does the trick."
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "当应用于 `Collection` 视图时，批量操作（`containsAll`、`removeAll` 和 `retainAll`）是令人惊讶的强大工具。首先，假设你想知道一个\
+    \ `Map` 是否是另一个的子映射 \x97 也就是说，第一个 `Map` 是否包含第二个中的所有键值映射。以下习语可以实现这一点。"
+- en: '[PRE15]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: Along similar lines, suppose you want to know whether two `Map` objects contain
+    mappings for all of the same keys.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，假设你想知道两个 `Map` 对象是否包含相同键的所有映射。
+- en: '[PRE16]'
+  id: totrans-53
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: Suppose you have a `Map` that represents a collection of attribute-value pairs,
+    and two `Set`s representing required attributes and permissible attributes. (The
+    permissible attributes include the required attributes.) The following snippet
+    determines whether the attribute map conforms to these constraints and prints
+    a detailed error message if it doesn't.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你有一个代表属性-值对集合的 `Map`，以及两个表示必需属性和可允许属性的 `Set`（可允许属性包括必需属性）。以下代码段确定属性映射是否符合这些约束，并在不符合时打印详细的错误消息。
+- en: '[PRE17]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: Suppose you want to know all the keys common to two `Map` objects.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想知道两个 `Map` 对象共有的所有键。
+- en: '[PRE18]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: A similar idiom gets you the common values.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似的习语可以获得共同的值。
+- en: All the idioms presented thus far have been nondestructive; that is, they don't
+    modify the backing `Map`. Here are a few that do. Suppose you want to remove all
+    of the key-value pairs that one `Map` has in common with another.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，所提出的所有习语都是非破坏性的；也就是说，它们不会修改支持的 `Map`。以下是一些会修改的。假设你想要删除一个 `Map` 与另一个 `Map`
+    共有的所有键值对。
+- en: '[PRE19]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: Suppose you want to remove from one `Map` all of the keys that have mappings
+    in another.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想要从一个 `Map` 中删除所有在另一个中具有映射的键。
+- en: '[PRE20]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: What happens when you start mixing keys and values in the same bulk operation?
+    Suppose you have a `Map`, `managers`, that maps each employee in a company to
+    the employee's manager. We'll be deliberately vague about the types of the key
+    and the value objects. It doesn't matter, as long as they're the same. Now suppose
+    you want to know who all the "individual contributors" (or nonmanagers) are. The
+    following snippet tells you exactly what you want to know.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你开始在同一批量操作中混合键和值时会发生什么？假设你有一个`Map`，`managers`，将公司中的每个员工映射到员工的经理。我们故意对键和值对象的类型保持模糊。只要它们相同就可以。现在假设你想知道所有“个人贡献者”（非经理）是谁。下面的代码片段会告诉你确切想要知道的内容。
+- en: '[PRE21]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: Suppose you want to fire all the employees who report directly to some manager,
+    Simon.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想解雇所有直接向某个经理Simon汇报的员工。
+- en: '[PRE22]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: Note that this idiom makes use of `Collections.singleton`, a static factory
+    method that returns an immutable `Set` with the single, specified element.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，这种习惯用法使用了`Collections.singleton`，这是一个返回具有单个指定元素的不可变`Set`的静态工厂方法。
+- en: Once you've done this, you may have a bunch of employees whose managers no longer
+    work for the company (if any of Simon's direct-reports were themselves managers).
+    The following code will tell you which employees have managers who no longer works
+    for the company.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦你完成了这个操作，你可能会有一堆员工，他们的经理不再为公司工作（如果Simon的直接下属本身是经理的话）。下面的代码将告诉你哪些员工的经理不再为公司工作。
+- en: '[PRE23]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: This example is a bit tricky. First, it makes a temporary copy of the `Map`,
+    and it removes from the temporary copy all entries whose (manager) value is a
+    key in the original `Map`. Remember that the original `Map` has an entry for each
+    employee. Thus, the remaining entries in the temporary `Map` comprise all the
+    entries from the original `Map` whose (manager) values are no longer employees.
+    The keys in the temporary copy, then, represent precisely the employees that we're
+    looking for.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个例子有点棘手。首先，它创建了`Map`的临时副本，并从临时副本中删除所有值为原始`Map`中键的条目。请记住，原始`Map`为每个员工都有一个条目。因此，临时`Map`中剩余的条目包括所有原始`Map`中值不再是员工的条目。因此，临时副本中的键恰好代表我们正在寻找的员工。
+- en: There are many more idioms like the ones contained in this section, but it would
+    be impractical and tedious to list them all. Once you get the hang of it, it's
+    not that difficult to come up with the right one when you need it.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一节中包含的习语还有很多，但列出它们所有将是不切实际和乏味的。一旦你掌握了它，当你需要时想出正确的习语并不那么困难。
+- en: Multimaps
+  id: totrans-72
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 多重映射
+- en: 'A *multimap* is like a `Map` but it can map each key to multiple values. The
+    Java Collections Framework doesn''t include an interface for multimaps because
+    they aren''t used all that commonly. It''s a fairly simple matter to use a `Map`
+    whose values are `List` instances as a multimap. This technique is demonstrated
+    in the next code example, which reads a word list containing one word per line
+    (all lowercase) and prints out all the anagram groups that meet a size criterion.
+    An *anagram group* is a bunch of words, all of which contain exactly the same
+    letters but in a different order. The program takes two arguments on the command
+    line: (1) the name of the dictionary file and (2) the minimum size of anagram
+    group to print out. Anagram groups containing fewer words than the specified minimum
+    are not printed.'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*Multimap*类似于`Map`，但它可以将每个键映射到多个值。Java集合框架不包括用于多重映射的接口，因为它们并不常用。使用值为`List`实例的`Map`作为多重映射是一件相当简单的事情。下一个代码示例演示了这种技术，它读取一个包含每行一个单词（全部小写）的单词列表，并打印出符合大小标准的所有变位词组。*变位词组*是一组单词，所有这些单词都包含完全相同的字母，但顺序不同。程序在命令行上接受两个参数：（1）字典文件的名称和（2）要打印出的变位词组的最小大小。不打印包含少于指定最小值的单词的变位词组。'
+- en: 'There is a standard trick for finding anagram groups: For each word in the
+    dictionary, alphabetize the letters in the word (that is, reorder the word''s
+    letters into alphabetical order) and put an entry into a multimap, mapping the
+    alphabetized word to the original word. For example, the word *bad* causes an
+    entry mapping *abd* into *bad* to be put into the multimap. A moment''s reflection
+    will show that all the words to which any given key maps form an anagram group.
+    It''s a simple matter to iterate over the keys in the multimap, printing out each
+    anagram group that meets the size constraint.'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有一个标准的技巧用于找到变位词组：对于字典中的每个单词，将单词中的字母按字母顺序排列（即，重新排列单词的字母以字母顺序）并将条目放入一个多重映射中，将按字母顺序排列的单词映射到原始单词。例如，单词*bad*会导致将*abd*映射到*bad*的条目放入多重映射中。稍加思考就会发现，任何给定键映射到的所有单词形成一个变位词组。遍历多重映射中的键并打印出符合大小约束的每个变位词组是一件简单的事情。
+- en: '[`The following program`](examples/Anagrams.java) is a straightforward implementation
+    of this technique.'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`以下程序`](examples/Anagrams.java)是这种技术的一个直接实现。'
+- en: '[PRE24]'
+  id: totrans-76
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: Running this program on a 173,000-word dictionary file with a minimum anagram
+    group size of eight produces the following output.
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在一个包含173,000个单词的字典文件上运行此程序，最小变位词组大小为八时，会产生以下输出。
+- en: '[PRE25]'
+  id: totrans-78
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: Many of these words seem a bit bogus, but that's not the program's fault; they're
+    in the dictionary file. Here's the [`dictionary file`](examples/dictionary.txt)
+    we used. It was derived from the Public Domain ENABLE benchmark reference word
+    list.
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些单词中有许多看起来有点虚假，但这不是程序的错；它们在字典文件中。这是我们使用的[`字典文件`](examples/dictionary.txt)。它是从公共领域的ENABLE基准参考词汇列表派生而来。

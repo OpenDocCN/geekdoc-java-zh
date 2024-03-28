@@ -1,0 +1,354 @@
+- en: Restrictions on Generics
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 泛型的限制。
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html](https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html](https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html)。
+- en: 'To use Java generics effectively, you must consider the following restrictions:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要有效地使用Java泛型，您必须考虑以下限制：
+- en: '[Cannot Instantiate Generic Types with Primitive Types](#instantiate)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[不能用原始类型实例化泛型类型](#instantiate)。'
+- en: '[Cannot Create Instances of Type Parameters](#createObjects)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[不能创建类型参数的实例](#createObjects)。'
+- en: '[Cannot Declare Static Fields Whose Types are Type Parameters](#createStatic)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[不能声明其类型为类型参数的静态字段](#createStatic)。'
+- en: '[Cannot Use Casts or `instanceof` With Parameterized Types](#cannotCast)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[不能在参数化类型中使用强制类型转换或`instanceof`](#cannotCast)。'
+- en: '[Cannot Create Arrays of Parameterized Types](#createArrays)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[不能创建参数化类型的数组](#createArrays)。'
+- en: '[Cannot Create, Catch, or Throw Objects of Parameterized Types](#cannotCatch)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[不能创建、捕获或抛出参数化类型的对象](#cannotCatch)。'
+- en: '[Cannot Overload a Method Where the Formal Parameter Types of Each Overload
+    Erase to the Same Raw Type](#cannotOverload)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[不能重载形式参数类型擦除为相同原始类型的方法](#cannotOverload)。'
+- en: Cannot Instantiate Generic Types with Primitive Types
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 不能用原始类型实例化泛型类型。
+- en: 'Consider the following parameterized type:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑以下参数化类型：
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'When creating a `Pair` object, you cannot substitute a primitive type for the
+    type parameter `K` or `V`:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在创建`Pair`对象时，您不能用原始类型替换类型参数`K`或`V`：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'You can substitute only non-primitive types for the type parameters `K` and
+    `V`:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您只能用非原始类型替换类型参数`K`和`V`：
+- en: '[PRE2]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Note that the Java compiler autoboxes `8` to `Integer.valueOf(8)` and ''`a`''
+    to `Character(''a'')`:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，Java编译器会将`8`自动装箱为`Integer.valueOf(8)`，将`'a'`自动装箱为`Character('a')`：
+- en: '[PRE3]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: For more information on autoboxing, see [Autoboxing and Unboxing](../data/autoboxing.html)
+    in the [Numbers and Strings](../data/index.html) lesson.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关自动装箱的更多信息，请参见[自动装箱和拆箱](../data/autoboxing.html)中的[数字和字符串](../data/index.html)课程。
+- en: Cannot Create Instances of Type Parameters
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 不能创建类型参数的实例。
+- en: 'You cannot create an instance of a type parameter. For example, the following
+    code causes a compile-time error:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你不能创建一个类型参数的实例。例如，以下代码会导致编译时错误：
+- en: '[PRE4]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'As a workaround, you can create an object of a type parameter through reflection:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为一种解决方法，您可以通过反射创建一个类型参数的对象：
+- en: '[PRE5]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'You can invoke the `append` method as follows:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以按以下方式调用`append`方法：
+- en: '[PRE6]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Cannot Declare Static Fields Whose Types are Type Parameters
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 不能声明其类型为类型参数的静态字段。
+- en: 'A class''s static field is a class-level variable shared by all non-static
+    objects of the class. Hence, static fields of type parameters are not allowed.
+    Consider the following class:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类的静态字段是所有非静态对象共享的类级变量。因此，不允许类型参数的静态字段。考虑以下类：
+- en: '[PRE7]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'If static fields of type parameters were allowed, then the following code would
+    be confused:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果允许类型参数的静态字段，则以下代码将会混淆：
+- en: '[PRE8]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Because the static field `os` is shared by `phone`, `pager`, and `pc`, what
+    is the actual type of `os`? It cannot be `Smartphone`, `Pager`, and `TabletPC`
+    at the same time. You cannot, therefore, create static fields of type parameters.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为静态字段`os`被`phone`、`pager`和`pc`共享，`os`的实际类型是什么？它不能同时是`Smartphone`、`Pager`和`TabletPC`。因此，您不能创建类型参数的静态字段。
+- en: Cannot Use Casts or `instanceof` with Parameterized Types
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 不能在参数化类型中使用强制类型转换或`instanceof`。
+- en: 'Because the Java compiler erases all type parameters in generic code, you cannot
+    verify which parameterized type for a generic type is being used at runtime:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为Java编译器会擦除泛型代码中的所有类型参数，所以无法在运行时验证泛型类型的参数化类型��
+- en: '[PRE9]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'The set of parameterized types passed to the `rtti` method is:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传递给`rtti`方法的参数化类型集合为：
+- en: '[PRE10]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'The runtime does not keep track of type parameters, so it cannot tell the difference
+    between an `ArrayList<Integer>` and an `ArrayList<String>`. The most you can do
+    is to use an unbounded wildcard to verify that the list is an `ArrayList`:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行时不会跟踪类型参数，因此无法区分`ArrayList<Integer>`和`ArrayList<String>`之间的区别。您最多可以使用无界通配符来验证列表是否是`ArrayList`：
+- en: '[PRE11]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'Typically, you cannot cast to a parameterized type unless it is parameterized
+    by unbounded wildcards. For example:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，除非使用无界通配符进行参数化，否则不能进行参数化类型的强制转换。例如：
+- en: '[PRE12]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'However, in some cases the compiler knows that a type parameter is always valid
+    and allows the cast. For example:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，在某些情况下，编译器知道类型参数始终有效并允许强制转换。例如：
+- en: '[PRE13]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Cannot Create Arrays of Parameterized Types
+  id: totrans-44
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 不能创建参数化类型的数组。
+- en: 'You cannot create arrays of parameterized types. For example, the following
+    code does not compile:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你不能创建参数化类型的数组。例如，以下代码无法编译：
+- en: '[PRE14]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: 'The following code illustrates what happens when different types are inserted
+    into an array:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码说明了当不同类型插入数组时会发生什么：
+- en: '[PRE15]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: 'If you try the same thing with a generic list, there would be a problem:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你尝试对一个泛型列表做同样的事情，会出现问题：
+- en: '[PRE16]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: If arrays of parameterized lists were allowed, the previous code would fail
+    to throw the desired `ArrayStoreException`.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果允许参数化列表的数组，上述代码将无法抛出期望的`ArrayStoreException`。
+- en: Cannot Create, Catch, or Throw Objects of Parameterized Types
+  id: totrans-52
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 无法创建、捕获或抛出参数化类型的对象
+- en: 'A generic class cannot extend the `Throwable` class directly or indirectly.
+    For example, the following classes will not compile:'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个泛型类不能直接或间接地扩展`Throwable`类。例如，以下类将无法编译：
+- en: '[PRE17]'
+  id: totrans-54
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: 'A method cannot catch an instance of a type parameter:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个方法无法捕获类型参数的实例：
+- en: '[PRE18]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: 'You can, however, use a type parameter in a `throws` clause:'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，你可以在`throws`子句中使用类型参数：
+- en: '[PRE19]'
+  id: totrans-58
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: Cannot Overload a Method Where the Formal Parameter Types of Each Overload Erase
+    to the Same Raw Type
+  id: totrans-59
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 无法重载形式参数类型擦除为相同原始类型的方法
+- en: A class cannot have two overloaded methods that will have the same signature
+    after type erasure.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个类不能有两个在类型擦除后具有相同签名的重载方法。
+- en: '[PRE20]'
+  id: totrans-61
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: The overloads would all share the same classfile representation and will generate
+    a compile-time error.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些重载将共享相同的类文件表示，并将生成编译时错误。

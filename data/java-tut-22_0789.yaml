@@ -1,0 +1,229 @@
+- en: New Properties
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 新属性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/properties.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/properties.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/properties.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/properties.html)
+- en: 'JAXP 1.5 defines three new properties that can be used to regulate whether
+    or not XML processors resolve external resources as listed above. The properties
+    are:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAXP 1.5定义了三个新属性，用于调节XML处理器是否解析上述外部资源。这些属性是：
+- en: '`javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD`'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.xml.XMLConstants.ACCESS_EXTERNAL_DTD`'
+- en: '`javax.xml.XMLConstants.ACCESS_EXTERNAL_SCHEMA`'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.xml.XMLConstants.ACCESS_EXTERNAL_SCHEMA`'
+- en: '`javax.xml.XMLConstants.ACCESS_EXTERNAL_STYLESHEET`'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.xml.XMLConstants.ACCESS_EXTERNAL_STYLESHEET`'
+- en: These API properties have corresponding system properties and jaxp.properties.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些API属性具有相应的系统属性和jaxp.properties。
+- en: ACCESS_EXTERNAL_DTD
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ACCESS_EXTERNAL_DTD
+- en: '**Name**: `http://javax.xml.XMLConstants/property/accessExternalDTD`'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**名称**：`http://javax.xml.XMLConstants/property/accessExternalDTD`'
+- en: '**Definition**: Restrict access to external DTDs, external Entity References
+    to the protocols specified.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义**：限制对外部DTD、外部实体引用到指定协议的访问。'
+- en: '**Value**: see [Values of the Properties](#values)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**值**：参见[属性的值](#values)'
+- en: '**Default value**: `all`, connection permitted to all protocols.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**默认值**：`all`，允许连接到所有协议。'
+- en: '**System property**: `javax.xml.accessExternalDTD`'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**系统属性**：`javax.xml.accessExternalDTD`'
+- en: ACCESS_EXTERNAL_SCHEMA
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ACCESS_EXTERNAL_SCHEMA
+- en: '**Name**: `http://javax.xml.XMLConstants/property/accessExternalSchema`'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**名称**：`http://javax.xml.XMLConstants/property/accessExternalSchema`'
+- en: '**Definition**: restrict access to the protocols specified for external reference
+    set by the `schemaLocation` attribute, Import and Include element.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义**：限制对由`schemaLocation`属性、Import和Include元素设置的外部引用协议的访问。'
+- en: '**Value**: see [Values of the Properties](#values)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**值**：参见[属性的值](#values)'
+- en: '**Default value**: `all`, connection permitted to all protocols.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**默认值**：`all`，允许连接到所有协议。'
+- en: '**System property**: `javax.xml.accessExternalSchema`'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**系统属性**：`javax.xml.accessExternalSchema`'
+- en: ACCESS_EXTERNAL_STYLESHEET
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ACCESS_EXTERNAL_STYLESHEET
+- en: '**Name**: `http://javax.xml.XMLConstants/property/accessExternalStylesheet`'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**名称**：`http://javax.xml.XMLConstants/property/accessExternalStylesheet`'
+- en: '**Definition**: restrict access to the protocols specified for external reference
+    set by the stylesheet processing instruction, document function, Import and Include
+    element.'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义**：限制对由样式表处理指令、文档函数、Import和Include元素设置的外部引用协议的访问。'
+- en: '**Value**: see [Values of the Properties](#values)'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**值**：参见[属性的值](#values)'
+- en: '**Default value**: `all`, connection permitted to all protocols.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**默认值**：`all`，允许连接到所有协议。'
+- en: '**System property**: `javax.xml.accessExternalStylesheet`'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**系统属性**：`javax.xml.accessExternalStylesheet`'
+- en: ${java.home}/lib/jaxp.properties
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ${java.home}/lib/jaxp.properties
+- en: 'These properties can be specified in `jaxp.properties` to define the behavior
+    for all applications using the Java Runtime. The format is `property-name=[value][,value]*`.
+    For example:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些属性可以在`jaxp.properties`中指定，以定义所有使用Java Runtime的应用程序的行为。格式为`property-name=[value][,value]*`。例如：
+- en: '[PRE0]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The property names are the same as those of the system properties: `javax.xml.accessExternalDTD`,
+    `javax.xml.accessExternalSchema`, and `javax.xml.accessExternalStylesheet`.'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性名称与系统属性相同：`javax.xml.accessExternalDTD`、`javax.xml.accessExternalSchema`和`javax.xml.accessExternalStylesheet`。
+- en: Values of the Properties
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 属性的值
+- en: All of the properties have values in the same format.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有属性的值格式相同。
+- en: '**Value**: a list of protocols separated by comma. A protocol is the scheme
+    portion of an URI, or in the case of the JAR protocol, "jar" plus the scheme portion
+    separated by colon. A scheme is defined as:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**值**：由逗号分隔的协议列表。协议是URI的scheme部分，或者在JAR协议的情况下，由冒号分隔的"jar"加上scheme部分。协议定义为：'
+- en: '`scheme = alpha *( alpha | digit | "+" | "-" | "." )`'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`scheme = alpha *( alpha | digit | "+" | "-" | "." )`'
+- en: where alpha = a-z and A-Z.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中alpha = a-z和A-Z。
+- en: 'And the JAR protocol:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以及JAR协议：
+- en: '`jar[:scheme]`'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`jar[:scheme]`'
+- en: Protocols are case-insensitive. Any whitespaces as defined by `Character.isSpaceChar`
+    in the value will be ignored. Examples of protocols are `file`, `http`, `jar:file`.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 协议不区分大小写。值中由`Character.isSpaceChar`定义的任何空格将被忽略。协议的示例包括`file`、`http`、`jar:file`。
+- en: '**Default value**: the default value is implementation specific. In JAXP 1.5
+    RI, Java SE 7u40, and Java SE 8, the default value is `all`, granting permissions
+    to all protocols.'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**默认值**：默认值是实现特定的。在JAXP 1.5 RI、Java SE 7u40和Java SE 8中，默认值为`all`，授予所有协议的权限。'
+- en: '**Granting all access**: the keyword `all` grants permission to all protocols.
+    For example, setting `javax.xml.accessExternalDTD=all` in `jaxp.properties` would
+    allow a system to work as before with no restrictions on accessing external DTDs
+    and Entity References.'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**授予所有访问**：关键字`all`授予所有协议的权限。例如，在`jaxp.properties`中设置`javax.xml.accessExternalDTD=all`将允许系统像以前一样工作，无限制地访问外部DTD和实体引用。'
+- en: '**Denying any access**: an empty string, that is, "", means no permission is
+    granted to any protocol. For example, setting `javax.xml.accessExternalDTD=""`
+    in `jaxp.properties` would instruct the JAXP processors to deny any external connections.'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**拒绝任何访问**：空字符串，即""，表示不授予任何协议权限。例如，在`jaxp.properties`中设置`javax.xml.accessExternalDTD=""`将指示JAXP处理器拒绝任何外部连接。'

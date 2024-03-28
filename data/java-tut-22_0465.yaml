@@ -1,0 +1,69 @@
+- en: Choosing the Drop Action
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 选择放置操作
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropaction.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropaction.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropaction.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropaction.html)
+- en: Every drag source (Java based or otherwise) advertises the set of actions it
+    supports when exporting data. If it supports data being copied, it advertises
+    the `COPY` action; if it supports data being moved from it, then it advertises
+    the `MOVE` action, and so on. For Swing components, the source actions are advertised
+    through the [`getSourceActions`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.html#getSourceActions-javax.swing.JComponent-)
+    method.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个拖动源（基于 Java 或其他方式）在导出数据时都会公布其支持的操作集。如果支持复制数据，则公布`COPY`操作；如果支持从中移动数据，则公布`MOVE`操作，依此类推。对于
+    Swing 组件，源操作通过[`getSourceActions`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.html#getSourceActions-javax.swing.JComponent-)方法公布。
+- en: When a drag is initiated, the user has some control over which of the source
+    actions is chosen for the transfer by way of keyboard modifiers used in conjunction
+    with the drag gesture — this is called the *user action*. For example, the default
+    (where no modifiers are used) generally indicates a move action, holding the Control
+    key indicates a copy action, and holding both Shift and Control indicates a linking
+    action. The user action is available via the [`getUserDropAction`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getUserDropAction--)
+    method.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当启动拖动操作时，用户可以通过与拖动手势结合使用的键盘修饰符来控制选择哪个源操作用于传输 — 这称为*用户操作*。例如，默认情况下（未使用修饰符），通常表示移动操作，按住
+    Control 键表示复制操作，同时按住 Shift 和 Control 表示链接操作。用户操作可通过[`getUserDropAction`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getUserDropAction--)方法获得。
+- en: The user action indicates a preference, but ultimately it is the target that
+    decides the drop action. For example, consider a component that will only accept
+    copied data. And consider a drag source that supports both copy and move. The
+    `TransferHandler` for the copy-only target can be coded to only accept data from
+    the source using the [`setDropAction`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#setDropAction-int-)
+    method, even if the user has indicated a preference for a move action.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户操作表示了偏好，但最终决定放置操作的是目标。例如，考虑一个只接受复制数据的组件。再考虑一个支持复制和移动的拖动源。即使用户表示偏好移动操作，仅接受来自源的数据的复制目标的`TransferHandler`也可以编码为仅接受数据，使用[`setDropAction`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#setDropAction-int-)方法。
+- en: 'This work happens in the `canImport` method, where the target''s `TransferHandler`
+    decides whether to accept the incoming data. An implementation that explicitly
+    chooses the `COPY` action, if it is supported by the source, might look like this:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这项工作发生在`canImport`方法中，目标的`TransferHandler`决定是否接受传入数据。如果源支持，一个明确选择`COPY`操作的实现可能如下所示：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The code snippet displayed in bold shows where the source's supported drop actions
+    are queried. If copy is supported, the `setDropAction` method is invoked to ensure
+    that only a copy action will take place and the method returns true.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 粗体显示的代码片段显示了查询源支持的放置操作的位置。如果支持复制，则调用`setDropAction`方法以确保只进行复制操作，并且该方法返回 true。
+- en: Next we will look at a demo that explicitly sets the drop action using `setDropAction`.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来我们将看一个演示，明确使用`setDropAction`设置放置操作。

@@ -1,0 +1,125 @@
+- en: Operators
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 运算符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/operators.html)
+- en: Now that you've learned how to declare and initialize variables, you probably
+    want to know how to *do something* with them. Learning the operators of the Java
+    programming language is a good place to start. Operators are special symbols that
+    perform specific operations on one, two, or three *operands*, and then return
+    a result.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你已经学会了如何声明和初始化变量，你可能想知道如何*对其进行操作*。学习 Java 编程语言的运算符是一个很好的开始。运算符是执行特定操作的特殊符号，作用于一个、两个或三个*操作数*，然后返回一个结果。
+- en: As we explore the operators of the Java programming language, it may be helpful
+    for you to know ahead of time which operators have the highest precedence. The
+    operators in the following table are listed according to precedence order. The
+    closer to the top of the table an operator appears, the higher its precedence.
+    Operators with higher precedence are evaluated before operators with relatively
+    lower precedence. Operators on the same line have equal precedence. When operators
+    of equal precedence appear in the same expression, a rule must govern which is
+    evaluated first. All binary operators except for the assignment operators are
+    evaluated from left to right; assignment operators are evaluated right to left.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当我们探索 Java 编程语言的运算符时，提前了解哪些运算符具有最高优先级可能会对您有所帮助。下表中的运算符按照优先级顺序列出。出现在表格顶部的运算符优先级较高。优先级较高的运算符在相对较低优先级的运算符之前进行评估。同一行上的运算符具有相同的优先级。当具有相同优先级的运算符出现在同一表达式中时，必须有规则来决定哪个首先进行评估。除了赋值运算符之外的所有二元运算符都是从左到右进行评估；赋值运算符是从右到左进行评估。
+- en: '**Operator Precedence**'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**运算符优先级**'
+- en: '| Operators | Precedence |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| 运算符 | 优先级 |'
+- en: '| postfix | `*expr*++ *expr*--` |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| 后缀 | `*expr*++ *expr*--` |'
+- en: '| unary | `++*expr* --*expr* +*expr* -*expr* ~ !` |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| 一元 | `++*expr* --*expr* +*expr* -*expr* ~ !` |'
+- en: '| multiplicative | `* / %` |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| 乘法 | `* / %` |'
+- en: '| additive | `+ -` |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| 加法 | `+ -` |'
+- en: '| shift | `<< >> >>>` |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| 移位 | `<< >> >>>` |'
+- en: '| relational | `< > <= >= instanceof` |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| 关系 | `< > <= >= instanceof` |'
+- en: '| equality | `== !=` |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| 相等 | `== !=` |'
+- en: '| bitwise AND | `&` |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| 按位与 | `&` |'
+- en: '| bitwise exclusive OR | `^` |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| 按位异或 | `^` |'
+- en: '| bitwise inclusive OR | `&#124;` |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| 按位或 | `&#124;` |'
+- en: '| logical AND | `&&` |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| 逻辑与 | `&&` |'
+- en: '| logical OR | `&#124;&#124;` |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| 逻辑或 | `&#124;&#124;` |'
+- en: '| ternary | `? :` |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| 三元 | `? :` |'
+- en: '| assignment | `= += -= *= /= %= &= ^= &#124;= <<= >>= >>>=` |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| 赋值 | `= += -= *= /= %= &= ^= &#124;= <<= >>= >>>=` |'
+- en: In general-purpose programming, certain operators tend to appear more frequently
+    than others; for example, the assignment operator "`=`" is far more common than
+    the unsigned right shift operator "`>>>`". With that in mind, the following discussion
+    focuses first on the operators that you're most likely to use on a regular basis,
+    and ends focusing on those that are less common. Each discussion is accompanied
+    by sample code that you can compile and run. Studying its output will help reinforce
+    what you've just learned.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在通用编程中，某些运算符比其他运算符更频繁地出现；例如，赋值运算符"`=`"比无符号右移运算符"`>>>`"更常见。因此，以下讨论首先关注您最有可能经常使用的运算符，最后关注那些不太常见的运算符。每个讨论都附有您可以编译和运行的示例代码。研究其输出将有助于巩固您刚刚学到的知识。

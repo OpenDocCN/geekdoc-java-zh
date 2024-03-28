@@ -1,0 +1,111 @@
+- en: Polymorphism
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 多态性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html](https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html](https://docs.oracle.com/javase/tutorial/java/IandI/polymorphism.html)
+- en: The dictionary definition of *polymorphism* refers to a principle in biology
+    in which an organism or species can have many different forms or stages. This
+    principle can also be applied to object-oriented programming and languages like
+    the Java language. Subclasses of a class can define their own unique behaviors
+    and yet share some of the same functionality of the parent class.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*多态性*的词典定义指的是生物学中的一个原则，即一个生物体或物种可以具有许多不同的形式或阶段。这个原则也可以应用于面向对象编程和像Java语言这样的语言中。类的子类可以定义自己独特的行为，同时共享父类的一些功能。'
+- en: Polymorphism can be demonstrated with a minor modification to the `Bicycle`
+    class. For example, a `printDescription` method could be added to the class that
+    displays all the data currently stored in an instance.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 多态性可以通过对`Bicycle`类进行微小修改来演示。例如，可以向类中添加一个`printDescription`方法，该方法显示实例中当前存储的所有数据。
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: To demonstrate polymorphic features in the Java language, extend the `Bicycle`
+    class with a `MountainBike` and a `RoadBike` class. For `MountainBike`, add a
+    field for `suspension`, which is a `String` value that indicates if the bike has
+    a front shock absorber, `Front`. Or, the bike has a front and back shock absorber,
+    `Dual`.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在Java语言中演示多态特性，请使用`MountainBike`和`RoadBike`类扩展`Bicycle`类。对于`MountainBike`，添加一个`suspension`字段，这是一个`String`值，指示自行车是否有前减震器，`Front`。或者，自行车有前后减震器，`Dual`。
+- en: 'Here is the updated class:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是更新后的类：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Note the overridden `printDescription` method. In addition to the information
+    provided before, additional data about the suspension is included to the output.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意覆盖的`printDescription`方法。除了之前提供的信息外，输出还包括有关悬架的额外数据。
+- en: 'Next, create the `RoadBike` class. Because road or racing bikes have skinny
+    tires, add an attribute to track the tire width. Here is the `RoadBike` class:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，创建`RoadBike`类。因为公路或赛车自行车有细轮胎，所以添加一个属性来跟踪轮胎宽度。这是`RoadBike`类：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Note that once again, the `printDescription` method has been overridden. This
+    time, information about the tire width is displayed.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`printDescription`方法再次被覆盖。这次，显示了有关轮胎宽度的信息。
+- en: 'To summarize, there are three classes: `Bicycle`, `MountainBike`, and `RoadBike`.
+    The two subclasses override the `printDescription` method and print unique information.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 总结一下，有三个类：`Bicycle`，`MountainBike`和`RoadBike`。这两个子类覆盖了`printDescription`方法并打印了独特的信息。
+- en: Here is a test program that creates three `Bicycle` variables. Each variable
+    is assigned to one of the three bicycle classes. Each variable is then printed.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个创建三个`Bicycle`变量的测试程序。每个变量分配给三个自行车类中的一个。然后打印每个变量。
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The following is the output from the test program:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是测试程序的输出：
+- en: '[PRE4]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The Java virtual machine (JVM) calls the appropriate method for the object that
+    is referred to in each variable. It does not call the method that is defined by
+    the variable's type. This behavior is referred to as *virtual method invocation*
+    and demonstrates an aspect of the important polymorphism features in the Java
+    language.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java虚拟机（JVM）调用与每个变量引用的对象相对应的方法。它不调用变量类型定义的方法。这种行为称为*虚拟方法调用*，展示了Java语言中重要的多态性特性的一个方面。

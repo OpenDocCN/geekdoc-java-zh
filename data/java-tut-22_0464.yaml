@@ -1,0 +1,109 @@
+- en: Demo - DropDemo
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 演示 - DropDemo
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html)
+- en: Now we will look at a demo that uses a custom transfer handler to implement
+    drop for a list component. Although the default transfer handler for list implements
+    export, because we are creating a custom transfer handler to implement import,
+    we have to re-implement export as well.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们将看一个演示，使用自定义传输处理程序为列表组件实现拖放。尽管列表的默认传输处理程序实现了导出，但因为我们正在创建一个自定义传输处理程序来实现导入，所以我们必须重新实现导出。
+- en: As you see from the screen shot, `DropDemo` contains an editable text area,
+    a list, and a combo box that allows you to select the drop mode for the list.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如您从屏幕截图中看到的那样，`DropDemo`包含一个可编辑的文本区域、一个列表和一个允许您为列表选择拖放模式的组合框。
+- en: '![DropDemo screen shot](../Images/33c4d168420b7b01a7bab0f2bf54f140.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![DropDemo 屏幕截图](../Images/33c4d168420b7b01a7bab0f2bf54f140.png)'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run `DropDemo` using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/dnd/index.html#DropDemo).[![Launches
+    the DropDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/DropDemoProject/DropDemo.jnlp)
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行`DropDemo`（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/dnd/index.html#DropDemo)。[![启动
+    DropDemo 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/DropDemoProject/DropDemo.jnlp)
+- en: Select some text in the text area and drop onto the list. The selected list
+    entry is replaced and that item becomes the current selection. This is how `USE_SELECTION`
+    works and is provided for backwards compatibility but is otherwise not recommended.
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在文本区域中选择一些文本并将其拖放到列表中。所选列表条目将被替换，并且该项目将成为当前选择。这就是`USE_SELECTION`的工作原理，提供了向后兼容性，但否则不建议使用。
+- en: Change the List Drop Mode to `ON` and try the same action. Once again, the selected
+    list item is replaced, but the current selection does not move.
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将列表拖放模式更改为`ON`并尝试相同操作。再次，所选列表项将被替换，但当前选择不会移动。
+- en: Change the List Drop Mode to `INSERT` and repeat the same action. The added
+    text is inserted at the drop location. In this mode it is not possible to modify
+    existing list items.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将列表拖放模式更改为`INSERT`并重复相同操作。添加的文本将插入到拖放位置。在此模式下，无法修改现有列表项。
+- en: Change the List Drop Mode to `ON_OR_INSERT`. Depending on the cursor position,
+    you can either insert the new text or you can replace existing text.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将列表拖放模式更改为`ON_OR_INSERT`。根据光标位置，您可以插入新文本或替换现有文本。
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Here is the [``ListTransferHandler``](../examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java)
+    implementation for [``DropDemo.java``](../examples/dnd/DropDemoProject/src/dnd/DropDemo.java).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是[``ListTransferHandler``](../examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java)的实现，用于[``DropDemo.java``](../examples/dnd/DropDemoProject/src/dnd/DropDemo.java)。
+- en: The transfer handler for this list supports copy and move and it reimplements
+    the drag support that list provides by default.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此列表的传输处理程序支持复制和移动，并重新实现了列表默认提供的拖动支持。
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Next we look at how the target can choose the drop action.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来我们将看一下目标如何选择拖放操作。

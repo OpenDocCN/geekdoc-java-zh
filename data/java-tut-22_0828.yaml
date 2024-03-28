@@ -1,0 +1,278 @@
+- en: See the Policy File Effects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 查看策略文件效果
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/tour2/step4.html](https://docs.oracle.com/javase/tutorial/security/tour2/step4.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/tour2/step4.html](https://docs.oracle.com/javase/tutorial/security/tour2/step4.html)
+- en: Now that you have added the required policy entry to the `examplepolicy` policy
+    file, you should be able to read the specified properties when you execute the
+    `GetProps` application with a security manager, as shown in the following figure.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您已经向`examplepolicy`策略文件添加了所需的策略条目，当您使用安全管理器执行`GetProps`应用程序时，您应该能够读取指定的属性，如下图所示。
+- en: '![the GetProps application can now read the specified properties](../Images/72888b9c253df8b95ff14957824a8f0f.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![GetProps应用程序现在可以读取指定的属性](../Images/72888b9c253df8b95ff14957824a8f0f.png)'
+- en: 'Whenever you run an applet, or an application with a security manager, the
+    policy files that are loaded and used by default are the ones specified in the
+    **"security properties file"**, which is located in one of the following directories:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当您运行一个小程序，或者一个带有安全管理器的应用程序时，默认加载和使用的策略文件是位于以下目录之一的**"安全属性文件"**中指定的文件。
+- en: '**Windows**: `*java.home*\lib\security\java.security`'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**Windows**：`*java.home*\lib\security\java.security`'
+- en: '**UNIX**: `*java.home*/lib/security/java.security`'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**UNIX**：`*java.home*/lib/security/java.security`'
+- en: '**Note:**   The `java.home` environment variable names the directory into which
+    the JRE was installed.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** `java.home`环境变量指定了JRE安装的目录。'
+- en: 'The policy file locations are specified as the values of properties whose names
+    take the form:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 策略文件的位置是指定为属性值的形式为：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Where the variable `n` indicates a number. Specify each property value in a
+    line that takes the following form:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中变量`n`表示一个数字。请在以下形式的行中指定每个属性值：
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Where *URL* is a URL specification. For example, the default policy files, sometimes
+    referred to as the system and user policy files, respectively, are defined in
+    the security properties file as
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中*URL*是URL规范。例如，默认的策略文件，有时分别称为系统和用户策略文件，在安全属性文件中定义为
+- en: '[PRE2]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Use of the notation `${propName}` in the security properties file
+    is a way of specifying the value of a property. Thus `${java.home}` will be replaced
+    at runtime by the actual value of the `"java.home"` property, which indicates
+    the directory into which the JRE was installed, and `${user.home}` will be replaced
+    by the value of the `"user.home"` property, for example, `C:\Windows`.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 在安全属性文件中使用`${propName}`符号是指定属性值的一种方式。因此`${java.home}`将在运行时被实际的`"java.home"`属性值替换，该属性值指示了JRE安装的目录，`${user.home}`将被`"user.home"`属性的值替换，例如，`C:\Windows`。'
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: There are two possible ways you can have the `examplepolicy` file be considered
+    as part of the overall policy, in addition to the policy files specified in the
+    security properties file. You can either specify the additional policy file in
+    a property passed to the runtime system, as described in [Approach 1](#Approach1),
+    or add a line in the security properties file specifying the additional policy
+    file, as discussed in [Approach 2](#Approach2).
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两种可能的方式可以使`examplepolicy`文件被视为整体策略的一部分，除了在安全属性文件中指定的策略文件。您可以通过将附加策略文件指定为传递给运行时系统的属性，如[方法1](#Approach1)中所述，或者在安全属性文件中添加指定附加策略文件的行，如[方法2](#Approach2)中所讨论的那样。
+- en: Approach 1
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 方法1
+- en: You can use a `-Djava.security.policy` interpreter command line argument to
+    specify a policy file that should be used in addition to the ones specified in
+    the security properties file.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用`-Djava.security.policy`解释器命令行参数来指定一个应该在安全属性文件中指定的策略文件之外使用的策略文件。
+- en: 'Make sure that you are in the directory containing `GetProps.class` and `examplepolicy`.
+    Then you can run the `GetProps` application and pass the `examplepolicy` policy
+    file to the interpreter by typing the following command on one line:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 确保您在包含`GetProps.class`和`examplepolicy`的目录中。然后，您可以运行`GetProps`应用程序，并通过在一行上键入以下命令将`examplepolicy`策略文件传递给解释器：
+- en: '[PRE3]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '**Note:  ** Remember that `-Djava.security.manager` is required in order to
+    run an application with a security manager, as shown in the [See How to Restrict
+    Applications](step2.html)  step.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 请记住，为了使用安全管理器运行应用程序，需要`-Djava.security.manager`，如[查看如何限制应用程序](step2.html)步骤中所示。'
+- en: The program reports the values of the `"user.home"` and `"java.home"` properties.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序报告了`"user.home"`和`"java.home"`属性的值。
+- en: If the application still reports an error, something is wrong in the policy
+    file. Use the Policy Tool to check the policy entry you just created in the [Set
+    up the Policy File to Grant the Required Permissions](step3.html)  step.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果应用程序仍然报告错误，则策略文件中存在问题。使用策略工具检查您在[设置策略文件以授予所需权限](step3.html)步骤中创建的策略条目。
+- en: Approach 2
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 方法2
+- en: You can specify a number of URLs in `policy.url.n` properties in the security
+    properties file, and all the designated policy files will get loaded. So one way
+    to have your `examplepolicy` file's policy entries considered by the `java` interpreter
+    is to add an entry specifying that policy file in the security properties file.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在安全属性文件中指定多个URL，所有指定的策略文件都将被加载。因此，让`java`解释器考虑您的`examplepolicy`文件的策略条目的一种方法是在安全属性文件中添加指定该策略文件的条目。
+- en: '* * *'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Important:** If you are running your own copy of the JDK, you can easily
+    edit your security properties file. If you are running a version shared with other
+    users, you may only be able to modify the system-wide security properties file
+    if you have write access to it or if you ask your system administrator to modify
+    the file when appropriate. However, it''s probably not appropriate for you to
+    make modifications to a system-wide policy file for this tutorial test. We suggest
+    that you just read the following to see how it is done or that you install your
+    own private version of the JDK to use for the tutorial lessons.'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**重要提示：** 如果您正在运行自己的JDK副本，您可以轻松编辑安全属性文件。如果您正在运行与其他用户共享的版本，只有在具有写入权限或在适当时向系统管理员请求修改文件时，您才能修改系统范围的安全属性文件。但是，对于本教程测试，您可能不应该对系统范围的策略文件进行修改。我们建议您只需阅读以下内容，看看如何操作，或者安装您自己的私人版本的JDK用于教程课程。'
+- en: '* * *'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'To modify the security properties file, open it in an editor suitable for editing
+    an ASCII text file. Then add the following line after the line containing `policy.url.2`:
+    If you''re on a Windows system, add'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要修改安全属性文件，请在适合编辑ASCII文本文件的编辑器中打开它。然后在包含`policy.url.2`的行之后添加以下行：如果您在Windows系统上，请添加
+- en: '[PRE4]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: If you're on a UNIX system, add
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您在UNIX系统上，请添加
+- en: '[PRE5]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: On a UNIX system you can alternatively explicitly specify your home directory,
+    as in
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在UNIX系统上，您还可以显式指定您的主目录，如下所示
+- en: '[PRE6]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Run the Application
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行应用程序
+- en: Now you should be able to successfully run the following.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，您应该能够成功运行以下内容。
+- en: '[PRE7]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: As with approach 1, if you still get a security exception, something is wrong
+    in the policy file. Use the Policy Tool to check the policy entry you just created
+    in the [Set up the Policy File to Grant the Required Permissions](step3.html) 
+    step. Then fix any typos or other errors.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与方法1一样，如果仍然出现安全异常，则策略文件中存在问题。使用策略工具检查您在[设置策略文件以授予所需权限](step3.html)步骤中创建的策略条目。然后修复任何拼写错误或其他错误。
+- en: '* * *'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '* * *'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Important:** You do not need to include the `examplepolicy` file unless you
+    are running this Tutorial lesson. To exclude this file, open the security properties
+    file and delete the line you just added.'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**重要提示：** 除非您正在运行本教程课程，否则无需包含`examplepolicy`文件。要排除此文件，请打开安全属性文件并删除刚刚添加的行。'
+- en: Before continuing, you may want to delete the line you just added in the security
+    properties file (or comment it out), since you probably do not want the `examplepolicy`
+    file included when you are not running the tutorial lessons.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在继续之前，您可能希望删除您刚刚在安全属性文件中添加的行（或将其注释掉），因为您可能不希望在不运行教程课程时包含`examplepolicy`文件。
+- en: '* * *'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

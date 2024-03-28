@@ -1,0 +1,2038 @@
+- en: Transforming XML Data with XSLT
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用 XSLT 转换 XML 数据
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/xslt/transformingXML.html](https://docs.oracle.com/javase/tutorial/jaxp/xslt/transformingXML.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/xslt/transformingXML.html](https://docs.oracle.com/javase/tutorial/jaxp/xslt/transformingXML.html)
+- en: The Extensible Stylesheet Language Transformations (XSLT) APIs can be used for
+    many purposes. For example, with a sufficiently intelligent stylesheet, you could
+    generate PDF or PostScript output from the XML data. But generally, XSLT is used
+    to generate formatted HTML output, or to create an alternative XML representation
+    of the data.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以使用可扩展样式表语言转换（XSLT）API来实现多种目的。例如，通过一个足够智能的样式表，你可以从 XML 数据生成 PDF 或 PostScript
+    输出。但通常情况下，XSLT 用于生成格式化的 HTML 输出，或者创建数据的另一种 XML 表示。
+- en: In this section, an XSLT transform is used to translate XML input data to HTML
+    output.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这一部分中，使用 XSLT 转换将 XML 输入数据转换为 HTML 输出。
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The [XSLT specification](http://www.w3.org/TR/xslt20/) is large
+    and complex, so this tutorial can only scratch the surface. It will give you a
+    little background so you can understand simple XSLT processing tasks, but it does
+    not examine in detail how to write an XSLT transform, rather concentrating on
+    how to use JAXP''s XSLT transform API. For a more thorough grounding in XSLT,
+    consult a good reference manual, such as Michael Kay''s *XSLT 2.0 and XPath 2.0:
+    Programmer''s Reference* (Wrox, 2008).'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** [XSLT 规范](http://www.w3.org/TR/xslt20/)庞大而复杂，因此本教程只能触及表面。它将为您提供一些背景知识，以便您理解简单的
+    XSLT 处理任务，但不会详细讨论如何编写 XSLT 转换，而是集中于如何使用 JAXP 的 XSLT 转换 API。要深入了解 XSLT，请参考一本好的参考手册，例如
+    Michael Kay 的*XSLT 2.0 和 XPath 2.0：程序员参考*（Wrox，2008）。'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Defining a Simple Document Type
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定义一个简单的文档类型
+- en: 'Start by defining a very simple document type that can be used for writing
+    articles. Our `article` documents will contain these structure tags:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先定义一个非常简单的文档类型，可用于撰写文章。我们的`article`文档将包含这些结构标签：
+- en: '`<TITLE>`: The title of the article'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<TITLE>`: 文章的标题'
+- en: '`<SECT>`: A section, consisting of a heading and a body'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<SECT>`: 一个包含标题和主体的节'
+- en: '`<PARA>`: A paragraph'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<PARA>`: 一个段落'
+- en: '`<LIST>`: A list'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<LIST>`: 一个列表'
+- en: '`<ITEM>`: An entry in a list'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<ITEM>`: 列表中的一个条目'
+- en: '`<NOTE>`: An aside, that is offset from the main text'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<NOTE>`: 一个与主文本分隔开的旁注'
+- en: The slightly unusual aspect of this structure is that we will not create a separate
+    element tag for a section heading. Such elements are commonly created to distinguish
+    the heading text (and any tags it contains) from the body of the section (that
+    is, any structure elements underneath the heading).
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种结构稍微不同寻常的地方在于，我们不会为节标题创建单独的元素标签。这样的元素通常被创建用于区分标题文本（及其包含的任何标签）和节的主体（即标题下面的任何结构元素）。
+- en: Instead, we will allow the heading to merge seamlessly into the body of a section.
+    That arrangement adds some complexity to the stylesheet, but it will give us a
+    chance to explore XSLT's template-selection mechanisms. It also matches our intuitive
+    expectations about document structure, where the text of a heading is followed
+    directly by structure elements, an arrangement that can simplify outline-oriented
+    editing.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相反，我们将允许标题与节的主体无缝融合。这种安排增加了样式表的一些复杂性，但它将让我们有机会探索 XSLT 的模板选择机制。它也符合我们对文档结构的直觉期望，即标题文本直接后跟结构元素，这种安排可以简化基于大纲的编辑。
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** This kind of structure is not easily validated, because XML''s mixed-content
+    model allows text anywhere in a section, whereas we want to confine text and inline
+    elements so that they appear only before the first structure element in the body
+    of the section. The assertion-based validator can do it, but most other schema
+    mechanisms cannot. So we will dispense with defining a DTD for the document type.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 这种结构不容易验证，因为 XML 的混合内容模型允许在节的任何位置出现文本，而我们希望将文本和内联元素限制在只出现在节主体的第一个结构元素之前。基于断言的验证器可以做到，但大多数其他模式机制无法。因此，我们将放弃为文档类型定义
+    DTD。'
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: In this structure, sections can be nested. The depth of the nesting will determine
+    what kind of HTML formatting to use for the section heading (for example, `h1`
+    or `h2`). Using a plain `SECT` tag (instead of numbered sections) is also useful
+    with outline-oriented editing, because it lets you move sections around at will
+    without having to worry about changing the numbering for any of the affected sections.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种结构中，部分可以嵌套。嵌套的深度将决定用于部分标题的HTML格式（例如，`h1`或`h2`）。使用普通的`SECT`标签（而不是编号的部分）在面向大纲的编辑中也很有用，因为它允许您随意移动部分，而无需担心更改任何受影响部分的编号。
+- en: For lists, we will use a type attribute to specify whether the list entries
+    are unordered (bulleted), alpha (enumerated with lowercase letters), ALPHA (enumerated
+    with uppercase letters), or numbered.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于列表，我们将使用一个类型属性来指定列表条目是无序的（带项目符号）、alpha（用小写字母���号）、ALPHA（用大写字母编号）还是编号的。
+- en: We will also allow for some inline tags that change the appearance of the text.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们还将允许一些内联标签来改变文本的外观。
+- en: '`<B>`: Bold'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<B>`：粗体'
+- en: '`<I>`: Italics'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<I>`：斜体'
+- en: '`<U>`: Underline'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<U>`：下划线'
+- en: '`<DEF>`: Definition'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<DEF>`：定义'
+- en: '`<LINK>`: Link to a URL'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`<LINK>`：链接到URL'
+- en: '* * *'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** An inline tag does not generate a line break, so a style change
+    caused by an inline tag does not affect the flow of text on the page (although
+    it will affect the appearance of that text). A structure tag, on the other hand,
+    demarcates a new segment of text, so at a minimum it always generates a line break
+    in addition to other format changes.'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 内联标签不会生成换行符，因此内联标签引起的样式更改不会影响页面上文本的流动（尽管它会影响该文本的外观）。另一方面，结构标签划分了文本的新段落，因此至少总是会生成一个换行符，除了其他格式更改。'
+- en: '* * *'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The `<DEF>` tag will be used for terms that are defined in the text. Such terms
+    will be displayed in italics, the way they ordinarily are in a document. But using
+    a special tag in the XML will allow an index program to find such definitions
+    and add them to an index, along with keywords in headings. In the preceding Note,
+    for example, the definitions of inline tags and structure tags could have been
+    marked with `<DEF>` tags for future indexing.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<DEF>`标签将用于文本中定义的术语。这些术语将以斜体显示，就像它们在文档中通常显示的那样。但是在XML中使用特殊标签将允许索引程序找到这些定义，并将它们添加到索引中，以及标题中的关键字。例如，在前面的注释中，内联标签和结构标签的定义可以用`<DEF>`标签标记以供将来索引。'
+- en: Finally, the `LINK` tag serves two purposes. First, it will let us create a
+    link to a URL without having to put the URL in twice; so we can code `<link>http//...</link>`
+    instead of `<a href="http//...">http//...</a>`. Of course, we will also want to
+    allow a form that looks like `<link target="...">...name...</link>`. That leads
+    to the second reason for the `<link>` tag. It will give us an opportunity to play
+    with conditional expressions in XSLT.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，`LINK`标签有两个目的。首先，它将让我们创建到URL的链接，而无需两次放置URL；因此我们可以编写`<link>http//...</link>`而不是`<a
+    href="http//...">http//...</a>`。当然，我们还希望允许一个看起来像`<link target="...">...name...</link>`的形式。这导致了`<link>`标签的第二个原因。它将让我们有机会在XSLT中使用条件表达式。
+- en: '* * *'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** Although the article structure is exceedingly simple (consisting
+    of only eleven tags), it raises enough interesting problems to give us a good
+    view of XSLT''s basic capabilities. But we will still leave large areas of the
+    specification untouched. In [What Else Can XSLT Do?](#ggyut), we will point out
+    the major features we skipped.'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 尽管文章结构非常简单（仅由十一个标签组成），但它引发了足够多有趣的问题，让我们对XSLT的基本功能有了很好的了解。但是我们仍然会留下大部分规范未触及的领域。在[还有什么其他XSLT可以做？](#ggyut)中，我们将指出我们跳过的主要功能。'
+- en: '* * *'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Creating a Test Document
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建一个测试文档
+- en: Here, you will create a simple test document using nested `<SECT>` elements,
+    a few <PARA> elements, a `<NOTE>` element, a `<LINK>`, and a `<LIST type="unordered">`.
+    The idea is to create a document with one of everything so that we can explore
+    the more interesting translation mechanisms.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，您将使用嵌套的`<SECT>`元素、一些`<PARA>`元素、一个`<NOTE>`元素、一个`<LINK>`和一个`<LIST type="unordered">`创建一个简单的测试文档。这个想法是创建一个包含各种元素的文档，以便我们可以探索更有趣的翻译机制。
+- en: '* * *'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The code discussed in this section is in `article1.xml`, which is
+    found in the `xslt/data` directory after you unzip [`XSLT examples`](../examples/xslt_samples.zip)
+    into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 本节讨论的代码位于`article1.xml`中，在您解压[`XSLT示例`](../examples/xslt_samples.zip)到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录后，可以在`xslt/data`目录中找到。'
+- en: '* * *'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: To make the test document, create a file called `article.xml` and enter the
+    following XML data.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建测试文档，请创建一个名为`article.xml`的文件，并输入以下 XML 数据。
+- en: '[PRE0]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Note that in the XML file, the subsection is totally contained within the major
+    section. (In HTML, on the other hand, headings do not contain the body of a section).
+    The result is an outline structure that is harder to edit in plain text form,
+    like this, but is much easier to edit with an outline-oriented editor.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，在 XML 文件中，子部分完全包含在主要部分中。（而在 HTML 中，标题不包含部分的正文）。结果是一个在纯文本形式下更难编辑的大纲结构，像这样，但在面向大纲的编辑器中更容易编辑。
+- en: 'Someday, given a tree-oriented XML editor that understands inline tags such
+    as `<B>` and `<I>`, it should be possible to edit an article of this kind in outline
+    form, without requiring a complicated stylesheet. (Such an editor would allow
+    the writer to focus on the structure of the article, leaving layout until much
+    later in the process). In such an editor, the article fragment would look something
+    like this:'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 某一天，如果有一个理解内联标记（如`<B>`和`<I>`）的树形 XML 编辑器，那么就可以以大纲形式编辑这种文章，而不需要复杂的样式表。（这样的编辑器将允许作者专注于文章的结构，将布局留到后期）。在这样的编辑器中，文章片段将看起来像这样：
+- en: '[PRE1]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** At the moment, tree-structured editors exist, but they treat inline
+    tags such as `<B>` and `<I>` in the same way that they treat structure tags, and
+    that can make the "outline" a bit difficult to read.'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 目前存在树形结构编辑器，但它们将内联标记（如`<B>`和`<I>`）与结构标记一样处理，这可能会使“大纲”有点难以阅读。'
+- en: '* * *'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Writing an XSLT Transform
+  id: totrans-49
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编写 XSLT 转换
+- en: Now it is time to begin writing an XSLT transform that will convert the XML
+    article and render it in HTML.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在是时候开始编写一个 XSLT 转换，将转换 XML 文章并在 HTML 中呈现出来。
+- en: '* * *'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The code discussed in this section is in `article1a.xsl`, which
+    is found in the `xslt/data` directory after you unzip [`XSLT examples`](../examples/xslt_samples.zip)
+    into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 本节讨论的代码位于`article1a.xsl`中，在将[`XSLT 示例`](../examples/xslt_samples.zip)解压缩到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录后，在`xslt/data`目录中找到。'
+- en: '* * *'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Start by creating a normal XML document:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从创建一个普通的 XML 文档开始：
+- en: '[PRE2]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Then add the following highlighted lines to create an XSL stylesheet:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后添加以下突出显示的行以创建一个 XSL 样式表：
+- en: '[PRE3]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '**Now set it up to produce HTML-compatible output.'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**现在设置它以生成兼容 HTML 的输出。'
+- en: '[PRE4]'
+  id: totrans-59
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: We will get into the detailed reasons for that entry later in this section.
+    For now, note that if you want to output anything other than well-formed XML,
+    then you will need an `<xsl:output>` tag like the one shown, specifying either
+    `text` or `html`. (The default value is `xml`).
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们将在本节稍后详细讨论该条目的原因。现在，请注意，如果你想输出除了格式良好的 XML 之外的任何内容，那么你将需要一个像所示的`<xsl:output>`标记，指定`text`或`html`。（默认值为`xml`）。
+- en: '* * *'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** When you specify XML output, you can add the indent attribute to
+    produce nicely indented XML output. The specification looks like this: `<xsl:output
+    method="xml" indent="yes"/>`.'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 当你指定 XML 输出时，你可以添加缩进属性以生成漂亮的缩进 XML 输出。规范如下：`<xsl:output method="xml"
+    indent="yes"/>`。'
+- en: '* * *'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Processing the Basic Structure Elements
+  id: totrans-64
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理基本结构元素
+- en: 'You will start filling in the stylesheet by processing the elements that go
+    into creating a table of contents: the root element, the title element, and headings.
+    You will also process the `PARA` element defined in the test document.'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你将开始填写样式表，处理用于创建目录的元素：根元素、标题元素和标题。你还将处理测试文档中定义的`PARA`元素。
+- en: '* * *'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** If on first reading you skipped the section that discusses the XPath
+    addressing mechanisms, [How XPath Works](xpath.html), now is a good time to go
+    back and review that section.'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 如果你在第一次阅读时跳过了讨论 XPath 寻址机制的部分，[XPath 工作原理](xpath.html)，现在是回去复习那部分的好时机。'
+- en: '* * *'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Begin by adding the main instruction that processes the root element:'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从添加处理根元素的主要指令开始：
+- en: '[PRE5]'
+  id: totrans-70
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The new XSL commands are shown in bold. (Note that they are defined in the `xsl`
+    namespace). The instruction `<xsl:apply-templates>` processes the children of
+    the current node. In this case, the current node is the root node.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 新的 XSL 命令以粗体显示。（请注意，它们在`xsl`命名空间中定义）。指令`<xsl:apply-templates>`处理当前节点的子节点。在这种情况下，当前节点是根节点。
+- en: Despite its simplicity, this example illustrates a number of important ideas,
+    so it is worth understanding thoroughly. The first concept is that a stylesheet
+    contains a number of templates, defined with the `<xsl:template>` tag. Each template
+    contains a match attribute, which uses the XPath addressing mechanisms described
+    in [How XPath Works](xpath.html) to select the elements that the template will
+    be applied to.
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管这个例子很简单，但它阐明了许多重要的概念，因此值得彻底理解。第一个概念是样式表包含许多模板，用`<xsl:template>`标签定义。每个模板包含一个匹配属性，该属性使用[XPath工作原理](xpath.html)中描述的XPath寻址机制来选择模板将应用于的元素。
+- en: 'Within the template, tags that do not start with the `xsl: namespace` prefix
+    are simply copied. The newlines and whitespace that follow them are also copied,
+    and that helps to make the resulting output readable.'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '在模板内部，不以`xsl: namespace`前缀开头的标签只是简单地复制。随后的换行符和空格也会被复制，这有助于使生成的输出可读。'
+- en: '* * *'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** When a newline is not present, whitespace is generally ignored.
+    To include whitespace in the output in such cases, or to include other text, you
+    can use the `<xsl:text>` tag. Basically, an XSLT stylesheet expects to process
+    tags. So everything it sees needs to be either an `<xsl:..>` tag, some other tag,
+    or whitespace.'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 当没有换行符时，通常会忽略空格。要在这种情况下包含输出中的空格，或者包含其他文本，您可以使用`<xsl:text>`标签。基本上，XSLT样式表期望处理标签。因此，它看到的一切都需要是`<xsl:..>`标签、其他标签或空格。'
+- en: '* * *'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: In this case, the non-XSL tags are HTML tags. So when the root tag is matched,
+    XSLT outputs the HTML start tags, processes any templates that apply to children
+    of the root, and then outputs the HTML end tags.
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，非XSL标签是HTML标签。因此，当匹配根标签时，XSLT输出HTML起始标签，处理适用于根节点子元素的任何模板，然后输出HTML结束标签。
+- en: Process the `<TITLE>` Element
+  id: totrans-78
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理`<TITLE>`元素
+- en: 'Next, add a template to process the article title:'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，添加一个模板来处理文章标题：
+- en: '[PRE6]'
+  id: totrans-80
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: In this case, you specify a complete path to the TITLE element and output some
+    HTML to make the text of the title into a large, centered heading. In this case,
+    the `apply-templates` tag ensures that if the title contains any inline tags such
+    as italics, links, or underlining, they also will be processed.
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，您指定了到TITLE元素的完整路径，并输出一些HTML以使标题文本成为一个大的、居中的标题。在这种情况下，`apply-templates`标签确保如果标题包含任何内联标签，如斜体、链接或下划线，它们也将被处理。
+- en: More importantly, the `apply-templates` instruction causes the text of the title
+    to be processed. Like the DOM data model, the XSLT data model is based on the
+    concept of text nodes contained in element nodes (which, in turn, can be contained
+    in other element nodes, and so on). That hierarchical structure constitutes the
+    source tree. There is also a result tree, which contains the output.
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更重要的是，`apply-templates`指令导致标题文本被处理。与DOM数据模型一样，XSLT数据模型基于包含在元素节点中的文本节点的概念（这些元素节点又可以包含在其他元素节点中，依此类推）。这种分层结构构成了源树。还有一个包含输出的结果树。
+- en: XSLT works by transforming the source tree into the result tree. To visualize
+    the result of XSLT operations, it is helpful to understand the structure of those
+    trees, and their contents. (For more on this subject, see [XSLT/XPath Data Model](xpath.html#gchlm)).
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: XSLT通过将源树转换为结果树来工作。要可视化XSLT操作的结果，了解这些树的结构及其内容是有帮助的。（有关此主题的更多信息，请参见[XSLT/XPath数据模型](xpath.html#gchlm)）。
+- en: Process Headings
+  id: totrans-84
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理标题
+- en: 'To continue processing the basic structure elements, add a template to process
+    the top-level headings:'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要继续处理基本结构元素，添加一个模板来处理顶级标题：
+- en: '[PRE7]'
+  id: totrans-86
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Here, you specify the path to the topmost `SECT` elements. But this time, you
+    apply templates in two stages using the `select` attribute. For the first stage,
+    you select text nodes, as well as inline tags such as bold and italics, using
+    the XPath `text()` function. (The vertical pipe (`|`) is used to match multiple
+    items: text or a bold tag or an italics tag, etc). In the second stage, you select
+    the other structure elements contained in the file, for sections, paragraphs,
+    lists, and notes.'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，您指定了到最顶层`SECT`元素的路径。但这次，您使用`select`属性在两个阶段应用模板。在第一阶段，您使用XPath的`text()`函数选择文本节点，以及加粗和斜体等内联标签（竖线（`|`）用于匹配多个项目：文本或加粗标签或斜体标签等）。在第二阶段，您选择文件中包含的其他结构元素，如章节、段落、列表和注释。
+- en: Using the select attribute lets you put the text and inline elements between
+    the `<h2>...</h2>` tags, while making sure that all the structure tags in the
+    section are processed afterward. In other words, you make sure that the nesting
+    of the headings in the XML document is not reflected in the HTML formatting, a
+    distinction that is important for HTML output.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用select属性可以让您将文本和内联元素放在`<h2>...</h2>`标签之间，同时确保随后处理该部分中的所有结构标签。换句话说，您确保XML文档中标题的嵌套不会反映在HTML格式中，这是对HTML输出很重要的区别。
+- en: 'In general, using the select clause lets you apply all templates to a subset
+    of the information available in the current context. As another example, this
+    template selects all attributes of the current node:'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一般来说，使用select子句可以让您将所有模板应用于当前上下文中可用信息的子集。作为另一个示例，此模板选择当前节点的所有属性：
+- en: '[PRE8]'
+  id: totrans-90
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'Next, add the virtually identical template to process subheadings that are
+    nested one level deeper:'
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，添加几乎相同的模板来处理嵌套一级更深的子标题：
+- en: '[PRE9]'
+  id: totrans-92
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Generate a Runtime Message
+  id: totrans-93
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 生成运行时消息
+- en: You could add templates for deeper headings, too, but at some point you must
+    stop, if only because HTML goes down only to five levels. For this example, you
+    will stop at two levels of section headings. But if the XML input happens to contain
+    a third level, you will want to deliver an error message to the user. This section
+    shows you how to do that.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您也可以为更深层的标题添加模板，但在某个时候必须停止，即使只是因为HTML只支持五级标题。在本例中，您将在两级部分标题处停止。但是，如果XML输入恰好包含第三级，您将希望向用户提供错误消息。本节将向您展示如何做到这一点。
+- en: '* * *'
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** We could continue processing `SECT` elements that are further down,
+    by selecting them with the expression `/SECT/SECT//SECT`. The `//` selects any
+    `SECT` elements, at any depth, as defined by the XPath addressing mechanism. But
+    instead we will take the opportunity to play with messaging.'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 我们可以继续处理更深层的`SECT`元素，通过使用表达式`/SECT/SECT//SECT`选择它们。`//`选择任何`SECT`元素，深度由XPath寻址机制定义。但我们将利用这个机会来玩弄消息传递。'
+- en: '* * *'
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Add the following template to generate an error when a section is encountered
+    that is nested too deep:'
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 添加以下模板以在遇到嵌套过深的部分时生成错误：
+- en: '[PRE10]'
+  id: totrans-99
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: The `terminate="yes"` clause causes the transformation process to stop after
+    the message is generated. Without it, processing could still go on, with everything
+    in that section being ignored.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`terminate="yes"`子句导致转换过程在生成消息后停止。如果没有它，处理仍然会继续，该部分中的所有内容都将被忽略。'
+- en: As an additional exercise, you could expand the stylesheet to handle sections
+    nested up to four sections deep, generating `<h2>...<h5>` tags. Generate an error
+    on any section nested five levels deep.
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为额外的练习，您可以扩展样式表以处理嵌套高达四个部分的部分，生成`<h2>...<h5>`标签。在任何嵌套五级深的部分上生成错误。
+- en: 'Finally, finish the stylesheet by adding a template to process the `PARA` tag:'
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，通过添加一个模板来处理`PARA`标签来完成样式表：
+- en: '[PRE11]'
+  id: totrans-103
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: Writing the Basic Program
+  id: totrans-104
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编写基本程序
+- en: Now you will modify the program that uses XSLT to echo an XML file unchanged,
+    changing it so that it uses your stylesheet.
+  id: totrans-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，您将修改使用XSLT的程序，以原样回显XML文件，并将其修改为使用您的样式表。
+- en: '* * *'
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The code discussed in this section is in `Stylizer.java`, which
+    is found in the `xslt` directory after you unzip [`XSLT examples`](../examples/xslt_samples.zip)
+    into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory. The result
+    is `stylizer1a.html`, found in `xslt/data`.'
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 本节讨论的代码位于`Stylizer.java`中，在将[`XSLT examples`](../examples/xslt_samples.zip)解压缩到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录后，可以在`xslt/data`中找到`stylizer1a.html`。 '
+- en: '* * *'
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The `Stylizer` example is adapted from `TransformationApp02`, which parses an
+    XML file and writes to `System.out`. The main differences between the two programs
+    are described below.
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Stylizer`示例改编自`TransformationApp02`，该示例解析XML文件并写入`System.out`。这两个程序之间的主要区别如下所述。'
+- en: Firstly, `Stylizer` uses the stylesheet when creating the `Transformer` object.
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，`Stylizer`在创建`Transformer`对象时使用样式表。
+- en: '[PRE12]'
+  id: totrans-111
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: This code uses the file to create a `StreamSource` object and then passes the
+    source object to the factory class to get the transformer.
+  id: totrans-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码使用文件创建`StreamSource`对象，然后将源对象传递给工厂类以获取转换器。
+- en: '* * *'
+  id: totrans-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** You can simplify the code somewhat by eliminating the `DOMSource`
+    class. Instead of creating a `DOMSource` object for the XML file, create a `StreamSource`
+    object for it, as well as for the stylesheet.'
+  id: totrans-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 通过消除`DOMSource`类，您可以简化代码。不要为XML文件创建`DOMSource`对象，而是为其创建`StreamSource`对象，以及为样式表创建`StreamSource`对象。'
+- en: '* * *'
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Running the `Stylizer` Sample
+  id: totrans-116
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行`Stylizer`示例
+- en: '**Navigate to the `samples` directory.**'
+  id: totrans-117
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航至`samples`目录。**'
+- en: '[PRE13]'
+  id: totrans-118
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: '**[`Download the XSLT examples by clicking this link`](../examples/xslt_samples.zip)
+    and unzip them into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.**'
+  id: totrans-119
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**[点击此链接下载XSLT示例](../examples/xslt_samples.zip)，并将其解压缩到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录中。**'
+- en: '**Navigate to the `xslt` directory.**'
+  id: totrans-120
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航至`xslt`目录。**'
+- en: '[PRE14]'
+  id: totrans-121
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: '**Compile the `Stylizer` sample.**'
+  id: totrans-122
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**编译`Stylizer`示例。**'
+- en: 'Type the following command:'
+  id: totrans-123
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 输入以下命令：
+- en: '[PRE15]'
+  id: totrans-124
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: '**Run the `Stylizer` sample on `article1.xml` using the stylesheet `article1a.xsl`.**'
+  id: totrans-125
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**使用样式表`article1a.xsl`在`article1.xml`上运行`Stylizer`示例。**'
+- en: '[PRE16]'
+  id: totrans-126
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: 'You will see the following output:'
+  id: totrans-127
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 您将看到以下输出：
+- en: '[PRE17]'
+  id: totrans-128
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: At this point, there is quite a bit of excess whitespace in the output. In the
+    next section, you will see how to eliminate most of it.
+  id: totrans-129
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此时，输出中有相当多的多余空格。在下一节中，您将看到如何消除大部分空格。
+- en: Trimming the Whitespace
+  id: totrans-130
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 修剪空白
+- en: Recall that when you look at the structure of a DOM, there are many text nodes
+    that contain nothing but ignorable whitespace. Most of the excess whitespace in
+    the output comes from these nodes. Fortunately, XSL gives you a way to eliminate
+    them. (For more about the node structure, see [XSLT/XPath Data Model](xpath.html#gchlm)).
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，当您查看DOM的结构时，有许多只包含可忽略空格的文本节点。输出中的大部分多余空格来自这些节点。幸运的是，XSL提供了一种消除它们的方法。（有关节点结构的更多信息，请参阅[XSLT/XPath数据模型](xpath.html#gchlm)。）
+- en: '* * *'
+  id: totrans-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The stylesheet discussed in this section is in `article1b.xsl`,
+    which is found in the `xslt/data` directory after you unzip [`XSLT examples`](../examples/xslt_samples.zip)
+    into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory. The result
+    is `stylizer1b.html`, found in `xslt/data`.'
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 本节讨论的样式表在解压缩[`XSLT示例`](../examples/xslt_samples.zip)到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录后，在`xslt/data`目录中找到的`article1b.xsl`中。结果是在`xslt/data`中找到的`stylizer1b.html`。'
+- en: '* * *'
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: To remove some of the excess whitespace, add the following highlighted line
+    to the stylesheet.
+  id: totrans-135
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要去除一些多余的空白，将以下突出显示的行添加到样式表中。
+- en: '[PRE18]'
+  id: totrans-136
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: This instruction tells XSL to remove any text nodes under `SECT` elements that
+    contain nothing but whitespace. Nodes that contain text other than whitespace
+    will not be affected, nor will other kinds of nodes.
+  id: totrans-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此指令告诉XSL删除`SECT`元素下只包含空格的文本节点。不包含空格以外文本的节点不会受影响，也不会影响其他类型的节点。
+- en: Running the `Stylizer` Sample with Trimmed Whitespace
+  id: totrans-138
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行带有修剪空白的`Stylizer`示例
+- en: '**Navigate to the `samples` directory.**'
+  id: totrans-139
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航至`samples`目录。**'
+- en: '[PRE19]'
+  id: totrans-140
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: '**[`Download the XSLT examples by clicking this link`](../examples/xslt_samples.zip)
+    and unzip them into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.**'
+  id: totrans-141
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**[点击此链接下载XSLT示例](../examples/xslt_samples.zip)，并将其解压缩到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录中。**'
+- en: '**Navigate to the `xslt` directory.**'
+  id: totrans-142
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航至`xslt`目录。**'
+- en: '[PRE20]'
+  id: totrans-143
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: '**Compile the `Stylizer` sample.**'
+  id: totrans-144
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**编译`Stylizer`示例。**'
+- en: 'Type the following command:'
+  id: totrans-145
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 输入以下命令：
+- en: '[PRE21]'
+  id: totrans-146
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: '**Run the `Stylizer` sample on `article1.xml` using the stylesheet `article1b.xsl`.**'
+  id: totrans-147
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**使用样式表`article1b.xsl`在`article1.xml`上运行`Stylizer`示例。**'
+- en: '[PRE22]'
+  id: totrans-148
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: 'You will see the following output:'
+  id: totrans-149
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 您将看到以下输出：
+- en: '[PRE23]'
+  id: totrans-150
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: 'That is quite an improvement. There are still newline characters and whitespace
+    after the headings, but those come from the way the XML is written:'
+  id: totrans-151
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这是一个相当大的改进。标题后仍然有换行符和空格，但这些来自XML的编写方式：
+- en: '[PRE24]'
+  id: totrans-152
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: Here, you can see that the section heading ends with a newline and indentation
+    space, before the PARA entry starts. That is not a big worry, because the browsers
+    that will process the HTML compress and ignore the excess space routinely. But
+    there is still one more formatting tool at our disposal.
+  id: totrans-153
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在这里，您可以看到节标题以换行符和缩进空格结束，然后是PARA条目开始。这不是一个大问题，因为处理HTML的浏览器通常会压缩和忽略多余的空格。但我们还有一个格式化工具可供使用。
+- en: Removing the Last Whitespace
+  id: totrans-154
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 移除最后的空白
+- en: '* * *'
+  id: totrans-155
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The stylesheet discussed in this section is in `article1c.xsl`,
+    which is found in the `xslt/data` directory after you unzip [`XSLT examples`](../examples/xslt_samples.zip)
+    into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory. The result
+    is `stylizer1c.html`, found in `xslt/data`.'
+  id: totrans-156
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 本节讨论的样式表在`article1c.xsl`中，解压[`XSLT examples`](../examples/xslt_samples.zip)到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录后，可以在`xslt/data`目录中找到。结果是在`xslt/data`中找到的`stylizer1c.html`。'
+- en: '* * *'
+  id: totrans-157
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'That last little bit of whitespace is disposed of by adding the following to
+    the stylesheet:'
+  id: totrans-158
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后那一点空白空间通过将以下内容添加到样式表中来处理：
+- en: '[PRE25]'
+  id: totrans-159
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: Running `Stylizer` with this stylesheet will remove all remaining whitespace.
+  id: totrans-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用此样式表运行`Stylizer`将删除所有剩余的空白空间。
+- en: Running the `Stylizer` Sample with All Whitespace Trimmed
+  id: totrans-161
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用所有空白空间修剪的`Stylizer`示例运行
+- en: '**Navigate to the `samples` directory.**'
+  id: totrans-162
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航到`samples`目录。**'
+- en: '[PRE26]'
+  id: totrans-163
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE26]'
+- en: '**[`Download the XSLT examples by clicking this link`](../examples/xslt_samples.zip)
+    and unzip them into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.**'
+  id: totrans-164
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**[点击此链接下载 XSLT 示例](../examples/xslt_samples.zip)并将其解压缩到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录中。**'
+- en: '**Navigate to the `xslt` directory.**'
+  id: totrans-165
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航到`xslt`目录。**'
+- en: '[PRE27]'
+  id: totrans-166
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE27]'
+- en: '**Compile the `Stylizer` sample.**'
+  id: totrans-167
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**编译`Stylizer`示例。**'
+- en: 'Type the following command:'
+  id: totrans-168
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 输入以下命令：
+- en: '[PRE28]'
+  id: totrans-169
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE28]'
+- en: '**Run the `Stylizer` sample on `article1.xml` using the stylesheet `article1c.xsl`.**'
+  id: totrans-170
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**使用样式表`article1c.xsl`在`article1.xml`上运行`Stylizer`示例。**'
+- en: '[PRE29]'
+  id: totrans-171
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE29]'
+- en: 'The output now looks like this:'
+  id: totrans-172
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 输出现在看起来像这样：
+- en: '[PRE30]'
+  id: totrans-173
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE30]'
+- en: 'That is quite a bit better. Of course, it would be nicer if it were indented,
+    but that turns out to be somewhat harder than expected. Here are some possible
+    avenues of attack, along with the difficulties:'
+  id: totrans-174
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 那已经好多了。当然，如果能缩进会更好，但事实证明这比预期的要困难一些。以下是一些可能的攻击途径，以及困难所在：
+- en: Indent option
+  id: totrans-175
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 缩进选项
+- en: Unfortunately, the `indent="yes"` option that can be applied to XML output is
+    not available for HTML output. Even if that option were available, it would not
+    help, because HTML elements are rarely nested! Although HTML source is frequently
+    indented to show the implied structure, the HTML tags themselves are not nested
+    in a way that creates a real structure.
+  id: totrans-176
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 不幸的是，可以应用于 XML 输出的`indent="yes"`选项对 HTML 输出不可用。即使该选项可用，也不会有帮助，因为 HTML 元素很少嵌套！尽管
+    HTML 源经常缩进以显示暗示的结构，但 HTML 标记本身并未以创建真实结构的方式嵌套。
+- en: Indent variables
+  id: totrans-177
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 缩进变量
+- en: The `<xsl:text>` function lets you add any text you want, including whitespace.
+    So it could conceivably be used to output indentation space. The problem is to
+    vary the amount of indentation space. XSLT variables seem like a good idea, but
+    they do not work here. The reason is that when you assign a value to a variable
+    in a template, the value is known only within that template (statically, at compile
+    time). Even if the variable is defined globally, the assigned value is not stored
+    in a way that lets it be dynamically known by other templates at runtime. When
+    `<apply-templates/>` invokes other templates, those templates are unaware of any
+    variable settings made elsewhere.
+  id: totrans-178
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`<xsl:text>`函数允许您添加任何文本，包括空格。因此，它可能被用于输出缩进空间。问题在于变化缩进空间的数量。XSLT 变量似乎是一个好主意，但在这里不起作用。原因是当您在模板中为变量赋值时，该值仅在该模板内（在编译时静态地）被知晓。即使变量在全局范围内定义，分配的值也不会以一种使其在运行时动态地被其他模板知晓的方式存储。当`<apply-templates/>`调用其他模板时，这些模板不知道其他地方设置的任何变量设置。'
+- en: Parameterized templates
+  id: totrans-179
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 参数化模板
+- en: Using a parameterized template is another way to modify a template's behavior.
+    But determining the amount of indentation space to pass as the parameter remains
+    the crux of the problem.
+  id: totrans-180
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 使用参数化模板是修改模板行为的另一种方法。但确定要传递的缩进空间量作为参数仍然是问题的关键。
+- en: At the moment, then, there does not appear to be any good way to control the
+    indentation of HTML formatted output. That would be inconvenient if you needed
+    to display or edit the HTML as plain text. But it is not a problem if you do your
+    editing on the XML form, using the HTML version only for display in a browser.
+    (When you view `stylizer1c.html`, for example, you see the results you expect).
+  id: totrans-181
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 目前，似乎没有任何好的方法来控制 HTML 格式化输出的缩进。如果您需要将 HTML 显示或编辑为纯文本，那将会很不方便。但如果您在 XML 表单上进行编辑，仅在浏览器中显示
+    HTML 版本，则不是问题（例如，当您查看`stylizer1c.html`时，您会看到预期的结果）。
+- en: Processing the Remaining Structure Elements
+  id: totrans-182
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理剩余的结构元素
+- en: In this section, you will process the `LIST` and `NOTE` elements, which add
+    more structure to an article.
+  id: totrans-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这一部分，您将处理 `LIST` 和 `NOTE` 元素，这些元素为文章添加了更多结构。
+- en: '* * *'
+  id: totrans-184
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The sample document described in this section is `article2.xml`,
+    and the stylesheet used to manipulate it is `article2.xsl`. The result is `stylizer2.html`.
+    These files are found in the `xslt/data` directory after you unzip [`XSLT examples`](../examples/xslt_samples.zip)
+    into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.'
+  id: totrans-185
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 本节描述的示例文档是 `article2.xml`，用于操作它的样式表是 `article2.xsl`。结果是 `stylizer2.html`。解压缩
+    [`XSLT examples`](../examples/xslt_samples.zip) 到 *install-dir*`/jaxp-1_4_2-`*release-date*`/samples`
+    目录后，这些文件可以在 `xslt/data` 目录中找到。'
+- en: '* * *'
+  id: totrans-186
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Start by adding some test data to the sample document:'
+  id: totrans-187
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先向示例文档添加一些测试数据：
+- en: '[PRE31]'
+  id: totrans-188
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE31]'
+- en: '* * *'
+  id: totrans-189
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** Although the `list` and `note` in the XML file are contained in
+    their respective paragraphs, it really makes no difference whether they are contained
+    or not; the generated HTML will be the same either way. But having them contained
+    will make them easier to deal with in an outline-oriented editor.'
+  id: totrans-190
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 虽然 XML 文件中的 `list` 和 `note` 包含在各自的段落中，但它们是否包含并不重要；生成的 HTML 无论如何都是相同的。但是包含它们会使它们在面向大纲的编辑器中更容易处理。'
+- en: '* * *'
+  id: totrans-191
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Modify `<PARA>` Handling
+  id: totrans-192
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 修改 `<PARA>` 处理
+- en: 'Next, modify the `PARA` template to account for the fact that we are now allowing
+    some of the structure elements to be embedded with a paragraph:'
+  id: totrans-193
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，修改 `PARA` 模板以考虑我们现在允许一些结构元素嵌入到段落中的事实：
+- en: '[PRE32]'
+  id: totrans-194
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE32]'
+- en: This modification uses the same technique you used for section headings. The
+    only difference is that `SECT` elements are not expected within a paragraph. (However,
+    a paragraph could easily exist inside another paragraph-for example, as quoted
+    material).
+  id: totrans-195
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种修改使用了你用于节标题的相同技术。唯一的区别是 `SECT` 元素不应该出现在段落中。（但是，一个段落很容易存在于另一个段落内，例如，作为引用材料）。
+- en: Process `<LIST>` and `<ITEM>` Elements
+  id: totrans-196
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理 `<LIST>` 和 `<ITEM>` 元素
+- en: 'Now you''re ready to add a template to process `LIST` elements:'
+  id: totrans-197
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你已经准备好添加一个模板来处理 `LIST` 元素：
+- en: '[PRE33]'
+  id: totrans-198
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE33]'
+- en: The `<xsl:if>` tag uses the `test=""` attribute to specify a Boolean condition.
+    In this case, the value of the type attribute is tested, and the list that is
+    generated changes depending on whether the value is ordered or unordered.
+  id: totrans-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<xsl:if>` 标签使用 `test=""` 属性来指定一个布尔条件。在这种情况下，测试值是 type 属性，并且生成的列表会根据值是有序还是无序而改变。'
+- en: 'Note two important things in this example:'
+  id: totrans-200
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中注意两个重要的事情：
+- en: There is no else clause, nor is there a return or exit statement, so it takes
+    two `<xsl:if>` tags to cover the two options. (Or the `<xsl:choose>` tag could
+    have been used, which provides case-statement functionality).
+  id: totrans-201
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 没有 else 子句，也没有 return 或 exit 语句，因此需要两个 `<xsl:if>` 标签来覆盖两个选项。（或者可以使用 `<xsl:choose>`
+    标签，它提供了 case 语句功能）。
+- en: Single quotes are required around the attribute values. Otherwise, the XSLT
+    processor attempts to interpret the word ordered as an XPath function instead
+    of as a string.
+  id: totrans-202
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在属性值周围需要使用单引号。否则，XSLT 处理器会尝试将 ordered 作为 XPath 函数来解释，而不是作为字符串。
+- en: 'Now finish LIST processing by handling ITEM elements:'
+  id: totrans-203
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在通过处理 ITEM 元素来完成 LIST 处理：
+- en: '[PRE34]'
+  id: totrans-204
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE34]'
+- en: Ordering Templates in a Stylesheet
+  id: totrans-205
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在样式表中排序模板
+- en: By now, you should have the idea that templates are independent of one another,
+    so it does not generally matter where they occur in a file. So from this point
+    on, we will show only the template you need to add. (For the sake of comparison,
+    they're always added at the end of the example stylesheet).
+  id: totrans-206
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，你应该已经了解到模板是彼此独立的，所以它们通常出现在文件中的位置并不重要。因此，从这一点开始，我们只会展示你需要添加的模板。（为了比较，它们总是添加在示例样式表的末尾）。
+- en: 'Order does make a difference when two templates can apply to the same node.
+    In that case, the one that is defined last is the one that is found and processed.
+    For example, to change the ordering of an indented list to use lowercase alphabetics,
+    you could specify a template pattern that looks like this: `//LIST//LIST`. In
+    that template, you would use the HTML option to generate an alphabetic enumeration,
+    instead of a numeric one.'
+  id: totrans-207
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当两个模板可以应用于同一节点时，顺序确实很重要。在这种情况下，最后定义的模板是被找到和处理的。例如，要将缩进列表的排序更改为使用小写字母表，可以指定一个看起来像这样的模板模式：`//LIST//LIST`。在该模板中，您将使用
+    HTML 选项生成字母枚举，而不是数字枚举。
+- en: But such an element could also be identified by the pattern `//LIST`. To make
+    sure that the proper processing is done, the template that specifies `//LIST`
+    would have to appear before the template that specifies `//LIST//LIST`.
+  id: totrans-208
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但这样的元素也可以通过模式`//LIST`来识别。为了确保正确处理，指定`//LIST`的模板必须出现在指定`//LIST//LIST`的模板之前。
+- en: Process `<NOTE>` Elements
+  id: totrans-209
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理`<NOTE>`元素
+- en: The last remaining structure element is the `NOTE` element. Add the following
+    template to handle that.
+  id: totrans-210
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 唯一剩下的结构元素是`NOTE`元素。添加以下模板来处理它。
+- en: '[PRE35]'
+  id: totrans-211
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE35]'
+- en: This code brings up an interesting issue that results from the inclusion of
+    the `<br/>` tag. For the file to be well-formed XML, the tag must be specified
+    in the stylesheet as `<br/>`, but that tag is not recognized by many browsers.
+    And although most browsers recognize the sequence `<br></br>`, they all treat
+    it like a paragraph break instead of a single line break.
+  id: totrans-212
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这段代码引发了一个有趣的问题，这是由于包含`<br/>`标签导致的。为了使文件成为格式良好的XML，必须在样式表中指定该标签为`<br/>`，但许多浏览器不识别该标签。虽然大多数浏览器识别序列`<br></br>`，但它们都将其视为段落换行而不是单个换行。
+- en: 'In other words, the transformation must generate a `<br>` tag, but the stylesheet
+    must specify `<br/>`. That brings us to the major reason for that special output
+    tag we added early in the stylesheet:'
+  id: totrans-213
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 换句话说，转换必须生成一个`<br>`标签，但样式表必须指定`<br/>`。这就是我们在样式表中早期添加的特殊输出标签的主要原因：
+- en: '[PRE36]'
+  id: totrans-214
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE36]'
+- en: 'That output specification converts empty tags such as `<br/>` to their HTML
+    form, `<br>`, on output. That conversion is important, because most browsers do
+    not recognize the empty tags. Here is a list of the affected tags:'
+  id: totrans-215
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该输出规范将空标签（如`<br/>`）转换为它们的HTML形式`<br>`，在输出时。这种转换很重要，因为大多数浏览器不识别空标签。以下是受影响的标签列表：
+- en: '[PRE37]'
+  id: totrans-216
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE37]'
+- en: To summarize, by default XSLT produces well-formed XML on output. And because
+    an XSL stylesheet is well-formed XML to start with, you cannot easily put a tag
+    such as `<br>` in the middle of it. The `<xsl:output method="html"/>` tag solves
+    the problem so that you can code `<br/>` in the stylesheet but get `<br>` in the
+    output.
+  id: totrans-217
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 总之，默认情况下，XSLT在输出时生成格式良好的XML。因为XSL样式表本身就是格式良好的XML，所以你不能轻易地在其中间放置`<br>`这样的标签。`<xsl:output
+    method="html"/>`标签解决了这个问题，这样你可以在样式表中编码`<br/>`，但在输出中得到`<br>`。
+- en: The other major reason for specifying `<xsl:output method="html"/>` is that,
+    as with the specification `<xsl:output method="text"/>`, generated text is not
+    escaped. For example, if the stylesheet includes the `<` entity reference, it
+    will appear as the `<` character in the generated text. When XML is generated,
+    on the other hand, the `<` entity reference in the stylesheet would be unchanged,
+    so it would appear as `<` in the generated text.
+  id: totrans-218
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定`<xsl:output method="html"/>`的另一个主要原因是，与指定`<xsl:output method="text"/>`一样，生成的文本不会被转义。例如，如果样式表包含`<`实体引用，它将出现为生成文本中的`<`字符。另一方面，当生成XML时，样式表中的`<`实体引用将保持不变，因此在生成的文本中会显示为`<`。
+- en: '* * *'
+  id: totrans-219
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** If you actually want `<` to be generated as part of the HTML output,
+    you will need to encode it as `&lt;`. That sequence becomes `<` on output, because
+    only the `&` is converted to an `&` character.'
+  id: totrans-220
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 如果你希望`<`实际上作为HTML输出的一部分生成，你需要将其编码为`&lt;`。这个序列在输出时变为`<`，因为只有`&`被转换为`&`字符。'
+- en: '* * *'
+  id: totrans-221
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Running the `Stylizer` Sample With `LIST` and `NOTE` Elements Defined
+  id: totrans-222
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用定义了`LIST`和`NOTE`元素的`Stylizer`示例运行
+- en: '**Navigate to the `samples` directory.**'
+  id: totrans-223
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航到`samples`目录。**'
+- en: '[PRE38]'
+  id: totrans-224
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE38]'
+- en: '**[`Download the XSLT examples by clicking this link`](../examples/xslt_samples.zip)
+    and unzip them into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.**'
+  id: totrans-225
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**[点击此链接下载XSLT示例](../examples/xslt_samples.zip)**，并将其解压缩到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录中。'
+- en: '**Navigate to the `xslt` directory.**'
+  id: totrans-226
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航到`xslt`目录。**'
+- en: '[PRE39]'
+  id: totrans-227
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE39]'
+- en: '**Compile the `Stylizer` sample.**'
+  id: totrans-228
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**编译`Stylizer`示例。**'
+- en: 'Type the following command:'
+  id: totrans-229
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 输入以下命令：
+- en: '[PRE40]'
+  id: totrans-230
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE40]'
+- en: '**Run the `Stylizer` sample on `article2.xml` using the stylesheet `article2.xsl`.**'
+  id: totrans-231
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**使用样式表`article2.xsl`在`article2.xml`上运行`Stylizer`示例。**'
+- en: '[PRE41]'
+  id: totrans-232
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE41]'
+- en: 'Here is the HTML that is generated for the second section when you run the
+    program now:'
+  id: totrans-233
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这是当你现在运行程序时为第二部分生成的HTML：
+- en: '[PRE42]'
+  id: totrans-234
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE42]'
+- en: Process Inline (Content) Elements
+  id: totrans-235
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理内联（内容）元素
+- en: The only remaining tags in the `ARTICLE` type are the inline tags-the ones that
+    do not create a line break in the output, but instead are integrated into the
+    stream of text they are part of.
+  id: totrans-236
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ARTICLE`类型中唯一剩下的标签是内联标签-它们不会在输出中创建换行，而是被整合到它们所属的文本流中。'
+- en: Inline elements are different from structure elements in that inline elements
+    are part of the content of a tag. If you think of an element as a node in a document
+    tree, then each node has both content and structure. The content is composed of
+    the text and inline tags it contains. The structure consists of the other elements
+    (structure elements) under the tag.
+  id: totrans-237
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内联元素与结构元素不同，内联元素是标签内容的一部分。 如果将元素视为文档树中的节点，则每个节点都具有内容和结构。 内容由它包含的文本和内联标记组成。 结构由标签下的其他元素（结构元素）组成。
+- en: '* * *'
+  id: totrans-238
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The sample document described in this section is `article3.xml`,
+    and the stylesheet used to manipulate it is `article3.xsl`. The result is `stylizer3.html`.'
+  id: totrans-239
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 本节描述的示例文档是`article3.xml`，用于操作它的样式表是`article3.xsl`。 结果是`stylizer3.html`。'
+- en: '* * *'
+  id: totrans-240
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Start by adding one more bit of test data to the sample document:'
+  id: totrans-241
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先向示例文档添加一些测试数据：
+- en: '[PRE43]'
+  id: totrans-242
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE43]'
+- en: 'Now process the inline `<DEF>` elements in paragraphs, renaming them to HTML
+    italics tags:'
+  id: totrans-243
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在处理段落中的内联`<DEF>`元素，将它们重命名为HTML斜体标记：
+- en: '[PRE44]'
+  id: totrans-244
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE44]'
+- en: 'Next, comment out the text-node normalization. It has served its purpose, and
+    now you are to the point that you need to preserve important spaces:'
+  id: totrans-245
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，注释掉文本节点规范化。它已经达到了它的目的，现在你需要保留重要的空格：
+- en: '[PRE45]'
+  id: totrans-246
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE45]'
+- en: This modification keeps us from losing spaces before tags such as `<I>` and
+    `<DEF>`. (Try the program without this modification to see the result).
+  id: totrans-247
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个修改使我们不会丢失在`<I>`和`<DEF>`等标签之前的空格。 （尝试在没有此修改的情况下运行程序，看看结果）。
+- en: Now process basic inline HTML elements such as `<B>`, `<I>`, and `<U>` for bold,
+    italics, and underlining.
+  id: totrans-248
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在处理基本的内联HTML元素，如`<B>`，`<I>`和`<U>`，用于加粗，斜体和下划线。
+- en: '[PRE46]'
+  id: totrans-249
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE46]'
+- en: The `<xsl:element>` tag lets you compute the element you want to generate. Here,
+    you generate the appropriate inline tag using the name of the current element.
+    In particular, note the use of curly braces (`{}`) in the `name=".."` expression.
+    Those curly braces cause the text inside the quotes to be processed as an XPath
+    expression instead of being interpreted as a literal string. Here, they cause
+    the XPath `name()` function to return the name of the current node.
+  id: totrans-250
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<xsl:element>`标签允许您计算要生成的元素。 在这里，您使用当前元素的名称生成适当的内联标记。 特别要注意在`name=".."`表达式中使用大括号（`{}`）。
+    这些大括号导致引号内的文本被处理为XPath表达式，而不是被解释为字面字符串。 在这里，它们导致XPath `name()`函数返回当前节点的名称。'
+- en: Curly braces are recognized anywhere that an attribute value template can occur.
+    (Attribute value templates are defined in section 7.6.2 of the XSLT specification,
+    and they appear several places in the template definitions). In such expressions,
+    curly braces can also be used to refer to the value of an attribute, `{@foo}`,
+    or to the content of an element `{foo}`.
+  id: totrans-251
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大括号可以出现在属性值模板可以出现的任何地方。 （属性值模板在XSLT规范的第7.6.2节中定义，并且它们出现在模板定义的几个地方）。 在这种表达式中，大括号也可以用于引用属性的值，`{@foo}`，或元素的内容`{foo}`。
+- en: '* * *'
+  id: totrans-252
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** You can also generate attributes using `<xsl:attribute>`. For more
+    information, see section 7.1.3 of the XSLT Specification.'
+  id: totrans-253
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 您还可以使用`<xsl:attribute>`生成属性。 有关更多信息，请参阅XSLT规范的第7.1.3节。'
+- en: '* * *'
+  id: totrans-254
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The last remaining element is the `LINK` tag. The easiest way to process that
+    tag will be to set up a named template that we can drive with a parameter:'
+  id: totrans-255
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后剩下的元素是`LINK`标签。处理该标签的最简单方法是设置一个带有参数的命名模板：
+- en: '[PRE47]'
+  id: totrans-256
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE47]'
+- en: The major difference in this template is that, instead of specifying a match
+    clause, you give the template a name using the `name=""` clause. So this template
+    gets executed only when you invoke it.
+  id: totrans-257
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个模板的主要区别在于，不是指定匹配子句，而是使用`name=""`子句为模板指定一个名称。 因此，只有在调用它时才会执行此模板。
+- en: Within the template, you also specify a parameter named `dest` using the `<xsl:param>`
+    tag. For a bit of error checking, you use the select clause to give that parameter
+    a default value of `UNDEFINED`. To reference the variable in the `<xsl:value-of>`
+    tag, you specify `.`
+  id: totrans-258
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在模板内部，还使用`<xsl:param>`标签指定一个名为`dest`的参数。 为了进行一些错误检查，您使用select子句为该参数指定了一个默认值`UNDEFINED`。
+    要在`<xsl:value-of>`标签中引用变量，您指定`.`。
+- en: '`* * *'
+  id: totrans-259
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`* * *'
+- en: '**Note -** Recall that an entry in quotes is interpreted as an expression unless
+    it is further enclosed in single quotes. That is why the single quotes were needed
+    earlier in `"@type=''ordered''"` to make sure that ordered was interpreted as
+    a string.'
+  id: totrans-260
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 请记住，引号中的条目被解释为表达式，除非它进一步被单引号括起来。 这就是为什么之前需要在`"@type=''ordered''"`中使用单引号来确保ordered被解释为字符串。'
+- en: '* * *'
+  id: totrans-261
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The `<xsl:element>` tag generates an element. Previously, you have been able
+    to simply specify the element we want by coding something like `<html>`. But here
+    you are dynamically generating the content of the HTML anchor (`<a>`) in the body
+    of the `<xsl:element>` tag. And you are dynamically generating the `href` attribute
+    of the anchor using the `<xsl:attribute>` tag.
+  id: totrans-262
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<xsl:element>`标签生成一个元素。之前，你可以简单地通过编写类似`<html>`的代码来指定我们想要的元素。但是在这里，你正在动态生成`<xsl:element>`标签的主体中
+    HTML 锚点(`<a>`)的内容。并且你正在使用`<xsl:attribute>`标签动态生成锚点的`href`属性。'
+- en: The last important part of the template is the `<apply-templates>` tag, which
+    inserts the text from the text node under the `LINK` element. Without it, there
+    would be no text in the generated HTML link.
+  id: totrans-263
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 模板的最后一个重要部分是`<apply-templates>`标签，它插入`LINK`元素下文本节点中的文本。如果没有它，生成的 HTML 链接中将没有文本。
+- en: 'Next, add the template for the `LINK` tag, and call the named template from
+    within it:'
+  id: totrans-264
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，添加`LINK`标签的模板，并在其中调用命名模板：
+- en: '[PRE48]'
+  id: totrans-265
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE48]'
+- en: The `test="@target"` clause returns true if the target attribute exists in the
+    LINK tag. So this `<xsl-if>` tag generates HTML links when the text of the link
+    and the target defined for it are different.
+  id: totrans-266
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`test="@target"`子句在 LINK 标签中存在 target 属性时返回 true。因此，当链接的文本和为其定义的目标不同时，这个`<xsl-if>`标签会生成
+    HTML 链接。'
+- en: The `<xsl:call-template>` tag invokes the named template, whereas `<xsl:with-param>`
+    specifies a parameter using the name clause and specifies its value using the
+    select clause.
+  id: totrans-267
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<xsl:call-template>`标签调用命名模板，而`<xsl:with-param>`使用`name`子句指定参数，并使用`select`子句指定其值。'
+- en: As the very last step in the stylesheet construction process, add the `<xsl-if>`
+    tag to process `LINK` tags that do not have a target attribute.
+  id: totrans-268
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在样式表构建过程的最后一步中，添加`<xsl-if>`标签来处理没有`target`属性的`LINK`标签。
+- en: '[PRE49]'
+  id: totrans-269
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE49]'
+- en: The `not(...)` clause inverts the previous test (remember, there is no else
+    clause). So this part of the template is interpreted when the target attribute
+    is not specified. This time, the parameter value comes not from a select clause,
+    but from the contents of the `<xsl:with-param>` element.
+  id: totrans-270
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`not(...)`子句反转了先前的测试（记住，没有 else 子句）。因此，当未指定目标属性时，模板的这部分被解释。这次，参数值不是来自`select`子句，而是来自`<xsl:with-param>`元素的内容。'
+- en: '* * *'
+  id: totrans-271
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** Just to make it explicit: Parameters and variables (which are discussed
+    in a few moments in [What Else Can XSLT Do?](#ggyut) can have their value specified
+    either by a select clause, which lets you use XPath expressions, or by the content
+    of the element, which lets you use XSLT tags.'
+  id: totrans-272
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 仅仅是为了明确：参数和变量（稍后在[ XSLT 还能做什么？](#ggyut)中讨论）的值可以通过`select`子句指定，让你可以使用
+    XPath 表达式，也可以通过元素的内容指定，让你可以使用 XSLT 标签。'
+- en: '* * *'
+  id: totrans-273
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: In this case, the content of the parameter is generated by the `<xsl:apply-templates/>`
+    tag, which inserts the contents of the text node under the `LINK` element.
+  id: totrans-274
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，参数的内容是由`<xsl:apply-templates/>`标签生成的，它插入`LINK`元素下文本节点的内容。
+- en: Running the `Stylizer` Sample With Inline Elements Defined
+  id: totrans-275
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行带有内联元素定义的`Stylizer`示例
+- en: '**Navigate to the `samples` directory.**'
+  id: totrans-276
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航到`samples`目录。**'
+- en: '[PRE50]'
+  id: totrans-277
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE50]'
+- en: '**[`Download the XSLT examples by clicking this link`](../examples/xslt_samples.zip)
+    and unzip them into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.**'
+  id: totrans-278
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**[点击此链接下载 XSLT 示例](../examples/xslt_samples.zip)并将其解压缩到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录。**'
+- en: '**Navigate to the `xslt` directory.**<'
+  id: totrans-279
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航到`xslt`目录。**'
+- en: '[PRE51]'
+  id: totrans-280
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE51]'
+- en: '**Compile the `Stylizer` sample.**'
+  id: totrans-281
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**编译`Stylizer`示例。**'
+- en: 'Type the following command:'
+  id: totrans-282
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 输入以下命令：
+- en: '[PRE52]'
+  id: totrans-283
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE52]'
+- en: '**Run the `Stylizer` sample on `article3.xml` using the stylesheet `article3.xsl`.**'
+  id: totrans-284
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**使用样式表`article3.xsl`在`article3.xml`上运行`Stylizer`示例。**'
+- en: '[PRE53]'
+  id: totrans-285
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE53]'
+- en: 'When you run the program now, the results should look something like this:'
+  id: totrans-286
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 现在运行程序，结果应该看起来像这样：
+- en: '[PRE54]'
+  id: totrans-287
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE54]'
+- en: Good work! You have now converted a rather complex XML file to HTML. (As simple
+    as it appears at first, it certainly provides a lot of opportunity for exploration).
+  id: totrans-288
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 干得好！你现在已经将一个相当复杂的 XML 文件转换为 HTML。（尽管一开始看起来很简单，但它确实提供了很多探索的机会）。
+- en: Printing the HTML
+  id: totrans-289
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 打印 HTML
+- en: You have now converted an XML file to HTML. One day, someone will produce an
+    HTML-aware printing engine that you will be able to find and use through the Java
+    Printing Service API. At that point, you will have ability to print an arbitrary
+    XML file by generating HTML. All you will have to do is to set up a stylesheet
+    and use your browser.
+  id: totrans-290
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您现在已将 XML 文件转换为 HTML。总有一天，会有人制作出一个了解 HTML 的打印引擎，您将能够通过 Java 打印服务 API 找到并使用它。到那时，您将能够通过生成
+    HTML 打印任意 XML 文件。您只需设置一个样式表并使用您的浏览器。
+- en: What Else Can XSLT Do?
+  id: totrans-291
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: XSLT 还能做什么？
+- en: 'As lengthy as this section has been, it has only scratched the surface of XSLT''s
+    capabilities. Many additional possibilities await you in the XSLT specification.
+    Here are a few things to look for:'
+  id: totrans-292
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管本节内容很长，但只是触及了 XSLT 的能力表面。XSLT 规范中还有许多额外的可能性等待着您。以下是一些值得关注的事项：
+- en: '`import` (Section 2.6.2) and `include` (section 2.6.1)'
+  id: totrans-293
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`import`（第 2.6.2 节）和 `include`（第 2.6.1 节）'
+- en: '`rt` (Section 2.6.2) and include (section 2.6.1) Use these statements to modularize
+    and combine XSLT stylesheets. The include statement simply inserts any definitions
+    from the included file. The import statement lets you override definitions in
+    the imported file with definitions in your own stylesheet.'
+  id: totrans-294
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`rt`（第 2.6.2 节）和 include（第 2.6.1 节）使用这些语句对 XSLT 样式表进行模块化和组合。include 语句只是插入所包含文件中的任何定义。import
+    语句允许您用自己样式表中的定义覆盖导入文件中的定义。'
+- en: '`for-each` loops (section 8)'
+  id: totrans-295
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`for-each` 循环（第 8 节）'
+- en: Loop over a collection of items and process each one in turn.
+  id: totrans-296
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 遍历一系列项目并依次处理每个项目。
+- en: '`choose` (case statement) for conditional processing (section 9.2)'
+  id: totrans-297
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`choose`（case 语句）用于条件处理（第 9.2 节）'
+- en: Branch to one of multiple processing paths depending on an input value.
+  id: totrans-298
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据输入值分支到多个处理路径之一。
+- en: Generating numbers (section 7.7)
+  id: totrans-299
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 生成数字（第 7.7 节）
+- en: 'Dynamically generate numbered sections, numbered elements, and numeric literals.
+    XSLT provides three numbering modes:'
+  id: totrans-300
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 动态生成编号的章节、编号元素和数字文字。XSLT 提供三种编号模式：
+- en: 'Single: Numbers items under a single heading, like an ordered list in HTML'
+  id: totrans-301
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Single：将项目编号在单个标题下，就像 HTML 中的有序列表
+- en: 'Multiple: Produces multilevel numbering such as "A.1.3"'
+  id: totrans-302
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Multiple：生成多级编号，如"A.1.3"
+- en: 'Any: Consecutively numbers items wherever they appear, as with footnotes in
+    a lesson.'
+  id: totrans-303
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Any：无论项目出现在何处，都连续编号，就像课程中的脚注。
+- en: Formatting numbers (section 12.3)
+  id: totrans-304
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 格式化数字（第 12.3 节）
+- en: Control enumeration formatting so that you get numerics (`format="1"`), uppercase
+    alphabetics (`format="A"`), lowercase alphabetics (`format="a"`), or compound
+    numbers, like "A.1," as well as numbers and currency amounts suited for a specific
+    international locale.
+  id: totrans-305
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 控制枚举格式，以便获得数字（`format="1"`）、大写字母（`format="A"`）、小写字母（`format="a"`）或复合数字，如"A.1"，以及适合特定国际区域设置的数字和货币金额。
+- en: Sorting output (section 10)
+  id: totrans-306
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 排序输出（第 10 节）
+- en: Produce output in a desired sorting order.
+  id: totrans-307
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 按照所需的排序顺序生成输出。
+- en: Mode-based templates (section 5.7)
+  id: totrans-308
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基于模式的模板（第 5.7 节）
+- en: Process an element multiple times, each time in a different "mode." You add
+    a mode attribute to templates and then specify `<apply-templates mode="...">`
+    to apply only the templates with a matching mode. Combine with the `<apply-templates
+    select="...">` attribute to apply mode-based processing to a subset of the input
+    data.
+  id: totrans-309
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 多次处理一个元素，每次在不同的“模式”中。您可以向模板添加一个模式属性，然后指定`<apply-templates mode="...">`来仅应用具有匹配模式的模板。结合`<apply-templates
+    select="...">`属性，将基于模式的处理应用于输入数据的子集。
+- en: Variables (section 11)
+  id: totrans-310
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 变量（第 11 节）
+- en: Variables are something like method parameters, in that they let you control
+    a template's behavior. But they are not as valuable as you might think. The value
+    of a variable is known only within the scope of the current template or `<xsl:if>`
+    tag (for example) in which it is defined. You cannot pass a value from one template
+    to another, or even from an enclosed part of a template to another part of the
+    same template.
+  id: totrans-311
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 变量类似于方法参数，可以控制模板的行为。但它们并不像你想象的那样有价值。变量的值仅在定义它的当前模板或`<xsl:if>`标签（例如）的范围内才可知。你无法将一个值从一个模板传递到另一个模板，甚至无法将一个模板的封闭部分的值传递到同一模板的另一部分。
+- en: These statements are true even for a "global" variable. You can change its value
+    in a template, but the change applies only to that template. And when the expression
+    used to define the global variable is evaluated, that evaluation takes place in
+    the context of the structure's root node. In other words, global variables are
+    essentially runtime constants. Those constants can be useful for changing the
+    behavior of a template, especially when coupled with include and import statements.
+    But variables are not a general-purpose data-management mechanism.
+  id: totrans-312
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使是“全局”变量，这些说法也是正确的。你可以在模板中更改它的值，但更改仅适用于该模板。当用于定义全局变量的表达式被评估时，该评估发生在结构的根节点的上下文中。换句话说，全局变量本质上是运行时常量。这些常量可以用于改变模板的行为，特别是与包含和导入语句结合使用时。但变量不是通用的数据管理机制。
+- en: The Trouble with Variables
+  id: totrans-313
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 变量的问题
+- en: It is tempting to create a single template and set a variable for the destination
+    of the link, rather than go to the trouble of setting up a parameterized template
+    and calling it two different ways. The idea is to set the variable to a default
+    value (say, the text of the `LINK` tag) and then, if the target attribute exists,
+    set the destination variable to the value of the target attribute.
+  id: totrans-314
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建一个单一模板并为链接的目标设置一个变量，而不是费力地设置一个带参数的模板并以两种不同的方式调用它，这是一个诱人的想法。这个想法是将变量设置为默认值（比如，`LINK`标签的文本），然后，如果目标属性存在，将目的地变量设置为目标属性的值。
+- en: That would be a good idea-if it worked. But again, the issue is that variables
+    are known only in the scope within which they are defined. So when you code an
+    `<xsl:if>` tag to change the value of the variable, the value is known only within
+    the context of the `<xsl:if>` tag. Once `</xsl:if>` is encountered, any change
+    to the variable's setting is lost.
+  id: totrans-315
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果这个方法行得通就好了。但问题在于变量只在定义它们的范围内才被知晓。因此，当你编写一个`<xsl:if>`标签来改变变量的值时，该值只在`<xsl:if>`标签的上下文中被知晓。一旦遇到`</xsl:if>`，对变量设置的任何更改都会丢失。
+- en: A similarly tempting idea is the possibility of replacing the `text()|B|I|U|DEF|LINK`
+    specification with a variable (`). But because the value of the variable is determined
+    by where it is defined, the value of a global inline variable consists of text
+    nodes, `<B>` nodes, and so on, that happen to exist at the root level. In other
+    words, the value of such a variable, in this case, is null.``**
+  id: totrans-316
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个同样诱人的想法是用一个变量（`）来替换`text()|B|I|U|DEF|LINK`规范。但由于变量的值取决于它的定义位置，全局内联变量的值由文本节点、`<B>`节点等组成，这些节点恰好存在于根级别。换句话说，在这种情况下，这样一个变量的值是空的。**

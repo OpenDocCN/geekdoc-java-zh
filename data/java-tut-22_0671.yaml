@@ -1,0 +1,251 @@
+- en: Transforming Shapes, Text, and Images
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 变换形状、文本和图像
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/advanced/transforming.html](https://docs.oracle.com/javase/tutorial/2d/advanced/transforming.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/advanced/transforming.html](https://docs.oracle.com/javase/tutorial/2d/advanced/transforming.html)
+- en: You can modify the transform attribute in the `Graphics2D` context to move,
+    rotate, scale, and shear graphics primitives when they are rendered. The transform
+    attribute is defined by an instance of the [`AffineTransform`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/AffineTransform.html)
+    class. An affine transform is a transformation such as translate, rotate, scale,
+    or shear in which parallel lines remain parallel even after being transformed.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在`Graphics2D`上下文中修改变换属性，以在渲染时移动、旋转、缩放和剪切图形基元。变换属性由[`AffineTransform`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/AffineTransform.html)类的实例定义。仿射变换是一种变换，如平移、旋转、缩放或剪切，在变换后平行线仍保持平行。
+- en: The [`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)
+    class provides several methods for changing the transform attribute. You can construct
+    a new `AffineTransform` and change the `Graphics2D` transform attribute by calling
+    `transform`.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)类提供了几种方法来更改变换属性。您可以构造一个新的`AffineTransform`并通过调用`transform`来更改`Graphics2D`的变换属性。'
+- en: '`AffineTransform` defines the following factory methods to make it easier to
+    construct new transforms:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`AffineTransform`定义了以下工厂方法，以便更容易构造新的变换：'
+- en: '`getRotateInstance`'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getRotateInstance`'
+- en: '`getScaleInstance`'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getScaleInstance`'
+- en: '`getShearInstance`'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getShearInstance`'
+- en: '`getTranslateInstance`'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getTranslateInstance`'
+- en: 'Alternatively you can use one of the `Graphics2D` transformation methods to
+    modify the current transform. When you call one of these convenience methods,
+    the resulting transform is concatenated with the current transform and is applied
+    during rendering:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，您可以使用`Graphics2D`的一个变换方法来修改当前变换。当您调用这些便利方法之一时，生成的变换将与当前变换连接，并在渲染期间应用：
+- en: "`rotate` \x97 to specify an angle of rotation in radians"
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`rotate` \x97 用于指定以弧度为单位的旋转角度"
+- en: "`scale` \x97 to specify a scaling factor in the *x* and *y* directions"
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`scale` \x97 用于指定*x*和*y*方向的缩放因子"
+- en: "`shear` \x97 to specify a shearing factor in the *x* and *y* directions"
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`shear` \x97 用于指定*x*和*y*方向的剪切因子"
+- en: "`translate` \x97 to specify a translation offset in the *x* and *y* directions"
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`translate` \x97 用于指定*x*和*y*方向的平移偏移量"
+- en: You can also construct an `AffineTransform` object directly and concatenate
+    it with the current transform by calling the `transform` method.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以直接构造一个`AffineTransform`对象，并通过调用`transform`方法将其与当前变换连接。
+- en: The `drawImage` method is also overloaded to allow you to specify an `AffineTransform`
+    that is applied to the image as it is rendered. Specifying a transform when you
+    call `drawImage` does not affect the `Graphics2D` transform attribute.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`drawImage`方法也被重载，允许您指定一个在渲染时应用于图像的`AffineTransform`。在调用`drawImage`时指定变换不会影响`Graphics2D`的变换属性。'
+- en: 'Example: Transform'
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例：变换
+- en: The following program is the same as `StrokeandFill`, but also allows the user
+    to choose a transformation to apply to the selected object when it is rendered.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的程序与`StrokeandFill`相同，但还允许用户在渲染选定对象时选择要应用的变换。
+- en: <applet code="Transform" archive="examples/lib/TransformApplet.jar" width="550"
+    height="400" alt="Transform applet"><param name="permissions" value="sandbox"></applet>
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="Transform" archive="examples/lib/TransformApplet.jar" width="550"
+    height="400" alt="Transform applet"><param name="permissions" value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，则需要安装至少[Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[``Transform.java``](examples/Transform.java) contains the complete code for
+    this applet.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``Transform.java``](examples/Transform.java) 包含此小程序的完整代码。'
+- en: 'When a transform is chosen from the Transform menu, the transform is concatenated
+    onto the `AffineTransform` `at`:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当从变换菜单中选择一个变换时，该变换将连接到`AffineTransform` `at`上：
+- en: '[PRE0]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Before displaying the shape corresponding to the menu choices, the application
+    first retrieves the current transform from the `Graphics2D` object:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在显示与菜单选择对应的形状之前，应用程序首先从`Graphics2D`对象中检索当前变换：
+- en: '[PRE1]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This transform will be restored to the `Graphics2D` after rendering.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此变换将在渲染后恢复到`Graphics2D`中。
+- en: 'After retrieving the current transform, another `AffineTransform`, `toCenterAt`,
+    is created that causes shapes to be rendered in the center of the panel. The `at`
+    `AffineTransform` is concatenated onto `toCenterAt`:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在检索当前变换后，创建另一个`AffineTransform`，`toCenterAt`，使形状在面板中心渲染。`at` `AffineTransform`被连接到`toCenterAt`上：
+- en: '[PRE2]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The `toCenterAt` transform is concatenated onto the `Graphics2D` transform
+    with the `transform` method:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`transform`方法将`toCenterAt`变换连接到`Graphics2D`变换上：
+- en: '[PRE3]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'After rendering is completed, the original transform is restored using the
+    `setTransform` method:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 渲染完成后，使用`setTransform`方法恢复原始变换：
+- en: '[PRE4]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '* * *'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Never use the `setTransform` method to concatenate a coordinate transform
+    onto an existing transform. The `setTransform` method overwrites the `Graphics2D`
+    object''s current transform, which might be needed for other reasons, such as
+    positioning Swing and lightweight components in a window. Use these steps to perform
+    transformations:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**永远不要使用`setTransform`方法将坐标变换连接到现有的变换上。`setTransform`方法会覆盖`Graphics2D`对象的当前变换，这可能会因其他原因而需要，比如在窗口中定位Swing和轻量级组件。执行变换的步骤如下：'
+- en: Use the `getTransform` method to get the current transform.
+  id: totrans-36
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用`getTransform`方法获取当前变换。
+- en: Use `transform`, `translate`, `scale`, `shear`, or `rotate` to concatenate a
+    transform.
+  id: totrans-37
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用`transform`、`translate`、`scale`、`shear`或`rotate`来连接一个变换。
+- en: Perform the rendering.
+  id: totrans-38
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 执行渲染。
+- en: Restore the original transform using the `setTransform` method.
+  id: totrans-39
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用`setTransform`方法恢复原始变换。
+- en: '* * *'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

@@ -1,0 +1,143 @@
+- en: How to Write an Item Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写项目监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/itemlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/itemlistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/itemlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/itemlistener.html)
+- en: Item events are fired by components that implement the [`ItemSelectable`](https://docs.oracle.com/javase/8/docs/api/java/awt/ItemSelectable.html)
+    interface. Generally, `ItemSelectable` components maintain on/off state for one
+    or more items. The Swing components that fire item events include buttons like
+    [check boxes](../components/button.html#checkbox), [check menu items](../components/menu.html),
+    [toggle buttons](../components/button.html) etc...and [combo boxes](../components/combobox.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 项目事件由实现[`ItemSelectable`](https://docs.oracle.com/8/docs/api/java/awt/ItemSelectable.html)接口的组件触发。通常，`ItemSelectable`组件维护一个或多个项目的开/关状态。触发项目事件的Swing组件包括按钮，如[复选框](../components/button.html#checkbox)、[复选菜单项](../components/menu.html)、[切换按钮](../components/button.html)等...以及[组合框](../components/combobox.html)。
+- en: 'Here is some item-event handling code taken from [`ComponentEventDemo.java`](../examples/events/ComponentEventDemoProject/src/events/ComponentEventDemo.java):'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是从[`ComponentEventDemo.java`](../examples/events/ComponentEventDemoProject/src/events/ComponentEventDemo.java)中提取的一些项目事件处理代码：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The Item Listener API
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 项目监听器API
+- en: The ItemListener Interface
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 项目监听器接口
+- en: '*Because `ItemListener` has only one method, it has no corresponding adapter
+    class.*'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*因为`ItemListener`只有一个方法，所以没有相应的适配器类。*'
+- en: '| Method | Purpose |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [itemStateChanged(ItemEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ItemListener.html#itemStateChanged-java.awt.event.ItemEvent-)
+    | Called just after a state change in the listened-to component. |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| [itemStateChanged(ItemEvent)](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ItemListener.html#itemStateChanged-java.awt.event.ItemEvent-)
+    | 在被监听组件状态改变后调用。 |'
+- en: The ItemEvent Class
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 项目事件类
+- en: '| Method | Purpose |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Object getItem()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ItemEvent.html#getItem--)
+    | Returns the component-specific object associated with the item whose state changed.
+    Often this is a `String` containing the text on the selected item. |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getItem()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ItemEvent.html#getItem--)
+    | 返回与状态改变的项目相关联的组件特定对象。通常这是一个包含所选项目文本的`String`。 |'
+- en: '| [ItemSelectable getItemSelectable()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ItemEvent.html#getItemSelectable--)
+    | Returns the component that fired the item event. You can use this instead of
+    the `getSource` method. |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| [ItemSelectable getItemSelectable()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ItemEvent.html#getItemSelectable--)
+    | 返回触发项目事件的组件。您可以使用这个方法代替`getSource`方法。 |'
+- en: '| [int getStateChange()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ItemEvent.html#getStateChange--)
+    | Returns the new state of the item. The `ItemEvent` class defines two states:
+    `SELECTED` and `DESELECTED`. |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getStateChange()](https://docs.oracle.com/javase/8/docs/api/java/awt/event/ItemEvent.html#getStateChange--)
+    | 返回项目的新状态。`ItemEvent`类定义了两种状态：`SELECTED`和`DESELECTED`。 |'
+- en: Examples that Use Item Listeners
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用���目监听器的示例
+- en: The following table lists some examples that use item listeners.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了一些使用项目监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`ComponentEventDemo`](../examples/events/index.html#ComponentEventDemo)
+    | This section and [How to Write a Component Listener](componentlistener.html)
+    | Listens for item events on a check box, which determines whether a label is
+    visible. |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ComponentEventDemo`](../examples/events/index.html#ComponentEventDemo)
+    | 本节和[如何编写组件监听器](componentlistener.html) | 监听复选框上的项目事件，确定标签是否可见。 |'
+- en: '| [`CheckBoxDemo`](../examples/components/index.html#CheckBoxDemo) | [How to
+    Use Check Boxes](../components/button.html#checkbox) | Four check boxes share
+    one item listener, which uses `getItemSelected` to determine which check box fired
+    the event. |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`CheckBoxDemo`](../examples/components/index.html#CheckBoxDemo) | [如何使用复选框](../components/button.html#checkbox)
+    | 四个复选框共享一个项目监听器，该监听器使用`getItemSelected`来确定哪个复选框触发了事件。 |'
+- en: '| [`MenuDemo`](../examples/components/index.html#MenuDemo) | [How to Use Menus](../components/menu.html)
+    | Listens for item events on a check box menu item. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`MenuDemo`](../examples/components/index.html#MenuDemo) | [如何使用菜单](../components/menu.html)
+    | 监听复选框菜单项上的项目事件。 |'
+- en: '| [`MenuDemo`](../examples/components/index.html#ScrollDemo) | [How to Use
+    Scroll Panes](../components/scrollpane.html) | Listens for item events on a toggle
+    button. |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`MenuDemo`](../examples/components/index.html#ScrollDemo) | [如何使用滚动窗格](../components/scrollpane.html)
+    | 监听切换按钮上的项目事件。 |'

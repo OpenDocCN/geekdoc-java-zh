@@ -1,0 +1,89 @@
+- en: Thread Pools
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 线程池
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/pools.html)
+- en: Most of the executor implementations in `java.util.concurrent` use *thread pools*,
+    which consist of *worker threads*. This kind of thread exists separately from
+    the `Runnable` and `Callable` tasks it executes and is often used to execute multiple
+    tasks.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.util.concurrent` 中的大多数执行器实现使用*线程池*，其中包含*工作线程*。这种类型的线程与它执行的`Runnable`和`Callable`任务分开存在，并经常用于执行多个任务。'
+- en: Using worker threads minimizes the overhead due to thread creation. Thread objects
+    use a significant amount of memory, and in a large-scale application, allocating
+    and deallocating many thread objects creates a significant memory management overhead.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用工作线程可以最小化由于线程创建而产生的开销。线程对象使用大量内存，在大规模应用程序中，分配和释放许多线程对象会产生显著的内存管理开销。
+- en: One common type of thread pool is the *fixed thread pool*. This type of pool
+    always has a specified number of threads running; if a thread is somehow terminated
+    while it is still in use, it is automatically replaced with a new thread. Tasks
+    are submitted to the pool via an internal queue, which holds extra tasks whenever
+    there are more active tasks than threads.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一种常见的线程池类型是*固定线程池*。这种类型的池始终有指定数量的线程在运行；如果某个线程在仍在使用时被终止，它将自动被新线程替换。任务通过内部队列提交到池中，当活动任务多于线程时，队列会保存额外的任务。
+- en: An important advantage of the fixed thread pool is that applications using it
+    *degrade gracefully*. To understand this, consider a web server application where
+    each HTTP request is handled by a separate thread. If the application simply creates
+    a new thread for every new HTTP request, and the system receives more requests
+    than it can handle immediately, the application will suddenly stop responding
+    to *all* requests when the overhead of all those threads exceed the capacity of
+    the system. With a limit on the number of the threads that can be created, the
+    application will not be servicing HTTP requests as quickly as they come in, but
+    it will be servicing them as quickly as the system can sustain.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用固定线程池的一个重要优势是应用程序在使用它时*优雅降级*。要理解这一点，考虑一个 Web 服务器应用程序，其中每个 HTTP 请求都由一个单独的线程处理。如果应用程序只是为每个新的
+    HTTP 请求创建一个新线程，并且系统接收到的请求多于它立即处理的能力，当所有这些线程的开销超过系统容量时，应用程序将突然停止响应*所有*请求。通过限制可以创建的线程数量，应用程序将不会像请求进来那样快速地为
+    HTTP 请求提供服务，但它将以系统能够维持的速度为它们提供服务。
+- en: 'A simple way to create an executor that uses a fixed thread pool is to invoke
+    the [`newFixedThreadPool`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newFixedThreadPool-int-)
+    factory method in [`java.util.concurrent.Executors`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html)
+    This class also provides the following factory methods:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建使用固定线程池的执行器的简单方法是在[`java.util.concurrent.Executors`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html)中调用[`newFixedThreadPool`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newFixedThreadPool-int-)工厂方法。该类还提供以下工厂方法：
+- en: The [`newCachedThreadPool`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool-int-)
+    method creates an executor with an expandable thread pool. This executor is suitable
+    for applications that launch many short-lived tasks.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`newCachedThreadPool`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool-int-)方法创建一个具有可扩展线程池的执行器。此执行器适用于启动许多短暂任务的应用程序。'
+- en: The [`newSingleThreadExecutor`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newSingleThreadExecutor-int-)
+    method creates an executor that executes a single task at a time.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`newSingleThreadExecutor`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newSingleThreadExecutor-int-)方法创建一个一次执行一个任务的执行器。'
+- en: Several factory methods are `ScheduledExecutorService` versions of the above
+    executors.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 几个工厂方法是上述执行器的`ScheduledExecutorService`版本。
+- en: If none of the executors provided by the above factory methods meet your needs,
+    constructing instances of [`java.util.concurrent.ThreadPoolExecutor`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadPoolExecutor.html)
+    or [`java.util.concurrent.ScheduledThreadPoolExecutor`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ScheduledThreadPoolExecutor.html)
+    will give you additional options.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果上述工厂方法提供的任何执行器都不符合您的需求，构造[`java.util.concurrent.ThreadPoolExecutor`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadPoolExecutor.html)或[`java.util.concurrent.ScheduledThreadPoolExecutor`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ScheduledThreadPoolExecutor.html)的实例将为您提供额外的选项。

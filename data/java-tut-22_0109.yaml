@@ -1,0 +1,379 @@
+- en: Manipulating Characters in a String
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 操作字符串中的字符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/data/manipstrings.html](https://docs.oracle.com/javase/tutorial/java/data/manipstrings.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/data/manipstrings.html](https://docs.oracle.com/javase/tutorial/java/data/manipstrings.html)
+- en: The `String` class has a number of methods for examining the contents of strings,
+    finding characters or substrings within a string, changing case, and other tasks.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`String`类有许多方法用于检查字符串的内容，在字符串中查找字符或子字符串，更改大小写以及其他任务。'
+- en: Getting Characters and Substrings by Index
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 通过索引获取字符和子字符串
+- en: 'You can get the character at a particular index within a string by invoking
+    the `charAt()` accessor method. The index of the first character is 0, while the
+    index of the last character is `length()-1`. For example, the following code gets
+    the character at index 9 in a string:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过调用`charAt()`访问器方法在字符串中获取特定索引处的字符。第一个字符的索引为0，而最后一个字符的索引为`length()-1`。例如，以下代码获取字符串中索引为9的字符：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Indices begin at 0, so the character at index 9 is ''O'', as illustrated in
+    the following figure:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 索引从0开始，因此索引为9的字符是'O'，如下图所示：
+- en: '![Use the charAt method to get a character at a particular index.](../Images/04b5f0416ca38f60591dfcd297bc80fc.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用charAt方法获取特定索引处的字符。](../Images/04b5f0416ca38f60591dfcd297bc80fc.png)'
+- en: 'If you want to get more than one consecutive character from a string, you can
+    use the `substring` method. The `substring` method has two versions, as shown
+    in the following table:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果要从字符串中获取多个连续字符，可以使用`substring`方法。`substring`方法有两个版本，如下表所示：
+- en: The `substring` Methods in the `String` Class
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`String`类中的`substring`方法'
+- en: '| Method | Description |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `String substring(int beginIndex, int endIndex)` | Returns a new string that
+    is a substring of this string. The substring begins at the specified `beginIndex`
+    and extends to the character at index `endIndex - 1`. |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| `String substring(int beginIndex, int endIndex)` | 返回一个新的字符串，该字符串是此字符串的子字符串。子字符串从指定的`beginIndex`开始，延伸到索引`endIndex
+    - 1`的字符。'
+- en: '| `String substring(int beginIndex)` | Returns a new string that is a substring
+    of this string. The integer argument specifies the index of the first character.
+    Here, the returned substring extends to the end of the original string. |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `String substring(int beginIndex)` | 返回一个新的字符串，该字符串是此字符串的子字符串。整数参数指定第一个字符的索引。在这里，返回的子字符串延伸到原始字符串的末尾。'
+- en: 'The following code gets from the Niagara palindrome the substring that extends
+    from index 11 up to, but not including, index 15, which is the word "roar":'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码从尼亚加拉回文中获取从索引11到索引15之前的子字符串，即单词"roar"：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '![Use the substring method to get part of a string.](../Images/c76ca5899d8c39cb8ba3db60eca48c48.png)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用substring方法获取字符串的一部分。](../Images/c76ca5899d8c39cb8ba3db60eca48c48.png)'
+- en: Other Methods for Manipulating Strings
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 用于操作字符串的其他方法
+- en: 'Here are several other `String` methods for manipulating strings:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是用于操作字符串的几种其他`String`方法：
+- en: Other Methods in the `String` Class for Manipulating Strings
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`String`类中用于操作字符串的其他方法'
+- en: '| Method | Description |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `String[] split(String regex)` `String[] split(String regex, int limit)`
+    | Searches for a match as specified by the string argument (which contains a regular
+    expression) and splits this string into an array of strings accordingly. The optional
+    integer argument specifies the maximum size of the returned array. Regular expressions
+    are covered in the lesson titled "Regular Expressions." |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| `String[] split(String regex)` `String[] split(String regex, int limit)`
+    | 搜索由字符串参数指定的匹配项（其中包含正则表达式）并相应地将此字符串拆分为字符串数组。可选的整数参数指定返回数组的最大大小。正则表达式在标题为"正则表达式"的课程中介绍。'
+- en: '| `CharSequence subSequence(int beginIndex, int endIndex)` | Returns a new
+    character sequence constructed from `beginIndex` index up until `endIndex` - 1.
+    |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| `CharSequence subSequence(int beginIndex, int endIndex)` | 返回从`beginIndex`索引开始直到`endIndex
+    - 1`的新字符序列。'
+- en: '| `String trim()` | Returns a copy of this string with leading and trailing
+    white space removed. |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| `String trim()` | 返回删除前导和尾随空格的此字符串的副本。'
+- en: '| `String toLowerCase() String toUpperCase()` | Returns a copy of this string
+    converted to lowercase or uppercase. If no conversions are necessary, these methods
+    return the original string. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| `String toLowerCase() String toUpperCase()` | 返回转换为小写或大写的此字符串的副本。如果不需要转换，则这些方法返回原始字符串。'
+- en: Searching for Characters and Substrings in a String
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在字符串中搜索字符和子字符串
+- en: 'Here are some other `String` methods for finding characters or substrings within
+    a string. The `String` class provides accessor methods that return the position
+    within the string of a specific character or substring: `indexOf()` and `lastIndexOf()`.
+    The `indexOf()` methods search forward from the beginning of the string, and the
+    `lastIndexOf()` methods search backward from the end of the string. If a character
+    or substring is not found, `indexOf()` and `lastIndexOf()` return -1.'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是一些用于在字符串中查找字符或子字符串的其他`String`方法。`String`类提供了返回特定字符或子字符串在字符串中位置的访问方法：`indexOf()`和`lastIndexOf()`。`indexOf()`方法从字符串的开头向前搜索，而`lastIndexOf()`方法从字符串的末尾向后搜索。如果未找到字符或子字符串，`indexOf()`和`lastIndexOf()`将返回-1。
+- en: The `String` class also provides a search method, `contains`, that returns true
+    if the string contains a particular character sequence. Use this method when you
+    only need to know that the string contains a character sequence, but the precise
+    location isn't important.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`String`类还提供了一个搜索方法`contains`，如果字符串包含特定的字符序列，则返回true。当您只需要知道字符串包含一个字符序列，但精确位置并不重要时，请使用此方法。'
+- en: The following table describes the various string search methods.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格描述了各种字符串搜索方法。
+- en: The Search Methods in the `String` Class
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`String`类中的搜索方法'
+- en: '| Method | Description |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `int indexOf(int ch) int lastIndexOf(int ch)` | Returns the index of the
+    first (last) occurrence of the specified character. |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| `int indexOf(int ch) int lastIndexOf(int ch)` | 返回指定字符的第一个（最后一个）出现的索引。'
+- en: '| `int indexOf(int ch, int fromIndex) int lastIndexOf(int ch, int fromIndex)`
+    | Returns the index of the first (last) occurrence of the specified character,
+    searching forward (backward) from the specified index. |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| `int indexOf(int ch, int fromIndex) int lastIndexOf(int ch, int fromIndex)`
+    | 返回指定字符的第一个（最后一个）出现的索引，从指定索引向前（向后）搜索。'
+- en: '| `int indexOf(String str) int lastIndexOf(String str)` | Returns the index
+    of the first (last) occurrence of the specified substring. |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| `int indexOf(String str) int lastIndexOf(String str)` | 返回指定子字符串的第一个（最后一个）出现的索引。'
+- en: '| `int indexOf(String str, int fromIndex) int lastIndexOf(String str, int fromIndex)`
+    | Returns the index of the first (last) occurrence of the specified substring,
+    searching forward (backward) from the specified index. |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| `int indexOf(String str, int fromIndex) int lastIndexOf(String str, int fromIndex)`
+    | 返回指定子字符串的第一个（最后一个）出现的索引，从指定索引向前（向后）搜索。'
+- en: '| `boolean contains(CharSequence s)` | Returns true if the string contains
+    the specified character sequence. |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| `boolean contains(CharSequence s)` | 如果字符串包含指定的字符序列，则返回true。 |'
+- en: '* * *'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** `CharSequence` is an interface that is implemented by the `String`
+    class. Therefore, you can use a string as an argument for the `contains()` method.'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意:** `CharSequence`是一个由`String`类实现的接口。因此，您可以将字符串作为`contains()`方法的参数。'
+- en: '* * *'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Replacing Characters and Substrings into a String
+  id: totrans-38
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将字符和子字符串替换为字符串
+- en: 'The `String` class has very few methods for inserting characters or substrings
+    into a string. In general, they are not needed: You can create a new string by
+    concatenation of substrings you have *removed* from a string with the substring
+    that you want to insert.'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`String`类几乎没有用于在字符串中插入字符或子字符串的方法。一般情况下，这些方法是不需要的：您可以通过将您从字符串中*删除*的子字符串与您要插入的子字符串连接起来创建一个新的字符串。'
+- en: 'The `String` class does have four methods for *replacing* found characters
+    or substrings, however. They are:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`String`类确实有四种用于*替换*找到的字符或子字符串的方法。它们是：'
+- en: Methods in the `String` Class for Manipulating Strings
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`String`类中用于操作字符串的方法'
+- en: '| Method | Description |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `String replace(char oldChar, char newChar)` | Returns a new string resulting
+    from replacing all occurrences of oldChar in this string with newChar. |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| `String replace(char oldChar, char newChar)` | 返回一个新字符串，该字符串由将此字符串中所有旧字符的出现替换为新字符而生成。
+    |'
+- en: '| `String replace(CharSequence target, CharSequence replacement)` | Replaces
+    each substring of this string that matches the literal target sequence with the
+    specified literal replacement sequence. |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| `String replace(CharSequence target, CharSequence replacement)` | 用指定的替换序列替换此字符串中与字面目标序列匹配的每个子字符串。
+    |'
+- en: '| `String replaceAll(String regex, String replacement)` | Replaces each substring
+    of this string that matches the given regular expression with the given replacement.
+    |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| `String replaceAll(String regex, String replacement)` | 用给定替换替换此字符串中与给定正则表达式匹配的每个子字符串。'
+- en: '| `String replaceFirst(String regex, String replacement)` | Replaces the first
+    substring of this string that matches the given regular expression with the given
+    replacement. |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| `String replaceFirst(String regex, String replacement)` | 用给定的替换字符串替换与给定正则表达式匹配的此字符串的第一个子字符串。
+    |'
+- en: An Example
+  id: totrans-47
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例
+- en: The following class, [`Filename`](examples/Filename.java), illustrates the use
+    of `lastIndexOf()` and `substring()` to isolate different parts of a file name.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下类，[`Filename`](examples/Filename.java)，演示了使用`lastIndexOf()`和`substring()`来分离文件名的不同部分。
+- en: '* * *'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The methods in the following `Filename` class don''t do any error
+    checking and assume that their argument contains a full directory path and a filename
+    with an extension. If these methods were production code, they would verify that
+    their arguments were properly constructed.'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**以下`Filename`类中的方法没有进行任何错误检查，并假定它们的参数包含完整的目录路径和带有扩展名的文件名。如果这些方法是生产代码，它们将验证它们的参数是否正确构造。'
+- en: '* * *'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[PRE2]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Here is a program, [`FilenameDemo`](examples/FilenameDemo.java), that constructs
+    a `Filename` object and calls all of its methods:'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个程序，[`FilenameDemo`](examples/FilenameDemo.java)，它构造了一个`Filename`对象并调用了它的所有方法：
+- en: '[PRE3]'
+  id: totrans-54
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'And here''s the output from the program:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是程序的输出：
+- en: '[PRE4]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: "As shown in the following figure, our `extension` method uses `lastIndexOf`\
+    \ to locate the last occurrence of the period (.) in the file name. Then `substring`\
+    \ uses the return value of `lastIndexOf` to extract the file name extension \x97\
+    \ that is, the substring from the period to the end of the string. This code assumes\
+    \ that the file name has a period in it; if the file name does not have a period,\
+    \ `lastIndexOf` returns -1, and the substring method throws a `StringIndexOutOfBoundsException`."
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如下图所示，我们的`extension`方法使用`lastIndexOf`来定位文件名中句点（.）的最后一个出现位置。然后`substring`使用`lastIndexOf`的返回值来提取文件名扩展名，即从句点到字符串末尾的子字符串。此代码假定文件名中有一个句点；如果文件名中没有句点，`lastIndexOf`将返回-1，而`substring`方法将抛出`StringIndexOutOfBoundsException`。
+- en: '![The use of lastIndexOf and substring in the extension method in the Filename
+    class.](../Images/ae33969ba05d1d9c42d6975db70ee446.png)'
+  id: totrans-58
+  prefs: []
+  type: TYPE_IMG
+  zh: '![在文件名类的扩展方法中使用lastIndexOf和substring。](../Images/ae33969ba05d1d9c42d6975db70ee446.png)'
+- en: Also, notice that the `extension` method uses `dot + 1` as the argument to `substring`.
+    If the period character (.) is the last character of the string, `dot + 1` is
+    equal to the length of the string, which is one larger than the largest index
+    into the string (because indices start at 0). This is a legal argument to `substring`
+    because that method accepts an index equal to, but not greater than, the length
+    of the string and interprets it to mean "the end of the string."
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还要注意，`extension`方法使用`dot + 1`作为`substring`的参数。如果句点字符（.）是字符串的最后一个字符，则`dot + 1`等于字符串的长度，这比字符串的最大索引大1（因为索引从0开始）。这是`substring`的合法参数，因为该方法接受一个等于但不大于字符串长度的索引，并将其解释为“字符串的结尾”。

@@ -1,0 +1,53 @@
+- en: A Synchronized Class Example
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 一个同步类的示例
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/syncrgb.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/syncrgb.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/syncrgb.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/syncrgb.html)
+- en: The class, [``SynchronizedRGB``](examples/SynchronizedRGB.java), defines objects
+    that represent colors. Each object represents the color as three integers that
+    stand for primary color values and a string that gives the name of the color.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个类，[``SynchronizedRGB``](examples/SynchronizedRGB.java)，定义了代表颜色的对象。每个对象将颜色表示为三个代表主要颜色值的整数和一个给出颜色名称的字符串。
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '`SynchronizedRGB` must be used carefully to avoid being seen in an inconsistent
+    state. Suppose, for example, a thread executes the following code:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 必须小心使用`SynchronizedRGB`，以避免出现不一致的状态。例如，假设一个线程执行以下代码：
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'If another thread invokes `color.set` after Statement 1 but before Statement
+    2, the value of `myColorInt` won''t match the value of `myColorName`. To avoid
+    this outcome, the two statements must be bound together:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果另一个线程在语句1之后但在语句2之前调用`color.set`，`myColorInt`的值将不匹配`myColorName`的值。为了避免这种结果，这两个语句必须绑定在一起：
+- en: '[PRE2]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: "This kind of inconsistency is only possible for mutable objects \x97 it will\
+    \ not be an issue for the immutable version of `SynchronizedRGB`."
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "这种不一致性只对可变对象有效 \x97 对于不可变版本的`SynchronizedRGB`不会有问题。"

@@ -1,0 +1,263 @@
+- en: Drawing an Image
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 绘制图像
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/images/drawimage.html](https://docs.oracle.com/javase/tutorial/2d/images/drawimage.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/images/drawimage.html](https://docs.oracle.com/javase/tutorial/2d/images/drawimage.html)
+- en: 'As you have already learned, the `Graphics.drawImage` method draws an image
+    at a specific location:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您已经了解的那样，`Graphics.drawImage`方法在特定位置绘制图像：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `x,y` location specifies the position for the top-left of the image. The
+    `observer` parameter notifies the application of updates to an image that is loaded
+    asynchronously. The `observer` parameter is not frequently used directly and is
+    not needed for the [`BufferedImage`](https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html)
+    class, so it usually is null.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`x,y`位置指定了图像左上角的位置。`observer`参数通知应用程序异步加载的图像更新。`observer`参数通常不直接使用，对于[`BufferedImage`](https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html)类来说，通常为null。'
+- en: The described method addresses only the case where the entire image is to be
+    drawn, mapping image pixels to user space coordinates 1:1\. Sometimes applications
+    require to draw a part of the image (a sub-image), or scale the image to cover
+    a particular area of the drawing surface, or transform or filter the image before
+    drawing.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 描述的方法仅适用于整个图像要绘制的情况，将图像像素映射到用户空间坐标1:1。有时应用程序需要绘制图像的一部分（子图像），或者缩放图像以覆盖绘图表面的特定区域，或在绘制之前对图像进行变换或过滤。
+- en: 'The overloads of the `drawImage()` method perform these operations. For example,
+    the following overload of the `drawImage()` method enables you to draw as much
+    of a specified area of the specified image as is currently available, scaling
+    it to fit inside the specified area of the destination drawable surface:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`drawImage()`方法的重载执行这些操作。例如，`drawImage()`方法的以下重载使您可以绘制指定图像的指定区域的尽可能多的部分，将其缩放以适合目标可绘制表面的指定区域：'
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The `src` parameters represent the area of the image to copy and draw. The
+    `dst` parameters display the area of the destination to cover by the source area.
+    The `dstx1, dsty1` coordinates define the location to draw the image. The width
+    and height dimensions on the destination area are calculated by the following
+    expressions: `(dstx2-dstx1), (dsty2-dsty1)`. If the dimensions of the source and
+    destinations areas are different, the Java 2D API will scale up or scale down,
+    as needed.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`src`参数表示要复制和绘制的图像区域。`dst`参数显示要由源区域覆盖的目标区域。`dstx1, dsty1`坐标定义了绘制图像的位置。目标区域的宽度和高度维度由以下表达式计算：`(dstx2-dstx1),
+    (dsty2-dsty1)`。如果源区域和目标区域的尺寸不同，Java 2D API将根据需要进行放大或缩小。'
+- en: The following code example divides an image into four quadrants and randomly
+    draws each quadrant of the source image into a different quadrant of the destination.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码示例将图像分成四个象限，并随机将源图像的每个象限绘制到目标的不同象限。
+- en: <applet code="JumbledImageApplet" archive="examples/lib/JumbledImageApplet.jar"
+    width="400" height="250" alt="Divides an image into four quadrants and randomly
+    draws each quadrant of the source image into a different quadrant of the destination."><param
+    name="permissions" value="sandbox"></applet>
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="JumbledImageApplet" archive="examples/lib/JumbledImageApplet.jar"
+    width="400" height="250" alt="将图像分成四个象限，并随机将源图像的每个象限绘制到目标的不同象限。"><param name="permissions"
+    value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，您需要安装至少[Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The complete code for this applet is in [`JumbledImageApplet.java`](examples/JumbledImageApplet.java).
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此小程序的完整代码在[`JumbledImageApplet.java`](examples/JumbledImageApplet.java)中。
+- en: This example uses the following code to paint the jumbled `duke_skateboard.jpg`
+    image. It iterates over the four sub-images of the source, drawing each in turn
+    into a randomly selected destination quadrant.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例使用以下代码绘制混乱的`duke_skateboard.jpg`图像。它迭代源图像的四个子图像，依次将每个子图像绘制到随机选择的目标象限中。
+- en: '[PRE2]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Filtering Images
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 图像过滤
+- en: 'In addition to copying and scaling images, the Java 2D API also filter an image.
+    *Filtering* is drawing or producing a new image by applying an algorithm to the
+    pixels of the source image. Image filters can be applied by using the following
+    method:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了复制和缩放图像外，Java 2D API还可以对图像进行滤镜处理。*滤镜*是通过将算法应用于源图像的像素来绘制或生成新图像。可以使用以下方法应用图像滤镜：
+- en: '[PRE3]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The `BufferedImageOp` parameter implements the filter. The following applet
+    represents an image drawn on top of text. Drag the slider to show more or less
+    of the text through the image and make the image more or less transparent.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`BufferedImageOp` 参数实现了滤镜。以下小程序代表了一个在文本上方绘制的图像。拖动滑块以通过图像显示更多或更少的文本，并使图像更加透明。'
+- en: <applet code="SeeThroughImageApplet" archive="examples/lib/SeeThroughImageApplet.jar"
+    width="400" height="250" alt="Represents an image drawn on top of text"><param
+    name="permissions" value="sandbox"></applet>
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="SeeThroughImageApplet" archive="examples/lib/SeeThroughImageApplet.jar"
+    width="400" height="250" alt="代表在文本上方绘制的图像"><param name="permissions" value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，请至少安装[Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The following code shows how the filter action is done by operating on a `BufferedImage`
+    object with an *alpha* channel and rescales that alpha channel by using the `RescaleOp`
+    object. The alpha channel determines the translucency of each pixel. It also specifies
+    the degree to which this image overwrites.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码显示了如何通过使用`RescaleOp`对象对带有*alpha*通道的`BufferedImage`对象执行滤镜操作，并通过该对象重新调整alpha通道。alpha通道确定每个像素的透明度。它还指定了此图像覆盖的程度。
+- en: '[PRE4]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The complete example represented in [`SeeThroughImageApplet.java`](examples/SeeThroughImageApplet.java)
+    includes the code that uses the slider to adjust the transparency from the initial
+    50%. This example also requires the [duke_skateboard.jpg](examples/duke_skateboard.jpg)
+    image.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 完整示例在[`SeeThroughImageApplet.java`](examples/SeeThroughImageApplet.java)中包含了使用滑块调整透明度从初始50%的代码。此示例还需要[duke_skateboard.jpg](examples/duke_skateboard.jpg)图像。
+- en: 'The `RescaleOp` object is just one of many filters that can be created. The
+    Java 2D API has several built in filters including the following:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`RescaleOp` 对象只是可以创建的许多滤镜之一。Java 2D API具有几种内置滤镜，包括以下内容：'
+- en: '`ConvolveOp`. Each output pixel is computed from surrounding pixels in the
+    source image. It may be used to blur or sharpen images.'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ConvolveOp`。每个输出像素都是从源图像中周围像素计算出来的。可用于模糊或锐化图像。'
+- en: '`AffineTransformOp`. This filter maps pixels in the source to a different position
+    in the destination by applying a transformation on the pixel location.'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`AffineTransformOp`。此滤镜通过在像素位置上应用变换将源中的像素映射到目标中的不同位置。'
+- en: '`LookupOp`. This filter uses an application supplied lookup table to remap
+    pixel colors.'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LookupOp`。此滤镜使用应用提供的查找表重新映射像素颜色。'
+- en: '`RescaleOp`. This filter multiplies the colors by some factor. Can be used
+    to lighten or darken the image, to increase or reduce its opacity, etc.'
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`RescaleOp`。此滤镜将颜色乘以某个因子。可用于使图像变亮或变暗，增加或减少其不透明度等。'
+- en: 'The following example uses each of the described filters as well as scaling:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用了描述的每个滤镜以及缩放：
+- en: <applet code="ImageDrawingApplet" archive="examples/lib/ImageDrawingApplet.jar"
+    width="400" height="250" alt="Demonstrates filters and scaling"><param name="permissions"
+    value="sandbox"></applet>
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="ImageDrawingApplet" archive="examples/lib/ImageDrawingApplet.jar"
+    width="400" height="250" alt="演示滤镜和缩放"><param name="permissions" value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，请至少安装[Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The complete code for this applet is in [`ImageDrawingApplet.java`](examples/ImageDrawingApplet.java)
+    and this applet requires the [bld.jpg](examples/bld.jpg) image.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此小程序的完整代码在[`ImageDrawingApplet.java`](examples/ImageDrawingApplet.java)中，此小程序需要[bld.jpg](examples/bld.jpg)图像。
+- en: Use the drop-down menu to select an image scaling or filtering operation.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用下拉菜单选择图像缩放或滤镜操作。

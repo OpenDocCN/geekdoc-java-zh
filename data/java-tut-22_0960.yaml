@@ -1,0 +1,207 @@
+- en: Converting Legacy Code to Use Generics
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 将遗留代码转换为使用泛型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/convert.html](https://docs.oracle.com/javase/tutorial/extra/generics/convert.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/convert.html](https://docs.oracle.com/javase/tutorial/extra/generics/convert.html)
+- en: Earlier, we showed how new and legacy code can interoperate. Now, it's time
+    to look at the harder problem of "generifying" old code.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 之前，我们展示了新代码和旧代码如何互操作。现在，是时候看看更难的问题，即"泛型化"旧代码。
+- en: If you decide to convert old code to use generics, you need to think carefully
+    about how you modify the API.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果决定将旧代码转换为使用泛型，需要仔细考虑如何修改API。
+- en: 'You need to make certain that the generic API is not unduly restrictive; it
+    must continue to support the original contract of the API. Consider again some
+    examples from `java.util.Collection`. The pre-generic API looks like:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您需要确保泛型API不会过于限制性；它必须继续支持API的原始契约。再次考虑一些`java.util.Collection`的示例。预泛型API看起来像：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'A naive attempt to generify it would be the following:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个天真的泛型尝试可能是以下内容：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'While this is certainly type safe, it doesn''t live up to the API''s original
+    contract. The `containsAll()` method works with any kind of incoming collection.
+    It will only succeed if the incoming collection really contains only instances
+    of `E`, but:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然这肯定是类型安全的，但它并不符合API的原始契约。`containsAll()`方法适用于任何类型的传入集合。只有当传入集合确实只包含`E`的实例时才会成功，但：
+- en: The static type of the incoming collection might differ, perhaps because the
+    caller doesn't know the precise type of the collection being passed in, or perhaps
+    because it is a `Collection<S>`,where `S` is a subtype of `E`.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 传入集合的静态类型可能不同，也许是因为调用者不知道传入的集合的确切类型，或者是因为它是一个`Collection<S>`，其中`S`是`E`的子类型。
+- en: It's perfectly legitimate to call `containsAll()` with a collection of a different
+    type. The routine should work, returning `false`.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用不同类型的集合调用`containsAll()`是完全合法的。该例程应该正常工作，返回`false`。
+- en: In the case of `addAll()`, we should be able to add any collection that consists
+    of instances of a subtype of `E`. We saw how to handle this situation correctly
+    in section [Generic Methods](methods.html).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`addAll()`的情况下，我们应该能够添加任何由`E`的子类型的实例组成的集合。我们看到如何在[泛型方法](methods.html)部分正确处理这种情况。
+- en: 'You also need to ensure that the revised API retains binary compatibility with
+    old clients. This implies that the erasure of the API must be the same as the
+    original, ungenerified API. In most cases, this falls out naturally, but there
+    are some subtle cases. We''ll examine one of the subtlest cases we''ve encountered,
+    the method `Collections.max()`. As we saw in section [More Fun with Wildcards](morefun.html),
+    a plausible signature for `max()` is:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还需要确保修改后的API与旧客户端保持二进制兼容性。这意味着API的擦除必须与原始的未泛型化API相同。在大多数情况下，这是自然而然的，但也有一些微妙的情况。我们将检查我们遇到的最微妙的情况之一，即方法`Collections.max()`。正如我们在[通配符的更多乐趣](morefun.html)部分看到的，`max()`的一个合理签名是：
+- en: '[PRE2]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'This is fine, except that the erasure of this signature is:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这很好，除了这个签名的擦除是：
+- en: '[PRE3]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'which is different than the original signature of `max()`:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这与`max()`的原始签名不同：
+- en: '[PRE4]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: One could certainly have specified this signature for `max()`, but it was not
+    done, and all the old binary class files that call `Collections.max()` depend
+    on a signature that returns `Object`.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当然可以为`max()`指定这个签名，但没有这样做，所有调用`Collections.max()`的旧二进制类文件都依赖于返回`Object`的签名。
+- en: We can force the erasure to be different, by explicitly specifying a superclass
+    in the bound for the formal type parameter `T`.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们可以通过在形式类型参数`T`的边界中明确指定一个超类来强制擦除不同。
+- en: '[PRE5]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: This is an example of giving *multiple bounds* for a type parameter, using the
+    syntax `T1 & T2 ... & Tn`. A type variable with multiple bounds is known to be
+    a subtype of all of the types listed in the bound. When a multiple bound is used,
+    the first type mentioned in the bound is used as the erasure of the type variable.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是给类型参数*多重边界*的一个示例，使用语法`T1 & T2 ... & Tn`。具有多重边界的类型变量被认为是边界中列出的所有类型的子类型。当使用多重边界时，边界中提到的第一个类型被用作类型变量的擦除。
+- en: Finally, we should recall that `max` only reads from its input collection, and
+    so is applicable to collections of any subtype of `T`.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，我们应该记住`max`只从其输入集合中读取，因此适用于`T`的任何子类型的集合。
+- en: 'This brings us to the actual signature used in the JDK:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将我们带到JDK中实际使用的签名：
+- en: '[PRE6]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: It's very rare that anything so involved comes up in practice, but expert library
+    designers should be prepared to think very carefully when converting existing
+    APIs.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在实践中很少会出现这么复杂的情况，但是专家库设计者在转换现有 API 时应该准备好仔细思考。
+- en: Another issue to watch out for is *covariant returns*, that is, refining the
+    return type of a method in a subclass. You should not take advantage of this feature
+    in an old API. To see why, let's look at an example.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个需要注意的问题是*协变返回*，即在子类中细化方法的返回类型。在旧的 API 中不应该利用这个特性。为了理解为什么，让我们看一个例子。
+- en: 'Assume your original API was of the form:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你原始的 API 形式为：
+- en: '[PRE7]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Taking advantage of covariant returns, you modify it to:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 利用协变返回，你将其修改为：
+- en: '[PRE8]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'Now, assume a third party client of your code wrote the following:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，假设你的代码的第三方客户写了以下内容：
+- en: '[PRE9]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: The Java virtual machine does not directly support overriding of methods with
+    different return types. This feature is supported by the compiler. Consequently,
+    unless the class `Baz` is recompiled, it will not properly override the `create()`
+    method of `Bar`. Furthermore, `Baz` will have to be modified, since the code will
+    be rejected as written—the return type of `create()` in `Baz` is not a subtype
+    of the return type of `create()` in `Bar`.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 虚拟机不直接支持具有不同返回类型的方法重写。这个特性由编译器支持。因此，除非重新编译类`Baz`，否则它将无法正确重写`Bar`的`create()`方法。此外，`Baz`将需要修改，因为代码将被拒绝——`Baz`中的`create()`的返回类型不是`Bar`中`create()`的返回类型的子类型。

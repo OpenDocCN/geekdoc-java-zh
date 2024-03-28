@@ -1,0 +1,280 @@
+- en: Interoperating with Legacy Code
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 与遗留代码互操作
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/legacy.html](https://docs.oracle.com/javase/tutorial/extra/generics/legacy.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/legacy.html](https://docs.oracle.com/javase/tutorial/extra/generics/legacy.html)
+- en: Until now, all our examples have assumed an idealized world, where everyone
+    is using the latest version of the Java programming language, which supports generics.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们所有的例子都假设了一个理想化的世界，在这个世界中，每个人都在使用支持泛型的最新版本的 Java 编程语言。
+- en: Alas, in reality this isn't the case. Millions of lines of code have been written
+    in earlier versions of the language, and they won't all be converted overnight.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，现实情况并非如此。数百万行代码是用早期版本的语言编写的，它们不会一夜之间全部转换。
+- en: 'Later, in the [Converting Legacy Code to Use Generics](convert.html) section,
+    we will tackle the problem of converting your old code to use generics. In this
+    section, we''ll focus on a simpler problem: how can legacy code and generic code
+    interoperate? This question has two parts: using legacy code from within generic
+    code and using generic code within legacy code.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 稍后，在[将遗留代码转换为使用泛型](convert.html)部分，我们将解决将旧代码转换为使用泛型的问题。在本节中，我们将专注于一个更简单的问题：如何使遗留代码和通用代码互操作？这个问题有两个部分：在通用代码中使用遗留代码和在遗留代码中使用通用代码。
+- en: Using Legacy Code in Generic Code
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在通用代码中使用遗留代码
+- en: How can you use old code, while still enjoying the benefits of generics in your
+    own code?
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如何在使用自己的代码时使用旧代码，同时仍享受泛型的好处？
+- en: 'As an example, assume you want to use the package `com.Example.widgets`. The
+    folks at Example.com market a system for inventory control, highlights of which
+    are shown below:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 举个例子，假设你想使用包 `com.Example.widgets`。Example.com 的人们推出了一个用于库存控制的系统，其亮点如下所示：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Now, you''d like to add new code that uses the API above. It would be nice
+    to ensure that you always called `addAssembly()` with the proper arguments - that
+    is, that the collection you pass in is indeed a `Collection` of `Part`. Of course,
+    generics are tailor made for this:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，你想添加新代码，使用上面的 API。最好确保你总是使用正确的参数调用 `addAssembly()` - 也就是说，你传入的集合确实是 `Part`
+    的 `Collection`。当然，泛型正是为此而设计的：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: When we call `addAssembly`, it expects the second parameter to be of type `Collection`.
+    The actual argument is of type `Collection<Part>`. This works, but why? After
+    all, most collections don't contain `Part` objects, and so in general, the compiler
+    has no way of knowing what kind of collection the type `Collection` refers to.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当我们调用 `addAssembly` 时，它期望第二个参数是 `Collection` 类型。实际参数是 `Collection<Part>` 类型。这样也能工作，但为什么呢？毕竟，大多数集合不包含
+    `Part` 对象，因此一般情况下，编译器无法知道 `Collection` 类型引用的是什么类型的集合。
+- en: In proper generic code, `Collection` would always be accompanied by a type parameter.
+    When a generic type like `Collection` is used without a type parameter, it's called
+    a *raw type*.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在适当的通用代码中，`Collection` 总是伴随着一个类型参数。当像 `Collection` 这样的通用类型在没有类型参数的情况下使用时，它被称为*原始类型*。
+- en: Most people's first instinct is that `Collection` really means `Collection<Object>`.
+    However, as we saw earlier, it isn't safe to pass a `Collection<Part>` in a place
+    where a `Collection<Object>` is required. It's more accurate to say that the type
+    `Collection` denotes a collection of some unknown type, just like `Collection<?>`.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数人的第一反应是 `Collection` 真的意味着 `Collection<Object>`。然而，正如我们之前看到的，将 `Collection<Part>`
+    传递到需要 `Collection<Object>` 的地方是不安全的。更准确地说，类型 `Collection` 表示某种未知类型的集合，就像 `Collection<?>`
+    一样。
+- en: But wait, that can't be right either! Consider the call to `getParts()`, which
+    returns a `Collection`. This is then assigned to `k`, which is a `Collection<Part>`.
+    If the result of the call is a `Collection<?>`, the assignment would be an error.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但等等，这也不对！考虑一下对 `getParts()` 的调用，它返回一个 `Collection`。然后将其赋给 `k`，它是一个 `Collection<Part>`。如果调用的结果是
+    `Collection<?>`，那么赋值就会出错。
+- en: In reality, the assignment is legal, but it generates an *unchecked warning*.
+    The warning is needed, because the fact is that the compiler can't guarantee its
+    correctness. We have no way of checking the legacy code in `getAssembly()` to
+    ensure that indeed the collection being returned is a collection of `Part`s. The
+    type used in the code is `Collection`, and one could legally insert all kinds
+    of objects into such a collection.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际上，这种赋值是合法的，但会生成一个*未经检查的警告*。这个警告是必要的，因为事实上编译器无法保证其正确性。我们无法检查 `getAssembly()`
+    中的遗留代码，以确保返回的确实是一个 `Part` 集合。代码中使用的类型是 `Collection`，可以合法地向这样的集合中插入各种对象。
+- en: So, shouldn't this be an error? Theoretically speaking, yes; but practically
+    speaking, if generic code is going to call legacy code, this has to be allowed.
+    It's up to you, the programmer, to satisfy yourself that in this case, the assignment
+    is safe because the contract of `getAssembly()` says it returns a collection of
+    `Part`s, even though the type signature doesn't show this.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么，这不应该是一个错误吗？从理论上讲，是的；但从实际上讲，如果通用代码要调用遗留代码，这必须被允许。这取决于你，程序员，要确信在这种情况下，赋值是安全的，因为`getAssembly()`的契约规定它返回一个`Part`的集合，即使类型签名没有显示这一点。
+- en: So raw types are very much like wildcard types, but they are not typechecked
+    as stringently. This is a deliberate design decision, to allow generics to interoperate
+    with pre-existing legacy code.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，原始类型非常类似于通配符类型，但它们的类型检查不那么严格。这是一个故意的设计决定，允许泛型与现有的遗留代码进行交互。
+- en: Calling legacy code from generic code is inherently dangerous; once you mix
+    generic code with non-generic legacy code, all the safety guarantees that the
+    generic type system usually provides are void. However, you are still better off
+    than you were without using generics at all. At least you know the code on your
+    end is consistent.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从通用代码调用遗留代码本质上是危险的；一旦将通用代码与非通用遗留代码混合，通常提供的所有通用类型系统的安全保证都将无效。然而，你仍然比根本不使用泛型要好。至少你知道你这边的代码是一致的。
+- en: At the moment there's a lot more non-generic code out there then there is generic
+    code, and there will inevitably be situations where they have to mix.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 目前，非泛型代码比泛型代码要多得多，而且不可避免地会出现必须混合使用它们的情况。
+- en: If you find that you must intermix legacy and generic code, pay close attention
+    to the unchecked warnings. Think carefully how you can justify the safety of the
+    code that gives rise to the warning.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你发现必须混合使用遗留代码和通用代码，请密切关注未经检查的警告。仔细考虑如何证明引发警告的代码的安全性。
+- en: What happens if you still made a mistake, and the code that caused a warning
+    is indeed not type safe? Let's take a look at such a situation. In the process,
+    we'll get some insight into the workings of the compiler.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你仍然犯了错误，导致警告的代码确实不安全，会发生什么？让我们看看这种情况。在这个过程中，我们将深入了解编译器的工作原理。
+- en: Erasure and Translation
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 擦除和转换
+- en: '[PRE2]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Here, we''ve aliased a list of strings and a plain old list. We insert an `Integer`
+    into the list, and attempt to extract a `String`. This is clearly wrong. If we
+    ignore the warning and try to execute this code, it will fail exactly at the point
+    where we try to use the wrong type. At run time, this code behaves like:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，我们给字符串列表和普通旧列表取了别名。我们将一个`Integer`插入列表，并尝试提取一个`String`。这显然是错误的。如果我们忽略警告并尝试执行此代码，它将在我们尝试使用错误类型的地方失败。在运行时，此代码的行为如下：
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: When we extract an element from the list, and attempt to treat it as a string
+    by casting it to `String`, we will get a `ClassCastException`. The exact same
+    thing happens with the generic version of `loophole()`.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当我们从列表中提取一个元素，并尝试将其强制转换为`String`以将其视为字符串时，我们将收到`ClassCastException`。与`loophole()`的泛型版本发生的事情完全相同。
+- en: The reason for this is, that generics are implemented by the Java compiler as
+    a front-end conversion called *erasure*. You can (almost) think of it as a source-to-source
+    translation, whereby the generic version of `loophole()` is converted to the non-generic
+    version.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是因为，泛型是由Java编译器实现的一种称为*擦除*的前端转换。你（几乎）可以将其视为源到源的转换，其中`loophole()`的泛型版本转换为非泛型版本。
+- en: As a result, **the type safety and integrity of the Java virtual machine are
+    never at risk, even in the presence of unchecked warnings**.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，**即使存在未经检查的警告，Java虚拟机的类型安全性和完整性也永远不会受到威胁**。
+- en: Basically, erasure gets rid of (or *erases*) all generic type information. All
+    the type information betweeen angle brackets is thrown out, so, for example, a
+    parameterized type like `List<String>` is converted into `List`. All remaining
+    uses of type variables are replaced by the upper bound of the type variable (usually
+    `Object`). And, whenever the resulting code isn't type-correct, a cast to the
+    appropriate type is inserted, as in the last line of `loophole`.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基本上，擦除会消除（或*擦除*）所有泛型类型信息。所有尖括号之间的类型信息都被丢弃，因此，例如，像`List<String>`这样的参数化类型被转换为`List`。所有类型变量的剩余用法都被替换为类型变量的上界（通常为`Object`）。并且，每当生成的代码不符合类型时，都会插入到适当类型的强制转换，就像`loophole`的最后一行一样。
+- en: The full details of erasure are beyond the scope of this tutorial, but the simple
+    description we just gave isn't far from the truth. It's good to know a bit about
+    this, especially if you want to do more sophisticated things like converting existing
+    APIs to use generics (see the [Converting Legacy Code to Use Generics](convert.html)
+    section), or just want to understand why things are the way they are.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 擦除的全部细节超出了本教程的范围，但我们刚刚给出的简单描述并不离谱。了解一些关于这个是很有好处的，特别是如果您想要做一些更复杂的事情，比如将现有API转换为使用泛型（参见[将旧代码转换为使用泛型](convert.html)部分），或者只是想了解为什么事情是这样的。
+- en: Using Generic Code in Legacy Code
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在旧代码中使用泛型代码
+- en: 'Now let''s consider the inverse case. Imagine that Example.com chose to convert
+    their API to use generics, but that some of their clients haven''t yet. So now
+    the code looks like:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们考虑相反的情况。想象一下，Example.com选择将他们的API转换为使用泛型，但是一些客户端还没有这样做。现在代码看起来像这样：
+- en: '[PRE4]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'and the client code looks like:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 客户端代码如下：
+- en: '[PRE5]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The client code was written before generics were introduced, but it uses the
+    package `com.Example.widgets` and the collection library, both of which are using
+    generic types. All the uses of generic type declarations in the client code are
+    raw types.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 客户端代码是在引入泛型之前编写的，但它使用了`com.Example.widgets`包和集合库，两者都使用了泛型类型。客户端代码中所有泛型类型声明的使用都是原始类型。
+- en: Line 1 generates an unchecked warning, because a raw `Collection` is being passed
+    in where a `Collection` of `Part`s is expected, and the compiler cannot ensure
+    that the raw `Collection` really is a `Collection` of `Part`s.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第1行生成了一个未经检查的警告，因为一个原始`Collection`被传递到一个期望`Part`集合的`Collection`位置，编译器无法确保原始`Collection`确实是`Part`集合。
+- en: As an alternative, you can compile the client code using the source 1.4 flag,
+    ensuring that no warnings are generated. However, in that case you won't be able
+    to use any of the new language features introduced in JDK 5.0.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为一种替代方案，您可以使用源1.4标志编译客户端代码，确保不会生成任何警告。然而，在这种情况下，您将无法使用JDK 5.0引入的任何新语言特性。
+- en: '* * *'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

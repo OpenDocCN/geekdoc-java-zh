@@ -1,0 +1,105 @@
+- en: Solving Common Problems Using Other Swing Features
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用其他 Swing 功能解决常见问题
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/problems.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/problems.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/problems.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/problems.html)
+- en: '**Problem:** My application is not showing the look and feel I have requested
+    via `UIManager.setLookAndFeel`.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 我的应用程序没有显示我通过`UIManager.setLookAndFeel`请求的外观。'
+- en: You probably either set the look and feel to an invalid look and feel or set
+    it after the UI manager loaded the default look and feel. If you are sure that
+    the look and feel you specified is valid and setting the look and feel is the
+    first thing your program does (at the top of its main method, for example), check
+    whether you have a static field that references a Swing class. This reference
+    can cause the default look and feel to be loaded if none has been specified. For
+    more information, including how to set a look and feel after the GUI has been
+    created, see the [look and feel](../lookandfeel/plaf.html) section.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能要么将外观设置为无效的外观，要么在 UI 管理器加载默认外观之后设置它。如果您确定您指定的外观是有效的，并且设置外观是程序执行的第一件事情（例如，在其主方法的顶部），请检查是否有一个引用
+    Swing 类的静态字段。如果没有指定外观，则此引用可能导致加载默认外观。更多信息，包括如何在创建 GUI 后设置外观，请参阅[外观](../lookandfeel/plaf.html)部分。
+- en: '**Problem:** Why is not my component getting the focus?'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 为什么我的组件没有获得焦点？'
+- en: Is it a custom component (for example, a direct subclass of `JComponent`) that
+    you created? If so, you may need to give your component an input map and mouse
+    listener. See [How to Make a Custom Component Focusable](focus.html#focusable)
+    for more information and a demo.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 是否是您创建的自定义组件（例如，`JComponent`的直接子类）？如果是，您可能需要为您的组件提供输入映射和鼠标监听器。有关更多信息和演示，请参阅[如何使自定义组件可聚焦](focus.html#focusable)。
+- en: Is the component inside of a `JWindow` object? The focus system requires a `JWindow`'s
+    owning frame to be visible for any components in the `JWindow` object to get the
+    focus. By default, if you do not specify an owning frame for a `JWindow` object,
+    an invisible owning frame is created for it. The solution is to either specify
+    a visible and focusable owning frame when creating the `JWindow` object or to
+    use `JDialog` or `JFrame` objects instead.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 组件是否在`JWindow`对象内？焦点系统要求`JWindow`的拥有框架对于`JWindow`对象中的任何组件都可见才能获得焦点。默认情况下，如果您没有为`JWindow`对象指定拥有框架，则会为其创建一个不可见的拥有框架。解决方案是在创建`JWindow`对象时要么指定一个可见且可聚焦的拥有框架，要么改用`JDialog`或`JFrame`对象。
+- en: '**Problem:** Why cannot my dialog receive the event generated when the user
+    hits the Escape key?'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 为什么我的对话框无法接收用户按下 Escape 键时生成的事件？'
+- en: If your dialog contains a text field, it may be consuming the event.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您的对话框包含文本字段，则可能正在消耗事件。
+- en: If you want to get the Escape event regardless of whether a component consumes
+    it, you should use a [``KeyEventDispatcher``](https://docs.oracle.com/javase/8/docs/api/java/awt/KeyEventDispatcher.html).
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果您想无论组件是否消耗事件都获取 Escape 事件，应该使用[``KeyEventDispatcher``](https://docs.oracle.com/javase/8/docs/api/java/awt/KeyEventDispatcher.html)。
+- en: If you want to get the Escape event only if a component has not consumed it,
+    then register a key binding on any `JComponent` component in the `JDialog` object,
+    using the `WHEN_IN_FOCUSED_WINDOW` input map. For more information, see the [How
+    to Use Key Bindings](../misc/keybinding.html) page.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果您只想在组件未消耗事件时获取 Escape 事件，则在`JDialog`对象中的任何`JComponent`组件上注册一个键绑定，使用`WHEN_IN_FOCUSED_WINDOW`输入映射。更多信息，请参阅[如何使用键绑定](../misc/keybinding.html)页面。
+- en: '**Problem:** Why I cannot apply Swing components to a tray icon? Current implementation
+    of the `TrayIcon` class supports the `PopupMenu` component, but not its Swing
+    counterpart `JPopupMenu`. This limitation narrows capabilities to employ additional
+    Swing features, for example, menu icons. See the Bug ID [6285881](http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6285881).'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**问题：** 为什么我无法将 Swing 组件应用于托盘图标？`TrayIcon`类的当前实现支持`PopupMenu`组件，但不支持其 Swing
+    对应物`JPopupMenu`。这种限制缩小了使用其他 Swing 功能的能力，例如菜单图标。请参阅 Bug ID [6285881](http://bugs.java.com/bugdatabase/view_bug.do?bug_id=6285881)。'
+- en: A new `JTrayIcon` class will be created to eliminate this inconvenience. Until
+    then, use AWT components to add a menu item, check box menu item, or submenu.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 为了消除这种不便，将创建一个新的`JTrayIcon`类。在那之前，请使用 AWT 组件添加菜单项、复选框菜单项或子菜单。
+- en: If you do not find your problem in this section, consult [Solving Common Component
+    Problems](../components/problems.html).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在本节中找不到您的问题，请参考[解决常见组件问题](../components/problems.html)。

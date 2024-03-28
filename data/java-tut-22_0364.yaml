@@ -1,0 +1,198 @@
+- en: Using Text Components
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用文本组件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/text.html](https://docs.oracle.com/javase/tutorial/uiswing/components/text.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/text.html](https://docs.oracle.com/javase/tutorial/uiswing/components/text.html)
+- en: "This section provides background information you might need when using Swing\
+    \ text components. If you intend to use an unstyled text component \x97 a [text\
+    \ field](textfield.html), [password field](passwordfield.html), [formatted text\
+    \ field](formattedtextfield.html), or [text area](textarea.html) \x97 go to its\
+    \ how-to page and return here only if necessary. If you intend to use a styled\
+    \ text component, see [How to Use Editor Panes and Text Panes](editorpane.html),\
+    \ and read this section as well. If you do not know which component you need,\
+    \ read on."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "本节提供了在使用Swing文本组件时可能需要的背景信息。如果你打算使用未经样式化的文本组件 \x97 一个[文本字段](textfield.html)、[密码字段](passwordfield.html)、[格式化文本字段](formattedtextfield.html)或[文本区域](textarea.html)\
+    \ \x97 请转到其操作页面，仅在必要时返回此处。如果你打算使用样式化文本组件，请参阅[如何使用编辑窗格和文本窗格](editorpane.html)，并阅读本节。如果你不知道需要哪种组件，请继续阅读。"
+- en: Swing text components display text and optionally allow the user to edit the
+    text. Programs need text components for tasks ranging from the straightforward
+    (enter a word and press Enter) to the complex (display and edit styled text with
+    embedded images in an Asian language).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing文本组件显示文本，并可选择允许用户编辑文本。程序需要文本组件来执行从简单任务（输入一个单词并按 Enter 键）到复杂任务（在亚洲语言中显示和编辑带有嵌入图像的样式文本）的各种任务。
+- en: Swing provides six text components, along with supporting classes and interfaces
+    that meet even the most complex text requirements. In spite of their different
+    uses and capabilities, all Swing text components inherit from the same superclass,
+    [`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html),
+    which provides a highly-configurable and powerful foundation for text manipulation.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing提供了六个文本组件，以及支持各种复杂文本需求的支持类和接口。尽管它们用途和功能不同，但所有Swing文本组件都继承自相同的超类[`JTextComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html)，为文本操作提供了高度可配置和强大的基础。
+- en: The following figure shows the `JTextComponent` hierarchy.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图显示了`JTextComponent`的层次结构。
+- en: '![Swing''s hierarchy of text components](../Images/d7cedf607dfe75c45c90e143abec042a.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Swing文本组件的层次结构](../Images/d7cedf607dfe75c45c90e143abec042a.png)'
+- en: The following picture shows an application called `TextSamplerDemo` that uses
+    each Swing text component.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图片显示了一个名为`TextSamplerDemo`的应用程序，该应用程序使用了每个Swing文本组件。
+- en: '![An application that provides a sample of each Swing text component](../Images/53a15966ce4b1b9831354a10bee51eb4.png)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_IMG
+  zh: '![提供每个Swing文本组件示例的应用程序](../Images/53a15966ce4b1b9831354a10bee51eb4.png)'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: Click the Launch button to run TextSamplerDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TextSamplerDemo).[![Launches
+    the TextSamplerDemo Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextSamplerDemoProject/TextSamplerDemo.jnlp)
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TextSamplerDemo（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TextSamplerDemo)。[![启动TextSamplerDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextSamplerDemoProject/TextSamplerDemo.jnlp)
+- en: Type some text in the text field and press Enter. Do the same in the password
+    field. The label beneath the fields is updated when you press Enter.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在文本字段中输入一些文本，然后按 Enter 键。在密码字段中也做同样操作。当你按 Enter 键时，字段下方的标签会更新。
+- en: Try entering valid and invalid dates into the formatted text field. Note that
+    when you press Enter the label beneath the fields is updated only if the date
+    is valid.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 尝试在格式化文本字段中输入有效和无效日期。请注意，只有日期有效时，当你按 Enter 键时，字段下方的标签才会更新。
+- en: Select and edit text in the text area and the text pane. Use keyboard bindings,
+    Ctrl-X, Ctrl-C, and Ctrl-V, to cut, copy, and paste text, respectively.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在文本区域和文本窗格中选择和编辑文本。使用键盘绑定，Ctrl-X、Ctrl-C 和 Ctrl-V，分别进行剪切、复制和粘贴文本。
+- en: Try to edit the text in the editor pane, which has been made uneditable with
+    a call to `setEditable`.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 尝试编辑已通过`setEditable`调用而变为不可编辑的编辑窗格中的文本。
+- en: Look in the text pane to find an example of an embedded component and an embedded
+    icon.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在文本窗格中查找一个嵌入组件和一个嵌入图标的示例。
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The `TextSamplerDemo` example uses the text components in very basic ways. The
+    following table tells you more about what you can do with each kind of text component.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextSamplerDemo`示例以非常基本的方式使用文本组件。以下表格告诉您可以使用每种文本组件做什么。'
+- en: '| Group | Description | Swing Classes |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| 组 | 描述 | Swing 类 |'
+- en: '| Text Controls | Also known simply as text fields, text controls can display
+    only one line of editable text. Like buttons, they generate action events. Use
+    them to get a small amount of textual information from the user and perform an
+    action after the text entry is complete. | [`JTextField`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html)
+    and its subclasses [`JPasswordField`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html)
+    and [`JFormattedTextField`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFormattedTextField.html)
+    |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| 文本控件 | 也简称为文本字段，文本控件只能显示一行可编辑文本。像按钮一样，它们会生成动作事件。使用它们从用户那里获取少量文本信息，并在文本输入完成后执行操作。
+    | [`JTextField`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html)
+    及其子类 [`JPasswordField`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html)
+    和 [`JFormattedTextField`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFormattedTextField.html)
+    |'
+- en: '| Plain Text Areas | `JTextArea` can display multiple lines of editable text.
+    Although a text area can display text in any font, all of the text is in the same
+    font. Use a text area to allow the user to enter unformatted text of any length
+    or to display unformatted help information. | [`JTextArea`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html)
+    |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| 普通文本区域 | `JTextArea`可以显示多行可编辑文本。虽然文本区域可以显示任何字体的文本，但所有文本都是相同字体。使用文本区域允许用户输入任意长度的未格式化文本或显示未格式化的帮助信息。
+    | [`JTextArea`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html)
+    |'
+- en: '| Styled Text Areas | A styled text component can display editable text using
+    more than one font. Some styled text components allow embedded images and even
+    embedded components. Styled text components are powerful and multi-faceted components
+    suitable for high-end needs, and offer more avenues for customization than the
+    other text components.Because they are so powerful and flexible, styled text components
+    typically require more initial programming to set up and use. One exception is
+    that editor panes can be easily loaded with formatted text from a URL, which makes
+    them useful for displaying uneditable help information. | [`JEditorPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html)
+    and its subclass'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| 样式文本区域 | 样式文本组件可以使用多种字体显示可编辑文本。一些样式文本组件允许嵌入图像甚至嵌入组件。样式文本组件是功能强大且多面向的组件，适用于高端需求，并提供比其他文本组件更多的自定义途径。由于它们如此强大和灵活，样式文本组件通常需要更多的初始编程来设置和使用。一个例外是编辑器窗格可以轻松地从URL加载格式化文本，这使它们非常适用于显示不可编辑的帮助信息。
+    | [`JEditorPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html)
+    及其子类'
+- en: '[`JTextPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html)
+    |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`JTextPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html)
+    |'
+- en: This Tutorial provides information about the foundation laid by the `JTextComponent`
+    class and tells you how to accomplish some common text-related tasks.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程提供了关于`JTextComponent`类奠定的基础的信息，并告诉您如何完成一些常见的与文本相关的任务。
+- en: 'To learn more about text components in JavaFX, see the [Using Text and Text
+    Effects in JavaFX](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/text.htm)
+    and [Using JavaFX UI Controls: Text Field](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/text-field.htm)
+    tutorials.'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解更多关于JavaFX中文本组件的信息，请参阅[在JavaFX中使用文本和文本效果](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/text.htm)和[使用JavaFX
+    UI控件：文本字段](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/text-field.htm)教程。

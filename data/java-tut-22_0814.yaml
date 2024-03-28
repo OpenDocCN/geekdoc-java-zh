@@ -1,0 +1,183 @@
+- en: 'Trail: Security Features in Java SE'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：Java SE中的安全功能
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/index.html](https://docs.oracle.com/javase/tutorial/security/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/index.html](https://docs.oracle.com/javase/tutorial/security/index.html)
+- en: In this trail you'll learn how the built-in Java™ security features protect
+    you from malevolent programs. You'll see how to use tools to control access to
+    resources, to generate and to check digital signatures, and to create and to manage
+    keys needed for signature generation and checking. You'll also see how to incorporate
+    cryptography services, such as digital signature generation and checking, into
+    your programs.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本教程中，您将了解内置的Java™安全功能如何保护您免受恶意程序的侵害。您将看到如何使用工具来控制对资源的访问，生成和检查数字签名，以及创建和管理用于签名生成和检查所需的密钥。您还将看到如何将加密服务（如数字签名生成和检查）整合到您的程序中。
+- en: 'The security features provided by the Java Development Kit (JDK™) are intended
+    for a variety of audiences:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java开发工具包（JDK™）提供的安全功能面向各种受众：
+- en: '**Users running programs**:'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**运行程序的用户**：'
+- en: Built-in security functionality protects you from malevolent programs (including
+    viruses), maintains the privacy of your files and information about you, and authenticates
+    the identity of each code provider. You can subject applications and applets to
+    security controls when you need to.
+  id: totrans-5
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 内置的安全功能可保护您免受恶意程序（包括病毒）的侵害，保护您文件的隐私和关于您的信息，并验证每个代码提供者的身份。当您需要时，您可以对应用程序和小程序进行安全控制。
+- en: '**Developers**:'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**开发人员**：'
+- en: You can use API methods to incorporate security functionality into your programs,
+    including cryptography services and security checks. The API framework enables
+    you to define and integrate your own permissions (controlling access to specific
+    resources), cryptography service implementations, security manager implementations,
+    and policy implementations. In addition, classes are provided for management of
+    your public/private key pairs and public key certificates from people you trust.
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 您可以使用API方法将安全功能整合到您的程序中，包括加密服务和安全检查。API框架使您能够定义和整合自己的权限（控制对特定资源的访问）、加密服务实现、安全管理器实现和策略实现。此外，还提供了用于管理您信任的人的公钥/私钥对和公钥证书的类。
+- en: '**Systems administrators, developers, and users**:'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**系统管理员、开发人员和用户**：'
+- en: JDK tools manage your keystore (database of keys and certificates); generate
+    digital signatures for JAR files, and verify the authenticity of such signatures
+    and the integrity of the signed contents; and create and modify the policy files
+    that define your installation's security policy.
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: JDK工具管理您的密钥库（密钥和证书的数据库）；为JAR文件生成数字签名，并验证这些签名的真实性和已签名内容的完整性；以及创建和修改定义安装安全策略的策略文件。
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** For developers that want to create applets and Java Web Start applications,
+    see [Java Applets](../deployment/applet/index.html) for security information.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 对于想要创建小程序和Java Web启动应用程序的开发人员，请参阅[Java小程序](../deployment/applet/index.html)以获取安全信息。'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Trail Lessons
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 教程课程
+- en: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [Creating a
+    Policy File](./tour1/index.html) shows how resource accesses can be controlled
+    by a policy file. For latest information on policy configuration files, see [Policy
+    Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/security/PolicyGuide.html)
+    page.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![教程图标](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [创建策略文件](./tour1/index.html)
+    展示了如何通过策略文件控制资源访问。有关策略配置文件的最新信息，请参阅[策略指南](https://docs.oracle.com/javase/8/docs/technotes/guides/security/PolicyGuide.html)
+    页面。'
+- en: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [Quick Tour
+    of Controlling Applications](./tour2/index.html) builds on the previous lesson,
+    showing how resource accesses, such as reading or writing a file, are not permitted
+    for applications that are run under a security manager unless explicitly allowed
+    by a permission in a policy file.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![教程图标](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [快速浏览控制应用程序](./tour2/index.html)
+    在前一课程的基础上展示了资源访问的控制，例如对于在安全管理器下运行的应用程序，除非在策略文件中明确允许，否则不允许读取或写入文件等资源访问。'
+- en: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [API and Tools
+    Use for Secure Code and File Exchanges](./sigcert/index.html) defines digital
+    signatures, certificates, and keystores and discusses why they are needed. It
+    also reviews information applicable to the next three lessons regarding the steps
+    commonly needed for using the tools or the API to generate signatures, export/import
+    certificates, and so on.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [用于安全代码和文件交换的API和工具使用](./sigcert/index.html)定义了数字签名、证书和密钥库，并讨论了它们为何需要。它还回顾了适用于接下来三个课程的信息，这些课程通常需要使用工具或API生成签名、导出/导入证书等步骤。'
+- en: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [Signing Code
+    and Granting It Permissions](./toolsign/index.html) illustrates the use of all
+    the security-related tools. It shows the steps that a developer would take to
+    sign and to distribute code for others to run. The lesson also shows how someone
+    who will run the code (or a system administrator) could add an entry in a policy
+    file to grant the code permission for the resource accesses it needs.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [签署代码并授予权限](./toolsign/index.html)展示了所有与安全相关的工具的使用。它展示了开发人员签署和分发代码供他人运行的步骤。本课程还展示了运行代码的人（或系统管理员）如何在策略文件中添加条目以授予代码所需的资源访问权限。'
+- en: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [Exchanging
+    Files](./toolfilex/index.html) shows use of the tools by one person to sign an
+    important document, such as a contract, and to export the public key certificate
+    for the public key corresponding to the private key used to sign the contract.
+    Then the lesson shows how another person, who receives the contract, the signature,
+    and the public key certificate, can import the certificate and verify the signature.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [文件交换](./toolfilex/index.html)展示了一个人使用工具签署重要文件，如合同，并导出与用于签署合同的私钥对应的公钥证书。然后本课程展示了另一个人如何导入证书并验证签名，该人收到了合同、签名和公钥证书。'
+- en: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [Generating
+    and Verifying Signatures](./apisign/index.html) walks you step by step through
+    an example of writing a Java program using the JDK Security API to generate keys,
+    to generate a digital signature for data using the private key, and to export
+    the public key and the signature to files. Then the example shows writing a second
+    program, which may be expected to run on a different person''s computer, that
+    imports the public key and verifies the authenticity of the signature. Finally,
+    the example discusses potential weaknesses of the approach used by the basic programs
+    and demonstrates possible alternative approaches and methods of supplying and
+    importing keys, including in certificates.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [生成和验证签名](./apisign/index.html)逐步引导您通过一个示例，使用JDK安全API编写Java程序生成密钥，使用私钥为数据生成数字签名，并将公钥和签名导出到文件。然后示例展示了编写第二个程序，该程序可能预期在另一个人的计算机上运行，导入公钥并验证签名的真实性。最后，示例讨论了基本程序使用的方法的潜在弱点，并演示了可能的替代方法和提供和导入密钥的方法，包括在证书中。'
+- en: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [Implementing
+    Your Own Permission](./userperm/index.html) demonstrates how to write a class
+    that defines its own special permission.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![Trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png)  [实现自己的权限](./userperm/index.html)演示了如何编写一个定义自己特殊权限的类。'
+- en: For More Information
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更多信息
+- en: JDK security release documentation can be found at the [Security](https://docs.oracle.com/javase/8/docs/technotes/guides/security/index.html)
+    guides page. This index page lists Specifications which present detailed information
+    about latest security features, including architecture specifications, usage guides,
+    API documentation, and tool documentation.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JDK安全发布文档可以在[安全](https://docs.oracle.com/javase/8/docs/technotes/guides/security/index.html)指南页面找到。此索引页面列出了规范，提供了关于最新安全功能的详细信息，包括架构规范、使用指南、API文档和工具文档。

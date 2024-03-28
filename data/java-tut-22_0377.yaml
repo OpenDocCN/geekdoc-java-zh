@@ -1,0 +1,784 @@
+- en: How to Make Frames (Main Windows)
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何制作窗口（主窗口）
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/frame.html](https://docs.oracle.com/javase/tutorial/uiswing/components/frame.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/frame.html](https://docs.oracle.com/javase/tutorial/uiswing/components/frame.html)
+- en: A Frame is a top-level window with a title and a border. The size of the frame
+    includes any area designated for the border. The dimensions of the border area
+    may be obtained using the `getInsets` method. Since the border area is included
+    in the overall size of the frame, the border effectively obscures a portion of
+    the frame, constraining the area available for rendering and/or displaying subcomponents
+    to the rectangle which has an upper-left corner location of `(insets.left`, `insets.top)`,
+    and has a size of `width - (insets.left + insets.right)` by `height - (insets.top
+    + insets.bottom)`.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 窗口是具有标题和边框的顶级窗口。窗口的大小包括为边框指定的任何区域。可以使用`getInsets`方法获取边框区域的尺寸。由于边框区域包含在窗口的整体尺寸中，边框实际上遮挡了窗口的一部分，限制了用于渲染和/或显示子组件的区域为一个矩形，其左上角位置为`(insets.left`，`insets.top)`，大小为`width
+    - (insets.left + insets.right)`乘以`height - (insets.top + insets.bottom)`。
+- en: A frame, implemented as an instance of the [`JFrame`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html)
+    class, is a window that has decorations such as a border, a title, and supports
+    button components that close or iconify the window. Applications with a GUI usually
+    include at least one frame. Applets sometimes use frames, as well.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为[`JFrame`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html)类的实例实现的窗口具有装饰，如边框、标题，并支持关闭或最小化窗口的按钮组件。具有
+    GUI 的应用程序通常至少包括一个窗口。小程序有时也使用窗口。
+- en: "To make a window that is dependent on another window \x97 disappearing when\
+    \ the other window is iconified, for example \x97 use a [`dialog`](dialog.html)\
+    \ instead of `frame.`. To make a window that appears within another window, use\
+    \ an [internal frame](internalframe.html)."
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "要创建一个依赖于另一个窗口的窗口 \x97 例如在另一个窗口最小化时消失 \x97 请使用[`dialog`](dialog.html)而不是`frame.`。要创建出现在另一个窗口内的窗口，请使用[内部窗口](internalframe.html)。"
+- en: Creating and Showing Frames
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建和显示窗口
+- en: Here is a picture of the extremely plain window created by the `FrameDemo` demonstration
+    application. You can find the source code in [`FrameDemo.java`](../examples/components/FrameDemoProject/src/components/FrameDemo.java).
+    You can [run FrameDemo](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/FrameDemoProject/FrameDemo.jnlp)
+    ( [download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是`FrameDemo`演示应用程序创建的非常简单窗口的图片。您可以在[`FrameDemo.java`](../examples/components/FrameDemoProject/src/components/FrameDemo.java)中找到源代码。您可以[运行FrameDemo](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/FrameDemoProject/FrameDemo.jnlp)（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。
+- en: '![A very boring frame](../Images/efdf6b7186bb297eb0f79e8407eaa162.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个非常无聊的窗口](../Images/efdf6b7186bb297eb0f79e8407eaa162.png)'
+- en: The following `FrameDemo` code shows how to create and set up a frame.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下`FrameDemo`代码显示了如何创建和设置窗口。
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Here are some details about the code:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是代码的一些细节：
+- en: The first line of code creates a frame using a constructor that lets you set
+    the frame title. The other frequently used `JFrame` constructor is the no-argument
+    constructor.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 代码的第一行使用允许您设置窗口标题的构造函数创建了一个窗口。另一个经常使用的`JFrame`构造函数是无参数构造函数。
+- en: Next the code specifies what happens when your user closes the frame. The `EXIT_ON_CLOSE`
+    operation exits the program when your user closes the frame. This behavior is
+    appropriate for this program because the program has only one frame, and closing
+    the frame makes the program useless.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 接下来的代码指定了当用户关闭窗口时发生的情况。`EXIT_ON_CLOSE`操作在用户关闭窗口时退出程序。这种行为适用于此程序，因为程序只有一个窗口，关闭窗口会使程序变得无用。
+- en: See [Responding to Window-Closing Events](#windowevents) for more information.
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 有关更多信息，请参阅[响应窗口关闭事件](#windowevents)。
+- en: The next bit of code adds a blank label to the frame content pane. If you're
+    not already familiar with content panes and how to add components to them, please
+    read [Adding Components to the Content Pane](toplevel.html#contentpane).
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 下一部分代码向窗口内容窗格添加了一个空标签。如果您还不熟悉内容窗格以及如何向其添加组件，请阅读[向内容窗格添加组件](toplevel.html#contentpane)。
+- en: For frames that have menus, you'd typically add the menu bar to the frame here
+    using the `setJMenuBar` method. See [How to Use Menus](menu.html) for details.
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 对于具有菜单的窗口，通常会使用`setJMenuBar`方法将菜单栏添加到窗口中。有关详细信息，请参阅[如何使用菜单](menu.html)。
+- en: The `pack` method sizes the frame so that all its contents are at or above their
+    preferred sizes. An alternative to `pack` is to establish a frame size explicitly
+    by calling `setSize` or `setBounds` (which also sets the frame location). In general,
+    using `pack` is preferable to calling `setSize`, since `pack` leaves the frame
+    layout manager in charge of the frame size, and layout managers are good at adjusting
+    to platform dependencies and other factors that affect component size.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`pack`方法调整框架大小，使得所有内容都达到或超过其首选大小。与`pack`相对的是通过调用`setSize`或`setBounds`（也设置框架位置）来明确建立框架大小。一般来说，使用`pack`比调用`setSize`更可取，因为`pack`让框架布局管理器负责框架大小，布局管理器擅长调整到平台依赖和其他影响组件大小的因素。'
+- en: 'This example does not set the frame location, but it is easy to do so using
+    either the `setLocationRelativeTo` or `setLocation` method. For example, the following
+    code centers a frame onscreen:'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这个示例没有设置框架位置，但可以使用`setLocationRelativeTo`或`setLocation`方法很容易地实现。例如，以下代码将框架居中显示在屏幕上：
+- en: '[PRE1]'
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Calling `setVisible(true)` makes the frame appear onscreen. Sometimes you might
+    see the `show` method used instead. The two usages are equivalent, but we use
+    `setVisible(true)` for consistency's sake.
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调用`setVisible(true)`使框架显示在屏幕上。有时你可能会看到使用`show`方法。这两种用法是等效的，但为了一致性起见，我们使用`setVisible(true)`。
+- en: Specifying Window Decorations
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定窗口装饰
+- en: By default, window decorations are supplied by the native window system. However,
+    you can request that the look-and-feel provide the decorations for a frame. You
+    can also specify that the frame have no window decorations at all, a feature that
+    can be used on its own, or to provide your own decorations, or with [full-screen
+    exclusive mode](../../extra/fullscreen/index.html).
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，窗口装饰由本机窗口系统提供。然而，你可以要求外观提供框架的装饰。你还可以指定框架根本没有窗口装饰，这是一个可以单独使用的功能，或者提供自己的装饰，或者与[全屏独占模式](../../extra/fullscreen/index.html)一起使用。
+- en: Besides specifying who provides the window decorations, you can also specify
+    which icon is used to represent the window. Exactly how this icon is used depends
+    on the window system or look and feel that provides the window decorations. If
+    the window system supports minimization, then the icon is used to represent the
+    minimized window. Most window systems or look and feels also display the icon
+    in the window decorations. A typical icon size is 16x16 pixels, but some window
+    systems use other sizes.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了指定谁提供窗口装饰，你还可以指定使用哪个图标来代表窗口。这个图标的使用方式取决于提供窗口装饰的窗口系统或外观。如果窗口系统支持最小化，那么图标将用于表示最小化的窗口。大多数窗口系统或外观也会在窗口装饰中显示图标。典型的图标大小是16x16像素，但有些窗口系统使用其他大小。
+- en: The following snapshots show three frames that are identical except for their
+    window decorations. As you can tell by the appearance of the button in each frame,
+    all three use the Java look and feel. The first uses decorations provided by the
+    window system, which happen to be Microsoft Windows, but could as easily be any
+    other system running the Java platform.The second and third use window decorations
+    provided by the Java look and feel. The third frame uses Java look and feel window
+    decorations, but has a custom icon.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下快照展示了三个相同的框架，除了它们的窗口装饰不同。通过每个框架中按钮的外观，你可以看出所有三个使用的是Java外观。第一个使用由窗口系统提供的装饰，这恰好是Microsoft
+    Windows，但也可以是运行Java平台的任何其他系统。第二个和第三个使用Java外观提供的窗口装饰。第三个框架使用Java外观提供的窗口装饰，但有一个自定义图标。
+- en: '| ![A frame with decorations provided by the window system](../Images/4b0a111145f31c2834c4df95170f4bcf.png)
+    | ![A frame with decorations provided by the look and feel](../Images/a5bcc136c08f8ea86cc422efbacca088.png)
+    | ![A frame with a custom icon](../Images/91392d9fd8a6cfd49eda8fdc925ce30f.png)
+    |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![由窗口系统提供装饰的框架](../Images/4b0a111145f31c2834c4df95170f4bcf.png) | ![由外观提供装饰的框架](../Images/a5bcc136c08f8ea86cc422efbacca088.png)
+    | ![带有自定义图标的框架](../Images/91392d9fd8a6cfd49eda8fdc925ce30f.png) |'
+- en: '| Window decorations provided by the look and feel | Window decorations provided
+    by the window system | Custom icon; window decorations provided by the look and
+    feel |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| 由外观提供的窗口装饰 | 由窗口系统提供的窗口装饰 | 自定义图标；由外观提供的窗口装饰 |'
+- en: 'Here is an example of creating a frame with a custom icon and with window decorations
+    provided by the look and feel:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个示例，创建一个带有自定义图标和由外观提供的窗口装饰的框架：
+- en: '[PRE2]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: As the preceding code snippet implies, you must invoke the `setDefaultLookAndFeelDecorated`
+    method *before* creating the frame whose decorations you wish to affect. The value
+    you set with `setDefaultLookAndFeelDecorated` is used for all subsequently created
+    `JFrame`s. You can switch back to using window system decorations by invoking
+    `JFrame.setDefaultLookAndFeelDecorated(false)`. Some look and feels might not
+    support window decorations; in this case, the window system decorations are used.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前面的代码片段所示，您必须在创建希望影响其装饰的窗口之前调用`setDefaultLookAndFeelDecorated`方法。您使用`setDefaultLookAndFeelDecorated`设置的值将用于随后创建的所有`JFrame`。您可以通过调用`JFrame.setDefaultLookAndFeelDecorated(false)`来切换回使用窗口系统装饰。某些外观和感觉可能不支持窗口装饰；在这种情况下，将使用窗口系统装饰。
+- en: "The full source code for the application that creates the frames pictured above\
+    \ is in [`FrameDemo2.java`](../examples/components/FrameDemo2Project/src/components/FrameDemo2.java).\
+    \ Besides showing how to choose window decorations, FrameDemo2 also shows how\
+    \ to disable all window decorations and gives an example of positioning windows.\
+    \ It includes two methods that create the `Image` objects used as icons \x97 one\
+    \ is loaded from a file, and the other is painted from scratch."
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "创建上述图片框架的应用程序的完整源代码在[`FrameDemo2.java`](../examples/components/FrameDemo2Project/src/components/FrameDemo2.java)中。除了显示如何选择窗口装饰外，FrameDemo2还展示了如何禁用所有窗口装饰，并演示了定位窗口的示例。它包括两个创建用作图标的`Image`对象的方法\
+    \ \x97 一个从文件加载，另一个从头开始绘制。"
+- en: '* * *'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this::**'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run the Frame Demo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#FrameDemo2).[![Launches
+    the FrameDemo2 example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/FrameDemo2Project/FrameDemo2.jnlp)
+  id: totrans-32
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行Frame
+    Demo（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#FrameDemo2)。[![启动FrameDemo2示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/FrameDemo2Project/FrameDemo2.jnlp)
+- en: Bring up two windows, both with look-and-feel-provided decorations, but with
+    different icons.
+  id: totrans-33
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 弹出两个窗口，都带有外观提供的装饰，但具有不同的图标。
+- en: The Java look and feel displays the icons in its window decorations. Depending
+    on your window system, the icon may be used elsewhere to represent the window,
+    especially when the window is minimized.
+  id: totrans-34
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: Java外观和感觉在其窗口装饰中显示图标。根据您的窗口系统，该图标可能会在其他地方用于表示窗口，特别是当窗口最小化时。
+- en: Bring up one or more windows with window system decorations.
+  id: totrans-35
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 弹出一个或多个带有窗口系统装饰的窗口。
+- en: See if your window system treats these icons differently.
+  id: totrans-36
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 查看您的窗口系统是否以不同方式处理这些图标。
+- en: Bring up one or more windows with no window decorations.
+  id: totrans-37
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 弹出一个或多个没有窗口装饰的窗口。
+- en: Play with the various types of windows to see how the window decorations, window
+    system, and frame icons interact.
+  id: totrans-38
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 通过使用各种类型的窗口来查看窗口装饰、窗口系统和框架图标之间的交互。
+- en: '* * *'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Responding to Window-Closing Events
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 响应窗口关闭事件
+- en: By default, when the user closes a frame onscreen, the frame is hidden. Although
+    invisible, the frame still exists and the program can make it visible again. If
+    you want different behavior, then you need to either register a window listener
+    that handles window-closing events, or you need to specify default close behavior
+    using the `setDefaultCloseOperation` method. You can even do both.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，当用户在屏幕上关闭一个窗口时，该窗口会被隐藏。尽管不可见，窗口仍然存在，程序可以再次使其可见。如果您希望有不同的行为，则需要注册一个处理窗口关闭事件的窗口监听器，或者使用`setDefaultCloseOperation`方法指定默认关闭行为。您甚至可以两者都做。
+- en: 'The argument to `setDefaultCloseOperation` must be one of the following values,
+    the first three of which are defined in the [`WindowConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/WindowConstants.html)
+    interface (implemented by `JFrame`, `JInternalPane`, and `JDialog`):'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`setDefaultCloseOperation`的参数必须是以下值之一，前三个值在[`WindowConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/WindowConstants.html)接口中定义（由`JFrame`、`JInternalPane`和`JDialog`实现）：'
+- en: '`DO_NOTHING_ON_CLOSE`'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DO_NOTHING_ON_CLOSE`'
+- en: Do not do anything when the user requests that the window close. Instead, the
+    program should probably use a window listener that performs some other action
+    in its `windowClosing` method.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户请求关闭窗口时不执行任何操作。相反，程序可能应该使用一个窗口监听器，在其`windowClosing`方法中执行其他操作。
+- en: '`HIDE_ON_CLOSE` (the default for `JDialog` and `JFrame`)'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`HIDE_ON_CLOSE`（`JDialog`和`JFrame`的默认值）'
+- en: Hide the window when the user closes it. This removes the window from the screen
+    but leaves it displayable.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户关闭窗口时隐藏窗口。这将窗口从屏幕上移除，但保持可显示状态。
+- en: '`DISPOSE_ON_CLOSE` (the default for `JInternalFrame`)'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DISPOSE_ON_CLOSE`（`JInternalFrame`的默认值）'
+- en: Hide and dispose of the window when the user closes it. This removes the window
+    from the screen and frees up any resources used by it.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户关闭窗口时隐藏并销毁窗口。这将窗口从屏幕上移除���并释放其使用的任何资源。
+- en: '`EXIT_ON_CLOSE` (defined in the [`JFrame`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html)
+    class)'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`EXIT_ON_CLOSE`（在[`JFrame`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html)类中定义）'
+- en: Exit the application, using `System.exit(0)`. This is recommended for applications
+    only. If used within an applet, a `SecurityException` may be thrown.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 退出应用程序，使用`System.exit(0)`。这仅适用于应用程序。如果在小程序中使用，可能会抛出`SecurityException`。
+- en: '* * *'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: '`DISPOSE_ON_CLOSE` can have results similar to `EXIT_ON_CLOSE` if only one
+    window is onscreen. More precisely, when the last displayable window within the
+    Java virtual machine (VM) is disposed of, the VM may terminate. See [AWT Threading
+    Issues](https://docs.oracle.com/javase/8/docs/api/java/awt/doc-files/AWTThreadIssues.html)
+    for details.'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DISPOSE_ON_CLOSE`如果屏幕上只有一个窗口，可能会产生与`EXIT_ON_CLOSE`类似的结果。更准确地说，当Java虚拟机（VM）中的最后一个可显示窗口被处理时，VM可能会终止。详细信息请参见[AWT线程问题](https://docs.oracle.com/javase/8/docs/api/java/awt/doc-files/AWTThreadIssues.html)。'
+- en: '* * *'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: "The default close operation is executed after any window listeners handle the\
+    \ window-closing event. So, for example, assume that you specify that the default\
+    \ close operation is to dispose of a frame. You also implement a window listener\
+    \ that tests whether the frame is the last one visible and, if so, saves some\
+    \ data and exits the application. Under these conditions, when the user closes\
+    \ a frame, the window listener will be called first. If it does not exit the application,\
+    \ then the default close operation \x97 disposing of the frame \x97 will then\
+    \ be performed."
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "默认关闭操作在任何窗口监听器处理窗口关闭事件之后执行。因此，例如，假设您指定默认关闭操作是销毁一个框架。您还实现了一个窗口监听器，测试框架是否是最后一个可见的框架，并在是的情况下保存一些数据并退出应用程序。在这些条件下，当用户关闭一个框架时，窗口监听器将首先被调用。如果它没有退出应用程序，那么默认关闭操作\
+    \ \x97 销毁框架 \x97 将会被执行。"
+- en: For more information about handling window-closing events, see [How to Write
+    Window Listeners](../events/windowlistener.html). Besides handling window-closing
+    events, window listeners can also react to other window state changes, such as
+    iconification and activation.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关处理窗口关闭事件的更多信息，请参见[如何编写窗口监听器](../events/windowlistener.html)。除了处理窗口关闭事件外，窗口监听器还可以对其他窗口状态更改做出反应，例如图标化和激活。
+- en: The Frame API
+  id: totrans-57
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 框架API
+- en: The following tables list the commonly used `JFrame` constructors and methods.
+    Other methods you might want to call are defined by the [`java.awt.Frame`](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html),
+    [`java.awt.Window`](https://docs.oracle.com/javase/8/docs/api/java/awt/Window.html),
+    and [`java.awt.Component`](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html)
+    classes, from which `JFrame` descends.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表列出了常用的`JFrame`构造函数和方法。您可能想调用的其他方法由[`java.awt.Frame`](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html)、[`java.awt.Window`](https://docs.oracle.com/javase/8/docs/api/java/awt/Window.html)和[`java.awt.Component`](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html)类定义，`JFrame`继承自这些类。
+- en: Because each `JFrame` object has a root pane, frames have support for interposing
+    input and painting behavior in front of the frame children, placing children on
+    different "layers", and for Swing menu bars. These topics are introduced in [Using
+    Top-Level Containers](toplevel.html) and explained in detail in [How to Use Root
+    Panes](rootpane.html).
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为每个`JFrame`对象都有一个根窗格，所以框架支持在框架子元素前插入输入和绘制行为，将子元素放置在不同的“层”上，并支持Swing菜单栏。这些主题在[使用顶级容器](toplevel.html)中介绍，并在[如何使用根窗格](rootpane.html)中详细解释。
+- en: 'The API for using frames falls into these categories:'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于使用框架的API分为以下几类：
+- en: '[Creating and Setting Up a Frame](#creating)'
+  id: totrans-61
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建和设置框架](#creating)'
+- en: '[Setting the Window Size and Location](#sizeplace)'
+  id: totrans-62
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置窗口大小和位置](#sizeplace)'
+- en: '[Methods Related to the Root Pane](#rootpane)'
+  id: totrans-63
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[与根窗格相关的方法](#rootpane)'
+- en: Creating and Setting Up a Frame
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建和设置一个窗口
+- en: '| Method or Constructor | Purpose |'
+  id: totrans-65
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法或构造函数 | 目的 |'
+- en: '| [JFrame()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#JFrame--)
+    [JFrame(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#JFrame-java.lang.String-)
+    | Create a frame that is initially invisible. The `String` argument provides a
+    title for the frame. To make the frame visible, invoke `setVisible(true)` on it.
+    |'
+  id: totrans-66
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JFrame()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#JFrame--)
+    [JFrame(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#JFrame-java.lang.String-)
+    | 创建一个最初不可见的窗口。`String`参数为窗口提供标题。要使窗口可见，请在其上调用`setVisible(true)`。 |'
+- en: '| [void setDefaultCloseOperation(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setDefaultCloseOperation-int-)
+    [int getDefaultCloseOperation()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getDefaultCloseOperation--)
+    | Set or get the operation that occurs when the user pushes the close button on
+    this frame. Possible choices are:'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setDefaultCloseOperation(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setDefaultCloseOperation-int-)
+    [int getDefaultCloseOperation()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getDefaultCloseOperation--)
+    | 设置或获取用户在此窗口上按下关闭按钮时发生的操作。可能的选择是：'
+- en: '`DO_NOTHING_ON_CLOSE`'
+  id: totrans-68
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DO_NOTHING_ON_CLOSE`'
+- en: '`HIDE_ON_CLOSE`'
+  id: totrans-69
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`HIDE_ON_CLOSE`'
+- en: '`DISPOSE_ON_CLOSE`'
+  id: totrans-70
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DISPOSE_ON_CLOSE`'
+- en: '`EXIT_ON_CLOSE`'
+  id: totrans-71
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`EXIT_ON_CLOSE`'
+- en: The first three constants are defined in the [`WindowConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/WindowConstants.html)
+    interface, which `JFrame` implements. The `EXIT_ON_CLOSE` constant is defined
+    in the [`JFrame`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html)
+    class. |
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前三个常量在[`WindowConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/WindowConstants.html)接口中定义，`JFrame`实现了该接口。`EXIT_ON_CLOSE`常量在[`JFrame`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html)类中定义。
+    |
+- en: '| [void setIconImage(Image)](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#setIconImage-java.awt.Image-)
+    [Image getIconImage()](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#getIconImage--)'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setIconImage(Image)](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#setIconImage-java.awt.Image-)
+    [Image getIconImage()](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#getIconImage--)'
+- en: '*(in `Frame`)* | Set or get the icon that represents the frame. Note that the
+    argument is a [java.awt.Image](https://docs.oracle.com/javase/8/docs/api/java/awt/Image.html)
+    object, not a `javax.swing.ImageIcon` (or any other `javax.swing.Icon` implementation).
+    |'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(in `Frame`)* | 设置或获取表示窗口的图标。请注意，参数是一个[java.awt.Image](https://docs.oracle.com/javase/8/docs/api/java/awt/Image.html)对象，而不是`javax.swing.ImageIcon`（或任何其他`javax.swing.Icon`实现）。
+    |'
+- en: '| [void setTitle(String)](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#setTitle-java.lang.String-)
+    [String getTitle()](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#getTitle--)'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setTitle(String)](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#setTitle-java.lang.String-)
+    [String getTitle()](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#getTitle--)'
+- en: '*(in `Frame`)* | Set or get the frame title. |'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(in `Frame`)* | 设置或获取窗口标题。 |'
+- en: '| [void setUndecorated(boolean)](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#setUndecorated-boolean-)
+    [boolean isUndecorated()](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#isUndecorated--)'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setUndecorated(boolean)](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#setUndecorated-boolean-)
+    [boolean isUndecorated()](https://docs.oracle.com/javase/8/docs/api/java/awt/Frame.html#isUndecorated--)'
+- en: '*(in `Frame`)* | Set or get whether this frame should be decorated. Works only
+    if the frame is not yet displayable (has not been packed or shown). Typically
+    used with [full-screen exclusive mode](../../extra/fullscreen/index.html) or to
+    enable custom window decorations. |'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(in `Frame`)* | 设置或获取此窗口是否应该装饰。仅在窗口尚未可显示（未打包或显示）时才有效。通常与[全屏独占模式](../../extra/fullscreen/index.html)一起使用，或者启用自定义窗口装饰。
+    |'
+- en: '| [static void setDefaultLookAndFeelDecorated(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setDefaultLookAndFeelDecorated-boolean-)
+    [static boolean isDefaultLookAndFeelDecorated()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#isDefaultLookAndFeelDecorated--)
+    | Determine whether subsequently created `JFrame`s should have their Window decorations
+    (such as borders, and widgets for closing the window) provided by the current
+    look-and-feel. Note that this is only a hint, as some look and feels may not support
+    this feature. |'
+  id: totrans-79
+  prefs: []
+  type: TYPE_TB
+  zh: '| [static void setDefaultLookAndFeelDecorated(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setDefaultLookAndFeelDecorated-boolean-)
+    [static boolean isDefaultLookAndFeelDecorated()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#isDefaultLookAndFeelDecorated--)
+    | 确定随后创建的`JFrame`是否应由当前外观提供其窗口装饰（如边框和用于关闭窗口的小部件）。请注意，这只是一个提示，因为某些外观可能不支持此功能。|'
+- en: Setting the Window Size and Location
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置窗口大小和位置
+- en: '| Method | Purpose |'
+  id: totrans-81
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void pack()](https://docs.oracle.com/javase/8/docs/api/java/awt/Window.html#pack--)
+    *(in `Window`)* | Size the window so that all its contents are at or above their
+    preferred sizes. |'
+  id: totrans-82
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void pack()](https://docs.oracle.com/javase/8/docs/api/java/awt/Window.html#pack--)
+    *(在`Window`中)* | 调整窗口大小，使其所有内容都达到或超过其首选大小。'
+- en: '| [void setSize(int, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setSize-int-int-)
+    [void setSize(Dimension)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setSize-java.awt.Dimension-)'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setSize(int, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setSize-int-int-)
+    [void setSize(Dimension)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setSize-java.awt.Dimension-)'
+- en: '[Dimension getSize()](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#getSize--)'
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Dimension getSize()](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#getSize--)'
+- en: '*(in `Component`)* | Set or get the total size of the window. The integer arguments
+    to `setSize` specify the width and height, respectively. |'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`Component`中)* | 设置或获取窗口的总大小。`setSize`的整数参数分别指定宽度和高度。|'
+- en: '| [void setBounds(int, int, int, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setBounds-int-int-int-int-)
+    [void setBounds(Rectangle)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setBounds-java.awt.Rectangle-)'
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setBounds(int, int, int, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setBounds-int-int-int-int-)
+    [void setBounds(Rectangle)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setBounds-java.awt.Rectangle-)'
+- en: '[Rectangle getBounds()](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#getBounds--)'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Rectangle getBounds()](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#getBounds--)'
+- en: '*(in `Component`)* | Set or get the size and position of the window. For the
+    integer version of `setBounds`, the window upper left corner is at the *x, y*
+    location specified by the first two arguments, and has the width and height specified
+    by the last two arguments. |'
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`Component`中)* | 设置或获取窗口的大小和位置。对于`setBounds`的整数版本，窗口的左上角位于由前两个参数指定的*x, y*位置，并具有由最后两个参数指定的宽度和高度。|'
+- en: '| [void setLocation(int, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setLocation-int-int-)
+    [Point getLocation()](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#getLocation--)'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setLocation(int, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#setLocation-int-int-)
+    [Point getLocation()](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html#getLocation--)'
+- en: '*(in `Component`)* | Set or get the location of the upper left corner of the
+    window. The parameters are the *x* and *y* values, respectively. |'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`Component`中)* | 设置或获取窗口左上角的位置。参数分别是*x*和*y*的值。|'
+- en: '| [void setLocationRelativeTo(Component)](https://docs.oracle.com/javase/8/docs/api/java/awt/Window.html#setLocationRelativeTo-java.awt.Component-)
+    *(in `Window`)* | Position the window so that it is centered over the specified
+    component. If the argument is `null`, the window is centered onscreen. To properly
+    center the window, you should invoke this method after the window size has been
+    set. |'
+  id: totrans-91
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setLocationRelativeTo(Component)](https://docs.oracle.com/javase/8/docs/api/java/awt/Window.html#setLocationRelativeTo-java.awt.Component-)
+    *(在`Window`中)* | 将窗口定位在指定组件的中心。如果参数为`null`，窗口将居中显示在屏幕上。要正确居中窗口，应在设置窗口大小后调用此方法。|'
+- en: Methods Related to the Root Pane
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与根窗格相关的方法
+- en: '| Method | Purpose |'
+  id: totrans-93
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setContentPane(Container)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setContentPane-java.awt.Container-)
+    [Container getContentPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getContentPane--)
+    | Set or get the frame content pane. The content pane contains the visible GUI
+    components within the frame. |'
+  id: totrans-94
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setContentPane(Container)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setContentPane-java.awt.Container-)
+    [Container getContentPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getContentPane--)
+    | 设置或获取框架的内容窗格。内容窗格包含框架内可见的 GUI 组件。'
+- en: '| [JRootPane createRootPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#createRootPane--)
+    [void setRootPane(JRootPane)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setRootPane-javax.swing.JRootPane-)'
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [JRootPane createRootPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#createRootPane--)
+    [void setRootPane(JRootPane)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setRootPane-javax.swing.JRootPane-)'
+- en: '[JRootPane getRootPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getRootPane--)
+    | Create, set, or get the frame root pane. The root pane manages the interior
+    of the frame including the content pane, the glass pane, and so on. |'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JRootPane getRootPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getRootPane--)
+    | 创建、设置或获取框架的根窗格。根窗格管理框架的内部，包括内容窗格、玻璃窗格等。'
+- en: '| [void setJMenuBar(JMenuBar)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setJMenuBar-javax.swing.JMenuBar-)
+    [JMenuBar getJMenuBar()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getJMenuBar--)
+    | Set or get the frame menu bar to manage a set of menus for the frame. |'
+  id: totrans-97
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setJMenuBar(JMenuBar)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setJMenuBar-javax.swing.JMenuBar-)
+    [JMenuBar getJMenuBar()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getJMenuBar--)
+    | 设置或获取框架的菜单栏，以管理框架的一组菜单。'
+- en: '| [void setGlassPane(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setGlassPane-java.awt.Component-)
+    [Component getGlassPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getGlassPane--)
+    | Set or get the frame glass pane. You can use the glass pane to intercept mouse
+    events or paint on top of your program GUI. |'
+  id: totrans-98
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setGlassPane(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setGlassPane-java.awt.Component-)
+    [Component getGlassPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getGlassPane--)
+    | 设置或获取框架的玻璃窗格。您可以使用玻璃窗格拦截鼠标事件或在程序 GUI 的顶部绘制。'
+- en: '| [void setLayeredPane(JLayeredPane)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setLayeredPane-javax.swing.JLayeredPane-)
+    [JLayeredPane getLayeredPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getLayeredPane--)
+    | Set or get the frame layered pane. You can use the frame layered pane to put
+    components on top of or behind other components. |'
+  id: totrans-99
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setLayeredPane(JLayeredPane)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setLayeredPane-javax.swing.JLayeredPane-)
+    [JLayeredPane getLayeredPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getLayeredPane--)
+    | 设置或获取框架的分层窗格。您可以使用框架的分层窗格将组件放置在其他组件的前面或后面。'
+- en: Examples that Use Frames
+  id: totrans-100
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用框架的示例
+- en: All of the standalone applications in this trail use `JFrame`. The following
+    table lists a few and tells you where each is discussed.
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程中的所有独立应用程序都使用`JFrame`。以下表格列出了一些应用程序，并告诉您每个应用程序的讨论位置。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-102
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`FrameDemo`](../examples/components/index.html#FrameDemo) | [The Example
+    Explained](#anexample) | Displays a basic frame with one component. |'
+  id: totrans-103
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`FrameDemo`](../examples/components/index.html#FrameDemo) | [示例说明](#anexample)
+    | 显示一个带有一个组件的基本框架。'
+- en: '| [`FrameDemo2`](../examples/components/index.html#FrameDemo2) | [Specifying
+    Window Decorations](#setDefaultLookAndFeelDecorated) | Lets you create frames
+    with various window decorations. |'
+  id: totrans-104
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`FrameDemo2`](../examples/components/index.html#FrameDemo2) | [指定窗口装饰](#setDefaultLookAndFeelDecorated)
+    | 允许您创建具有各种窗口装饰的框架。'
+- en: "| [`Framework`](../examples/components/index.html#Framework) | \x97 | A study\
+    \ in creating and destroying windows, in implementing a menu bar, and in exiting\
+    \ an application. |"
+  id: totrans-105
+  prefs: []
+  type: TYPE_TB
+  zh: "| [`Framework`](../examples/components/index.html#Framework) | \x97 | 研究如何创建和销毁窗口，实现菜单栏以及退出应用程序。"
+- en: '| [`LayeredPaneDemo`](../examples/components/index.html#LayeredPaneDemo) |
+    [How to Use Layered Panes](layeredpane.html) | Illustrates how to use a layered
+    pane (but not the frame layered pane). |'
+  id: totrans-106
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`LayeredPaneDemo`](../examples/components/index.html#LayeredPaneDemo) |
+    [如何使用分层窗格](layeredpane.html) | 演示如何使用分层窗格（但不是框架的分层窗格）。'
+- en: '| [`GlassPaneDemo`](../examples/components/index.html#GlassPaneDemo) | [The
+    Glass Pane](rootpane.html#glasspane) | Illustrates the use of a frame glass pane.
+    |'
+  id: totrans-107
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`GlassPaneDemo`](../examples/components/index.html#GlassPaneDemo) | [玻璃窗格](rootpane.html#glasspane)
+    | 演示了框架玻璃窗格的使用。'
+- en: '| [`MenuDemo`](../examples/components/index.html#MenuDemo) | [How to Use Menus](menu.html)
+    | Shows how to put a `JMenuBar` in a `JFrame`. |'
+  id: totrans-108
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`MenuDemo`](../examples/components/index.html#MenuDemo) | [如何使用菜单](menu.html)
+    | 展示如何将`JMenuBar`放入`JFrame`中。'

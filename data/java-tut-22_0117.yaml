@@ -1,0 +1,325 @@
+- en: Generic Types
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 泛型类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/types.html](https://docs.oracle.com/javase/tutorial/java/generics/types.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/types.html](https://docs.oracle.com/javase/tutorial/java/generics/types.html)
+- en: A *generic type* is a generic class or interface that is parameterized over
+    types. The following `Box` class will be modified to demonstrate the concept.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*泛型类型*是一个参数化类型的泛型类或接口。下面的 `Box` 类将被修改以演示这个概念。'
+- en: A Simple Box Class
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个简单的 Box 类
+- en: 'Begin by examining a non-generic `Box` class that operates on objects of any
+    type. It needs only to provide two methods: `set`, which adds an object to the
+    box, and `get`, which retrieves it:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先看一下一个操作任意类型对象的非泛型 `Box` 类。它只需要提供两个方法：`set`，用于向盒子中添加对象，和 `get`，用于检索对象：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Since its methods accept or return an `Object`, you are free to pass in whatever
+    you want, provided that it is not one of the primitive types. There is no way
+    to verify, at compile time, how the class is used. One part of the code may place
+    an `Integer` in the box and expect to get `Integer`s out of it, while another
+    part of the code may mistakenly pass in a `String`, resulting in a runtime error.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于它的方法接受或返回一个 `Object`，你可以自由传入任何你想要的东西，只要不是原始类型之一。在编译时无法验证类的使用方式。代码的一部分可能将一个
+    `Integer` 放入盒子中，并期望从中获取 `Integer`，而代码的另一部分可能错误地传入一个 `String`，导致运行时错误。
+- en: A Generic Version of the Box Class
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Box 类的泛型版本
+- en: 'A *generic class* is defined with the following format:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个*泛型类*的定义格式如下：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The type parameter section, delimited by angle brackets (`<>`), follows the
+    class name. It specifies the *type parameters* (also called *type variables*)
+    `T1`, `T2`, ..., and `Tn`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类型参数部分，由尖括号（`<>`）界定，跟在类名后面。它指定了*类型参数*（也称为*类型变量*）`T1`、`T2`、... 和 `Tn`。
+- en: To update the `Box` class to use generics, you create a *generic type declaration*
+    by changing the code "`public class Box`" to "`public class Box<T>`". This introduces
+    the type variable, `T`, that can be used anywhere inside the class.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将 `Box` 类更新为使用泛型，你需要通过将代码 "`public class Box`" 更改为 "`public class Box<T>`"
+    来创建一个*泛型类型声明*。这引入了类型变量 `T`，可以在类内部的任何地方使用。
+- en: 'With this change, the `Box` class becomes:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有了这个改变，`Box` 类变成了：
+- en: '[PRE2]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'As you can see, all occurrences of `Object` are replaced by `T`. A type variable
+    can be any **non-primitive** type you specify: any class type, any interface type,
+    any array type, or even another type variable.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如你所看到的，所有 `Object` 的出现都被 `T` 替换。类型变量可以是你指定的任何**非原始**类型：任何类类型、任何接口类型、任何数组类型，甚至是另一个类型变量。
+- en: This same technique can be applied to create generic interfaces.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种技术也可以应用于创建泛型接口。
+- en: Type Parameter Naming Conventions
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 类型参数命名约定
+- en: 'By convention, type parameter names are single, uppercase letters. This stands
+    in sharp contrast to the variable [naming](../nutsandbolts/variables.html#naming)
+    conventions that you already know about, and with good reason: Without this convention,
+    it would be difficult to tell the difference between a type variable and an ordinary
+    class or interface name.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 按照惯例，类型参数的名称是单个大写字母。这与你已经了解的变量[命名](../nutsandbolts/variables.html#naming)约定形成鲜明对比，而且有充分的理由：没有这个约定，很难区分类型变量和普通类或接口名称。
+- en: 'The most commonly used type parameter names are:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最常用的类型参数名称有：
+- en: E - Element (used extensively by the Java Collections Framework)
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: E - Element（Java 集合框架广泛使用）
+- en: K - Key
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: K - Key
+- en: N - Number
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: N - Number
+- en: T - Type
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: T - Type
+- en: V - Value
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: V - Value
+- en: S,U,V etc. - 2nd, 3rd, 4th types
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: S,U,V 等 - 第二、第三、第四种类型
+- en: You'll see these names used throughout the Java SE API and the rest of this
+    lesson.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你将在 Java SE API 和本课程的其余部分中看到这些名称的使用。
+- en: Invoking and Instantiating a Generic Type
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 调用和实例化泛型类型
+- en: 'To reference the generic `Box` class from within your code, you must perform
+    a *generic type invocation*, which replaces `T` with some concrete value, such
+    as `Integer`:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在代码中引用泛型 `Box` 类，你必须执行一个*泛型类型调用*，将 `T` 替换为某个具体值，比如 `Integer`：
+- en: '[PRE3]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: You can think of a generic type invocation as being similar to an ordinary method
+    invocation, but instead of passing an argument to a method, you are passing a
+    *type argument* — `Integer` in this case — to the `Box` class itself.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以将泛型类型调用看作类似于普通方法调用，但是不是向方法传递参数，而是向 `Box` 类本身传递一个*类型参数* — 在本例中是 `Integer`。
+- en: '* * *'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Type Parameter and Type Argument Terminology:** Many developers use the terms
+    "type parameter" and "type argument" interchangeably, but these terms are not
+    the same. When coding, one provides type arguments in order to create a parameterized
+    type. Therefore, the `T` in `Foo<T>` is a type parameter and the `String` in `Foo<String>
+    f` is a type argument. This lesson observes this definition when using these terms.'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**类型参数和类型参数术语：** 许多开发人员将“类型参数”和“类型参数”这两个术语互换使用，但这两个术语并不相同。在编码时，为了创建参数化类型，需要提供类型参数。因此，在`Foo<T>`中，`T`是类型参数，而在`Foo<String>
+    f`中的`String`是类型参数。本课程在使用这些术语时遵守此定义。'
+- en: '* * *'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Like any other variable declaration, this code does not actually create a new
+    `Box` object. It simply declares that `integerBox` will hold a reference to a
+    "`Box` of `Integer`", which is how `Box<Integer>` is read.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与任何其他变量声明一样，此代码实际上并不创建新的`Box`对象。它只是声明`integerBox`将保存对“`Box` of `Integer`”的引用，这就是`Box<Integer>`的含义。
+- en: An invocation of a generic type is generally known as a *parameterized type*.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常将泛型类型的调用称为*参数化类型*。
+- en: 'To instantiate this class, use the `new` keyword, as usual, but place `<Integer>`
+    between the class name and the parenthesis:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要实例化此类，像往常一样使用`new`关键字，但是在类名和括号之间放置`<Integer>`：
+- en: '[PRE4]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The Diamond
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 钻石
+- en: 'In Java SE 7 and later, you can replace the type arguments required to invoke
+    the constructor of a generic class with an empty set of type arguments (<>) as
+    long as the compiler can determine, or infer, the type arguments from the context.
+    This pair of angle brackets, <>, is informally called *the diamond*. For example,
+    you can create an instance of `Box<Integer>` with the following statement:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java SE 7及更高版本中，只要编译器可以从上下文中确定或推断出类型参数，就可以用空类型参数集（<>）替换调用泛型类构造函数所需的类型参数。这一对尖括号<>非正式地称为*钻石*。例如，您可以使用以下语句创建`Box<Integer>`的实例：
+- en: '[PRE5]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: For more information on diamond notation and type inference, see [Type Inference](genTypeInference.html).
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关钻石符号和类型推断的更多信息，请参见[类型推断](genTypeInference.html)。
+- en: Multiple Type Parameters
+  id: totrans-41
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 多个类型参数
+- en: 'As mentioned previously, a generic class can have multiple type parameters.
+    For example, the generic `OrderedPair` class, which implements the generic `Pair`
+    interface:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，泛型类可以具有多个类型参数。例如，实现泛型`Pair`接口的泛型`OrderedPair`类：
+- en: '[PRE6]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The following statements create two instantiations of the `OrderedPair` class:'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下语句创建了`OrderedPair`类的两个实例：
+- en: '[PRE7]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The code, `new OrderedPair<String, Integer>`, instantiates `K` as a `String`
+    and `V` as an `Integer`. Therefore, the parameter types of `OrderedPair`'s constructor
+    are `String` and `Integer`, respectively. Due to [autoboxing](../data/autoboxing.html),
+    it is valid to pass a `String` and an `int` to the class.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 代码`new OrderedPair<String, Integer>`实例化`K`为`String`，`V`为`Integer`。因此，`OrderedPair`的构造函数的参数类型分别为`String`和`Integer`。由于[自动装箱](../data/autoboxing.html)，将`String`和`int`传递给类是有效的。
+- en: 'As mentioned in [The Diamond](#diamond), because a Java compiler can infer
+    the `K` and `V` types from the declaration `OrderedPair<String, Integer>`, these
+    statements can be shortened using diamond notation:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[钻石](#diamond)中所述，因为Java编译器可以从声明`OrderedPair<String, Integer>`中推断出`K`和`V`类型，所以可以使用钻石符号缩短这些语句：
+- en: '[PRE8]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: To create a generic interface, follow the same conventions as for creating a
+    generic class.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建泛型接口，遵循与创建泛型类相同的约定。
+- en: Parameterized Types
+  id: totrans-50
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 参数化类型
+- en: 'You can also substitute a type parameter (that is, `K` or `V`) with a parameterized
+    type (that is, `List<String>`). For example, using the `OrderedPair<K, V>` example:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以用参数化类型（即`List<String>`）替换类型参数（即`K`或`V`）。例如，使用`OrderedPair<K, V>`示例：
+- en: '[PRE9]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'

@@ -1,0 +1,219 @@
+- en: Locale-Sensitive Services SPI
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 区域敏感服务 SPI
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/services.html](https://docs.oracle.com/javase/tutorial/i18n/locale/services.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/services.html](https://docs.oracle.com/javase/tutorial/i18n/locale/services.html)
+- en: This feature enables the plug-in of locale-dependent data and services. In this
+    way, third parties are able to provide implementations of most locale-sensitive
+    classes in the `java.text` and `java.util` packages.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此功能使得可以插入依赖于区域的数据和服务。通过这种方式，第三方能够提供 `java.text` 和 `java.util` 包中大多数区域敏感类的实现。
+- en: The implementation of SPIs *(Service Provider Interface)* is based on abstract
+    classes and Java interfaces that are implemented by the service provider. At runtime
+    the Java class loading mechanism is used to dynamically locate and load classes
+    that implement the SPI.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SPIs *(服务提供者接口)* 的实现基于由服务提供者实现的抽象类和 Java 接口。在运行时，Java 类加载机制用于动态定位和加载实现 SPI 的类。
+- en: 'You can use the locale-sensitive services SPI to provide the following locale
+    sensitive implementations:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用区域敏感的服务 SPI 来提供以下区域敏感的实现：
+- en: '`BreakIterator` objects'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`BreakIterator` 对象'
+- en: '`Collator` objects'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Collator` 对象'
+- en: Language code, Country code, and Variant name for the `Locale` class
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Locale` 类的语言代码、国家代码和变体名称'
+- en: Time Zone names
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 时区名称
+- en: Currency symbols
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 货币符号
+- en: '`DateFormat` objects'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DateFormat` 对象'
+- en: '`DateFormatSymbol` objects'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DateFormatSymbol` 对象'
+- en: '`NumberFormat` objects'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`NumberFormat` 对象'
+- en: '`DecimalFormatSymbols` objects'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DecimalFormatSymbols` 对象'
+- en: 'The corresponding SPIs are contained both in `java.text.spi` and in `java.util.spi`
+    packages:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相应的 SPI 包含在 `java.text.spi` 和 `java.util.spi` 包中：
+- en: '| `java.util.spi` | `java.text.spi` |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| `java.util.spi` | `java.text.spi` |'
+- en: '|'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '`CurrencyNameProvider`'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CurrencyNameProvider`'
+- en: '`LocaleServiceProvider`'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LocaleServiceProvider`'
+- en: '`TimeZoneNameProvider`'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`TimeZoneNameProvider`'
+- en: '`CalendarDataProvider`'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CalendarDataProvider`'
+- en: '|'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '`BreakIteratorProvider`'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`BreakIteratorProvider`'
+- en: '`CollatorProvider`'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CollatorProvider`'
+- en: '`DateFormatProvider`'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DateFormatProvider`'
+- en: '`DateFormatSymbolsProvider`'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DateFormatSymbolsProvider`'
+- en: '`DecimalFormatSymbolsProvider`'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DecimalFormatSymbolsProvider`'
+- en: '`NumberFormatProvider`'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`NumberFormatProvider`'
+- en: '|'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: 'For example, if you would like to provide a `NumberFormat` object for a new
+    locale, you have to implement the `java.text.spi.NumberFormatProvider` class.
+    You need to extend this class and implement its methods:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，如果您想为新的区域提供一个 `NumberFormat` 对象，您必须实现 `java.text.spi.NumberFormatProvider`
+    类。您需要扩展此类并实现其方法：
+- en: '`getCurrencyInstance(Locale locale)`'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getCurrencyInstance(Locale locale)`'
+- en: '`getIntegerInstance(Locale locale)`'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getIntegerInstance(Locale locale)`'
+- en: '`getNumberInstance(Locale locale)`'
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getNumberInstance(Locale locale)`'
+- en: '`getPercentInstance(Locale locale)`'
+  id: totrans-33
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getPercentInstance(Locale locale)`'
+- en: '[PRE0]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: These methods first check whether the Java runtime environment supports the
+    requested locale; if so, they use that support. Otherwise, the methods call the
+    `getAvailableLocales()` methods of installed providers for the appropriate interface
+    to find a provider that supports the requested locale.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些方法首先检查 Java 运行时环境是否支持请求的区域；如果支持，则使用该支持。否则，方法调用已安装的提供程序的适当接口的 `getAvailableLocales()`
+    方法，以找到支持请求的区域的提供程序。

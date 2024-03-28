@@ -1,0 +1,91 @@
+- en: Creating and Using Packages
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建和使用包
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/package/packages.html](https://docs.oracle.com/javase/tutorial/java/package/packages.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/package/packages.html](https://docs.oracle.com/javase/tutorial/java/package/packages.html)
+- en: To make types easier to find and use, to avoid naming conflicts, and to control
+    access, programmers bundle groups of related types into packages.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了使类型更容易找到和使用，避免命名冲突，并控制访问权限，程序员将相关类型的组合打包成包。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Definition:** A *package* is a grouping of related types providing access
+    protection and name space management. Note that *types* refers to classes, interfaces,
+    enumerations, and annotation types. Enumerations and annotation types are special
+    kinds of classes and interfaces, respectively, so *types* are often referred to
+    in this lesson simply as *classes and interfaces*.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义：** *包* 是提供访问保护和命名空间管理的相关类型的分组。请注意，*类型* 指的是类、接口、枚举和注解类型。枚举和注解类型是类和接口的特殊种类，因此在本课程中，*类型*
+    经常简称为*类和接口*。'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The types that are part of the Java platform are members of various packages
+    that bundle classes by function: fundamental classes are in `java.lang`, classes
+    for reading and writing (input and output) are in `java.io`, and so on. You can
+    put your types in packages too.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台中的类型是通过功能将类打包在一起的各种包的成员：基本类在`java.lang`中，用于读写（输入和输出）的类在`java.io`中，依此类推。你也可以将你的类型放在包中。
+- en: Suppose you write a group of classes that represent graphic objects, such as
+    circles, rectangles, lines, and points. You also write an interface, `Draggable`,
+    that classes implement if they can be dragged with the mouse.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你编写了一组表示图形对象的类，比如圆、矩形、线条和点。你还编写了一个接口，`Draggable`，如果类可以被鼠标拖动，则实现该接口。
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'You should bundle these classes and the interface in a package for several
+    reasons, including the following:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你应该将这些类和接口打包到一个包中，原因包括以下几点：
+- en: You and other programmers can easily determine that these types are related.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你和其他程序员可以轻松确定这些类型是相关的。
+- en: You and other programmers know where to find types that can provide graphics-related
+    functions.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你和其他程序员知道在哪里找到可以提供与图形相关功能的类型。
+- en: The names of your types won't conflict with the type names in other packages
+    because the package creates a new namespace.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你的类型名称不会与其他包中的类型名称冲突，因为包会创建一个新的命名空间。
+- en: You can allow types within the package to have unrestricted access to one another
+    yet still restrict access for types outside the package.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你可以允许包内的类型彼此之间具有无限制的访问，但仍然限制包外类型的访问。

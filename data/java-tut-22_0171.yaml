@@ -1,0 +1,297 @@
+- en: Formatting
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 格式化
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/formatting.html](https://docs.oracle.com/javase/tutorial/essential/io/formatting.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/formatting.html](https://docs.oracle.com/javase/tutorial/essential/io/formatting.html)
+- en: Stream objects that implement formatting are instances of either [`PrintWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintWriter.html),
+    a character stream class, or [`PrintStream`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintStream.html),
+    a byte stream class.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现格式化的流对象是[`PrintWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintWriter.html)（字符流类）或[`PrintStream`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintStream.html)（字节流类）的实例。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The only `PrintStream` objects you are likely to need are [`System.out`](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#out)
+    and [`System.err`](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#err).
+    (See [I/O from the Command Line](cl.html) for more on these objects.) When you
+    need to create a formatted output stream, instantiate `PrintWriter`, not `PrintStream`.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**你可能需要的唯一`PrintStream`对象是[`System.out`](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#out)和[`System.err`](https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#err)。（有关这些对象的更多信息，请参阅[从命令行进行I/O](cl.html)。）当您需要创建格式化输出流时，请实例化`PrintWriter`，而不是`PrintStream`。'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Like all byte and character stream objects, instances of `PrintStream` and
+    `PrintWriter` implement a standard set of `write` methods for simple byte and
+    character output. In addition, both `PrintStream` and `PrintWriter` implement
+    the same set of methods for converting internal data into formatted output. Two
+    levels of formatting are provided:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 像所有字节和字符流对象一样，`PrintStream`和`PrintWriter`的实例实现了一组用于简单字节和字符输出的标准`write`方法。此外，`PrintStream`和`PrintWriter`都实现了相同的一组方法，用于将内部数据转换为格式化输出。提供了两个级别的格式化：
+- en: '`print` and `println` format individual values in a standard way.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`print`和`println`以标准方式格式化单个值。'
+- en: '`format` formats almost any number of values based on a format string, with
+    many options for precise formatting.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`format`根据格式字符串几乎可以格式化任意数量的值，具有许多精确格式化选项。'
+- en: The `print` and `println` Methods
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`print`和`println`方法'
+- en: 'Invoking `print` or `println` outputs a single value after converting the value
+    using the appropriate `toString` method. We can see this in the [`Root`](examples/Root.java)
+    example:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调用`print`或`println`在使用适当的`toString`方法转换值后输出单个值。我们可以在[`Root`](examples/Root.java)示例中看到这一点：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Here is the output of `Root`:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是`Root`的输出：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The `i` and `r` variables are formatted twice: the first time using code in
+    an overload of `print`, the second time by conversion code automatically generated
+    by the Java compiler, which also utilizes `toString`. You can format any value
+    this way, but you don''t have much control over the results.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`i`和`r`变量被格式化两次：第一次使用`print`重载中的代码，第二次是由Java编译器自动生成的转换代码，也利用了`toString`。您可以以这种方式格式化任何值，但对结果的控制不多。'
+- en: The `format` Method
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`format`方法'
+- en: The `format` method formats multiple arguments based on a *format string*. The
+    format string consists of static text embedded with *format specifiers*; except
+    for the format specifiers, the format string is output unchanged.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`format`方法根据*格式字符串*格式化多个参数。格式字符串由静态文本与*格式说明符*嵌入在一起组成；除了格式说明符外，格式字符串不会改变输出。'
+- en: Format strings support many features. In this tutorial, we'll just cover some
+    basics. For a complete description, see [`format string syntax`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax)
+    in the API specification.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 格式字符串支持许多功能。在本教程中，我们只涵盖了一些基础知识。有关完整描述，请参阅API规范中的[`格式字符串语法`](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html#syntax)。
+- en: 'The [`Root2`](examples/Root2.java) example formats two values with a single
+    `format` invocation:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Root2`](examples/Root2.java)示例使用单个`format`调用格式化两个值：'
+- en: '[PRE2]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Here is the output:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是输出：
+- en: '[PRE3]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Like the three used in this example, all format specifiers begin with a `%`
+    and end with a 1- or 2-character *conversion* that specifies the kind of formatted
+    output being generated. The three conversions used here are:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 像这个示例中使用的三个一样，所有格式说明符都以`%`开头，并以指定正在生成的格式化输出类型的1个或2个字符*转换*结尾。这里使用的三个转换是：
+- en: '`d` formats an integer value as a decimal value.'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`d`将整数值格式化为十进制值。'
+- en: '`f` formats a floating point value as a decimal value.'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`f`将浮点值格式化为十进制值。'
+- en: '`n` outputs a platform-specific line terminator.'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`n`输出特定于平台的换行符。'
+- en: 'Here are some other conversions:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一些其他转换：
+- en: '`x` formats an integer as a hexadecimal value.'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`x`将整数格式化为十六进制值。'
+- en: '`s` formats any value as a string.'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`s` 将任何值格式化为字符串。'
+- en: '`tB` formats an integer as a locale-specific month name.'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`tB` 格式化一个整数为本地特定的月份名称。'
+- en: There are many other conversions.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有许多其他转换。
+- en: '* * *'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: Except for `%%` and `%n`, all format specifiers must match an argument. If they
+    don't, an exception is thrown.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了 `%%` 和 `%n` 之外，所有格式说明符都必须匹配一个参数。如果不匹配，就会抛出异常。
+- en: In the Java programming language, the `\n` escape always generates the linefeed
+    character (`\u000A`). Don't use `\n` unless you specifically want a linefeed character.
+    To get the correct line separator for the local platform, use `%n`.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 Java 编程语言中，`\n` 转义始终生成换行符（`\u000A`）。除非特别需要换行符，否则不要使用 `\n`。要获取本地平台的正确换行符，请使用
+    `%n`。
+- en: '* * *'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: In addition to the conversion, a format specifier can contain several additional
+    elements that further customize the formatted output. Here's an example, [`Format`](examples/Format.java),
+    that uses every possible kind of element.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了转换之外，格式说明符还可以包含几个额外元素，进一步定制格式化输出。这里是一个示例，[`Format`](examples/Format.java)，使用了每种可能的元素类型。
+- en: '[PRE4]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Here''s the output:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是输出结果：
+- en: '[PRE5]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The additional elements are all optional. The following figure shows how the
+    longer specifier breaks down into elements.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有附加元素都是可选的。下图显示了更长格式说明符如何分解为元素。
+- en: '![Elements of a format specifier](../Images/e81802b1b525a38f572976fabc86016b.png)'
+  id: totrans-41
+  prefs: []
+  type: TYPE_IMG
+  zh: '![格式说明符的元素](../Images/e81802b1b525a38f572976fabc86016b.png)'
+- en: Elements of a Format Specifier.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 格式说明符的元素。
+- en: 'The elements must appear in the order shown. Working from the right, the optional
+    elements are:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 元素必须按照所示顺序出现。从右边开始，可选元素包括：
+- en: '**Precision**. For floating point values, this is the mathematical precision
+    of the formatted value. For `s` and other general conversions, this is the maximum
+    width of the formatted value; the value is right-truncated if necessary.'
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**精度**。对于浮点值，这是格式化值的数学精度。对于 `s` 和其他一般转换，这是格式化值的最大宽度；如果需要，值将被右截断。'
+- en: '**Width**. The minimum width of the formatted value; the value is padded if
+    necessary. By default the value is left-padded with blanks.'
+  id: totrans-45
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**宽度**。格式化值的最小宽度；如果需要，将填充值。默认情况下，值左侧用空格填充。'
+- en: '**Flags** specify additional formatting options. In the `Format` example, the
+    `+` flag specifies that the number should always be formatted with a sign, and
+    the `0` flag specifies that `0` is the padding character. Other flags include
+    `-` (pad on the right) and `,` (format number with locale-specific thousands separators).
+    Note that some flags cannot be used with certain other flags or with certain conversions.'
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**标志** 指定额外的格式选项。在 `Format` 示例中，`+` 标志指定数字应始终带有符号格式，`0` 标志指定 `0` 为填充字符。其他标志包括
+    `-`（右侧填充）和 `,`（使用本地特定的千位分隔符格式化数字）。请注意，某些标志不能与其他标志或某些转换一起使用。'
+- en: 'The **Argument Index** allows you to explicitly match a designated argument.
+    You can also specify `<` to match the same argument as the previous specifier.
+    Thus the example could have said: `System.out.format("%f, %<+020.10f %n", Math.PI);`'
+  id: totrans-47
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**参数索引** 允许您显式匹配指定的参数。您还可以指定 `<` 来匹配与上一个格式说明符相同的参数。因此，示例可以这样说：`System.out.format("%f,
+    %<+020.10f %n", Math.PI);`'

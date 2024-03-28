@@ -1,0 +1,93 @@
+- en: Measuring Text
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 测量文本
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/text/measuringtext.html](https://docs.oracle.com/javase/tutorial/2d/text/measuringtext.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/text/measuringtext.html](https://docs.oracle.com/javase/tutorial/2d/text/measuringtext.html)
+- en: 'To properly measure text, you need to learn a few methods and some mistakes
+    to avoid. Font metrics are measurements of text rendered by a [`Font`](https://docs.oracle.com/javase/8/docs/api/java/awt/Font.html)
+    object such as the height of a line of text in the font. The most common way to
+    measure text is to use a [`FontMetrics`](https://docs.oracle.com/javase/8/docs/api/java/awt/FontMetrics.html)
+    instance which encapsulates this metrics information. For example:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要正确测量文本，您需要学习一些方法和一些要避免的错误。字体度量是由[`Font`](https://docs.oracle.com/javase/8/docs/api/java/awt/Font.html)对象呈现的文本的测量，例如字体中一行文本的高度。测量文本最常见的方法是使用封装了这些度量信息的[`FontMetrics`](https://docs.oracle.com/javase/8/docs/api/java/awt/FontMetrics.html)实例。例如：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This way is sufficient for many applications to evenly space lines of text or
+    to size Swing components.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于许多应用程序来说，这种方式足以均匀间隔文本行或调整 Swing 组件的大小。
+- en: 'Note the following:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意以下内容：
+- en: The metrics are obtained from the [`Graphics`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html)
+    class, because this class encapsulates the `FontRenderContext`, which is needed
+    to accurately measure text. At screen resolutions, fonts are adjusted for ease
+    of reading. As text size increases, this adjustment does not scale linearly. So,
+    at 20 pt, a font will not display text exactly twice the length as it would at
+    10 pt. Besides the text itself and the font, the other important piece of information
+    needed to measure text is the `FontRenderContext`. This method includes the transform
+    from user space to device pixels that is used in measuring text.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 这些度量是从[`Graphics`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html)类中获取的，因为这个类封装了`FontRenderContext`，这是准确测量文本所需的。在屏幕分辨率下，字体会根据易读性进行调整。随着文本大小的增加，这种调整并不是线性缩放的。因此，在
+    20 pt 时，字体显示的文本长度不会正好是在 10 pt 时的两倍。除了文本本身和字体之外，用于测量文本的另一个重要信息是`FontRenderContext`。该方法包括从用户空间到设备像素的变换，用于测量文本。
+- en: The height is reported without reference to any particular string of text. It
+    is useful, for example in, a text editor where you want the same line spacing
+    between each line of text.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 高度报告时没有参考任何特定文本字符串。例如，在文本编辑器中，您希望每行文本之间具有相同的行间距时，这是有用的。
+- en: '`stringWidth()` returns the advance width of the text. *Advance width* is the
+    distance from the origin of the text to the position of a subsequently rendered
+    string.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`stringWidth()`返回文本的前进宽度。*前进宽度*是从文本原点到随后呈现的字符串位置的距离。'
+- en: When using these methods to measure text, note that the text can extend in any
+    direction outside of a rectangle, defined by the font height and the advance of
+    the string.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在使用这些方法测量文本时，请注意文本可以向字体高度和字符串前进的矩形定义之外的任何方向延伸。
+- en: '![This figure shows hot to measure text by using font metrics](../Images/70cd3ffa50b8e9a6fa105e1dd2741933.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_IMG
+  zh: '![此图显示了如何使用字体度量来测量文本](../Images/70cd3ffa50b8e9a6fa105e1dd2741933.png)'
+- en: Typically, the simplest solution is to ensure that the text is not clipped,
+    for example, by components that surround the text. Add padding in cases where
+    the text might otherwise be clipped.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，最简单的解决方案是确保文本不被裁剪，例如，由围绕文本的组件。在可能导致文本被裁剪的情况下添加填充。
+- en: If this solution is insufficient, other text measurement APIs in the Java 2D
+    software can return rectangular bounding boxes. These boxes account for the height
+    of the specific text to be measured and for pixelization effects.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果此解决方案不足够，Java 2D 软件中的其他文本测量 API 可以返回矩形边界框。这些框考虑了要测量的特定文本的高度和像素化效果。

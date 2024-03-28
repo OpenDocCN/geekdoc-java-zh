@@ -1,0 +1,166 @@
+- en: Add a Policy Entry with a SignedBy Alias
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 添加带有 SignedBy 别名的策略条目
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/wstep3.html](https://docs.oracle.com/javase/tutorial/security/toolsign/wstep3.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/wstep3.html](https://docs.oracle.com/javase/tutorial/security/toolsign/wstep3.html)
+- en: To grant code signed by `susan` permission to read any files in the `C:\TestData`
+    directory, you need to create a policy entry granting this permission. Note that
+    "Code signed by `susan`" is an abbreviated way of saying "Code in a class file
+    contained in a JAR file, where the JAR file was signed using the private key corresponding
+    to the public key that appears in a keystore certificate in an entry aliased by
+    `susan`."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要授予由`susan`签名的代码权限以读取`C:\TestData`目录中的任何文件，您需要创建一个授予此权限的策略条目。请注意，“由`susan`签名的代码”是指“包含在
+    JAR 文件中的类文件中的代码，其中 JAR 文件是使用与出现在别名为`susan`的 keystore 证书中的公钥对应的私钥签名的。”
+- en: 'Choose the **Add Policy Entry** button in the main Policy Tool window. This
+    brings up the Policy Entry dialog box:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在主策略工具窗口中选择**添加策略条目**按钮。这将打开策略条目对话框：
+- en: '![the Policy Entry dialog](../Images/3c564acdfa5f545df2ecf819a4941040.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![策略条目对话框](../Images/3c564acdfa5f545df2ecf819a4941040.png)'
+- en: 'Using this dialog box, type the following alias into the **SignedBy** text
+    box:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此对话框中，将以下别名键入到**SignedBy**文本框中：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Leave the **CodeBase** text box blank, to grant *all* code signed by `susan`
+    the permission, no matter where it comes from.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将**CodeBase**文本框留空，以授予由`susan`签名的*所有*代码权限，无论其来源。
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** If you wanted to restrict the permission to just code signed by `susan`
+    that comes from the `C:\Test\` directory, you would type the following URL into
+    the **CodeBase** text box:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您想将权限限制为仅来自`C:\Test\`目录的`susan`签名代码，您将在**CodeBase**文本框中键入以下 URL：'
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: To add the permission, choose the **Add Permission** button. This brings up
+    the Permissions dialog box.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要添加权限，请选择**添加权限**按钮。这将打开权限对话框。
+- en: '![the Permission dialog](../Images/d835a9db408a06b19edb28fc4d18cdd6.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_IMG
+  zh: '![权限对话框](../Images/d835a9db408a06b19edb28fc4d18cdd6.png)'
+- en: Do the following.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 执行以下操作。
+- en: Choose **File Permission** from the Permission drop-down list. The complete
+    permission type name (`java.io.FilePermission`) now appears in the text box to
+    the right of the drop-down list.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从权限下拉列表中选择**文件权限**。完整的权限类型名称（`java.io.FilePermission`）现在显示在下拉列表右侧的文本框中。
+- en: 'Type the following in the text box to the right of the list labeled Target
+    Name to specify all files in the `C:\TestData\` directory:'
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在标记为目标名称的列表右侧的文本框中键入以下内容，以指定`C:\TestData\`目录中的所有文件：
+- en: '[PRE2]'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Specify read access by choosing the **read** option from the Actions drop-down
+    list.
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 通过从操作下拉列表中选择**读取**选项来指定读取权限。
+- en: Now the Permissions dialog box looks like the following.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在权限对话框看起来像下面这样。
+- en: '![the Permission dialog, with fields filled in](../Images/e1f6d7748b787156d6565a88b1e84057.png)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_IMG
+  zh: '![填写字段的权限对话框](../Images/e1f6d7748b787156d6565a88b1e84057.png)'
+- en: Choose the **OK** button. The new permission appears in a line in the Policy
+    Entry dialog, as follows.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 选择**确定**按钮。新的权限出现在策略条目对话框中的一行中，如下所示。
+- en: '![the new Permission appears in the Policy Entry dialog](../Images/4d328e154caf475e0ec47459e4cdb078.png)'
+  id: totrans-22
+  prefs: []
+  type: TYPE_IMG
+  zh: '![新的权限出现在策略条目对话框中](../Images/4d328e154caf475e0ec47459e4cdb078.png)'
+- en: '* * *'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Each backslash in the file path you typed has been replaced with
+    two backslashes, for your convenience. Strings in a policy file are processed
+    by a tokenizer that allows \ to be used as an escape character (for example, `\n`
+    to indicate a new line), so the policy file requires *two* backslashes to indicate
+    a single backslash. If you use single backslashes as your directory separators,
+    Policy Tool automatically converts them to double backslashes for you.'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 你在文件路径中键入的每个反斜杠都已替换为两个反斜杠，以方便您使用。策略文件中的字符串由一个标记器处理，允许使用 \ 作为转义字符（例如，`\n`
+    表示换行），因此策略文件需要*两个*反斜杠来表示一个反斜杠。如果您使用单个反斜杠作为目录分隔符，策略工具会自动将其转换为双反斜杠。'
+- en: '* * *'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: You are now done specifying this policy entry, so choose the **Done** button
+    in the Policy Entry dialog. The Policy Tool window now contains a line representing
+    the policy entry, showing the **SignedBy** value.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在已经完成指定此策略条目的操作，请在策略条目对话框中选择**完成**按钮。策略工具窗口现在包含表示策略条目的一行，显示**SignedBy**值。

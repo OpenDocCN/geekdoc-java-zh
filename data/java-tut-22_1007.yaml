@@ -1,0 +1,91 @@
+- en: Simple
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 简单
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/simple.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/simple.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/simple.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/simple.html)
+- en: '*Simple* authentication consists of sending the LDAP server the fully qualified
+    DN of the client (user) and the client''s clear-text password (see [RFC 2251](http://www.ietf.org/rfc/rfc2251.txt)
+    and [RFC 2829](http://www.ietf.org/rfc/rfc2829.txt)). This mechanism has security
+    problems because the password can be read from the network. To avoid exposing
+    the password in this way, you can use the simple authentication mechanism within
+    an encrypted channel (such as SSL), provided that this is supported by the LDAP
+    server.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*简单*身份验证包括向LDAP服务器发送客户端（用户）的完全限定DN和客户端的明文密码（参见[RFC 2251](http://www.ietf.org/rfc/rfc2251.txt)和[RFC
+    2829](http://www.ietf.org/rfc/rfc2829.txt)）。这种机制存在安全问题，因为密码可以从网络中读取。为了避免以这种方式暴露密码，您可以在加密通道（如SSL）中使用简单身份验证机制，前提是LDAP服务器支持。'
+- en: Both the LDAP v2 and v3 support simple authentication.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP v2和v3都支持简单身份验证。
+- en: To use the simple authentication mechanism, you must set the three authentication
+    environment properties as follows.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用简单身份验证机制，必须设置三个身份验证环境属性如下。
+- en: '[`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION).'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION)。'
+- en: Set to `"simple"`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置为`"simple"`。
+- en: '[`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL).'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Context.SECURITY_PRINCIPAL`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_PRINCIPAL)。'
+- en: Set to the fully qualified DN of the entity that is being authenticated (such
+    as, `"cn=S. User, ou=NewHires, o=JNDITutorial"`). It is of type `java.lang.String`.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置为正在进行身份验证的实体的完全限定DN（例如，`"cn=S. User, ou=NewHires, o=JNDITutorial"`）。它的类型为`java.lang.String`。
+- en: '[`Context.SECURITY_CREDENTIALS`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS).'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Context.SECURITY_CREDENTIALS`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_CREDENTIALS)。'
+- en: Set to the password of the principal (for example, `"mysecret"`). It is of type
+    `java.lang.String`, `char` array (`char[]`), or `byte` array (`byte[]`). If the
+    password is a `java.lang.String` or a `char` array, then it is encoded using UTF-8
+    for the LDAP v3 and using ISO-Latin-1 for the LDAP v2 for transmission to the
+    server. If the password is a `byte[]`, then it is transmitted as is to the server.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置为主体的密码（例如，`"mysecret"`）。它的类型为`java.lang.String`，`char`数组（`char[]`）或`byte`数组（`byte[]`）。如果密码是`java.lang.String`或`char`数组，则在传输到服务器时使用UTF-8进行编码以供LDAP
+    v3使用，使用ISO-Latin-1供LDAP v2使用。如果密码是`byte[]`，则按原样传输到服务器。
+- en: See the [example](authentication.html#SIMPLE) earlier in this section that illustrates
+    how to use simple authentication.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看本节中早期的[示例](authentication.html#SIMPLE)，演示如何使用简单身份验证。
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** If you supply an empty string, an empty `byte`/`char` array, or `null`
+    to the `Context.SECURITY_CREDENTIALS` environment property, then the authentication
+    mechanism will be `"none"`. This is because the LDAP requires the password to
+    be nonempty for simple authentication. The protocol automatically converts the
+    authentication to `"none"` if a password is not supplied.'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您向`Context.SECURITY_CREDENTIALS`环境属性提供空字符串、空的`byte`/`char`数组或`null`，则身份验证机制将是`"none"`。这是因为LDAP要求简单身份验证的密码不能为空。如果未提供密码，则协议会自动将身份验证转换为`"none"`。'

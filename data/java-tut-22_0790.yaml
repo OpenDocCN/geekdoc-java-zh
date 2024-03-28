@@ -1,0 +1,89 @@
+- en: Scope and Order
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 范围和顺序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/scope.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/scope.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/scope.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/scope.html)
+- en: '`javax.xml.XMLConstants#FEATURE_SECURE_PROCESSING` (FSP) is a required feature
+    for XML processors including DOM, SAX, Schema Validation, XSLT and XPath. When
+    set to `true`, it is recommended that implementations enable access restrictions
+    as defined by the new properties specified above. For compatibility, JAXP 1.5
+    does not enable the new restrictions, although FSP is true by default for DOM,
+    SAX and Schema Validation.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`javax.xml.XMLConstants#FEATURE_SECURE_PROCESSING`（FSP）是包括DOM、SAX、Schema Validation、XSLT和XPath在内的XML处理器的必需功能。当设置为`true`时，建议实现启用由上述新属性定义的访问限制。为了兼容性，尽管对于DOM、SAX和Schema
+    Validation，默认情况下FSP为true，但JAXP 1.5不会启用新的限制。'
+- en: For JDK 8, the new `accessExternal*` properties are proposed to be set to the
+    empty string when FSP is explicitly set. This is only the case when FSP is set
+    through the API, for example `factory.setFeature(FSP, true)`. Although FSP is
+    true by default for DOM, SAX and Schema Validation it is not treated as if "explicitly"
+    set, JDK 8 therefore does not set restrictions by default.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于JDK 8，建议将新的`accessExternal*`属性在FSP被明确设置时设置为空字符串。这仅在通过API设置FSP时才会发生，例如`factory.setFeature(FSP,
+    true)`。尽管对于DOM、SAX和Schema Validation，默认情况下FSP为true，但JDK 8并不将其视为“明确”设置，因此默认情况下不会设置限制。
+- en: Properties specified in the `jaxp.properties` file affect all invocations of
+    the JDK or JRE, and will override their default values, or those that may have
+    been set by FEATURE_SECURE_PROCESSING.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`jaxp.properties`文件中指定的属性会影响JDK或JRE的所有调用，并将覆盖其默认值，或者可能已经由FEATURE_SECURE_PROCESSING设置的值。
+- en: System properties, when set, will affect one invocation only, and will override
+    the default settings or those set in jaxp.properties, or those that may have been
+    set by FEATURE_SECURE_PROCESSING.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当设置系统属性时，将仅影响一个调用，并将覆盖默认设置或在jaxp.properties中设置的设置，或者可能已经由FEATURE_SECURE_PROCESSING设置的设置。
+- en: JAXP properties specified through JAXP factories or `SAXParser` take preference
+    over system properties, the `jaxp.properties` file, as well as `javax.xml.XMLConstants#FEATURE_SECURE_PROCESSING`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过JAXP工厂或`SAXParser`指定的JAXP属性优先于系统属性，`jaxp.properties`文件以及`javax.xml.XMLConstants#FEATURE_SECURE_PROCESSING`。
+- en: 'The new JAXP properties have no effect on the relevant constructs they attempt
+    to restrict in the following situations:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 新的JAXP属性在以下情况下对其试图限制的相关构造没有影响：
+- en: When there is a resolver and the source returned by the resolver is not null.
+    This applies to entity resolvers that may be set on SAX and DOM parsers, XML resolvers
+    on StAX parsers, LSResourceResolver on SchemaFactory, a Validator or ValidatorHandler,
+    or URIResolver on a transformer.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当存在解析器并且解析器返回的源不为null时。这适用于可能设置在SAX和DOM解析器上的实体解析器，StAX解析器上的XML解析器，SchemaFactory上的LSResourceResolver，验证器或ValidatorHandler，或者转换器上的URIResolver。
+- en: When a schema is created explicitly by calling `SchemaFactory`'s `newSchema`
+    method.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当通过调用`SchemaFactory`的`newSchema`方法显式创建模式时。
+- en: When external resources are not required. For example, the following features/properties
+    are supported by the reference implementation and may be used to instruct the
+    processor to not load the external DTD or resolve external entities.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当不需要外部资源时。例如，以下功能/属性由参考实现支持，并可用于指示处理器不加载外部DTD或解析外部实体。
+- en: '[PRE0]'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'

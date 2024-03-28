@@ -1,0 +1,62 @@
+- en: Other Configuration Utilities
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 其他配置实用程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/environment/other.html](https://docs.oracle.com/javase/tutorial/essential/environment/other.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/environment/other.html](https://docs.oracle.com/javase/tutorial/essential/environment/other.html)
+- en: Here is a summary of some other configuration utilities.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一些其他配置实用程序的摘要。
+- en: The *Preferences API* allows applications to store and retrieve configuration
+    data in an implementation-dependent backing store. Asynchronous updates are supported,
+    and the same set of preferences can be safely updated by multiple threads and
+    even multiple applications. For more information, refer to the [Preferences API
+    Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/preferences/index.html).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*首选项API*允许应用程序在一个与实现相关的后备存储中存储和检索配置数据。支持异步更新，并且同一组首选项可以被多个线程甚至多个应用程序安全地更新。更多信息，请参考[首选项API指南](https://docs.oracle.com/javase/8/docs/technotes/guides/preferences/index.html)。'
+- en: An application deployed in a *JAR archive* uses a *manifest* to describe the
+    contents of the archive. For more information, refer to the [Packaging Programs
+    in JAR Files](../../deployment/jar/index.html) lesson.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 部署在*JAR归档*中的应用程序使用*清单*来描述归档的内容。更多信息，请参考[在JAR文件中打包程序](../../deployment/jar/index.html)课程。
+- en: The configuration of a *Java Web Start application* is contained in a *JNLP
+    file*. For more information, refer to the [Java Web Start](../../deployment/webstart/index.html)
+    lesson.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*Java Web Start 应用程序*的配置包含在一个*JNLP文件*中。更多信息，请参考[Java Web Start](../../deployment/webstart/index.html)课程。'
+- en: The configuration of a *Java Plug-in applet* is partially determined by the
+    HTML tags used to embed the applet in the web page. Depending on the applet and
+    the browser, these tags can include `<applet>`, `<object>`, `<embed>`, and `<param>`.
+    For more information, refer to the [Java Applets](../../deployment/applet/index.html)
+    lesson.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*Java插件小程序*的配置部分取决于用于在网页中嵌入小程序的HTML标签。根据小程序和浏览器，这些标签可以包括`<applet>`、`<object>`、`<embed>`和`<param>`。更多信息，请参考[Java小程序](../../deployment/applet/index.html)课程。'
+- en: "The class [`java.util.ServiceLoader`](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)\
+    \ provides a simple *service provider* facility. A service provider is an implementation\
+    \ of a *service* \x97 a well-known set of interfaces and (usually abstract) classes.\
+    \ The classes in a service provider typically implement the interfaces and subclass\
+    \ the classes defined in the service. Service providers can be installed as extensions\
+    \ (see [The Extension Mechanism](../../ext/index.html)). Providers can also be\
+    \ made available by adding them to the class path or by some other platform-specific\
+    \ means."
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "类[`java.util.ServiceLoader`](https://docs.oracle.com/javase/8/docs/api/java/util/ServiceLoader.html)提供了一个简单的*服务提供者*设施。服务提供者是*服务*的实现\x97\
+    一组众所周知的接口和（通常是抽象的）类。服务提供者的类通常实现服务中定义的接口并子类化类。服务提供者可以作为扩展安装（参见[扩展机制](../../ext/index.html)）。提供者也可以通过将它们添加到类路径或通过其他特定于平台的方式来提供。"

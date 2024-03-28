@@ -1,0 +1,723 @@
+- en: How to Use Color Choosers
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用颜色选择器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/colorchooser.html](https://docs.oracle.com/javase/tutorial/uiswing/components/colorchooser.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/colorchooser.html](https://docs.oracle.com/javase/tutorial/uiswing/components/colorchooser.html)
+- en: Use the [`JColorChooser`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html)
+    class to enable users to choose from a palette of colors. A color chooser is a
+    component that you can place anywhere within your program GUI. The `JColorChooser`
+    API also makes it easy to bring up a [dialog](dialog.html) (modal or not) that
+    contains a color chooser.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[`JColorChooser`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html)类使用户可以从调色板中选择颜色。颜色选择器是一个组件，您可以将其放置在程序GUI中的任何位置。`JColorChooser`
+    API还可以轻松地弹出包含颜色选择器的[对话框](dialog.html)（模态或非模态）。
+- en: 'Here is a picture of an application that uses a color chooser to set the text
+    color in a banner:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个使用颜色选择器设置横幅文本颜色的应用程序的图片：
+- en: '![A snapshot of ColorChooserDemo, which contains a standard color chooser.](../Images/a8016c76426953be98a411b40c2aa1b4.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ColorChooserDemo的快照，其中包含标准颜色选择器。](../Images/a8016c76426953be98a411b40c2aa1b4.png)'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run the ColorChooser Demo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download the JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#ColorChooserDemo).[![Launches
+    the ButtonDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ColorChooserDemoProject/ColorChooserDemo.jnlp)
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行ColorChooser演示（[下载JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#ColorChooserDemo)。[![启动ButtonDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ColorChooserDemoProject/ColorChooserDemo.jnlp)
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The source code for the program is in [`ColorChooserDemo.java`](../examples/components/ColorChooserDemoProject/src/components/ColorChooserDemo.java).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序的源代码位于[`ColorChooserDemo.java`](../examples/components/ColorChooserDemoProject/src/components/ColorChooserDemo.java)中。
+- en: The color chooser consists of everything within the box labeled **Choose Text
+    Color**. This is what a standard color chooser looks like in the Java Look & Feel.
+    It contains two parts, a tabbed pane and a preview panel. The three tabs in the
+    tabbed pane select *chooser panels*. The *preview panel* below the tabbed pane
+    displays the currently selected color.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 颜色选择器包括标有**选择文本颜色**的框内的所有内容。这是Java外观和感觉中标准颜色选择器的样子。它包含两部分，一个选项卡窗格和一个预览面板。选项卡窗格中的三个选项卡选择*选择器面板*。选项卡窗格下方的*预览面板*显示当前选定的颜色。
+- en: 'Here is the code from the example that creates a `JColorChooser` instance and
+    adds it to a container:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是创建`JColorChooser`实例并将其添加到容器的示例代��：
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `JColorChooser` constructor in the previous code snippet takes a `Color`
+    argument, which specifies the chooser's initially selected color. If you do not
+    specify the initial color, then the color chooser displays `Color.white`. See
+    the [`Color` API documentation](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html)
+    for a list of color constants you can use.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上一个代码片段中，`JColorChooser`构造函数接受一个`Color`参数，该参数指定了选择器的初始选定颜色。如果您没有指定初始颜色，则颜色选择器将显示`Color.white`。请查看[`Color`
+    API文档](https://docs.oracle.com/javase/8/docs/api/java/awt/Color.html)以获取可用的颜色常量列表。
+- en: 'A color chooser uses an instance of [`ColorSelectionModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/colorchooser/ColorSelectionModel.html)
+    to contain and manage the current selection. The color selection model fires a
+    change event whenever the user changes the color in the color chooser. The example
+    program registers a change listener with the color selection model so that it
+    can update the banner at the top of the window. The following code registers and
+    implements the change listener:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 颜色选择器使用[`ColorSelectionModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/colorchooser/ColorSelectionModel.html)的实例来包含和管理当前选择。颜色选择模型在用户更改颜色时触发更改事件。示例程序向颜色选择模型注册了更改侦听器，以便能够更新窗口顶部的横幅。以下代码注册并实现了更改侦听器：
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: See [How to Write a Change Listener](../events/changelistener.html) for general
+    information about change listeners and change events.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关更改侦听器和更改事件的一般信息，请参阅[如何编写更改侦听器](../events/changelistener.html)。
+- en: A basic color chooser, like the one used in the example program, is sufficient
+    for many programs. However, the color chooser API allows you to customize a color
+    chooser by providing it with a preview panel of your own design, by adding your
+    own chooser panels to it, or by removing existing chooser panels from the color
+    chooser. Additionally, the `JColorChooser` class provides two methods that make
+    it easy to use a color chooser within a dialog.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 像示例程序中使用的基本颜色选择器对于许多程序来说已经足够了。然而，颜色选择器API允许您通过提供自己设计的预览面板、向其添加自定义选择器面板或移除颜色选择器中的现有选择器面板来自定义颜色选择器。此外，`JColorChooser`类提供了两个方法，使得在对话框中使用颜色选择器变得简单。
+- en: 'The rest of this section discusses these topics:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的其余部分讨论以下主题：
+- en: '[Another Example: ColorChooserDemo2](#advancedexample)'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[另一个示例：ColorChooserDemo2](#advancedexample)'
+- en: '[Showing a Color Chooser in a Dialog](#dialog)'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在对话框中显示颜色选择器](#dialog)'
+- en: '[Removing or Replacing the Preview Panel](#previewpanel)'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[移除或替换预览面板](#previewpanel)'
+- en: '[Creating a Custom Chooser Panel](#chooserpanel)'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建自定义选择器面板](#chooserpanel)'
+- en: '[The Color Chooser API](#api)'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[颜色选择器API](#api)'
+- en: '[Examples that Use Color Choosers](#eg)'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用颜色选择器的示例](#eg)'
+- en: 'Another Example: ColorChooserDemo2'
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 另一个示例：ColorChooserDemo2
+- en: Now let's turn our attention to [ColorChooserDemo2](../examples/components/index.html#ColorChooserDemo2),
+    a modified version of the previous demo program that uses more of the `JColorChooser`
+    API.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们转向[ColorChooserDemo2](../examples/components/index.html#ColorChooserDemo2)，这是前一个演示程序的修改版本，使用了更多的`JColorChooser`API。
+- en: '* * *'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run the ColorChooser Demo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download the JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#ColorChooserDemo2).[![Launches
+    the ButtonDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ColorChooserDemo2Project/ColorChooserDemo2.jnlp)
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 点击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行ColorChooser
+    Demo（[下载JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自己编译和运行示例，请参考[示例索引](../examples/components/index.html#ColorChooserDemo2)。[![启动ButtonDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ColorChooserDemo2Project/ColorChooserDemo2.jnlp)
+- en: '* * *'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Here is a picture of ColorChooserDemo2:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是ColorChooserDemo2的图片：
+- en: '![A snapshot of ColorChooserDemo, which contains a custom color chooser.](../Images/6c69345e0bf4c33db739de489e37446d.png)'
+  id: totrans-32
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ColorChooserDemo的快照，其中包含自定义颜色选择器。](../Images/6c69345e0bf4c33db739de489e37446d.png)'
+- en: 'This program customizes the banner text color chooser in these ways:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序自定义了横幅文本颜色选择器的方式如下：
+- en: Removes the preview panel
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 移除预览面板
+- en: Removes all of the default chooser panels
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 移除所有默认的选择器面板
+- en: Adds a custom chooser panel
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 添加一个自定义选择器面板
+- en: '[Removing or Replacing the Preview Panel](#previewpanel) covers the first customization.
+    [Creating a Custom Chooser Panel](#chooserpanel) discusses the last two.'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[移除或替换预览面板](#previewpanel)涵盖了第一个自定义。[创建自定义选择器面板](#chooserpanel)讨论了后两个。'
+- en: This program also adds a button that brings up a color chooser in a dialog,
+    which you can use to set the banner background color.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序还添加了一个按钮，点击后会在对话框中打开一个颜色选择器，您可以用它来设置横幅的背景颜色。
+- en: Showing a Color Chooser in a Dialog
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在对话框中显示颜色选择器
+- en: 'The `JColorChooser` class provides two class methods to make it easy to use
+    a color chooser in a dialog. ColorChooserDemo2 uses one of these methods, `showDialog`,
+    to display the background color chooser when the user clicks the **Show Color
+    Chooser...** button. Here is the single line of code from the example that brings
+    up the background color chooser in a dialog:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JColorChooser`类提供了两个类方法，使得在对话框中使用颜色选择器变得简单。ColorChooserDemo2使用其中一个方法，`showDialog`，当用户点击**显示颜色选择器...**按钮时，会显示背景颜色选择器的对话框。以下是示例中用于在对话框中打开背景颜色选择器的单行代码：'
+- en: '[PRE2]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The first argument is the parent for the dialog, the second is the dialog title,
+    and the third is the initially selected color.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个参数是对话框的父级，第二个是对话框标题，第三个是初始选择的颜色。
+- en: 'The dialog disappears under three conditions: the user chooses a color and
+    clicks the **OK** button, the user cancels the operation with the **Cancel** button,
+    or the user dismisses the dialog with a frame control. If the user chooses a color,
+    the `showDialog` method returns the new color. If the user cancels the operation
+    or dismisses the window, the method returns `null`. Here is the code from the
+    example that updates the banner background color according to the value returned
+    by `showDialog`:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对话框在三种情况下消失：用户选择颜色并点击**确定**按钮，用户使用**取消**按钮取消操作，或用户使用框架控件关闭对话框。如果用户选择了颜色，`showDialog`
+    方法将返回新颜色。如果用户取消操作或关闭窗口，则该方法返回 `null`。以下是根据 `showDialog` 返回值更新横幅背景颜色的示例代码：
+- en: '[PRE3]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The dialog created by `showDialog` is modal. If you want a non-modal dialog,
+    you can use `JColorChooser`'s `createDialog` method to create the dialog. This
+    method also lets you specify action listeners for the **OK** and **Cancel** buttons
+    in the dialog window. Use `JDialog`'s `show` method to display the dialog created
+    by this method. For an example that uses this method, see [Specifying Other Editors](table.html#editor)
+    in the [How to Use Tables](table.html) section.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`showDialog` 创建的对话框是模态的。如果你想要一个非模态对话框，可以使用 `JColorChooser` 的 `createDialog`
+    方法来创建对话框。这个方法还允许你为对话框窗口中的**确定**和**取消**按钮指定动作监听器。使用 `JDialog` 的 `show` 方法来显示这个方法创建的对话框。有关使用此方法的示例，请参见[指定其他编辑器](table.html#editor)中的[如何使用表格](table.html)部分。'
+- en: Removing or Replacing the Preview Panel
+  id: totrans-46
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 移除或替换预览面板
+- en: 'By default, the color chooser displays a preview panel. ColorChooserDemo2 removes
+    the text color chooser''s preview panel with this line of code:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，颜色选择器显示一个预览面板。ColorChooserDemo2 使用以下代码移除文本颜色选择器的预览面板：
+- en: '[PRE4]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: This effectively removes the preview panel because a plain `JPanel` has no size
+    and no default view. To set the preview panel back to the default, use `null`
+    as the argument to `setPreviewPanel`.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将有效地移除预览面板，因为普通的 `JPanel` 没有大小和默认视图。要将预览面板恢复为默认设置，请使用 `setPreviewPanel` 的参数为
+    `null`。
+- en: To provide a custom preview panel, you also use `setPreviewPanel`. The component
+    you pass into the method should inherit from `JComponent`, specify a reasonable
+    size, and provide a customized view of the current color. To get notified when
+    the user changes the color in the color chooser, the preview panel must register
+    as a change listener on the color chooser's color selection model as described
+    [previously](#changelistener).
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要提供自定义预览面板，还要使用 `setPreviewPanel`。你传递给该方法的组件应该继承自 `JComponent`，指定一个合理的大小，并提供当前颜色的自定义视图。要在用户更改颜色选择器中的颜色时收到通知，预览面板必须像之前描述的那样在颜色选择器的颜色选择模型上注册为更改监听器。
+- en: Creating a Custom Chooser Panel
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建自定义选择器面板
+- en: 'The default color chooser provides five chooser panels:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认颜色选择器提供五个选择器面板：
+- en: "Swatches \x97 for choosing a color from a collection of swatches."
+  id: totrans-53
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "色板 \x97 用于从一组色板中选择颜色。"
+- en: "[HSV](http://en.wikipedia.org/wiki/HSL_and_HSV) \x97 for choosing a color using\
+    \ the Hue-Saturation-Value color representation. Prior to JDK 7, this was called\
+    \ HSB, for Hue-Saturation-Brightness."
+  id: totrans-54
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[HSV](http://en.wikipedia.org/wiki/HSL_and_HSV) \x97 用于使用色调-饱和度-亮度颜色表示选择颜色。在\
+    \ JDK 7 之前，这被称为 HSB，代表色调-饱和度-亮度。"
+- en: "[HSL](http://en.wikipedia.org/wiki/HSL_and_HSV) \x97 for choosing a color using\
+    \ the Hue-Saturation-Lightness color representation. This is new in JDK 7."
+  id: totrans-55
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[HSL](http://en.wikipedia.org/wiki/HSL_and_HSV) \x97 用于使用色调-饱和度-亮度颜色表示选择颜色。这是\
+    \ JDK 7 中的新功能。"
+- en: "[RGB](http://en.wikipedia.org/wiki/RGB_color_model) \x97 for choosing a color\
+    \ using the Red-Green-Blue color model."
+  id: totrans-56
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[RGB](http://en.wikipedia.org/wiki/RGB_color_model) \x97 用于使用红-绿-蓝颜色模型选择颜色。"
+- en: "[CMYK](http://en.wikipedia.org/wiki/Cmyk) \x97 for choosing a color using the\
+    \ process color or four color model. This is new in JDK 7."
+  id: totrans-57
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[CMYK](http://en.wikipedia.org/wiki/Cmyk) \x97 用于使用过程颜色或四色模型选择颜色。这是 JDK 7 中的新功能。"
+- en: You can extend the default color chooser by adding chooser panels of your own
+    design with `addChooserPanel`, or you can limit it by removing chooser panels
+    with `removeChooserPanel`.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以通过使用 `addChooserPanel` 添加自己设计的选择器面板来扩展默认颜色选择器，或者通过使用 `removeChooserPanel`
+    删除选择器面板来限制它。
+- en: 'If you want to remove all of the default chooser panels and add one or more
+    of your own, you can do this with a single call to `setChooserPanels`. ColorChooserDemo2
+    uses this method to replace the default chooser panels with an instance of [`CrayonPanel`](../examples/components/ColorChooserDemo2Project/src/components/CrayonPanel.java),
+    a custom chooser panel. Here is the call to `setChooserPanels` from that example:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果要删除所有默认的选择器面板并添加一个或多个自定义面板，可以通过单个调用`setChooserPanels`来实现。ColorChooserDemo2使用此方法将默认选择器面板替换为[`CrayonPanel`](../examples/components/ColorChooserDemo2Project/src/components/CrayonPanel.java)的实例，一个自定义选择器面板。以下是来自该示例的`setChooserPanels`调用：
+- en: '[PRE5]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The code is straightforward: it creates an array containing the `CrayonPanel`.
+    Next the code calls `setChooserPanels` to set the contents of the array as the
+    color chooser''s chooser panels.'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 代码很简单：它创建一个包含`CrayonPanel`的数组。接下来，代码调用`setChooserPanels`将数组的内容设置为颜色选择器的选择器面板。
+- en: '`CrayonPanel` is a subclass of [`AbstractColorChooserPanel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/colorchooser/AbstractColorChooserPanel.html)
+    and overrides the five abstract methods defined in its superclass:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CrayonPanel`是[`AbstractColorChooserPanel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/colorchooser/AbstractColorChooserPanel.html)的子类，并重写了其超类中定义的五个抽象方法：'
+- en: '**`void buildChooser()`**'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`void buildChooser()`**'
+- en: "Creates the GUI that comprises the chooser panel. The example creates four\
+    \ toggle buttons \x97 one for each crayon \x97 and adds them to the chooser panel."
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "创建包含选择器面板的GUI。示例创建四个切换按钮 \x97 每个代表一个蜡笔 \x97 并将它们添加到选择器面板中。"
+- en: '**`void updateChooser()`**'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`void updateChooser()`**'
+- en: This method is called whenever the chooser panel is displayed. The implementation
+    of this method selects the toggle button that represents the currently selected
+    color.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当显示选择器面板时，将调用此方法。此方法的实现选择代表当前选定颜色的切换按钮。
+- en: '[PRE6]'
+  id: totrans-67
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '**`String getDisplayName()`**'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`String getDisplayName()`**'
+- en: 'Returns the display name of the chooser panel. The name is used on the tab
+    for the chooser panel. Here is the example `getDisplayName` method:'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回选择器面板的显示名称。该名称用于选择器面板的选项卡上。以下是示例`getDisplayName`方法：
+- en: '[PRE7]'
+  id: totrans-70
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: '**`Icon getSmallDisplayIcon()`**'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`Icon getSmallDisplayIcon()`**'
+- en: Returns a small icon to represent this chooser panel. This is currently unused.
+    Future versions of the color chooser might use this icon or the large one to represent
+    this chooser panel in the display. The example implementation of this method returns
+    `null`.
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回一个小图标来表示此选择器面板。目前未使用。将来的颜色选择器版本可能会使用此图标或大图标来表示此选择器面板在显示中的位置。此方法的示例实现返回`null`。
+- en: '**`Icon getLargeDisplayIcon()`**'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`Icon getLargeDisplayIcon()`**'
+- en: Returns a large icon to represent this chooser panel. This is currently unused.
+    Future versions of the color chooser might use this icon or the small one to represent
+    this chooser panel in the display. The example implementation of this method returns
+    `null`.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回一个大图标来表示此选择器面板。目前未使用。将来的颜色选择器版本可能会使用此图标或小图标来表示此选择器面板在显示中的位置。此方法的示例实现返回`null`。
+- en: The Color Chooser API
+  id: totrans-75
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 颜色选择器API
+- en: 'The following tables list the commonly used `JColorChooser` constructors and
+    methods. Other methods you might call are listed in the API tables in [The JComponent
+    Class](jcomponent.html). The API for using color choosers falls into these categories:'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的`JColorChooser`构造函数和方法。您可能调用的其他方法在[The JComponent Class](jcomponent.html)的API表中列出。使用颜色选择器的API分为以下几类：
+- en: '[Creating and Displaying the Color Chooser](#creating)'
+  id: totrans-77
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建和显示颜色选择器](#creating)'
+- en: '[Customizing the Color Chooser GUI](#customizing)'
+  id: totrans-78
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[自定义颜色选择器 GUI](#customizing)'
+- en: '[Setting or Getting the Current Color](#selection)'
+  id: totrans-79
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置或获取当前颜色](#selection)'
+- en: Creating and Displaying the Color Chooser
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建和显示颜色选择器
+- en: '| Method or Constructor | Purpose |'
+  id: totrans-81
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法或构造函数 | 目的 |'
+- en: '| [JColorChooser()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#JColorChooser--)
+    [JColorChooser(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#JColorChooser-java.awt.Color-)'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [JColorChooser()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#JColorChooser--)
+    [JColorChooser(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#JColorChooser-java.awt.Color-)'
+- en: '[JColorChooser(ColorSelectionModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#JColorChooser-javax.swing.colorchooser.ColorSelectionModel-)
+    | Create a color chooser. The default constructor creates a color chooser with
+    an initial color of `Color.white`. Use the second constructor to specify a different
+    initial color. The `ColorSelectionModel` argument, when present, provides the
+    color chooser with a color selection model. |'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JColorChooser(ColorSelectionModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#JColorChooser-javax.swing.colorchooser.ColorSelectionModel-)
+    | 创建一个颜色选择器。默认构造函数创建一个初始颜色为`Color.white`的颜色选择器。使用第二个构造函数指定不同的初始颜色。当存在`ColorSelectionModel`参数时，为颜色选择器提供颜色选择模型。
+    |'
+- en: '| [Color showDialog(Component, String, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#showDialog-java.awt.Component-java.lang.String-java.awt.Color-)
+    | Create and show a color chooser in a modal dialog. The `Component` argument
+    is the parent of the dialog, the `String` argument specifies the dialog title,
+    and the `Color` argument specifies the chooser''s initial color. |'
+  id: totrans-84
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Color showDialog(Component, String, Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#showDialog-java.awt.Component-java.lang.String-java.awt.Color-)
+    | 创建并显示一个颜色选择器在模态对话框中。`Component`参数是对话框的父级，`String`参数指定对话框标题，`Color`参数指定选择器的初始颜色。
+    |'
+- en: '| [JDialog createDialog(Component, String, boolean, JColorChooser, ActionListener,'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [JDialog createDialog(Component, String, boolean, JColorChooser, ActionListener,'
+- en: 'ActionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#createDialog-java.awt.Component-java.lang.String-boolean-javax.swing.JColorChooser-java.awt.event.ActionListener-java.awt.event.ActionListener-)
+    | Create a dialog for the specified color chooser. As with `showDialog`, the `Component`
+    argument is the parent of the dialog and the `String` argument specifies the dialog
+    title. The other arguments are as follows: the `boolean` specifies whether the
+    dialog is modal, the `JColorChooser` is the color chooser to display in the dialog,
+    the first `ActionListener` is for the **OK** button, and the second is for the
+    **Cancel** button. |'
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ActionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#createDialog-java.awt.Component-java.lang.String-boolean-javax.swing.JColorChooser-java.awt.event.ActionListener-java.awt.event.ActionListener-)
+    | 为指定的颜色选择器创建对话框。与`showDialog`一样，`Component`参数是对话框的父级，`String`参数指定对话框标题。其他参数如下：`boolean`指定对话框是否为模态，`JColorChooser`是要在对话框中显示的颜色选择器，第一个`ActionListener`是为**确定**按钮，第二个是为**取消**按钮。
+    |
+- en: Customizing the Color Chooser's GUI
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自定义颜色选择器的 GUI
+- en: '| Method | Purpose |'
+  id: totrans-88
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setPreviewPanel(JComponent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setPreviewPanel-javax.swing.JComponent-)
+    [JComponent getPreviewPanel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#getPreviewPanel--)
+    | Set or get the component used to preview the color selection. To remove the
+    preview panel, use `new JPanel()` as an argument. To specify the default preview
+    panel, use `null`. |'
+  id: totrans-89
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setPreviewPanel(JComponent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setPreviewPanel-javax.swing.JComponent-)
+    [JComponent getPreviewPanel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#getPreviewPanel--)
+    | 设置或获取用于预览颜色选择的组件。要移除预览面板，请使用`new JPanel()`作为参数。要指定默认预览面板，请使用`null`。 |'
+- en: '| [void setChooserPanels(AbstractColorChooserPanel[])](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setChooserPanels-javax.swing.colorchooser.AbstractColorChooserPanel:A-)
+    [AbstractColorChooserPanel[] getChooserPanels()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#getChooserPanels--)
+    | Set or get the chooser panels in the color chooser. |'
+  id: totrans-90
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setChooserPanels(AbstractColorChooserPanel[])](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setChooserPanels-javax.swing.colorchooser.AbstractColorChooserPanel:A-)
+    [AbstractColorChooserPanel[] getChooserPanels()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#getChooserPanels--)
+    | 设置或获取颜色选择器中的选择面板。 |'
+- en: '| [void addChooserPanel(AbstractColorChooserPanel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#addChooserPanel-javax.swing.colorchooser.AbstractColorChooserPanel-)
+    [AbstractColorChooserPanel removeChooserPanel(AbstractColorChooserPanel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#removeChooserPanel-javax.swing.colorchooser.AbstractColorChooserPanel-)
+    | Add a chooser panel to the color chooser or remove a chooser panel from it.
+    |'
+  id: totrans-91
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void addChooserPanel(AbstractColorChooserPanel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#addChooserPanel-javax.swing.colorchooser.AbstractColorChooserPanel-)
+    [AbstractColorChooserPanel removeChooserPanel(AbstractColorChooserPanel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#removeChooserPanel-javax.swing.colorchooser.AbstractColorChooserPanel-)
+    | 向颜色选择器添加选择器面板或从中移除选择器面板。 |'
+- en: '| [void setDragEnabled(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setDragEnabled-boolean-)
+    [boolean getDragEnabled()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#getDragEnabled--)
+    | Set or get the `dragEnabled` property, which must be true to enable drag handling
+    on this component. The default value is false. See [Drag and Drop and Data Transfer](../dnd/index.html)
+    for more details. |'
+  id: totrans-92
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setDragEnabled(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setDragEnabled-boolean-)
+    [boolean getDragEnabled()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#getDragEnabled--)
+    | 设置或获取`dragEnabled`属性，该属性必须为true才能在此组件上启用拖放处理。默认值为false。有关更多详细信息，请参阅[拖放和数据传输](../dnd/index.html)。
+    |'
+- en: Setting or Getting the Current Color
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置或获取当前颜色
+- en: '| Method | Purpose |'
+  id: totrans-94
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setColor(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setColor-java.awt.Color-)
+    [void setColor(int, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setColor-int-int-int-)'
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setColor(Color)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setColor-java.awt.Color-)
+    [void setColor(int, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setColor-int-int-int-)'
+- en: '[void setColor(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setColor-int-)'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[void setColor(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setColor-int-)'
+- en: '[Color getColor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#getColor--)
+    | Set or get the currently selected color. The three integer version of the `setColor`
+    method interprets the three integers together as an RGB color. The single integer
+    version of the `setColor` method divides the integer into four 8-bit bytes and
+    interprets the integer as an RGB color as follows: ![How color chooser interprets
+    an int as an RGB value.](../Images/c14774ad771a624724b722c4dde29e12.png) |'
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Color getColor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#getColor--)
+    | 设置或获取当前选择的颜色。`setColor`方法的三个整数版本将这三个整数一起解释为RGB颜色。`setColor`方法的单个整数版本将整数分成四个8位字节，并按以下方式解释整数为RGB颜色：![颜色选择器如何将整数解释为RGB值。](../Images/c14774ad771a624724b722c4dde29e12.png)
+    |'
+- en: '| [void setSelectionModel(ColorSelectionModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setSelectionModel-javax.swing.colorchooser.ColorSelectionModel-)
+    [ColorSelectionModel getSelectionModel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#getSelectionModel--)
+    | Set or get the selection model for the color chooser. This object contains the
+    current selection and fires change events to registered listeners whenever the
+    selection changes. |'
+  id: totrans-98
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setSelectionModel(ColorSelectionModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#setSelectionModel-javax.swing.colorchooser.ColorSelectionModel-)
+    [ColorSelectionModel getSelectionModel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JColorChooser.html#getSelectionModel--)
+    | 设置或获取颜色选择器的选择模型。该对象包含当前选择，并在选择更改时向注册的侦听器触发更改事件。 |'
+- en: Examples that Use Color Choosers
+  id: totrans-99
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用颜色选择器的示例
+- en: This table shows the examples that use `JColorChooser` and where those examples
+    are described.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此表显示使用`JColorChooser`的示例以及这些示例的描述位置。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-101
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注意事项 |'
+- en: '| [ColorChooserDemo](../examples/components/index.html#ColorChooserDemo) |
+    This section | Uses a standard color chooser. |'
+  id: totrans-102
+  prefs: []
+  type: TYPE_TB
+  zh: '| [ColorChooserDemo](../examples/components/index.html#ColorChooserDemo) |
+    此部分 | 使用标准颜色选择器。 |'
+- en: '| [ColorChooserDemo2](../examples/components/index.html#ColorChooserDemo2)
+    | This section | Uses one customized color chooser and one standard color chooser
+    in a dialog created with `showDialog`. |'
+  id: totrans-103
+  prefs: []
+  type: TYPE_TB
+  zh: '| [ColorChooserDemo2](../examples/components/index.html#ColorChooserDemo2)
+    | 此部分 | 在使用`showDialog`创建的对话框中使用一个自定义颜色选择器和一个标准颜色选择器。 |'
+- en: '| [TableDialogEditDemo](../examples/components/index.html#TableDialogEditDemo)
+    | [How to Use Tables](table.html) | Shows how to use a color chooser as a custom
+    cell editor in a table. The color chooser used by this example is created with
+    `createDialog`. |'
+  id: totrans-104
+  prefs: []
+  type: TYPE_TB
+  zh: '| [TableDialogEditDemo](../examples/components/index.html#TableDialogEditDemo)
+    | [如何使用表格](table.html) | 展示如何在表格中使用颜色选择器作为自定义单元格编辑器。该示例中使用的颜色选择器是通过`createDialog`创建的。
+    |'
+- en: '| [BasicDnD](../misc/../examples/dnd/index.html#BasicDnD) | [Introduction to
+    DnD](../dnd/intro.html) | Uses a color chooser that is not in a dialog; demonstrates
+    default drag-and-drop capabilities of Swing components, including color choosers.
+    |'
+  id: totrans-105
+  prefs: []
+  type: TYPE_TB
+  zh: '| [BasicDnD](../misc/../examples/dnd/index.html#BasicDnD) | [DnD简介](../dnd/intro.html)
+    | 使用不在对话框中的颜色选择器；演示了 Swing 组件的默认拖放功能，包括颜色选择器。 |'

@@ -1,0 +1,134 @@
+- en: Updating a JAR File
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 更新JAR文件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/update.html](https://docs.oracle.com/javase/tutorial/deployment/jar/update.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/update.html](https://docs.oracle.com/javase/tutorial/deployment/jar/update.html)
+- en: The Jar tool provides a `u` option which you can use to update the contents
+    of an existing JAR file by modifying its manifest or by adding files.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Jar工具提供了一个`u`选项，您可以使用该选项通过修改清单或添加文件来更新现有JAR文件的内容。
+- en: 'The basic command for adding files has this format:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 添加文件的基本命令格式如下：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'In this command:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此命令中：
+- en: The `u` option indicates that you want to *update* an existing JAR file.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`u`选项表示您要*更新*现有的JAR文件。'
+- en: The `f` option indicates that the JAR file to update is specified on the command
+    line.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`f`选项表示要更新的JAR文件在命令行上指定。'
+- en: '`jar-file` is the existing JAR file that is to be updated.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`jar-file`是要更新的现有JAR文件。'
+- en: '`input-file(s)` is a space-delimited list of one or more files that you want
+    to add to the JAR file.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`input-file(s)`是一个用空格分隔的一个或多个要添加到JAR文件中的文件列表。'
+- en: Any files already in the archive having the same pathname as a file being added
+    will be overwritten.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何已经存在于归档中且与要添加的文件具有相同路径名的文件将被覆盖。
+- en: When creating a new JAR file, you can optionally use the `-C` option to indicate
+    a change of directory. For more information, see the [Creating a JAR File](build.html)
+    section.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建新的JAR文件时，您可以选择使用`-C`选项来指示目录更改。有关更多信息，请参阅[创建JAR文件](build.html)部分。
+- en: Examples
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例
+- en: 'Recall that `TicTacToe.jar` has these contents:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请记住，`TicTacToe.jar`包含以下内容：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Suppose that you want to add the file `images/new.gif` to the JAR file. You
+    could accomplish that by issuing this command from the parent directory of the
+    `images` directory:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想要将文件`images/new.gif`添加到JAR文件中。你可以通过在`images`目录的父目录中发出以下命令来实现：
+- en: '[PRE2]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The revised JAR file would have this table of contents:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 修改后的JAR文件将具有以下目录：
+- en: '[PRE3]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'You can use the `-C` option to "change directories" during execution of the
+    command. For example:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在执行命令期间使用`-C`选项来“更改目录”。例如：
+- en: '[PRE4]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'This command would change to the `images` directory before adding `new.gif`
+    to the JAR file. The `images` directory would not be included in the pathname
+    of `new.gif` when it''s added to the archive, resulting in a table of contents
+    that looks like this:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此命令将在将`new.gif`添加到JAR文件之前切换到`images`目录。当`new.gif`添加到归档中时，`images`目录不会包含在`new.gif`的路径名中，导致目录如下所示：
+- en: '[PRE5]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'

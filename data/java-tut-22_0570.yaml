@@ -1,0 +1,136 @@
+- en: Non-ISO Date Conversion
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 非ISO日期转换
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/nonIso.html](https://docs.oracle.com/javase/tutorial/datetime/iso/nonIso.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/nonIso.html](https://docs.oracle.com/javase/tutorial/datetime/iso/nonIso.html)
+- en: This tutorial does not discuss the [`java.time.chrono`](https://docs.oracle.com/javase/8/docs/api/java/time/chrono/package-summary.html)
+    package in any detail. However, it might be useful to know that this package provides
+    several predefined chronologies that are not ISO-based, such as Japanese, Hijrah,
+    Minguo, and Thai Buddhist. You can also use this package to create your own chronology.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程不会详细讨论[`java.time.chrono`](https://docs.oracle.com/javase/8/docs/api/java/time/chrono/package-summary.html)包。但是，了解到该包提供了几个不基于ISO的预定义年表，如日本、伊斯兰、民国和泰国佛教。您还可以使用此包创建自己的年表。
+- en: This section shows you how to convert between an ISO-based date and a date in
+    one of the other predefined chronologies.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节将向您展示如何在ISO日期和其他预定义年表日期之间进行转换。
+- en: Converting to a Non-ISO-Based Date
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 转换为非ISO日期
+- en: 'You can convert an ISO-based date to a date in another chronology by using
+    the `from(TemporalAccessor)` method, such as [`JapaneseDate.from(TemporalAccessor)`](https://docs.oracle.com/javase/8/docs/api/java/time/chrono/JapaneseDate.html#from-java.time.temporal.TemporalAccessor-).
+    This method throws a `DateTimeException` if it is unable to convert the date to
+    a valid instance. The following code converts a `LocalDateTime` instance to several
+    predefined non-ISO calendar dates:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用`from(TemporalAccessor)`方法将ISO日期转换为其他年表的日期，例如[`JapaneseDate.from(TemporalAccessor)`](https://docs.oracle.com/javase/8/docs/api/java/time/chrono/JapaneseDate.html#from-java.time.temporal.TemporalAccessor-)。如果无法将日期转换为有效实例，则此方法会抛出`DateTimeException`。以下代码将`LocalDateTime`实例转换为几个预定义的非ISO日历日期：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The [``StringConverter``](examples/StringConverter.java) example converts from
+    a `LocalDate` to a `ChronoLocalDate` to a `String` and back. The `toString` method
+    takes an instance of `LocalDate` and a `Chronology` and returns the converted
+    string by using the provided `Chronology`. The `DateTimeFormatterBuilder` is used
+    to build a string that can be used for printing the date:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``StringConverter``](examples/StringConverter.java)示例将从`LocalDate`转换为`ChronoLocalDate`再转换为`String`，然后再转回去。`toString`方法接受`LocalDate`实例和`Chronology`，并通过提供的`Chronology`返回转换后的字符串。`DateTimeFormatterBuilder`用于构建可用于打印日期的字符串：'
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'When the method is invoked with the following date for the predefined chronologies:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用以下日期调用预定义年表的方法时：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The output looks like this:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出如下：
+- en: '[PRE3]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Converting to an ISO-Based Date
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 转换为基于ISO的日期
+- en: 'You can convert from a non-ISO date to a `LocalDate` instance using the static
+    [`LocalDate.from`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#from-java.time.temporal.TemporalAccessor-)
+    method, as shown in the following example:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用静态[`LocalDate.from`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#from-java.time.temporal.TemporalAccessor-)方法将非ISO日期转换为`LocalDate`实例，如下例所示：
+- en: '[PRE4]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Other temporal-based classes also provide this method, which throws a `DateTimeException`
+    if the date cannot be converted.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其他基于时间的类也提供此方法，如果日期无法转换，则会抛出`DateTimeException`。
+- en: The `fromString` method, from the [``StringConverter``](examples/StringConverter.java)
+    example, parses a `String` containing a non-ISO date and returns a `LocalDate`
+    instance.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 来自[``StringConverter``](examples/StringConverter.java)示例的`fromString`方法解析包含非ISO日期的`String`并返回`LocalDate`实例。
+- en: '[PRE5]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'When the method is invoked with the following strings:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用以下字符串调用方法时：
+- en: '[PRE6]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The printed strings should all convert back to October 29th, 1996:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 打印的字符串应该都能转换回1996年10月29日：
+- en: '[PRE7]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'

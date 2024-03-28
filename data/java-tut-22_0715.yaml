@@ -1,0 +1,256 @@
+- en: Processing SQL Statements with JDBC
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用JDBC处理SQL语句
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html)
+- en: 'In general, to process any SQL statement with JDBC, you follow these steps:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一般来说，要使用JDBC处理任何SQL语句，您需要按照以下步骤进行：
+- en: '[Establishing a connection.](#establishing_connections)'
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[建立连接。](#establishing_connections)'
+- en: '[Create a statement.](#creating_statements)'
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[创建语句。](#creating_statements)'
+- en: '[Execute the query.](#executing_queries)'
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[执行查询。](#executing_queries)'
+- en: '[Process the `ResultSet` object.](#processing_resultset_objects)'
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[处理`ResultSet`对象。](#processing_resultset_objects)'
+- en: '[Close the connection.](#closing_connections)'
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[关闭连接。](#closing_connections)'
+- en: 'This page uses the following method, [`CoffeesTable.viewTable`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTable.java),
+    from the tutorial sample to demonstrate these steps. This method outputs the contents
+    of the table `COFFEES`. This method will be discussed in more detail later in
+    this tutorial:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页使用教程示例中的方法[`CoffeesTable.viewTable`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTable.java)来演示这些步骤。此方法输出表`COFFEES`的内容。此方法将在本教程的后续部分中更详细地讨论：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Establishing Connections
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 建立连接
+- en: First, establish a connection with the data source you want to use. A data source
+    can be a DBMS, a legacy file system, or some other source of data with a corresponding
+    JDBC driver. This connection is represented by a `Connection` object. See [Establishing
+    a Connection](connecting.html) for more information.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，与要使用的数据源建立连接。数据源可以是DBMS、传统文件系统或具有相应JDBC驱动程序的其他数据源。此连接由`Connection`对象表示。有关更多信息，请参见[建立连接](connecting.html)。
+- en: Creating Statements
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建语句
+- en: A `Statement` is an interface that represents a SQL statement. You execute `Statement`
+    objects, and they generate `ResultSet` objects, which is a table of data representing
+    a database result set. You need a `Connection` object to create a `Statement`
+    object.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Statement`是表示SQL语句的接口。您执行`Statement`对象，它们生成`ResultSet`对象，这是表示数据库结果集的数据表。您需要一个`Connection`对象来创建`Statement`对象。'
+- en: 'For example, `CoffeesTable.viewTable` creates a `Statement` object with the
+    following code:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，`CoffeesTable.viewTable`使用以下代码创建了一个`Statement`对象：
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'There are three different kinds of statements:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有三种不同类型的语句：
+- en: '`Statement`: Used to implement simple SQL statements with no parameters.'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Statement`：用于执行没有参数的简单SQL语句。'
+- en: '`PreparedStatement`: (Extends `Statement`.) Used for precompiling SQL statements
+    that might contain input parameters. See [Using Prepared Statements](prepared.html)
+    for more information.'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`PreparedStatement`：（扩展`Statement`。）用于预编译可能包含输入参数的SQL语句。有关更多信息，请参见[使用预编译语句](prepared.html)。'
+- en: '`CallableStatement:` (Extends `PreparedStatement`.) Used to execute stored
+    procedures that may contain both input and output parameters. See [Stored Procedures](storedprocedures.html)
+    for more information.'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CallableStatement:`（扩展`PreparedStatement`。）用于执行可能包含输入和输出参数的存储过程。有关更多信息，请参见[存储过程](storedprocedures.html)。'
+- en: Executing Queries
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 执行查询
+- en: 'To execute a query, call an `execute` method from `Statement` such as the following:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要执行查询，请调用`Statement`中的`execute`方法，如下所示：
+- en: '`execute`: Returns `true` if the first object that the query returns is a `ResultSet`
+    object. Use this method if the query could return one or more `ResultSet` objects.
+    Retrieve the `ResultSet` objects returned from the query by repeatedly calling
+    `Statement.getResultSet`.'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`execute`：如果查询返回的第一个对象是`ResultSet`对象，则返回`true`。如果查询可能返回一个或多个`ResultSet`对象，请使用此方法。通过反复调用`Statement.getResultSet`检索查询返回的`ResultSet`对象。'
+- en: '`executeQuery`: Returns one `ResultSet` object.'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`executeQuery`：返回一个`ResultSet`对象。'
+- en: '`executeUpdate`: Returns an integer representing the number of rows affected
+    by the SQL statement. Use this method if you are using `INSERT`, `DELETE`, or
+    `UPDATE` SQL statements.'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`executeUpdate`：返回一个整数，表示受SQL语句影响的行数。如果您使用`INSERT`、`DELETE`或`UPDATE` SQL语句，请使用此方法。'
+- en: 'For example, `CoffeesTable.viewTable` executed a `Statement` object with the
+    following code:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，`CoffeesTable.viewTable`使用以下代码执行了一个`Statement`对象：
+- en: '[PRE2]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: See [Retrieving and Modifying Values from Result Sets](retrieving.html) for
+    more information.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关更多信息，请参见[从结果集中检索和修改值](retrieving.html)。
+- en: Processing ResultSet Objects
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理ResultSet对象
+- en: You access the data in a `ResultSet` object through a cursor. Note that this
+    cursor is not a database cursor. This cursor is a pointer that points to one row
+    of data in the `ResultSet` object. Initially, the cursor is positioned before
+    the first row. You call various methods defined in the `ResultSet` object to move
+    the cursor.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过游标访问`ResultSet`对象中的数据。请注意，此游标不是数据库游标。这个游标是指向`ResultSet`对象中一行数据的指针。最初，游标位于第一行之前。您调用`ResultSet`对象中定义的各种方法来移动游标。
+- en: 'For example, `CoffeesTable.viewTable` repeatedly calls the method `ResultSet.next`
+    to move the cursor forward by one row. Every time it calls `next`, the method
+    outputs the data in the row where the cursor is currently positioned:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，`CoffeesTable.viewTable`重复调用`ResultSet.next`方法来将游标向前移动一行。每次调用`next`时，该方法会输出游标当前位置的行中的数据：
+- en: '[PRE3]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: See [Retrieving and Modifying Values from Result Sets](retrieving.html) for
+    more information.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[从结果集中检索和修改值](retrieving.html)获取更多信息。
+- en: Closing Connections
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 关闭连接
+- en: When you are finished using a `Connection`, `Statement`, or `ResultSet` object,
+    call its `close` method to immediately release the resources it's using.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您使用完`Connection`、`Statement`或`ResultSet`对象后，请调用其`close`方法立即释放它正在使用的资源。
+- en: 'Alternatively, use a `try`-with-resources statement to automatically close
+    `Connection`, `Statement`, and `ResultSet` objects, regardless of whether an `SQLException`
+    has been thrown. (JDBC throws an `SQLException` when it encounters an error during
+    an interaction with a data source. See [Handling SQL Exceptions](sqlexception.html)
+    for more information.) An automatic resource statement consists of a `try` statement
+    and one or more declared resources. For example, the `CoffeesTable.viewTable`
+    method automatically closes its `Statement` object, as follows:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，可以使用`try`-with-resources语句自动关闭`Connection`、`Statement`和`ResultSet`对象，无论是否抛出`SQLException`。（当JDBC在与数据源交互时遇到错误时，会抛出`SQLException`。查看[处理SQL异常](sqlexception.html)获取更多信息。）自动资源语句由一个`try`语句和一个或多个声明的资源组成。例如，`CoffeesTable.viewTable`方法会自动关闭其`Statement`对象，如下所示：
+- en: '[PRE4]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The following statement is a `try`-with-resources statement, which declares
+    one resource, `stmt`, that will be automatically closed when the `try` block terminates:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下语句是一个`try`-with-resources语句，声明了一个资源`stmt`，当`try`块终止时将自动关闭该资源：
+- en: '[PRE5]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: See [The `try`-with-resources Statement](../../essential/exceptions/tryResourceClose.html)
+    in the [Essential Classes](../../essential/index.html) trail for more information.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[try-with-resources语句](../../essential/exceptions/tryResourceClose.html)在[Essential
+    Classes](../../essential/index.html)教程中获取更多信息。

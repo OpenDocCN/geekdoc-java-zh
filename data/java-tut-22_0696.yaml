@@ -1,0 +1,115 @@
+- en: Creating a Project
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建一个项目
+- en: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/quick/project.html](https://docs.oracle.com/javase/tutorial/javabeans/quick/project.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/quick/project.html](https://docs.oracle.com/javase/tutorial/javabeans/quick/project.html)
+- en: The easiest way to learn about JavaBeans is to start using them. To begin, [download
+    and install the latest version of NetBeans](http://netbeans.org/). This tutorial
+    describes how to use NetBeans version 7.0.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 学习JavaBeans最简单的方法是开始使用它们。首先，[下载并安装最新版本的NetBeans](http://netbeans.org/)。本教程描述了如何使用NetBeans
+    7.0 版本。
+- en: NetBeans is a *bean builder tool*, which means it recognizes JavaBeans components
+    (beans) and enables you to snap components together into an application with ease.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: NetBeans是一个*bean构建工具*，这意味着它识别JavaBeans组件（bean）并使您能够轻松地将组件拼接在一起形成应用程序。
+- en: A Button is a Bean
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 按钮是一个Bean
+- en: Start NetBeans. Choose **File > New Project...** from the menu.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 启动NetBeans。从菜单中选择**文件 > 新建项目...**。
+- en: '[![Choose Java and Java Application](../Images/b2f1338e55cdb10bed9ba642449a3332.png)](../../figures/javabeans/new-project-1.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![选择Java和Java应用程序](../Images/b2f1338e55cdb10bed9ba642449a3332.png)](../../figures/javabeans/new-project-1.png)'
+- en: Click for full image
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击查看完整图片
+- en: Select **Java** from the **Categories** list and select **Java Application**
+    from the **Projects** list. Click **Next >**.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从**类别**列表中选择**Java**，从**项目**列表中选择**Java应用程序**。点击**下一步 >**。
+- en: '[![Enter a project name](../Images/cc99e3cff23fc336d1fc62a1914ac711.png)](../../figures/javabeans/new-project-2.png)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![输入项目名称](../Images/cc99e3cff23fc336d1fc62a1914ac711.png)](../../figures/javabeans/new-project-2.png)'
+- en: Click for full image
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击查看完整图片
+- en: 'Enter **SnapApp** as the application name. Uncheck **Create Main Class** and
+    click **Finish**. NetBeans creates the new project and you can see it in NetBeans''
+    **Projects** pane:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输入**SnapApp**作为应用程序名称。取消选中**创建主类**，然后点击**完成**。NetBeans创建新项目，您可以在NetBeans的**项目**窗格中看到它：
+- en: '![SnapApp in the Projects pane](../Images/39bca8212461c453cddd6e48f4318087.png)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_IMG
+  zh: '![项目窗格中的SnapApp](../Images/39bca8212461c453cddd6e48f4318087.png)'
+- en: Control-click on the **SnapApp** project and choose **New > JFrame Form...**
+    from the popup menu.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在**SnapApp**项目上按住控制键单击，从弹出菜单中选择**新建 > JFrame表单...**。
+- en: '[![Create a new frame](../Images/9bb25000480aa402e6c9ec3a7588d61e.png)](../../figures/javabeans/snapapp-new-jframe.png)'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![创建新框架](../Images/9bb25000480aa402e6c9ec3a7588d61e.png)](../../figures/javabeans/snapapp-new-jframe.png)'
+- en: Click for full image
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击查看完整图片
+- en: 'Fill in **SnapFrame** for the class name and **snapapp** as the package. Click
+    **Finish**. NetBeans creates the new class and shows its visual designer:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在类名中填写**SnapFrame**，包名填写**snapapp**。点击**完成**。NetBeans创建新类并显示其可视化设计工具：
+- en: '[![NetBeans'' visual designer](../Images/bea5e1003626d780e9bc211c3e80e604.png)](../../figures/javabeans/SnapFrame-Design.png)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![NetBeans的可视化设计工具](../Images/bea5e1003626d780e9bc211c3e80e604.png)](../../figures/javabeans/SnapFrame-Design.png)'
+- en: Click for full image
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击查看完整图片
+- en: In the **Projects** pane on the left, you can see the newly created `SnapFrame`
+    class. In the center of the screen is the NetBeans visual designer. On the right
+    side is the **Palette**, which contains all the components you can add to the
+    frame in the visual designer.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在左侧的**项目**窗格中，您可以看到新创建的`SnapFrame`类。屏幕中央是NetBeans的可视化设计工具。右侧是**Palette**，其中包含您可以在可视化设计工具中添加到框架中的所有组件。

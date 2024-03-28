@@ -1,0 +1,94 @@
+- en: Retrieving and Parsing Constructor Modifiers
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 检索和解析构造函数修饰符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/ctorModifiers.html](https://docs.oracle.com/javase/tutorial/reflect/member/ctorModifiers.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/ctorModifiers.html](https://docs.oracle.com/javase/tutorial/reflect/member/ctorModifiers.html)
+- en: 'Because of the role of constructors in the language, fewer modifiers are meaningful
+    than for methods:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于构造函数在语言中的作用，比方法更少的修饰符是有意义的：
+- en: 'Access modifiers: `public`, `protected`, and `private`'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 访问修饰符：`public`，`protected`和`private`
+- en: Annotations
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 注解
+- en: The [``ConstructorAccess``](example/ConstructorAccess.java) example searches
+    for constructors in a given class with the specified access modifier. It also
+    displays whether the constructor is synthetic (compiler-generated) or of variable
+    arity.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``ConstructorAccess``](example/ConstructorAccess.java)示例在给定类中搜索具有指定访问修饰符的构造函数。它还显示构造函数是否是合成的（由编译器生成）或具有可变参数。'
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: There is not an explicit [`Modifier`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Modifier.html)
+    constant which corresponds to "package-private" access, so it is necessary to
+    check for the absence of all three access modifiers to identify a package-private
+    constructor.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 没有明确对应于“包私有”访问权限的[`Modifier`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Modifier.html)常量，因此需要检查所有三个访问修饰符的缺失来识别包私有构造函数。
+- en: 'This output shows the private constructors in [`java.io.File`](https://docs.oracle.com/javase/8/docs/api/java/io/File.html):'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此输出显示了[`java.io.File`](https://docs.oracle.com/javase/8/docs/api/java/io/File.html)中的私有构造函数：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Synthetic constructors are rare; however the [``SyntheticConstructor``](example/SyntheticConstructor.java)
+    example illustrates a typical situation where this may occur:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 合成构造函数很少见；但是[``SyntheticConstructor``](example/SyntheticConstructor.java)示例说明了可能发生这种情况的典型情况：
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '[PRE3]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Since the inner class's constructor references the private constructor of the
+    enclosing class, the compiler must generate a package-private constructor. The
+    parameter type `SyntheticConstructor$1` is arbitrary and dependent on the compiler
+    implementation. Code which depends on the presence of any synthetic or non-public
+    class members may not be portable.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于内部类的构造函数引用了封闭类的私有构造函数，编译器必须生成一个包私有构造函数。参数类型`SyntheticConstructor$1`是任意的，取决于编译器的实现。依赖于任何合成或非公共类成员存在的代码可能不具有可移植性。
+- en: Constructors implement [`java.lang.reflect.AnnotatedElement`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AnnotatedElement.html),
+    which provides methods to retrieve runtime annotations with [`java.lang.annotation.RetentionPolicy.RUNTIME`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html#RUNTIME).
+    For an example of obtaining annotations see the [Examining Class Modifiers and
+    Types](../class/classModifiers.html) section.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 构造函数实现了[`java.lang.reflect.AnnotatedElement`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AnnotatedElement.html)，提供了用于检索运行时注解的方法，使用[`java.lang.annotation.RetentionPolicy.RUNTIME`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/RetentionPolicy.html#RUNTIME)。有关获取注解的示例，请参见[检查类修饰符和类型](../class/classModifiers.html)部分。

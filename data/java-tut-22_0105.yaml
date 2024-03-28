@@ -1,0 +1,144 @@
+- en: 'Questions and Exercises: Numbers'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习：数字
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/data/QandE/numbers-questions.html](https://docs.oracle.com/javase/tutorial/java/data/QandE/numbers-questions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/data/QandE/numbers-questions.html](https://docs.oracle.com/javase/tutorial/java/data/QandE/numbers-questions.html)
+- en: Questions
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 问题
+- en: 'Use the API documentation to find the answers to the following questions:'
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用 API 文档找到以下问题的答案：
+- en: What `Integer` method can you use to convert an `int` into a string that expresses
+    the number in hexadecimal? For example, what method converts the integer 65 into
+    the string "41"?
+  id: totrans-4
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 你可以使用哪个`Integer`方法将`int`转换为以十六进制表示数字的字符串？例如，哪个方法将整数 65 转换为字符串“41”？
+- en: What `Integer` method would you use to convert a string expressed in base 5
+    into the equivalent `int`? For example, how would you convert the string "230"
+    into the integer value 65? Show the code you would use to accomplish this task.
+  id: totrans-5
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 你会使用哪个`Integer`方法将以基数 5 表示的字符串转换为相应的`int`？例如，如何将字符串“230”转换为整数值 65？展示你将用于完成此任务的代码。
+- en: What Double method can you use to detect whether a floating-point number has
+    the special value Not a Number (`NaN`)?
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 你可以使用哪个 Double 方法来检测浮点数是否具有特殊值“非数字”（`NaN`）？
+- en: What is the value of the following expression, and why?
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 以下表达式的值是多少，为什么？
+- en: '[PRE0]'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Exercises
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 练习
+- en: Change [`MaxVariablesDemo`](MaxVariablesDemo.java) to show minimum values instead
+    of maximum values. You can delete all code related to the variables `aChar` and
+    `aBoolean`. What is the output?
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将[`MaxVariablesDemo`](MaxVariablesDemo.java)更改为显示最小值而不是最大值。您可以删除与变量`aChar`和`aBoolean`相关的所有代码。输出是什么？
+- en: 'Create a program that reads an unspecified number of integer arguments from
+    the command line and adds them together. For example, suppose that you enter the
+    following:'
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个程序，从命令行读取未指定数量的整数参数并将它们相加。例如，假设您输入以下内容：
+- en: '[PRE1]'
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The program should display `16` and then exit. The program should display an
+    error message if the user enters only one argument. You can base your program
+    on [`ValueOfDemo`](../../data/examples/ValueOfDemo.java).
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 程序应显示`16`，然后退出。如果用户只输入一个参数，程序应显示错误消息。您可以基于[`ValueOfDemo`](../../data/examples/ValueOfDemo.java)编写您的程序。
+- en: 'Create a program that is similar to the previous one but has the following
+    differences:'
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个类似于上一个程序但具有以下区别的程序：
+- en: Instead of reading integer arguments, it reads floating-point arguments.
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它不是读取整数参数，而是读取浮点参数。
+- en: It displays the sum of the arguments, using exactly two digits to the right
+    of the decimal point.
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它显示参数的总和，小数点右侧正好有两位。
+- en: 'For example, suppose that you enter the following:'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 例如，假设您输入以下内容：
+- en: '[PRE2]'
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The program would display `108.75`. Depending on your locale, the decimal point
+    might be a comma (`,`) instead of a period (`.`).
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 程序将显示`108.75`。根据您的区域设置，小数点可能是逗号（`,`）而不是句号（`.`）。
+- en: '[Check your answers.](numbers-answers.html)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[检查你的答案。](numbers-answers.html)'

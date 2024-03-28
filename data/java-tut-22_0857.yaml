@@ -1,0 +1,49 @@
+- en: Prepare Initial Program Structure
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 准备初始程序结构
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/step1.html](https://docs.oracle.com/javase/tutorial/security/apisign/step1.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/step1.html](https://docs.oracle.com/javase/tutorial/security/apisign/step1.html)
+- en: Here's the basic structure of the `GenSig` program. Place it in a file called
+    `GenSig.java`.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是`GenSig`程序的基本结构。将其放在名为`GenSig.java`的文件中。
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Notes:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意：
+- en: The methods for signing data are in the `java.security` package, so the program
+    imports everything from that package. The program also imports the `java.io` package,
+    which contains the methods needed to input the file data to be signed.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 签署数据的方法位于`java.security`包中，因此程序从该包中导入所有内容。程序还导入了`java.io`包，其中包含输入要签名的文件数据所需的方法。
+- en: A single argument is expected, specifying the data file to be signed.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 期望提供一个参数，指定要签名的数据文件。
+- en: The code written in subsequent steps will go between the `try` and the `catch`
+    blocks.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 后续步骤中编写的代码将放在`try`和`catch`块之间。

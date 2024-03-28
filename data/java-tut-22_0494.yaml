@@ -1,0 +1,217 @@
+- en: How to Write a List Data Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写列表数据监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/listdatalistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/listdatalistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/listdatalistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/listdatalistener.html)
+- en: "List data events occur when the contents of a mutable [list](../components/list.html)\
+    \ change. Since the model \x97 not the component \x97 fires these events, you\
+    \ have to register a list data listener with the list model. If you have not explicitly\
+    \ created a list with a mutable list model, then your list is immutable, and its\
+    \ model will not fire these events."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当可变[列表](../components/list.html)的内容发生变化时，会触发列表数据事件。由于模型而不是组件触发这些事件，因此您必须向列表模型注册列表数据监听器。如果您没有显式创建具有可变列表模型的列表，则您的列表是不可变的，其模型不会触发这些事件。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: '[Combo box](../components/combobox.html) models also fire list data events.
+    However, you normally do not need to know about them unless you are [creating
+    a custom combo box model](../components/combobox.html#datsun).'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[组合框](../components/combobox.html) 模型也会触发列表数据事件。但是，除非你正在[创建自定义组合框模型](../components/combobox.html#datsun)，否则通常不需要了解它们。'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The following example demonstrates list data events on a mutable list:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例演示了可变列表上的列表数据事件：
+- en: '![An output of the ListDataEventDemo which demonstrates list data events. ](../Images/30ed91ef6f197343ddb152e3180b50b7.png)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_IMG
+  zh: '![演示列表数据事件的 ListDataEventDemo 输出。](../Images/30ed91ef6f197343ddb152e3180b50b7.png)'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run ListDataEventDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/events/index.html#ListDataEventDemo).[![Launches
+    the ListDataEventDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ListDataEventDemoProject/ListDataEventDemo.jnlp)
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行
+    ListDataEventDemo（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/events/index.html#ListDataEventDemo)。[![启动
+    ListDataEventDemo 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ListDataEventDemoProject/ListDataEventDemo.jnlp)
+- en: Type in the name of your favorite ski resort and click the **Add** button. An
+    `intervalAdded` event was fired.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 输入你最喜欢的滑雪胜地的名称，然后点击**添加**按钮。将触发一个 `intervalAdded` 事件。
+- en: Select a few contiguous items in the list and click the **Delete** button. An
+    `intervalRemoved` event was fired.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在列表中选择几个连续的项目，然后点击**删除**按钮。将触发一个 `intervalRemoved` 事件。
+- en: Select one item and move it up or down in the list with the arrow buttons. Two
+    `contentsChanged` events are fired — one for the item that moved and one for the
+    item that was displaced.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 选择一个项目，然后使用箭头按钮将其上移或下移。将触发两个 `contentsChanged` 事件 — 一个是移动的项目，另一个是被替换的项目。
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'You can find the demo''s code in [`ListDataEventDemo.java`](../examples/events/ListDataEventDemoProject/src/events/ListDataEventDemo.java).
+    Here is the code that registers a list data listener on the list model and implements
+    the listener:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在[`ListDataEventDemo.java`](../examples/events/ListDataEventDemoProject/src/events/ListDataEventDemo.java)中找到演示的代码。以下是在列表模型上注册列表数据监听器并实现监听器的代码：
+- en: '[PRE0]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The List Data Listener API
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 列表数据监听器 API
+- en: The ListDataListener Interface
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列表数据监听器接口
+- en: '*`ListDataListener` has no corresponding adapter class.*'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*`ListDataListener` 没有对应的适配器类。*'
+- en: '| Method | Purpose |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [intervalAdded(ListDataEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataListener.html#intervalAdded-javax.swing.event.ListDataEvent-)
+    | Called when one or more items have been added to the list. |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| [intervalAdded(ListDataEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataListener.html#intervalAdded-javax.swing.event.ListDataEvent-)
+    | 当一个或多个项目被添加到列表时调用。 |'
+- en: '| [intervalRemoved(ListDataEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataListener.html#intervalRemoved-javax.swing.event.ListDataEvent-)
+    | Called when one or more items have been removed from the list. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| [intervalRemoved(ListDataEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataListener.html#intervalRemoved-javax.swing.event.ListDataEvent-)
+    | 当一个或多个项目从列表中被移除时调用。 |'
+- en: '| [contentsChanged(ListDataEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataListener.html#contentsChanged-javax.swing.event.ListDataEvent-)
+    | Called when the contents of one or more items in the list have changed. |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| [contentsChanged(ListDataEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataListener.html#contentsChanged-javax.swing.event.ListDataEvent-)
+    | 当列表中一个或多个项目的内容发生更改时调用。 |'
+- en: The ListDataEvent API
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ListDataEvent API
+- en: '| Method | Purpose |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*in `java.util.EventObject`*) | Return the object that fired the event. |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*在 `java.util.EventObject` 中*) | 返回触发事件的对象。 |'
+- en: '| [int getIndex0()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataEvent.html#getIndex0--)
+    | Return the index of the first item whose value has changed. |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getIndex0()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataEvent.html#getIndex0--)
+    | 返回值发生更改的第一个项目的索引。 |'
+- en: '| [int getIndex1()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataEvent.html#getIndex1--)
+    | Return the index of the last item whose value has changed. |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getIndex1()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataEvent.html#getIndex1--)
+    | 返回值发生更改的最后一个项目的索引。 |'
+- en: '| [int getType()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataEvent.html#getType--)
+    | Return the event type. The possible values are: `CONTENTS_CHANGED`, `INTERVAL_ADDED`,
+    or `INTERVAL_REMOVED`. |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getType()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/ListDataEvent.html#getType--)
+    | 返回事件类型。可能的值为：`CONTENTS_CHANGED`、`INTERVAL_ADDED` 或 `INTERVAL_REMOVED`。 |'
+- en: Examples that Use List Data Listeners
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用列表数据监听器的示例
+- en: The following table lists the examples that use list data listeners.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了使用列表数据监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`ListDataEventDemo`](../examples/events/index.html#ListDataEventDemo) |
+    This section | Reports all list data events that occur on a list. |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ListDataEventDemo`](../examples/events/index.html#ListDataEventDemo) |
+    本节 | 报告列表上发生的所有列表数据事件。 |'

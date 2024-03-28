@@ -1,0 +1,129 @@
+- en: Setting Trusted Arguments and Secure Properties
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 设置可信参数和安全属性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/settingArgsProperties.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/settingArgsProperties.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/settingArgsProperties.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/settingArgsProperties.html)
+- en: You can set certain Java Virtual Machine arguments and secure properties for
+    your rich Internet application (RIA) in the RIA's Java Network Launch Protocol
+    (JNLP) file. For applets, you can also set arguments in the `java_arguments` parameter
+    of the `<applet>` tag. Although there is a predefined set of secure properties,
+    you can also define new secure properties by prefixing the property name with
+    "`jnlp.`" or "`javaws.`". Properties can be retrieved in your RIA by using the
+    `System.getProperty` method.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在富互联网应用程序（RIA）的Java网络启动协议（JNLP）文件中设置特定的Java虚拟机参数和安全属性。对于小程序，你还可以在`<applet>`标签的`java_arguments`参数中设置参数。虽然有一组预定义的安全属性，但你也可以通过在属性名称前加上"`jnlp.`"或"`javaws.`"来定义新的安全属性。可以通过使用`System.getProperty`方法在你的RIA中检索属性。
+- en: Consider the Properties and Arguments Demo applet. The following Java Virtual
+    Machine arguments and properties are set in the applet's JNLP file, [`appletpropsargs.jnlp`](examples/applet_PropertiesAndVMArgs/src/appletpropsargs.jnlp).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑属性和参数演示小程序。以下Java虚拟机参数和属性在小程序的JNLP文件[`appletpropsargs.jnlp`](examples/applet_PropertiesAndVMArgs/src/appletpropsargs.jnlp)中设置。
+- en: '`-Xmx` – A secure argument set equal to "256M"'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`-Xmx` – 一个安全参数，设置为"256M"'
+- en: '`sun.java2d.noddraw` – A predefined secure property set equal to "true"'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`sun.java2d.noddraw` – 一个预定义的安全属性，设置为"true"'
+- en: '`jnlp.myProperty` – A user-defined secure property set equal to "a user-defined
+    property"'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`jnlp.myProperty` – 一个用户定义的安全属性，设置为"a user-defined property"'
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The [`PropertiesArgsDemoApplet`](examples/applet_PropertiesAndVMArgs/src/PropertiesArgsDemoApplet.java)
+    class uses the `System.getProperty` method to retrieve the `java.version` property
+    and other properties that are set in the JNLP file. The `PropertiesArgsDemoApplet`
+    class also displays the properties.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`PropertiesArgsDemoApplet`](examples/applet_PropertiesAndVMArgs/src/PropertiesArgsDemoApplet.java)类使用`System.getProperty`方法检索在JNLP文件中设置的`java.version`属性和其他属性。`PropertiesArgsDemoApplet`类还显示这些属性。'
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The Properties and Arguments Demo applet is shown next. You can also see the
+    applet running in [`AppletPage.html`](examples/dist/applet_PropertiesAndVMArgs/AppletPage.html).
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来显示属性和参数演示小程序。你也可以在[`AppletPage.html`](examples/dist/applet_PropertiesAndVMArgs/AppletPage.html)中看到小程序运行。
+- en: '//&lt;![CDATA[ var attributes = { code:''PropertiesArgsDemoApplet.class'',
+    archive:''examples/dist/applet_PropertiesAndVMArgs/applet_PropertiesAndVMArgs.jar'',
+    width:800, height:50} ; var parameters = { jnlp_href: ''examples/dist/applet_PropertiesAndVMArgs/appletpropsargs.jnlp''
+    }; deployJava.runApplet(attributes, parameters, ''1.6''); //]]&gt;'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '//&lt;![CDATA[ var attributes = { code:''PropertiesArgsDemoApplet.class'',
+    archive:''examples/dist/applet_PropertiesAndVMArgs/applet_PropertiesAndVMArgs.jar'',
+    width:800, height:50} ; var parameters = { jnlp_href: ''examples/dist/applet_PropertiesAndVMArgs/appletpropsargs.jnlp''
+    }; deployJava.runApplet(attributes, parameters, ''1.6''); //]]&gt;'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果你看不到小程序运行，你需要安装至少[Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果你看不到示例运行，请确保在浏览器中启用JavaScript解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[Download source code](examplesIndex.html#PropertiesAndVMArgs) for the *Properties
+    and Arguments Demo Applet* example to experiment further.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#PropertiesAndVMArgs)以进一步实验*属性和参数演示小程序*示例。'
+- en: See [System Properties](properties.html) for a complete set of system properties
+    that can be accessed by RIAs.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[系统属性](properties.html)以获取可以被RIA访问的完整系统属性集。

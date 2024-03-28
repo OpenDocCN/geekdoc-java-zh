@@ -1,0 +1,240 @@
+- en: Predefined Annotation Types
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 预定义的注解类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/annotations/predefined.html](https://docs.oracle.com/javase/tutorial/java/annotations/predefined.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/annotations/predefined.html](https://docs.oracle.com/javase/tutorial/java/annotations/predefined.html)
+- en: A set of annotation types are predefined in the Java SE API. Some annotation
+    types are used by the Java compiler, and some apply to other annotations.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一组注解类型在Java SE API中预定义。一些注解类型由Java编译器使用，而一些适用于其他注解。
+- en: Annotation Types Used by the Java Language
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Java语言使用的注解类型
+- en: The predefined annotation types defined in `java.lang` are `@Deprecated`, `@Override`,
+    and `@SuppressWarnings`.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`java.lang`中定义的预定义注解类型为`@Deprecated`、`@Override`和`@SuppressWarnings`。
+- en: '**@Deprecated** [`@Deprecated`](https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html)
+    annotation indicates that the marked element is *deprecated* and should no longer
+    be used. The compiler generates a warning whenever a program uses a method, class,
+    or field with the `@Deprecated` annotation. When an element is deprecated, it
+    should also be documented using the Javadoc `@deprecated` tag, as shown in the
+    following example. The use of the at sign (`@`) in both Javadoc comments and in
+    annotations is not coincidental: they are related conceptually. Also, note that
+    the Javadoc tag starts with a lowercase *d* and the annotation starts with an
+    uppercase *D*.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**@Deprecated** [`@Deprecated`](https://docs.oracle.com/javase/8/docs/api/java/lang/Deprecated.html)
+    注解表示标记的元素已被*弃用*，不应再使用。每当程序使用带有`@Deprecated`注解的方法、类或字段时，编译器都会生成警告。当元素被弃用时，还应使用Javadoc的`@deprecated`标签进行文档化，如下例所示。在Javadoc注释和注解中使用`@`符号并非巧合：它们在概念上是相关的。另外，请注意，Javadoc标签以小写*d*开头，而注解以大写*D*开头。'
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '**@Override** [`@Override`](https://docs.oracle.com/javase/8/docs/api/java/lang/Override.html)
+    annotation informs the compiler that the element is meant to override an element
+    declared in a superclass. Overriding methods will be discussed in [Interfaces
+    and Inheritance](../IandI/index.html).'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**@Override** [`@Override`](https://docs.oracle.com/javase/8/docs/api/java/lang/Override.html)
+    注解告诉编译器，该元素意在覆盖在超类中声明的元素。覆盖方法将在[接口和继承](../IandI/index.html)中讨论。'
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: While it is not required to use this annotation when overriding a method, it
+    helps to prevent errors. If a method marked with `@Override` fails to correctly
+    override a method in one of its superclasses, the compiler generates an error.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然在覆盖方法时不是必须使用此注解，但它有助于防止错误。如果标记为`@Override`的方法未能正确覆盖其超类中的方法，编译器将生成错误。
+- en: '**@SuppressWarnings** [`@SuppressWarnings`](https://docs.oracle.com/javase/8/docs/api/java/lang/SuppressWarnings.html)
+    annotation tells the compiler to suppress specific warnings that it would otherwise
+    generate. In the following example, a deprecated method is used, and the compiler
+    usually generates a warning. In this case, however, the annotation causes the
+    warning to be suppressed.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**@SuppressWarnings** [`@SuppressWarnings`](https://docs.oracle.com/javase/8/docs/api/java/lang/SuppressWarnings.html)
+    注解告诉编译器抑制其通常生成的特定警告。在下面的示例中，使用了一个已弃用的方法，编译器通常会生成警告。然而，在这种情况下，该注解导致警告被抑制。'
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Every compiler warning belongs to a category. The Java Language Specification
+    lists two categories: `deprecation` and `unchecked`. The `unchecked` warning can
+    occur when interfacing with legacy code written before the advent of [generics](../generics/index.html).
+    To suppress multiple categories of warnings, use the following syntax:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个编译器警告都属于一个类别。Java语言规范列出了两个类别：`deprecation`和`unchecked`。当与在[泛型](../generics/index.html)出现之前编写的旧代码进行接口时，可能会出现`unchecked`警告。要抑制多个类别的警告，请使用以下语法：
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '**@SafeVarargs** [`@SafeVarargs`](https://docs.oracle.com/javase/8/docs/api/java/lang/SafeVarargs.html)
+    annotation, when applied to a method or constructor, asserts that the code does
+    not perform potentially unsafe operations on its `varargs` parameter. When this
+    annotation type is used, unchecked warnings relating to `varargs` usage are suppressed.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**@SafeVarargs** [`@SafeVarargs`](https://docs.oracle.com/javase/8/docs/api/java/lang/SafeVarargs.html)
+    注解，当应用于方法或构造函数时，断言代码不对其`varargs`参数执行潜在不安全的操作。使用此注解类型时，与`varargs`使用相关的未经检查的警告将被抑制。'
+- en: '**@FunctionalInterface** [`@FunctionalInterface`](https://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html)
+    annotation, introduced in Java SE 8, indicates that the type declaration is intended
+    to be a functional interface, as defined by the Java Language Specification.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**@FunctionalInterface** [`@FunctionalInterface`](https://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html)
+    注解，引入于Java SE 8，指示类型声明旨在成为功能接口，如Java语言规范所定义。'
+- en: Annotations That Apply to Other Annotations
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 适用于其他注解的注解
+- en: Annotations that apply to other annotations are called *meta-annotations*. There
+    are several meta-annotation types defined in `java.lang.annotation`.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 适用于其他注解的注解称为*元注解*。在`java.lang.annotation`中定义了几种元注解类型。
+- en: '**@Retention** [`@Retention`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Retention.html)
+    annotation specifies how the marked annotation is stored:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**@Retention** [`@Retention`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Retention.html)
+    注解指定标记的注解如何存储：'
+- en: '`RetentionPolicy.SOURCE` – The marked annotation is retained only in the source
+    level and is ignored by the compiler.'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`RetentionPolicy.SOURCE` – 标记的注解仅在源级别保留，并被编译器忽略。'
+- en: '`RetentionPolicy.CLASS` – The marked annotation is retained by the compiler
+    at compile time, but is ignored by the Java Virtual Machine (JVM).'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`RetentionPolicy.CLASS` – 标记的注解在编译时由编译器保留，但在Java虚拟机（JVM）中被忽略。'
+- en: '`RetentionPolicy.RUNTIME` – The marked annotation is retained by the JVM so
+    it can be used by the runtime environment.'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`RetentionPolicy.RUNTIME` – 标记的注解由JVM保留，因此可以被运行时环境使用。'
+- en: '**@Documented** [`@Documented`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Documented.html)
+    annotation indicates that whenever the specified annotation is used those elements
+    should be documented using the Javadoc tool. (By default, annotations are not
+    included in Javadoc.) For more information, see the [Javadoc tools page](https://docs.oracle.com/javase/8/docs/technotes/guides/javadoc/index.html).'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**@Documented** [`@Documented`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Documented.html)
+    注解指示每当使用指定的注解时，应使用Javadoc工具记录这些元素。（默认情况下，注解不包含在Javadoc中。）有关更多信息，请参阅[Javadoc工具页面](https://docs.oracle.com/javase/8/docs/technotes/guides/javadoc/index.html)。'
+- en: '**@Target** [`@Target`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Target.html)
+    annotation marks another annotation to restrict what kind of Java elements the
+    annotation can be applied to. A target annotation specifies one of the following
+    element types as its value:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**@Target** [`@Target`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Target.html)
+    注解标记另一个注解，限制注解可以应用于哪种Java元素。目标注解将以下元素类型之一指定为其值：'
+- en: '`ElementType.ANNOTATION_TYPE` can be applied to an annotation type.'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ElementType.ANNOTATION_TYPE` 可以应用于注解类型。'
+- en: '`ElementType.CONSTRUCTOR` can be applied to a constructor.'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ElementType.CONSTRUCTOR` 可以应用于构造函数。'
+- en: '`ElementType.FIELD` can be applied to a field or property.'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ElementType.FIELD` 可以应用于字段或属性。'
+- en: '`ElementType.LOCAL_VARIABLE` can be applied to a local variable.'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ElementType.LOCAL_VARIABLE` 可以应用于局部变量。'
+- en: '`ElementType.METHOD` can be applied to a method-level annotation.'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ElementType.METHOD` 可以应用于方法级别的注解。'
+- en: '`ElementType.PACKAGE` can be applied to a package declaration.'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ElementType.PACKAGE` 可以应用于包声明。'
+- en: '`ElementType.PARAMETER` can be applied to the parameters of a method.'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ElementType.PARAMETER` 可以应用于方法的参数。'
+- en: '`ElementType.TYPE` can be applied to any element of a class.'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ElementType.TYPE` 可以应用于类的任何元素。'
+- en: '**@Inherited** [`@Inherited`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Inherited.html)
+    annotation indicates that the annotation type can be inherited from the super
+    class. (This is not true by default.) When the user queries the annotation type
+    and the class has no annotation for this type, the class'' superclass is queried
+    for the annotation type. This annotation applies only to class declarations.'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**@Inherited** [`@Inherited`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Inherited.html)
+    注解指示注解类型可以从超类继承。（默认情况下不是这样。）当用户查询注解类型并且类没有此类型的注解时，将查询类的超类以获取注解类型。此注解仅适用于类声明。'
+- en: '**@Repeatable** [`@Repeatable`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Repeatable.html)
+    annotation, introduced in Java SE 8, indicates that the marked annotation can
+    be applied more than once to the same declaration or type use. For more information,
+    see [Repeating Annotations](repeating.html).'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**@Repeatable** [`@Repeatable`](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/Repeatable.html)
+    注解，引入于Java SE 8，表示标记的注解可以多次应用于同一声明或类型使用。有关更多信息，请参阅[重复注解](repeating.html)。'

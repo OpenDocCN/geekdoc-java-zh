@@ -1,0 +1,94 @@
+- en: Scope
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 范围
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/scope.html](https://docs.oracle.com/javase/tutorial/jndi/ops/scope.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/scope.html](https://docs.oracle.com/javase/tutorial/jndi/ops/scope.html)
+- en: The default [`SearchControls`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html)
+    specifies that the search is to be performed in the named context ( [`SearchControls.ONELEVEL_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#ONELEVEL_SCOPE)).
+    This default is used in the examples in the [Search Filters section](filter.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认的[`SearchControls`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html)指定搜索在命名上下文中执行（[`SearchControls.ONELEVEL_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#ONELEVEL_SCOPE)）。这个默认设置在[搜索过滤器部分](filter.html)的示例中使用。
+- en: In addition to this default, you can specify that the search be performed in
+    the *entire subtree* or only in the named object.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了这个默认设置外，您还可以指定搜索在*整个子树*或仅在命名对象中执行。
+- en: Search the Subtree
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 搜索子树
+- en: A search of the entire subtree searches the named object and all of its descendants.
+    To make the search behave in this way, pass [`SearchControls.SUBTREE_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#SUBTREE_SCOPE)
+    to [`SearchControls.setSearchScope()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#setSearchScope-int-)
+    as follows.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对整个子树进行搜索将搜索命名对象及其所有后代。要使搜索以这种方式执行，请将[`SearchControls.SUBTREE_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#SUBTREE_SCOPE)传递给[`SearchControls.setSearchScope()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#setSearchScope-int-)如下所示。
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[`This example`](examples/SearchSubtree.java) searches the context `ctx`''s
+    subtree for entries that satisfy the specified filter. It finds the entry `"cn=
+    Ted Geisel, ou=People"` in this subtree that satisfies the filter.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`这个示例`](examples/SearchSubtree.java) 搜索上下文`ctx`的子树，查找满足指定过滤器的条目。它在这个子树中找到了满足过滤器的条目`"cn=
+    Ted Geisel, ou=People"`。'
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Search the Named Object
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 搜索命名对象
+- en: You can also search the named object. This is useful, for example, to test whether
+    the named object satisfies a search filter. To search the named object, pass [`SearchControls.OBJECT_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#OBJECT_SCOPE)
+    to `setSearchScope()`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你也可以搜索命名对象。例如，测试命名对象是否符合搜索过滤器非常有用。要搜索命名对象，请将[`SearchControls.OBJECT_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#OBJECT_SCOPE)传递给`setSearchScope()`。
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '[`This example`](examples/SearchObject.java) tests whether the object `"cn=Ted
+    Geisel, ou=People"` satisfies the given filter.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`这个示例`](examples/SearchObject.java) 测试对象`"cn=Ted Geisel, ou=People"`是否满足给定的过滤器。'
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The example found one answer and printed it. Notice that the name of the result
+    is the empty string. This is because the name of the object is always named relative
+    to the context of the search (in this case, `"cn=Ted Geisel, ou=People"`).
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例找到一个答案并将其打印出来。请注意，结果的名称是空字符串。这是因为对象的名称始终相对于搜索上下文命名（在本例中为`"cn=Ted Geisel,
+    ou=People"`）。

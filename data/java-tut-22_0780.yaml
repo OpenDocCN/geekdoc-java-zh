@@ -1,0 +1,357 @@
+- en: Why StAX?
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 为什么选择 StAX？
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/stax/why.html](https://docs.oracle.com/javase/tutorial/jaxp/stax/why.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/stax/why.html](https://docs.oracle.com/javase/tutorial/jaxp/stax/why.html)
+- en: The StAX project was spearheaded by BEA with support from Sun Microsystems,
+    and the [JSR 173 specification](http://jcp.org/en/jsr/detail?id=173) passed the
+    Java Community Process final approval ballot in March, 2004\. The primary goal
+    of the StAX API is to give “parsing control to the programmer by exposing a simple
+    iterator based API. This allows the programmer to ask for the next event (pull
+    the event) and allows state to be stored in procedural fashion.” StAX was created
+    to address limitations in the two most prevalent parsing APIs, SAX and DOM.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX 项目由 BEA 主导，得到了 Sun Microsystems 的支持，[JSR 173 规范](http://jcp.org/en/jsr/detail?id=173)于
+    2004 年 3 月通过了 Java 社区流程的最终批准投票。StAX API 的主要目标是通过公开一个简单的基于迭代器的 API，将“解析控制权交给程序员。这允许程序员请求下一个事件（拉取事件），并允许以过程化方式存储状态。”
+    StAX 的创建是为了解决两种最常见解析 API，SAX 和 DOM，的限制。
+- en: Streaming versus DOM
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 流式处理与 DOM
+- en: 'Generally speaking, there are two programming models for working with XML infosets:
+    **streaming** and the **document object model** (DOM).'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一般来说，处理 XML 信息集有两种编程模型：**流式处理**和**文档对象模型**（DOM）。
+- en: The DOM model involves creating in-memory objects representing an entire document
+    tree and the complete infoset state for an XML document. Once in memory, DOM trees
+    can be navigated freely and parsed arbitrarily, and as such provide maximum flexibility
+    for developers. However, the cost of this flexibility is a potentially large memory
+    footprint and significant processor requirements, because the entire representation
+    of the document must be held in memory as objects for the duration of the document
+    processing. This may not be an issue when working with small documents, but memory
+    and processor requirements can escalate quickly with document size.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: DOM 模型涉及创建代表整个文档树和 XML 文档的完整信息集状态的内存对象。一旦在内存中，DOM 树可以自由导航和任意解析，因此为开发人员提供了最大的灵活性。然而，这种灵活性的代价是潜在的大内存占用和显著的处理器需求，因为整个文档的表示必须作为对象在内存中保持，以便在文档处理期间使用。在处理小型文档时，这可能不是问题，但随着文档大小的增加，内存和处理器需求可能会迅速升高。
+- en: Streaming refers to a programming model in which XML infosets are transmitted
+    and parsed serially at application runtime, often in real time, and often from
+    dynamic sources whose contents are not precisely known beforehand. Moreover, stream-based
+    parsers can start generating output immediately, and infoset elements can be discarded
+    and garbage collected immediately after they are used. While providing a smaller
+    memory footprint, reduced processor requirements, and higher performance in certain
+    situations, the primary trade-off with stream processing is that you can only
+    see the infoset state at one location at a time in the document. You are essentially
+    limited to the “cardboard tube” view of a document, the implication being that
+    you need to know what processing you want to do before reading the XML document.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 流式处理是指一种编程模型，在应用程序运行时串行传输和解析 XML 信息集，通常是实时的，并且通常来自动态来源，其内容事先并不完全知晓。此外，基于流的解析器可以立即开始生成输出，并且信息集元素在使用后可以立即丢弃和进行垃圾回收。虽然提供了较小的内存占用、降低的处理器需求和在某些情况下更高的性能，但流处理的主要折衷是您只能在文档中的一个位置看到信息集状态。您基本上受限于文档的“纸板筒”视图，这意味着您需要在阅读
+    XML 文档之前知道要进行哪些处理。
+- en: Streaming models for XML processing are particularly useful when your application
+    has strict memory limitations, as with a cellphone running the Java Platform,
+    Micro Edition (Java ME platform), or when your application needs to process several
+    requests simultaneously, as with an application server. In fact, it can be argued
+    that the majority of XML business logic can benefit from stream processing, and
+    does not require the in-memory maintenance of entire DOM trees.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在处理 XML 时，流式处理模型特别适用于应用程序具有严格的内存限制，比如在运行 Java 平台微版（Java ME 平台）的手机上，或者当应用程序需要同时处理多个请求时，比如在应用服务器上。实际上，可以说大多数
+    XML 业务逻辑都可以从流式处理中受益，并且不需要在内存中维护整个 DOM 树。
+- en: Pull Parsing versus Push Parsing
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 拉取解析与推送解析
+- en: Streaming **pull parsing** refers to a programming model in which a client application
+    calls methods on an XML parsing library when it needs to interact with an XML
+    infoset—that is, the client only gets (pulls) XML data when it explicitly asks
+    for it.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 流**拉取解析**是一种编程模型，其中客户端应用程序在需要与 XML 信息集交互时调用 XML 解析库的方法，即客户端只有在明确请求时才会获取（拉取）XML
+    数据。
+- en: Streaming **push parsing** refers to a programming model in which an XML parser
+    sends (pushes) XML data to the client as the parser encounters elements in an
+    XML infoset—that is, the parser sends the data whether or not the client is ready
+    to use it at that time.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 流**推送解析**是一种编程模型，其中 XML 解析器在遇到 XML 信息集中的元素时向客户端发送（推送）XML 数据，即使客户端此时还没有准备好使用它。
+- en: 'Pull parsing provides several advantages over push parsing when working with
+    XML streams:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在处理 XML 流时，拉取解析相比于推送解析提供了几个优势：
+- en: With pull parsing, the client controls the application thread, and can call
+    methods on the parser when needed. By contrast, with push processing, the parser
+    controls the application thread, and the client can only accept invocations from
+    the parser.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在拉取解析中，客户端控制应用程序线程，并且可以在需要时调用解析器的方法。相比之下，在推送处理中，解析器控制应用程序线程，客户端只能接受解析器的调用。
+- en: Pull parsing libraries can be much smaller and the client code to interact with
+    those libraries much simpler than with push libraries, even for more complex documents.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 拉取解析库可以比推送库更小，与这些库交互的客户端代码也更简单，即使对于更复杂的文档。
+- en: Pull clients can read multiple documents at one time with a single thread.
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 拉取客户端可以使用单个线程同时读取多个文档。
+- en: A StAX pull parser can filter XML documents such that elements unnecessary to
+    the client can be ignored, and it can support XML views of non-XML data.
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: StAX 拉取解析器可以过滤 XML 文档，使客户端不需要的元素被忽略，并且可以支持非 XML 数据的 XML 视图。
+- en: StAX Use Cases
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: StAX 使用案例
+- en: 'The StAX specification defines a number of use cases for the API:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StAX 规范定义了 API 的许多用例：
+- en: Data binding
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 数据绑定
+- en: Unmarshalling an XML document
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 反编组 XML 文档
+- en: Marshalling an XML document
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将 XML 文档编组
+- en: Parallel document processing
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 并行文档处理
+- en: Wireless communication
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 无线通信
+- en: Simple Object Access Protocol (SOAP) message processing
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 简单对象访问协议（SOAP）消息处理
+- en: Parsing simple predictable structures
+  id: totrans-24
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 解析简单可预测的结构
+- en: Parsing graph representations with forward references
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 解析具有前向引用的图形表示
+- en: Parsing Web Services Description Language (WSDL)
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 解析 Web 服务描述语言（WSDL）
+- en: Virtual data sources
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 虚拟数据源
+- en: Viewing as XML data stored in databases
+  id: totrans-28
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 查看存储在数据库中的 XML 数据
+- en: Viewing data in Java objects created by XML data binding
+  id: totrans-29
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 查看由 XML 数据绑定创建的 Java 对象中的数据
+- en: Navigating a DOM tree as a stream of events
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将 DOM 树作为事件流导航
+- en: Parsing specific XML vocabularies
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 解析特定的 XML 词汇
+- en: Pipelined XML processing
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 管道化 XML 处理
+- en: A complete discussion of all these use cases is beyond the scope of this lesson.
+    Please refer to the StAX specification for further information.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对所有这些用例的完整讨论超出了本课程的范围。请参考 StAX 规范以获取更多信息。
+- en: Comparing StAX to Other JAXP APIs
+  id: totrans-34
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将 StAX 与其他 JAXP API 进行比较
+- en: As an API in the JAXP family, StAX can be compared, among other APIs, to SAX,
+    TrAX, and JDOM. Of the latter two, StAX is not as powerful or flexible as TrAX
+    or JDOM, but neither does it require as much memory or processor load to be useful,
+    and StAX can, in many cases, outperform the DOM-based APIs. The same arguments
+    outlined above, weighing the cost/benefits of the DOM model versus the streaming
+    model, apply here.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为 JAXP 家族中的一个 API，StAX 可以与 SAX、TrAX 和 JDOM 等其他 API 进行比较。在后两者中，StAX 不像 TrAX
+    或 JDOM 那样强大或灵活，但也不需要太多内存或处理器负载才能发挥作用，并且在许多情况下，StAX 可以胜过基于 DOM 的 API。上面概述的相同论点，权衡
+    DOM 模型与流模型的成本/效益，在这里同样适用。
+- en: 'With this in mind, the closest comparisons can be made between StAX and SAX,
+    and it is here that StAX offers features that are beneficial in many cases; some
+    of these include:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有鉴于此，最接近的比较可以在 StAX 和 SAX 之间进行，正是在这里 StAX 提供了许多情况下有益的功能；其中一些包括：
+- en: StAX-enabled clients are generally easier to code than SAX clients. While it
+    can be argued that SAX parsers are marginally easier to write, StAX parser code
+    can be smaller and the code necessary for the client to interact with the parser
+    simpler.
+  id: totrans-37
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用 StAX 的客户端通常比使用 SAX 的客户端更容易编码。虽然可以说 SAX 解析器稍微更容易编写，但 StAX 解析器的代码可能更小，客户端与解析器交互所需的代码更简单。
+- en: StAX is a bidirectional API, meaning that it can both read and write XML documents.
+    SAX is read only, so another API is needed if you want to write XML documents.
+  id: totrans-38
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: StAX 是一个双向 API，意味着它既可以读取又可以写入 XML 文档。SAX 只能读取，所以如果你想要写入 XML 文档，就需要另一个 API。
+- en: SAX is a push API, whereas StAX is pull. The trade-offs between push and pull
+    APIs outlined above apply here.
+  id: totrans-39
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: SAX 是一个推送 API，而 StAX 是一个拉取 API。上面概述的推送和拉取 API 之间的权衡在这里也适用。
+- en: The following table summarizes the comparative features of StAX, SAX, DOM, and
+    TrAX. (The table is adapted from [Does StAX Belong in Your XML Toolbox?](http://www.developer.com/xml/article.php/3397691)
+    by Jeff Ryan).
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格总结了 StAX、SAX、DOM 和 TrAX 的比较特性。（表格改编自 Jeff Ryan 的文章[Does StAX Belong in Your
+    XML Toolbox?](http://www.developer.com/xml/article.php/3397691)）。
+- en: XML Parser API Feature Summary
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: XML 解析器 API 特性摘要
+- en: '| Feature | StAX | SAX | DOM | TrAX |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| 特性 | StAX | SAX | DOM | TrAX |'
+- en: '| API Type | Pull, streaming | Push, streaming | In memory tree | XSLT Rule
+    |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| API 类型 | 拉取，流式 | 推送，流式 | 内存树 | XSLT 规则 |'
+- en: '| Ease of Use | High | Medium | High | Medium |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| 使用便捷性 | 高 | 中 | 高 | 中 |'
+- en: '| XPath Capability | No | No | Yes | Yes |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| XPath 能力 | 否 | 否 | 是 | 是 |'
+- en: '| CPU and Memory Efficiency | Good | Good | Varies | Varies |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| CPU 和内存效率 | 良好 | 良好 | 各异 | 各异 |'
+- en: '| Forward Only | Yes | Yes | No | No |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| 仅向前 | 是 | 是 | 否 | 否 |'
+- en: '| Read XML | Yes | Yes | Yes | Yes |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| 读取 XML | 是 | 是 | 是 | 是 |'
+- en: '| Write XML | Yes | No | Yes | Yes |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| 写入 XML | 是 | 否 | 是 | 是 |'
+- en: '| Create, Read, Update, Delete | No | No | Yes | No |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| 创建，读取，更新，删除 | 否 | 否 | 是 | 否 |'

@@ -1,0 +1,319 @@
+- en: How to Use Separators
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用分隔符
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/separator.html](https://docs.oracle.com/javase/tutorial/uiswing/components/separator.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/separator.html](https://docs.oracle.com/javase/tutorial/uiswing/components/separator.html)
+- en: The [`JSeparator`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSeparator.html)
+    class provides a horizontal or vertical dividing line or empty space. It's most
+    commonly used in menus and tool bars. In fact, you can use separators without
+    even knowing that a `JSeparator` class exists, since [menus](menu.html) and [tool
+    bars](toolbar.html) provide convenience methods that create and add separators
+    customized for their containers. Separators are somewhat similar to [borders](../components/border.html),
+    except that they are genuine components and, as such, are drawn inside a container,
+    rather than around the edges of a particular component.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`JSeparator`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSeparator.html)类提供水平或垂直的分隔线或空白空间。它最常用于菜单和工具栏。实际上，您甚至可以在不知道`JSeparator`类存在的情况下使用分隔符，因为[菜单](menu.html)和[工具栏](toolbar.html)提供了方便的方法来创建并添加针对其容器定制的分隔符。分隔符与[边框](../components/border.html)有些相似，只是它们是真正的组件，因此会在容器内绘制，而不是在特定组件的边缘周围。'
+- en: 'Here is a picture of a menu that has three separators, used to divide the menu
+    into four groups of items:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个菜单的图片，其中有三个分隔符，用于将菜单分成四组项目：
+- en: '![A menu with 4 parts, as indicated by 3 separators](../Images/dad5205603402ac38ca5ea954a4d1206.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个带有3个分隔符指示的4部分菜单](../Images/dad5205603402ac38ca5ea954a4d1206.png)'
+- en: 'The code to add the menu items and separators to the menu is extremely simple,
+    boiling down to something like this:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将菜单项和分隔符添加到菜单的代码非常简单，大致如下：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Adding separators to a tool bar is similar. You can find the full code explained
+    in the how-to sections for [menus](menu.html) and [tool bars](toolbar.html). If
+    you want more control over separators in menus and tool bars, you can directly
+    use the `JSeparator` subclasses that implement them: [JPopupMenu.Separator](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPopupMenu.Separator.html)
+    and [JToolBar.Separator](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.Separator.html).
+    In particular, `JToolBar.Separator` has API for specifying the separator''s size.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将分隔符添加到工具栏类似。您可以在[菜单](menu.html)和[工具栏](toolbar.html)的操作部分找到完整的代码解释。如果您想对菜单和工具栏中的分隔符有更多控制，可以直接使用实现它们的`JSeparator`子类：[JPopupMenu.Separator](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPopupMenu.Separator.html)和[JToolBar.Separator](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.Separator.html)。特别是，`JToolBar.Separator`具有用于指定分隔符大小的API。
+- en: Using JSeparator
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用JSeparator
+- en: You can use the `JSeparator` class directly to provide a dividing line in any
+    container. The following picture shows a GUI that has a separator to the right
+    of the button labeled Fire.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以直接使用`JSeparator`类在任何容器中提供分隔线。以下图片显示了一个GUI，其中在标有Fire的按钮右侧有一个分隔符。
+- en: '![A snapshot of ListDemo](../Images/5287aeaa15aab806b1c5e716d32fc88d.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ListDemo的快照](../Images/5287aeaa15aab806b1c5e716d32fc88d.png)'
+- en: 'Separators have almost no API and are extremely easy to use as long as you
+    keep one thing in mind: In most implementations, a vertical separator has a preferred
+    height of 0, and a horizontal separator has a preferred width of 0\. This means
+    a separator **is not visible** unless you either set its preferred size or put
+    it in under the control of a layout manager such as `BorderLayout` or `BoxLayout`
+    that stretches it to fill its available display area.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分隔符几乎没有API，并且非常容易使用，只要记住一件事：在大多数实现中，垂直分隔符的首选高度为0，水平分隔符的首选宽度为0。这意味着分隔符**不可见**，除非您设置其首选大小或将其放在像`BorderLayout`或`BoxLayout`这样的布局管理器的控制下，以拉伸以填充其可用的显示区域。
+- en: The vertical separator does have a bit of width (and the horizontal a bit of
+    height), so you should see some space where the separator is. However, the actual
+    dividing line isn't drawn unless the width and height are both non-zero.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 垂直分隔符确实有一定的宽度（水平分隔符有一定的高度），因此您应该看到分隔符所在的空间。但是，除非宽度和高度都不为零，否则不会绘制实际的分隔线。
+- en: The following code snippet shows how ListDemo puts together the panel that contains
+    the vertical separator. You can find the full source code for ListDemo in [`ListDemo.java`](../examples/components/ListDemoProject/src/components/ListDemo.java).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段显示了ListDemo如何组合包含垂直分隔符的面板。您可以在[`ListDemo.java`](../examples/components/ListDemoProject/src/components/ListDemo.java)中找到ListDemo的完整源代码。
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: "As the code shows, the buttons, separator, and text field all share a single\
+    \ container \x97 a `JPanel` instance that uses a left-to-right [box layout](../layout/box.html).\
+    \ Thanks to the layout manager (and to the fact that separators have unlimited\
+    \ maximum sizes), the separator is automatically made as tall as its available\
+    \ display area."
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "正如代码所示，按钮、分隔符和文本字段都共享一个容器 \x97 一个使用从左到右的[盒式布局](../layout/box.html)的 `JPanel`\
+    \ 实例。由于布局管理器（以及分隔符具有无限的最大尺寸），分隔符会自动调整为其可用的显示区域一样高。"
+- en: In the preceding code, the horizontal struts are invisible components used to
+    provide space around the separator. A 5-pixel empty border provides a cushion
+    around the panel, and also serves to prevent the separator from extending all
+    the way to the component above it and the window's edge below it.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上述代码中，水平支撑是不可见的组件，用于在分隔符周围提供空间。5像素的空边框在面板周围提供缓冲，并防止分隔符延伸到其上方的组件和下方窗口的边缘。
+- en: Here's a picture of another GUI that uses a separator, this time to put a dividing
+    line between a group of controls and a display area.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是另一个使用分隔符的 GUI 的图片，这次是为了在一组控件和显示区域之间放置一个分隔线。
+- en: '![A snapshot of TextInputDemo](../Images/9da559f6dd5a73749b7292aeac779423.png)'
+  id: totrans-18
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TextInputDemo 的快照](../Images/9da559f6dd5a73749b7292aeac779423.png)'
+- en: 'You can find the code in the [example index](../examples/components/index.html#TextInputDemo).
+    Here is the code that sets up the separator''s container:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在[示例索引](../examples/components/index.html#TextInputDemo)中找到代码。以下是设置分隔符容器的代码：
+- en: '[PRE2]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: As in the last example, the panel uses an empty border so that the separator
+    doesn't extend all the way to the edges of its container. Placing the separator
+    in the leftmost area of the `BorderLayout`-controlled container makes the separator
+    as tall as the address-display component that's in the center of the container.
+    See [How to Use BorderLayout](../layout/border.html) for details on how border
+    layouts work.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与上一个示例一样，面板使用空边框，以便分隔符不会延伸到其容器的边缘。将分隔符放在由 `BorderLayout` 控制的容器的最左侧区域使分隔符与容器中心的地址显示组件一样高。有关边框布局工作原理的详细信息，请参阅[如何使用
+    BorderLayout](../layout/border.html)。
+- en: The Separator API
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 分隔符 API
+- en: The API for using separators is minimal, since they have no contents and don't
+    respond to user input.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用分隔符的 API 很少，因为它们没有内容，也不响应用户输入。
+- en: Creating and Initializing Separators
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建和初始化分隔符
+- en: '| Constructor or Method | Purpose |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数或方法 | 目的 |'
+- en: '| [void addSeparator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.html#addSeparator--)
+    [void addSeparator(Dimension)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.html#addSeparator-java.awt.Dimension-)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void addSeparator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.html#addSeparator--)
+    [void addSeparator(Dimension)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.html#addSeparator-java.awt.Dimension-)'
+- en: '*(in `JToolBar`)* | Append a tool bar separator (which is invisible in most,
+    if not all, look and feels) to the current end of the tool bar. The optional argument
+    specifies the size of the separator. The no-argument version of this method uses
+    a separator with a default size, as determined by the current look and feel. |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在 `JToolBar` 中)* | 在工具栏的当前末尾附加一个工具栏分隔符（在大多数情况下是不可见的），可选参数指定分隔符的大小。此方法的无参数版本使用默认大小的分隔符，由当前外观和感觉确定。
+    |'
+- en: '| [void addSeparator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JMenu.html#addSeparator--)
+    [void insertSeparator(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JMenu.html#insertSeparator-int-)'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void addSeparator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JMenu.html#addSeparator--)
+    [void insertSeparator(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JMenu.html#insertSeparator-int-)'
+- en: '*(in `JMenu`)* | Put a separator in the menu. The `addSeparator` method puts
+    the separator at the current end of the menu. The `insertSeparator` method inserts
+    the separator into the menu at the specified position. |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在 `JMenu` 中)* | 在菜单中放置一个分隔符。`addSeparator` 方法将分隔符放在菜单的当前末尾。`insertSeparator`
+    方法在指定位置将分隔符插入菜单中。 |'
+- en: '| [void addSeparator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPopupMenu.html#addSeparator--)
+    *(in `JPopupMenu`)* | Put a separator at the current end of the popup menu. |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void addSeparator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPopupMenu.html#addSeparator--)
+    *(在 `JPopupMenu` 中)* | 在弹出菜单的当前末尾放置一个分隔符。 |'
+- en: '| [JSeparator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSeparator.html#JSeparator--)
+    [JSeparator(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSeparator.html#JSeparator-int-)
+    | Create a separator. If you don''t specify an argument, the separator is horizontal.
+    The argument can be either `SwingConstants.HORIZONTAL` or `SwingConstants.VERTICAL`.
+    |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JSeparator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSeparator.html#JSeparator--)
+    [JSeparator(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSeparator.html#JSeparator-int-)
+    | 创建一个分隔符。如果不指定参数，分隔符是水平的。参数可以是`SwingConstants.HORIZONTAL`或`SwingConstants.VERTICAL`。
+    |'
+- en: '| [void setOrientation(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSeparator.html#setOrientation-int-)
+    [int getOrientation()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSeparator.html#getOrientation--)'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setOrientation(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSeparator.html#setOrientation-int-)
+    [int getOrientation()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSeparator.html#getOrientation--)'
+- en: '*(in `JSeparator`)* | Get or set the separator''s orientation, which can be
+    either `SwingConstants.HORIZONTAL` or `SwingConstants.VERTICAL`. |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`JSeparator`中)* | 获取或设置分隔符的方向，可以是`SwingConstants.HORIZONTAL`或`SwingConstants.VERTICAL`。
+    |'
+- en: '| [JToolBar.Separator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.Separator.html#JToolBar.Separator--)
+    [JToolBar.Separator(Dimension)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.Separator.html#JToolBar.Separator-java.awt.Dimension-)
+    | Create a separator for use in a tool bar. The optional argument specifies the
+    separator''s size. |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JToolBar.Separator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.Separator.html#JToolBar.Separator--)
+    [JToolBar.Separator(Dimension)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.Separator.html#JToolBar.Separator-java.awt.Dimension-)
+    | 创建用于工具栏的分隔符。可选参数指定分隔符的大小。 |'
+- en: '| [setSeparatorSize(Dimension)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.Separator.html#setSeparatorSize-java.awt.Dimension-)
+    *(in `JToolBar.Separator`)* | Specify the separator''s size. More specifically,
+    the specified `Dimension` is used as the separator''s minimum, preferred, and
+    maximum sizes. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| [setSeparatorSize(Dimension)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JToolBar.Separator.html#setSeparatorSize-java.awt.Dimension-)
+    *(在`JToolBar.Separator`中)* | 指定分隔符的大小。更具体地说，指定的`Dimension`用作分隔符的最小、首选和最大大小。 |'
+- en: '| [JPopupMenu.Separator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPopupMenu.Separator.html#JPopupMenu.Separator--)
+    | Create a separator for use in a menu. |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JPopupMenu.Separator()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPopupMenu.Separator.html#JPopupMenu.Separator--)
+    | 创建用于菜单的分隔符。 |'
+- en: Examples that Use Separators
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用分隔符的示例
+- en: Several of this lesson's examples use separators, usually in menus. Here is
+    a list of some of the more interesting examples.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程的几个示例使用分隔符，通常在菜单中。以下是一些更有趣的示例列表。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`ListDemo`](../examples/components/index.html#ListDemo) | This section and
+    [How to Use Lists](list.html) | Uses a vertical separator in a panel controlled
+    by a horizontal box layout. |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ListDemo`](../examples/components/index.html#ListDemo) | 本节和[如何使用列表](list.html)
+    | 在由水平盒式布局控制的面板中使用垂直分隔符。 |'
+- en: '| [`TextInputDemo`](../examples/components/index.html#TextInputDemo) | This
+    section and [How to Use Formatted Text Fields](formattedtextfield.html) | Uses
+    a vertical separator at the left of a panel controlled by a border layout. |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextInputDemo`](../examples/components/index.html#TextInputDemo) | 本节和[如何使用格式化文本字段](formattedtextfield.html)
+    | 在由边界布局控制的面板左侧使用垂直分隔符。 |'
+- en: '| [`MenuDemo`](../examples/components/index.html#MenuDemo) | This section and
+    [How to Use Menus](menu.html) | Uses the `JMenu` method `addSeparator` to put
+    separators in a menu. |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`MenuDemo`](../examples/components/index.html#MenuDemo) | 本节和[如何使用菜单](menu.html)
+    | 使用`JMenu`方法`addSeparator`在菜单中放置分隔符。 |'
+- en: '| [`ToolBarDemo2`](../examples/components/index.html#ToolBarDemo2) | [How to
+    Use Tool Bars](toolbar.html) | Uses the `JToolBar` method `addSeparator` to put
+    space between two kinds of buttons. |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ToolBarDemo2`](../examples/components/index.html#ToolBarDemo2) | [如何使用工具栏](toolbar.html)
+    | 使用`JToolBar`方法`addSeparator`在两种按钮之间放置空间。 |'
+- en: If you are programming in JavaFX, see [Using JavaFX UI Controls](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/separator.htm).
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在使用JavaFX编程，请参阅[使用JavaFX UI控件](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/separator.htm)。

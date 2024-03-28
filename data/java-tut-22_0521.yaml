@@ -1,0 +1,199 @@
+- en: 'Lesson: Interfaces'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：接口
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html)
+- en: The *core collection interfaces* encapsulate different types of collections,
+    which are shown in the figure below. These interfaces allow collections to be
+    manipulated independently of the details of their representation. Core collection
+    interfaces are the foundation of the Java Collections Framework. As you can see
+    in the following figure, the core collection interfaces form a hierarchy.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*核心集合接口*封装了不同类型的集合，如下图所示。这些接口允许独立于其表示细节来操作集合。核心集合接口是Java集合框架的基础。如下图所示，核心集合接口形成了一个层次结构。'
+- en: '![Two interface trees, one starting with Collection and including Set, SortedSet,
+    List, and Queue, and the other starting with Map and including SortedMap.](../Images/7a5ed10e7a4f3194580b9f165722a7c6.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![两个接口树，一个以Collection开头，包括Set、SortedSet、List和Queue，另一个以Map开头，包括SortedMap。](../Images/7a5ed10e7a4f3194580b9f165722a7c6.png)'
+- en: The core collection interfaces.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 核心集合接口。
+- en: "A `Set` is a special kind of `Collection`, a `SortedSet` is a special kind\
+    \ of `Set`, and so forth. Note also that the hierarchy consists of two distinct\
+    \ trees \x97 a `Map` is not a true `Collection`."
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "`Set` 是一种特殊类型的 `Collection`，`SortedSet` 是一种特殊类型的 `Set`，依此类推。还要注意，层次结构由两个不同的树组成\
+    \ \x97 `Map` 不是真正的 `Collection`。"
+- en: Note that all the core collection interfaces are generic. For example, this
+    is the declaration of the `Collection` interface.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，所有核心集合接口都是泛型的。例如，这是 `Collection` 接口的声明。
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `<E>` syntax tells you that the interface is generic. When you declare a
+    `Collection` instance you can *and should* specify the type of object contained
+    in the collection. Specifying the type allows the compiler to verify (at compile-time)
+    that the type of object you put into the collection is correct, thus reducing
+    errors at runtime. For information on generic types, see the [Generics (Updated)](../../java/generics/index.html)
+    lesson.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<E>` 语法告诉你该接口是泛型的。当你声明一个 `Collection` 实例时，你可以*并且应该*指定集合中包含的对象类型。指定类型允许编译器在编译时验证你放入集合中的对象类型是否正确，从而减少运行时错误。有关泛型类型的信息，请参阅[泛型（已更新）](../../java/generics/index.html)课程。'
+- en: When you understand how to use these interfaces, you will know most of what
+    there is to know about the Java Collections Framework. This chapter discusses
+    general guidelines for effective use of the interfaces, including when to use
+    which interface. You'll also learn programming idioms for each interface to help
+    you get the most out of it.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你了解如何使用这些接口时，你将了解大部分关于Java集合框架的知识。本章讨论了有效使用接口的一般准则，包括何时使用哪个接口。您还将学习每个接口的编程习惯用法，以帮助您充分利用它。
+- en: "To keep the number of core collection interfaces manageable, the Java platform\
+    \ doesn't provide separate interfaces for each variant of each collection type.\
+    \ (Such variants might include immutable, fixed-size, and append-only.) Instead,\
+    \ the modification operations in each interface are designated *optional* \x97\
+    \ a given implementation may elect not to support all operations. If an unsupported\
+    \ operation is invoked, a collection throws an [`UnsupportedOperationException`](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html).\
+    \ Implementations are responsible for documenting which of the optional operations\
+    \ they support. All of the Java platform's general-purpose implementations support\
+    \ all of the optional operations."
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "为了使核心集合接口的数量可管理，Java平台没有为每种集合类型的每种变体提供单独的接口。（这些变体可能包括不可变、固定大小和仅追加的。）相反，每个接口中的修改操作被指定为*可选的*\
+    \ \x97 给定的实现可以选择不支持所有操作。如果调用了不受支持的操作，集合会抛出一个[`UnsupportedOperationException`](https://docs.oracle.com/javase/8/docs/api/java/lang/UnsupportedOperationException.html)。实现负责记录支持哪些可选操作。Java平台的通用实现支持所有可选操作。"
+- en: 'The following list describes the core collection interfaces:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下列表描述了核心集合接口：
+- en: "`Collection` \x97 the root of the collection hierarchy. A collection represents\
+    \ a group of objects known as its *elements*. The `Collection` interface is the\
+    \ least common denominator that all collections implement and is used to pass\
+    \ collections around and to manipulate them when maximum generality is desired.\
+    \ Some types of collections allow duplicate elements, and others do not. Some\
+    \ are ordered and others are unordered. The Java platform doesn't provide any\
+    \ direct implementations of this interface but provides implementations of more\
+    \ specific subinterfaces, such as `Set` and `List`. Also see [The Collection Interface](collection.html)\
+    \ section."
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Collection` \x97 集合层次结构的根。一个集合代表一组称为其*元素*的对象。`Collection`接口是所有集合实现的最小公分母，用于在需要最大一般性时传递集合并操作它们。某些类型的集合允许重复元素，而其他类型则不允许。有些是有序的，而其他是无序的。Java平台没有直接提供这个接口的任何实现，但提供了更具体的子接口的实现，比如`Set`和`List`。另请参阅[集合接口](collection.html)部分。"
+- en: "`Set` \x97 a collection that cannot contain duplicate elements. This interface\
+    \ models the mathematical set abstraction and is used to represent sets, such\
+    \ as the cards comprising a poker hand, the courses making up a student's schedule,\
+    \ or the processes running on a machine. See also [The Set Interface](set.html)\
+    \ section."
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Set` \x97 一个不能包含重复元素的集合。这个接口模拟了数学集合抽象，并用于表示集合，比如组成扑克手的牌，组成学生课程表的课程，或者机器上运行的进程。另请参阅[集合接口](set.html)部分。"
+- en: "`List` \x97 an ordered collection (sometimes called a *sequence*). `List`s\
+    \ can contain duplicate elements. The user of a `List` generally has precise control\
+    \ over where in the list each element is inserted and can access elements by their\
+    \ integer index (position). If you've used `Vector`, you're familiar with the\
+    \ general flavor of `List`. Also see [The List Interface](list.html) section."
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`List` \x97 一个有序集合（有时被称为*序列*）。`List`可以包含重复元素。`List`的用户通常可以精确控制每个元素在列表中的插入位置，并且可以通过它们的整数索引（位置）访问元素。如果你使用过`Vector`，那么你对`List`的一般特性已经很熟悉。另请参阅[列表接口](list.html)部分。"
+- en: "`Queue` \x97 a collection used to hold multiple elements prior to processing.\
+    \ Besides basic `Collection` operations, a `Queue` provides additional insertion,\
+    \ extraction, and inspection operations."
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Queue` \x97 用于在处理之前保存多个元素的集合。除了基本的`Collection`操作外，`Queue`还提供额外的插入、提取和检查操作。"
+- en: Queues typically, but do not necessarily, order elements in a FIFO (first-in,
+    first-out) manner. Among the exceptions are priority queues, which order elements
+    according to a supplied comparator or the elements' natural ordering. Whatever
+    the ordering used, the head of the queue is the element that would be removed
+    by a call to `remove` or `poll`. In a FIFO queue, all new elements are inserted
+    at the tail of the queue. Other kinds of queues may use different placement rules.
+    Every `Queue` implementation must specify its ordering properties. Also see [The
+    Queue Interface](queue.html) section.
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 队列通常按照FIFO（先进先出）的方式对元素进行排序，但并非必须如此。优先队列是其中的例外，它根据提供的比较器或元素的自然顺序对元素进行排序。无论使用何种排序方式，队列的头部都是通过调用`remove`或`poll`将被移除的元素。在FIFO队列中，所有新元素都插入到队列的尾部。其他类型的队列可能使用不同的放置规则。每个`Queue`实现必须指定其排序属性。另请参阅[队列接口](queue.html)部分。
+- en: "`Deque` \x97 a collection used to hold multiple elements prior to processing.\
+    \ Besides basic `Collection` operations, a `Deque` provides additional insertion,\
+    \ extraction, and inspection operations."
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Deque` \x97 用于在处理之前保存多个元素的集合。除了基本的`Collection`操作外，`Deque`还提供额外的插入、提取和检查操作。"
+- en: Deques can be used both as FIFO (first-in, first-out) and LIFO (last-in, first-out).
+    In a deque all new elements can be inserted, retrieved and removed at both ends.
+    Also see [The Deque Interface](deque.html) section.
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 双端队列可以同时作为FIFO（先进先出）和LIFO（后进先出）使用。在双端队列中，所有新元素都可以在两端插入、检索和移除。另请参阅[双端队列接口](deque.html)部分。
+- en: "`Map` \x97 an object that maps keys to values. A `Map` cannot contain duplicate\
+    \ keys; each key can map to at most one value. If you've used `Hashtable`, you're\
+    \ already familiar with the basics of `Map`. Also see [The Map Interface](map.html)\
+    \ section."
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Map` \x97 一个将键映射到值的对象。`Map`不能包含重复键；每个键最多可以映射到一个值。如果你使用过`Hashtable`，那么你已经熟悉`Map`的基础知识。另请参阅[映射接口](map.html)部分。"
+- en: 'The last two core collection interfaces are merely sorted versions of `Set`
+    and `Map`:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后两个核心集合接口仅仅是`Set`和`Map`的排序版本：
+- en: "`SortedSet` \x97 a `Set` that maintains its elements in ascending order. Several\
+    \ additional operations are provided to take advantage of the ordering. Sorted\
+    \ sets are used for naturally ordered sets, such as word lists and membership\
+    \ rolls. Also see [The SortedSet Interface](sorted-set.html) section."
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`SortedSet` \x97 一个按升序维护其元素的`Set`。提供了几个额外的操作来利用排序。排序集用于自然排序的集合，比如单词列表和成员名单。另请参阅[SortedSet接口](sorted-set.html)部分。"
+- en: "`SortedMap` \x97 a `Map` that maintains its mappings in ascending key order.\
+    \ This is the `Map` analog of `SortedSet`. Sorted maps are used for naturally\
+    \ ordered collections of key/value pairs, such as dictionaries and telephone directories.\
+    \ Also see [The SortedMap Interface](sorted-map.html) section."
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`SortedMap` \x97 一个按升序维护其映射的`Map`。这是`SortedSet`的`Map`类比。排序映射用于自然排序的键/值对集合，比如字典和电话目录。另请参阅[SortedMap接口](sorted-map.html)部分。"
+- en: To understand how the sorted interfaces maintain the order of their elements,
+    see the [Object Ordering](order.html) section.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解排序接口如何维护其元素的顺序，请参阅[对象排序](order.html)部分。

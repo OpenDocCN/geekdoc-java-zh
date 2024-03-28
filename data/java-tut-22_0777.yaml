@@ -1,0 +1,748 @@
+- en: Generating XML from an Arbitrary Data Structure
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 从任意数据结构生成XML
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/xslt/generatingXML.html](https://docs.oracle.com/javase/tutorial/jaxp/xslt/generatingXML.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/xslt/generatingXML.html](https://docs.oracle.com/javase/tutorial/jaxp/xslt/generatingXML.html)
+- en: This section uses XSLT to convert an arbitrary data structure to XML.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节使用XSLT将任意数据结构转换为XML。
+- en: 'Here is an outline of the process:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是整个过程的概述：
+- en: Modify an existing program that reads the data, to make it generate SAX events.
+    (Whether that program is a real parser or simply a data filter of some kind is
+    irrelevant for the moment).
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 修改一个现有的读取数据的程序，使其生成SAX事件。（此时，该程序是一个真正的解析器还是一个数据过滤器都无关紧要）。
+- en: Use the SAX "parser" to construct a `SAXSource` for the transformation.
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用SAX“解析器”构建一个`SAXSource`进行转换。
+- en: Use the same `StreamResult` object as created in the last exercise to display
+    the results. (But note that you could just as easily create a `DOMResult` object
+    to create a DOM in memory).
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用与上一个练习中创建的相同的`StreamResult`对象来显示结果。（但请注意，你也可以轻松地创建一个`DOMResult`对象来在内存中创建一个DOM）。
+- en: Wire the source to the result using the transformer object to make the conversion.
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用转换器对象将源连接到结果，进行转换。
+- en: For starters, you need a data set you want to convert and a program capable
+    of reading the data. The next two sections create a simple data file and a program
+    that reads it.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，你需要一个要转换的数据集和一个能够读取数据的程序。接下来的两个部分创建了一个简单的数据文件和一个读取它的程序。
+- en: Creating a Simple File
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建一个简单的文件
+- en: This example uses data set for an address book, `PersonalAddressBook.ldif`.
+    If you have not done so already, [`download the XSLT examples`](../examples/xslt_samples.zip)
+    and unzip them into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.
+    The file shown here was produced by creating a new address book in Netscape Messenger,
+    giving it some dummy data (one address card), and then exporting it in LDAP Data
+    Interchange Format (LDIF) format. It contained in the directory `xslt/data` after
+    you unzip the XSLT examples.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个例子使用了一个地址簿的数据集，`PersonalAddressBook.ldif`。如果你还没有这样做，[`下载XSLT示例`](../examples/xslt_samples.zip)并解压到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录中。这里显示的文件是通过在Netscape
+    Messenger中创建一个新的地址簿，给它一些虚拟数据（一个地址卡），然后以LDAP数据交换格式（LDIF）格式导出而生成的。解压XSLT示例后，它位于`xslt/data`目录中。
+- en: The following [Figure ](#gghhj) shows the address book entry that was created.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的[图示](#gghhj)显示了创建的通讯录条目。
+- en: Figure  Address Book Entry
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 图示 通讯录条目
+- en: '![Snapshot of a Mozilla Thunderbird contact details card.](../Images/fc603efcd5e003bf0d8a41e181e83efc.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Mozilla Thunderbird联系人详细信息卡的快照。](../Images/fc603efcd5e003bf0d8a41e181e83efc.png)'
+- en: Exporting the address book produces a file like the one shown next. The parts
+    of the file that we care about are shown in bold.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 导出通讯录会生成一个类似下面显示的文件。我们关心的文件部分以粗体显示。
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Note that each line of the file contains a variable name, a colon, and a space
+    followed by a value for the variable. The `sn` variable contains the person's
+    surname (last name) and the variable `cn` contains the `DisplayName` field from
+    the address book entry.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，文件的每一行都包含一个变量名，一个冒号和一个空格，后面跟着变量的值。`sn`变量包含人的姓氏（姓），变量`cn`包含通讯录条目中的`DisplayName`字段。
+- en: Creating a Simple Parser
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建一个简单的解析器
+- en: The next step is to create a program that parses the data.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一步是创建一个解析数据的程序。
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The code discussed in this section is in `AddressBookReader01.java`,
+    which is found in the `xslt` directory after you unzip [`XSLT examples`](../examples/xslt_samples.zip)
+    into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 本节讨论的代码在`AddressBookReader01.java`中，解压[`XSLT示例`](../examples/xslt_samples.zip)到*install-dir*`/jaxp-1_4_2-`*release-date*`/samples`目录后，可以在`xslt`目录中找到。'
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The text for the program is shown next. It is an extremely simple program that
+    does not even loop for multiple entries because, after all, it is only a demo.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来显示程序的文本。这是一个非常简单的程序，甚至不会为多个条目循环，因为毕竟它只是一个演示。
+- en: '[PRE1]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'This program contains three methods:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个程序包含三个方法：
+- en: '`main`'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`main`'
+- en: The `main` method gets the name of the file from the command line, creates an
+    instance of the parser, and sets it to work parsing the file. This method will
+    disappear when we convert the program into a SAX parser. (That is one reason for
+    putting the parsing code into a separate method).
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`main`方法从命令行获取文件名，创建解析器的实例，并开始解析文件。当我们将程序转换为SAX解析器时，这个方法将消失。（这是将解析代码放入单独方法的一个原因）。'
+- en: '`parse`'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`parse`'
+- en: This method operates on the `File` object sent to it by the main routine. As
+    you can see, it is very straightforward. The only concession to efficiency is
+    the use of a `BufferedReader`, which can become important when you start operating
+    on large files.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此方法在主例程发送的 `File` 对象上运行。正如您所看到的，这非常简单。唯一的效率让步是使用 `BufferedReader`，当您开始操作大文件时，这可能变得重要。
+- en: '`output`'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`output`'
+- en: The output method contains the logic for the structure of a line. It takes three
+    arguments. The first argument gives the method a name to display, so it can output
+    `html` as a variable name, instead of `xmozillausehtmlmail`. The second argument
+    gives the variable name stored in the file (`xmozillausehtmlmail`). The third
+    argument gives the line containing the data. The routine then strips off the variable
+    name from the start of the line and outputs the desired name, plus the data.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出方法包含了一行结构的逻辑。它接受三个参数。第一个参数给出一个要显示的方法名称，因此它可以将 `html` 输出为一个变量名，而不是 `xmozillausehtmlmail`。第二个参数给出存储在文件中的变量名（`xmozillausehtmlmail`）。第三个参数给出包含数据的行。然后该例程从行的开头剥离变量名并输出所需的名称，加上数据。
+- en: Running the `AddressBookReader01` Sample
+  id: totrans-31
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行 `AddressBookReader01` 示例
+- en: '**Navigate to the `samples` directory.**'
+  id: totrans-32
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航到 `samples` 目录。**'
+- en: '[PRE2]'
+  id: totrans-33
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '**[`Download the XSLT examples by clicking this link`](../examples/xslt_samples.zip)
+    and unzip them into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.**'
+  id: totrans-34
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**[点击此链接下载 XSLT 示例](../examples/xslt_samples.zip) 并将其解压缩到 *install-dir*`/jaxp-1_4_2-`*release-date*`/samples`
+    目录中。**'
+- en: '**Navigate to the `xslt` directory.**'
+  id: totrans-35
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航到 `xslt` 目录。**'
+- en: '[PRE3]'
+  id: totrans-36
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '**Compile the `AddressBookReader01` sample.**'
+  id: totrans-37
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**编译 `AddressBookReader01` 示例。**'
+- en: 'Type the following command:'
+  id: totrans-38
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 输入以下命令：
+- en: '[PRE4]'
+  id: totrans-39
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '**Run the `AddressBookReader01` sample on a data file.**'
+  id: totrans-40
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**在数据文件上运行 `AddressBookReader01` 示例。**'
+- en: In the case below, `AddressBookReader01` is run on the file `PersonalAddressBook.ldif`
+    shown above, found in the `xslt/data` directory after you have unzipped the samples
+    bundle.
+  id: totrans-41
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在下面的情况下，`AddressBookReader01` 在上面显示的文件 `PersonalAddressBook.ldif` 上运行，在解压缩示例包后在
+    `xslt/data` 目录中找到。
+- en: '[PRE5]'
+  id: totrans-42
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'You will see the following output:'
+  id: totrans-43
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 您将看到以下输出：
+- en: '[PRE6]'
+  id: totrans-44
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: This is a bit more readable than the file shown in [Creating a Simple File](#gghhh).
+  id: totrans-45
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这比 [创建简单文件](#gghhh) 中显示的文件更易读。
+- en: Creating a Parser that Generates SAX Events
+  id: totrans-46
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建生成 SAX 事件的解析器
+- en: This section shows how to make the parser generate SAX events, so that you can
+    use it as the basis for a `SAXSource` object in an XSLT transform.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节展示了如何使解析器生成 SAX 事件，以便您可以将其用作 XSLT 转换中的 `SAXSource` 对象的基础。
+- en: '* * *'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The code discussed in this section is in `AddressBookReader02.java`,
+    which is found in the `xslt` directory after you unzip [`XSLT examples`](../examples/xslt_samples.zip)
+    into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory. `AddressBookReader02.java`
+    is adapted from `AddressBookReader01.java`, so only the differences in code between
+    the two examples will be discussed here.'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 本节讨论的代码在 `AddressBookReader02.java` 中，该文件在您将 [`XSLT examples`](../examples/xslt_samples.zip)
+    解压缩到 *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` 目录后的 `xslt` 目录中找到。`AddressBookReader02.java`
+    是从 `AddressBookReader01.java` 改编而来，因此这里只讨论两个示例之间的代码差异。'
+- en: '* * *'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '`AddressBookReader02` requires the following highlighted classes that were
+    not used in `AddressBookReader01`.'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`AddressBookReader02` 需要以下未在 `AddressBookReader01` 中使用的突出显示的类。'
+- en: '[PRE7]'
+  id: totrans-52
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The application also extends `XmlReader`. This change converts the application
+    into a parser that generates the appropriate SAX events.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该应用程序还扩展了 `XmlReader`。此更改将应用程序转换为生成适当的 SAX 事件的解析器。
+- en: '[PRE8]'
+  id: totrans-54
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Unlike the `AddressBookReader01` sample, this application does not have a `main`
+    method.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与 `AddressBookReader01` 示例不同，此应用程序没有 `main` 方法。
+- en: 'The following global variables will be used later in this section:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下全局变量将在本节后面使用：
+- en: '[PRE9]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: The SAX `ContentHandler` is the object that will get the SAX events generated
+    by the parser. To make the application into an `XmlReader`, the application defines
+    a `setContentHandler` method. The handler variable will hold a reference to the
+    object that is sent when `setContentHandler` is invoked.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SAX `ContentHandler` 是将获得解析器生成的 SAX 事件的对象。为了将应用程序转换为 `XmlReader`，应用程序定义了一个 `setContentHandler`
+    方法。处理程序变量将保存在调用 `setContentHandler` 时发送的对象的引用。
+- en: When the parser generates SAX element events, it will need to supply namespace
+    and attribute information. Because this is a simple application, it defines null
+    values for both of those.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当解析器生成 SAX 元素事件时，它将需要提供命名空间和属性信息。因为这是一个简单的应用程序，它为这两者定义了空值。
+- en: The application also defines a root element for the data structure (`addressbook`)
+    and sets up an indent string to improve the readability of the output.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序还为数据结构（`addressbook`）定义了一个根元素，并设置了一个缩进字符串以提高输出的可读性。
+- en: 'Furthermore, the parse method is modified so that it takes an `InputSource`
+    (rather than a `File`) as an argument and accounts for the exceptions it can generate:'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，解析方法被修改为接受 `InputSource`（而不是 `File`）作为参数，并考虑了它可能生成的异常：
+- en: '[PRE10]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'Now, rather than creating a new `FileReader` instance as was done in `AddressBookReader01`,
+    the reader is encapsulated by the `InputSource` object:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，不再像在 `AddressBookReader01` 中那样创建新的 `FileReader` 实例，而是将读取器封装在 `InputSource`
+    对象中：
+- en: '[PRE11]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: '* * *'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The next section shows how to create the input source object and
+    what is put in it will, in fact, be a buffered reader. But the `AddressBookReader`
+    could be used by someone else, somewhere down the line. This step makes sure that
+    the processing will be efficient, regardless of the reader you are given.'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 下一节将展示如何创建输入源对象，实际放入其中的将是一个缓冲读取器。但是 `AddressBookReader` 可能会被其他人在某个地方使用。这一步确保处理将是高效的，无论给定的读取器是什么。'
+- en: '* * *'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The next step is to modify the parse method to generate SAX events for the
+    start of the document and the root element. The following highlighted code does
+    that:'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一步是修改解析方法以生成文档和根元素的 SAX 事件。以下突出显示的代码实现了这一点：
+- en: '[PRE12]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: Here, the application checks to make sure that the parser is properly configured
+    with a `ContentHandler`. (For this application, we do not care about anything
+    else). It then generates the events for the start of the document and the root
+    element, and finishes by sending the end event for the root element and the end
+    event for the document.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，应用程序检查解析器是否正确配置了 `ContentHandler`。（对于这个应用程序，我们不关心其他任何内容）。然后生成文档和根元素的开始事件，并通过发送根元素的结束事件和文档的结束事件来完成。
+- en: 'Two items are noteworthy at this point:'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此时有两个值得注意的地方：
+- en: The `setDocumentLocator` event has not been sent, because that is optional.
+    Were it important, that event would be sent immediately before the `startDocument`
+    event.
+  id: totrans-72
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setDocumentLocator` 事件未发送，因为这是可选的。如果它很重要，那么该事件将在 `startDocument` 事件之前立即发送。'
+- en: 'An `ignorableWhitespace` event is generated before the end of the root element.
+    This, too, is optional, but it drastically improves the readability of the output,
+    as will be seen shortly. (In this case, the whitespace consists of a single newline,
+    which is sent in the same way that characters are sent to the characters method:
+    as a character array, a starting index, and a length).'
+  id: totrans-73
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在根元素结束之前生成了一个 `ignorableWhitespace` 事件。这也是可选的，但它极大地提高了输出的可读性，很快就会看到。（在这种情况下，空白包括一个单独的换行符，它以与将字符发送到字符方法相同的方式发送：作为字符数组、起始索引和长度）。
+- en: 'Now that SAX events are being generated for the document and the root element,
+    the next step is to modify the output method to generate the appropriate element
+    events for each data item. Removing the call to `System.out.println(name + ":
+    " + text)` and adding the following highlighted code achieves that:'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '现在生成了文档和根元素的 SAX 事件，下一步是修改输出方法以为每个数据项生成适当的元素事件。删除对 `System.out.println(name
+    + ": " + text)` 的调用，并添加以下突出显示的代码来实现：'
+- en: '[PRE13]'
+  id: totrans-75
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: Because the `ContentHandler` methods can send `SAXExceptions` back to the parser,
+    the parser must be prepared to deal with them. In this case, none are expected,
+    so the application is simply allowed to fail if any occur.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为 `ContentHandler` 方法可以将 `SAXExceptions` 发送回解析器，所以解析器必须准备好处理它们。在这种情况下，不会有任何异常，所以如果出现任何异常，应用程序将简单地允许失败。
+- en: The length of the data is then calculated, again generating some ignorable whitespace
+    for readability. In this case, there is only one level of data, so we can use
+    a fixed-indent string. (If the data were more structured, we would have to calculate
+    how much space to indent, depending on the nesting of the data).
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后计算数据的长度，再次生成一些可忽略的空白以提高可读性。在这种情况下，只有一个数据级别，所以我们可以使用一个固定的缩进字符串。（如果数据结构更加结构化，我们将不得不根据数据的嵌套计算缩进空间）。
+- en: '* * *'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The indent string makes no difference to the data but will make
+    the output a lot easier to read. Without that string, all the elements would be
+    concatenated end to end:'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 缩进字符串对数据本身没有影响，但会使输出更容易阅读。如果没有该字符串，所有元素将被连接在一起：'
+- en: '[PRE14]'
+  id: totrans-80
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: '* * *'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Next, the following method configures the parser with the `ContentHandler`
+    that is to receive the events it generates:'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，以下方法配置解析器，以接收其生成的事件的 `ContentHandler`：
+- en: '[PRE15]'
+  id: totrans-83
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: 'Several other methods must be implemented in order to satisfy the `XmlReader`
+    interface. For the purpose of this exercise, null methods are generated for all
+    of them. A production application, however, would require that the error handler
+    methods be implemented to produce a more robust application. For this example,
+    though, the following code generates null methods for them:'
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还必须实现几个其他方法以满足 `XmlReader` 接口的要求。为了这个练习，所有这些方法都生成了空方法。然而，一个生产应用程序需要实现错误处理程序方法以生成更健壮的应用程序。不过，在这个例子中，以下代码为它们生成了空方法：
+- en: '[PRE16]'
+  id: totrans-85
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: Then the following code generates null methods for the remainder of the `XmlReader`
+    interface. (Most of them are of value to a real SAX parser but have little bearing
+    on a data-conversion application like this one).
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，以下代码为剩余的 `XmlReader` 接口生成了空方法。（其中大部分对于真实的 SAX 解析器是有价值的，但对于像这样的数据转换应用程序却没有太大影响）。
+- en: '[PRE17]'
+  id: totrans-87
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE17]'
+- en: You now have a parser you can use to generate SAX events. In the next section,
+    you will use it to construct a SAX source object that will let you transform the
+    data into XML.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您有一个可以用来生成 SAX 事件的解析器。在下一节中，您将使用它来构造一个 SAX 源对象，从而将数据转换为 XML。
+- en: Using the Parser as a `SAXSource`
+  id: totrans-89
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用解析器作为 `SAXSource`
+- en: Given a SAX parser to use as an event source, you can construct a transformer
+    to produce a result. In this section, `TransformerApp` will be updated to produce
+    a stream output result, although it could just as easily produce a DOM result.
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 给定一个用作事件源的 SAX 解析器，您可以构造一个转换器来生成一个结果。在本节中，`TransformerApp` 将被更新以生成一个流输出结果，尽管它也可以轻松地生成一个
+    DOM 结果。
+- en: '* * *'
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** Note: The code discussed in this section is in `TransformationApp03.java`,
+    which is found in the `xslt` directory after you unzip [`XSLT examples`](../examples/xslt_samples.zip)
+    into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.'
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** 注意：本节讨论的代码位于 `TransformationApp03.java` 中，在将 [`XSLT 示例`](../examples/xslt_samples.zip)
+    解压缩到 *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` 目录后，可以在 `xslt` 目录中找到。'
+- en: '* * *'
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: To start with, `TransformationApp03` differs from `TransformationApp02` in the
+    classes it needs to import to construct a `SAXSource` object. These classes are
+    shown highlighted below. The DOM classes are no longer needed at this point, so
+    have been discarded, although leaving them in does not do any harm.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要开始，`TransformationApp03` 与 `TransformationApp02` 的不同之处在于构建 `SAXSource` 对象所需导入的类。这些类如下所示。在这一点上，DOM
+    类已不再需要，因此已被丢弃，尽管保留它们不会造成任何伤害。
+- en: '[PRE18]'
+  id: totrans-95
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE18]'
+- en: 'Next, instead of creating a DOM `DocumentBuilderFactory` instance, the application
+    creates a SAX parser, which is an instance of the `AddressBookReader`:'
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，应用程序不再创建 DOM `DocumentBuilderFactory` 实例，而是创建了一个 SAX 解析器，即 `AddressBookReader`
+    的实例：
+- en: '[PRE19]'
+  id: totrans-97
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE19]'
+- en: Then, the following highlighted code constructs a `SAXSource` object
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，以下突出显示的代码构造了一个 `SAXSource` 对象
+- en: '[PRE20]'
+  id: totrans-99
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE20]'
+- en: Here, `TransformationApp03` constructs a buffered reader (as mentioned earlier)
+    and encapsulates it in an input source object. It then creates a `SAXSource` object,
+    passing it the reader and the `InputSource` object, and passes that to the transformer.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，`TransformationApp03` 构造了一个缓冲读取器（如前所述），并将其封装在一个输入源对象中。然后创建了一个 `SAXSource`
+    对象，将读取器和 `InputSource` 对象传递给它，然后将其传递给转换器。
+- en: When the application runs, the transformer configures itself as the `ContentHandler`
+    for the SAX parser (the `AddressBookReader`) and tells the parser to operate on
+    the `inputSource` object. Events generated by the parser then go to the transformer,
+    which does the appropriate thing and passes the data on to the result object.
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当应用程序运行时，转换器将自身配置为 SAX 解析器（`AddressBookReader`）的 `ContentHandler`，并告诉解析器对 `inputSource`
+    对象进行操作。解析器生成的事件然后传递给转换器，转换器执行适当的操作并将数据传递给结果对象。
+- en: Finally, `TransformationApp03` does not generate exceptions, so the exception
+    handling code seen in `TransformationApp02` is no longer present.
+  id: totrans-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，`TransformationApp03` 不会生成异常，因此在 `TransformationApp02` 中看到的异常处理代码不再存在。
+- en: Running the `TransformationApp03` Sample
+  id: totrans-103
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行 `TransformationApp03` 示例
+- en: '**Navigate to the `samples` directory.**'
+  id: totrans-104
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航到 `samples` 目录。**'
+- en: '[PRE21]'
+  id: totrans-105
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE21]'
+- en: '**[`Download the XSLT examples by clicking this link`](../examples/xslt_samples.zip)
+    and unzip them into the *install-dir*`/jaxp-1_4_2-`*release-date*`/samples` directory.**'
+  id: totrans-106
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**[点击此链接下载 XSLT 示例](../examples/xslt_samples.zip) 并将其解压缩到 *install-dir*`/jaxp-1_4_2-`*release-date*`/samples`
+    目录中。**'
+- en: '**Navigate to the `xslt` directory.**'
+  id: totrans-107
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**导航到 `xslt` 目录。**'
+- en: '[PRE22]'
+  id: totrans-108
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE22]'
+- en: '**Compile the `TransformationApp03` sample.**'
+  id: totrans-109
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编译`TransformationApp03`示例。
+- en: 'Type the following command:'
+  id: totrans-110
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 输入以下命令：
+- en: '[PRE23]'
+  id: totrans-111
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE23]'
+- en: '**Run the `TransformationApp03` sample on a data file you wish to convert to
+    XML.**'
+  id: totrans-112
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 运行`TransformationApp03`示例，转换您希望转换为XML的数据文件。
+- en: In the case below, `TransformationApp03` is run on the `PersonalAddressBook.ldif`
+    file, found in the `xslt/data` directory after you have unzipped the samples bundle.
+  id: totrans-113
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在下面的情况下，在您解压缩示例包后，在`xslt/data`目录中找到的`PersonalAddressBook.ldif`文件上运行`TransformationApp03`。
+- en: '[PRE24]'
+  id: totrans-114
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE24]'
+- en: 'You will see the following output:'
+  id: totrans-115
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 您将看到以下输出：
+- en: '[PRE25]'
+  id: totrans-116
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE25]'
+- en: As you can see, the LDIF format file `PersonalAddressBook` has been converted
+    to XML!
+  id: totrans-117
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 正如您所看到的，LDIF格式文件`PersonalAddressBook`已被转换为XML！

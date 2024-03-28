@@ -1,0 +1,140 @@
+- en: Setting Package Version Information
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 设置包版本信息
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/packageman.html](https://docs.oracle.com/javase/tutorial/deployment/jar/packageman.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/packageman.html](https://docs.oracle.com/javase/tutorial/deployment/jar/packageman.html)
+- en: 'You may need to include package version information in a JAR file''s manifest.
+    You provide this information with the following headers in the manifest:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能需要在 JAR 文件的 MANIFEST.MF 中包含包版本信息。您可以使用 MANIFEST.MF 中的以下头部提供此信息：
+- en: '**Headers in a manifest**'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**清单中的头部**'
+- en: '| Header | Definition |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| 头部 | 定义 |'
+- en: '| `Name` | The name of the specification. |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Name` | 规范的名称。 |'
+- en: '| `Specification-Title` | The title of the specification. |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Specification-Title` | 规范的标题。 |'
+- en: '| `Specification-Version` | The version of the specification. |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Specification-Version` | 规范的版本。 |'
+- en: '| `Specification-Vendor` | The vendor of the specification. |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Specification-Vendor` | 规范的供应商。 |'
+- en: '| `Implementation-Title` | The title of the implementation. |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Implementation-Title` | 实现的标题。 |'
+- en: '| `Implementation-Version` | The build number of the implementation. |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Implementation-Version` | 实现的构建编号。 |'
+- en: '| `Implementation-Vendor` | The vendor of the implementation. |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Implementation-Vendor` | 实现的供应商。 |'
+- en: 'One set of such headers can be assigned to each package. The versioning headers
+    should appear directly beneath the `Name` header for the package. This example
+    shows all the versioning headers:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个包可以分配一组这样的头部。版本头部应直接出现在包的`Name`头部下方。此示例显示了所有版本头部：
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: For more information about package version headers, see the [Package Versioning
+    specification](https://docs.oracle.com/javase/8/docs/technotes/guides/versioning/spec/versioning2.html#wp89936)
+    .
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于包版本头的更多信息，请参阅[包版本规范](https://docs.oracle.com/javase/8/docs/technotes/guides/versioning/spec/versioning2.html#wp89936)。
+- en: An Example
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例
+- en: We want to include the headers in the example above in the manifest of MyJar.jar.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们希望在 MyJar.jar 的 MANIFEST.MF 中包含上述示例中的头部。
+- en: 'We first create a text file named `Manifest.txt` with the following contents:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先创建一个名为`Manifest.txt`的文本文件，内容如下：
+- en: '[PRE1]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Warning:** The text file must end with a new line or carriage return. The
+    last line will not be parsed properly if it does not end with a new line or carriage
+    return.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**警告：** 文本文件必须以新行或回车符结束。如果最后一行没有以新行或回车符结束，将无法正确解析最后一行。'
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'We then create a JAR file named `MyJar.jar` by entering the following command:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后通过输入以下命令创建名为`MyJar.jar`的 JAR 文件：
+- en: '[PRE2]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'This creates the JAR file with a manifest with the following contents:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这将创建带有以下内容的 MANIFEST.MF 文件的 JAR 文件：
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

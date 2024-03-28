@@ -1,0 +1,81 @@
+- en: Summary
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 概要
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/summary.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/summary.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/summary.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/summary.html)
+- en: In Swing, painting begins with the `paint` method, which then invokes `paintComponent`,
+    `paintBorder`, and `paintChildren`. The system will invoke this automatically
+    when a component is first painted, is resized, or becomes exposed after being
+    hidden by another window.
+  id: totrans-2
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在Swing中，绘制始于`paint`方法，然后调用`paintComponent`、`paintBorder`和`paintChildren`。当组件首次绘制、调整大小或在被另一个窗口隐藏后再次暴露时，系统将自动调用这些方法。
+- en: Programmatic repaints are accomplished by invoking a component's `repaint` method;
+    do *not* invoke its `paintComponent` directly. Invoking `repaint` causes the painting
+    subsystem to take the necessary steps to ensure that your `paintComponent` method
+    is invoked at an appropriate time.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过调用组件的`repaint`方法来实现程序化重绘；*不要*直接调用其`paintComponent`。调用`repaint`会导致绘制子系统采取必要步骤，以确保您的`paintComponent`方法在适当的时间被调用。
+- en: The multi-arg version of `repaint` allows you to shrink the component's *clip
+    rectangle* (the section of the screen that is affected by painting operations)
+    so that painting can become more efficient. We utilized this technique in the
+    `moveSquare` method to avoid repainting sections of the screen that have not changed.
+    There is also a no-arg version of this method that will repaint the component's
+    entire surface area.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`repaint`的多参数版本允许您缩小组件的*剪辑矩形*（受绘制操作影响的屏幕部分），以使绘制更有效。我们在`moveSquare`方法中利用了这种技术，以避免重新绘制未发生变化的屏幕部分。还有一个无参数版本的方法，它将重新绘制组件的整个表面区域。'
+- en: Because we have shrunk the clip rectangle, our `moveSquare` method invokes `repaint`
+    not once, but twice. The first invocation repaints the area of the component where
+    the square *previously* was (the inherited behavior is to fill the area with the
+    current background color.) The second invocation paints the area of the component
+    where the square *currently* is.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 因为我们已经缩小了剪辑矩形，我们的`moveSquare`方法不止一次地调用`repaint`。第一次调用重新绘制了组件中方块*先前*所在的区域（继承的行为是用当前背景颜色填充区域）。第二次调用绘制了组件中方块*当前*所在的区域。
+- en: You can invoke `repaint` multiple times from within the same event handler,
+    but Swing will take that information and repaint the component in just one operation.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以在同一事件处理程序中多次调用`repaint`，但Swing将获取这些信息并在一次操作中重新绘制组件。
+- en: For components with a UI Delegate, you should pass the `Graphics` parameter
+    with the line `super.paintComponent(g)` as the first line of code in your `paintComponent`
+    override. If you do not, then your component will be responsible for manually
+    painting its background. You can experiment with this by commenting out that line
+    and recompiling to see that the background is no longer painted.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于具有UI Delegate的组件，您应该将`Graphics`参数与`super.paintComponent(g)`这一行代码作为您的`paintComponent`覆盖中的第一行代码传递。如果不这样做，那么您的组件将负责手动绘制其背景。您可以通过注释掉该行并重新编译来进行实验，看看背景不再被绘制。
+- en: By factoring out our new code into a separate `RedSquare` class, the application
+    maintains an object-oriented design, which keeps the `paintComponent` method of
+    the `MyPanel` class free of clutter. Painting still works because we have passed
+    the `Graphics` object off to the red square by invoking its `paintSquare(Graphics
+    g)` method. Keep in mind that the name of this method is one that we have created
+    from scratch; we are not overriding `paintSquare` from anywhere higher up in the
+    Swing API.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过将新代码提取到一个单独的`RedSquare`类中，应用程序保持了面向对象的设计，这使得`MyPanel`类的`paintComponent`方法保持清晰。绘制仍然有效，因为我们通过调用其`paintSquare(Graphics
+    g)`方法将`Graphics`对象传递给了红色方块。请记住，这个方法的名称是我们从头开始创建的；我们没有从Swing API的更高层次覆盖`paintSquare`。

@@ -1,0 +1,182 @@
+- en: Reading from and Writing to a Socket
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 从套接字读取和写入
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/sockets/readingWriting.html](https://docs.oracle.com/javase/tutorial/networking/sockets/readingWriting.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 译文：[https://docs.oracle.com/javase/tutorial/networking/sockets/readingWriting.html](https://docs.oracle.com/javase/tutorial/networking/sockets/readingWriting.html)
+- en: Let's look at a simple example that illustrates how a program can establish
+    a connection to a server program using the `Socket` class and then, how the client
+    can send data to and receive data from the server through the socket.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看一个简单的示例，说明程序如何使用`Socket`类与服务器程序建立连接，然后客户端如何通过套接字向服务器发送数据并从服务器接收数据。
+- en: The example program implements a client, [`EchoClient`](examples/EchoClient.java),
+    that connects to an echo server. The echo server receives data from its client
+    and echoes it back. The example [`EchoServer`](examples/EchoServer.java) implements
+    an echo server. (Alternatively, the client can connect to any host that supports
+    the [Echo Protocol](http://tools.ietf.org/html/rfc862).)
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例程序实现了一个客户端，[`EchoClient`](examples/EchoClient.java)，连接到一个回显服务器。回显服务器从其客户端接收数据并将其回显。示例[`EchoServer`](examples/EchoServer.java)实现了一个回显服务器。（或者，客户端可以连接到支持[Echo
+    Protocol](http://tools.ietf.org/html/rfc862)的任何主机。）
+- en: The `EchoClient` example creates a socket, thereby getting a connection to the
+    echo server. It reads input from the user on the standard input stream, and then
+    forwards that text to the echo server by writing the text to the socket. The server
+    echoes the input back through the socket to the client. The client program reads
+    and displays the data passed back to it from the server.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`EchoClient`示例创建一个套接字，从而连接到回显服务器。它从标准输入流中读取用户输入，然后通过将文本写入套接字将该文本转发到回显服务器。服务器通过套接字将输入回显到客户端。客户端程序读取并显示从服务器传回的数据。'
+- en: Note that the `EchoClient` example both writes to and reads from its socket,
+    thereby sending data to and receiving data from the echo server.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`EchoClient`示例既向其套接字写入数据，也从其套接字读取数据，从而向回显服务器发送数据并接收数据。
+- en: 'Let''s walk through the program and investigate the interesting parts. The
+    following statements in the [`try`-with-resources](../../essential/exceptions/tryResourceClose.html)
+    statement in the `EchoClient` example are critical. These lines establish the
+    socket connection between the client and the server and open a [`PrintWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintWriter.html)
+    and a [`BufferedReader`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html)
+    on the socket:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们逐步走过程序并研究有趣的部分。在`EchoClient`示例中的[`try`-with-resources](../../essential/exceptions/tryResourceClose.html)语句中，以下语句至关重要。这些行建立了客户端和服务器之间的套接字连接，并在套接字上打开了一个[`PrintWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintWriter.html)和一个[`BufferedReader`](https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html)：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The first statement in the `try`-with resources statement creates a new [`Socket`](https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html)
+    object and names it `echoSocket`. The `Socket` constructor used here requires
+    the name of the computer and the port number to which you want to connect. The
+    example program uses the first [command-line argument](../../essential/environment/cmdLineArgs.html)
+    as the name of the computer (the host name) and the second command line argument
+    as the port number. When you run this program on your computer, make sure that
+    the host name you use is the fully qualified IP name of the computer to which
+    you want to connect. For example, if your echo server is running on the computer
+    `echoserver.example.com` and it is listening on port number 7, first run the following
+    command from the computer `echoserver.example.com` if you want to use the `EchoServer`
+    example as your echo server:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`try`-with资源语句中的第一条语句创建了一个新的[`Socket`](https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html)对象，并命名为`echoSocket`。此处使用的`Socket`构造函数需要要连接的计算机的名称和端口号。示例程序使用第一个[命令行参数](../../essential/environment/cmdLineArgs.html)作为计算机的名称（主机名），第二个命令行参数作为端口号。当您在计算机上运行此程序时，请确保您使用的主机名是要连接的计算机的完全限定IP名称。例如，如果您的回显服务器在计算机`echoserver.example.com`上运行，并且正在侦听端口号7，则如果您想将`EchoServer`示例用作您的回显服务器，请先从计算机`echoserver.example.com`运行以下命令：'
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Afterward, run the `EchoClient` example with the following command:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 后续，使用以下命令运行`EchoClient`示例：
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The second statement in the `try`-with resources statement gets the socket's
+    output stream and opens a `PrintWriter` on it named `out`. Similarly, the third
+    statement gets the socket's input stream and opens a `BufferedReader` on it named
+    `in`. The example uses readers and writers so that it can write Unicode characters
+    over the socket. If you are not yet familiar with the Java platform's I/O classes,
+    you may wish to read [Basic I/O](../../essential/io/index.html).
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`try`-with资源语句中的第二个语句获取套接字的输出流，并在其上打开名为`out`的`PrintWriter`。类似地，第三个语句获取套接字的输入流，并在其上打开名为`in`的`BufferedReader`。该示例使用读取器和写入器，以便可以通过套接字写入Unicode字符。如果您还不熟悉Java平台的I/O类，请阅读[基本I/O](../../essential/io/index.html)。'
+- en: 'The next interesting part of the program is the `while` loop. The loop reads
+    a line at a time from the standard input stream with the `BufferedReader` object
+    `stdIn`, which is created in the fourth statement in the `try`-with resources
+    statement. The loop then immediately sends the line to the server by writing it
+    to the `PrintWriter` connected to the socket:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 程序的下一个有趣部分是`while`循环。该循环从标准输入流中逐行读取数据，使用在`try`-with资源语句中创建的`BufferedReader`对象`stdIn`。然后，该循环立即将该行数据通过写入到与套接字连接的`PrintWriter`发送到服务器：
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The last statement in the `while` loop reads a line of information from the
+    `BufferedReader` connected to the socket. The `readLine` method waits until the
+    server echoes the information back to `EchoClient`. When `readline` returns, `EchoClient`
+    prints the information to the standard output.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`while`循环中的最后一个语句从与套接字连接的`BufferedReader`中读取一行信息。`readLine`方法会等待服务器将信息回显给`EchoClient`。当`readline`返回时，`EchoClient`将信息打印到标准输出。'
+- en: The `while` loop continues until the user types an end-of-input character. That
+    is, the `EchoClient` example reads input from the user, sends it to the Echo server,
+    gets a response from the server, and displays it, until it reaches the end-of-input.
+    (You can type an end-of-input character by pressing **Ctrl-C**.) The `while` loop
+    then terminates, and the Java runtime automatically closes the readers and writers
+    connected to the socket and to the standard input stream, and it closes the socket
+    connection to the server. The Java runtime closes these resources automatically
+    because they were created in the `try`-with-resources statement. The Java runtime
+    closes these resources in reverse order that they were created. (This is good
+    because streams connected to a socket should be closed before the socket itself
+    is closed.)
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`while`循环会一直持续，直到用户输入结束符号。也就是说，`EchoClient`示例从用户那里读取输入，将其发送到Echo服务器，从服务器获取响应，并显示它，直到达到输入结束。
+    （您可以通过按下**Ctrl-C**键来输入结束符号。）然后`while`循环终止，并且Java运行时会自动关闭与套接字和标准输入流连接的读取器和写入器，并关闭与服务器的套接字连接。Java运行时会自动关闭这些资源，因为它们是在`try`-with资源语句中创建的。Java运行时会按照它们创建的相反顺序关闭这些资源。（这很好，因为连接到套接字的流应该在套接字本身关闭之前关闭。）'
+- en: 'This client program is straightforward and simple because the echo server implements
+    a simple protocol. The client sends text to the server, and the server echoes
+    it back. When your client programs are talking to a more complicated server such
+    as an HTTP server, your client program will also be more complicated. However,
+    the basics are much the same as they are in this program:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该客户端程序非常简单直接，因为回显服务器实现了一个简单的协议。客户端向服务器发送文本，服务器将其回显。当您的客户端程序与更复杂的服务器（如HTTP服务器）通信时，您的客户端程序也会更复杂。但是，基本原理与本程序中的相同：
+- en: Open a socket.
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 打开一个套接字。
+- en: Open an input stream and output stream to the socket.
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 打开一个输入流和输出流到套接字。
+- en: Read from and write to the stream according to the server's protocol.
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 根据服务器的协议从流中读取和写入数据。
+- en: Close the streams.
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 关闭流。
+- en: Close the socket.
+  id: totrans-22
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 关闭套接字。
+- en: Only step 3 differs from client to client, depending on the server. The other
+    steps remain largely the same.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 仅步骤3因客户端而异，取决于服务器。其他步骤基本保持不变。

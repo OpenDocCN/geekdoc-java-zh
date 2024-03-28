@@ -1,0 +1,142 @@
+- en: Avoiding Unnecessary Update Checks
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 避免不必要的更新检查
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/avoidingUnnecessaryUpdateChecks.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/avoidingUnnecessaryUpdateChecks.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/avoidingUnnecessaryUpdateChecks.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/avoidingUnnecessaryUpdateChecks.html)
+- en: Rich Internet applications (RIAs) are cached locally to improve startup time.
+    However, before launching a RIA, the launch software checks to make sure that
+    every JAR file referenced in the RIA's Java Network Launch Protocol (JNLP) file
+    is up-to-date. In other words, the launch software makes sure that you are running
+    the latest version of the RIA and not an older cached copy. These update checks
+    can take up to a few hundred milliseconds depending on the number of JAR files
+    and network speed. Use the techniques described in this topic to avoid unnecessary
+    update checks and to enhance the start up time of your RIA.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 富互联网应用程序（RIA）在本地缓存以提高启动时间。但是，在启动RIA之前，启动软件会检查确保RIA的Java网络启动协议（JNLP）文件中引用的每个JAR文件都是最新的。换句话说，启动软件确保您运行的是RIA的最新版本，而不是旧的缓存副本。这些更新检查可能需要几百毫秒，具体取决于JAR文件数量和网络速度。使用本主题中描述的技术来避免不必要的更新检查，并提高RIA的启动时间。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: The term "launch software" is used here to collectively refer to the Java Plug-in
+    software and the Java Web Start software. The Java Plug-in software launches applets
+    while the Java Web Start software launches Java Web Start applications.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此处使用术语“启动软件”来统称Java插件软件和Java Web Start软件。Java插件软件用于启动小程序，而Java Web Start软件用于启动Java
+    Web Start应用程序。
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Leveraging the Version Download Protocol
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 利用版本下载协议
+- en: You can leverage the *version download protocol* to eliminate unnecessary version
+    checks. See the following steps to enable this protocol.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以利用*版本下载协议*来消除不必要的版本检查。请参阅以下步骤以启用此协议。
+- en: 'Rename the JAR files to include a version number suffix with the following
+    naming convention:'
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将JAR文件重命名为包含版本号后缀的命名约定如下：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: For example, rename `DynamicTreeDemo.jar` to `DynamicTreeDemo__V1.0.jar`.
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 例如，将`DynamicTreeDemo.jar`重命名为`DynamicTreeDemo__V1.0.jar`。
+- en: In the JNLP file, specify a version for every JAR file, and set the `jnlp.versionEnabled`
+    property to `true`.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在JNLP文件中为每个JAR文件指定一个版本，并将`jnlp.versionEnabled`属性设置为`true`。
+- en: '[PRE1]'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: When the `jnlp.versionEnabled` property is enabled, the launch software performs
+    only *one* update check to make sure that the JNLP file is up-to-date. The software
+    compares the version numbers that are specified in the JNLP file with the corresponding
+    JAR file versions (according to the naming convention mentioned in step 1) and
+    updates only the outdated JAR files. This approach is efficient because only the
+    update check for the JNLP file occurs over the network. All other version checks
+    occur locally.
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 当启用`jnlp.versionEnabled`属性时，启动软件仅执行*一次*更新检查，以确保JNLP文件是最新的。软件将JNLP文件中指定的版本号与相应的JAR文件版本（根据第1步中提到的命名约定）进行比较，并仅更新过时的JAR文件。这种方法非常高效，因为仅在网络上进行JNLP文件的更新检查。所有其他版本检查都在本地进行。
+- en: If a file with the correct version number is not found, the launch software
+    attempts to load the default JAR file (for example, `DynamicTreeDemo.jar`).
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如果未找到具有正确版本号的文件，则启动软件将尝试加载默认的JAR文件（例如，`DynamicTreeDemo.jar`）。
+- en: Performing Update Checks in the Background
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在后台执行更新检查
+- en: 'If it is not critical for the user to immediately run the latest version of
+    your RIA, you can specify that all update checks should occur in the background.
+    In this case, the launch software launches the locally cached copy for immediate
+    usage and downloads a newer version of the RIA in the background. The newer version
+    of the RIA will be launched the next time the user attempts to use your RIA. To
+    enable background update checks, add the following line to your JNLP file:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果用户立即运行您的RIA的最新版本并不是关键，您可以指定所有更新检查应在后台进行。在这种情况下，启动软件将启动本地缓存副本以供立即使用，并在后台下载RIA的新版本。下次用户尝试使用您的RIA时，将启动新版本的RIA。要启用后台更新检查，请将以下行添加到您的JNLP文件中：
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The following code snippet shows a sample JNLP file with the background update
+    check enabled:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段显示了启用后台更新检查的示例JNLP文件：
+- en: '[PRE3]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

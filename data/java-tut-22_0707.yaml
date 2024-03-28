@@ -1,0 +1,207 @@
+- en: Long Term Persistence
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 长期持久性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/advanced/longpersistence.html](https://docs.oracle.com/javase/tutorial/javabeans/advanced/longpersistence.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/advanced/longpersistence.html](https://docs.oracle.com/javase/tutorial/javabeans/advanced/longpersistence.html)
+- en: '*Long-term persistence* is a model that enables beans to be saved in XML format.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*长期持久性*是一种模型，可以将bean保存为XML格式。'
+- en: Information on the XML format and on how to implement long-term persistence
+    for non-beans can be found in [XML Schema](http://www.oracle.com/technetwork/java/persistence3-139471.html)
+    and [Using XMLEncoder](http://www.oracle.com/technetwork/java/persistence4-140124.html).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关XML格式和如何为非bean实现长期持久性的信息，请参阅[XML模式](http://www.oracle.com/technetwork/java/persistence3-139471.html)和[使用XMLEncoder](http://www.oracle.com/technetwork/java/persistence4-140124.html)。
+- en: Encoder and Decoder
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编码器和解码器
+- en: 'The [`XMLEncoder`](https://docs.oracle.com/javase/8/docs/api/java/beans/XMLEncoder.html)
+    class is assigned to write output files for textual representation of `Serializable`
+    objects. The following code fragment is an example of writing a Java bean and
+    its properties in XML format:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`XMLEncoder`](https://docs.oracle.com/javase/8/docs/api/java/beans/XMLEncoder.html)类用于编写`Serializable`对象的文本表示的输出文件。以下代码片段是将Java
+    bean及其属性以XML格式写入的示例：'
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The [`XMLDecoder`](https://docs.oracle.com/javase/8/docs/api/java/beans/XMLDecoder.html)
+    class reads an XML document that was created with XMLEncoder:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`XMLDecoder`](https://docs.oracle.com/javase/8/docs/api/java/beans/XMLDecoder.html)类读取使用XMLEncoder创建的XML文档：'
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: What's in XML?
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: XML中有什么？
+- en: 'An XML bean archive has its own specific syntax, which includes the following
+    tags to represent each bean element:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: XML bean存档具有自己特定的语法，其中包括以下标签来表示每个bean元素：
+- en: an XML preamble to describe a version of XML and type of encoding
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 用于描述XML版本和编码类型的XML前言
+- en: a `**<java>**` tag to embody all object elements of the bean
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个`**<java>**`标签，用于包含bean的所有对象元素
+- en: an `**<object>**` tag to represent a set of method calls needed to reconstruct
+    an object from its serialized form
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个`**<object>**`标签，用于表示从其序列化形式重建对象所需的一组方法调用
+- en: '[PRE2]'
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: or statements
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 或语句
+- en: '[PRE3]'
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'tags to define appropriate primitive types:'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 用于定义适当的基本类型的标签：
+- en: '`**<boolean>**`'
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`**<boolean>**`'
+- en: '`**<byte>**`'
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`**<byte>**`'
+- en: '`**<char>**`'
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`**<char>**`'
+- en: '`**<short>**`'
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`**<short>**`'
+- en: '`**<int>**`'
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`**<int>**`'
+- en: '`**<long>**`'
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`**<long>**`'
+- en: '`**<float>**`'
+  id: totrans-24
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`**<float>**`'
+- en: '`**<double>**`'
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`**<double>**`'
+- en: '[PRE4]'
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: a **<`class`>** tag to represent an instance of Class.
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个**<`class`>**标签，用于表示Class的一个实例。
+- en: '[PRE5]'
+  id: totrans-28
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: an **<`array`>** tag to define an array
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个**<`array`>**标签用于定义数组
+- en: '[PRE6]'
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The following code represents an XML archive that will be generated for the
+    `SimpleBean` component:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码表示将为`SimpleBean`组件生成的XML存档：
+- en: '[PRE7]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'

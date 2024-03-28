@@ -1,0 +1,199 @@
+- en: Invoking Applet Methods From JavaScript Code
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 从JavaScript代码调用Applet方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/invokingAppletMethodsFromJavaScript.html](https://docs.oracle.com/javase/tutorial/deployment/applet/invokingAppletMethodsFromJavaScript.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/invokingAppletMethodsFromJavaScript.html](https://docs.oracle.com/javase/tutorial/deployment/applet/invokingAppletMethodsFromJavaScript.html)
+- en: 'JavaScript code on a web page can interact with Java applets embedded on the
+    page. JavaScript code can perform operations such as the following:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 网页上的JavaScript代码可以与嵌入在页面上的Java applet进行交互。JavaScript代码可以执行以下操作：
+- en: Invoke methods on Java objects
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用Java对象上的方法
+- en: Get and set fields in Java objects
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取并设置Java对象中的字段
+- en: Get and set Java array elements
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取和设置Java数组元素
+- en: The [LiveConnect Specification](http://www.oracle.com/technetwork/java/javase/plugin2-142482.html#LIVECONNECT)
+    describes details about how JavaScript code communicates with Java code.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[LiveConnect规范](http://www.oracle.com/technetwork/java/javase/plugin2-142482.html#LIVECONNECT)描述了JavaScript代码如何与Java代码通信的详细信息。'
+- en: Security warnings are shown when JavaScript code makes calls to a Java applet.
+    To suppress these warnings, add the `Caller-Allowable-Codebase` attribute to the
+    JAR file manifest. Specify the location of the JavaScript code that is allowed
+    to make calls to the applet. See [JAR File Manifest Attributes for Security](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html)
+    for information about the `Caller-Allowable-Codebase` attribute.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当JavaScript代码调用Java applet时，会显示安全警告。要抑制这些警告，需要在JAR文件清单中添加`Caller-Allowable-Codebase`属性。指定允许调用applet的JavaScript代码的位置。有关`Caller-Allowable-Codebase`属性的信息，请参阅[安全的JAR文件清单属性](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html)。
+- en: This topic explores JavaScript code to Java applet communication using the Math
+    applet example. The `MathApplet` class and supporting `Calculator` class provide
+    a set of public methods and variables. The JavaScript code on the web page invokes
+    and evaluates these public members to pass data and retrieve calculated results.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本主题探讨了使用Math applet示例进行JavaScript代码到Java applet通信。`MathApplet`类和支持的`Calculator`类提供了一组公共方法和变量。网页上的JavaScript代码调用和评估这些公共成员以传递数据并检索计算结果。
+- en: Math Applet and Related Classes
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Math Applet和相关类
+- en: Here is the source code for the [``MathApplet``](examples/applet_InvokingAppletMethodsFromJavaScript/src/jstojava/MathApplet.java)
+    class. The `getCalculator` method returns a reference to the `Calculator` helper
+    class.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是[``MathApplet``](examples/applet_InvokingAppletMethodsFromJavaScript/src/jstojava/MathApplet.java)类的源代码。`getCalculator`方法返回`Calculator`辅助类的引用。
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The methods in the [``Calculator``](examples/applet_InvokingAppletMethodsFromJavaScript/src/jstojava/Calculator.java)
+    class let the user set two values, add numbers, and retrieve the numbers in a
+    range.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``Calculator``](examples/applet_InvokingAppletMethodsFromJavaScript/src/jstojava/Calculator.java)类中的方法允许用户设置两个值，相加数字，并在范围内检索数字。'
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `getDate` method of the [``DateHelper``](examples/applet_InvokingAppletMethodsFromJavaScript/src/jstojava/DateHelper.java)
+    class returns the current date.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``DateHelper``](examples/applet_InvokingAppletMethodsFromJavaScript/src/jstojava/DateHelper.java)类的`getDate`方法返回当前日期。'
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Deploying the Applet
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 部署Applet
+- en: Deploy the applet in a web page, [``AppletPage.html``](examples/dist/applet_InvokingAppletMethodsFromJavaScript/AppletPage.html)
+    When deploying the applet, make sure that you specify an id for the applet. The
+    applet id is used later to obtain a reference to the applet object.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在网页中部署applet，[``AppletPage.html``](examples/dist/applet_InvokingAppletMethodsFromJavaScript/AppletPage.html)。部署applet时，请确保为applet指定一个id。稍后将使用applet
+    id获取对applet对象的引用。
+- en: '[PRE3]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Next, add some JavaScript code to the [``AppletPage.html``](examples/dist/applet_InvokingAppletMethodsFromJavaScript/AppletPage.html)
+    web page. The JavaScript code can use the applet id as a reference to the applet
+    object and invoke the applet's methods. In the example shown next, the JavaScript
+    code sets the applet's public member variables, invokes public methods, and retrieves
+    a reference to another object referenced by the applet (`Calculator`). The JavaScript
+    code is able to handle primitive, array, and object return types.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，在[``AppletPage.html``](examples/dist/applet_InvokingAppletMethodsFromJavaScript/AppletPage.html)网页中添加一些JavaScript代码。JavaScript代码可以使用applet
+    id作为对applet对象的引用，并调用applet的方法。在下面的示例中，JavaScript代码设置了applet的公共成员变量，调用了公共方法，并检索了由applet引用的另一个对象（`Calculator`）的引用。JavaScript代码能够处理基本类型、数组和对象返回类型。
+- en: '[PRE4]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The Math applet displays the following results on the web page when the number
+    a = 0 and b = 5:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当数字a = 0和b = 5时，Math applet在网页上显示以下结果：
+- en: '[PRE5]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Open [``AppletPage.html``](examples/dist/applet_InvokingAppletMethodsFromJavaScript/AppletPage.html)
+    in a browser to view the Math applet.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在浏览器中打开[``AppletPage.html``](examples/dist/applet_InvokingAppletMethodsFromJavaScript/AppletPage.html)以查看数学小程序。
+- en: '* * *'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，请至少安装[Java SE 开发工具包（JDK）6 更新 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '* * *'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到示例运行，请确保在浏览器中启用 JavaScript 解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Check [security restrictions](security.html#jsNote) placed on applets invoked
+    by JavaScript code.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 检查由 JavaScript 代码调用的小程序所受到的[安全限制](security.html#jsNote)。
+- en: '[Download source code](examplesIndex.html#InvokingAppletMethodsFromJavaScript)
+    for the *Invoking Applet Methods From JavaScript Code* example to experiment further.'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#InvokingAppletMethodsFromJavaScript)以进一步进行实验的*通过
+    JavaScript 代码调用小程序方法*示例。'

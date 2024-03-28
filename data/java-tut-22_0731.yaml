@@ -1,0 +1,485 @@
+- en: Using SQLXML Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用 SQLXML 对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlxml.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlxml.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlxml.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlxml.html)
+- en: The `Connection` interface provides support for the creation of `SQLXML` objects
+    using the method `createSQLXML`. The object that is created does not contain any
+    data. Data may be added to the object by calling the `setString`, `setBinaryStream`,
+    `setCharacterStream` or `setResult` method on the `SQLXML` interface.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Connection` 接口支持使用 `createSQLXML` 方法创建 `SQLXML` 对象。创建的对象不包含任何数据。可以通过在 `SQLXML`
+    接口上调用 `setString`、`setBinaryStream`、`setCharacterStream` 或 `setResult` 方法向对象添加数据。'
+- en: 'The following topics are covered:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面涵盖了以下主题：
+- en: '[Creating SQLXML Objects](#creating_sqlxml)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建 SQLXML 对象](#creating_sqlxml)'
+- en: '[Retrieving SQLXML Values in ResultSet](#retrieving_sqlxml)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在 ResultSet 中检索 SQLXML 值](#retrieving_sqlxml)'
+- en: '[Accessing SQLXML Object Data](#accessing_sqlxml)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[访问 SQLXML 对象数据](#accessing_sqlxml)'
+- en: '[Storing SQLXML Objects](#storing_sqlxml)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[存储 SQLXML 对象](#storing_sqlxml)'
+- en: '[Initializing SQLXML Objects](#initializing_sqlxml)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[初始化 SQLXML 对象](#initializing_sqlxml)'
+- en: '[Releasing SQLXML Resources](#releasing_sqlxml)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[释放 SQLXML 资源](#releasing_sqlxml)'
+- en: '[Sample Code](#sample_code)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[示例代码](#sample_code)'
+- en: Creating SQLXML Objects
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建 SQLXML 对象
+- en: In the following excerpt, the method `Connection.createSQLXML` is used to create
+    an empty `SQLXML` object. The `SQLXML.setString` method is used to write data
+    to the `SQLXML` object that was created.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在以下摘录中，使用 `Connection.createSQLXML` 方法创建一个空的 `SQLXML` 对象。使用 `SQLXML.setString`
+    方法将数据写入创建的 `SQLXML` 对象。
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Retrieving SQLXML Values in ResultSet
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在 ResultSet 中检索 SQLXML 值
+- en: The `SQLXML` data type is treated similarly to the more primitive built-in types.
+    A `SQLXML` value can be retrieved by calling the `getSQLXML` method in the `ResultSet`
+    or `CallableStatement` interface.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SQLXML` 数据类型类似于更基本的内置类型。可以通过在 `ResultSet` 或 `CallableStatement` 接口中调用 `getSQLXML`
+    方法来检索 `SQLXML` 值。'
+- en: 'For example, the following excerpt retrieves a `SQLXML` value from the first
+    column of the `ResultSet` *rs*:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，以下摘录从 `ResultSet` *rs* 的第一列检索一个 `SQLXML` 值：
+- en: '[PRE1]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '`SQLXML` objects remain valid for at least the duration of the transaction
+    in which they are created, unless their `free` method is invoked.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SQLXML` 对象在创建它们的事务持续时间内至少保持有效，除非调用它们的 `free` 方法。'
+- en: Accessing SQLXML Object Data
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 访问 SQLXML 对象数据
+- en: 'The `SQLXML` interface provides the `getString`, `getBinaryStream`, `getCharacterStream`,
+    and `getSource` methods to access its internal content. The following excerpt
+    retrieves the contents of an `SQLXML` object using the `getString` method:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SQLXML` 接口提供了 `getString`、`getBinaryStream`、`getCharacterStream` 和 `getSource`
+    方法来访问其内部内容。以下摘录使用 `getString` 方法检索 `SQLXML` 对象的内容：'
+- en: '[PRE2]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The `getBinaryStream` or `getCharacterStream` methods can be used to obtain
+    an `InputStream` or a `Reader` object that can be passed directly to an XML parser.
+    The following excerpt obtains an `InputStream` object from an `SQLXML` Object
+    and then processes the stream using a DOM (Document Object Model) parser:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以使用 `getBinaryStream` 或 `getCharacterStream` 方法获取可直接传递给 XML 解析器的 `InputStream`
+    或 `Reader` 对象。以下摘录从 `SQLXML` 对象获取一个 `InputStream` 对象，然后使用 DOM（文档对象模型）解析器处理流：
+- en: '[PRE3]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The `getSource` method returns a `javax.xml.transform.Source` object. Sources
+    are used as input to XML parsers and XSLT transformers.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getSource` 方法返回一个 `javax.xml.transform.Source` 对象。源用作 XML 解析器和 XSLT 转换器的输入。'
+- en: 'The following excerpt retrieves and parses the data from a `SQLXML` object
+    using the `SAXSource` object returned by invoking the `getSource` method:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下摘录使用通过调用 `getSource` 方法返回的 `SAXSource` 对象从 `SQLXML` 对象中检索和解析数据：
+- en: '[PRE4]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Storing SQLXML Objects
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 存储 SQLXML 对象
+- en: A `SQLXML` object can be passed as an input parameter to a `PreparedStatement`
+    object just like other data types. The method `setSQLXML` sets the designated
+    `PreparedStatement` parameter with a `SQLXML` object.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SQLXML` 对象可以像其他数据类型一样作为输入参数传递给 `PreparedStatement` 对象。`setSQLXML` 方法使用 `SQLXML`
+    对象设置指定的 `PreparedStatement` 参数。'
+- en: In the following excerpt, `authorData` is an instance of the `java.sql.SQLXML`
+    interface whose data was initialized previously.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在以下摘录中，`authorData` 是一个 `java.sql.SQLXML` 接口的实例，其数据先前已初始化。
+- en: '[PRE5]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The `updateSQLXML` method can be used to update a column value in an updatable
+    result set.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`updateSQLXML` 方法可用于更新可更新结果集中的列值。'
+- en: If the `java.xml.transform.Result`, `Writer`, or `OutputStream` object for the
+    `SQLXML` object has not been closed prior to calling `setSQLXML` or `updateSQLXML`,
+    a `SQLException` will be thrown.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在调用`setSQLXML`或`updateSQLXML`之前未关闭`SQLXML`对象的`java.xml.transform.Result`、`Writer`或`OutputStream`对象，将抛出`SQLException`。
+- en: Initializing SQLXML Objects
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 初始化SQLXML对象
+- en: The `SQLXML` interface provides the methods `setString`, `setBinaryStream`,
+    `setCharacterStream`, or `setResult` to initialize the content for a `SQLXML`
+    object that has been created by calling the `Connection.createSQLXML` method.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SQLXML`接口提供了`setString`、`setBinaryStream`、`setCharacterStream`或`setResult`方法来初始化通过调用`Connection.createSQLXML`方法创建的`SQLXML`对象的内容。'
+- en: 'The following excerpt uses the method `setResult` to return a `SAXResult` object
+    to populate a newly created `SQLXML` object:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下摘录使用`setResult`方法返回一个`SAXResult`对象以填充一个新创建的`SQLXML`对象：
+- en: '[PRE6]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The following excerpt uses the `setCharacterStream` method to obtain a `java.io.Writer`
+    object in order to initialize a `SQLXML` object:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下摘录使用`setCharacterStream`方法获取一个`java.io.Writer`对象以初始化一个`SQLXML`对象：
+- en: '[PRE7]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Similarly, the `SQLXML` `setString` method can be used to initialize a `SQLXML`
+    object.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样地，`SQLXML`的`setString`方法可用于初始化一个`SQLXML`对象。
+- en: If an attempt is made to call the `setString`, `setBinaryStream`, `setCharacterStream`,
+    and `setResult` methods on a `SQLXML` object that has previously been initialized,
+    a `SQLException` will be thrown. If more than one call to the methods `setBinaryStream`,
+    `setCharacterStream`, and `setResult` occurs for the same `SQLXML` object, a `SQLException`
+    is thrown and the previously returned `javax.xml.transform.Result`, `Writer`,
+    or `OutputStream` object is not affected.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果尝试在先前初始化过的`SQLXML`对象上调用`setString`、`setBinaryStream`、`setCharacterStream`和`setResult`方法，将抛出`SQLException`。如果对同一`SQLXML`对象多次调用`setBinaryStream`、`setCharacterStream`和`setResult`方法，则会抛出`SQLException`，并且先前返回的`javax.xml.transform.Result`、`Writer`或`OutputStream`对象不受影响。
+- en: Releasing SQLXML Resources
+  id: totrans-41
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 释放SQLXML资源
+- en: '`SQLXML` objects remain valid for at least the duration of the transaction
+    in which they are created. This could potentially result in an application running
+    out of resources during a long running transaction. Applications may release `SQLXML`
+    resources by invoking their `free` method.'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SQLXML`对象在创建它们的事务持续时间内至少保持有效。这可能导致应用程序在长时间运行的事务中耗尽资源。应用程序可以通过调用它们的`free`方法释放`SQLXML`资源。'
+- en: In the following excerpt, the `method SQLXML.free` is called to release the
+    resources held for a previously created `SQLXML` object.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在以下摘录中，调用`method SQLXML.free`来释放先前创建的`SQLXML`对象所持有的资源。
+- en: '[PRE8]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Sample Code
+  id: totrans-45
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例代码
+- en: MySQL and Java DB and their respective JDBC drivers do not fully support the
+    `SQLXML` JDBC data type as described on in this section. However, the sample [`RSSFeedsTable.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/RSSFeedsTable.java)
+    demonstrates how to handle XML data with MySQL and Java DB.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MySQL和Java DB及其各自的JDBC驱动程序并不完全支持本节中描述的`SQLXML` JDBC数据类型。然而，示例[`RSSFeedsTable.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/RSSFeedsTable.java)演示了如何处理MySQL和Java
+    DB中的XML数据。
+- en: The owner of The Coffee Break follows several RSS feeds from various web sites
+    that cover restaurant and beverage industry news. An RSS (Really Simple Syndication
+    or Rich Site Summary) feed is an XML document that contains a series of articles
+    and associated metadata, such as the date of publication and author for each article.
+    The owner would like to store these RSS feeds into a database table, including
+    the RSS feed from The Coffee Break's blog.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: The Coffee Break的所有者关注来自各种网站的几个RSS订阅源，涵盖餐厅和饮料行业新闻。RSS（真正简单的聚合或富站点摘要）订阅源是一个包含一系列文章和相关元数据的XML文档，如每篇文章的发布日期和作者。所有者希望将这些RSS订阅源存储到数据库表中，包括The
+    Coffee Break博客的RSS订阅源。
+- en: The file [`rss-the-coffee-break-blog.xml`](examples/JDBCTutorial/xml/rss-the-coffee-break-blog.xml)
+    is an example RSS feed from The Coffee Break's blog. The file [`rss-coffee-industry-news.xml`](examples/JDBCTutorial/xml/rss-coffee-industry-news.xml)
+    is an example RSS feed from (the ficticious) Coffee Industry News.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件[`rss-the-coffee-break-blog.xml`](examples/JDBCTutorial/xml/rss-the-coffee-break-blog.xml)是The
+    Coffee Break博客的一个示例RSS订阅源。文件[`rss-coffee-industry-news.xml`](examples/JDBCTutorial/xml/rss-coffee-industry-news.xml)是（虚构的）Coffee
+    Industry News的一个示例RSS订阅源。
+- en: Working with XML Data in MySQL
+  id: totrans-49
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 在MySQL中处理XML数据
+- en: 'The sample `RSSFeedsTable` stores RSS feeds in the table `RSS_FEEDS`, which
+    is created with the following command:'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例`RSSFeedsTable`将RSS订阅源存储在名为`RSS_FEEDS`的表中，该表是使用以下命令创建的：
+- en: '[PRE9]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: MySQL does not support the XML data type. Instead, this sample stores XML data
+    in a column of type `LONGTEXT`, which is a `CLOB` SQL data type. MySQL has four
+    `CLOB` data types; the `LONGTEXT` data type holds the greatest amount of characters
+    among the four.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MySQL 不支持 XML 数据类型。相反，此示例将 XML 数据存储在类型为 `LONGTEXT` 的列中，这是一种 `CLOB` SQL 数据类型。MySQL
+    有四种 `CLOB` 数据类型；`LONGTEXT` 数据类型在这四种类型中包含的字符数量最多。
+- en: 'The method [`RSSFeedsTable.addRSSFeed`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/RSSFeedsTable.java)
+    adds an RSS feed to the `RSS_FEEDS` table. The first statements of this method
+    converts the RSS feed (which is represented by an XML file in this sample) into
+    an object of type `org.w3c.dom.Document`, which represents a DOM (Document Object
+    Model) document. This class, along with classes and interfaces contained in the
+    package `javax.xml`, contain methods that enable you to manipulate XML data content.
+    For example, the following statement uses an XPath expression to retrieve the
+    title of the RSS feed from the `Document` object:'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法 [`RSSFeedsTable.addRSSFeed`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/RSSFeedsTable.java)
+    将一个 RSS 订阅添加到 `RSS_FEEDS` 表中。此方法的第一条语句将 RSS 订阅（在此示例中表示为 XML 文件）转换为类型为 `org.w3c.dom.Document`
+    的对象，该对象表示 DOM（文档对象模型）文档。这个类以及包含在 `javax.xml` 包中的类和接口包含了使您能够操作 XML 数据内容的方法。例如，以下语句使用
+    XPath 表达式从 `Document` 对象中检索 RSS 订阅的标题：
+- en: '[PRE10]'
+  id: totrans-54
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: The XPath expression `/rss/channel/title[1]` retrieves the contents of the first
+    `<title>` element. For the file `rss-the-coffee-break-blog.xml`, this is the string
+    `The Coffee Break Blog`.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: XPath 表达式 `/rss/channel/title[1]` 检索第一个 `<title>` 元素的内容。对于文件 `rss-the-coffee-break-blog.xml`，这是字符串
+    `The Coffee Break Blog`。
+- en: 'The following statements add the RSS feed to the table `RSS_FEEDS`:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下语句将 RSS 订阅添加到表 `RSS_FEEDS` 中：
+- en: '[PRE11]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: The [`RSSFeedsTable.viewTable`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/RSSFeedsTable.java)
+    method retrieves the contents of `RSS_FEEDS`. For each row, the method creates
+    an object of type `org.w3c.dom.Document` named `doc` in which to store the XML
+    content in the column `RSS_FEED_XML`. The method retrieves the XML content and
+    stores it in an object of type `SQLXML` named `rssFeedXML`. The contents of `rssFeedXML`
+    are parsed and stored in the `doc` object.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法 [`RSSFeedsTable.viewTable`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/RSSFeedsTable.java)
+    检索 `RSS_FEEDS` 的内容。对于每一行，该方法创建一个名为 `doc` 的类型为 `org.w3c.dom.Document` 的对象，用于存储列
+    `RSS_FEED_XML` 中的 XML 内容。该方法检索 XML 内容并将其存储在名为 `rssFeedXML` 的类型为 `SQLXML` 的对象中。`rssFeedXML`
+    的内容被解析并存储在 `doc` 对象中。
+- en: Working with XML Data in Java DB
+  id: totrans-59
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 在 Java DB 中处理 XML 数据
+- en: '**Note**: See the section "XML data types and operators" in [*Java DB Developer''s
+    Guide*](https://docs.oracle.com/javadb/index_jdk8.html) for more information about
+    working with XML data in Java DB.'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：有关在 Java DB 中处理 XML 数据的更多信息，请参阅 [*Java DB 开发人员指南*](https://docs.oracle.com/javadb/index_jdk8.html)
+    中的 "XML 数据类型和运算符" 部分。'
+- en: 'The sample `RSSFeedsTable` stores RSS feeds in the table `RSS_FEEDS`, which
+    is created with the following command:'
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例 `RSSFeedsTable` 将 RSS 订阅存储在表 `RSS_FEEDS` 中，该表是使用以下命令创建的：
+- en: '[PRE12]'
+  id: totrans-62
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: Java DB supports the XML data type, but it does not support the `SQLXML` JDBC
+    data type. Consequently, you must convert any XML data to a character format,
+    and then use the Java DB operator `XMLPARSE` to convert it to the XML data type.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java DB 支持 XML 数据类型，但不支持 `SQLXML` JDBC 数据类型。因此，您必须将任何 XML 数据转换为字符格式，然后使用 Java
+    DB 运算符 `XMLPARSE` 将其转换为 XML 数据类型。
+- en: The [`RSSFeedsTable.addRSSFeed`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/RSSFeedsTable.java)
+    method adds an RSS feed to the `RSS_FEEDS` table. The first statements of this
+    method convert the RSS feed (which is represented by an XML file in this sample)
+    into an object of type `org.w3c.dom.Document`. This is described in the section
+    [Working with XML Data in MySQL](#working-with-xml-data-in-mysql).
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法 [`RSSFeedsTable.addRSSFeed`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/RSSFeedsTable.java)
+    将一个 RSS 订阅添加到 `RSS_FEEDS` 表中。此方法的第一条语句将 RSS 订阅（在此示例中表示为 XML 文件）转换为类型为 `org.w3c.dom.Document`
+    的对象。这在 [在 MySQL 中处理 XML 数据](#working-with-xml-data-in-mysql) 部分中有描述。
+- en: The `RSSFeedsTable.addRSSFeed` method converts the RSS feed to a `String` object
+    with the method [`JDBCTutorialUtilities.convertDocumentToString`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JDBCTutorialUtilities.java).
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`RSSFeedsTable.addRSSFeed` 方法使用方法 [`JDBCTutorialUtilities.convertDocumentToString`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JDBCTutorialUtilities.java)
+    将 RSS 订阅转换为 `String` 对象。'
+- en: 'Java DB has an operator named `XMLPARSE` that parses a character string representation
+    into a Java DB XML value, which is demonstrated by the following excerpt:'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java DB有一个名为`XMLPARSE`的操作符，将字符字符串表示解析为Java DB XML值，以下摘录演示了这一点：
+- en: '[PRE13]'
+  id: totrans-67
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: The `XMLPARSE` operator requires that you convert the character representation
+    of the XML document into a string data type that Java DB recognizes. In this example,
+    it converts it into a `CLOB` data type. See [Getting Started](gettingstarted.html)
+    and the Java DB documentation for more information about Apache Xalan and Java
+    DB requirements.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`XMLPARSE`操作符要求您将XML文档的字符表示转换为Java DB识别的字符串数据类型。在本例中，它将其转换为`CLOB`数据类型。有关Apache
+    Xalan和Java DB要求的更多信息，请参阅[入门指南](gettingstarted.html)和Java DB文档。'
+- en: 'The method [`RSSFeedsTable.viewTable`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/RSSFeedsTable.java)
+    retrieves the contents of `RSS_FEEDS`. Because Java DB does not support the JDBC
+    data type `SQLXML` you must retrieve the XML content as a string. Java DB has
+    an operator named `XMLSERIALIZE` that converts an XML type to a character type:'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法[`RSSFeedsTable.viewTable`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/RSSFeedsTable.java)检索`RSS_FEEDS`的内容。因为Java
+    DB不支持JDBC数据类型`SQLXML`，您必须将XML内容检索为字符串。Java DB有一个名为`XMLSERIALIZE`的操作符，将XML类型转换为字符类型：
+- en: '[PRE14]'
+  id: totrans-70
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: As with the `XMLPARSE` operator, the `XMLSERIALIZE` operator requires that Apache
+    Xalan be listed in your Java class path.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与`XMLPARSE`操作符一样，`XMLSERIALIZE`操作符要求在您的Java类路径中列出Apache Xalan。

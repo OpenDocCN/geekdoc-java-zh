@@ -1,0 +1,118 @@
+- en: Text
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 文本
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/text.html](https://docs.oracle.com/javase/tutorial/2d/overview/text.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/text.html](https://docs.oracle.com/javase/tutorial/2d/overview/text.html)
+- en: The Java 2D API has various text rendering capabilities including methods for
+    rendering strings and entire classes for setting font attributes and performing
+    text layout.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D API具有各种文本渲染功能，包括用于呈现字符串的方法以及用于设置字体属性和执行文本布局的整个类。
+- en: If you just want to draw a static text string, the most direct way to render
+    it directly through the `Graphics` class by using the `drawString` method. To
+    specify the font, you use the `setFont` method of the `Graphics` class.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您只想绘制静态文本字符串，最直接的方法是通过`Graphics`类使用`drawString`方法直接呈现它。要指定字体，您可以使用`Graphics`类的`setFont`方法。
+- en: If you want to implement your own text-editing routines or need more control
+    over the layout of the text than the text components provide, you can use the
+    Java 2D text layout classes in the `java.awt.font` package.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想要实现自己的文本编辑例程或需要比文本组件提供的更多对文本布局的控制，您可以使用`java.awt.font`包中的Java 2D文本布局类。
+- en: Fonts
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 字体
+- en: The shapes that a font uses to represent the characters in a string are called
+    *glyphs*. A particular character or combination of characters might be represented
+    as one or more glyphs. For example, *á* might be represented by two glyphs, whereas
+    the ligature *fi* might be represented by a single glyph.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字体用于表示字符串中字符的形状称为*字形*。特定字符或字符组合可能表示为一个或多个字形。例如，*á*可能由两个字形表示，而连字*fi*可能由一个字形表示。
+- en: A *font* can be thought of as a collection of glyphs. A single font might have
+    many *faces*, such as italic and regular. All of the faces in a font have similar
+    typographic features and can be recognized as members of the same *family*. In
+    other words, a collection of glyphs with a particular style form a *font face*.
+    A collection of font faces forms a *font family*. The collection of font families
+    forms the set of fonts that are available on the system.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*字体*可以被视为一组字形。单个字体可能有许多*面孔*，如斜体和常规。字体中的所有面孔具有类似的印刷特征，并且可以被识别为同一*字体系列*的成员。换句话说，具有特定样式的一组字形形成一个*字体面孔*。一组字体面孔形成一个*字体系列*。字体系列的集合形成了系统中可用的字体集。'
+- en: When you are using the Java 2D API, you specify fonts by using an instance of
+    `Font`. You can determine what fonts are available by calling the static method
+    `GraphicsEnvironment.getLocalGraphicsEnvironment` and then querying the returned
+    `GraphicsEnvironment`. The `getAllFonts` method returns an array that contains
+    `Font` instances for all of the fonts available on the system. The `getAvailableFontFamilyNames`
+    method returns a list of the available font families.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您使用Java 2D API时，您可以通过使用`Font`的实例来指定字体。您可以通过调用静态方法`GraphicsEnvironment.getLocalGraphicsEnvironment`并查询返回的`GraphicsEnvironment`来确定可用的字体。`getAllFonts`方法返回一个包含系统上所有可用字体的`Font`实例数组。`getAvailableFontFamilyNames`方法返回可用字体系列的列表。
+- en: Text Layout
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文本布局
+- en: 'Before text can be displayed, it must be laid out so that the characters are
+    represented by the appropriate glyphs in the proper positions. The following are
+    two Java 2D mechanisms for managing text layout:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在文本可以显示之前，必须对其进行布局，以便字符以适当的位置表示为适当的字形。以下是两种用于管理文本布局的Java 2D机制：
+- en: The `TextLayout` class manages text layout, highlighting, and hit detection.
+    The facilities provided by `TextLayout` handle the most common cases, including
+    strings with mixed fonts, mixed languages, and bidirectional text.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`TextLayout`类管理文本布局、高亮显示和命中检测。`TextLayout`提供的功能处理最常见的情况，包括具有混合字体、混合语言和双向文本的字符串。'
+- en: You can create the own `GlyphVector` objects by using the `Font` class and then
+    rendering each `GlyphVector` object through the `Graphics2D` class. Thus, you
+    can completely control how text is shaped and positioned.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以通过使用`Font`类创建自己的`GlyphVector`对象，然后通过`Graphics2D`类渲染每个`GlyphVector`对象。因此，您可以完全控制文本的形状和位置。
+- en: Rendering Hints for Text
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文本的渲染提示
+- en: The Java 2D API enables you to control the quality of shapes and text rendering
+    by using *rendering hints*. Rendering hints are encapsulated by the `java.awt.RenderingHints`
+    class.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D API使您能够通过使用*渲染提示*来控制形状和文本渲染的质量。渲染提示由`java.awt.RenderingHints`类封装。
+- en: As applied to text, this capability is used for antialiasing (which is also
+    known as an smooth edges). For example, the `KEY_TEXT_ANTIALIASING` hint enables
+    you to control the antialiasing of text separately from the antialiasing of other
+    shapes. To learn more about rendering hints see the [Controlling Rendering Quality](../advanced/quality.html)
+    lesson.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当应用于文本时，这种能力用于抗锯齿（也称为平滑边缘）。例如，`KEY_TEXT_ANTIALIASING`提示可以让您单独控制文本的抗锯齿效果，而不影响其他形状的抗锯齿效果。要了解更多关于渲染提示的信息，请参阅[控制渲染质量](../advanced/quality.html)课程。

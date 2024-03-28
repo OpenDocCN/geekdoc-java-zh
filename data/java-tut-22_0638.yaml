@@ -1,0 +1,214 @@
+- en: Java 2D Rendering
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Java 2D 渲染
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/rendering.html](https://docs.oracle.com/javase/tutorial/2d/overview/rendering.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/rendering.html](https://docs.oracle.com/javase/tutorial/2d/overview/rendering.html)
+- en: The Java 2D API provides a uniform rendering model across different types of
+    devices. At the application level, the rendering process is the same whether the
+    target rendering device is a screen or a printer. When a component needs to be
+    displayed, its `paint` or `update` method is automatically invoked with the appropriate
+    `Graphics` context.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D API在不同类型设备上提供统一的渲染模型。在应用程序级别，无论目标渲染设备是屏幕还是打印机，渲染过程都是相同的。当需要显示组件时，其`paint`或`update`方法会自动使用适当的`Graphics`上下文调用。
+- en: 'The Java 2D API includes the [`java.awt.Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)
+    class, which extends the [`Graphics`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html)
+    class to provide access to the enhanced graphics and rendering features of the
+    Java 2D API. These features include:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D API包括[`java.awt.Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)类，该类扩展了[`Graphics`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html)类，以提供对Java
+    2D API增强图形和渲染功能的访问。这些功能包括：
+- en: Rendering the outline of any geometric primitive, using the stroke and paint
+    attributes (`draw` method).
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 渲染任何几何原语的轮廓，使用笔画和填充属性（`draw` 方法）。
+- en: Rendering any geometric primitive by filling its interior with the color or
+    pattern specified by the paint attributes (`fill` method).
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过使用颜色或图案指定的填充属性（`fill` 方法）来填充任何几何原语的内部。
+- en: Rendering any text string (the `drawString` method). The font attribute is used
+    to convert the string to glyphs, which are then filled with the color or pattern
+    specified by the paint attributes.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 渲染任何文本字符串（`drawString` 方法）。字体属性用于将字符串转换为字形，然后用颜色或图案指定的填充。
+- en: Rendering the specified image (the `drawImage` method).
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 渲染指定的图像（`drawImage` 方法）。
+- en: 'In addition, the `Graphics2D` class supports the `Graphics` rendering methods
+    for particular shapes, such as `drawOval` and `fillRect`. All methods that are
+    represented above can be divided into two groups:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，`Graphics2D`类支持特定形状的`drawOval`和`fillRect`等`Graphics`渲染方法。上面列出的所有方法可以分为两组：
+- en: Methods to draw a shape
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 绘制形状的方法
+- en: Methods that affect rendering
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 影响渲染的方法
+- en: 'The second group of the methods uses the state attributes that form the `Graphics2D`
+    context for following purposes:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二组方法使用形成`Graphics2D`上下文的状态属性，用于以下目的：
+- en: To vary the stroke width
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 变化笔画宽度
+- en: To change how strokes are joined together
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 更改如何连接笔画
+- en: To set a clipping path to limit the area that is rendered
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 设置裁剪路径以限制渲染区域
+- en: To translate, rotate, scale, or shear objects when they are rendered
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在渲染对象时平移、旋转、缩放或倾斜对象
+- en: To define colors and patterns to fill shapes with
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 定义颜色和图案以填充形状
+- en: To specify how to compose multiple graphics objects
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 指定如何组合多个图形对象
+- en: 'To employ Java 2D API features in the application, cast the `Graphics` object
+    passed into a component’s rendering method to a `Graphics2D` object. For example:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在应用程序中使用Java 2D API功能，将传递给组件渲染方法的`Graphics`对象转换为`Graphics2D`对象。例如：
+- en: '[PRE0]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: As the following figure shows, the `Graphics2D` class rendering context contains
+    several attributes.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如下图所示，`Graphics2D`类的渲染上下文包含几个属性。
+- en: '| ![This figure represents a stroke to outline the shape ](../Images/b31a5c395046f2ef7daff02c1a9fcd55.png)
+    | The *pen attribute* is applied to the outline of a shape. This stroke attribute
+    enables you to draw lines with any point size and dashing pattern and apply end-cap
+    and join decorations to a line. |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![此图表示用笔画描绘形状的轮廓](../Images/b31a5c395046f2ef7daff02c1a9fcd55.png) | *笔属性*应用于形状的轮廓。此笔画属性使您能够用任何点大小和虚线模式绘制线条，并对线条应用端点和连接装饰。
+    |'
+- en: '| ![This figure shows how to fill a shape with solid color](../Images/46743518d93a6f21b6e560b8f7d48dd7.png)
+    | The *fill attribute* is applied to a shape''s interior. This paint attribute
+    enables you to fill shapes with solid colors, gradients, and patterns. |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![此图显示如何用纯色填充形状](../Images/46743518d93a6f21b6e560b8f7d48dd7.png) | *填充属性*应用于形状的内部。此填充属性使您能够用纯色、渐变和图案填充形状。
+    |'
+- en: '| ![This figure shows how to composite an existing image and a graphic primitives
+    ](../Images/03f800db700325932eb01d0633bc5664.png) | The *compositing attribute*
+    is used when rendered objects overlap existing objects. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![这个图展示了如何合成现有图像和图形基元](../Images/03f800db700325932eb01d0633bc5664.png) |
+    *compositing attribute* 在渲染对象重叠现有对象时使用。'
+- en: '| ![This figure represents shearing transform](../Images/58b0fe38b82c64a42073cf090c67ff6a.png)
+    | The *transform* attribute is applied during rendering to convert the rendered
+    object from user space to device-space coordinates. Optional translation, rotation,
+    scaling, or shearing transforms can also be applied through this attribute. |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![这个图表示剪切变换](../Images/58b0fe38b82c64a42073cf090c67ff6a.png) | *transform*
+    属性在渲染过程中应用，将渲染对象从用户空间转换为设备空间坐标。通过该属性还可以应用可选的平移、旋转、缩放或剪切变换。'
+- en: '| ![This figure represents how to define the clipping path by using the Shape
+    object](../Images/0591aea0aac5f00f688b3df1b2295ffb.png) | The *clip*, type restricts
+    rendering to the area within the outline of the `Shape` object used to define
+    the clipping path. Any `Shape` object that is used to define the clip. |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![这个图展示了如何使用 Shape 对象定义剪切路径](../Images/0591aea0aac5f00f688b3df1b2295ffb.png)
+    | *clip* 类型将渲染限制在用于定义剪切路径的 `Shape` 对象轮廓内的区域。任何用于定义剪切的 `Shape` 对象。'
+- en: '| ![This figure demonstrates a sample of glyphs](../Images/f8ea3e5dd6cc935bf5bb501562eb9c8a.png)
+    | The *font* attribute is used to convert text strings to glyphs. |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![这个图展示了字形的示例](../Images/f8ea3e5dd6cc935bf5bb501562eb9c8a.png) | *font* 属性用于将文本字符串转换为字形。'
+- en: '| ![This figure represents antialiasing ](../Images/d68058a0df93922e871f0a6983e9755e.png)
+    | *Rendering hints* specify preferences in the trade-offs between speed and quality.
+    For example, you can specify whether antialiasing should be used, if this feature
+    available. See also [Controlling Rendering Quality](../advanced/quality.html).
+    |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![这个图表示抗锯齿](../Images/d68058a0df93922e871f0a6983e9755e.png) | *Rendering
+    hints* 指定在速度和质量之间的权衡偏好。例如，您可以指定是否应使用抗锯齿，如果该功能可用的话。另请参阅 [控制渲染质量](../advanced/quality.html)。'
+- en: To learn more about transforming and compositing see the [Advanced Topics in
+    Java2D](../advanced/index.html) lesson.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解更多关于变换和合成的内容，请参阅 [Java2D 中的高级主题](../advanced/index.html)。
+- en: When an attribute is set, the appropriate attribute object is passed. As the
+    following example shows, to change the paint attribute to a blue-green gradient
+    fill, you construct a `GradientPaint` object and then call the `setPaint` method.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当设置属性时，会传递适当的属性对象。如下例所示，要将绘画属性更改为蓝绿色渐变填充，您需要构造一个 `GradientPaint` 对象，然后调用 `setPaint`
+    方法。
+- en: '[PRE1]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

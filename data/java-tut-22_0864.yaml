@@ -1,0 +1,82 @@
+- en: Input and Convert the Encoded Public Key Bytes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 输入并转换编码的公钥字节
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/vstep2.html](https://docs.oracle.com/javase/tutorial/security/apisign/vstep2.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/vstep2.html](https://docs.oracle.com/javase/tutorial/security/apisign/vstep2.html)
+- en: Next, `VerSig` needs to import the encoded public key bytes from the file specified
+    as the first command line argument and to convert them to a `PublicKey`. A `PublicKey`
+    is needed because that is what the `Signature` `initVerify` method requires in
+    order to initialize the `Signature` object for verification.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，`VerSig`需要从指定为第一个命令行参数的文件中导入编码的公钥字节，并将其转换为`PublicKey`。需要一个`PublicKey`，因为`Signature`的`initVerify`方法需要它来初始化用于验证的`Signature`对象。
+- en: First, read in the encoded public key bytes.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，读取编码的公钥字节。
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Now the byte array `encKey` contains the encoded public key bytes.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在字节数组`encKey`包含了编码的公钥字节。
+- en: You can use a `KeyFactory` class in order to instantiate a DSA public key from
+    its encoding. The `KeyFactory` class provides conversions between opaque keys
+    (of type `Key`) and key specifications, which are transparent representations
+    of the underlying key material. With an opaque key you can obtain the algorithm
+    name, format name, and encoded key bytes, but not the key material, which, for
+    example, may consist of the key itself and the algorithm parameters used to calculate
+    the key. (Note that `PublicKey`, because it extends `Key`, is itself a `Key`.)
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用`KeyFactory`类来实例化一个DSA公钥，从其编码中。`KeyFactory`类提供了不透明密钥（类型为`Key`）和密钥规范之间的转换，密钥规范是底层密钥材料的透明表示。通过不透明密钥，你可以获取算法名称、格式名称和编码的密钥字节，但不能获取密钥材料，例如，可能包括密钥本身和用于计算密钥的算法参数。
+    （请注意，`PublicKey`，因为它扩展了`Key`，本身也是一个`Key`。）
+- en: 'So, first you need a key specification. You can obtain one via the following,
+    assuming that the key was encoded according to the X.509 standard, which is the
+    case, for example, if the key was generated with the built-in DSA key-pair generator
+    supplied by the SUN provider:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所以，首先你需要一个密钥规范。假设密钥是根据X.509标准编码的，你可以通过以下方式获取一个，例如，如果密钥是使用SUN提供的内置DSA密钥对生成器生成的：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Now you need a `KeyFactory` object to do the conversion. That object must be
+    one that works with DSA keys.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你需要一个`KeyFactory`对象来进行转换。该对象必须是一个可以处理DSA密钥的对象。
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Finally, you can use the `KeyFactory` object to generate a `PublicKey` from
+    the key specification.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，你可以使用`KeyFactory`对象从密钥规范生成一个`PublicKey`。
+- en: '[PRE3]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

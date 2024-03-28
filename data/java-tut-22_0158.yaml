@@ -1,0 +1,117 @@
+- en: Chained Exceptions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 链式异常
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/chained.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/chained.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/chained.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/chained.html)
+- en: An application often responds to an exception by throwing another exception.
+    In effect, the first exception *causes* the second exception. It can be very helpful
+    to know when one exception causes another. *Chained Exceptions* help the programmer
+    do this.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序通常通过抛出另一个异常来响应异常。实际上，第一个异常*导致*第二个异常。知道一个异常导致另一个异常时会非常有帮助。*链式异常*帮助程序员做到这一点。
+- en: The following are the methods and constructors in `Throwable` that support chained
+    exceptions.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是支持链式异常的`Throwable`中的方法和构造函数。
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `Throwable` argument to `initCause` and the `Throwable` constructors is
+    the exception that caused the current exception. `getCause` returns the exception
+    that caused the current exception, and `initCause` sets the current exception's
+    cause.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`initCause`和`Throwable`构造函数的`Throwable`参数是导致当前异常的异常。`getCause`返回导致当前异常的异常，`initCause`设置当前异常的原因。'
+- en: The following example shows how to use a chained exception.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例展示了如何使用链式异常。
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: In this example, when an `IOException` is caught, a new `SampleException` exception
+    is created with the original cause attached and the chain of exceptions is thrown
+    up to the next higher level exception handler.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，当捕获到`IOException`时，会创建一个带有原始原因附加的新的`SampleException`异常，并将异常链抛到下一个更高级别的异常处理程序。
+- en: Accessing Stack Trace Information
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 访问堆栈跟踪信息
+- en: Now let's suppose that the higher-level exception handler wants to dump the
+    stack trace in its own format.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在假设更高级别的异常处理程序想要以自己的格式转储堆栈跟踪。
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Definition:** A *stack trace* provides information on the execution history
+    of the current thread and lists the names of the classes and methods that were
+    called at the point when the exception occurred. A stack trace is a useful debugging
+    tool that you''ll normally take advantage of when an exception has been thrown.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义：** *堆栈跟踪*提供了关于当前线程执行历史的信息，并列出了在异常发生时调用的类和方法的名称。堆栈跟踪是一个有用的调试工具，当抛出异常时，通常会利用它。'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The following code shows how to call the `getStackTrace` method on the exception
+    object.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码展示了如何在异常对象上调用`getStackTrace`方法。
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Logging API
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 日志记录 API
+- en: The next code snippet logs where an exception occurred from within the `catch`
+    block. However, rather than manually parsing the stack trace and sending the output
+    to `System.err()`, it sends the output to a file using the logging facility in
+    the [`java.util.logging`](https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html)
+    package.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个代码片段记录了异常发生的位置，位于`catch`块内部。然而，它不是手动解析堆栈跟踪并将输出发送到`System.err()`，而是使用[`java.util.logging`](https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html)包中的日志记录功能将输出发送到文件。
+- en: '[PRE3]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

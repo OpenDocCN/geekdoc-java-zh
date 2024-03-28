@@ -1,0 +1,166 @@
+- en: Accessing the Client Using JNLP API
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用JNLP API访问客户端
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/usingJNLPAPI.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/usingJNLPAPI.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/usingJNLPAPI.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/usingJNLPAPI.html)
+- en: When launched by using the Java Network Launch Protocol (JNLP), rich Internet
+    applications (RIAs) can access the client with the user's permission. Consider
+    the Text Editor applet example to understand how to use JNLP API based services.
+    The Text Editor has a text area and buttons labeled Open, Save, and SaveAs. The
+    Text Editor can be used to open an existing text file, edit it, and save it back
+    to disk.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用Java网络启动协议（JNLP）启动时，富互联网应用程序（RIA）可以在用户许可的情况下访问客户端。考虑文本编辑器小程序示例，以了解如何使用基于JNLP
+    API的服务。文本编辑器具有文本区域和标有打开、保存和另存为的按钮。文本编辑器可用于打开现有文本文件，编辑它，并将其保存回磁盘。
+- en: The Text Editor applet is shown next.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来显示文本编辑器小程序。
+- en: '//&lt;![CDATA[ var attributes = { code:''TextEditorApplet.class'', archive:''examples/dist/applet_JNLP_API/applet_JNLP_API.jar'',
+    width:500, height:300} ; var parameters = { jnlp_href: ''examples/dist/applet_JNLP_API/texteditor_applet.jnlp''
+    }; deployJava.runApplet(attributes, parameters, ''1.6''); //]]&gt;'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '//&lt;![CDATA[ var attributes = { code:''TextEditorApplet.class'', archive:''examples/dist/applet_JNLP_API/applet_JNLP_API.jar'',
+    width:500, height:300} ; var parameters = { jnlp_href: ''examples/dist/applet_JNLP_API/texteditor_applet.jnlp''
+    }; deployJava.runApplet(attributes, parameters, ''1.6''); //]]&gt;'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，请至少安装[Java SE开发工具包（JDK）6更新10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到示例运行，可能需要在浏览器中启用JavaScript解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The [`TextEditor`](examples/applet_JNLP_API/src/TextEditor.java) and [`TextEditorApplet`](examples/applet_JNLP_API/src/TextEditor.java)
+    classes lay out the user interface and display it as an applet. The [`FileHandler`](examples/applet_JNLP_API/src/FileHandler.java)
+    class contains the core functionality with respect to using JNLP API based services.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`TextEditor`](examples/applet_JNLP_API/src/TextEditor.java)和[`TextEditorApplet`](examples/applet_JNLP_API/src/TextEditor.java)类布局用户界面并将其显示为小程序。[`FileHandler`](examples/applet_JNLP_API/src/FileHandler.java)类包含了关于使用基于JNLP
+    API的服务的核心功能。'
+- en: Remember, the techniques described in this topic apply to Java Web Start applications
+    as well.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住，本主题中描述的技术也适用于Java Web Start应用程序。
+- en: 'To make use of a JNLP service, first retrieve a reference to the service. The
+    `initialize` method of the `FileHandler` class retrieves references to JNLP services
+    as shown in the following code snippet:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用JNLP服务，首先检索对服务的引用。`FileHandler`类的`initialize`方法检索JNLP服务的引用，如下面的代码片段所示：
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: After you have a reference to the required services, invoke methods on the service
+    to perform the necessary operations. The `open` method of the `FileHandler` class
+    invokes the `openFileDialog` method of the [`FileOpenService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/FileOpenService.html)
+    class to display a file chooser. The `open` method returns the contents of the
+    selected file.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在获得所需服务的引用之后，调用服务上的方法执行必要的操作。`FileHandler`类的`open`方法调用[`FileOpenService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/FileOpenService.html)类的`openFileDialog`方法以显示文件选择器。`open`方法返回所选文件的内容。
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Similarly, the `save` and `saveAs` methods of the `FileHandler` class invoke
+    corresponding methods of the [`FileSaveService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/FileSaveService.html)
+    class to enable the user to select a file name and save the contents of the text
+    area to disk.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，`FileHandler`类的`save`和`saveAs`方法调用[`FileSaveService`](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/javax/jnlp/FileSaveService.html)类的相应方法，以使用户能够选择文件名并将文本区域的内容保存到磁盘。
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: At runtime, when the RIA attempts to open or save a file, users see a security
+    dialog asking them if they want to allow the action. The operation will proceed
+    only if users allow the RIA to access their environment.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在运行时，当RIA尝试打开或保存文件时，用户会看到一个安全对话框，询问他们是否允许该操作。只有在用户允许RIA访问其环境时，操作才会继续进行。
+- en: The complete source of the [`FileHandler`](examples/applet_JNLP_API/src/FileHandler.java)
+    class is shown next.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面显示了[`FileHandler`](examples/applet_JNLP_API/src/FileHandler.java)类的完整源代码。
+- en: '[PRE3]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** To compile Java code that has a reference to classes in the `javax.jnlp`
+    package, include `<your JDK path>/jre/lib/javaws.jar` in your classpath. At runtime,
+    the Java Runtime Environment software automatically makes these classes available
+    to RIAs.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 要编译具有对`javax.jnlp`包中类的引用的Java代码，请在类路径中包含`<你的JDK路径>/jre/lib/javaws.jar`。在运行时，Java运行环境软件会自动使这些类对RIA可用。'
+- en: '* * *'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[Download source code](examplesIndex.html#AppletJNLPAPI) for the *Text Editor
+    Applet* example to experiment further.'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#AppletJNLPAPI)以进一步尝试*文本编辑器小程序*示例。'

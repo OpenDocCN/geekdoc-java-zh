@@ -1,0 +1,67 @@
+- en: Methods
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/method.html](https://docs.oracle.com/javase/tutorial/reflect/member/method.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/method.html](https://docs.oracle.com/javase/tutorial/reflect/member/method.html)
+- en: A *method* contains executable code which may be invoked. Methods are inherited
+    and in non-reflective code behaviors such as overloading, overriding, and hiding
+    are enforced by the compiler. In contrast, reflective code makes it possible for
+    method selection to be restricted to a specific class without considering its
+    superclasses. Superclass methods may be accessed but it is possible to determine
+    their declaring class; this is impossible to discover programmatically without
+    reflection and is the source of many subtle bugs.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*方法* 包含可调用的可执行代码。方法是继承的，在非反射代码中，编译器强制执行重载、覆盖和隐藏等行为。相比之下，反射代码使得方法选择可以限制在特定类中而不考虑其超类。可以访问超类方法，但可以确定它们的声明类；这在没有反射的情况下是不可能通过编程方式发现的，这是许多微妙错误的根源。'
+- en: 'The [`java.lang.reflect.Method`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html)
+    class provides APIs to access information about a method''s modifiers, return
+    type, parameters, annotations, and thrown exceptions. It also be used to invoke
+    methods. These topics are covered by the following sections:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`java.lang.reflect.Method`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html)
+    类提供了访问有关方法修饰符、返回类型、参数、注解和抛出异常的信息的 API。它还可以用于调用方法。以下部分涵盖了这些主题：'
+- en: '[Obtaining Method Type Information](methodType.html) shows how to enumerate
+    methods declared in a class and obtains type information'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[获取方法类型信息](methodType.html)展示了如何枚举在类中声明的方法并获取类型信息'
+- en: '[Obtaining Names of Method Parameters](methodparameterreflection.html) shows
+    how to retrieve names and other information of a method or constructor''s parameters'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[获取方法参数的名称](methodparameterreflection.html)展示了如何检索方法或构造函数的参数的名称和其他信息'
+- en: '[Retrieving and Parsing Method Modifiers](methodModifiers.html) describes how
+    to access and decode modifiers and other information associated with the method'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检索和解析方法修饰符](methodModifiers.html)描述了如何访问和解码与方法相关的修饰符和其他信息'
+- en: '[Invoking Methods](methodInvocation.html) illustrates how to execute a method
+    and obtain its return value'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[调用方法](methodInvocation.html)演示了如何执行一个方法并获取其返回值'
+- en: '[Troubleshooting](methodTrouble.html) covers common errors encountered when
+    finding or invoking methods'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[故障排除](methodTrouble.html) 涵盖了在查找或调用方法时遇到的常见错误'

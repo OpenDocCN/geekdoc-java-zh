@@ -1,0 +1,403 @@
+- en: How to Use Editor Panes and Text Panes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用编辑窗格和文本窗格
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html](https://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html](https://docs.oracle.com/javase/tutorial/uiswing/components/editorpane.html)
+- en: 'Two Swing classes support styled text: [`JEditorPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html)
+    and its subclass [`JTextPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html).
+    The `JEditorPane` class is the foundation for Swing''s styled text components
+    and provides a mechanism through which you can add support for custom text formats.
+    If you want unstyled text, use a [text area](textarea.html) instead.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 两个Swing类支持样式文本：[`JEditorPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html)及其子类[`JTextPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html)。`JEditorPane`类是Swing样式文本组件的基础，并提供了一种机制，通过该机制您可以为自定义文本格式添加支持。如果您需要无样式文本，请改用[文本区域](textarea.html)。
+- en: You can see an editor pane and a text pane in use by running TextSamplerDemo.
+    Here is a picture of the `TextSamplerDemo` example.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行TextSamplerDemo可以看到编辑窗格和文本窗格的使用。以下是`TextSamplerDemo`示例的图片。
+- en: '![An application that provides a sample of each Swing text component](../Images/53a15966ce4b1b9831354a10bee51eb4.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![提供每个Swing文本组件示例的应用程序](../Images/53a15966ce4b1b9831354a10bee51eb4.png)'
+- en: Click the Launch button to run TextSamplerDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TextSamplerDemo).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TextSamplerDemo（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TextSamplerDemo)。
+- en: '[![Launches the TextSamplerDemo Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextSamplerDemoProject/TextSamplerDemo.jnlp)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TextSamplerDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextSamplerDemoProject/TextSamplerDemo.jnlp)'
+- en: 'The `TextSamplerDemo` example barely begins to demonstrate the capabilities
+    of editor panes and text panes. However, the top right editor pane illustrates
+    a handy, easy-to-use feature: it displays uneditable help information loaded from
+    a URL. The text pane at the lower right demonstrates that you can easily embed
+    images and even components directly into text panes.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextSamplerDemo`示例仅仅是展示编辑窗格和文本窗格功能的开始。然而，右上角的编辑窗格展示了一个方便易用的功能：它显示从URL加载的不可编辑的帮助信息。右下角的文本窗格演��了您可以轻松地将图像甚至组件直接嵌入文本窗格中。'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: If you need a fully-fledged help system, take a look at the [javahelp](https://javaee.github.io/javahelp/)
+    project.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您需要一个完整的帮助系统，请查看[javahelp](https://javaee.github.io/javahelp/)项目。
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The Swing text API is powerful and immense, and we could devote an entire book
+    just to using editor panes and text panes. This section introduces their capabilities,
+    offers hints on which one you might want to use, and points to other sources of
+    information.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing文本API功能强大且庞大，我们可以专门撰写一本书来介绍如何使用编辑窗格和文本窗格。本节介绍它们的功能，提供使用建议，并指向其他信息来源。
+- en: '[Using an Editor Pane to Display Text From a URL](#editorpane)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用编辑窗格显示来自URL的文本](#editorpane)'
+- en: '[Editor Panes vs. Text Panes](#recap)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[编辑窗格 vs. 文本窗格](#recap)'
+- en: '[An Example of Using a Text Pane](#textpane)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用文本窗格的示例](#textpane)'
+- en: '[The Editor Pane and Text Pane API](#api)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[编辑窗格和文本窗格API](#api)'
+- en: '[Examples That Use Editor Panes and Text Panes](#eg)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用编辑窗格和文本窗格的示例](#eg)'
+- en: Using an Editor Pane to Display Text From a URL
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用编辑窗格显示来自URL的文本
+- en: One task that you can accomplish without knowing anything about the Swing text
+    system is displaying text from a URL. Here is the code from [`TextSamplerDemo.java`](../examples/components/TextSamplerDemoProject/src/components/TextSamplerDemo.java)
+    that creates an uneditable editor pane that displays text formatted with HTML
+    tags.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在不了解Swing文本系统的情况下，您可以完成的任务之一是显示来自URL的文本。以下是[`TextSamplerDemo.java`](../examples/components/TextSamplerDemoProject/src/components/TextSamplerDemo.java)中创建的一个不可编辑的编辑窗格，用于显示使用HTML标记格式化的文本的代码。
+- en: '[PRE0]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The code uses the default constructor to create the editor pane, then calls
+    `setEditable(false)` so the user cannot edit the text. Next, the code creates
+    the `URL` object, and calls the `setPage` method with it.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 代码使用默认构造函数创建编辑窗格，然后调用`setEditable(false)`以防止用户编辑文本。接下来，代码创建`URL`对象，并使用它调用`setPage`方法。
+- en: The `setPage` method opens the resource pointed to by the URL and figures out
+    the format of the text (which is HTML in the example). If the text format is known,
+    the editor pane initializes itself with the text found at the URL. A standard
+    editor pane can understand plain text, HTML, and RTF. Note that the page might
+    be loaded asynchronously, which keeps the GUI responsive but means that you should
+    not count on the data being completely loaded after the call to `setPage` returns.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`setPage`方法打开URL指向的资源，并确定文本的格式（在示例中为HTML）。如果已知文本格式，编辑窗格将使用在URL找到的文本进行初始化。标准编辑窗格可以理解纯文本、HTML和RTF。请注意，页面可能会异步加载，这会使GUI保持响应性，但意味着您不应该指望在调用`setPage`返回后数据已完全加载。'
+- en: Editor Panes vs. Text Panes
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编辑窗格与文本窗格
+- en: In order to use editor panes and text panes, you need to understand the text
+    system, which is described in [Text Component Features](generaltext.html). Several
+    facts about editor panes and text panes are scattered throughout that section.
+    Here we list the facts again and provide a bit more detail. The information here
+    should help you understand the differences between editor panes and text panes,
+    and when to use which.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用编辑窗格和文本窗格，您需要了解文本系统，该系统在[文本组件功能](generaltext.html)中有描述。关于编辑窗格和文本窗格的几个事实分散在该部分中。在这里，我们再次列出这些事实并提供更多细节。这里的信息应该帮助您了解编辑窗格和文本窗格之间的区别，以及何时使用哪种。
+- en: An editor pane or a text pane can easily be loaded with text from a URL using
+    the `setPage` method. The `JEditorPane` class also provides constructors that
+    let you initialize an editor pane from a URL. The `JTextPane` class has no such
+    constructors. See [Using an Editor Pane to Display Text From a URL](#editorpane)
+    for an example that uses this feature to load an uneditable editor pane with HTML-formatted
+    text.
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过`setPage`方法，可以轻松地从URL加载文本到编辑窗格或文本窗格中。`JEditorPane`类还提供了构造函数，让您可以从URL初始化编辑窗格。`JTextPane`类没有这样的构造函数。参见[使用编辑窗格显示来自URL的文本](#editorpane)的示例，该示例使用此功能加载一个不可编辑的编辑窗格，其中包含HTML格式的文本。
+- en: Be aware that the document and editor kit might change when using the `setPage`
+    method. For example, if an editor pane contains plain text (the default), and
+    you load it with HTML, the document will change to an `HTMLDocument` instance
+    and the editor kit will change to an `HTMLEditorKit` instance. If your program
+    uses the `setPage` method, make sure you adjust your code for possible changes
+    to the pane's document and editor kit instances (re-register document listeners
+    on the new document, and so on).
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 使用`setPage`方法时要注意文档和编辑器工具包可能会发生变化。例如，如果编辑窗格包含纯文本（默认情况下），而您将其加载为HTML，则文档将更改为`HTMLDocument`实例，编辑器工具包将更改为`HTMLEditorKit`实例。如果您的程序使用`setPage`方法，请确保调整代码以适应窗格文档和编辑器工具包实例的可能更改（在新文档上重新注册文档监听器等）。
+- en: Editor panes, by default, know how to read, write, and edit plain, HTML, and
+    RTF text. Text panes inherit this capability but impose certain limitations. A
+    text pane insists that its document implement the `StyledDocument` interface.
+    `HTMLDocument` and `RTFDocument` are both `StyledDocuments` so HTML and RTF work
+    as expected within a text pane. If you load a text pane with plain text though,
+    the text pane's document is not a `PlainDocument` as you might expect, but a `DefaultStyledDocument`.
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 默认情况下，编辑窗格知道如何读取、写入和编辑纯文本、HTML和RTF文本。文本窗格继承了这种能力，但施加了一定的限制。文本窗格要求其文档实现`StyledDocument`接口。`HTMLDocument`和`RTFDocument`都是`StyledDocuments`，因此在文本窗格中HTML和RTF可以正常工作。但是，如果您将文本窗格加载为纯文本，则文本窗格的文档不是您可能期望的`PlainDocument`，而是`DefaultStyledDocument`。
+- en: To support a custom text format, implement an editor kit that can read, write,
+    and edit text of that format. Then call the `registerEditorKitForContentType`
+    method to register your kit with the `JEditorPane` class. By registering an editor
+    kit in this way, all editor panes and text panes in your program will be able
+    to read, write, and edit the new format. However, if the new editor kit is not
+    a `StyledEditorKit`, text panes will not support the new format.
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 要支持自定义文本格式，需要实现一个可以读取、写入和编辑该格式文本的编辑器工具包。然后调用`registerEditorKitForContentType`方法将您的工具包注册到`JEditorPane`类中。通过这种方式注册编辑器工具包，程序中的所有编辑窗格和文本窗格都能够读取、写入和编辑新格式。但是，如果新的编辑器工具包不是`StyledEditorKit`，文本窗格将不支持新格式。
+- en: As mentioned previously, a text pane requires its document to implement the
+    `StyledDocument` interface. The Swing text package provides a default implementation
+    of this interface, `DefaultStyledDocument`, which is the document that text panes
+    use by default. A text pane also requires that its editor kit be an instance of
+    a `StyledEditorKit` (or a subclass). Be aware that the `read` and `write` methods
+    for `StyleEditorKit` work with plain text.
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如前所述，文本窗格需要其文档实现`StyledDocument`接口。Swing文本包提供了这个接口的默认实现，`DefaultStyledDocument`，这是文本窗格默认使用的文档。文本窗格还需要其编辑器工具包是`StyledEditorKit`的一个实例（或子类）。请注意，`StyleEditorKit`的`read`和`write`方法适用于纯文本。
+- en: Through their styled document and styled editor kit, text panes provide support
+    for named styles and logical styles. The `JTextPane` class itself contains many
+    methods for working with styles that simply call methods in its document or editor
+    kit.
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过它们的样式文档和样式编辑器工具包，文本窗格提供对命名样式和逻辑样式的支持。`JTextPane`类本身包含许多用于处理样式的方法，这些方法只是调用其文档或编辑器工具包中的方法。
+- en: Through the API provided in the `JTextPane` class, you can embed images and
+    components in a text pane. You can embed images in an editor pane, too, but only
+    by including the images in an HTML or RTF file.
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过`JTextPane`类提供的API，您可以在文本窗格中嵌入图像和组件。您也可以在编辑窗格中嵌入图像，但只能通过在HTML或RTF文件中包含图像来实现。
+- en: An Example of Using a Text Pane
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用文本窗格的示例
+- en: Here is the code from the `TextSamplerDemo` example that creates and initializes
+    a text pane.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是`TextSamplerDemo`示例中创建和初始化文本窗格的代码。
+- en: '[PRE1]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: "Briefly, this code hard-codes the initial text into an array and creates and\
+    \ hard-codes several *styles* \x97 objects that represent different paragraph\
+    \ and character formats \x97 into another array. Next, the code loops over the\
+    \ arrays, inserts the text into the text pane, and specifies the style to use\
+    \ for the inserted text."
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "简而言之，这段代码将初始文本硬编码到一个数组中，并创建并将几个*样式* \x97 表示不同段落和字符格式的对象 \x97 硬编码到另一个数组中。接下来，代码循环遍历这些数组，将文本插入文本窗格，并指定要用于插入文本的样式。"
+- en: Although this is an interesting example that concisely demonstrates several
+    features of `JTextPane`, "real-world" programs aren't likely to initialize a text
+    pane this way. Instead, a program would use an editor pane to save a document
+    which would then be used to initialize the text pane.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然这是一个有趣的例子，简洁地展示了`JTextPane`的几个特性，但“现实世界”中的程序不太可能以这种方式初始化文本窗格。相反，程序会使用编辑窗格保存文档，然后再用它来初始化文本窗格。
+- en: The Editor Pane and Text Pane API
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编辑窗格和文本窗格API
+- en: This section lists some of the API related to text and editor panes. Many of
+    the most useful methods for [JEditorPane](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html)
+    and its subclass [JTextPane](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html)
+    are inherited from the `JTextComponent` class. You can find the API tables for
+    `JTextComponent` in [The Text Component API](textapi.html). Also see [The JComponent
+    Class](jcomponent.html), which describes the API inherited from `JComponent`.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节列出了与文本和编辑窗格相关的一些API。许多[JEditorPane](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html)及其子类[JTextPane](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html)最有用的方法都是从`JTextComponent`类继承的。您可以在[文本组件API](textapi.html)中找到`JTextComponent`的API表。还请参阅[The
+    JComponent Class](jcomponent.html)，其中描述了从`JComponent`继承的API。
+- en: JEditorPane API for Displaying Text from a URL
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JEditorPane用于显示来自URL的文本的API
+- en: '| Method or Constructor | Description |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法或构造函数 | 描述 |'
+- en: '| [JEditorPane(URL)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html#JEditorPane-java.net.URL-)
+    [JEditorPane(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html#JEditorPane-java.lang.String-)
+    | Creates an editor pane loaded with the text at the specified URL. |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JEditorPane(URL)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html#JEditorPane-java.net.URL-)
+    [JEditorPane(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html#JEditorPane-java.lang.String-)
+    | 创建一个加载指定URL文本的编辑窗格。 |'
+- en: '| [setPage(URL)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html#setPage-java.net.URL-)
+    [setPage(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html#setPage-java.lang.String-)
+    | Loads an editor pane (or text pane) with the text at the specified URL. |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| [setPage(URL)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html#setPage-java.net.URL-)
+    [setPage(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html#setPage-java.lang.String-)
+    | 使用指定URL加载编辑窗格（或文本窗格）中的文本。 |'
+- en: '| [URL getPage()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html#getPage--)
+    | Gets the URL for the editor pane''s (or text pane''s) current page. |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| [URL getPage()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JEditorPane.html#getPage--)
+    | 获取编辑窗格（或文本窗格）当前页面的URL。 |'
+- en: JTextPane API
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JTextPane API
+- en: '| Method or Constructor | Description |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法或构造函数 | 描述 |'
+- en: '| [JTextPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html#JTextPane--)
+    [JTextPane(StyledDocument)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html#JTextPane-javax.swing.text.StyledDocument-)
+    | Creates a text pane. The optional argument specifies the text pane''s model.
+    |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JTextPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html#JTextPane--)
+    [JTextPane(StyledDocument)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html#JTextPane-javax.swing.text.StyledDocument-)
+    | 创建一个文本窗格。可选参数指定文本窗格的模型。 |'
+- en: '| [StyledDocument getStyledDocument](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html#getStyledDocument--)
+    [setStyledDocument(StyledDocument)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html#setStyledDocument-javax.swing.text.StyledDocument-)
+    | Gets or sets the text pane''s model. |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| [StyledDocument getStyledDocument](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html#getStyledDocument--)
+    [setStyledDocument(StyledDocument)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextPane.html#setStyledDocument-javax.swing.text.StyledDocument-)
+    | 获取或设置文本窗格的模型。 |'
+- en: Examples That Use Text Panes and Editor Panes
+  id: totrans-48
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用文本窗格和编辑窗格的示例
+- en: To begin using text, you might want to run these programs and examine their
+    code to find something similar to what you want to do.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要开始使用文本，您可能希望运行这些程序并检查它们的代码，找到与您想要做的类似的内容。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`TextSamplerDemo`](../examples/components/index.html#TextSamplerDemo) |
+    [Using Text Components](text.html) | Uses each Swing text component. |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextSamplerDemo`](../examples/components/index.html#TextSamplerDemo) |
+    [使用文本组件](text.html) | 使用每个Swing文本组件。 |'
+- en: '| [`TextComponentDemo`](../examples/components/index.html#TextComponentDemo)
+    | [Text Component Features](generaltext.html) | Provides a customized text pane.
+    Illustrates many text component features, such as undo and redo, document filters,
+    document listeners, caret change listeners, and how to associate editing actions
+    with menus and key strokes. |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextComponentDemo`](../examples/components/index.html#TextComponentDemo)
+    | [文本组件特性](generaltext.html) | 提供一个定制的文本窗格。展示了许多文本组件特性，如撤销和重做，文档过滤器，文档监听器，插入符位置变化监听器，以及如何将编辑操作与菜单和快捷键关联起来。
+    |'
+- en: '| [`TreeDemo`](../examples/components/index.html#TreeDemo) | [How to Use Trees](tree.html)
+    | Uses an editor pane to display help loaded from an HTML file. |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TreeDemo`](../examples/components/index.html#TreeDemo) | [如何使用树形结构](tree.html)
+    | 使用编辑窗格显示从HTML文件加载的帮助信息。 |'
+- en: 'Learn to edit HTML text in JavaFX with the [Using JavaFX UI Controls: HTML
+    Editor](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/editor.htm)
+    tutorial.'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 学习如何在JavaFX中编辑HTML文本，参考[使用JavaFX UI控件：HTML编辑器](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/editor.htm)
+    教程。

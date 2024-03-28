@@ -1,0 +1,390 @@
+- en: Using Transactions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用事务
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/transactions.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/transactions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/transactions.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/transactions.html)
+- en: There are times when you do not want one statement to take effect unless another
+    one completes. For example, when the proprietor of The Coffee Break updates the
+    amount of coffee sold each week, the proprietor will also want to update the total
+    amount sold to date. However, the amount sold per week and the total amount sold
+    should be updated at the same time; otherwise, the data will be inconsistent.
+    The way to be sure that either both actions occur or neither action occurs is
+    to use a transaction. A transaction is a set of one or more statements that is
+    executed as a unit, so either all of the statements are executed, or none of the
+    statements is executed.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时候你不希望一个语句生效，除非另一个语句完成。例如，当“咖啡休息时间”的老板更新每周销售的咖啡量时，老板还希望更新迄今为止的总销售量。然而，每周销售量和总销售量应该同时更新；否则，数据将不一致。确保两个动作都发生或两个动作都不发生的方法是使用事务。事务是一组一个或多个语句，作为一个单元执行，因此要么所有语句都执行，要么所有语句都不执行。
+- en: This page covers the following topics
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页涵盖以下主题
+- en: '[Disabling Auto-Commit Mode](#disable_auto_commit)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[禁用自动提交模式](#disable_auto_commit)'
+- en: '[Committing Transactions](#commit_transactions)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[提交事务](#commit_transactions)'
+- en: '[Using Transactions to Preserve Data Integrity](#transactions_data_integrity)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用事务保持数据完整性](#transactions_data_integrity)'
+- en: '[Setting and Rolling Back to Savepoints](#set_roll_back_savepoints)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置和回滚保存点](#set_roll_back_savepoints)'
+- en: '[Releasing Savepoints](#release_savepoints)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[释放保存点](#release_savepoints)'
+- en: '[When to Call Method rollback](#call_rollback)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[何时调用 rollback 方法](#call_rollback)'
+- en: Disabling Auto-Commit Mode
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 禁用自动提交模式
+- en: When a connection is created, it is in auto-commit mode. This means that each
+    individual SQL statement is treated as a transaction and is automatically committed
+    right after it is executed. (To be more precise, the default is for a SQL statement
+    to be committed when it is completed, not when it is executed. A statement is
+    completed when all of its result sets and update counts have been retrieved. In
+    almost all cases, however, a statement is completed, and therefore committed,
+    right after it is executed.)
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当创建连接时，它处于自动提交模式。这意味着每个单独的 SQL 语句都被视为一个事务，并在执行后立即自动提交。（更准确地说，默认情况下，SQL 语句在完成时提交，而不是在执行时。当所有结果集和更新计数都被检索时，语句完成。然而，在几乎所有情况下，语句在执行后立即完成，因此提交。）
+- en: 'The way to allow two or more statements to be grouped into a transaction is
+    to disable the auto-commit mode. This is demonstrated in the following code, where
+    `con` is an active connection:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 允许将两个或多个语句分组为一个事务的方法是禁用自动提交模式。在以下代码中演示了这一点，其中`con`是一个活动连接：
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Committing Transactions
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 提交事务
+- en: 'After the auto-commit mode is disabled, no SQL statements are committed until
+    you call the method `commit` explicitly. All statements executed after the previous
+    call to the method `commit` are included in the current transaction and committed
+    together as a unit. The following method, [`CoffeesTable.updateCoffeeSales`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTable.java),
+    in which `con` is an active connection, illustrates a transaction:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在禁用自动提交模式后，直到显式调用`commit`方法之前，不会提交任何 SQL 语句。在上一次调用`commit`方法之后执行的所有语句都包含在当前事务中，并作为一个单元一起提交。以下方法[`CoffeesTable.updateCoffeeSales`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTable.java)，其中`con`是一个活动连接，演示了一个事务：
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: In this method, the auto-commit mode is disabled for the connection `con`, which
+    means that the two prepared statements `updateSales` and `updateTotal` are committed
+    together when the method `commit` is called. Whenever the `commit` method is called
+    (either automatically when auto-commit mode is enabled or explicitly when it is
+    disabled), all changes resulting from statements in the transaction are made permanent.
+    In this case, that means that the `SALES` and `TOTAL` columns for Colombian coffee
+    have been changed to `50` (if `TOTAL` had been `0` previously) and will retain
+    this value until they are changed with another update statement.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种方法中，连接`con`的自动提交模式被禁用，这意味着当调用`commit`方法时，两个准备好的语句`updateSales`和`updateTotal`将一起提交。每当调用`commit`方法（无论是在自动提交模式启用时自动调用还是在禁用时显式调用），事务中语句导致的所有更改都将变为永久性。在这种情况下，这意味着哥伦比亚咖啡的`SALES`和`TOTAL`列已更改为`50`（如果`TOTAL`之前为`0`），并将保留此值，直到它们通过另一个更新语句进行更改。
+- en: The statement `con.setAutoCommit(true);` enables auto-commit mode, which means
+    that each statement is once again committed automatically when it is completed.
+    Then, you are back to the default state where you do not have to call the method
+    `commit` yourself. It is advisable to disable the auto-commit mode only during
+    the transaction mode. This way, you avoid holding database locks for multiple
+    statements, which increases the likelihood of conflicts with other users.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 语句`con.setAutoCommit(true);`启用自动提交模式，这意味着每个语句再次在完成时自动提交。然后，您回到默认状态，无需自己调用`commit`方法。建议仅在事务模式下禁用自动提交模式。这样，您可以避免为多个语句保持数据库锁，从而增加与其他用户发生冲突的可能性。
+- en: Using Transactions to Preserve Data Integrity
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用事务保持数据完整性
+- en: In addition to grouping statements together for execution as a unit, transactions
+    can help to preserve the integrity of the data in a table. For instance, imagine
+    that an employee was supposed to enter new coffee prices in the table `COFFEES`
+    but delayed doing it for a few days. In the meantime, prices rose, and today the
+    owner is in the process of entering the higher prices. The employee finally gets
+    around to entering the now outdated prices at the same time that the owner is
+    trying to update the table. After inserting the outdated prices, the employee
+    realizes that they are no longer valid and calls the `Connection` method `rollback`
+    to undo their effects. (The method `rollback` aborts a transaction and restores
+    values to what they were before the attempted update.) At the same time, the owner
+    is executing a `SELECT` statement and printing the new prices. In this situation,
+    it is possible that the owner will print a price that had been rolled back to
+    its previous value, making the printed price incorrect.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了将语句组合在一起作为一个单元执行外，事务还可以帮助保持表中数据的完整性。例如，想象一下，一个员工应该在`COFFEES`表中输入新的咖啡价格，但推迟了几天才这样做。与此同时，价格上涨了，今天所有者正在尝试输入更高的价格。员工最终开始输入现在已过时的价格，与此同时所有者正在尝试更新表。在插入过时价格后，员工意识到这些价格不再有效，并调用`Connection`方法`rollback`来撤消它们的影响。（`rollback`方法中止事务并将值恢复为尝试更新之前的值。）与此同时，所有者正在执行`SELECT`语句并打印新价格。在这种情况下，可能会打印出一个已经回滚到先前值的价格，使打印的价格不正确。
+- en: This kind of situation can be avoided by using transactions, providing some
+    level of protection against conflicts that arise when two users access data at
+    the same time.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种情况可以通过使用事务来避免，提供一定程度的保护，防止两个用户同时访问数据时出现冲突。
+- en: To avoid conflicts during a transaction, a DBMS uses locks, mechanisms for blocking
+    access by others to the data that is being accessed by the transaction. (Note
+    that in auto-commit mode, where each statement is a transaction, locks are held
+    for only one statement.) After a lock is set, it remains in force until the transaction
+    is committed or rolled back. For example, a DBMS could lock a row of a table until
+    updates to it have been committed. The effect of this lock would be to prevent
+    a user from getting a dirty read, that is, reading a value before it is made permanent.
+    (Accessing an updated value that has not been committed is considered a *dirty
+    read* because it is possible for that value to be rolled back to its previous
+    value. If you read a value that is later rolled back, you will have read an invalid
+    value.)
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了在事务期间避免冲突，数据库管理系统使用锁，这是一种阻止其他人访问事务正在访问的数据的机制。 （请注意，在自动提交模式下，每个语句都是一个事务，锁仅保留一个语句。）设置锁之后，锁将持续有效，直到事务提交或回滚。
+    例如，数据库管理系统可以锁定表的一行，直到对其进行的更新被提交。 这种锁的效果是防止用户获取脏读取，即在数据永久化之前读取值。 （访问尚未提交的更新值被视为*脏读*，因为可能将该值回滚到其先前的值。
+    如果读取后来被回滚的值，您将读取一个无效的值。）
+- en: How locks are set is determined by what is called a transaction isolation level,
+    which can range from not supporting transactions at all to supporting transactions
+    that enforce very strict access rules.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 锁是如何设置的取决于所谓的事务隔离级别，它可以从根本不支持事务到支持实施非常严格访问规则。
+- en: 'One example of a transaction isolation level is `TRANSACTION_READ_COMMITTED`,
+    which will not allow a value to be accessed until after it has been committed.
+    In other words, if the transaction isolation level is set to `TRANSACTION_READ_COMMITTED`,
+    the DBMS does not allow dirty reads to occur. The interface `Connection` includes
+    five values that represent the transaction isolation levels you can use in JDBC:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事务隔离级别的一个示例是`TRANSACTION_READ_COMMITTED`，它不允许在提交之后访问值。 换句话说，如果事务隔离级别设置为`TRANSACTION_READ_COMMITTED`，数据库管理系统不允许发生脏读取。
+    接口`Connection`包括五个值，表示您可以在JDBC中使用的事务隔离级别：
+- en: '| Isolation Level | Transactions | Dirty Reads | Non-Repeatable Reads | Phantom
+    Reads |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| 隔离级别 | 事务 | 脏读 | 不可重复读 | 幻读 |'
+- en: '| `TRANSACTION_NONE` | Not supported | *Not applicable* | *Not applicable*
+    | *Not applicable* |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| `TRANSACTION_NONE` | 不支持 | *不适用* | *不适用* | *不适用* |'
+- en: '| `TRANSACTION_READ_COMMITTED` | Supported | Prevented | Allowed | Allowed
+    |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| `TRANSACTION_READ_COMMITTED` | 支持 | 阻止 | 允许 | 允许 |'
+- en: '| `TRANSACTION_READ_UNCOMMITTED` | Supported | Allowed | Allowed | Allowed
+    |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| `TRANSACTION_READ_UNCOMMITTED` | 支持 | 允许 | 允许 | 允许 |'
+- en: '| `TRANSACTION_REPEATABLE_READ` | Supported | Prevented | Prevented | Allowed
+    |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| `TRANSACTION_REPEATABLE_READ` | 支持 | 阻止 | 阻止 | 允许 |'
+- en: '| `TRANSACTION_SERIALIZABLE` | Supported | Prevented | Prevented | Prevented
+    |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| `TRANSACTION_SERIALIZABLE` | 支持 | 阻止 | 阻止 | 阻止 |'
+- en: A *non-repeatable read* occurs when transaction A retrieves a row, transaction
+    B subsequently updates the row, and transaction A later retrieves the same row
+    again. Transaction A retrieves the same row twice but sees different data.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当事务A检索一行，事务B随后更新该行，然后事务A稍后再次检索相同的行时，会发生*不可重复读*。 事务A两次检索相同的行，但看到不同的数据。
+- en: A *phantom read* occurs when transaction A retrieves a set of rows satisfying
+    a given condition, transaction B subsequently inserts or updates a row such that
+    the row now meets the condition in transaction A, and transaction A later repeats
+    the conditional retrieval. Transaction A now sees an additional row. This row
+    is referred to as a phantom.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当事务A检索满足给定条件的一组行时，事务B随后插入或更新一行，使得该行现在满足事务A中的条件，然后事务A稍后重复条件检索时，会发生*幻读*。 事务A现在看到了一个额外的行。
+    这行被称为幻像。
+- en: Usually, you do not need to do anything about the transaction isolation level;
+    you can just use the default one for your DBMS. The default transaction isolation
+    level depends on your DBMS. For example, for Java DB, it is `TRANSACTION_READ_COMMITTED`.
+    JDBC allows you to find out what transaction isolation level your DBMS is set
+    to (using the `Connection` method `getTransactionIsolation`) and also allows you
+    to set it to another level (using the `Connection` method `setTransactionIsolation`).
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，您不需要对事务隔离级别做任何处理；您可以只使用您的DBMS的默认隔离级别。默认事务隔离级别取决于您的DBMS。例如，对于Java DB，它是`TRANSACTION_READ_COMMITTED`。JDBC允许您查找您的DBMS设置的事务隔离级别（使用`Connection`方法`getTransactionIsolation`），并且还允许您将其设置为另一个级别（使用`Connection`方法`setTransactionIsolation`）。
+- en: '**Note**: A JDBC driver might not support all transaction isolation levels.
+    If a driver does not support the isolation level specified in an invocation of
+    `setTransactionIsolation`, the driver can substitute a higher, more restrictive
+    transaction isolation level. If a driver cannot substitute a higher transaction
+    level, it throws a `SQLException`. Use the method `DatabaseMetaData.supportsTransactionIsolationLevel`
+    to determine whether or not the driver supports a given level.'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：JDBC驱动程序可能不支持所有事务隔离级别。如果驱动程序不支持在调用`setTransactionIsolation`时指定的隔离级别，则驱动程序可以替换为更高、更严格的事务隔离级别。如果驱动程序无法替换为更高的事务级别，则会抛出`SQLException`。使用方法`DatabaseMetaData.supportsTransactionIsolationLevel`来确定驱动程序是否支持给定级别。'
+- en: Setting and Rolling Back to Savepoints
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置和回滚到Savepoints
+- en: The method `Connection.setSavepoint`, sets a `Savepoint` object within the current
+    transaction. The `Connection.rollback` method is overloaded to take a `Savepoint`
+    argument.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`Connection.setSavepoint`在当前事务中设置一个`Savepoint`对象。方法`Connection.rollback`被重载以接受一个`Savepoint`参数。
+- en: 'The following method, [`CoffeesTable.modifyPricesByPercentage`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTable.java),
+    raises the price of a particular coffee by a percentage, `priceModifier`. However,
+    if the new price is greater than a specified price, `maximumPrice`, then the price
+    is reverted to the original price:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下方法，[`CoffeesTable.modifyPricesByPercentage`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/CoffeesTable.java)，通过百分比`priceModifier`提高特定咖啡的价格。但是，如果新价格大于指定价格`maximumPrice`，则价格将恢复到原始价格：
+- en: '[PRE2]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The following statement specifies that the cursor of the `ResultSet` object
+    generated from the `getPrice` query is closed when the `commit` method is called.
+    Note that if your DBMs does not support `ResultSet.CLOSE_CURSORS_AT_COMMIT`, then
+    this constant is ignored:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下语句指定了从`getPrice`查询生成的`ResultSet`对象的游标在调用`commit`方法时关闭。请注意，如果您的DBMS不支持`ResultSet.CLOSE_CURSORS_AT_COMMIT`，则此常量将被忽略：
+- en: '[PRE3]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The method begins by creating a `Savepoint` with the following statement:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该方法首先通过以下语句创建一个`Savepoint`：
+- en: '[PRE4]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The method checks if the new price is greater than the `maximumPrice` value.
+    If so, the method rolls back the transaction with the following statement:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该方法检查新价格是否大于`maximumPrice`值。如果是，则使用以下语句回滚事务：
+- en: '[PRE5]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Consequently, when the method commits the transaction by calling the `Connection.commit`
+    method, it will not commit any rows whose associated `Savepoint` has been rolled
+    back; it will commit all the other updated rows.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，当方法通过调用`Connection.commit`方法提交事务时，它不会提交任何已回滚其关联`Savepoint`的行；它将提交所有其他更新的行。
+- en: Releasing Savepoints
+  id: totrans-46
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 释放Savepoints
+- en: The method `Connection.releaseSavepoint` takes a `Savepoint` object as a parameter
+    and removes it from the current transaction.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`Connection.releaseSavepoint`以`Savepoint`对象作为参数，并将其从当前事务中移除。
+- en: After a savepoint has been released, attempting to reference it in a rollback
+    operation causes a `SQLException` to be thrown. Any savepoints that have been
+    created in a transaction are automatically released and become invalid when the
+    transaction is committed, or when the entire transaction is rolled back. Rolling
+    a transaction back to a savepoint automatically releases and makes invalid any
+    other savepoints that were created after the savepoint in question.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 释放Savepoints后，尝试在回滚操作中引用它会导致抛出`SQLException`。在事务提交或整个事务回滚时，已创建的任何保存点都会自动释放并在事务提交时变为无效，或者在回滚整个事务时变为无效。将事务回滚到保存点会自动释放并使其他在该保存点之后创建的保存点无效。
+- en: When to Call Method rollback
+  id: totrans-49
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 何时调用`rollback`方法
+- en: As mentioned earlier, calling the method `rollback` terminates a transaction
+    and returns any values that were modified to their previous values. If you are
+    trying to execute one or more statements in a transaction and get a `SQLException`,
+    call the method `rollback` to end the transaction and start the transaction all
+    over again. That is the only way to know what has been committed and what has
+    not been committed. Catching a `SQLException` tells you that something is wrong,
+    but it does not tell you what was or was not committed. Because you cannot count
+    on the fact that nothing was committed, calling the method `rollback` is the only
+    way to be certain.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，调用方法`rollback`会终止事务并将修改的任何值返回到它们之前的值。如果您尝试在事务中执行一个或多个语句并收到`SQLException`，请调用方法`rollback`来结束事务并重新开始事务。这是唯一的方法来知道什么已经提交，什么尚未提交。捕获`SQLException`告诉您出现了问题，但它并不告诉您什么已经提交或尚未提交。因为您不能确定没有任何提交，调用方法`rollback`是确保的唯一方法。
+- en: The method `CoffeesTable.updateCoffeeSales` demonstrates a transaction and includes
+    a `catch` block that invokes the method `rollback`. If the application continues
+    and uses the results of the transaction, this call to the `rollback` method in
+    the `catch` block prevents the use of possibly incorrect data.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`CoffeesTable.updateCoffeeSales`演示了一个事务，并包括一个调用方法`rollback`的`catch`块。如果应用程序继续并使用事务的结果，`catch`块中对`rollback`方法的调用将阻止使用可能不正确的数据。

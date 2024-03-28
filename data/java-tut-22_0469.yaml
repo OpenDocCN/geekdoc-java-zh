@@ -1,0 +1,130 @@
+- en: Demo - LocationSensitiveDemo
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 演示 - LocationSensitiveDemo
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/locsensitivedemo.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/locsensitivedemo.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/locsensitivedemo.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/locsensitivedemo.html)
+- en: The following demo, `LocationSensitiveDemo`, shows a `JTree` that has been configured
+    to support drop on any node except for one called "names" (or its descendants).
+    Use the text field at the top of the frame as the drag source (it will automatically
+    increment the string number each time you drag from there).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的演示`LocationSensitiveDemo`展示了一个已配置为支持在除了名为"names"（或其子代）之外的任何节点上进行拖放的`JTree`。使用窗口顶部的文本字段作为拖动源（每次从那里拖动时，字符串编号会自动递增）。
+- en: A combo box below the tree allows you to toggle the behavior for showing the
+    drop location. Swing's default behavior is to show the drop location only when
+    the area can accept the drop. You can override this behavior to always show the
+    drop location (even if the area cannot accept the drop) or to never show the drop
+    location (even if the area can accept the drop).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 树下方的一个下拉框允许您切换显示拖放位置的行为。Swing的默认行为是仅在区域可以接受拖放时显示拖放位置。您可以覆盖此行为以始��显示拖放位置（即使区域无法接受拖放）或永远不显示拖放位置（即使区域可以接受拖放）。
+- en: '![A snapshot of the LocationSensitiveDemo demo.](../Images/276ccb1a0b0d1b7803869c6d4fb2b48a.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![LocationSensitiveDemo演示的快照。](../Images/276ccb1a0b0d1b7803869c6d4fb2b48a.png)'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run `LocationSensitiveDemo` using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/dnd/index.html#LocationSensitiveDemo).[![Launches
+    the ListDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/LocationSensitiveDemoProject/LocationSensitiveDemo.jnlp)
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行`LocationSensitiveDemo`（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/dnd/index.html#LocationSensitiveDemo)。[![启动ListDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/LocationSensitiveDemoProject/LocationSensitiveDemo.jnlp)
+- en: Initiate a drag by pressing on top of "String 0" in the text field and moving
+    the mouse a short distance. Drag into the tree and move downwards. As you hover
+    the mouse over most of the nodes, the drag acceptability is indicated by both
+    the mouse cursor and by the node becoming highlighted. Drop the text onto the
+    "colors" node. The new item becomes a child of that node and a sibling to the
+    colors listed.
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 通过在文本字段中"String 0"上按下并将鼠标移动一小段距离来启动拖动。拖动到树中并向下移动。当你将鼠标悬停在大多数节点上时，拖动接受性会通过鼠标指针和节点高亮显示来指示。将文本放到"colors"节点上。新项目将成为该节点的子节点，并成为列出的颜色的同级节点。
+- en: Drag "String 1" from the textfield into the tree. Try to drop it on the "names"
+    node. As you drag over that node or its children, Swing will not provide any drop
+    location feedback and it will not accept the data.
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将"String 1"从文本字段拖动到树中。尝试将其放在"names"节点上。当你拖动到该节点或其子节点时，Swing不会提供任何拖放位置反馈，也不会接受数据。
+- en: Change the "Show drop location" combo box to "Always".
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将"Show drop location"下拉框更改为"Always"。
+- en: Repeat steps 1 and 2\. The drop location now displays for the "names" node,
+    but you cannot drop data into that area.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 重复步骤1和2。现在拖放位置将显示在"names"节点，但你无法将数据放入该区域。
+- en: Change the "Show drop location" combo box to "Never".
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将"Show drop location"下拉框更改为"Never"。
+- en: Repeat steps 1 and 2\. The drop location will not display for any part of the
+    tree, though you can still drop data into the nodes, other than "names".
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 重复步骤1和2。拖放位置将不会显示在树的任何部分，尽管你仍然可以将数据放入除了"names"之外的节点。
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The `canImport` method for [``LocationSensitiveDemo``](../examples/dnd/LocationSensitiveDemoProject/src/dnd/LocationSensitiveDemo.java)
+    looks like this:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``LocationSensitiveDemo``](../examples/dnd/LocationSensitiveDemoProject/src/dnd/LocationSensitiveDemo.java)的`canImport`方法如下所示：'
+- en: '[PRE0]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The first code snippet displayed in bold modifies the drop location feedback
+    mechanism. If "Always", then the drop location is always shown. If "Never", the
+    drop location is never shown. Otherwise, the default behavior applies.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个显示为粗体的代码片段修改了拖放位置反馈机制。如果是"Always"，则始终显示拖放位置。如果是"Never"，则永远不显示拖放位置。否则，应用默认行为。
+- en: The second code snippet displayed in bold contains the logic that determines
+    whether the tree will accept the data. If the path is not a valid path or if it
+    is not the names path (or its descendant) it will return false and the import
+    will not be accepted.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 粗体显示的第二个代码片段包含确定树是否接受数据的逻辑。如果路径不是有效路径，或者不是名称路径（或其子路径），它将返回false，导入将不被接受。

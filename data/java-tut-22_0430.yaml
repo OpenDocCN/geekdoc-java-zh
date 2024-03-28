@@ -1,0 +1,263 @@
+- en: A Visual Guide to Layout Managers
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 布局管理器的可视化指南
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html)
+- en: 'Several AWT and Swing classes provide layout managers for general use:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有几个 AWT 和 Swing 类提供了用于一般用途的布局管理器：
+- en: '[`BorderLayout`](#border)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`BorderLayout`](#border)'
+- en: '[`BoxLayout`](#box)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`BoxLayout`](#box)'
+- en: '[`CardLayout`](#card)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`CardLayout`](#card)'
+- en: '[`FlowLayout`](#flow)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`FlowLayout`](#flow)'
+- en: '[`GridBagLayout`](#gridbag)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`GridBagLayout`](#gridbag)'
+- en: '[`GridLayout`](#grid)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`GridLayout`](#grid)'
+- en: '[`GroupLayout`](#group)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`GroupLayout`](#group)'
+- en: '[`SpringLayout`](#spring)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`SpringLayout`](#spring)'
+- en: This section shows example GUIs that use these layout managers, and tells you
+    where to find the how-to page for each layout manager. You can find links for
+    running the examples in the how-to pages and in the [example index](../examples/layout/index.html).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节展示了使用这些布局管理器的示例 GUI，并告诉您在哪里找到每个布局管理器的操作说明页面。您可以在操作说明页面和[示例索引](../examples/layout/index.html)中找到运行示例的链接。
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程涵盖了手动编写布局代码，这可能具有挑战性。如果您对学习布局管理的所有细节不感兴趣，您可能更喜欢使用`GroupLayout`布局管理器结合构建工具来布局您的
+    GUI。其中一个构建工具是[NetBeans IDE](../learn/index.html)。否则，如果您想手动编写代码并且不想使用`GroupLayout`，那么推荐使用`GridBagLayout`作为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有兴趣使用 JavaFX 创建 GUI，请参阅[JavaFX 中的布局](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: BorderLayout
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: BorderLayout
+- en: '![A picture of a GUI that uses BorderLayout](../Images/ad6ae2877c21489c23de688be50fa24d.png)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用BorderLayout的GUI的图片](../Images/ad6ae2877c21489c23de688be50fa24d.png)'
+- en: 'Every content pane is initialized to use a `BorderLayout`. (As [Using Top-Level
+    Containers](../components/toplevel.html) explains, the content pane is the main
+    container in all frames, applets, and dialogs.) A `BorderLayout` places components
+    in up to five areas: top, bottom, left, right, and center. All extra space is
+    placed in the center area. Tool bars that are created using [JToolBar](../components/toolbar.html)
+    must be created within a `BorderLayout` container, if you want to be able to drag
+    and drop the bars away from their starting positions. For further details, see
+    [How to Use BorderLayout](border.html).'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个内容窗格都初始化为使用`BorderLayout`。（正如[使用顶级容器](../components/toplevel.html)中解释的，内容窗格是所有框架、小程序和对话框中的主要容器。）`BorderLayout`
+    将组件放在最多五个区域：顶部、底部、左侧、右侧和中心。所有额外的空间都放在中心区域。使用[JToolBar](../components/toolbar.html)创建的工具栏必须在`BorderLayout`容器内创建，如果您希望能够将工具栏从其起始位置拖放到其他位置。更多细节，请参阅[如何使用
+    BorderLayout](border.html)。
+- en: BoxLayout
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: BoxLayout
+- en: '![A picture of a GUI that uses BoxLayout](../Images/8e510cc5e929290b39de89731eb49bb4.png)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用BoxLayout的GUI的图片](../Images/8e510cc5e929290b39de89731eb49bb4.png)'
+- en: The `BoxLayout` class puts components in a single row or column. It respects
+    the components' requested maximum sizes and also lets you align components. For
+    further details, see [How to Use BoxLayout](box.html).
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`BoxLayout` 类将组件放在单行或单列中。它尊重组件的请求的最大尺寸，并且还允许您对齐组件。更多细节，请参阅[如何使用 BoxLayout](box.html)。'
+- en: CardLayout
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: CardLayout
+- en: '![A picture of a GUI that uses CardLayout](../Images/26aec8afefd1f2f5326323d57942ca0a.png)
+    ![Another picture of the same layout](../Images/3b53a2bceda4ff23a72ba9b204c40c0b.png)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用CardLayout的GUI的图片](../Images/26aec8afefd1f2f5326323d57942ca0a.png) ![相同布局的另一张图片](../Images/3b53a2bceda4ff23a72ba9b204c40c0b.png)'
+- en: The `CardLayout` class lets you implement an area that contains different components
+    at different times. A `CardLayout` is often controlled by a combo box, with the
+    state of the combo box determining which panel (group of components) the `CardLayout`
+    displays. An alternative to using `CardLayout` is using a [tabbed pane](../components/tabbedpane.html),
+    which provides similar functionality but with a pre-defined GUI. For further details,
+    see [How to Use CardLayout](card.html).
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CardLayout`类允许您在不同时间包含不同组件的区域。`CardLayout`通常由组合框控制，组合框的状态确定`CardLayout`显示的哪个面板（一组组件）。使用[选项卡窗格](../components/tabbedpane.html)的替代方法是使用`CardLayout`，它提供类似的功能，但具有预定义的GUI。更多详情，请参阅[如何使用CardLayout](card.html)。'
+- en: FlowLayout
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: FlowLayout
+- en: '![A picture of a GUI that uses FlowLayout](../Images/acf1d6cee94083b9de2ccbb3be6c197a.png)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用FlowLayout的GUI图片](../Images/acf1d6cee94083b9de2ccbb3be6c197a.png)'
+- en: '`FlowLayout` is the default layout manager for every `JPanel`. It simply lays
+    out components in a single row, starting a new row if its container is not sufficiently
+    wide. Both panels in CardLayoutDemo, shown [previously](#card), use `FlowLayout`.
+    For further details, see [How to Use FlowLayout](flow.html).'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`FlowLayout`是每个`JPanel`的默认布局管理器。它简单地将组件按照一行排列，如果其容器宽度不够，则开始新行。CardLayoutDemo中的两个面板，如[前面](#card)所示，都使用`FlowLayout`。更多详情，请参阅[如何使用FlowLayout](flow.html)。'
+- en: GridBagLayout
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: GridBagLayout
+- en: '![A picture of a GUI that uses GridBagLayout](../Images/6ede3d7f6d186f09fd9b0e05029fe3b9.png)'
+  id: totrans-29
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用GridBagLayout的GUI图片](../Images/6ede3d7f6d186f09fd9b0e05029fe3b9.png)'
+- en: '`GridBagLayout` is a sophisticated, flexible layout manager. It aligns components
+    by placing them within a grid of cells, allowing components to span more than
+    one cell. The rows in the grid can have different heights, and grid columns can
+    have different widths. For further details, see [How to Use GridBagLayout](gridbag.html).'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GridBagLayout`是一种复杂、灵活的布局管理器。它通过将组件放置在单元格网格内来对齐组件，允许组件跨越多个单元格。网格中的行可以具有不同的高度，网格列可以具有不同的宽度。更多详情，请参阅[如何使用GridBagLayout](gridbag.html)。'
+- en: GridLayout
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: GridLayout
+- en: '![A picture of a GUI that uses GridLayout](../Images/014b93e45655af3e7a1f69b4c75c538e.png)'
+  id: totrans-32
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用GridLayout的GUI图片](../Images/014b93e45655af3e7a1f69b4c75c538e.png)'
+- en: '`GridLayout` simply makes a bunch of components equal in size and displays
+    them in the requested number of rows and columns. For further details, see [How
+    to Use GridLayout](grid.html).'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GridLayout`简单地使一组组件大小相等，并以请求的行数和列数显示它们。更多详情，请参阅[如何使用GridLayout](grid.html)。'
+- en: GroupLayout
+  id: totrans-34
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: GroupLayout
+- en: '![A picture of a GUI that uses GroupLayout](../Images/00f007d7ae784f49a507eb570bb0bc37.png)'
+  id: totrans-35
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用GroupLayout的GUI图片](../Images/00f007d7ae784f49a507eb570bb0bc37.png)'
+- en: '`GroupLayout` is a layout manager that was developed for use by GUI builder
+    tools, but it can also be used manually. `GroupLayout` works with the horizontal
+    and vertical layouts separately. The layout is defined for each dimension independently.
+    Consequently, however, each component needs to be defined twice in the layout.
+    The Find window shown above is an example of a `GroupLayout`. For further details,
+    see [How to Use GroupLayout](group.html).'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`GroupLayout`是一种为GUI构建工具开发的布局管理器，但也可以手动使用。`GroupLayout`分别处理水平和垂直布局。布局针对每个维度独立定义。因此，每个组件在布局中需要定义两次。上面显示的查找窗口是`GroupLayout`的一个示例。更多详情，请参阅[如何使用GroupLayout](group.html)。'
+- en: SpringLayout
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: SpringLayout
+- en: '![A picture of a GUI that uses SpringLayout](../Images/7d7a0a5f20c81a5a6f26182b0fe72d3a.png)![Another
+    GUI that uses SpringLayout](../Images/247dbdc9e832944c9b43729ece90d0f4.png)'
+  id: totrans-38
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用SpringLayout的GUI图片](../Images/7d7a0a5f20c81a5a6f26182b0fe72d3a.png)![另一个使用SpringLayout的GUI图片](../Images/247dbdc9e832944c9b43729ece90d0f4.png)'
+- en: '`SpringLayout` is a flexible layout manager designed for use by GUI builders.
+    It lets you specify precise relationships between the edges of components under
+    its control. For example, you might define that the left edge of one component
+    is a certain distance (which can be dynamically calculated) from the right edge
+    of a second component. `SpringLayout` lays out the children of its associated
+    container according to a set of constraints, as shall be seen in [How to Use SpringLayout](spring.html).'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SpringLayout`是一种为GUI构建工具设计的灵活布局管理器。它允许您指定其控制下组件的边缘之间的精确关系。例如，您可以定义一个组件的左边缘与第二个组件的右边缘之间的一定距离（可以动态计算）。`SpringLayout`根据一组约束条件布置其关联容器的子组件，如[如何使用SpringLayout](spring.html)中所示。'

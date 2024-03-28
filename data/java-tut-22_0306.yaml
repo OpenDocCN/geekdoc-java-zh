@@ -1,0 +1,160 @@
+- en: Embedding JNLP File in Applet Tag
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 在小程序��签中嵌入 JNLP 文件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/embeddingJNLPFileInWebPage.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/embeddingJNLPFileInWebPage.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/embeddingJNLPFileInWebPage.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/embeddingJNLPFileInWebPage.html)
+- en: When applets are deployed by using the Java Network Launch Protocol (JNLP),
+    the Java Plug-in software launches the applet after downloading the JNLP file
+    from the network. Beginning in the Java SE 7 release, you can reduce the time
+    it takes for applets to launch, by embedding the JNLP file in the web page itself
+    so that an additional network request can be avoided the first time the applet
+    is loaded. This will result in applets launching quickly on the web browser.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用 Java Network Launch Protocol (JNLP) 部署小程序时，Java 插件软件会在从网络下载 JNLP 文件后启动小程序。从
+    Java SE 7 版本开始，您可以通过将 JNLP 文件嵌入到网页中来减少小程序启动时间，从而避免第一次加载小程序时额外的网络请求。这将导致小程序在 Web
+    浏览器上快速启动。
+- en: 'A Base64 encoded JNLP file can be embedded in the `jnlp_embedded` parameter
+    when deploying an applet in a web page. The attributes of the `<jnlp>` element
+    should meet the following restrictions:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在网页中部署小程序时，可以将 Base64 编码的 JNLP 文件嵌入到 `jnlp_embedded` 参数中。`<jnlp>` 元素的属性应满足以下限制：
+- en: The `href` attribute should contain a relative path.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`href` 属性应包含相对路径。'
+- en: The `codebase` attribute should not be specified. This implies that the codebase
+    will be derived from the URL of the web page in which the applet is loaded.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 不应指定 `codebase` 属性。这意味着代码库将从加载小程序的网页的 URL 派生。
+- en: The following steps describe how to embed a JNLP file in a web page to deploy
+    an applet.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下步骤描述了如何在网页中嵌入 JNLP 文件以部署小程序。
+- en: Create a [``JNLP``](examples/depl_EmbeddingJNLPInWebPage/src/dynamictree_applet.jnlp)
+    file for your applet. A sample file is shown next.
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 为您的小程序创建一个[``JNLP``](examples/depl_EmbeddingJNLPInWebPage/src/dynamictree_applet.jnlp)文件。下面显示了一个示例文件。
+- en: '[PRE0]'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Encode the contents of the JNLP file using the Base64 scheme. You can use any
+    Base64 encoding tool to encode the JNLP file. Check the usage of the tool to create
+    a string with Base64 encoding. Some examples of tools and web sites that may be
+    used are as follows:'
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用 Base64 方案对 JNLP 文件的内容进行编码。您可以使用任何 Base64 编码工具对 JNLP 文件进行编码。查看工具的用法以创建具有 Base64
+    编码的字符串。可以使用的一些工具和网站示例如下：
+- en: UNIX commands – `base64`, `uuencode`
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: UNIX 命令 – `base64`, `uuencode`
+- en: Web sites – [Base64 Encode and Decode](http://base64encode.org/), [Base64 Encoder](http://www.opinionatedgeek.com/dotnet/tools/base64encode/)
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 网站 – [Base64 编码和解码](http://base64encode.org/), [Base64 编码器](http://www.opinionatedgeek.com/dotnet/tools/base64encode/)
+- en: When deploying the applet in a web page, specify the `jnlp_embedded` parameter
+    with it's value set to the Base64 encoded JNLP string. Make sure to include only
+    the actual Base64 bytes without any encoding tool specific headers or footers.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在网页中部署小程序时，指定 `jnlp_embedded` 参数，并将其值设置为 Base64 编码的 JNLP 字符串。确保只包含实际的 Base64
+    字节，不包含任何编码工具特定的头部或尾部。
+- en: '[PRE1]'
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Some encoding tools may wrap the encoded string into several 76-column lines.
+    To use this multi-line attribute value in JavaScript code, specify the attribute
+    value as a set of concatenated strings. You can include the multi-line attribute
+    value as is if the applet is deployed directly with the `<applet>` HTML tag.
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 一些编码工具可能会将编码后的字符串包装成几个 76 列的行。要在 JavaScript 代码中使用这种多行属性值，请将属性值指定为一组连接的字符串。如果小程序直接使用
+    `<applet>` HTML 标签部署，则可以按原样包含多行属性值。
+- en: Open [``AppletPage.html``](examples/dist/depl_EmbeddingJNLPInWebPage/AppletPage.html)
+    in a browser to view the Dynamic Tree Demo applet that is launched by using the
+    JNLP file embedded in the web page.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在浏览器中打开[``AppletPage.html``](examples/dist/depl_EmbeddingJNLPInWebPage/AppletPage.html)以查看通过在网页中嵌入
+    JNLP 文件启动的动态树演示小程序。
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，请至少安装[Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到示例运行，可能需要在浏览器中启用 JavaScript 解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[Download source code](examplesIndex.html#EmbeddedJNLP) for the *Embedded JNLP*
+    example to experiment further.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#EmbeddedJNLP)以进一步进行实验的*嵌入式 JNLP* 示例。'

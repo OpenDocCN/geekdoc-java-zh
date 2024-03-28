@@ -1,0 +1,77 @@
+- en: LDAP Compare
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: LDAP 比较
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/compare.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/compare.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/compare.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/compare.html)
+- en: The LDAP "compare" operation allows a client to ask the server whether the named
+    entry has an attribute/value pair. This allows the server to keep certain attribute/value
+    pairs secret (that is, not exposed for general "search" access) while still allowing
+    the client limited use of them. Some servers might use this feature for passwords,
+    for example, although it is insecure for the client to pass clear-text passwords
+    in the "compare" operation itself.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP 的“比较”操作允许客户端询问服务器是否具有指定条目的属性/值对。这使得服务器可以保留某些属性/值对的机密性（即，不对一般“搜索”访问公开），同时仍允许客户端有限使用它们。例如，一些服务器可能会将此功能用于密码，尽管客户端在“比较”操作本身中传递明文密码是不安全的。
+- en: 'To accomplish this in the JNDI, use suitably constrained arguments for the
+    following methods:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在 JNDI 中实现这一点，请对以下方法使用适当限制的参数：
+- en: '[`search(Name name, String filter, SearchControls ctls)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-javax.naming.directory.SearchControls-)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`search(Name name, String filter, SearchControls ctls)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-javax.naming.directory.SearchControls-)'
+- en: '[`search(Name name, String filterExpr, Object[]filterArgs, SearchControls ctls)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-java.lang.Object:A-javax.naming.directory.SearchControls-)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`search(Name name, String filterExpr, Object[]filterArgs, SearchControls ctls)`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-java.lang.Object:A-javax.naming.directory.SearchControls-)'
+- en: The filter must be of the form "(*name*=*value*)". You cannot use wild cards.
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 过滤器必须是“(*name*=*value*)”的形式。不能使用通配符。
+- en: The search scope must be [`SearchControls.OBJECT_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#OBJECT_SCOPE).
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 搜索范围必须是[`SearchControls.OBJECT_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#OBJECT_SCOPE)。
+- en: You must request that no attributes be returned. If these criteria are not met,
+    then these methods will use an LDAP "search" operation instead of an LDAP "compare"
+    operation.
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 你必须要求不返回任何属性。如果不符合这些条件，那么这些方法将使用 LDAP 的“搜索”操作而不是 LDAP 的“比较”操作。
+- en: Here's [`an example`](examples/Compare.java) that causes an LDAP "compare" operation
+    to be used.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个[`示例`](examples/Compare.java)，会导致使用 LDAP 的“比较”操作。
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If the compare is successful, the resulting enumeration will contain a single
+    item whose name is the empty name and which contains no attributes.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果比较成功，结果枚举将包含一个名称为空且不包含任何属性的单个项目。

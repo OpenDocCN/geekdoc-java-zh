@@ -1,0 +1,53 @@
+- en: Error Handling
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 错误处理
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/error.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/error.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/properties/error.html](https://docs.oracle.com/javase/tutorial/jaxp/properties/error.html)
+- en: 'Since the properties are new to the current release, it is recommended that
+    applications catch exceptions proper to the interface, for example, SAXException
+    in the following example. Catching the applications may work properly on older
+    releases, for example the sample code contains the following method that detects
+    if the sample is run with a version of the JDK or a JAXP implementation that supports
+    the new property:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于这些属性是当前版本的新功能，建议应用程序捕获适合接口的异常，例如，在以下示例中捕获SAXException。在旧版本上，应用程序可能正常工作，例如，示例代码包含以下方法，用于检测是否使用支持新属性的JDK版本或JAXP实现运行示例：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'If access to external resources is denied due to the restrictions set by the
+    new properties, an exception will be thrown with an error in the following format:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果由于新属性设置的限制而拒绝访问外部资源，则将以以下格式抛出异常并带有错误信息：
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'For example, if fetching an external DTD is denied by restriction to http protocol
+    such as the following: `parser.setProperty("http://javax.xml.XMLConstants/property/accessExternalDTD",
+    "file");` and if the parser parses an XML file that contains external reference
+    to `"http://java.sun.com/dtd/properties.dtd"`, the error message would look like
+    the following:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，如果由于限制只允许使用http协议而拒绝获取外部DTD，如下所示：`parser.setProperty("http://javax.xml.XMLConstants/property/accessExternalDTD",
+    "file");`，并且解析器解析包含对`"http://java.sun.com/dtd/properties.dtd"`的外部引用的XML文件，则错误消息将如下所示：
+- en: '[PRE2]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'

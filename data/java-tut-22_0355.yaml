@@ -1,0 +1,226 @@
+- en: Setting up the CelsiusConverter Project
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 设置CelsiusConverter项目
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/learn/settingup.html](https://docs.oracle.com/javase/tutorial/uiswing/learn/settingup.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/learn/settingup.html](https://docs.oracle.com/javase/tutorial/uiswing/learn/settingup.html)
+- en: If you have worked with the NetBeans IDE in the past, much of this section will
+    look familiar, since the initial steps are similar for most projects. Still, the
+    following steps describe settings that are specific to this application, so take
+    care to follow them closely.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您以前使用过NetBeans IDE，那么本节的大部分内容看起来会很熟悉，因为最初的步骤对大多数项目都是相似的。不过，接下来的步骤描述了特定于此应用程序的设置，因此请务必仔细遵循。
+- en: 'Step 1: Create a New Project'
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤 1：创建一个新项目
+- en: 'To create a new project, launch the NetBeans IDE and choose New Project from
+    the File menu:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '要创建一个新项目，请启动NetBeans IDE并从“文件”菜单���选择“新项目”： '
+- en: '![Creating a New Project within the GUI](../Images/305ef9348b0fb00967afaadca812ad3d.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![在GUI中创建一个新项目](../Images/305ef9348b0fb00967afaadca812ad3d.png)'
+- en: Creating a New Project
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建一个新项目
+- en: Keyboard shortcuts for each command appear on the far right of each menu item.
+    The look and feel of the NetBeans IDE may vary across platforms, but the functionality
+    will remain the same.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个命令的键盘快捷键显示在每个菜单项的最右侧。NetBeans IDE的外观和感觉可能在不同平台上有所不同，但功能将保持不变。
+- en: 'Step 2: Choose General -> Java Application'
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤 2：选择General -> Java Application
+- en: 'Next, select General from the Categories column, and Java Application from
+    the Projects column:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，从类别列中选择“General”，从项目列中选择“Java Application”：
+- en: '[![screen shot from NetBeans application](../Images/947f4e30df0d1ecd29edba7355d2e825.png)](../../figures/uiswing/learn/nb-swing-3.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![NetBeans应用程序的屏幕截图](../Images/947f4e30df0d1ecd29edba7355d2e825.png)](../../figures/uiswing/learn/nb-swing-3.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击图像以查看其自然大小。*
+- en: You may notice mention of "J2SE" in the description pane; that is the old name
+    for what is now known as the "Java SE" platform. Press the button labeled "Next"
+    to proceed.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能会在描述窗格中看到“J2SE”的提及；那是现在被称为“Java SE”平台的旧名称。按下标有“下一步”的按钮继续。
+- en: 'Step 3: Set a Project Name'
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤 3：设置项目名称
+- en: Now enter "CelsiusConverterProject" as the project name. You can leave the Project
+    Location and Project Folder fields set to their default values, or click the Browse
+    button to choose an alternate location on your system.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在将“CelsiusConverterProject”输入为项目名称。您可以将项目位置和项目文件夹字段保留为默认值，或者单击“浏览”按钮选择系统上的其他位置。
+- en: '[![screen shot from NetBeans](../Images/3a299ca3e73030994c28a3f7736ede4f.png)](../../figures/uiswing/learn/nb-swing-4.png)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![NetBeans中的屏幕截图](../Images/3a299ca3e73030994c28a3f7736ede4f.png)](../../figures/uiswing/learn/nb-swing-4.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击图像以查看其自然大小。*
+- en: Make sure to deselect the "Create Main Class" check box; leaving this option
+    selected generates a new class as the main entry point for the application, but
+    our main GUI window (created in the next step) will serve that purpose, so checking
+    this box is not necessary. Click the "Finish" button when you are done.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 确保取消选中“创建主类”复选框；保留此选项会生成一个新类作为应用程序的主入口点，但我们的主GUI窗口（在下一步中创建）将担任此职责，因此不需要选中此框。完成后点击“完成”按钮。
+- en: '[![screen shot from NetBeans](../Images/cac999338fa5cfa5d43eee45aa880da7.png)](../../figures/uiswing/learn/nb-swing-5.png)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![NetBeans中的屏幕截图](../Images/cac999338fa5cfa5d43eee45aa880da7.png)](../../figures/uiswing/learn/nb-swing-5.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击图像以查看其自然大小。*
+- en: When the IDE finishes loading, you will see a screen similar to the above. All
+    panes will be empty except for the Projects pane in the upper left hand corner,
+    which shows the newly created project.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当IDE完成加载时，您将看到类似上述的屏幕。所有窗格都将为空，除了左上角的项目窗格，显示了新创建的项目。
+- en: 'Step 4: Add a JFrame Form'
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤 4：添加一个JFrame表单
+- en: '[![screen shot from NetBeans](../Images/2061183964f08f467e980fdaca1a4d70.png)](../../figures/uiswing/learn/nb-swing-6.png)'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![NetBeans中的屏幕截图](../Images/2061183964f08f467e980fdaca1a4d70.png)](../../figures/uiswing/learn/nb-swing-6.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击图像以查看其自然大小。*
+- en: Now right-click the CelsiusConverterProject name and choose New -> JFrame Form
+    (`JFrame` is the Swing class responsible for the main frame for your application.)
+    You will learn how to designate this class as the application's entry point later
+    in this lesson.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在右键点击`CelsiusConverterProject`名称，选择New -> JFrame Form（`JFrame`是负责应用程序主窗体的Swing类）。你将在本课程后面学习如何将这个类指定为应用程序的入口点。
+- en: 'Step 5: Name the GUI Class'
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤5：命名GUI类
+- en: Next, type `CelsiusConverterGUI` as the class name, and `learn` as the package
+    name. You can actually name this package anything you want, but here we are following
+    the tutorial convention of naming the package after the lesson in which is resides.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，将`CelsiusConverterGUI`作为类名，`learn`作为包名。实际上，你可以将这个包命名为任何你想要的名称，但在这里我们遵循教程的惯例，将包命名为所在课程的名称。
+- en: '[![Screen shot from NetBeans](../Images/505c46ab33809880d16de9e84083f092.png)](../../figures/uiswing/learn/nb-swing-7.png)'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![NetBeans的屏幕截图](../Images/505c46ab33809880d16de9e84083f092.png)](../../figures/uiswing/learn/nb-swing-7.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击图片查看其原始大小。*
+- en: The remainder of the fields should automatically be filled in, as shown above.
+    Click the Finish button when you are done.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其余字段应自动填写，如上所示。完成后点击Finish按钮。
+- en: '[![Screen shot from NetBeans](../Images/120ad8000bc8723fe499be10d8a32214.png)](../../figures/uiswing/learn/nb-swing-8.png)'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![NetBeans的屏幕截图](../Images/120ad8000bc8723fe499be10d8a32214.png)](../../figures/uiswing/learn/nb-swing-8.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击图片查看其原始大小。*
+- en: When the IDE finishes loading, the right pane will display a design-time, graphical
+    view of the `CelsiusConverterGUI`. It is on this screen that you will visually
+    drag, drop, and manipulate the various Swing components.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当IDE加载完成时，右侧窗格将显示`CelsiusConverterGUI`的设计时、图形化视图。在这个屏幕上，你将可以直观地拖放和操作各种Swing组件。

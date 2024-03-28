@@ -1,0 +1,671 @@
+- en: Structure of the JNLP File
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: JNLP 文件的结构
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jnlpFileSyntax.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jnlpFileSyntax.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jnlpFileSyntax.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jnlpFileSyntax.html)
+- en: This topic describes the syntax of the Java Network Launch Protocol (JNLP) file
+    for rich Internet applications (RIAs).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本主题描述了用于丰富互联网应用程序（RIA）的 Java 网络启动协议（JNLP）文件的语法。
+- en: 'The following code snippet shows a sample JNLP file for a Java Web Start application:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的代码片段显示了一个 Java Web Start 应用程序的示例 JNLP 文件：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The following table describes the elements and attributes commonly used in JNLP
+    files. Click the parent link to view an element's parent.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表描述了 JNLP 文件中常用的元素和属性。单击父链接查看元素的父级。
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This table does not include all possible contents of the JNLP file.
+    For more information, see the [Java Network Launching Protocol and API Specification
+    Change Log](http://www.oracle.com/technetwork/java/javase/jnlp-spec-log-139509.html).'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 此表格不包括 JNLP 文件的所有可能内容。有关更多信息，请参阅[Java 网络启动协议和 API 规范更改日志](http://www.oracle.com/technetwork/java/javase/jnlp-spec-log-139509.html)。'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Commonly Used Elements and Attributes in a JNLP file**'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**JNLP 文件中常用的元素和属性**'
+- en: '| Element | Attributes | Description | Since | Required |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| 元素 | 属性 | 描述 | 自版本 | 必需 |'
+- en: '| jnlp |  | The topmost xml element for a JNLP file. | 1.0  | Yes |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| jnlp |  | JNLP 文件的最顶层 xml 元素。 | 1.0  | 是 |'
+- en: '|  | spec | Value of the attribute can be 1.0, 1.5, or 6.0, or can use wildcards
+    such as 1.0+. It denotes the minimum version of the JNLP Specification that this
+    JNLP file can work with. | 1.0 |  |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | spec | 属性的值可以是 1.0、1.5 或 6.0，也可以使用通配符，如 1.0+。表示此 JNLP 文件可以使用的 JNLP 规范的最低版本。
+    | 1.0 |  |'
+- en: '|  | codebase | The base location for all relative URLs specified in `href`
+    attributes in the JNLP file. | 1.0 |  |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | codebase | JNLP 文件中 `href` 属性中指定的所有相对 URL 的基本位置。 | 1.0 |  |'
+- en: '|  | href | The URL of the JNLP file itself. | 1.0 |  |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | href | JNLP 文件本身的 URL。 | 1.0 |  |'
+- en: '|  | version | The version of the RIA being launched, as well as the version
+    of the JNLP file itself. | 1.0 |  |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | version | 正在启动的 RIA 的版本，以及 JNLP 文件本身的版本。 | 1.0 |  |'
+- en: '|      information ^([parent](#jnlp)) |  | Contains other elements that describe
+    the RIA and its source. | 1.0 | Yes |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '|      information ^([parent](#jnlp)) |  | 包含描述 RIA 及其来源的其他元素。 | 1.0 | 是 |'
+- en: '|  | os | The operating system for which this information element should be
+    considered. | 1.5.0'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|  | os | 应考虑的操作系统。 | 1.5.0 |  |'
+- en: '|  |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '|  |'
+- en: '|  | arch | The architecture for which this information element should be considered.
+    | 1.5.0 |  |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | arch | 应考虑的体系结构。 | 1.5.0 |  |'
+- en: '|  | platform | The platform for which this information element should be considered.
+    | 1.5.0 |  |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | platform | 应考虑的平台。 | 1.5.0 |  |'
+- en: '|  | locale | The locale for which this information element should be considered.
+    | 1.5.0 |  |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | locale | 应考虑的区域设置。 | 1.5.0 |  |'
+- en: '|          title ^([parent](#information)) |  | The title of the RIA. | 1.0
+    | Yes |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '|          title ^([parent](#information)) |  | RIA 的标题。 | 1.0 | 是 |'
+- en: '|          vendor ^([parent](#information)) |  | The provider of the RIA. |
+    1.0 | Yes |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '|          vendor ^([parent](#information)) |  | RIA 的提供者。 | 1.0 | 是 |'
+- en: '|          homepage ^([parent](#information)) |  | The homepage of the RIA.
+    | 1.0 |  |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '|          homepage ^([parent](#information)) |  | RIA 的主页。 | 1.0 |  |'
+- en: '|  | href | A URL pointing to where more information about this RIA can be
+    found. | 1.0 | Yes |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | href | 指向有关此 RIA 的更多信息的 URL。 | 1.0 | 是 |'
+- en: '|          description ^([parent](#information)) |  | A short statement describing
+    the RIA. | 1.0 |  |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '|          description ^([parent](#information)) |  | 描述 RIA 的简短语句。 | 1.0 |  |'
+- en: '|  | kind | An indicator as to the type of description. Legal values are one-line,
+    short, and tooltip. | 1.0 |  |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | kind | 描述类型的指示符。合法值为 one-line、short 和 tooltip。 | 1.0 |  |'
+- en: '|          icon ^([parent](#information)) |  | An icon that can be used to
+    identify the RIA to the user. | 1.0 |  |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '|          icon ^([parent](#information)) |  | 用于向用户识别 RIA 的图标。 | 1.0 |  |'
+- en: '|  | href | A URL pointing to the icon file. Can be in one of the following
+    formats: gif, jpg, png, ico. | 1.0 | Yes |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | href | 指向图标文件的 URL。可以是以下格式之一：gif、jpg、png、ico。 | 1.0 | 是 |'
+- en: '|  | kind | Indicates the suggested use of the icon, can be: default, selected,
+    disabled, rollover, splash, or shortcut. | 1.0 |  |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | kind | 指示图标的建议用途，可以是：default、selected、disabled、rollover、splash 或 shortcut。
+    | 1.0 |  |'
+- en: '|  | width | Can be used to indicate the resolution of the image. | 1.0 |  |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | 宽度 | 可用于指示图像的分辨率。 | 1.0 |  |'
+- en: '|  | height | Can be used to indicate the resolution of the image. | 1.0 |  |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | 高度 | 可用于指示图像的分辨率。 | 1.0 |  |'
+- en: '|  | depth | Can be used to indicate the resolution of the image. | 1.0 |  |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | 深度 | 可用于指示图像的分辨率。 | 1.0 |  |'
+- en: '|          offline-allowed ^([parent](#information)) |  | Indicates that this
+    RIA can operate when the client system is disconnected from the network. | 1.0
+    |  |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '|          offline-allowed ^([父级](#information)) |  | 表示此 RIA 可在客户端系统与网络断开连接时运行。
+    | 1.0 |  |'
+- en: '|          shortcut ^([parent](#information)) |  | Can be used to indicate
+    the RIA''s preferences for desktop integration. | 1.5.0 |  |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '|          快捷方式 ^([父级](#information)) |  | 可用于指示 RIA 对桌面集成的偏好。 | 1.5.0 |  |'
+- en: '|  | online | Can be used to describe the RIA''s preference for creating a
+    shortcut to run online or offline. | 1.5.0 |  |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | 在线 | 可用于描述 RIA 对创建在线或离线运行快捷方式的偏好。 | 1.5.0 |  |'
+- en: '|          desktop ^([parent](#information)) |  | Can be used to indicate the
+    RIA''s preference for putting a shortcut on the user''s desktop. | 1.5.0 |  |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '|          桌面 ^([父级](#information)) |  | 可用于指示 RIA 将快捷方式放置在用户桌面上的偏好。 | 1.5.0
+    |  |'
+- en: '|          menu ^([parent](#information)) |  | Can be used to indicate the
+    RIA''s preference for putting a menu item in the user''s start menus. | 1.5.0
+    |  |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '|          菜单 ^([父级](#information)) |  | 可用于指示 RIA 将菜单项放置在用户开始菜单中的偏好。 | 1.5.0
+    |  |'
+- en: '|  | sub-menu | Can be used to indicate the RIA''s preference for where to
+    place the menu item. | 1.5.0 |  |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | 子菜单 | 可用于指示 RIA 对菜单项放置位置的偏好。 | 1.5.0 |  |'
+- en: '|          association ^([parent](#information)) |  | Can be used to hint to
+    the JNLP client that the RIA wants to be registered with the operating system
+    as the primary handler of certain extensions and a certain mime-type. If this
+    element is included, either the offline-allowed element must also be included,
+    or the href attribute must be set for the jnlp element. | 1.5.0 |  |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '|          关联 ^([父级](#information)) |  | 可用于提示 JNLP 客户端，RIA 希望在操作系统中注册为某些扩展和某些
+    MIME 类型的主要处理程序。如果包括此元素，则必须同时包括 offline-allowed 元素，或者必须为 jnlp 元素设置 href 属性。 | 1.5.0
+    |  |'
+- en: '|  | extensions | A list of file extensions (separated by spaces) that the
+    RIA requests it be registered to handle. | 1.5.0 |  |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | 扩展 | RIA 请求注册处理的文件扩展名列表（以空格分隔）。 | 1.5.0 |  |'
+- en: '|  | mime-type | The mime-type that the RIA requests it be registered to handle.
+    | 1.5.0 |  |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | MIME 类型 | RIA 请求注册处理的 MIME 类型。 | 1.5.0 |  |'
+- en: '|          related-content ^([parent](#information)) |  | An additional piece
+    of related content that can be integrated with the RIA. | 1.5.0 |  |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '|          相关内容 ^([父级](#information)) |  | 可与 RIA 集成的附加相关内容。 | 1.5.0 |  |'
+- en: '|  | href | A URL pointing to the related content. | 1.5.0 | Yes |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | 链接 | 指向相关内容的 URL。 | 1.5.0 | 是 |'
+- en: '|     update ^([parent](#jnlp)) |  | The preferences for how RIA updates should
+    be handled by the JNLP client. | 1.6.0 |  |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '|     更新 ^([父级](#jnlp)) |  | JNLP 客户端应如何处理 RIA 更新的偏好。 | 1.6.0 |  |'
+- en: '|  | check | The preference for when the JNLP client should check for updates.
+    Value can be always, timeout, or background.. | 1.6.0 |  |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | 检查 | JNLP 客户端应何时检查更新的偏好。值可以是 always、timeout 或 background。 | 1.6.0 |  |'
+- en: '|  | policy | The preference for how the JNLP client should handle a RIA update
+    when a new version is available before the RIA is launched. Values can be always,
+    prompt-update, or prompt-run. | 1.6.0 |  |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | 策略 | JNLP 客户端在启动 RIA 之前处理新版本可用时的 RIA 更新偏好。值可以是 always、prompt-update 或
+    prompt-run。 | 1.6.0 |  |'
+- en: '|  |  |  | 1.0 |  |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '|  |  |  | 1.0 |  |'
+- en: '|     security ^([parent](#jnlp)) |  | Can be used to request enhanced permissions.
+    If this element is not included, the application is run in the security sandbox.
+    | 1.0 |  |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '|     安全 ^([父级](#jnlp)) |  | 可用于请求增强权限。如果不包括此元素，则应用程序在安全沙箱中运行。 | 1.0 |  |'
+- en: '|          all-permissions ^([parent](#security)) |  | Requests that the RIA
+    be run with all permissions. | 1.0 |  |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '|          all-permissions ^([父级](#security)) |  | 请求以所有权限运行 RIA。 | 1.0 |  |'
+- en: '|          j2ee-application-client-permissions ^([parent](#security)) |  |
+    Requests that the RIA be run with a permission set that meets the security specifications
+    of the J2EE application client environment. | 1.0 |  |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '|          j2ee-application-client-permissions ^([父级](#security)) |  | 请求以符合
+    J2EE 应用程序客户端环境安全规范的权限集运行 RIA。 | 1.0 |  |'
+- en: '|     resources ^([parent](#jnlp)) |  | Describes all the resources that are
+    needed for the RIA. | 1.0 | Yes |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '|     资源 ^([父级](#jnlp)) |  | 描述 RIA 需要的所有资源。 | 1.0 | 是 |'
+- en: '|  | os | The operating system for which the resources element should be considered.
+    | 1.0 |  |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | os | 应考虑资源元素的操作系统。 | 1.0 |  |'
+- en: '|  | arch | The architecture for which the resources element should be considered.
+    | 1.0 |  |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | arch | 应考虑资源元素的架构。 | 1.0 |  |'
+- en: '|  | locale | The locales for which the resources element should be considered.
+    |  |  |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | locale | 应考虑资源元素的区域设置。 |  |  |'
+- en: '|          java or j2se ^([parent](#resources)) |  | Versions of Java software
+    to run the RIA with. | 1.6.0 (java)  |  |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '|          java or j2se ^([parent](#resources)) |  | 用于运行RIA的Java软件版本。 | 1.6.0
+    (java)  |  |'
+- en: '|  | version | Ordered list of version ranges to use. | 1.0 | Yes |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | version | 要使用的版本范围的有序列表。 | 1.0 | 是 |'
+- en: '|  | href | The URL denoting the supplier of this version of Java software,
+    and from where it can be downloaded. | 1.0 |  |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | href | 指示此版本的Java软件供应商的URL，以及可以从哪里下载。 | 1.0 |  |'
+- en: '|  | java-vm-args | An additional set of standard and non-standard virtual
+    machine arguments that the RIA would prefer the JNLP client use when launching
+    the JRE software. | 1.0 |  |'
+  id: totrans-59
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | java-vm-args | RIA希望JNLP客户端在启动JRE软件时使用的一组标准和非标准虚拟机参数。 | 1.0 |  |'
+- en: '|  | initial-heap-size | The initial size of the Java heap. | 1.0 |  |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | initial-heap-size | Java堆的初始大小。 | 1.0 |  |'
+- en: '|  | max-heap-size | The maximum size of the Java heap. | 1.0 |  |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | max-heap-size | Java堆的最大大小。 | 1.0 |  |'
+- en: '|          jar ^([parent](#resources)) |  | A JAR file that is part of the
+    RIA''s classpath. | 1.0 | Yes |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_TB
+  zh: '|          jar ^([parent](#resources)) |  | RIA类路径的JAR文件。 | 1.0 | 是 |'
+- en: '|  | href | The URL of the JAR file. | 1.0 | Yes |'
+  id: totrans-63
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | href | JAR文件的URL。 | 1.0 | 是 |'
+- en: '|  | version | The requested version of the JAR file. Requires using the version-based
+    download protocol | 1.0 |  |'
+  id: totrans-64
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | version | JAR文件的请求版本。需要使用基于版本的下载协议 | 1.0 |  |'
+- en: '|  | main | Indicates if this JAR file contains the class containing the `main`
+    method of the RIA. | 1.0 |  |'
+  id: totrans-65
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | main | 表示此JAR文件是否包含RIA的包含`main`方法的类。 | 1.0 |  |'
+- en: '|  | download | Indicates that this JAR file can be downloaded lazily, or when
+    needed. | 1.0 |  |'
+  id: totrans-66
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | download | 表示此JAR文件可以懒加载下载，或在需要时下载。 | 1.0 |  |'
+- en: '|  | size | The downloadable size of the JAR file in bytes. | 1.0 |  |'
+  id: totrans-67
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | size | JAR文件的可下载大小（以字节为单位）。 | 1.0 |  |'
+- en: '|  | part | Can be used to group resources together so that they are downloaded
+    at the same time. | 1.0 |  |'
+  id: totrans-68
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | part | 可用于将资源分组在一起，以便同时下载。 | 1.0 |  |'
+- en: '|          nativelib ^([parent](#resources)) |  | A JAR file that contains
+    native libraries in its root directory. | 1.0 |  |'
+  id: totrans-69
+  prefs: []
+  type: TYPE_TB
+  zh: '|          nativelib ^([parent](#resources)) |  | 包含本机库的JAR文件，位于其根目录中。 | 1.0
+    |  |'
+- en: '|  | href | The URL of the JAR file. | 1.0 | Yes |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | href | JAR文件的URL。 | 1.0 | 是 |'
+- en: '|  | version | The requested version of the JAR file. Requires using the version-based
+    download protocol | 1.0 |  |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | version | JAR文件的请求版本。需要使用基于版本的下载协议 | 1.0 |  |'
+- en: '|  | download | Can be used to indicate this JAR file can be downloaded lazily.
+    | 1.0 |  |'
+  id: totrans-72
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | download | 可用于指示此JAR文件可以懒加载下载。 | 1.0 |  |'
+- en: '|  | size | The downloadable size of the JAR file in bytes. | 1.0 |  |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | size | JAR文件的可下载大小（以字节为单位）。 | 1.0 |  |'
+- en: '|  | part | Can be used to group resources together so they will be downloaded
+    at the same time. | 1.0 |  |'
+  id: totrans-74
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | part | 可用于将资源分组在一起，以便同时下载。 | 1.0 |  |'
+- en: '|          extension ^([parent](#resources)) |  | A pointer to an additional
+    component-desc or installer-desc to be used with this RIA. | 1.0 |  |'
+  id: totrans-75
+  prefs: []
+  type: TYPE_TB
+  zh: '|          extension ^([parent](#resources)) |  | 指向要与此RIA一起使用的附加component-desc或installer-desc。
+    | 1.0 |  |'
+- en: '|  | href | The URL to the additional extension JNLP file. | 1.0 | Yes |'
+  id: totrans-76
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | href | 附加扩展JNLP文件的URL。 | 1.0 | 是 |'
+- en: '|  | version | The version of the additional extension JNLP file. | 1.0 |  |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | version | 附加扩展JNLP文件的版本。 | 1.0 |  |'
+- en: '|  | name | The name of the additional extension JNLP file | 1.0 |  |'
+  id: totrans-78
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | name | 附加扩展JNLP文件的名称 | 1.0 |  |'
+- en: '|              ext-download ^([parent](#extension)) |  | Can be used in an
+    extension element to denote the parts contained in a component-extension. | 1.0
+    |  |'
+  id: totrans-79
+  prefs: []
+  type: TYPE_TB
+  zh: '|              ext-download ^([parent](#extension)) |  | 可用于在扩展元素中表示包含在组件扩展中的部分。
+    | 1.0 |  |'
+- en: '|  | ext-part | The name of a part that can be expected to be found in the
+    extension. | 1.0 | Yes |'
+  id: totrans-80
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | ext-part | 可预期在扩展中找到的部分的名称。 | 1.0 | 是 |'
+- en: '|  | download | Can be used to indicate this extension can be downloaded eagerly
+    or lazily. | 1.0 |  |'
+  id: totrans-81
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | download | 可用于指示此扩展可以急切或懒加载下载。 | 1.0 |  |'
+- en: '|  | part | Denotes the name of a part in this JNLP file in which to include
+    the extension. | 1.0 |  |'
+  id: totrans-82
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | part | 指示在此JNLP文件中包含扩展的部分的名称。 | 1.0 |  |'
+- en: '|          package ^([parent](#resources)) |  | Can be used to indicate to
+    the JNLP client which packages are implemented in which JAR files. | 1.0 |  |'
+  id: totrans-83
+  prefs: []
+  type: TYPE_TB
+  zh: '|          package ^([parent](#resources)) |  | 可用于指示 JNLP 客户端哪些包实现在哪些 JAR
+    文件中。 | 1.0 |  |'
+- en: '|  | name | Package name contained in the JAR files of the given part. | 1.0
+    | Yes |'
+  id: totrans-84
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | name | 给定部分的 JAR 文件中包含的包名。 | 1.0 | 是 |'
+- en: '|  | part | Part name containing the JAR files that include the given package
+    name. | 1.0 | Yes |'
+  id: totrans-85
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | part | 包含包名的 JAR 文件的部分名称。 | 1.0 | 是 |'
+- en: '|  | recursive | Can be used to indicate that all package names, beginning
+    with the given name, can be found in the given part. | 1.0 |  |'
+  id: totrans-86
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | recursive | 可用于指示所有以给定名称开头的包名可以在给定部分中找到。 | 1.0 |  |'
+- en: '|          property ^([parent](#resources)) |  | Defines a system property
+    that will be available through the `System.getProperty` and `System.getProperties`
+    methods. | 1.0 |  |'
+  id: totrans-87
+  prefs: []
+  type: TYPE_TB
+  zh: '|          property ^([parent](#resources)) |  | 定义一个系统属性，可以通过`System.getProperty`和`System.getProperties`方法获得。
+    | 1.0 |  |'
+- en: '|  | name | Name of the system property. | 1.0 | Yes |'
+  id: totrans-88
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | name | 系统属性的名称。 | 1.0 | 是 |'
+- en: '|  | value | Value of the system property. | 1.0 | Yes |'
+  id: totrans-89
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | value | 系统属性的值。 | 1.0 | 是 |'
+- en: '|  |  | Note: A JNLP file must contain one of the following: application-desc,
+    applet-desc, component-desc, or installer-desc. | 1.0 | Yes |'
+  id: totrans-90
+  prefs: []
+  type: TYPE_TB
+  zh: '|  |  | 注意：JNLP 文件必须包含以下之一：application-desc、applet-desc、component-desc 或 installer-desc。
+    | 1.0 | 是 |'
+- en: '|     application-desc ^([parent](#jnlp)) |  | Denotes this is the JNLP file
+    for an application. | 1.0 |  |'
+  id: totrans-91
+  prefs: []
+  type: TYPE_TB
+  zh: '|     application-desc ^([parent](#jnlp)) |  | 表示这是一个应用程序的 JNLP 文件。 | 1.0 |  |'
+- en: '|  | main-class | The name of the class containing the `public static void
+    main(String[])` method of the application. | 1.0 | Yes |'
+  id: totrans-92
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | main-class | 应用程序的包含`public static void main(String[])`方法的类的名称。 | 1.0
+    | 是 |'
+- en: '|          argument ^([parent](#applicationdesc)) |  | Each argument contains
+    (in order) an additional argument to be passed to the `main` method. | 1.0 |  |'
+  id: totrans-93
+  prefs: []
+  type: TYPE_TB
+  zh: '|          argument ^([parent](#applicationdesc)) |  | 每个参数包含（按顺序）要传递给`main`方法的额外参数。
+    | 1.0 |  |'
+- en: '|     applet-desc ^([parent](#jnlp)) |  | Denotes this is the JNLP file for
+    an applet. | 1.0 |  |'
+  id: totrans-94
+  prefs: []
+  type: TYPE_TB
+  zh: '|     applet-desc ^([parent](#jnlp)) |  | 表示这是一个 applet 的 JNLP 文件。 | 1.0 |  |'
+- en: '|  | main-class | The name of the main applet class. | 1.0 | Yes |'
+  id: totrans-95
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | main-class | 主 applet 类的名称。 | 1.0 | 是 |'
+- en: '|  | documentbase | The document base for the applet as a URL. | 1.0 |  |'
+  id: totrans-96
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | documentbase | 应用程序的 applet 的文档基础 URL。 | 1.0 |  |'
+- en: '|  | name | Name of the applet. | 1.0 | Yes |'
+  id: totrans-97
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | name | applet 的名称。 | 1.0 | 是 |'
+- en: '|  | width | The width of the applet in pixels. | 1.0 | Yes |'
+  id: totrans-98
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | width | applet 的宽度（以像素为单位）。 | 1.0 | 是 |'
+- en: '|  | height | The height of the applet in pixels. | 1.0 | Yes |'
+  id: totrans-99
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | height | applet 的高度（以像素为单位）。 | 1.0 | 是 |'
+- en: '|          param ^([parent](#appletdesc)) |  | A set of parameters that can
+    be passed to the applet. | 1.0 |  |'
+  id: totrans-100
+  prefs: []
+  type: TYPE_TB
+  zh: '|          param ^([parent](#appletdesc)) |  | 可传递给 applet 的一组参数。 | 1.0 |  |'
+- en: '|  | name | The name of this parameter. | 1.0 | Yes |'
+  id: totrans-101
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | name | 此参数的名称。 | 1.0 | 是 |'
+- en: '|  | value | The value of this parameter. | 1.0 | Yes |'
+  id: totrans-102
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | value | 此参数的值。 | 1.0 | 是 |'
+- en: '|     component-desc ^([parent](#jnlp)) |  | Denotes this is the JNLP file
+    for a component extension. | 1.0 |  |'
+  id: totrans-103
+  prefs: []
+  type: TYPE_TB
+  zh: '|     component-desc ^([parent](#jnlp)) |  | 表示这是一个组件扩展的 JNLP 文件。 | 1.0 |  |'
+- en: '|     installer-desc ^([parent](#jnlp)) |  | Denotes this is the JNLP file
+    for an installed extension. | 1.0 |  |'
+  id: totrans-104
+  prefs: []
+  type: TYPE_TB
+  zh: '|     installer-desc ^([parent](#jnlp)) |  | 表示这是一个已安装扩展的 JNLP 文件。 | 1.0 |  |'
+- en: '|  | main-class | The name of the class containing the `public static void
+    main(String[])` method of the installer. | 1.0 | Yes |'
+  id: totrans-105
+  prefs: []
+  type: TYPE_TB
+  zh: '|  | main-class | 安装程序的包含`public static void main(String[])`方法的类的名称。 | 1.0
+    | 是 |'
+- en: Encoding JNLP Files
+  id: totrans-106
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编码 JNLP 文件
+- en: Java Web Start software supports encoding of JNLP files in any character encoding
+    supported by the Java platform. For more information about character encoding
+    in the Java platform, see the [Supported Encodings Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html).
+    To encode a JNLP file, specify an encoding in the XML prolog of that file. For
+    example, the following line indicates that the JNLP file is encoded in UTF-16.
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Web Start 软件支持在 Java 平台支持的任何字符编码中对 JNLP 文件进行编码。有关 Java 平台中字符编码的更多信息，请参阅[支持的编码指南](https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html)。要对
+    JNLP 文件进行编码，请在该文件的 XML prolog 中指定一个编码。例如，以下行表示 JNLP 文件以 UTF-16 编码。
+- en: '[PRE1]'
+  id: totrans-108
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The XML prolog itself must be UTF-8-encoded.'
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** XML prolog 本身必须是 UTF-8 编码的。'
+- en: '* * *'
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

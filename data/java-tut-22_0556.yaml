@@ -1,0 +1,97 @@
+- en: Method Naming Conventions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 方法命名约定
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/overview/naming.html](https://docs.oracle.com/javase/tutorial/datetime/overview/naming.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/overview/naming.html](https://docs.oracle.com/javase/tutorial/datetime/overview/naming.html)
+- en: The Date-Time API offers a rich set of methods within a rich set of classes.
+    The method names are made consistent between classes wherever possible. For example,
+    many of the classes offer a `now` method that captures the date or time values
+    of the current moment that are relevant to that class. There are `from` methods
+    that allow conversion from one class to another.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间API提供了丰富的方法集合，涵盖了丰富的类。在可能的情况下，方法名称在类之间保持一致。例如，许多类提供了一个`now`方法，用于捕获与该类相关的当前时刻的日期或时间值。还有`from`方法允许从一个类转换为另一个类。
+- en: 'There is also standardization regarding the method name prefixes. Because most
+    of the classes in the Date-Time API are immutable, the API does not include `set`
+    methods. (After its creation, the value of an immutable object cannot be changed.
+    The immutable equivalent of a `set` method is `with`.) The following table lists
+    the commonly used prefixes:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法名称前缀也有标准化。由于日期时间API中的大多数类都是不可变的，API不包括`set`方法。（创建后，不可变对象的值不能更改。`set`方法的不可变等效方法是`with`。）以下表列出了常用的前缀：
+- en: '| Prefix | Method Type | Use |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| 前缀 | 方法类型 | 用途 |'
+- en: '| `of` | static factory | Creates an instance where the factory is primarily
+    validating the input parameters, not converting them. |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| `of` | 静态工厂 | 创建一个实例，其中工厂主要验证输入参数，而不是转换它们。'
+- en: '| `from` | static factory | Converts the input parameters to an instance of
+    the target class, which may involve losing information from the input. |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| `from` | 静态工厂 | 将输入参数转换为目标类的实例，这可能涉及从输入中丢失信息。'
+- en: '| `parse` | static factory | Parses the input string to produce an instance
+    of the target class. |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| `parse` | 静态工厂 | 解析输入字符串以生成目标类的实例。'
+- en: '| `format` | instance | Uses the specified formatter to format the values in
+    the temporal object to produce a string. |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| `format` | 实例 | 使用指定的格式化程序格式化时间对象中的值以生成字符串。'
+- en: '| `get` | instance | Returns a part of the state of the target object. |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `get` | 实例 | 返回目标对象的状态的一部分。'
+- en: '| `is` | instance | Queries the state of the target object. |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `is` | 实例 | 查询目标对象的状态。'
+- en: '| `with` | instance | Returns a copy of the target object with one element
+    changed; this is the immutable equivalent to a `set` method on a JavaBean. |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| `with` | 实例 | 返回目标对象的副本，其中一个元素已更改；这相当于JavaBean上的`set`方法的不可变版本。'
+- en: '| `plus` | instance | Returns a copy of the target object with an amount of
+    time added. |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `plus` | 实例 | 返回目标对象的副本，其中添加了一定数量的时间。'
+- en: '| `minus` | instance | Returns a copy of the target object with an amount of
+    time subtracted. |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| `minus` | 实例 | 返回目标对象的副本，其中减去了一定数量的时间。'
+- en: '| `to` | instance | Converts this object to another type. |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| `to` | 实例 | 将此对象转换为另一种类型。'
+- en: '| `at` | instance | Combines this object with another. |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| `at` | 实例 | 将此对象与另一个对象组合。'

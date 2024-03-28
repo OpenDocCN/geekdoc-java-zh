@@ -1,0 +1,90 @@
+- en: Dates and Times
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 日期和时间
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/dateintro.html](https://docs.oracle.com/javase/tutorial/i18n/format/dateintro.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/dateintro.html](https://docs.oracle.com/javase/tutorial/i18n/format/dateintro.html)
+- en: '* * *'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Version note:** This Date and Time section uses the date and time APIs in
+    the `java.util` package. The `java.time` APIs, available in the JDK 8 release,
+    provides a comprehensive date and time model that offers significant improvements
+    over the `java.util` classes. The `java.time` APIs are described in the [Date
+    Time](../../datetime/index.html) trail. The [Legacy Date-Time Code](../../datetime/iso/legacy.html)
+    page might be of particular interest.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**版本说明：** 此日期和时间部分使用`java.util`包中的日期和时间API。JDK 8发布的`java.time` API提供了一个全面的日期和时间模型，相比`java.util`类有显著改进。`java.time`
+    API在[日期时间](../../datetime/index.html)教程中有描述。[旧版日期时间代码](../../datetime/iso/legacy.html)页面可能会引起特别关注。'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '`Date` objects represent dates and times. You cannot display or print a `Date`
+    object without first converting it to a `String` that is in the proper format.
+    Just what is the "proper" format? First, the format should conform to the conventions
+    of the end user''s `Locale`. For example, Germans recognize `20.4.09` as a valid
+    date, but Americans expect that same date to appear as `4/20/09`. Second, the
+    format should include the necessary information. For instance, a program that
+    measures network performance may report on elapsed milliseconds. An online appointment
+    calendar probably won''t display milliseconds, but it will show the days of the
+    week.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Date`对象表示日期和时间。您无法显示或打印`Date`对象，而不先将其转换为适当格式的`String`。什么是“适当”的格式呢？首先，格式应符合最终用户的`Locale`的约定。例如，德国人认为`20.4.09`是一个有效的日期，但美国人期望同一日期显示为`4/20/09`。其次，格式应包含必要的信息。例如，一个测量网络性能的程序可能报告经过的毫秒数。在线约会日历可能不会显示毫秒，但会显示星期几。'
+- en: This section explains how to format dates and times in various ways and in a
+    locale-sensitive manner. If you follow these techniques your programs will display
+    dates and times in the appropriate `Locale`, but your source code will remain
+    independent of any specific `Locale`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍如何以各种方式和符合区域设置的方式格式化日期和时间。如果您遵循这些技术，您的程序将以适当的`Locale`显示日期和时间，但您的源代码将保持独立于任何特定的`Locale`。
+- en: '[Using Predefined Formats](dateFormat.html)'
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用预定义格式](dateFormat.html)'
+- en: The `DateFormat` class provides predefined formatting styles that are locale-specific
+    and easy to use.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DateFormat`类提供了具有区域特定性和易于使用的预定义格式样式。'
+- en: '[Customizing Formats](simpleDateFormat.html)'
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[自定义格式](simpleDateFormat.html)'
+- en: With the `SimpleDateFormat` class, you can create customized, locale-specific
+    formats.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`SimpleDateFormat`类，您可以创建定制的、区域特定的格式。
+- en: '[Changing Date Format Symbols](dateFormatSymbols.html)'
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[更改日期格式符号](dateFormatSymbols.html)'
+- en: Using the `DateFormatSymbols` class, you can change the symbols that represent
+    the names of months, days of the week, and other formatting elements.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`DateFormatSymbols`类，您可以更改表示月份名称、星期几和其他格式化元素的符号。

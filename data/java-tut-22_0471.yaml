@@ -1,0 +1,47 @@
+- en: Drop Location Rendering
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 放置位置渲染
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/droplocation.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/droplocation.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/droplocation.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/droplocation.html)
+- en: This is a more advanced topic and most people do not need to worry about it.
+    However, if you have a custom component you will need to handle the drop location
+    rendering yourself.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个更高级的主题，大多数人不需要担心它。但是，如果您有一个自定义组件，您将需要自行处理放置位置的渲染。
+- en: You can register to be notified whenever the `dropLocation` property changes.
+    You would listen for this change and do your own rendering of the drop location
+    in a custom renderer for the component or in the `paintComponent` method, using
+    the `getDropLocation` method.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以注册以便在`dropLocation`属性更改时收到通知。您可以监听此更改，并在组件的自定义渲染器中或在`paintComponent`方法中使用`getDropLocation`方法自行渲染放置位置。
+- en: 'Here is an example of listening for the `dropLocation` property:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是监听`dropLocation`属性的示例：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Here is an example of the `paintComponent` approach:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是`paintComponent`方法的一个示例：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

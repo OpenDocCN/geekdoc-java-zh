@@ -1,0 +1,201 @@
+- en: How to Use FlowLayout
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用流式布局
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/flow.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/flow.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/layout/flow.html](https://docs.oracle.com/javase/tutorial/uiswing/layout/flow.html)
+- en: '* * *'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** This lesson covers writing layout code by hand, which can be challenging.
+    If you are not interested in learning all the details of layout management, you
+    might prefer to use the `GroupLayout` layout manager combined with a builder tool
+    to lay out your GUI. One such builder tool is the [NetBeans IDE](../learn/index.html).
+    Otherwise, if you want to code by hand and do not want to use `GroupLayout`, then
+    `GridBagLayout` is recommended as the next most flexible and powerful layout manager.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 本课程涵盖了手动编写布局代码，这可能具有挑战性。如果您不想学习布局管理的所有细节，您可能更喜欢使用`GroupLayout`布局管理器结合构建工具来布局您的
+    GUI。其中一个构建工具是[NetBeans IDE](../learn/index.html)。否则，如果您想手动编码而不想使用`GroupLayout`，那么推荐使用`GridBagLayout`作为下一个最灵活和强大的布局管理器。'
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: If you are interested in using JavaFX to create your GUI, see [Working With
+    Layouts in JavaFX](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有兴趣使用 JavaFX 创建 GUI，请参阅[JavaFX 中的布局](https://docs.oracle.com/javase/8/javafx/layout-tutorial/index.html)。
+- en: 'The [`FlowLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/FlowLayout.html)
+    class provides a very simple layout manager that is used, by default, by the `JPanel`
+    objects. The following figure represents a snapshot of an application that uses
+    the flow layout:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`FlowLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/FlowLayout.html)类提供了一个非常简单的布局管理器，默认情况下由`JPanel`对象使用。以下图表示使用流式布局的应用程序的快照：'
+- en: '![A snapshot of FlowLayoutDemo](../Images/73e94a575150a0b87ac77b5f9a9c0c76.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![FlowLayoutDemo 的快照](../Images/73e94a575150a0b87ac77b5f9a9c0c76.png)'
+- en: Click the Launch button to run FlowLayoutDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/layout/index.html#FlowLayoutDemo).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行`FlowLayoutDemo`（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/layout/index.html#FlowLayoutDemo)。
+- en: '[![Launches the FlowLayoutDemo application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/FlowLayoutDemoProject/FlowLayoutDemo.jnlp)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 FlowLayoutDemo 应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/FlowLayoutDemoProject/FlowLayoutDemo.jnlp)'
+- en: The complete code of this demo is in the [`FlowLayoutDemo.java`](../examples/layout/FlowLayoutDemoProject/src/layout/FlowLayoutDemo.java)
+    file.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此演示的完整代码位于[`FlowLayoutDemo.java`](../examples/layout/FlowLayoutDemoProject/src/layout/FlowLayoutDemo.java)文件中。
+- en: The `FlowLayout` class puts components in a row, sized at their preferred size.
+    If the horizontal space in the container is too small to put all the components
+    in one row, the `FlowLayout` class uses multiple rows. If the container is wider
+    than necessary for a row of components, the row is, by default, centered horizontally
+    within the container. To specify that the row is to aligned either to the left
+    or right, use a `FlowLayout` constructor that takes an alignment argument. Another
+    constructor of the `FlowLayout` class specifies how much vertical or horizontal
+    padding is put around the components.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`FlowLayout` 类将组件放在一行中，大小为它们的首选大小。如果容器中的水平空间太小，无法将所有组件放在一行中，`FlowLayout` 类将使用多行。如果容器比一行组件所需的宽度更宽，则默认情况下，该行在容器内水平居中。要指定行是左对齐还是右对齐，请使用带有对齐参数的`FlowLayout`构造函数。`FlowLayout`类的另一个构造函数指定在组件周围放置多少垂直或水平填充。'
+- en: The code snippet below creates a `FlowLayout` object and the components it manages.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的代码片段创建了一个`FlowLayout`对象和它管理的组件。
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Select either the Left to Right or Right to Left option and click the Apply
+    orientation button to set up the component's orientation. The following code snippet
+    applies the Left to Right components orientation to the `experimentLayout`.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 选择“从左到右”或“从右到左”选项，并单击“应用方向”按钮以设置组件的方向。以下代码片段将“从左到右”组件方向应用于`experimentLayout`。
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The FlowLayout API
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 流式布局 API
+- en: The following table lists constructors of the `FlowLayout` class.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表列出了`FlowLayout`类的构造函数。
+- en: '| Constructor | Purpose |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数 | 目的 |'
+- en: '| [`FlowLayout()`](https://docs.oracle.com/javase/8/docs/api/java/awt/FlowLayout.html#FlowLayout--)
+    | Constructs a new `FlowLayout` object with a centered alignment and horizontal
+    and vertical gaps with the default size of 5 pixels. |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`FlowLayout()`](https://docs.oracle.com/javase/8/docs/api/java/awt/FlowLayout.html#FlowLayout--)
+    | 构造一个具有居中对齐和水平垂直间隙的默认大小为`5像素`的新`FlowLayout`对象。 |'
+- en: '| [`FlowLayout(int *align*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/FlowLayout.html#FlowLayout-int-)
+    | Creates a new flow layout manager with the indicated alignment and horizontal
+    and vertical gaps with the default size of 5 pixels. The alignment argument can
+    be `FlowLayout.LEADING`, `FlowLayout.CENTER`, or `FlowLayout.TRAILING`. When the
+    `FlowLayout` object controls a container with a left-to right component orientation
+    (the default), the `LEADING` value specifies the components to be left-aligned
+    and the `TRAILING` value specifies the components to be right-aligned. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`FlowLayout(int *align*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/FlowLayout.html#FlowLayout-int-)
+    | 创建一个新的流式布局管理器，具有指定的对齐方式和水平垂直间隙，默认大小为`5像素`。对齐参数可以是`FlowLayout.LEADING`，`FlowLayout.CENTER`或`FlowLayout.TRAILING`。当`FlowLayout`对象控制具有从左到右组件方向（默认）的容器时，`LEADING`值指定左对齐的组件，`TRAILING`值指定右对齐的组件。
+    |'
+- en: '| [`FlowLayout (int *align*, int *hgap*, int *vgap*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/FlowLayout.html#FlowLayout-int-int-int-)
+    | Creates a new flow layout manager with the indicated alignment and the indicated
+    horizontal and vertical gaps. The `hgap` and `vgap` arguments specify the number
+    of pixels to put between components. |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`FlowLayout (int *align*, int *hgap*, int *vgap*)`](https://docs.oracle.com/javase/8/docs/api/java/awt/FlowLayout.html#FlowLayout-int-int-int-)
+    | 创建一个新的流式布局管理器，具有指定的对齐方式和指定的水平和垂直间隙。`hgap`和`vgap`参数指定组件之间要放置的像素数。 |'
+- en: Examples that Use FlowLayout
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用FlowLayout的示例
+- en: The following table lists code examples that use the `FlowLayout` class and
+    provides links to related sections.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了使用`FlowLayout`类的代码示例，并提供到相关部分的链接。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`FlowLayoutDemo`](../examples/layout/index.html#FlowLayoutDemo) | This page
+    | Sets up a content pane to use `FlowLayout`. If you set the `RIGHT_TO_LEFT` constant
+    to `true` and recompile, you can see how `FlowLayout` handles a container that
+    has a right-to-left component orientation. |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`FlowLayoutDemo`](../examples/layout/index.html#FlowLayoutDemo) | 本页 | 设置内容窗格使用`FlowLayout`。如果将`RIGHT_TO_LEFT`常量设置为`true`并重新编译，您可以看到`FlowLayout`如何处理具有从右到左组件方向的容器。
+    |'
+- en: '| [`CardLayoutDemo`](../examples/layout/index.html#CardLayoutDemo) | [How to
+    Use CardLayout](card.html) | Centers a component nicely in the top part of a `BorderLayout`,
+    and puts the component in a `JPanel` that uses a `FlowLayout`. |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`CardLayoutDemo`](../examples/layout/index.html#CardLayoutDemo) | [如何使用CardLayout](card.html)
+    | 在`BorderLayout`的顶部部分很好地居中一个组件，并将组件放在使用`FlowLayout`的`JPanel`中。 |'
+- en: '| [`ButtonDemo`](../examples/components/index.html#ButtonDemo) | [How to Use
+    Buttons, Check Boxes, and Radio Buttons](../components/button.html) | Uses the
+    default `FlowLayout` of a `JPanel`. |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ButtonDemo`](../examples/components/index.html#ButtonDemo) | [如何使用按钮、复选框和单选按钮](../components/button.html)
+    | 使用`JPanel`的默认`FlowLayout`。 |'
+- en: '| [`TextInputDemo`](../examples/components/index.html#TextInputDemo) | [How
+    to Use Formatted Text Fields](../components/formattedtextfield.html) | Uses a
+    panel with a right-aligned `FlowLayout` presenting two buttons. |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextInputDemo`](../examples/components/index.html#TextInputDemo) | [如何使用格式化文本字段](../components/formattedtextfield.html)
+    | 使用一个右对齐的`FlowLayout`呈现两个按钮的面板。 |'

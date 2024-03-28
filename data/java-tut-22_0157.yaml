@@ -1,0 +1,171 @@
+- en: How to Throw Exceptions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何抛出异常
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/throwing.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/throwing.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/throwing.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/throwing.html)
+- en: 'Before you can catch an exception, some code somewhere must throw one. Any
+    code can throw an exception: your code, code from a package written by someone
+    else such as the packages that come with the Java platform, or the Java runtime
+    environment. Regardless of what throws the exception, it''s always thrown with
+    the `throw` statement.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在捕获异常之前，某个地方的代码必须抛出异常。任何代码都可以抛出异常：您的代码、其他人编写的包中的代码（例如 Java 平台提供的包）或 Java 运行时环境。无论是什么引发了异常，它总是使用
+    `throw` 语句抛出。
+- en: As you have probably noticed, the Java platform provides numerous exception
+    classes. All the classes are descendants of the [`Throwable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html)
+    class, and all allow programs to differentiate among the various types of exceptions
+    that can occur during the execution of a program.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您可能已经注意到的，Java 平台提供了许多异常类。所有这些类都是 [`Throwable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html)
+    类的后代，所有这些类都允许程序在程序执行期间区分各种可能发生的异常类型。
+- en: You can also create your own exception classes to represent problems that can
+    occur within the classes you write. In fact, if you are a package developer, you
+    might have to create your own set of exception classes to allow users to differentiate
+    an error that can occur in your package from errors that occur in the Java platform
+    or other packages.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以创建自己的异常类来表示您编写的类中可能发生的问题。实际上，如果您是一个包开发者，您可能需要创建自己的一组异常类，以允许用户区分在您的包中可能发生的错误与在
+    Java 平台或其他包中发生的错误。
+- en: You can also create *chained* exceptions. For more information, see the [Chained
+    Exceptions](../../essential/exceptions/chained.html) section.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以创建*链接*异常。有关更多信息，请参阅[链接异常](../../essential/exceptions/chained.html)部分。
+- en: The throw Statement
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 抛出语句
+- en: 'All methods use the `throw` statement to throw an exception. The `throw` statement
+    requires a single argument: a throwable object. Throwable objects are instances
+    of any subclass of the `Throwable` class. Here''s an example of a `throw` statement.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有方法都使用 `throw` 语句来抛出异常。`throw` 语句需要一个参数：一个可抛出对象。可抛出对象是 `Throwable` 类的任何子类的实例。这里是一个
+    `throw` 语句的示例。
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Let's look at the `throw` statement in context. The following `pop` method is
+    taken from a class that implements a common stack object. The method removes the
+    top element from the stack and returns the object.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看看 `throw` 语句的上下文。以下 `pop` 方法取自实现常见堆栈对象的类。该方法从堆栈中移除顶部元素并返回该对象。
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `pop` method checks to see whether any elements are on the stack. If the
+    stack is empty (its size is equal to `0`), `pop` instantiates a new `EmptyStackException`
+    object (a member of `java.util`) and throws it. The [Creating Exception Classes](../../essential/exceptions/creating.html)
+    section in this chapter explains how to create your own exception classes. For
+    now, all you need to remember is that you can throw only objects that inherit
+    from the `java.lang.Throwable` class.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`pop` 方法检查堆栈上是否有任何元素。如果堆栈为空（其大小等于 `0`），`pop` 实例化一个新的 `EmptyStackException`
+    对象（`java.util` 的成员）并将其抛出。本章的[创建异常类](../../essential/exceptions/creating.html)部分解释了如何创建自己的异常类。现在，您只需要记住您只能抛出继承自
+    `java.lang.Throwable` 类的对象。'
+- en: Note that the declaration of the `pop` method does not contain a `throws` clause.
+    `EmptyStackException` is not a checked exception, so `pop` is not required to
+    state that it might occur.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，`pop` 方法的声明中不包含 `throws` 子句。`EmptyStackException` 不是一个受检异常，因此 `pop` 不需要声明它可能发生。
+- en: Throwable Class and Its Subclasses
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Throwable 类及其子类
+- en: 'The objects that inherit from the `Throwable` class include direct descendants
+    (objects that inherit directly from the `Throwable` class) and indirect descendants
+    (objects that inherit from children or grandchildren of the `Throwable` class).
+    The figure below illustrates the class hierarchy of the `Throwable` class and
+    its most significant subclasses. As you can see, `Throwable` has two direct descendants:
+    [`Error`](https://docs.oracle.com/javase/8/docs/api/java/lang/Error.html) and
+    [`Exception`](https://docs.oracle.com/javase/8/docs/api/java/lang/Exception.html).'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 继承自`Throwable`类的对象包括直接后代（直接从`Throwable`类继承的对象）和间接后代（从`Throwable`类的子类或孙子类继承的对象）。下图说明了`Throwable`类及其最重要的子类的类层次结构。正如你所看到的，`Throwable`有两个直接后代：[`Error`](https://docs.oracle.com/javase/8/docs/api/java/lang/Error.html)和[`Exception`](https://docs.oracle.com/javase/8/docs/api/java/lang/Exception.html)。
+- en: '![The Throwable class and its most significant subclasses.](../Images/84d504625ecc17df1827f19bf2d79a03.png)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Throwable类及其最重要的子类。](../Images/84d504625ecc17df1827f19bf2d79a03.png)'
+- en: The Throwable class.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Throwable类。
+- en: Error Class
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 错误类
+- en: When a dynamic linking failure or other hard failure in the Java virtual machine
+    occurs, the virtual machine throws an `Error`. Simple programs typically do *not*
+    catch or throw `Error`s.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当Java虚拟机发生动态链接失败或其他严重故障时，虚拟机会抛出一个`Error`。简单的程序通常不会捕获或抛出`Error`。
+- en: Exception Class
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 异常类
+- en: Most programs throw and catch objects that derive from the `Exception` class.
+    An `Exception` indicates that a problem occurred, but it is not a serious system
+    problem. Most programs you write will throw and catch `Exception`s as opposed
+    to `Error`s.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数程序会抛出和捕获从`Exception`类派生的对象。`Exception`表示发生了问题，但不是严重的系统问题。你编写的大多数程序会抛出和捕获`Exception`，而不是`Error`。
+- en: The Java platform defines the many descendants of the `Exception` class. These
+    descendants indicate various types of exceptions that can occur. For example,
+    `IllegalAccessException` signals that a particular method could not be found,
+    and `NegativeArraySizeException` indicates that a program attempted to create
+    an array with a negative size.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台定义了`Exception`类的许多后代。这些后代表示可能发生的各种异常类型。例如，`IllegalAccessException`表示找不到特定方法，而`NegativeArraySizeException`表示程序尝试创建一个负大小的数组。
+- en: "One `Exception` subclass, `RuntimeException`, is reserved for exceptions that\
+    \ indicate incorrect use of an API. An example of a runtime exception is `NullPointerException`,\
+    \ which occurs when a method tries to access a member of an object through a `null`\
+    \ reference. The section [Unchecked Exceptions \x97 The Controversy](runtime.html)\
+    \ discusses why most applications shouldn't throw runtime exceptions or subclass\
+    \ `RuntimeException`."
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "一个`Exception`子类，`RuntimeException`，用于指示API的不正确使用的异常。一个运行时异常的例子是`NullPointerException`，当一个方法尝试通过`null`引用访问对象的成员时会发生。本节[未经检查的异常\
+    \ \x97 争议](runtime.html)讨论了为什么大多数应用程序不应该抛出运行时异常或子类化`RuntimeException`。"

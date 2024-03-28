@@ -1,0 +1,193 @@
+- en: Filters
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 过滤器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/filter.html](https://docs.oracle.com/javase/tutorial/jndi/ops/filter.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/filter.html](https://docs.oracle.com/javase/tutorial/jndi/ops/filter.html)
+- en: In addition to specifying a search using a set of attributes, you can specify
+    a search in the form of a *search filter*. A search filter is a search query expressed
+    in the form of a logical expression. The syntax of search filters accepted by
+    [`DirContext.search()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-javax.naming.directory.SearchControls-)
+    is described in [RFC 2254](http://www.ietf.org/rfc/rfc2254.txt).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了使用一组属性指定搜索外，还可以以*搜索过滤器*的形式指定搜索。搜索过滤器是以逻辑表达式形式表达的搜索查询。[`DirContext.search()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-java.lang.String-javax.naming.directory.SearchControls-)接受的搜索过滤器语法在[RFC
+    2254](http://www.ietf.org/rfc/rfc2254.txt)中有描述。
+- en: 'The following search filter specifies that the qualifying entries must have
+    an `"sn"` attribute with a value of `"Geisel"` and a `"mail"` attribute with any
+    value:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下搜索过滤器指定符合条件的条目必须具有值为`"Geisel"`的`"sn"`属性和任何值的`"mail"`属性：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The following code creates a filter and default [`SearchControls`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html),
+    and uses them to perform a search. The search is equivalent to the one presented
+    in the [basic search](basicsearch.html) example.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码创建一个过滤器和默认的[`SearchControls`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html)，并使用它们执行搜索。该搜索等同于[基本搜索](basicsearch.html)示例中呈现的搜索。
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Running [`this example`](examples/SearchWithFilterRetAll.java) produces the
+    following result.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行[`此示例`](examples/SearchWithFilterRetAll.java)会产生以下结果。
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Quick Overview of Search Filter Syntax
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 搜索过滤器语法快速概述
+- en: The search filter syntax is basically a logical expression in prefix notation
+    (that is, the logical operator appears before its arguments). The following table
+    lists the symbols used for creating filters.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 搜索过滤器语法基本上是前缀表示法中的逻辑表达式（即，逻辑运算符出现在其参数之前）。以下表列出了用于创建过滤器的符号。
+- en: '| Symbol | Description |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| 符号 | 描述 |'
+- en: '| & | conjunction (that is, *and* — all in list must be true) |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| & | 合取（即，*与* — 列表中的所有项目必须为真） |'
+- en: '| &#124; | disjunction (that is, *or* — one or more alternatives must be true)
+    |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| &#124; | 析取（即，*或* — 一个或多个备选项必须为真） |'
+- en: '| ! | negation (that is, *not* — the item being negated must not be true) |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| ! | 否定（即，*非* — 被否定的项目必须为假） |'
+- en: '| = | equality (according to the matching rule of the attribute) |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| = | 等于（根据属性匹配规则） |'
+- en: '| ~= | approximate equality (according to the matching rule of the attribute)
+    |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| ~= | 大致相等（根据属性匹配规则） |'
+- en: '| >= | greater than (according to the matching rule of the attribute) |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| >= | 大于（根据属性匹配规则） |'
+- en: '| <= | less than (according to the matching rule of the attribute) |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| <= | 小于（根据属性匹配规则） |'
+- en: '| =* | presence (that is, the entry must have the attribute but its value is
+    irrelevant) |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| =* | 存在（即，条目必须具有属性，但其值无关紧要） |'
+- en: '| * | wildcard (indicates zero or more characters can occur in that position);
+    used when specifying attribute values to match |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| * | 通配符（表示该位置可以出现零个或多个字符）；用于指定要匹配的属性值时使用 |'
+- en: '| \ | escape (for escaping ''*'', ''('', or '')'' when they occur inside an
+    attribute value) |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| \ | 转义（用于在属性值中出现''*''、''(''或'')''时进行转义） |'
+- en: Each item in the filter is composed using an attribute identifier and either
+    an attribute value or symbols denoting the attribute value. For example, the item
+    `"sn=Geisel"` means that the `"sn"` attribute must have the attribute value `"Geisel"`
+    and the item `"mail=*"` indicates that the `"mail"` attribute must be present.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个过滤器中的项目都是使用属性标识符和属性值或表示属性值的符号组成的。例如，项目`"sn=Geisel"`表示`"sn"`属性必须具有属性值`"Geisel"`，而项目`"mail=*"`表示`"mail"`属性必须存在。
+- en: Each item must be enclosed within a set of parentheses, as in `"(sn=Geisel)"`.
+    These items are composed using logical operators such as "&" (conjunction) to
+    create logical expressions, as in `"(& (sn=Geisel) (mail=*))"`.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个项目必须用一组括号括起来，如`"(sn=Geisel)"`。这些项目使用逻辑运算符（如"&"（合取））组合，以创建逻辑表达式，如`"(& (sn=Geisel)
+    (mail=*))"`。
+- en: Each logical expression can be further composed of other items that themselves
+    are logical expressions, as in `"(| (& (sn=Geisel) (mail=*)) (sn=L*))"`. This
+    last example is requesting either entries that have both a `"sn"` attribute of
+    `"Geisel"` and the `"mail"` attribute or entries whose `"sn"` attribute begins
+    with the letter "L."
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个逻辑表达式都可以进一步由其他本身是逻辑表达式的项目组成，就像`"(| (& (sn=Geisel) (mail=*)) (sn=L*))"`中那样。最后一个示例请求具有`"sn"`属性为`"Geisel"`和`"mail"`属性的条目，或者其`"sn"`属性以字母"L"开头的条目。
+- en: For a complete description of the syntax, see [RFC 2254](http://ietf.org/rfc/rfc2254.txt).
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关语法的完整描述，请参阅[RFC 2254](http://ietf.org/rfc/rfc2254.txt)。
+- en: Returning Selected Attributes
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 返回选定属性
+- en: The previous example returned all attributes associated with the entries that
+    satisfy the specified filter. You can select the attributes to return by setting
+    the search controls argument. You create an array of attribute identifiers that
+    you want to include in the result and pass it to [`SearchControls.setReturningAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#setReturningAttributes-java.lang.String:A-).
+    Here's an example.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的示例返回满足指定过滤器的条目关联的所有属性。您可以通过设置搜索控件参数来选择要返回的属性。您可以创建一个要包含在结果中的属性标识符数组，并将其传递给[`SearchControls.setReturningAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#setReturningAttributes-java.lang.String:A-)。以下是一个示例。
+- en: '[PRE3]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: This example is equivalent to the [Returning Selected Attributes](basicsearch.html#SELECT)
+    example in the Basic Search section. Running [`this example`](examples/SearchWithFilter.java)
+    produces the following results. (The entry does not have a `"golfhandicap"` attribute,
+    so it is not returned.)
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例等同于基本搜索部分中的[返回选定属性](basicsearch.html#SELECT)示例。运行[`这个示例`](examples/SearchWithFilter.java)会产生以下结果。（该条目没有`"golfhandicap"`属性，因此不会返回。）
+- en: '[PRE4]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'

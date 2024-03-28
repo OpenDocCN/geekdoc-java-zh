@@ -1,0 +1,141 @@
+- en: About the JFC and Swing
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 关于 JFC 和 Swing
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/start/about.html](https://docs.oracle.com/javase/tutorial/uiswing/start/about.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/start/about.html](https://docs.oracle.com/javase/tutorial/uiswing/start/about.html)
+- en: JFC is short for Java Foundation Classes, which encompass a group of features
+    for building graphical user interfaces (GUIs) and adding rich graphics functionality
+    and interactivity to Java applications. It is defined as containing the features
+    shown in the table below.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JFC 是 Java Foundation Classes 的缩写，它包含了一组用于构建图形用户界面（GUI）和为 Java 应用程序添加丰富的图形功能和交互性的特性。它被定义为包含下表所示的特性。
+- en: '| Feature | Description |'
+  id: totrans-3
+  prefs: []
+  type: TYPE_TB
+  zh: '| 功��� | 描述 |'
+- en: '| Swing GUI Components | Includes everything from buttons to split panes to
+    tables. Many components are capable of sorting, printing, and drag and drop, to
+    name a few of the supported features. |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| Swing GUI 组件 | 包括从按钮到分割窗格到表格的所有内容。许多组件能够进行排序、打印和拖放等功能，这只是支持的功能之一。'
+- en: '| Pluggable Look-and-Feel Support | The look and feel of Swing applications
+    is pluggable, allowing a choice of look and feel. For example, the same program
+    can use either the Java or the Windows look and feel. Additionally, the Java platform
+    supports the GTK+ look and feel, which makes hundreds of existing look and feels
+    available to Swing programs. Many more look-and-feel packages are available from
+    various sources. |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| Pluggable Look-and-Feel Support | Swing 应用程序的外观和感觉是可插拔的，允许选择外观和感觉。例如，同一个程序可以使用
+    Java 或 Windows 外观和感觉。此外，Java 平台支持 GTK+ 外观和感觉，使得数百种现有的外观和感觉可用于 Swing 程序。许多其他外观和感觉包可以从各种来源获取。'
+- en: '| Accessibility API | Enables assistive technologies, such as screen readers
+    and Braille displays, to get information from the user interface. |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| Accessibility API | 允许辅助技术，如屏幕阅读器和盲文显示器，从用户界面获取信息。'
+- en: '| Java 2D API | Enables developers to easily incorporate high-quality 2D graphics,
+    text, and images in applications and applets. Java 2D includes extensive APIs
+    for generating and sending high-quality output to printing devices. |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| Java 2D API | 允许开发人员在应用程序和小程序中轻松地整合高质量的2D图形、文本和图像。Java 2D包括广泛的API，用于生成和发送高质量的输出到打印设备。'
+- en: '| Internationalization | Allows developers to build applications that can interact
+    with users worldwide in their own languages and cultural conventions. With the
+    input method framework developers can build applications that accept text in languages
+    that use thousands of different characters, such as Japanese, Chinese, or Korean.
+    |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| 国际化 | 允许开发人员构建可以与全球用户以其自己的语言和文化习俗交互的应用程序。借助输入法框架，开发人员可以构建接受使用数千个不同字符的语言（如日语、中文或韩语）的文本的应用程序。'
+- en: This trail concentrates on the Swing components. We help you choose the appropriate
+    components for your GUI, tell you how to use them, and give you the background
+    information you need to use them effectively. We also discuss other features as
+    they apply to Swing components.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程集中讨论 Swing 组件。我们将帮助您选择适合您的 GUI 的组件，告诉您如何使用它们，并为您提供使用它们的有效背景信息。我们还将讨论其他与 Swing
+    组件相关的功能。
+- en: Which Swing Packages Should I Use?
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 我应该使用哪些 Swing 包？
+- en: 'The Swing API is powerful, flexible — and immense. The Swing API has 18 public
+    packages:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing API 强大、灵活 —— 也是庞大的。Swing API 有18个公共包：
+- en: '| `javax.accessibility` | `javax.swing.plaf` | `javax.swing.text` |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.accessibility` | `javax.swing.plaf` | `javax.swing.text` |'
+- en: '| `javax.swing` | `javax.swing.plaf.basic` | `javax.swing.text.html` |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.swing` | `javax.swing.plaf.basic` | `javax.swing.text.html` |'
+- en: '| `javax.swing.border` | `javax.swing.plaf.metal` | `javax.swing.text.html.parser`
+    |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.swing.border` | `javax.swing.plaf.metal` | `javax.swing.text.html.parser`
+    |'
+- en: '| `javax.swing.colorchooser` | `javax.swing.plaf.multi` | `javax.swing.text.rtf`
+    |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.swing.colorchooser` | `javax.swing.plaf.multi` | `javax.swing.text.rtf`
+    |'
+- en: '| `javax.swing.event` | `javax.swing.plaf.synth` | `javax.swing.tree` |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.swing.event` | `javax.swing.plaf.synth` | `javax.swing.tree` |'
+- en: '| `javax.swing.filechooser` | `javax.swing.table` | `javax.swing.undo` |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.swing.filechooser` | `javax.swing.table` | `javax.swing.undo` |'
+- en: 'Fortunately, most programs use only a small subset of the API. This trail sorts
+    out the API for you, giving you examples of common code and pointing you to methods
+    and classes you''re likely to need. Most of the code in this trail uses only one
+    or two Swing packages:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 幸运的是，大多数程序只使用 API 的一个小子集。本教程为您整理了 API，为您提供常见代码示例，并指导您可能需要的方法和类。本教程中的大部分代码仅使用一个或两个
+    Swing 包：
+- en: '`javax.swing`'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.swing`'
+- en: '`javax.swing.event` (not always required)'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`javax.swing.event`（不总是必需的）'

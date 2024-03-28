@@ -1,0 +1,325 @@
+- en: Customizing Formats
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 自定义格式
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html](https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html](https://docs.oracle.com/javase/tutorial/i18n/format/decimalFormat.html)
+- en: You can use the `DecimalFormat` class to format decimal numbers into locale-specific
+    strings. This class allows you to control the display of leading and trailing
+    zeros, prefixes and suffixes, grouping (thousands) separators, and the decimal
+    separator. If you want to change formatting symbols, such as the decimal separator,
+    you can use the `DecimalFormatSymbols` in conjunction with the `DecimalFormat`
+    class. These classes offer a great deal of flexibility in the formatting of numbers,
+    but they can make your code more complex.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用`DecimalFormat`类将十进制数格式化为特定于区域设置的字符串。这个类允许你控制前导和尾随零的显示，前缀和后缀，分组（千位）分隔符和小数分隔符。如果你想要更改格式化符号，比如小数分隔符，你可以与`DecimalFormat`类一起使用`DecimalFormatSymbols`。这些类在数字格式化方面提供了很大的灵活性，但可能会使你的代码变得更加复杂。
+- en: The text that follows uses examples that demonstrate the `DecimalFormat` and
+    `DecimalFormatSymbols` classes. The code examples in this material are from a
+    sample program called [`DecimalFormatDemo`](examples/DecimalFormatDemo.java).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下文本使用示例演示了`DecimalFormat`和`DecimalFormatSymbols`类。本材料中的代码示例来自一个名为[`DecimalFormatDemo`](examples/DecimalFormatDemo.java)的示例程序。
+- en: Constructing Patterns
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 构建模式
+- en: You specify the formatting properties of `DecimalFormat` with a pattern `String`.
+    The pattern determines what the formatted number looks like. For a full description
+    of the pattern syntax, see [Number Format Pattern Syntax](#numberpattern).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以通过模式`String`指定`DecimalFormat`的格式属性。模式决定了格式化后的数字是什么样子的。有关模式语法的完整描述，请参见[数字格式模式语法](#numberpattern)。
+- en: 'The example that follows creates a formatter by passing a pattern `String`
+    to the `DecimalFormat` constructor. The `format` method accepts a `double` value
+    as an argument and returns the formatted number in a `String`:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的示例通过将模式`String`传递给`DecimalFormat`构造函数来创建一个格式化器。`format`方法接受一个`double`值作为参数，并以`String`形式返回格式化后的数字：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The output for the preceding lines of code is described in the following table.
+    The `value` is the number, a `double` , that is to be formatted. The `pattern`
+    is the `String` that specifies the formatting properties. The `output`, which
+    is a `String`, represents the formatted number.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面代码的输出描述在以下表中。`value`是要格式化的数字，一个`double`，`pattern`是指定格式属性的`String`，`output`是一个`String`，表示格式化后的数字。
+- en: Output from `DecimalFormatDemo` Program
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DecimalFormatDemo`程序的输出'
+- en: '| `value` | `pattern` | `output` | Explanation |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `value` | `pattern` | `output` | 解释 |'
+- en: '| 123456.789 | ###,###.### | 123,456.789 | The pound sign (#) denotes a digit,
+    the comma is a placeholder for the grouping separator, and the period is a placeholder
+    for the decimal separator. |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| 123456.789 | ###,###.### | 123,456.789 | 井号（#）表示一个数字，逗号是分组分隔符的占位符，句点是小数分隔符的占位符。
+    |'
+- en: '| 123456.789 | ###.## | 123456.79 | The `value` has three digits to the right
+    of the decimal point, but the `pattern` has only two. The `format` method handles
+    this by rounding up. |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| 123456.789 | ###.## | 123456.79 | `value`小数点右侧有三位数字，但`pattern`只有两位。`format`方法通过四舍五入处理这个问题。
+    |'
+- en: '| 123.78 | 000000.000 | 000123.780 | The `pattern` specifies leading and trailing
+    zeros, because the 0 character is used instead of the pound sign (#). |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| 123.78 | 000000.000 | 000123.780 | `pattern`指定了前导和尾随零，因为使用0字符而不是井号（#）。 |'
+- en: '| 12345.67 | $###,###.### | $12,345.67 | The first character in the `pattern`
+    is the dollar sign ($). Note that it immediately precedes the leftmost digit in
+    the formatted `output`. |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| 12345.67 | $###,###.### | $12,345.67 | `pattern`中的第一个字符是美元符号($)。请注意，它紧跟在格式化的`output`中最左边的数字之前。
+    |'
+- en: '| 12345.67 | \u00A5###,###.### | ¥12,345.67 | The `pattern` specifies the currency
+    sign for Japanese yen (¥) with the Unicode value 00A5. |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| 12345.67 | \u00A5###,###.### | ¥12,345.67 | `pattern`指定了日元（¥）的货币符号，Unicode值为00A5。
+    |'
+- en: Locale-Sensitive Formatting
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 区域敏感格式化
+- en: 'The preceding example created a `DecimalFormat` object for the default `Locale`.
+    If you want a `DecimalFormat` object for a non-default `Locale`, you instantiate
+    a `NumberFormat` and then cast it to `DecimalFormat`. Here''s an example:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的示例创建了一个默认`Locale`的`DecimalFormat`对象。如果你想要一个非默认`Locale`的`DecimalFormat`对象，你可以实例化一个`NumberFormat`，然后将其转换为`DecimalFormat`。以下是一个示例：
+- en: '[PRE1]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Running the previous code example results in the output that follows. The formatted
+    number, which is in the second column, varies with `Locale`:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行上一个代码示例会产生以下输出。格式化的数字，位于第二列，随`Locale`而变化：
+- en: '[PRE2]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'So far the formatting patterns discussed here follow the conventions of U.S.
+    English. For example, in the pattern ###,###.## the comma is the thousands-separator
+    and the period represents the decimal point. This convention is fine, provided
+    that your end users aren''t exposed to it. However, some applications, such as
+    spreadsheets and report generators, allow the end users to define their own formatting
+    patterns. For these applications the formatting patterns specified by the end
+    users should use localized notation. In these cases you''ll want to invoke the
+    `applyLocalizedPattern` method on the `DecimalFormat` object.'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，这里讨论的格式化模式遵循美国英语的惯例。例如，在模式###,###.##中，逗号是千位分隔符，句点代表小数点。这种惯例是可以接受的，前提是您的最终用户不会接触到它。然而，一些应用程序，如电子表格和报表生成器，允许最终用户定义自己的格式化模式。对于这些应用程序，最终用户指定的格式化模式应使用本地化符号。在这些情况下，您需要在`DecimalFormat`对象上调用`applyLocalizedPattern`方法。
+- en: Altering the Formatting Symbols
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更改格式化符号
+- en: You can use the [DecimalFormatSymbols](https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormatSymbols.html)
+    class to change the symbols that appear in the formatted numbers produced by the
+    `format` method. These symbols include the decimal separator, the grouping separator,
+    the minus sign, and the percent sign, among others.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用[DecimalFormatSymbols](https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormatSymbols.html)类来更改`format`方法生成的格式化数字中出现的符号。这些符号包括小数分隔符、分组分隔符、减号和百分号等。
+- en: The next example demonstrates the `DecimalFormatSymbols` class by applying a
+    strange format to a number. The unusual format is the result of the calls to the
+    `setDecimalSeparator`, `setGroupingSeparator`, and `setGroupingSize` methods.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个示例演示了`DecimalFormatSymbols`类，通过对数字应用奇怪的格式来实现。这种不寻常的格式是通过调用`setDecimalSeparator`、`setGroupingSeparator`和`setGroupingSize`方法得到的。
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'When run, this example prints the number in a bizarre format:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行时，此示例会以奇怪的格式打印数字：
+- en: '[PRE4]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Number Format Pattern Syntax
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 数字格式模式语法
+- en: 'You can design your own format patterns for numbers by following the rules
+    specified by the following BNF diagram:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以按照以下 BNF 图表指定的规则设计自己的数字格式模式：
+- en: '[PRE5]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The notation used in the preceding diagram is explained in the following table:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前面的图表中使用的符号在以下表格中有解释：
+- en: '| Notation | Description |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| 符号 | 描述 |'
+- en: '| `X*` | 0 or more instances of X |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| `X*` | X 的 0 或多个实例 |'
+- en: '| `(X &#124; Y)` | either X or Y |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| `(X &#124; Y)` | X 或 Y 中的任意一个 |'
+- en: '| `X..Y` | any character from X up to Y, inclusive |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| `X..Y` | 从 X 到 Y 的任意字符，包括 X 和 Y |'
+- en: '| `S - T` | characters in S, except those in T |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| `S - T` | S 中的字符，但不包括 T 中的字符 |'
+- en: '| `{X}` | X is optional |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| `{X}` | X 是可选的 |'
+- en: In the preceding BNF diagram, the first subpattern specifies the format for
+    positive numbers. The second subpattern, which is optional, specifies the format
+    for negative numbers.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前面的 BNF 图表中，第一个子模式指定了正数的格式。第二个子模式是可选的，指定了负数的格式。
+- en: Although not noted in the BNF diagram, a comma may appear within the integer
+    portion.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管在 BNF 图表中没有说明，但逗号可能出现在整数部分内。
+- en: 'Within the subpatterns, you specify formatting with special symbols. These
+    symbols are described in the following table:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在子模式中，您可以使用特殊符号指定格式。这些符号在以下表格中描述：
+- en: '| Symbol | Description |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| 符号 | 描述 |'
+- en: '| 0 | a digit |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| 0 | 一个数字 |'
+- en: '| # | a digit, zero shows as absent |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| # | 一个数字，零表示不存在 |'
+- en: '| . | placeholder for decimal separator |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| . | 小数分隔符的占位符 |'
+- en: '| , | placeholder for grouping separator |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| , | 用于分组分隔符的占位符 |'
+- en: '| E | separates mantissa and exponent for exponential formats |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| E | 用于指数格式中的尾数和指数的分隔符 |'
+- en: '| ; | separates formats |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| ; | 分隔格式 |'
+- en: '| - | default negative prefix |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| - | 默认负数前缀 |'
+- en: '| % | multiply by 100 and show as percentage |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| % | 乘以 100 并显示为百分比 |'
+- en: '| ? | multiply by 1000 and show as per mille |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| ? | 乘以 1000 并显示为千分数 |'
+- en: '| ¤ | currency sign; replaced by currency symbol; if doubled, replaced by international
+    currency symbol; if present in a pattern, the monetary decimal separator is used
+    instead of the decimal separator |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| ¤ | 货币符号；替换为货币符号；如果双倍，则替换为国际货币符号；如果在模式中存在，则使用货币小数分隔符而不是小数分隔符 |'
+- en: '| X | any other characters can be used in the prefix or suffix |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| X | 前缀或后缀中可以使用任何其他字符 |'
+- en: '| '' | used to quote special characters in a prefix or suffix |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| '' | 用于引用前缀或后缀中的特殊字符 |'

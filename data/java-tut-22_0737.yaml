@@ -1,0 +1,136 @@
+- en: Using RowId Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用 RowId 对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlrowid.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlrowid.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlrowid.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlrowid.html)
+- en: '**Note**: MySQL and Java DB currently do not support the `RowId` JDBC interface.
+    Consequently, no JDBC tutorial example is available to demonstrate the features
+    described in this section.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：MySQL和Java DB目前不支持`RowId` JDBC接口。因此，没有可用的JDBC教程示例来演示本节中描述的功能。'
+- en: A `RowId` object represents an address to a row in a database table. Note, however,
+    that the `ROWID` type is not a standard SQL type. `ROWID` values can be useful
+    because they are typically the fastest way to access a single row and are unique
+    identifies for rows in a table. However, you should not use a `ROWID` value as
+    the primary key of a table. For example, if you delete a particular row from a
+    table, a database might reassign its `ROWID` value to a row inserted later.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`RowId`对象表示数据库表中一行的地址。但请注意，`ROWID`类型不是标准SQL类型。`ROWID`值可能很有用，因为它们通常是访问单个行的最快方式，并且是表中行的唯一标识符。但是，您不应将`ROWID`值用作表的主键。例如，如果从表中删除特定行，则数据库可能会将其`ROWID`值重新分配给稍后插入的行。'
+- en: 'The following topics are covered:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面涵盖了以下主题：
+- en: '[Retrieving RowId Objects](#retrieving_rowid_objects)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检索 RowId 对象](#retrieving_rowid_objects)'
+- en: '[Using RowId Objects](#using_rowid_objects)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 RowId 对象](#using_rowid_objects)'
+- en: '[Lifetime of RowId Validity](#lifetime_rowid_validity)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[RowId 有效期](#lifetime_rowid_validity)'
+- en: Retrieving RowId Objects
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检索 RowId 对象
+- en: 'Retrieve a `java.sql.RowId` object by calling the getter methods defined in
+    the interfaces `ResultSet` and `CallableStatement`. The `RowId` object that is
+    returned is an immutable object that you can use for subsequent referrals as a
+    unique identifier to a row. The following is an example of calling the `ResultSet.getRowId`
+    method:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过调用接口`ResultSet`和`CallableStatement`中定义的getter方法检索`java.sql.RowId`对象。返回的`RowId`对象是一个不可变对象，您可以将其用作后续引用的唯一标识符。以下是调用`ResultSet.getRowId`方法的示例：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Using RowId Objects
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用 RowId 对象
+- en: 'You can set a `RowId` object as a parameter in a parameterized `PreparedStatement`
+    object:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以将`RowId`对象设置为参数传递给参数化的`PreparedStatement`对象：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'You can also update a column with a specific `RowId` object in an updatable
+    `ResultSet` object:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以在可更新的`ResultSet`对象中使用特定的`RowId`对象更新列：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: A `RowId` object value is typically not portable between data sources and should
+    be considered as specific to the data source when using the set or update method
+    in `PreparedStatement` and `ResultSet` objects, respectively. It is therefore
+    inadvisable to get a `RowId` object from a `ResultSet` object with a connection
+    to one data source and then attempt to use the same `RowId` object in a unrelated
+    `ResultSet` object with a connection to a different data source.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`RowId`对象的值通常在数据源之间不可移植，并且在分别使用`PreparedStatement`和`ResultSet`对象的设置或更新方法时应被视为特定于数据源。因此，不建议从连接到一个数据源的`ResultSet`对象获取`RowId`对象，然后尝试在连接到不同数据源的不相关`ResultSet`对象中使用相同的`RowId`对象。'
+- en: Lifetime of RowId Validity
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: RowId 有效期
+- en: A `RowId` object is valid as long as the identified row is not deleted and the
+    lifetime of the `RowId` object is within the bounds of the lifetime specified
+    by that the data source for the `RowId`.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只要识别的行未被删除，`RowId`对象就有效，并且`RowId`对象的生命周期在数据源为`RowId`指定的生命周期范围内。
+- en: 'To determine the lifetime of `RowId` objects of your database or data source,
+    call the method `DatabaseMetaData.getRowIdLifetime`. It returns a value of a `RowIdLifetime`
+    enumerated data type. The following method, [`JDBCTutorialUtilities.rowIdLifeTime`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JDBCTutorialUtilities.java),
+    returns the lifetime of `RowId` objects:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要确定数据库或数据源中`RowId`对象的生命周期，请调用方法`DatabaseMetaData.getRowIdLifetime`。它返回一个`RowIdLifetime`枚举数据类型的值。以下方法，[`JDBCTutorialUtilities.rowIdLifeTime`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JDBCTutorialUtilities.java)，返回`RowId`对象的生命周期：
+- en: '[PRE3]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

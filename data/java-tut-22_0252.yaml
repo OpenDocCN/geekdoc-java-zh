@@ -1,0 +1,83 @@
+- en: Methods of the PatternSyntaxException Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: PatternSyntaxException 类的方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/pse.html](https://docs.oracle.com/javase/tutorial/essential/regex/pse.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/pse.html](https://docs.oracle.com/javase/tutorial/essential/regex/pse.html)
+- en: 'A [`PatternSyntaxException`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/PatternSyntaxException.html)
+    is an unchecked exception that indicates a syntax error in a regular expression
+    pattern. The `PatternSyntaxException` class provides the following methods to
+    help you determine what went wrong:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`PatternSyntaxException`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/PatternSyntaxException.html)是一个未经检查的异常，表示正则表达式模式中的语法错误。`PatternSyntaxException`类提供以下方法，帮助您确定出了什么问题：'
+- en: '[`public String getDescription()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/PatternSyntaxException.html#getDescription--):
+    Retrieves the description of the error.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String getDescription()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/PatternSyntaxException.html#getDescription--):
+    检索错误的描述。'
+- en: '[`public int getIndex()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/PatternSyntaxException.html#getIndex--):
+    Retrieves the error index.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public int getIndex()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/PatternSyntaxException.html#getIndex--):
+    检索错误索引。'
+- en: '[`public String getPattern()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/PatternSyntaxException.html#getPattern--):
+    Retrieves the erroneous regular expression pattern.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String getPattern()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/PatternSyntaxException.html#getPattern--):
+    检索错误的正则表达式模式。'
+- en: '[`public String getMessage()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/PatternSyntaxException.html#getMessage--):
+    Returns a multi-line string containing the description of the syntax error and
+    its index, the erroneous regular-expression pattern, and a visual indication of
+    the error index within the pattern.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String getMessage()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/PatternSyntaxException.html#getMessage--):
+    返回一个包含语法错误描述、错误索引、错误的正则表达式模式以及模式中错误索引的可视指示的多行字符串。'
+- en: 'The following source code, [`RegexTestHarness2.java`](examples/RegexTestHarness2.java),
+    updates our test harness to check for malformed regular expressions:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下源代码，[`RegexTestHarness2.java`](examples/RegexTestHarness2.java)，更新了我们的测试工具以检查格式不正确的正则表达式：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To run this test, enter `?i)foo` as the regular expression. This mistake is
+    a common scenario in which the programmer has forgotten the opening parenthesis
+    in the embedded flag expression `(?i)`. Doing so will produce the following results:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要运行此测试，请将`?i)foo`输入为正则表达式。这个错误是程序员在嵌入式标志表达式`(?i)`中忘记开括号的常见情况。这样做将产生以下结果：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: From this output, we can see that the syntax error is a dangling metacharacter
+    (the question mark) at index 0\. A missing opening parenthesis is the culprit.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从这个输出中，我们可以看到语法错误是在索引0处的悬空元字符（问号）。缺少的开括号是罪魁祸首。

@@ -1,0 +1,235 @@
+- en: The JarClassLoader Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: '`JarClassLoader`类'
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/jarclassloader.html](https://docs.oracle.com/javase/tutorial/deployment/jar/jarclassloader.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/jarclassloader.html](https://docs.oracle.com/javase/tutorial/deployment/jar/jarclassloader.html)
+- en: The `JarClassLoader` class extends `java.net.URLClassLoader`. As its name implies,
+    `URLClassLoader` is designed to be used for loading classes and resources that
+    are accessed by searching a set of URLs. The URLs can refer either to directories
+    or to JAR files.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JarClassLoader`类扩展了`java.net.URLClassLoader`。顾名思义，`URLClassLoader`被设计用于加载通过搜索一组URL访问的类和资源。这些URL可以是目录或JAR文件。'
+- en: In addition to subclassing `URLClassLoader`, `JarClassLoader` also makes use
+    of features in two other new JAR-related APIs, the `java.util.jar` package and
+    the `java.net.JarURLConnection` class. In this section, we'll look in detail at
+    the constructor and two methods of `JarClassLoader`.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了继承`URLClassLoader`，`JarClassLoader`还利用了另外两个新的与JAR相关的API特性，即`java.util.jar`包和`java.net.JarURLConnection`类。在本节中，我们将详细查看`JarClassLoader`的构造函数和两个方法。
+- en: The JarClassLoader Constructor
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`JarClassLoader`构造函数'
+- en: The constructor takes an instance of `java.net.URL` as an argument. The URL
+    passed to this constructor will be used elsewhere in `JarClassLoader` to find
+    the JAR file from which classes are to be loaded.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 构造函数以`java.net.URL`的实例作为参数。传递给这个构造函数的URL将在`JarClassLoader`的其他地方使用，以找到要加载类的JAR文件。
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `URL` object is passed to the constructor of the superclass, `URLClassLoader`,
+    which takes a `URL[]` array, rather than a single `URL` instance, as an argument.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`URL`对象被传递给父类`URLClassLoader`的构造函数，该构造函数接受一个`URL[]`数组作为参数，而不是单个`URL`实例。'
+- en: The getMainClassName Method
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`getMainClassName`方法'
+- en: 'Once a `JarClassLoader` object is constructed with the URL of a JAR-bundled
+    application, it''s going to need a way to determine which class in the JAR file
+    is the application''s entry point. That''s the job of the `getMainClassName` method:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦使用JAR捆绑应用程序的URL构造了一个`JarClassLoader`对象，它将需要一种方法来确定JAR文件中哪个类是应用程序的入口点。这就是`getMainClassName`方法的工作：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'You may recall from a [previous lesson](run.html) that a JAR-bundled application''s
+    entry point is specified by the `Main-Class` header of the JAR file''s manifest.
+    To understand how `getMainClassName` accesses the `Main-Class` header value, let''s
+    look at the method in detail, paying special attention to the new JAR-handling
+    features that it uses:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能还记得之前的一节课中提到过，JAR捆绑应用程序的入口点是由JAR文件清单的`Main-Class`头部指定的。为了理解`getMainClassName`如何访问`Main-Class`头部的值，让我们详细看一下这个方法，特别关注它使用的新的JAR处理特性：
+- en: The JarURLConnection class and JAR URLs
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`JarURLConnection`类和JAR URL'
+- en: 'The `getMainClassName` method uses the JAR URL format specified by the `java.net.JarURLConnection`
+    class. The syntax for the URL of a JAR file is as in this example:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getMainClassName`方法使用了`java.net.JarURLConnection`类指定的JAR URL格式。JAR文件的URL语法如下例所示：'
+- en: '[PRE2]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The terminating `!/` separator indicates that the URL refers to an entire JAR
+    file. Anything following the separator refers to specific JAR-file contents, as
+    in this example:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 终止的`!/`分隔符表示URL指向整个JAR文件。分隔符后面的任何内容都指向特定的JAR文件内容，就像这个例子中一样：
+- en: '[PRE3]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The first line in the `getMainClassName` method is:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`getMainClassName`方法中的第一行是：'
+- en: '[PRE4]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: This statement constructs a new `URL` object representing a JAR URL, appending
+    the `!/` separator to the URL that was used in creating the `JarClassLoader` instance.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个语句构造了一个新的`URL`对象，表示一个JAR URL，将`JarClassLoader`实例创建时使用的URL后面添加了`!/`分隔符。
+- en: The java.net.JarURLConnection class
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`java.net.JarURLConnection`类'
+- en: 'This class represents a communications link between an application and a JAR
+    file. It has methods for accessing the JAR file''s manifest. The second line of
+    `getMainClassName` is:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个类表示应用程序和JAR文件之间的通信链接。它有用于访问JAR文件清单的方法。`getMainClassName`的第二行是：
+- en: '[PRE5]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: In this statement, `URL` instance created in the first line opens a `URLConnection`.
+    The `URLConnection` instance is then cast to `JarURLConnection` so it can take
+    advantage of `JarURLConnection`'s JAR-handling features.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个语句中，第一行创建的`URL`实例打开了一个`URLConnection`。然后将`URLConnection`实例转换为`JarURLConnection`，以便利用`JarURLConnection`的JAR处理特性。
+- en: 'Fetching Manifest Attributes: java.util.jar.Attributes'
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 获取清单属性：`java.util.jar.Attributes`
+- en: 'With a `JarURLConnection` open to a JAR file, you can access the header information
+    in the JAR file''s manifest by using the `getMainAttributes` method of `JarURLConnection`.
+    This method returns an instance of `java.util.jar.Attributes`, a class that maps
+    header names in JAR-file manifests with their associated string values. The third
+    line in `getMainClassName` creates an `Attributes` object:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过打开到 JAR 文件的`JarURLConnection`，您可以使用`JarURLConnection`的`getMainAttributes`方法访问
+    JAR 文件 MANIFEST 中的头信息。此方法返回一个`java.util.jar.Attributes`的实例，该类将 JAR 文件 MANIFEST
+    中的头名称与其关联的字符串值进行映射。`getMainClassName`中的第三行创建了一个`Attributes`对象：
+- en: '[PRE6]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'To get the value of the manifest''s `Main-Class` header, the fourth line of
+    `getMainClassName` invokes the `Attributes.getValue` method:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要获取 MANIFEST 的`Main-Class`头的值，`getMainClassName`的第四行调用了`Attributes.getValue`方法：
+- en: '[PRE7]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The method's argument, `Attributes.Name.MAIN_CLASS`, specifies that it's the
+    value of the `Main-Class` header that you want. (The `Attributes.Name` class also
+    provides static fields such as `MANIFEST_VERSION`, `CLASS_PATH`, and `SEALED`
+    for specifying other standard manifest headers.)
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法的参数`Attributes.Name.MAIN_CLASS`指定了您想要的`Main-Class`头的值。（`Attributes.Name`类还提供了静态字段，如`MANIFEST_VERSION`、`CLASS_PATH`和`SEALED`，用于指定其他标准
+    MANIFEST 头。）
+- en: The invokeClass Method
+  id: totrans-30
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: invokeClass 方法
+- en: 'We''ve seen how `JarURLClassLoader` can identify the main class in a JAR-bundled
+    application. The last method to consider, `JarURLClassLoader.invokeClass`, enables
+    that main class to be invoked to launch the JAR-bundled application:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们已经看到`JarURLClassLoader`如何在打包为 JAR 的应用程序中识别主类。要考虑的最后一个方法是`JarURLClassLoader.invokeClass`，它使得可以调用主类来启动打包为
+    JAR 的应用程序：
+- en: '[PRE8]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'The `invokeClass` method takes two arguments: the name of the application''s
+    entry-point class and an array of string arguments to pass to the entry-point
+    class''s `main` method. First, the main class is loaded:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`invokeClass`方法接受两个参数：应用程序入口点类的名称和要传递给入口点类的`main`方法的字符串参数数组。首先，加载主类：'
+- en: '[PRE9]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: The `loadClass` method is inherited from `java.lang.ClassLoader`.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`loadClass`方法是从`java.lang.ClassLoader`继承的。'
+- en: Once the main class is loaded, the reflection API of the `java.lang.reflect`
+    package is used to pass the arguments to the class and launch it. You can refer
+    to the tutorial on [The Reflection API](../../reflect/index.html) for a review
+    of reflection.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦主类加载完成，就会使用`java.lang.reflect`包的反射API将参数传递给类并启动它。您可以参考[反射API](../../reflect/index.html)上的教程来复习反射。

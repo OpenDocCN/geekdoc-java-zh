@@ -1,0 +1,220 @@
+- en: Adding the Application Logic
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 添加应用程序逻辑
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/learn/logic.html](https://docs.oracle.com/javase/tutorial/uiswing/learn/logic.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/learn/logic.html](https://docs.oracle.com/javase/tutorial/uiswing/learn/logic.html)
+- en: It is now time to add in the application logic.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在是时候添加应用程序逻辑了。
+- en: 'Step 1: Change the Default Variable Names'
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤1：更改默认变量名称
+- en: The figure below shows the default variable names as they currently appear within
+    the Inspector. For each component, the variable name appears first, followed by
+    the object's type in square brackets. For example, `jTextField1 [JTextField]`
+    means that "jTextField1" is the variable name and "JTextField" is its type.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下图显示了当前在检查器中显示的默认变量名称。对于每个组件，变量名称首先出现，然后是方括号中的对象类型。例如，`jTextField1 [JTextField]`表示“jTextField1”是变量名称，“JTextField”是其类型。
+- en: '![Default Variable Names](../Images/e11aeb05b6dd5039127ff914878f802e.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![默认变量名称](../Images/e11aeb05b6dd5039127ff914878f802e.png)'
+- en: Default Variable Names
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认变量名称
+- en: 'The default names are not very relevant in the context of this application,
+    so it makes sense to change them from their defaults to something that is more
+    meaningful. Right-click each variable name and choose "Change variable name."
+    When you are finished, the variable names should appear as follows:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此应用程序的上下文中，默认名称并不是非常相关，因此将它们从默认值更改为更有意义的内容是有意义的。右键单击每个变量名称，选择“更改变量名称”。完成后，变量名称应如下所示：
+- en: '![New Variable Names ](../Images/c8f8b157de387ea387fd541f7822c320.png)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_IMG
+  zh: '![新的变量名称](../Images/c8f8b157de387ea387fd541f7822c320.png)'
+- en: New Variable Names
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 新的变量名称
+- en: The new variable names are "tempTextField", "celsiusLabel", "convertButton",
+    and "fahrenheitLabel." Each change that you make in the Inspector will automatically
+    propagate its way back into the source code. You can rest assured that compilation
+    will not fail due to typos or mistakes of that nature — mistakes that are common
+    when editing by hand.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 新的变量名称是“tempTextField”、“celsiusLabel”、“convertButton”和“fahrenheitLabel”。您在检查器中进行的每个更改都将自动传播回源代码中。您可以放心，编译不会因手动编辑时常见的拼写错误或类似错误而失败。
+- en: 'Step 2: Register the Event Listeners'
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤2：注册事件监听器
+- en: 'When an end-user interacts with a Swing GUI component (such as clicking the
+    Convert button), that component will generate a special kind of object — called
+    an *event object* — which it will then broadcast to any other objects that have
+    previously registered themselves as *listeners* for that event. The NetBeans IDE
+    makes event listener registration extremely simple:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当最终用户与Swing GUI组件交互（例如单击“Convert”按钮）时，该组件将生成一种特殊类型的对象 —— 称为*事件对象* —— 然后将其广播到先前注册为该事件的*监听器*的任何其他对象。NetBeans
+    IDE使事件监听器注册变得非常简单：
+- en: '[![using the NetBeans GUI to connect the actionPerformed method to the object](../Images/ec69d9533fad8533b6dfdb89a7cd5d76.png)](../../figures/uiswing/learn/nb-swing-22.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![使用NetBeans GUI将actionPerformed方法连接到对象](../Images/ec69d9533fad8533b6dfdb89a7cd5d76.png)](../../figures/uiswing/learn/nb-swing-22.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击图像以查看其自然大小。*
+- en: 'In the Design Area, click on the Convert button to select it. Make sure that
+    *only* the Convert button is selected (if the JFrame itself is also selected,
+    this step will not work.) Right-click the Convert button and choose Events ->
+    Action -> ActionPerformed. This will generate the required event-handling code,
+    leaving you with empty method bodies in which to add your own functionality:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在设计区域中，单击“Convert”按钮以选择它。确保*只有*“Convert”按钮被选中（如果JFrame本身也被选中，则此步骤将无效）。右键单击“Convert”按钮，选择事件
+    -> 动作 -> actionPerformed。这将生成所需的事件处理代码，使您可以在其中添加自己的功能的空方法体：
+- en: '[![the actionPerformed method in the source code tab](../Images/abaae40f77d5eb3315185881fde04683.png)](../../figures/uiswing/learn/nb-swing-23.png)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![源代码选项卡中的actionPerformed方法](../Images/abaae40f77d5eb3315185881fde04683.png)](../../figures/uiswing/learn/nb-swing-23.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击图像以查看其自然大小。*
+- en: There are many different event types representing the various kinds of actions
+    that an end-user can take (clicking the mouse triggers one type of event, typing
+    at the keyboard triggers another, moving the mouse yet another, and so on.) Our
+    application is only concerned with the ActionEvent; for more information about
+    event handling, see [Writing Event Listeners](../events/index.html).
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有许多不同类型的事件，代表着用户可以执行的各种操作（点击鼠标会触发一种类型的事件，键盘输入会触发另一种，移动鼠标则会触发另一种，依此类推）。我们的应用程序只关注**ActionEvent**；有关事件处理的更多信息，请参阅[编写事件监听器](../events/index.html)。
+- en: 'Step 3: Add the Temperature Conversion Code'
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤 3：添加温度转换代码
+- en: 'The final step is to simply paste the temperature conversion code into the
+    empty method body. The following code is all that is necessary to convert a temperature
+    from Celsius to Fahrenheit:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一步只需将温度转换代码粘贴到空方法体中。以下代码是将温度从摄氏度转换为华氏度所需的全部内容：
+- en: '* * *'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: This example is not localizable because the `parseDouble` method is not localizable.
+    This code snippet is for illustration purposes only. A more robust implementation
+    would use the [Scanner](https://docs.oracle.com/javase/8/docs/api/java/util/Scanner.html)
+    class to parse the user input.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例不可本地化，因为`parseDouble`方法不可本地化。此代码片段仅用于说明目的。更健壮的实现将使用[Scanner](https://docs.oracle.com/javase/8/docs/api/java/util/Scanner.html)类来解析用户输入。
+- en: '* * *'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[PRE0]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Simply copy this code and paste it into the convertButtonActionPerformed method
+    as shown below:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只需复制此代码并将其粘贴到下面所示的`convertButtonActionPerformed`方法中：
+- en: '[![Step 3: Add the Temperature Conversion Code](../Images/1200fbfee2f8bc3462f1a255db02c932.png)](../../figures/uiswing/learn/nb-swing-24.png)'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![步骤 3：添加温度转换代码](../Images/1200fbfee2f8bc3462f1a255db02c932.png)](../../figures/uiswing/learn/nb-swing-24.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已经缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击图像以查看其自然大小。*
+- en: With the conversion code in place, the application is now complete.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 完成温度转换代码后，应用程序现在已经完成。
+- en: 'Step 4: Run the Application'
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 步骤 4：运行应用程序
+- en: Running the application is simply a matter of choosing Run -> Run Main Project
+    within the NetBeans IDE. The first time you run this application, you will be
+    prompted with a dialog asking to set `CelsiusConverterGUI` as the main class for
+    this project. Click the OK button, and when the program finishes compiling, you
+    should see the application running in its own window.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行应用程序只是在NetBeans IDE中选择运行 -> 运行主项目的简单事情。第一次运行此应用程序时，会提示您设置`CelsiusConverterGUI`为此项目的主类。点击“确定”按钮，当程序编译完成后，您应该会看到应用程序在自己的窗口中运行。
+- en: Congratulations! You have completed your first Swing application!
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 恭喜！您已经完成了您的第一个Swing应用程序！

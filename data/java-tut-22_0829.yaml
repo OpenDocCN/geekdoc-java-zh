@@ -1,0 +1,826 @@
+- en: 'Lesson: API and Tools Use for Secure Code and File Exchanges'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：用于安全代码和文件交换的API和工具使用
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/sigcert/index.html](https://docs.oracle.com/javase/tutorial/security/sigcert/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/sigcert/index.html](https://docs.oracle.com/javase/tutorial/security/sigcert/index.html)
+- en: This lesson explains why digital signatures, certificates, and keystores are
+    needed. The lesson also compares use of the tools versus the JDK Security API
+    with respect to generating signatures. Such tool usage is demonstrated in the
+    next two lessons, [Signing Code and Granting It Permissions](../toolsign/index.html)
+    and [Exchanging Files](../toolfilex/index.html). API usage is demonstrated in
+    the [Generating and Verifying Signatures](../apisign/index.html) lesson.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程解释了为什么需要数字签名、证书和密钥库。该课程还比较了使用这些工具与JDK安全API生成签名的情况。这些工具的使用在接下来的两节课中进行演示，[签署代码并授予权限](../toolsign/index.html)
+    和 [文件交换](../toolfilex/index.html)。API的使用在 [生成和验证签名](../apisign/index.html) 课程中进行演示。
+- en: This lesson contains the following sections
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程包含以下部分
+- en: '[Code and Document Security](#Intro)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[代码和文档安全](#Intro)'
+- en: '[Tool and API Notes](#Notes)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[工具和API注释](#Notes)'
+- en: '[Use of the JDK Security API to Sign Documents](#API)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用JDK安全API签署文档](#API)'
+- en: '[Use of the Tools to Sign Code or Documents](#Tools)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用工具签署代码或文档](#Tools)'
+- en: Code and Document Security
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 代码和文档安全
+- en: If you electronically send someone an important document (or documents), or
+    an applet or application to run, the recipient needs a way to verify that the
+    document or code came from you and was not modified in transit (for example, by
+    a malicious user intercepting it). Digital signatures, certificates, and keystores
+    all help ensure the security of the files you send.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您通过电子方式向某人发送重要文件（或文件）、或要运行的小程序或应用程序，接收方需要一种方法来验证文件或代码是否来自您，并且在传输过程中未被修改（例如，被恶意用户拦截）。数字签名、证书和密钥库都有助于确保您发送的文件的安全性。
+- en: Digital Signatures
+  id: totrans-10
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 数字签名
+- en: The basic idea in the use of digital signatures is as follows.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用数字签名的基本思想如下。
+- en: You "sign" the document or code using one of your **private keys**, which you
+    can generate by using `keytool` or security API methods. That is, you generate
+    a digital signature for the document or code, using the `jarsigner` tool or Security
+    API methods.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 您使用您可以通过`keytool`或安全API方法生成的**私钥**对文档或代码进行“签名”。也就是说，您使用`jarsigner`工具或安全API方法为文档或代码生成数字签名。
+- en: You send your signed document to your recipient.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 您将签名的文档发送给接收方。
+- en: You also supply your recipient with your **public key.** This public key corresponds
+    to the private key you originally used to generate the signature.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 您还向接收方提供您的**公钥**。这个公钥对应于您最初用于生成签名的私钥。
+- en: Your recipient uses your public key to verify that your document came from you
+    and was not modified before it reached him/her.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 接收方使用您的公钥来验证您的文件是否来自您，并且在到达之前未被修改。
+- en: A recipient needs to ensure that your public key *itself* is authentic before
+    he/she can use it to verify that your signature is authentic. Therefore, you will
+    usually supply a **certificate** that contains your public key together with the
+    key of a **Certificate Authority** who can vouch for your key's authenticity.
+    See the next section for details.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接收方需要确保您的公钥*本身*是真实的，然后才能使用它来验证您的签名是否真实。因此，您通常会提供一个包含您的公钥以及可以为您的密钥真实性作证的**证书颁发机构**的密钥的**证书**。有关详细信息，请参见下一节。
+- en: For more information about the terminology and concepts of signing and verification,
+    and further explanation of the benefits, see the [Signing JAR Files](../../deployment/jar/signing.html)
+    section of the "The Packaging Programs in JAR Files" lesson.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关签名和验证术语和概念的更多信息，以及有关好处的进一步解释，请参见“JAR文件打包程序”课程的 [签署JAR文件](../../deployment/jar/signing.html)
+    部分。
+- en: Certificates
+  id: totrans-18
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 证书
+- en: 'A certificate contains:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 证书包含：
+- en: A public key.
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个公钥。
+- en: 'The "distinguished-name" information of the entity (person, company, or so
+    on) whose certificate it is. This entity is referred to as the certificate *subject*,
+    or *owner*. The distinguished-name information includes the following attributes
+    (or a subset): the entity''s name, organizational unit, organization, city or
+    locality, state or province, and country code.'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 证书的“显著名称”信息是指证书的实体（个人、公司等）的信息。这个实体被称为证书*主体*或*所有者*。显著名称信息包括以下属性（或其子集）：实体的名称、组织单位、组织、城市或地点、州或省和国家代码。
+- en: A digital signature. A certificate is signed by one entity, the *issuer*, to
+    vouch for the fact that the enclosed public key is the actual public key of another
+    entity, the *owner*.
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 数字签名。证书由一个实体，*颁发者*，签名，以证明封闭的公钥是另一个实体，*所有者*的实际公钥。
+- en: The distinguished-name information for the signer (issuer).
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 签名者（颁发者）的显著名称信息。
+- en: One way for a recipient to check whether a certificate is valid is by verifying
+    its digital signature, using its issuer's (signer's) public key. That key can
+    itself be stored within another certificate whose signature can also be verified
+    by using the public key of that next certificate's issuer, and that key may *also*
+    be stored in yet *another* certificate, and so on. You can stop checking when
+    you reach a public key that you already trust and use it to verify the signature
+    on the corresponding certificate.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 收件人检查证书是否有效的一种方法是使用颁发者（签名者）的公钥验证其数字签名。该密钥本身可以存储在另一个证书中，该证书的签名也可以通过使用下一个证书的颁发者的公钥进行验证，而该密钥可能*也*存储在另*一个*证书中，依此类推。当你到达一个你已经信任的公钥并用它来验证相应证书上的签名时，你可以停止检查。
+- en: If the recipient cannot establish a trust chain, then he/she can calculate the
+    certificate **fingerprint(s)**, using the `keytool` `-import` or `-printcert`
+    command. A fingerprint is a relatively short number that uniquely and reliably
+    identifies the certificate. (Technically, the fingerprint is a hash value of the
+    certificate information, using a message digest function.) The recipient can then
+    phone the certificate owner and compare the fingerprint values of the received
+    certificate with the certificate that was sent. If the fingerprints are the same,
+    the certificates are the same.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果收件人无法建立信任链，那么他/她可以使用 `keytool` 的 `-import` 或 `-printcert` 命令计算证书的**指纹**。指纹是一个相对较短的数字，可以唯一且可靠地识别证书。（从技术上讲，指纹是证书信息的哈希值，使用消息摘要函数。）然后，收件人可以打电话给证书所有者，并将收到的证书的指纹值与发送的证书进行比较。如果指纹相同，则证书相同。
+- en: Thus you can ensure that a certificate was not modified in transit. One other
+    potential uncertainty when working with certificates is the identity of the sender.
+    Sometimes a certificate is **self-signed**, that is, signed using the private
+    key corresponding to the public key in the certificate; the issuer is the same
+    as the subject.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，你可以确保证书在传输过程中没有被修改。在处理证书时的另一个潜在不确定性是发送者的身份。有时证书是**自签名**的，即使用与证书中的公钥对应的私钥签名；颁发者与主体相同。
+- en: Self-signing a certificate is useful for developing and testing an application.
+    However, before deploying to users, obtain a certificate from a trusted third
+    party, referred to as a certification authority (CA). To do so, you send a self-signed
+    certificate signing request (CSR) to the CA. The CA verifies the signature on
+    the CSR and your identity, perhaps by checking your driver's license or other
+    information. The CA then vouches for your being the owner of the public key by
+    issuing a certificate and signing it with its own (the CA's) private key. Anybody
+    who trusts the issuing CA's public key can now verify the signature on the certificate.
+    In many cases the issuing CA itself may have a certificate from a CA higher up
+    in the CA hierarchy, leading to **certificate chains**.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自签名证书对于开发和测试应用程序很有用。然而，在部署给用户之前，从一个受信任的第三方（称为认证机构（CA））那里获取证书是必要的。为此，你向 CA 发送一个自签名证书签名请求（CSR）。CA
+    验证 CSR 上的签名和你的身份，可能通过检查你的驾驶执照或其他信息。然后，CA 通过使用自己的（CA 的）私钥签发证书并为你作为公钥所有者背书。任何信任颁发
+    CA 的公钥的人现在都可以验证证书上的签名。在许多情况下，颁发 CA 本身可能有一个来自 CA 层次结构更高层的证书，导致**证书链**。
+- en: 'Certificates of entities you trust are typically imported into your keystore
+    as "**trusted certificates**." The public key in each such certificate may then
+    be used to verify signatures generated using the corresponding private key. Such
+    verifications can be accomplished by:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你信任的实体的证书通常被导入到你的密钥库中作为“**受信任的证书**”。每个这样的证书中的公钥可以用来验证使用相应私钥生成的签名。这样的验证可以通过以下方式完成：
+- en: the `jarsigner` tool (if the document/code and signature appear in a JAR file),
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`jarsigner` 工具（如果文档/代码和签名出现在一个 JAR 文件中），'
+- en: API methods, or
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: API 方法，或
+- en: the runtime system, when a resource access is attempted and a policy file specifies
+    that the resource access is allowed for the code attempting the access if its
+    signature is authentic. The code's class file(s) and signature must be in a JAR
+    file.
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 运行时系统，在尝试访问资源时，如果策略文件指定允许代码尝试访问的资源访问，且其签名是真实的，则允许访问。代码的类文件和签名必须在一个 JAR 文件中。
+- en: If you are sending signed code or documents to others, you need to supply them
+    with the certificate containing the public key corresponding to the private key
+    used to sign the code/document. The `keytool` `-export` command or API methods
+    can export your certificate from your keystore to a file, which can then be sent
+    to anyone needing it. A person who receives the certificate can import it into
+    the keystore as a trusted certificate, using, for example, API methods or the
+    `keytool` `-import` command.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您要向他人发送签名的代码或文档，则需要向他们提供包含与用于签署代码/文档的私钥对应的公钥的证书。`keytool` 的 `-export` 命令或
+    API 方法可以将您的证书从密钥库导出到文件中，然后可以将该文件发送给需要的任何人。接收证书的人可以将其导入到密钥库中作为受信任的证书，例如使用 API 方法或
+    `keytool` 的 `-import` 命令。
+- en: If you use the `jarsigner` tool to generate a signature for a JAR file, the
+    tool retrieves your certificate and its supporting certificate chain from your
+    keystore. The tool then stores them, along with the signature, in the JAR file.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您使用 `jarsigner` 工具为 JAR 文件生成签名，则该工具会从您的密钥库中检索您的证书及其支持的证书链。然后，该工具将它们与签名一起存储在
+    JAR 文件中。
+- en: Keystores
+  id: totrans-34
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 密钥库
+- en: 'Private keys and their associated public key certificates are stored in password-protected
+    databases called **keystores**. A keystore can contain two types of entries: the
+    trusted certificate entries discussed above, and key/certificate entries, each
+    containing a private key and the corresponding public key certificate. Each entry
+    in a keystore is identified by an *alias*.'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 私钥及其相关的公钥证书存储在受密码保护的数据库中，称为**密钥库**。密钥库可以包含两种类型的条目：上述讨论的受信任证书条目，以及密钥/证书条目，每个条目包含一个私钥和相应的公钥证书。密钥库中的每个条目都由一个*别名*标识。
+- en: A keystore owner can have multiple keys in the keystore, accessed via different
+    aliases. An alias is typically named after a particular role in which the keystore
+    owner uses the associated key. An alias may also identify the purpose of the key.
+    For example, the alias `signPersonalEmail` might be used to identify a keystore
+    entry whose private key is used for signing personal e-mail, and the alias `signJarFiles`
+    might be used to identify an entry whose private key is used for signing JAR files.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 密钥库所有者可以在密钥库中拥有多个密钥，通过不同的别名访问。别名通常以密钥库所有者在其中使用相关密钥的特定角色命名。别名也可以标识密钥的用途。例如，别名
+    `signPersonalEmail` 可能用于标识一个用于签署个人电子邮件的密钥库条目，而别名 `signJarFiles` 可能用于标识一个用于签署 JAR
+    文件的条目。
+- en: The `keytool` tool can be used to
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`keytool` 工具可用于'
+- en: Create private keys and their associated public key certificates
+  id: totrans-38
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建私钥及其相关的公钥证书
+- en: Issue certificate requests, which you send to the appropriate certification
+    authority
+  id: totrans-39
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 发出证书请求，然后将其发送给适当的认证机构
+- en: Import certificate replies, obtained from the certification authority you contacted
+  id: totrans-40
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 导入从您联系的认证机构获得的证书回复
+- en: Import public key certificates belonging to other parties as trusted certificates
+  id: totrans-41
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 导入属于其他方的公钥证书作为受信任的证书
+- en: Manage your keystore
+  id: totrans-42
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 管理您的密钥库
+- en: API methods can also be used to access and to modify a keystore.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: API 方法也可用于访问和修改密钥库。
+- en: Tool and API Notes
+  id: totrans-44
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 工具和 API 注意事项
+- en: Note the following regarding use of the tools and the API related to digital
+    signatures.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意以下与数字签名相关的工具和 API 使用。
+- en: You can use the JDK Security API, tools, or a combination to generate keys and
+    signatures and to import certificates. You can use these API or tool features
+    to securely exchange documents with others.
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以使用 JDK 安全 API、工具或组合来生成密钥和签名，并导入证书。您可以使用这些 API 或工具功能与他人安全地交换文档。
+- en: To use the *tools* for document exchange, the document(s) must be placed in
+    a JAR (Java ARchive) file, which may be created by the `jar` tool. A JAR file
+    is a good way of encapsulating multiple files in one spot. When a file is "signed",
+    the resulting digital signature bytes need to be stored somewhere. When a JAR
+    file is signed, the signature can go in the JAR file itself. This is what happens
+    when you use the `jarsigner` tool to sign a JAR file.
+  id: totrans-47
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 要使用*工具*进行文档交换，文档必须放在JAR（Java ARchive）文件中，可以通过`jar`工具创建。JAR文件是将多个文件封装在一个位置的好方法。当文件被“签名”时，生成的数字签名字节需要存储在某个地方。当JAR文件被签名时，签名可以放在JAR文件本身中。这就是当您使用`jarsigner`工具对JAR文件进行签名时发生的情况。
+- en: If you are creating applet code that you will sign, it needs to be placed in
+    a JAR file. The same is true if you are creating application code that may be
+    similarly restricted by running it with a security manager. The reason you need
+    the JAR file is that when a policy file specifies that code signed by a particular
+    entity is permitted one or more operations, such as specific file reads or writes,
+    the code is expected to come from a signed JAR file. (The term "signed code" is
+    an abbreviated way of saying "code in a class file that appears in a JAR file
+    that was signed.")
+  id: totrans-48
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果您正在创建将要签署的小程序代码，它需要放在JAR文件中。如果您正在创建可能受到安全管理器限制的应用程序代码，同样需要放在JAR文件中。您需要JAR文件的原因是，当策略文件指定由特定实体签名的代码允许一个或多个操作，例如特定文件读取或写入时，预期代码来自已签名的JAR文件。（术语“已签名代码”是指“出现在已签名JAR文件中的类文件中的代码”的简称。）
+- en: In order for the runtime system to check a code signature, the person/organization
+    that will run the code first needs to import into their keystore a certificate
+    authenticating the public key corresponding to the private key used to sign the
+    code.
+  id: totrans-49
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 为了使运行时系统检查代码签名，将运行代码的人/组织首先需要将验证用于签署代码的私钥对应的公钥的证书导入其密钥库中。
+- en: In order for the `jarsigner` tool to verify the authenticity of a JAR file signature,
+    the person/organization that received the JAR file first needs to import into
+    their keystore a certificate authenticating the public key corresponding to the
+    private key used to sign the code.
+  id: totrans-50
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 为了使`jarsigner`工具验证JAR文件签名的真实性，首先需要将接收到的JAR文件的人/组织导入其密钥库中，以验证与用于签署代码的私钥对应的公钥的证书。
+- en: At this time there are no APIs for certificate creation.
+  id: totrans-51
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 目前还没有用于证书创建的API。
+- en: Use of the JDK Security API to Sign Documents
+  id: totrans-52
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用JDK安全API签署文档
+- en: The [Generating and Verifying Signatures](../apisign/index.html) shows you how
+    to use the JDK Security API to sign documents. The lesson shows what one program,
+    executed by the person who has the original document, would do to
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[生成和验证签名](../apisign/index.html)展示了如何使用JDK安全API签署文档。该课程展示了由拥有原始文档的人执行的一个程序会做什么'
+- en: generate keys,
+  id: totrans-54
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 生成密钥，
+- en: generate a digital signature for the data using the private key, and
+  id: totrans-55
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用私钥为数据生成数字签名，然后
+- en: export the public key and the signature to files.
+  id: totrans-56
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 导出公钥和签名到文件。
+- en: Then it shows an example of another program, executed by the receiver of the
+    data, signature, and public key. It shows how the program
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后展示了另一个程序的示例，由数据、签名和公钥的接收者执行。展示了该程序如何
+- en: Imports the public key
+  id: totrans-58
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 导入公钥
+- en: Verifies the authenticity of the signature.
+  id: totrans-59
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 验证签名的真实性。
+- en: This lesson also shows you alternative ways to import and supply keys, including
+    certificates.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程还展示了导入和提供密钥的替代方法，包括证书。
+- en: Use of the Tools to Sign Code or Documents
+  id: totrans-61
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用工具签署代码或文档
+- en: The [Signing Code and Granting It Permissions](../toolsign/index.html) lesson
+    shows how to use Java Security tools to place your code into a JAR file, sign
+    it, and export your public key. Then it shows how your recipient can use these
+    same Java tools to import your public key certificate and then add an entry to
+    a policy file that will grant your code the permission it needs to access system
+    resources controlled by your recipient.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[签署代码并授予权限](../toolsign/index.html)课程展示了如何使用Java安全工具将您的代码放入JAR文件中，对其进行签名，并导出您的公钥。然后展示了您的接收方如何使用相同的Java工具导入您的公钥证书，然后向策略文件添加条目，以授予您的代码访问受接收方控制的系统资源所需的权限。'
+- en: The [Exchanging Files](../toolfilex/index.html) lesson you how to use Java security
+    tools to sign a document and then export the public key certificate for the public
+    key using `keytool`. corresponding to the private key used to sign that document
+    using `keytool`. Then it shows how your recipient can verify your signature by
+    installing your public key certificate and then using the `jarsigner` tool to
+    verify your signature.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[文件交换](../toolfilex/index.html)课程教你如何使用Java安全工具签署文档，然后使用`keytool`导出公钥证书，对应于使用`keytool`签署该文档的私钥。然后它展示了如何接收者可以通过安装您的公钥证书并使用`jarsigner`工具验证您的签名。'
+- en: 'These two lessons have much in common. In both cases, the first two steps for
+    the code or document sender are to:'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这两个课程有很多共同之处。在两种情况下，发送代码或文档的前两个步骤是：
+- en: Create a JAR file containing the document or class file, using the `jar` tool.
+  id: totrans-65
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`jar`工具创建包含文档或类文件的JAR文件。
+- en: Generate keys (if they don't already exist), using the `keytool` `-genkey` command.
+  id: totrans-66
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 生成密钥（如果尚不存在），使用`keytool`的`-genkey`命令。
+- en: 'The next two steps are optional:'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的两个步骤是可选的：
+- en: Use the `keytool` `-certreq` command; then send the resulting certificate signing
+    request to a certification authority (CA) such as VeriSign.
+  id: totrans-68
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`keytool`的`-certreq`命令；然后将生成的证书签名请求发送给认证机构（CA），如VeriSign。
+- en: Use the `keytool` `-import` command to import the CA's response.
+  id: totrans-69
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`keytool`的`-import`命令导入CA的响应。
+- en: 'The next two steps are required:'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的两个步骤是必需的：
+- en: Sign the JAR file, using the `jarsigner` tool and the private key generated
+    earlier.
+  id: totrans-71
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用之前生成的私钥，使用`jarsigner`工具对JAR文件进行签名。
+- en: Export the public key certificate, using the `keytool` `-export` command. Then
+    supply the signed JAR file and the certificate to the receiver.
+  id: totrans-72
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`keytool`的`-export`命令导出公钥证书。然后将签名的JAR文件和证书提供给接收者。
+- en: In both cases, the receiver of the signed JAR file and the certificate should
+    import the certificate as a trusted certificate, using the `keytool` `-import`
+    command. The `keytool` will attempt to construct a trust chain from the certificate
+    to be imported to an already trusted certificate in the keystore. If that fails,
+    the `keytool` will display the certificate fingerprint and prompt you to verify
+    it.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在两种情况下，签署的JAR文件和证书的接收者应该使用`keytool`的`-import`命令将证书导入为受信任的证书。`keytool`将尝试从要导入的证书到密钥库中已受信任的证书构建信任链。如果失败，`keytool`将显示证书指纹并提示您进行验证。
+- en: If what was sent was code, the receiver also needs to modify a policy file to
+    permit the required resource accesses to code signed by the private key corresponding
+    to the public key in the imported certificate. The **Policy Tool** can be used
+    to do this.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果发送的是代码，则接收者还需要修改策略文件以允许由导入证书中的公钥对应的私钥签名的代码访问所需资源。可以使用**策略工具**来执行此操作。
+- en: If what was sent was one or more documents, the receiver needs to verify the
+    authenticity of the JAR file signature, using the `jarsigner` tool.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果发送的是一个或多个文档，则接收者需要使用`jarsigner`工具验证JAR文件签名的真实性。
+- en: This lesson discusses the two optional steps. The other steps are covered in
+    the next two lessons, [Signing Code and Granting It Permissions](../toolsign/index.html)
+    and [Exchanging Files](../toolfilex/index.html) .
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程讨论了两个可选步骤。其他步骤在接下来的两个课程中涵盖，[签署代码并授予权限](../toolsign/index.html)和[文件交换](../toolfilex/index.html)。
+- en: Generating a Certificate Signing Request (CSR) for a Public Key Certificate
+  id: totrans-77
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 为公钥证书生成证书签名请求（CSR）
+- en: When `keytool` is used to generate public/private key pairs, it creates a keystore
+    entry containing a private key and a self-signed certificate for the public key.
+    (That is, the certificate is signed using the corresponding private key.) This
+    is adequate when developing and testing an application.
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用`keytool`生成公私钥对时，它会创建一个包含私钥和公钥的自签名证书的密钥库条目。（即，证书使用相应的私钥进行签名。）这在开发和测试应用程序时是足够的。
+- en: 'However, a certificate is more likely to be trusted by others if it is signed
+    by a certification authority (CA). To get a certificate signed by a CA, you first
+    generate a certificate signing request (CSR), via a command such as the following:'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，如果证书由认证机构（CA）签名，其他人更有可能信任该证书。要获得由CA签名的证书，首先需要生成证书签名请求（CSR），通过类似以下命令：
+- en: '[PRE0]'
+  id: totrans-80
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Here *alias* is used to access the keystore entry containing the private key
+    and the public key certificate, and *csrFile* specifies the name to be used for
+    the CSR created by this command.
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里*alias*用于访问包含私钥和公钥证书的密钥库条目，*csrFile*指定此命令创建的 CSR 使用的名称。
+- en: You then submit this file to a CA, such as VeriSign, Inc. The CA authenticates
+    you, the requestor ("subject"), and then signs and returns a certificate authenticating
+    your public key. By signing the certificate, the CA vouches that you are the owner
+    of the public key.
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，你将此文件提交给 CA，如 VeriSign, Inc.。CA 对你（请求者/"主体"）进行验证，然后签署并返回一个验证你的公钥的证书。通过签署证书，CA
+    保证你是公钥的所有者。
+- en: In some cases, the CA will return a chain of certificates, each one authenticating
+    the public key of the signer of the previous certificate in the chain.
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某些情况下，CA 会返回一系列证书，每个证书都用于验证链中前一个证书签发者的公钥。
+- en: Importing the Response from the CA
+  id: totrans-84
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 导入来自 CA 的响应
+- en: After submitting a certificate signing request (CSR) to a certification authority
+    (CA), you need to replace the original self-signed certificate in your keystore
+    with a certificate chain by importing the certificate (or chain of certificates)
+    returned to you by the CA.
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在向认证机构（CA）提交证书签名请求（CSR）后，你需要通过导入 CA 返回给你的证书（或证书链）来用证书链替换密钥库中的原始自签名证书。
+- en: But first you need a "trusted certificate" entry in your keystore (or in the
+    `cacerts` keystore file, described below) that authenticates the *CA*'s public
+    key. With such an entry the CA's signature can be verified. That is, the CA's
+    signature on the certificate, or on the final certificate in the chain the CA
+    sends to you in response to your CSR, can be verified.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但首先，你需要在你的密钥库中（或下面描述的`cacerts`密钥库文件中）有一个"受信任证书"条目，用于验证*CA*的公钥。有了这样的条目，可以验证 CA
+    对证书的签名。也就是说，可以验证 CA 对证书的签名，或者验证 CA 发送给你作为 CSR 响应中的最终证书链上的最终证书的签名。
+- en: Importing a Certificate from a CA as a "Trusted Certificate"
+  id: totrans-87
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 从 CA 导入证书作为"受信任证书"
+- en: Before you import the certificate reply from a CA, you need one or more "trusted
+    certificates" in your keystore or in the `cacerts` file.
+  id: totrans-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在导入来自 CA 的证书回复之前，你需要在你的密钥库或`cacerts`文件中拥有一个或多个"受信任证书"。
+- en: If the certificate reply is a certificate chain, you just need the top certificate
+    of the chain -- the "root" CA certificate authenticating that CA's public key.
+  id: totrans-89
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果证书回复是一个证书链，你只需要链中的顶层证书 -- "根" CA 证书，用于验证该 CA 的公钥。
+- en: If the certificate reply is a single certificate, you need a certificate for
+    the issuing CA (the one that signed it). If that certificate is not self-signed,
+    you need a certificate for its signer, and so on, up to a self-signed "root" CA
+    certificate.
+  id: totrans-90
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果证书回复是单个证书，你需要签发它的 CA 的证书。如果该证书不是自签名的，你需要其签发者的证书，依此类推，直到自签名的"根" CA 证书。
+- en: The `cacerts` file represents a system-wide keystore with CA certificates. This
+    file resides in the JRE security properties directory, `*java.home*/lib/security`,
+    where *java.home* is the JRE installation directory.
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`cacerts`文件代表一个系统范围的带有 CA 证书的密钥库。该文件位于 JRE 安全属性目录`*java.home*/lib/security`中，其中*java.home*是
+    JRE 安装目录。'
+- en: '* * *'
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**IMPORTANT: Verify Your `cacerts` File**'
+  id: totrans-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**重要提示：验证你的`cacerts`文件**'
+- en: Since you trust the CAs in the `cacerts` file as entities for signing and issuing
+    certificates to other entities, you must manage the `cacerts` file carefully.
+    The `cacerts` file should contain only certificates of the CAs you trust. It is
+    your responsibility to verify the trusted root CA certificates bundled in the
+    `cacerts` file and make your own trust decisions. To remove an untrusted CA certificate
+    from the `cacerts` file, use the delete option of the `keytool` command. You can
+    find the `cacerts` file in the JRE installation directory. Contact your system
+    administrator if you do not have permission to edit this file.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于你信任`cacerts`文件中的 CA 作为签署和颁发证书给其他实体的实体，你必须仔细管理`cacerts`文件。`cacerts`文件应只包含你信任的
+    CA 的证书。你有责任验证`cacerts`文件中捆绑的受信任根 CA 证书，并做出自己的信任决定。要从`cacerts`文件中删除一个不受信任的 CA 证书，使用`keytool`命令的删除选项。你可以在
+    JRE 安装目录中找到`cacerts`文件。如果没有权限编辑此文件，请联系系统管理员。
+- en: '* * *'
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The `cacerts` file contains a number of trusted CA certificates. If you sent
+    your CSR to one of these trusted vendors (such as VeriSign), you won't need to
+    import the vendor's root certificate as a trusted certificate in your keystore;
+    you can go on to the [next](#ImportReply) section to see how to import the certificate
+    reply from the CA.
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`cacerts`文件包含许多受信任的CA证书。如果您将您的CSR发送给了这些受信任的供应商之一（比如VeriSign），您就不需要将供应商的根证书作为受信任证书导入到您的密钥库中；您可以继续到[下一个](#ImportReply)部分，查看如何从CA导入证书回复。'
+- en: A certificate from a CA is usually either self-signed or signed by another CA,
+    in which case you also need a certificate authenticating that CA's public key.
+    Suppose that company ABC, Inc., is a CA and that you obtain a file named `ABCCA.cer`,
+    purportedly a self-signed certificate from ABC, authenticating that CA's public
+    key.
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从CA获得的证书通常是自签名的或者由另一个CA签名的，此时您还需要一个证书来验证该CA的公钥。假设ABC公司是一个CA，并且您获得了一个名为`ABCCA.cer`的文件，据称是来自ABC公司的自签名证书，用于验证该CA的公钥。
+- en: Be very careful to ensure that the certificate is valid prior to importing it
+    as a "trusted" certificate! View it first (using the `keytool` `-printcert` command
+    or the `keytool` `-import` command without the `-noprompt` option), and make sure
+    that the displayed certificate fingerprint(s) match the expected ones. You can
+    call the person who sent the certificate and compare the fingerprint(s) that you
+    see with the ones that they show or that a secure public key repository shows.
+    Only if the fingerprints are equal is it guaranteed that the certificate has not
+    been replaced in transit with somebody else's (for example, an attacker's) certificate.
+    If such an attack took place and you did not check the certificate before you
+    imported it, you would end up trusting anything the attacker has signed.
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在将证书导入为“受信任”证书之前，请务必确保证书是有效的！首先查看它（使用`keytool`的`-printcert`命令或者`keytool`的`-import`命令，不带`-noprompt`选项），并确保显示的证书指纹与预期的一致。您可以联系发送证书的人，并将您看到的指纹与他们展示的或者安全的公钥存储库展示的指纹进行比较。只有当指纹相等时，才能保证证书在传输过程中没有被替换为其他人（例如，攻击者）的证书。如果发生这样的攻击，并且您在导入证书之前没有检查证书，那么您将信任攻击者签署的任何内容。
+- en: 'If you trust that the certificate is valid, you can add it to your keystore
+    via a command such as the following:'
+  id: totrans-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您相信该证书是有效的，您可以通过类似以下命令将其添加到您的密钥库中：
+- en: '[PRE1]'
+  id: totrans-100
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This command creates a "trusted certificate" entry in the keystore whose name
+    is that specified in *storefile*. The entry contains the data from the file `ABCCA.cer`,
+    and it is assigned the specified alias.
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此命令在密钥库中创建一个名为*storefile*指定的“受信任证书”条目。该条目包含来自文件`ABCCA.cer`的数据，并分配指定的别名。
+- en: Importing the Certificate Reply from the CA
+  id: totrans-102
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 从CA导入证书回复
+- en: Once you've imported the required trusted certificate(s), as described in the
+    previous section, or they are already in your keystore or in the `cacerts` file,
+    you can import the certificate reply and thereby replace your self-signed certificate
+    with a certificate chain. This chain will be either the one returned by the CA
+    in response to your request (if the CA reply is a chain) or one constructed (if
+    the CA reply is a single certificate) by using the certificate reply and trusted
+    certificates that are already available in the keystore or in the `cacerts` keystore
+    file.
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦您已经导入了所需的受信任证书，就像前一节中描述的那样，或者它们已经存在于您的密钥库中或者在`cacerts`文件中，您可以导入证书回复，从而用证书链替换您的自签名证书。这个链将是CA对您的请求的回复中返回的（如果CA的回复是一个链）或者通过使用证书回复和已经在密钥库中或者`cacerts`密钥库文件中可用的受信任证书构建的（如果CA的回复是一个单一证书）。
+- en: 'As an example, suppose that you sent your certificate signing request to VeriSign.
+    You can then import the reply via the following, which assumes that the returned
+    certificate is in the file specified by *certReplyFile*:'
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 举例来说，假设您将您的证书签名请求发送给了VeriSign。然后您可以通过以下方式导入回复，假设返回的证书在*certReplyFile*指定的文件中：
+- en: '[PRE2]'
+  id: totrans-105
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Type this command on one line.
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在一行上输入此命令。
+- en: The certificate reply is validated by using trusted certificates from the keystore
+    and optionally by using the certificates configured in the `cacerts` keystore
+    file (if the `-trustcacerts` option is specified). Each certificate in the chain
+    is verified, using the certificate at the next level higher in the chain. You
+    need to trust only the top-level "root" CA certificate in the chain. If you do
+    not already trust the top-level certificate, `keytool` will display the fingerprint
+    of that certificate and ask you whether you want to trust it.
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 证书回复通过使用密钥库中的受信任证书进行验证，并可选择使用`cacerts`密钥库文件中配置的证书进行验证（如果指定了`-trustcacerts`选项）。每个链中的证书都会被验证，使用链中下一级别的证书。您只需要信任链中顶级的“根”CA证书。如果您尚未信任顶级证书，`keytool`将显示该证书的指纹，并询问您是否要信任它。
+- en: The new certificate chain of the specified (by *alias*) entry replaces the old
+    certificate (or chain) associated with this entry. The old chain can be replaced
+    only if a valid *keypass*, the password used to protect the private key of the
+    entry, is supplied. If no password is provided and if the private key password
+    is different from the keystore password, the user is prompted for it.
+  id: totrans-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定（通过*别名*）条目的新证书链将替换与该条目关联的旧证书（或链）。只有在提供有效的*keypass*，用于保护条目私钥的密码时，才能替换旧链。如果未提供密码，并且私钥密码与密钥库密码不同，则会提示用户输入。
+- en: 'For more detailed information about generating CSRs and importing certificate
+    replies, see the `keytool` documentation:'
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于生成证书签名请求（CSR）和导入证书回复的更详细信息，请参阅`keytool`文档：
+- en: '[keytool documentation with Windows examples](https://docs.oracle.com/javase/8/docs/technotes/tools/windows/keytool.html)'
+  id: totrans-110
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[带有Windows示例的keytool文档](https://docs.oracle.com/javase/8/docs/technotes/tools/windows/keytool.html)'
+- en: '[keytool documentation with UNIX examples](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html)'
+  id: totrans-111
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[带有UNIX示例的keytool文档](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html)'

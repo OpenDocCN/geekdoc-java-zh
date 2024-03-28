@@ -1,0 +1,160 @@
+- en: 'Questions and Exercises: Interfaces'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习：接口
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/QandE/questions.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/QandE/questions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/QandE/questions.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/QandE/questions.html)
+- en: Questions
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 问题
+- en: At the beginning of this lesson, you learned that the core collection interfaces
+    are organized into two distinct inheritance trees. One interface in particular
+    is not considered to be a true `Collection`, and therefore sits at the top of
+    its own tree. What is the name of this interface?
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在本课程的开始，您了解到核心集合接口被组织成两个不同的继承树。特别是一个接口被认为不是真正的`Collection`，因此位于自己的树的顶部。这个接口的名称是什么？
+- en: Each interface in the collections framework is declared with the `<E>` syntax,
+    which tells you that it is generic. When you declare a `Collection` instance,
+    what is the advantage of specifying the type of objects that it will contain?
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 集合框架中的每个接口都使用`<E>`语法声明，告诉您它是泛型的。当您声明一个`Collection`实例时，指定它将包含的对象类型有什么优势？
+- en: What interface represents a collection that does not allow duplicate elements?
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 什么接口代表不允许重复元素的集合？
+- en: What interface forms the root of the collections hierarchy?
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 什么接口形成了集合层次结构的根？
+- en: What interface represents an ordered collection that may contain duplicate elements?
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 什么接口代表可能包含重复元素的有序集合？
+- en: What interface represents a collection that holds elements prior to processing?
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 什么接口代表在处理之前保存元素的集合？
+- en: What interface represents a type that maps keys to values?
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 什么接口代表将键映射到值的类型？
+- en: What interface represents a double-ended queue?
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 什么接口代表双端队列？
+- en: Name three different ways to iterate over the elements of a `List`.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 列出遍历`List`元素的三种不同方法。
+- en: 'True or False: Aggregate operations are mutative operations that modify the
+    underlying collection.'
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 真或假：聚合操作是修改基础集合的变异操作。
+- en: Exercises
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 练习
+- en: Write a program that prints its arguments in random order. Do not make a copy
+    of the argument array. Demonstrate how to print out the elements using both streams
+    and the traditional enhanced for statement.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编写一个以随机顺序打印其参数的程序。不要复制参数数组。演示如何使用流和传统的增强for语句打印元素。
+- en: Take the [`FindDups`](../examples/FindDups.java) example and modify it to use
+    a `SortedSet` instead of a `Set`. Specify a `Comparator` so that case is ignored
+    when sorting and identifying set elements.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 取[`FindDups`](../examples/FindDups.java)示例，并修改它以使用`SortedSet`而不是`Set`。指定一个`Comparator`，以便在排序和识别集合元素时忽略大小写。
+- en: Write a method that takes a `List<String>` and applies [`String.trim`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#trim--)
+    to each element.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编写一个方法，接受一个`List<String>`并对每个元素应用[`String.trim`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#trim--)。
+- en: Consider the four core interfaces, `Set`, `List`, `Queue`, and `Map`. For each
+    of the following four assignments, specify which of the four core interfaces is
+    best-suited, and explain how to use it to implement the assignment.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 考虑四个核心接口，`Set`、`List`、`Queue`和`Map`。对于以下四个任务中的每一个，指定哪个核心接口最适合，并解释如何使用它来实现任务。
+- en: Whimsical Toys Inc (WTI) needs to record the names of all its employees. Every
+    month, an employee will be chosen at random from these records to receive a free
+    toy.
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: Whimsical Toys Inc（WTI）需要记录所有员工的姓名。每个月，将从这些记录中随机选择一个员工以获得免费玩具。
+- en: WTI has decided that each new product will be named after an employee but only
+    first names will be used, and each name will be used only once. Prepare a list
+    of unique first names.
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: WTI已决定每个新产品都将以员工的名字命名，但只使用名字的第一个字母，并且每个名字只能使用一次。准备一个独特的名字列表。
+- en: WTI decides that it only wants to use the most popular names for its toys. Count
+    up the number of employees who have each first name.
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: WTI决定只想使用最受欢迎的名字来命名其玩具。统计每个名字的员工数量。
+- en: WTI acquires season tickets for the local lacrosse team, to be shared by employees.
+    Create a waiting list for this popular sport.
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: WTI为当地的长曲棍球队购买季票，将由员工共享。为这项受欢迎的运动创建一个等待名单。
+- en: '[Check your answers.](answers.html)'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[检查你的答案。](answers.html)'

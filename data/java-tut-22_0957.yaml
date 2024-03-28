@@ -1,0 +1,184 @@
+- en: The Fine Print
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 细则
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/fineprint.html](https://docs.oracle.com/javase/tutorial/extra/generics/fineprint.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 译文：[https://docs.oracle.com/javase/tutorial/extra/generics/fineprint.html](https://docs.oracle.com/javase/tutorial/extra/generics/fineprint.html)
+- en: A Generic Class is Shared by All Its Invocations
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个泛型类被所有调用共享
+- en: What does the following code fragment print?
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段打印什么？
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: You might be tempted to say `false`, but you'd be wrong. It prints `true`, because
+    all instances of a generic class have the same run-time class, regardless of their
+    actual type parameters.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能会倾向于说`false`，但你会错。它打印`true`，因为泛型类的所有实例具有相同的运行时类，而不考虑它们的实际类型参数。
+- en: Indeed, what makes a class generic is the fact that it has the same behavior
+    for all of its possible type parameters; the same class can be viewed as having
+    many different types.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际上，使类成为泛型的是它对所有可能的类型参数具有相同行为的事实；同一个类可以被视为具有许多不同的类型。
+- en: As consequence, the static variables and methods of a class are also shared
+    among all the instances. That is why it is illegal to refer to the type parameters
+    of a type declaration in a static method or initializer, or in the declaration
+    or initializer of a static variable.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，类的静态变量和方法也被所有实例共享。这就是为什么在静态方法或初始化程序中引用类型声明的类型参数，或在静态变量的声明或初始化程序中引用类型参数是非法的原因。
+- en: Casts and InstanceOf
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 强制转换和InstanceOf
+- en: 'Another implication of the fact that a generic class is shared among all its
+    instances, is that it usually makes no sense to ask an instance if it is an instance
+    of a particular invocation of a generic type:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 泛型类被所有实例共享的事实的另一个含义是，通常没有意义询问一个实例是否是泛型类型的特定调用的实例：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: similarly, a cast such as
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，像这样的强制转换
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: gives an unchecked warning, since this isn't something the runtime system is
+    going to check for you.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 给出一个未经检查的警告，因为这不是运行时系统会为你检查的内容。
+- en: The same is true of type variables
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类型变量也是如此
+- en: '[PRE3]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Type variables don't exist at run time. This means that they entail no performance
+    overhead in either time nor space, which is nice. Unfortunately, it also means
+    that you can't reliably use them in casts.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类型变量在运行时不存在。这意味着它们在时间和空间上都没有性能开销，这很好。不幸的是，这也意味着你不能可靠地在强制转换中使用它们。
+- en: Arrays
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 数组
+- en: The component type of an array object may not be a type variable or a parameterized
+    type, unless it is an (unbounded) wildcard type.You can declare array *types*
+    whose element type is a type variable or a parameterized type, but not array *objects*.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除非是（无界）通配符类型，否则数组对象的组件类型可能不是类型变量或参数化类型。你可以声明元素类型为类型变量或参数化类型的数组*类型*，但不能声明数组*对象*。
+- en: 'This is annoying, to be sure. This restriction is necessary to avoid situations
+    like:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这确实很烦人。这个限制是必要的，以避免出现这样的情况：
+- en: '[PRE4]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: If arrays of parameterized type were allowed, the previous example would compile
+    without any unchecked warnings, and yet fail at run-time. We've had type-safety
+    as a primary design goal of generics. In particular, the language is designed
+    to guarantee that **if your entire application has been compiled without unchecked
+    warnings using `javac -source 1.5`, it is type safe**.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果允许参数化类型的数组，前面的例子将在没有任何未经检查警告的情况下编译，并在运行时失败。我们将类型安全作为泛型的主要设计目标。特别是，该语言被设计为保证**如果整个应用程序使用`javac
+    -source 1.5`编译时没有未经检查的警告，那么它是类型安全的**。
+- en: However, you can still use wildcard arrays. The following variation on the previous
+    code forgoes the use of both array objects and array types whose element type
+    is parameterized. As a result, we have to cast explicitly to get a `String` out
+    of the array.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，你仍然可以使用通配符数组。前面代码的以下变体放弃了使用数组对象和元素类型为参数化的数组类型。因此，我们必须显式转换才能从数组中获取`String`。
+- en: '[PRE5]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: In the next variation, which causes a compile-time error, we refrain from creating
+    an array object whose element type is parameterized, but still use an array type
+    with a parameterized element type.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在下一个变体中，会导致编译时错误，我们避免创建元素类型为参数化的数组对象，但仍然使用具有参数化元素类型的数组类型。
+- en: '[PRE6]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'Similarly, attempting to create an array object whose element type is a type
+    variable causes a compile-time error:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，尝试创建元素类型为类型变量的数组对象会导致编译时错误：
+- en: '[PRE7]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Since type variables don't exist at run time, there is no way to determine what
+    the actual array type would be.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于类型变量在运行时不存在，无法确定实际的数组类型。
+- en: The way to work around these kinds of limitations is to use class literals as
+    run time type tokens, as described in the next section, [Class Literals as Runtime-Type
+    Tokens](literals.html).
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 解决这类限制的方法是使用类字面量作为运行时类型标记，如下一节所述，[类字面量作为运行时类型标记](literals.html)。

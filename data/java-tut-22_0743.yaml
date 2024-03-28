@@ -1,0 +1,147 @@
+- en: Architecture of the JMX Technology
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: JMX 技术的架构
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jmx/overview/architecture.html](https://docs.oracle.com/javase/tutorial/jmx/overview/architecture.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jmx/overview/architecture.html](https://docs.oracle.com/javase/tutorial/jmx/overview/architecture.html)
+- en: 'The JMX technology can be divided into three levels, as follows:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JMX 技术可以分为三个级别，如下：
+- en: Instrumentation
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 仪器化
+- en: JMX agent
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: JMX 代理
+- en: Remote management
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 远程管理
+- en: Instrumentation
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 仪器化
+- en: To manage resources using the JMX technology, you must first instrument the
+    resources in the Java programming language. You use Java objects known as *MBeans*
+    to implement the access to the resources' instrumentation. MBeans must follow
+    the design patterns and interfaces defined in the JMX specification. Doing so
+    ensures that all MBeans provide managed resource instrumentation in a standardized
+    way. In addition to standard MBeans, the JMX specification also defines a special
+    type of MBean called an *MXBean*. An MXBean is an MBean that references only a
+    pre-defined set of data types. Other types of MBean exist, but this trail will
+    concentrate on standard MBeans and MXBeans.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用 JMX 技术管理资源，必须首先使用 Java 编程语言对资源进行仪器化。您使用称为 *MBeans* 的 Java 对象来实现对资源仪器化的访问。MBeans
+    必须遵循 JMX 规范中定义的设计模式和接口。这样做可以确保所有 MBeans 以标准化的方式提供受管理资源的仪器化。除了标准 MBeans 外，JMX 规范还定义了一种特殊类型的
+    MBean，称为 *MXBean*。MXBean 是仅引用预定义数据类型的 MBean。还有其他类型的 MBean，但本文将集中讨论标准 MBeans 和
+    MXBeans。
+- en: Once a resource has been instrumented by MBeans, it can be managed through a
+    JMX agent. MBeans do not require knowledge of the JMX agent with which they will
+    operate.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦资源被 MBeans 仪器化，就可以通过 JMX 代理进行管理。MBeans 不需要了解它们将操作的 JMX 代理。
+- en: MBeans are designed to be flexible, simple, and easy to implement. Developers
+    of applications, systems, and networks can make their products manageable in a
+    standard way without having to understand or invest in complex management systems.
+    Existing resources can be made manageable with minimum effort.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: MBeans 被设计为灵活、简单且易于实现。应用程序、系统和网络的开发人员可以使其产品以标准方式可管理，而无需了解或投资于复杂的管理系统。现有资源可以通过最小的努力变得可管理。
+- en: In addition, the instrumentation level of the JMX specification provides a notification
+    mechanism. This mechanism enables MBeans to generate and propagate notification
+    events to components of the other levels.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，JMX 规范的仪器化级别提供了通知机制。该机制使 MBeans 能够生成和传播通知事件给其他级别的组件。
+- en: JMX Agent
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: JMX 代理
+- en: A JMX technology-based agent (JMX agent) is a standard management agent that
+    directly controls resources and makes them available to remote management applications.
+    JMX agents are usually located on the same machine as the resources they control,
+    but this arrangement is not a requirement.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基于 JMX 技术的代理（JMX 代理）是一个标准的管理代理，直接控制资源并使其可供远程管理应用程序使用。JMX 代理通常位于控制资源的同一台机器上，但这并不是必需的。
+- en: The core component of a JMX agent is the **MBean server**, a managed object
+    server in which MBeans are registered. A JMX agent also includes a set of services
+    to manage MBeans, and at least one communications adaptor or connector to allow
+    access by a management application.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JMX 代理的核心组件是**MBean 服务器**，一个注册 MBeans 的受管理对象服务器。JMX 代理还包括一组服务来管理 MBeans，并至少一个通信适配器或连接器，以允许管理应用程序访问。
+- en: When you implement a JMX agent, you do not need to know the semantics or functions
+    of the resources that it will manage. In fact, a JMX agent does not even need
+    to know which resources it will serve because any resource instrumented in compliance
+    with the JMX specification can use any JMX agent that offers the services that
+    the resource requires. Similarly, the JMX agent does not need to know the functions
+    of the management applications that will access it.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您实现一个 JMX 代理时，不需要了解它将管理的资源的语义或功能。事实上，JMX 代理甚至不需要知道它将服务的资源，因为任何按照 JMX 规范进行仪器化的资源都可以使用任何提供资源所需服务的
+    JMX 代理。同样，JMX 代理也不需要知道将访问它的管理应用程序的功能。
+- en: Remote Management
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 远程管理
+- en: JMX technology instrumentation can be accessed in many different ways, either
+    through existing management protocols such as the Simple Network Management Protocol
+    (SNMP) or through proprietary protocols. The MBean server relies on protocol adaptors
+    and connectors to make a JMX agent accessible from management applications outside
+    the agent's Java Virtual Machine (Java VM).
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JMX 技术仪器化可以通过许多不同的方式访问，可以通过现有的管理协议，如简单网络管理协议（SNMP）或专有协议来访问。 MBean 服务器依赖于协议适配器和连接器，使得
+    JMX 代理可以从代理的 Java 虚拟机（Java VM）外部的管理应用程序访问。
+- en: Each adaptor provides a view through a specific protocol of all MBeans that
+    are registered in the MBean server. For example, an HTML adaptor could display
+    an MBean in a browser.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个适配器通过特定协议提供了在 MBean 服务器中注册的所有 MBeans 的视图。例如，HTML 适配器可以在浏览器中显示一个 MBean。
+- en: Connectors provide a manager-side interface that handles the communication between
+    manager and JMX agent. Each connector provides the same remote management interface
+    through a different protocol. When a remote management application uses this interface,
+    it can connect to a JMX agent transparently through the network, regardless of
+    the protocol. The JMX technology provides a standard solution for exporting JMX
+    technology instrumentation to remote applications based on Java Remote Method
+    Invocation (Java RMI).
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 连接器提供了一个管理端接口，处理管理者和 JMX 代理之间的通信。每个连接器通过不同的协议提供相同的远程管理接口。当远程管理应用程序使用此接口时，它可以通过网络透明地连接到
+    JMX 代理，而不受协议的限制。 JMX 技术提供了一种标准解决方案，用于基于 Java 远程方法调用（Java RMI）将 JMX 技术仪器化导出到远程应用程序。

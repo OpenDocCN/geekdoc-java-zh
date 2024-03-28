@@ -1,0 +1,120 @@
+- en: How to Write an Undoable Edit Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写可撤销编辑监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/undoableeditlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/undoableeditlistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/undoableeditlistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/undoableeditlistener.html)
+- en: Undoable edit events occur when an operation that can be undone occurs on a
+    component. Currently, only text components fire undoable edit events, and then
+    only indirectly. The text component's document fires the events. For text components,
+    undoable operations include inserting characters, deleting characters, and modifying
+    the style of text. Programs typically listen to undoable edit events to assist
+    in the implementation of undo and redo commands.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当组件上发生可撤销操作时，会触发可撤销编辑事件。目前，只有文本组件间接触发可撤销编辑事件。文本组件的文档会触发这些事件。对于文本组件，可撤销操作包括插入字符、删除字符和修改文本样式。程序通常监听可撤销编辑事件以帮助实现撤销和重做命令。
+- en: Here is the undoable edit event handling code from an application called `TextComponentDemo`.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是来自名为`TextComponentDemo`的应用程序的可撤销编辑事件处理代码。
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: You can find a link to the source file for `TextComponentDemo` in the [example
+    index for Using Swing Components](../examples/components/index.html#TextComponentDemo).
+    For a discussion about the undoable edit listener aspect of the program see [Implementing
+    Undo and Redo](../components/generaltext.html#undo)
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在[使用 Swing 组件示例索引](../examples/components/index.html#TextComponentDemo)中找到`TextComponentDemo`的源文件链接。有关程序中可撤销编辑监听器方面的讨论，请参阅[实现撤销和重做](../components/generaltext.html#undo)
+- en: The Undoable Edit Listener API
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 可撤销编辑监听器 API
+- en: The UndoableEditListener Interface
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可撤销编辑监听器接口
+- en: '*Because `UndoableEditListener` has only one method, it has no corresponding
+    adapter class.*'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*因为`UndoableEditListener`只有一个方法，所以没有相应的适配器类。*'
+- en: '| Method | Purpose |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [undoableEditHappened(UndoableEditEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/UndoableEditListener.html#undoableEditHappened-javax.swing.event.UndoableEditEvent-)
+    | Called when an undoable event occurs on the listened-to component. |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| [undoableEditHappened(UndoableEditEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/UndoableEditListener.html#undoableEditHappened-javax.swing.event.UndoableEditEvent-)
+    | 当监听的组件上发生可撤销事件时调用。 |'
+- en: The UndoableEditEvent Class
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可撤销编辑事件类
+- en: '| Method | Purpose |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*in `java.util.EventObject`*) | Return the object that fired the event. |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*在 `java.util.EventObject` 中*) | 返回触发事件的对象。 |'
+- en: '| [UndoableEdit getEdit()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/UndoableEditEvent.html#getEdit--)
+    | Returns an [`UndoableEdit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/undo/UndoableEdit.html)
+    object that represents the edit that occurred and contains information about and
+    commands for undoing or redoing the edit. |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| [UndoableEdit getEdit()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/UndoableEditEvent.html#getEdit--)
+    | 返回一个表示发生的编辑并包含有关撤消或重做编辑的信息和命令的[`UndoableEdit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/undo/UndoableEdit.html)对象。
+    |'
+- en: Examples that Use Undoable Edit Listeners
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用可撤销编辑监听器的示例
+- en: The following table lists the examples that use undoable edit listeners.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了使用可撤销编辑监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`TextComponentDemo`](../examples/components/index.html#TextComponentDemo)
+    | [Implementing Undo and Redo](../components/generaltext.html#undo) | Implements
+    undo and redo on a text pane with help from an undoable edit listener. |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextComponentDemo`](../examples/components/index.html#TextComponentDemo)
+    | [实现撤销和重做](../components/generaltext.html#undo) | 使用可撤销编辑监听器在文本窗格上实现撤销和重做。 |'

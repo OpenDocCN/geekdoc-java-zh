@@ -1,0 +1,81 @@
+- en: 'Lesson: Concurrency in Swing'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：Swing 中的并发
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html](https://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html](https://docs.oracle.com/javase/tutorial/uiswing/concurrency/index.html)
+- en: '[Examples Index](../examples/concurrency/index.html)'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[示例索引](../examples/concurrency/index.html)'
+- en: This lesson discusses concurrency as it applies to Swing programming. It assumes
+    that you are already familiar with the content of the [Concurrency](../../essential/concurrency/index.html)
+    lesson in the [Essential Java Classes](../../essential/index.html) trail.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程讨论了并发如何应用于 Swing 编程。它假定您已经熟悉[Essential Java Classes](../../essential/index.html)路径中[Concurrency](../../essential/concurrency/index.html)课程的内容。
+- en: Careful use of concurrency is particularly important to the Swing programmer.
+    A well-written Swing program uses concurrency to create a user interface that
+    never "freezes" — the program is always responsive to user interaction, no matter
+    what it's doing. To create a responsive program, the programmer must learn how
+    the Swing framework employs threads.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 慎重使用并发对于 Swing 程序员尤为重要。一个编写良好的 Swing 程序利用并发创建一个用户界面，永远不会“冻结” —— 无论正在做什么，程序始终对用户交互做出响应。为了创建一个响应灵敏的程序，程序员必须了解
+    Swing 框架如何使用线程。
+- en: 'A Swing programmer deals with the following kinds of threads:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing 程序员处理以下类型的线程：
+- en: '*Initial threads*, the threads that execute initial application code.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*初始线程*，执行初始应用程序代码的线程。'
+- en: The *event dispatch thread*, where all event-handling code is executed. Most
+    code that interacts with the Swing framework must also execute on this thread.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*事件分发线程*，执行所有事件处理代码。大多数与 Swing 框架交互的代码也必须在此线程上执行。'
+- en: '*Worker threads*, also known as *background threads*, where time-consuming
+    background tasks are executed.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*工作线程*，也称为*后台线程*，执行耗时的后台任务。'
+- en: 'The programmer does not need to provide code that explicitly creates these
+    threads: they are provided by the runtime or the Swing framework. The programmer''s
+    job is to utilize these threads to create a responsive, maintainable Swing program.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 程序员不需要提供明确创建这些线程的代码：它们由运行时或 Swing 框架提供。程序员的工作是利用这些线程创建一个响应灵敏、易于维护的 Swing 程序。
+- en: Like any other program running on the Java platform, a Swing program can create
+    additional threads and thread pools, using the tools described in the Concurrency
+    lesson. But for basic Swing programs the threads described here are sufficient.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与在 Java 平台上运行的任何其他程序一样，Swing 程序可以使用并发课程中描述的工具创建额外的线程和线程池。但是对于基本的 Swing 程序，这里描述的线程就足够了。
+- en: This lesson discusses each of the three kinds of threads in turn. Worker threads
+    require the most discussion because tasks that run on them are created using `javax.swing.SwingWorker`.
+    This class has many useful features, including communication and coordination
+    between worker thread tasks and the tasks on other threads.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程依次讨论了三种线程。工作线程需要更多讨论，因为在其上运行的任务是使用`javax.swing.SwingWorker`创建的。这个类具有许多有用的功能，包括工作线程任务与其他线程上的任务之间的通信和协调。

@@ -1,0 +1,708 @@
+- en: '"Hello World!" for the NetBeans IDE'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: “Hello World!” 适用于 NetBeans IDE
+- en: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/cupojava/netbeans.html](https://docs.oracle.com/javase/tutorial/getStarted/cupojava/netbeans.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/getStarted/cupojava/netbeans.html](https://docs.oracle.com/javase/tutorial/getStarted/cupojava/netbeans.html)
+- en: It's time to write your first application! These detailed instructions are for
+    users of the NetBeans IDE. The NetBeans IDE runs on the Java platform, which means
+    that you can use it with any operating system for which there is a JDK available.
+    These operating systems include Microsoft Windows, Solaris OS, Linux, and Mac
+    OS X.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是时候编写您的第一个应用程序了！这些详细说明适用于 NetBeans IDE 的用户。NetBeans IDE 运行在 Java 平台上，这意味着您可以在任何有
+    JDK 可用的操作系统上使用它。这些操作系统包括 Microsoft Windows、Solaris OS、Linux 和 Mac OS X。
+- en: '[A Checklist](#netbeans-1)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[一个清单](#netbeans-1)'
+- en: '[Creating Your First Application](#netbeans-2)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建您的第一个应用程序](#netbeans-2)'
+- en: '[Create an IDE Project](#netbeans-2a)'
+  id: totrans-5
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建一个 IDE 项目](#netbeans-2a)'
+- en: '[Add JDK 8 to the Platform List (if necessary)](#netbeans-jdk)'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将 JDK 8 添加到平台列表（如果需要）](#netbeans-jdk)'
+- en: '[Add Code to the Generated Source File](#netbeans-2b)'
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[向生成的源文件添加代码](#netbeans-2b)'
+- en: '[Compile the Source File](#netbeans-2c)'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[编译源文件](#netbeans-2c)'
+- en: '[Run the Program](#netbeans-2d)'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[运行程序](#netbeans-2d)'
+- en: '[Continuing the Tutorial with the NetBeans IDE](#netbeans-3)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 NetBeans IDE 继续教程](#netbeans-3)'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: A Checklist  ![a checkmark](../Images/ae285209df9792caff36016a53cd305f.png)
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个清单  ![一个勾选标记](../Images/ae285209df9792caff36016a53cd305f.png)
+- en: 'To write your first program, you''ll need:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编写您的第一个程序，您需要：
+- en: The Java SE Development Kit (JDK 7 has been selected in this example)
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: Java SE 开发工具包（此示例中选择了 JDK 7）
+- en: 'For Microsoft Windows, Solaris OS, and Linux: [Java SE Downloads Index](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    page'
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于 Microsoft Windows、Solaris OS 和 Linux：[Java SE 下载索引](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    页面
+- en: 'For Mac OS X: [developer.apple.com](https://developer.apple.com/)'
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于 Mac OS X：[developer.apple.com](https://developer.apple.com/)
+- en: The NetBeans IDE
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: NetBeans IDE
+- en: 'For all platforms: [NetBeans IDE Downloads Index](http://netbeans.org/downloads/index.html)
+    page'
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于所有平台：[NetBeans IDE 下载索引](http://netbeans.org/downloads/index.html) 页面
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Creating Your First Application
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建您的第一个应用程序
+- en: 'Your first application, `HelloWorldApp`, will simply display the greeting "Hello
+    World!" To create this program, you will:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您的第一个应用程序`HelloWorldApp`将简单地显示问候语“Hello World!” 要创建此程序，您将：
+- en: Create an IDE project
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建一个 IDE 项目
+- en: When you create an IDE project, you create an environment in which to build
+    and run your applications. Using IDE projects eliminates configuration issues
+    normally associated with developing on the command line. You can build or run
+    your application by choosing a single menu item within the IDE.
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 创建 IDE 项目时，您创建了一个环境，用于构建和运行应用程序。使用 IDE 项目可以消除通常与在命令行上开发相关的配置问题。您可以通过在 IDE 中选择单个菜单项来构建或运行应用程序。
+- en: Add code to the generated source file
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 向生成的源文件添加代码
+- en: A source file contains code, written in the Java programming language, that
+    you and other programmers can understand. As part of creating an IDE project,
+    a skeleton source file will be automatically generated. You will then modify the
+    source file to add the "Hello World!" message.
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 源文件包含用 Java 编程语言编写的代码，您和其他程序员可以理解。作为创建 IDE 项目的一部分，将自动生成一个骨架源文件。然后，您将修改源文件以添加“Hello
+    World!” 信息。
+- en: Compile the source file into a .class file
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 编译源文件为 .class 文件
+- en: The IDE invokes the Java programming language *compiler* `(javac)`, which takes
+    your source file and translates its text into instructions that the Java virtual
+    machine can understand. The instructions contained within this file are known
+    as *bytecodes*.
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: IDE 调用 Java 编程语言*编译器*（`javac`），它接受您的源文件并将其文本翻译为 Java 虚拟机可以理解的指令。该文件中包含的指令称为*字节码*。
+- en: Run the program
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 运行程序
+- en: The IDE invokes the Java application *launcher tool* (`java`), which uses the
+    Java virtual machine to run your application.
+  id: totrans-29
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: IDE 调用 Java 应用程序*启动器工具*（`java`），该工具使用 Java 虚拟机来运行您的应用程序。
+- en: Create an IDE Project
+  id: totrans-30
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 创建一个 IDE 项目
+- en: 'To create an IDE project:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建一个 IDE 项目：
+- en: Launch the NetBeans IDE.
+  id: totrans-32
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 运行程序
+- en: On Microsoft Windows systems, you can use the NetBeans IDE item in the Start
+    menu.
+  id: totrans-33
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在 Microsoft Windows 系统上，您可以在“开始”菜单中使用 NetBeans IDE 项目。
+- en: On Solaris OS and Linux systems, you execute the IDE launcher script by navigating
+    to the IDE's `bin` directory and typing `./netbeans.`
+  id: totrans-34
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: �� Solaris OS 和 Linux 系统上，您可以通过导航到 IDE 的 `bin` 目录并输入 `./netbeans` 来执行 IDE 启动脚本。
+- en: On Mac OS X systems, click the NetBeans IDE application icon.
+  id: totrans-35
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在 Mac OS X 系统上，单击 NetBeans IDE 应用程序图标。
+- en: In the NetBeans IDE, choose **File** | **New Project...**.
+  id: totrans-36
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在 NetBeans IDE 中，选择**文件** | **新建项目...**。
+- en: '![NetBeans IDE with the File | New Project menu item selected.](../Images/c0ffd8dfc86bf76e1433e02d68b3680e.png)'
+  id: totrans-37
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![NetBeans IDE，文件 | 新建项目 菜单项已选择。](../Images/c0ffd8dfc86bf76e1433e02d68b3680e.png)'
+- en: NetBeans IDE with the File | New Project menu item selected.
+  id: totrans-38
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: NetBeans IDE，文件 | 新建项目 菜单项已选择。
+- en: 'In the **New Project** wizard, expand the **Java** category and select **Java
+    Application** as shown in the following figure:'
+  id: totrans-39
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在**新建项目**向导中，展开**Java**类别，并选择**Java 应用程序**，如下图所示：
+- en: '![NetBeans IDE, New Project wizard, Choose Project page.](../Images/95d2be1e89e211123a3933e9ef199fd6.png)'
+  id: totrans-40
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![NetBeans IDE，新项目向导，选择项目页面。](../Images/95d2be1e89e211123a3933e9ef199fd6.png)'
+- en: NetBeans IDE, New Project wizard, Choose Project page.
+  id: totrans-41
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: NetBeans IDE，新项目向导，选择项目页面。
+- en: 'In the **Name and Location** page of the wizard, do the following (as shown
+    in the figure below):'
+  id: totrans-42
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在向导的**名称和位置**页面中，执行以下操作（如下图所示）：
+- en: In the **Project Name** field, type `Hello World App`.
+  id: totrans-43
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在**项目名称**字段中，输入`Hello World App`。
+- en: In the **Create Main Class** field, type `helloworldapp.HelloWorldApp`.
+  id: totrans-44
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在**创建主类**字段中，输入`helloworldapp.HelloWorldApp`。
+- en: '![NetBeans IDE, New Project wizard, Name and Location page.](../Images/b41788b06035ecdca48bdaed9f17a5b0.png)'
+  id: totrans-45
+  prefs:
+  - PREF_IND
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![NetBeans IDE，新项目向导，名称和位置页面。](../Images/b41788b06035ecdca48bdaed9f17a5b0.png)'
+- en: NetBeans IDE, New Project wizard, Name and Location page.
+  id: totrans-46
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: NetBeans IDE，新项目向导，名称和位置页面。
+- en: Click Finish.
+  id: totrans-47
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击完成。
+- en: 'The project is created and opened in the IDE. You should see the following
+    components:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 项目已创建并在 IDE 中打开。您应该看到以下组件：
+- en: The **Projects** window, which contains a tree view of the components of the
+    project, including source files, libraries that your code depends on, and so on.
+  id: totrans-49
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**项目**窗口，其中包含项目组件的树视图，包括源文件、代码依赖的库等。'
+- en: The **Source Editor** window with a file called `HelloWorldApp.java` open.
+  id: totrans-50
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 打开 NetBeans IDE。
+- en: The **Navigator** window, which you can use to quickly navigate between elements
+    within the selected class.
+  id: totrans-51
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**导航器**窗口，您可以使用它快速在所选类中的元素之间导航。'
+- en: '![NetBeans IDE with the HelloWorldApp project open.](../Images/0419089914f4000cc8ca39f02dd1987f.png)'
+  id: totrans-52
+  prefs:
+  - PREF_IND
+  type: TYPE_IMG
+  zh: '![打开 HelloWorldApp 项目的 NetBeans IDE。](../Images/0419089914f4000cc8ca39f02dd1987f.png)'
+- en: NetBeans IDE with the HelloWorldApp project open.
+  id: totrans-53
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 打开的 NetBeans IDE 与 HelloWorldApp 项目。
+- en: '* * *'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Add JDK 8 to the Platform List (if necessary)
+  id: totrans-55
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 将 JDK 8 添加到平台列表（如果需要）
+- en: 'It may be necessary to add JDK 8 to the IDE''s list of available platforms.
+    To do this, choose Tools | Java Platforms as shown in the following figure:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可能需要将 JDK 8 添加到 IDE 的可用平台列表中。要执行此操作，请选择工具 | Java 平台，如下图所示：
+- en: '![Selecting the Java Platform Manager from the Tools Menu](../Images/09b0ef3cbe884296791e384a67401a68.png)'
+  id: totrans-57
+  prefs: []
+  type: TYPE_IMG
+  zh: '![从工具菜单中选择 Java 平台管理器](../Images/09b0ef3cbe884296791e384a67401a68.png)'
+- en: Selecting the Java Platform Manager from the Tools Menu
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从工具菜单中选择 Java 平台管理器
+- en: 'If you don''t see JDK 8 (which might appear as 1.8 or 1.8.0) in the list of
+    installed platforms, click **Add Platform**, navigate to your JDK 8 install directory,
+    and click **Finish**. You should now see this newly added platform:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在已安装平台列表中看不到 JDK 8（可能显示为 1.8 或 1.8.0），请单击**添加平台**，导航到 JDK 8 安装目录，然后单击**完成**。现在您应该看到这个新添加的平台：
+- en: '![The Java Platform Manager from the Tools Menu](../Images/5a9ac9789ec8e366e3ae4f7d3b323aba.png)'
+  id: totrans-60
+  prefs: []
+  type: TYPE_IMG
+  zh: '![从工具菜单中选择 Java 平台管理器](../Images/5a9ac9789ec8e366e3ae4f7d3b323aba.png)'
+- en: The Java Platform Manager
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 平台管理器
+- en: To set this JDK as the default for all projects, you can run the IDE with the
+    `--jdkhome` switch on the command line, or by entering the path to the JDK in
+    the `netbeans_j2sdkhome` property of your `INSTALLATION_DIRECTORY/etc/netbeans.conf`
+    file.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '要将此 JDK 设置为所有项目的默认 JDK，您可以在命令行上使用 `--jdkhome` 开关运行 IDE，或者在 `INSTALLATION_DIRECTORY/etc/netbeans.conf`
+    文件的 `netbeans_j2sdkhome` 属性中输入 JDK 的路径。 '
+- en: 'To specify this JDK for the current project only, select **Hello World App**
+    in the **Projects** pane, choose **File** | **Project Properties (Hello World
+    App)**, click **Libraries**, then select **JDK 1.8** in the **Java Platform**
+    pulldown menu. You should see a screen similar to the following:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要为当前项目指定此 JDK，请在**项目**窗格中选择**Hello World App**，选择**文件** | **项目属性（Hello World
+    App）**，单击**库**，然后在**Java 平台**下拉菜单中选择**JDK 1.8**。您应该看到类似以下内容的屏幕：
+- en: '![](../Images/08ff1d9b92c3f6cbb6f7e506ada59738.png)'
+  id: totrans-64
+  prefs: []
+  type: TYPE_IMG
+  zh: '![](../Images/08ff1d9b92c3f6cbb6f7e506ada59738.png)'
+- en: The IDE is now configured for JDK 8.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: IDE 现在已配置为 JDK 8。
+- en: '* * *'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Add Code to the Generated Source File
+  id: totrans-67
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 向生成的源文件添加代码
+- en: 'When you created this project, you left the **Create Main Class** checkcbox
+    selected in the **New Project** wizard. The IDE has therefore created a skeleton
+    class for you. You can add the "Hello World!" message to the skeleton code by
+    replacing the line:'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在创建此项目时，在**新建项目**向导中保留了**创建主类**复选框。因此，IDE 已为您创建了一个骨架类。您可以通过替换以下行将“Hello World!”
+    信息添加到骨架代码中：
+- en: '[PRE0]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'with the line:'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用以下行：
+- en: '[PRE1]'
+  id: totrans-71
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Optionally, you can replace these four lines of generated code:'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可选地，您可以替换这四行生成的代码：
+- en: '[PRE2]'
+  id: totrans-73
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'with these lines:'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用以下行：
+- en: '[PRE3]'
+  id: totrans-75
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: These four lines are a code comment and do not affect how the program runs.
+    Later sections of this tutorial explain the use and format of code comments.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这四行是代码注释，不会影响程序的运行。本教程的后续部分将解释代码注释的用法和格式。
+- en: '**Be Careful When You Type** ![uppercase letter A](../Images/fe2a9efa9303e3a11008a371960c6958.png)  
+    ![lowercase letter A](../Images/35dfe1acb05615f4c50f882eefb02a10.png)'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**在输入时要小心** ![大写字母 A](../Images/fe2a9efa9303e3a11008a371960c6958.png)   ![小写字母
+    a](../Images/35dfe1acb05615f4c50f882eefb02a10.png)'
+- en: '* * *'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Type all code, commands, and file names exactly as shown. Both the
+    compiler (`javac`) and launcher (`java`) are *case-sensitive*, so you must capitalize
+    consistently.'
+  id: totrans-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**确保按照所示输入所有代码、命令和文件名。编译器（`javac`）和启动器（`java`）都是*区分大小写*的，因此您必须保持一致。'
+- en: '`HelloWorldApp` is *not* the same as `helloworldapp`.'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`HelloWorldApp`与`helloworldapp`*不同*。'
+- en: '* * *'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Save your changes by choosing **File** | **Save**.
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过选择**文件** | **保存**来保存您的更改。
+- en: 'The file should look something like the following:'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件���该看起来类似于以下内容：
+- en: '[PRE4]'
+  id: totrans-84
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Compile the Source File into a .class File
+  id: totrans-85
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 编译源文件为 .class 文件
+- en: To compile your source file, choose **Run** | **Build Project (Hello World App)**
+    from the IDE's main menu.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编译您的源文件，请从 IDE 的主菜单中选择**运行** | **构建项目（Hello World App）**。
+- en: 'The Output window opens and displays output similar to what you see in the
+    following figure:'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出窗口将打开并显示类似于以下图示的输出：
+- en: '![Output window showing results of building the HelloWorld project.](../Images/e8decfa2047fabddb275fd91c3c1c54e.png)'
+  id: totrans-88
+  prefs: []
+  type: TYPE_IMG
+  zh: '![输出窗口显示 HelloWorld 项目构建的结果。](../Images/e8decfa2047fabddb275fd91c3c1c54e.png)'
+- en: Output window showing results of building the HelloWorld project.
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 输出窗口显示 HelloWorld 项目构建的结果。
+- en: If the build output concludes with the statement `BUILD SUCCESSFUL`, congratulations!
+    You have successfully compiled your program!
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果构建输出以“构建成功”结束，则恭喜！您已成功编译了您的程序！
+- en: If the build output concludes with the statement `BUILD FAILED`, you probably
+    have a syntax error in your code. Errors are reported in the Output window as
+    hyperlinked text. You double-click such a hyperlink to navigate to the source
+    of an error. You can then fix the error and once again choose **Run** | **Build
+    Project**.
+  id: totrans-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果构建输出以“构建失败”结束，则您的代码中可能存在语法错误。错误将作为超链接文本显示在输出窗口中。双击此类超链接可导航到错误源。然后，您可以修复错误，再次选择**运行**
+    | **构建项目**。
+- en: When you build the project, the bytecode file `HelloWorldApp.class` is generated.
+    You can see where the new file is generated by opening the **Files** window and
+    expanding the **Hello World App/build/classes/helloworldapp** node as shown in
+    the following figure.
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 构建项目时，将生成字节码文件`HelloWorldApp.class`。您可以通过打开**文件**窗口并展开**Hello World App/build/classes/helloworldapp**节点来查看新文件生成的位置，如下图所示。
+- en: '![Files window, showing the generated .class file.](../Images/df783a70304e6e5c3a48c2789d2a099e.png)'
+  id: totrans-93
+  prefs: []
+  type: TYPE_IMG
+  zh: '![文件窗口，显示生成的.class文件。](../Images/df783a70304e6e5c3a48c2789d2a099e.png)'
+- en: Files window, showing the generated .class file.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件窗口，显示生成的`.class`文件。
+- en: Now that you have built the project, you can run your program.
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您已经构建了项目，可以运行您的程序。
+- en: Run the Program
+  id: totrans-96
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 运行程序
+- en: From the IDE's menu bar, choose **Run** | **Run Main Project**.
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从IDE的菜单栏中，选择**运行** | **运行主项目**。
+- en: The next figure shows what you should now see.
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下图显示了您现在应该看到的内容。
+- en: '![The program prints Hello World! to the Output window (along with other output
+    from the build script).](../Images/8cf0eea5d529b2d3acfc7fad763cfd90.png)'
+  id: totrans-99
+  prefs: []
+  type: TYPE_IMG
+  zh: '![程序将“Hello World！”打印到输出窗口（以及构建脚本的其他输出）。](../Images/8cf0eea5d529b2d3acfc7fad763cfd90.png)'
+- en: The program prints "Hello World!" to the Output window (along with other output
+    from the build script).
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 程序将“Hello World！”打印到输出窗口（以及构建脚本的其他输出）。
+- en: Congratulations! Your program works!
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 恭喜！您的程序正常运行！
+- en: Continuing the Tutorial with the NetBeans IDE
+  id: totrans-102
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用NetBeans IDE继续教程
+- en: 'The next few pages of the tutorial will explain the code in this simple application.
+    After that, the lessons go deeper into core language features and provide many
+    more examples. Although the rest of the tutorial does not give specific instructions
+    about using the NetBeans IDE, you can easily use the IDE to write and run the
+    sample code. The following are some tips on using the IDE and explanations of
+    some IDE behavior that you are likely to see:'
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 教程的接下来几页将解释这个简单应用程序中的代码。之后，课程将深入探讨核心语言特性，并提供更多示例。尽管教程的其余部分没有提供有关使用NetBeans IDE的具体说明，但您可以轻松使用IDE编写和运行示例代码。以下是一些关于使用IDE的提示以及您可能会看到的一些IDE行为的解释：
+- en: Once you have created a project in the IDE, you can add files to the project
+    using the **New File** wizard. Choose **File** | **New File**, and then select
+    a template in the wizard, such as the Empty Java File template.
+  id: totrans-104
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在IDE中创建项目后，您可以使用**新建文件**向导将文件添加到项目中。选择**文件** | **新建文件**，然后在向导中选择模板，例如空的Java文件模板。
+- en: You can compile and run an individual file (as opposed to a whole project) using
+    the IDE's **Compile File** (F9) and **Run File** (Shift-F6) commands. If you use
+    the **Run Main Project** command, the IDE will run the file that the IDE associates
+    as the main class of the main project. Therefore, if you create an additional
+    class in your HelloWorldApp project and then try to run that file with the **Run
+    Main Project** command, the IDE will run the `HelloWorldApp` file instead.
+  id: totrans-105
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以使用IDE的**编译文件**（F9）和**运行文件**（Shift-F6）命令编译和运行单个文件（而不是整个项目）。如果您使用**运行主项目**命令，IDE将运行IDE关联为主项目的主类的文件。因此，如果您在HelloWorldApp项目中创建了一个额外的类，然后尝试使用**运行主项目**命令运行该文件，IDE将运行`HelloWorldApp`文件。
+- en: You might want to create separate IDE projects for sample applications that
+    include more than one source file.
+  id: totrans-106
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可能希望为包含多个源文件的示例应用程序创建单独的IDE项目。
+- en: As you are typing in the IDE, a code completion box might periodically appear.
+    You can either ignore the code completion box and keep typing, or you can select
+    one of the suggested expressions. If you would prefer not to have the code completion
+    box automatically appear, you can turn off the feature. Choose **Tools** | **Options**
+    | **Editor**, click the **Code Completion** tab and clear the **Auto Popup Completion
+    Window** check box.
+  id: totrans-107
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在IDE中输入时，代码完成框可能会定期出现。您可以选择忽略代码完成框并继续输入，或者选择建议的表达式之一。如果您不希望代码完成框自动出现，可以关闭该功能。选择**工具**
+    | **选项** | **编辑器**，单击**代码完成**选项卡并清��**自动弹出完成窗口**复选框。
+- en: If you want to rename the node for a source file in the **Projects** window,
+    choose **Refactor** from IDE's main menu. The IDE prompts you with the **Rename**
+    dialog box to lead you through the options of renaming the class and the updating
+    of code that refers to that class. Make the changes and click **Refactor** to
+    apply the changes. This sequence of clicks might seem unnecessary if you have
+    just a single class in your project, but it is very useful when your changes affect
+    other parts of your code in larger projects.
+  id: totrans-108
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果您想要重命名**项目**窗口中源文件的节点，请从IDE的主菜单中选择**重构**。IDE会提示您使用**重命名**对话框引导您完成重命名类和更新引用该类的代码的选项。进行更改并单击**重构**以应用更改。如果您的项目中只有一个类，这一系列点击可能看起来是多余的，但是在更大的项目中，当您的更改影响代码的其他部分时，这是非常有用的。
+- en: For a more thorough guide to the features of the NetBeans IDE, see the [NetBeans
+    Documentation](https://netbeans.org/kb/) page.
+  id: totrans-109
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 要了解NetBeans IDE功能的更详尽指南，请参阅[NetBeans文档](https://netbeans.org/kb/)页面。

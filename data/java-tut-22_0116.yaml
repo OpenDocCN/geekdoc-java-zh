@@ -1,0 +1,84 @@
+- en: Why Use Generics?
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 为什么使用泛型？
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/why.html](https://docs.oracle.com/javase/tutorial/java/generics/why.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/why.html](https://docs.oracle.com/javase/tutorial/java/generics/why.html)
+- en: In a nutshell, generics enable *types* (classes and interfaces) to be parameters
+    when defining classes, interfaces and methods. Much like the more familiar *formal
+    parameters* used in method declarations, type parameters provide a way for you
+    to re-use the same code with different inputs. The difference is that the inputs
+    to formal parameters are values, while the inputs to type parameters are types.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 简而言之，泛型使*类型*（类和接口）在定义类、接口和方法时成为参数。就像在方法声明中使用的更熟悉的*形式参数*一样，类型参数提供了一种方式让您可以重复使用相同的代码以不同的输入。不同之处在于，形式参数的输入是值，而类型参数的输入是类型。
+- en: 'Code that uses generics has many benefits over non-generic code:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用泛型的代码比不使用泛型的代码有许多好处：
+- en: Stronger type checks at compile time.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 编译时进行更强的类型检查。
+- en: A Java compiler applies strong type checking to generic code and issues errors
+    if the code violates type safety. Fixing compile-time errors is easier than fixing
+    runtime errors, which can be difficult to find.
+  id: totrans-5
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: Java编译器对泛型代码应用强类型检查，如果代码违反类型安全性，则会发出错误。修复编译时错误比修复运行时错误更容易，后者可能很难找到。
+- en: Elimination of casts.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 消除强制类型转换。
+- en: 'The following code snippet without generics requires casting:'
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 不使用泛型的以下代码片段需要进行强制类型转换：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'When re-written to use generics, the code does not require casting:'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 当重写为使用泛型时，代码不需要进行强制类型转换：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Enabling programmers to implement generic algorithms.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使程序员能够实现泛型算法。
+- en: By using generics, programmers can implement generic algorithms that work on
+    collections of different types, can be customized, and are type safe and easier
+    to read.
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 通过使用泛型，程序员可以实现适用于不同类型集合的泛型算法，可以进行定制，并且是类型安全且更易阅读的。

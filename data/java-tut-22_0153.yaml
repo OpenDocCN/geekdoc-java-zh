@@ -1,0 +1,111 @@
+- en: The finally Block
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: finally块
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html)
+- en: "The `finally` block *always* executes when the `try` block exits. This ensures\
+    \ that the `finally` block is executed even if an unexpected exception occurs.\
+    \ But `finally` is useful for more than just exception handling \x97 it allows\
+    \ the programmer to avoid having cleanup code accidentally bypassed by a `return`,\
+    \ `continue`, or `break`. Putting cleanup code in a `finally` block is always\
+    \ a good practice, even when no exceptions are anticipated."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`finally`块*总是*在`try`块退出时执行。这确保了即使发生意外异常，`finally`块也会被执行。但`finally`不仅仅用于异常处理，它允许程序员避免清理代码被`return`、`continue`或`break`意外绕过。将清理代码放在`finally`块中始终是一个良好的实践，即使不预期发生异常。'
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The `finally` block may not execute if the JVM exits while the `try`
+    or `catch` code is being executed.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**如果JVM在执行`try`或`catch`代码时退出，则`finally`块可能不会执行。'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The `try` block of the `writeList` method that you've been working with here
+    opens a `PrintWriter`. The program should close that stream before exiting the
+    `writeList` method. This poses a somewhat complicated problem because `writeList`'s
+    `try` block can exit in one of three ways.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你一直在这里工作的`writeList`方法的`try`块打开了一个`PrintWriter`。程序应该在退出`writeList`方法之前关闭该流。这带来了一个有点复杂的问题，因为`writeList`的`try`块可以以三种方式之一退出。
+- en: The `new FileWriter` statement fails and throws an `IOException`.
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`new FileWriter`语句失败并抛出`IOException`。'
+- en: The `list.get(i)` statement fails and throws an `IndexOutOfBoundsException`.
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`list.get(i)`语句失败并抛出`IndexOutOfBoundsException`。'
+- en: Everything succeeds and the `try` block exits normally.
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 一切顺利，`try`块正常退出。
+- en: The runtime system always executes the statements within the `finally` block
+    regardless of what happens within the `try` block. So it's the perfect place to
+    perform cleanup.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 无论`try`块内发生了什么，运行时系统始终执行`finally`块中的语句。因此，这是执行清理操作的完美位置。
+- en: The following `finally` block for the `writeList` method cleans up and then
+    closes the `PrintWriter` and `FileWriter`.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下`writeList`方法的`finally`块清理并关闭`PrintWriter`和`FileWriter`。
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Important:** Use a `try-`with-resources statement instead of a `finally`
+    block when closing a file or otherwise recovering resources. The following example
+    uses a `try`-with-resources statement to clean up and close the `PrintWriter`
+    and `FileWriter` for the `writeList` method:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**重要：**在关闭文件或恢复资源时，请使用`try-`with-resources语句而不是`finally`块。以下示例使用`try`-with-resources语句清理和关闭`writeList`方法的`PrintWriter`和`FileWriter`：'
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `try`-with-resources statement automatically releases system resources when
+    no longer needed. See [The try-with-resources Statement](tryResourceClose.html).
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`try`-with-resources语句在不再需要时自动释放系统资源。请参见[try-with-resources语句](tryResourceClose.html)。'
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

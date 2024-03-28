@@ -1,0 +1,68 @@
+- en: 'Lesson: Introduction to JAXB'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：JAXB简介
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/index.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxb/intro/index.html](https://docs.oracle.com/javase/tutorial/jaxb/intro/index.html)
+- en: Java Architecture for XML Binding (JAXB) provides a fast and convenient way
+    to bind XML schemas and Java representations, making it easy for Java developers
+    to incorporate XML data and processing functions in Java applications. As part
+    of this process, JAXB provides methods for unmarshalling (reading) XML instance
+    documents into Java content trees, and then marshalling (writing) Java content
+    trees back into XML instance documents. JAXB also provides a way to generate XML
+    schema from Java objects.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Architecture for XML Binding (JAXB)提供了一种快速便捷的方式来绑定XML模式和Java表示，使Java开发人员能够轻松地在Java应用程序中整合XML数据和处理功能。作为这个过程的一部分，JAXB提供了将XML实例文档解组（读取）为Java内容树的方法，然后将Java内容树重新组合（写入）为XML实例文档的方法。JAXB还提供了一种从Java对象生成XML模式的方法。
+- en: 'JAXB 2.0 includes several important improvements to JAXB 1.0:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAXB 2.0对JAXB 1.0进行了几项重要改进：
+- en: Support for all W3C XML Schema features. (JAXB 1.0 did not specify bindings
+    for some of the W3C XML Schema features.)
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 支持所有W3C XML Schema功能。（JAXB 1.0没有为一些W3C XML Schema功能指定绑定。）
+- en: Support for binding Java-to-XML, with the addition of the `javax.xml.bind.annotation`
+    package to control this binding. (JAXB 1.0 specified the mapping of XML Schema-to-Java,
+    but not Java-to-XML Schema.)
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 支持将Java绑定到XML，通过添加`javax.xml.bind.annotation`包来控制此绑定。（JAXB 1.0规定了XML Schema到Java的映射，但没有规定Java到XML
+    Schema的映射。）
+- en: A significant reduction in the number of generated schema-derived classes.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 生成的基于模式的类数量显著减少。
+- en: Additional validation capabilities through the JAXP 1.3 validation APIs.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过JAXP 1.3验证API提供的额外验证功能。
+- en: Smaller runtime libraries.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 更小的运行时库。
+- en: This lesson describes the JAXB architecture, functions, and core concepts, and
+    provides examples with step-by-step procedures for using JAXB.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程描述了JAXB架构、功能和核心概念，并提供了使用JAXB的逐步示例过程。

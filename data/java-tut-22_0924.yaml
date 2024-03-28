@@ -1,0 +1,131 @@
+- en: 'Lesson: Working with URLs'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：使用URL
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/index.html](https://docs.oracle.com/javase/tutorial/networking/urls/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/index.html](https://docs.oracle.com/javase/tutorial/networking/urls/index.html)
+- en: URL is the acronym for Uniform Resource Locator. It is a reference (an address)
+    to a resource on the Internet. You provide URLs to your favorite Web browser so
+    that it can locate files on the Internet in the same way that you provide addresses
+    on letters so that the post office can locate your correspondents.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: URL是统一资源定位符的缩写。它是指向互联网上资源的引用（地址）。您向您喜爱的Web浏览器提供URL，以便它可以定位互联网上的文件，就像您向邮局提供地址以便它可以找到您的通信对象一样。
+- en: Java programs that interact with the Internet also may use URLs to find the
+    resources on the Internet they wish to access. Java programs can use a class called
+    [`URL`](https://docs.oracle.com/javase/8/docs/api/java/net/URL.html) in the `java.net`
+    package to represent a URL address.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与互联网交互的Java程序还可以使用URL来找到他们希望访问的互联网资源。Java程序可以使用`java.net`包中的一个名为[`URL`](https://docs.oracle.com/javase/8/docs/api/java/net/URL.html)的类来表示URL地址。
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Terminology Note:**'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**术语说明：**'
+- en: The term *URL* can be ambiguous. It can refer to an Internet address or a `URL`
+    object in a Java program. Where the meaning of URL needs to be specific, this
+    text uses "URL address" to mean an Internet address and "`URL` object" to refer
+    to an instance of the `URL` class in a program.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 术语*URL*可能会产生歧义。它可以指互联网地址或Java程序中的`URL`对象。在需要明确URL含义的情况下，本文使用"URL地址"来指代互联网地址，使用"`URL`对象"来指代程序中`URL`类的实例。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[What Is a URL?](definition.html)'
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[什么是URL？](definition.html)'
+- en: 'A URL takes the form of a string that describes how to find a resource on the
+    Internet. URLs have two main components: the protocol needed to access the resource
+    and the location of the resource.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: URL采用描述如何在互联网上找到资源的字符串形式。URL有两个主要组成部分：访问资源所需的协议和资源的位置。
+- en: '[Creating a URL](creatingUrls.html)'
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[创建URL](creatingUrls.html)'
+- en: Within your Java programs, you can create a URL object that represents a URL
+    address. The URL object always refers to an absolute URL but can be constructed
+    from an absolute URL, a relative URL, or from URL components.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在您的Java程序中，您可以创建一个表示URL地址的URL对象。URL对象始终指向绝对URL，但可以从绝对URL、相对URL或URL组件构造。
+- en: '[Parsing a URL](urlInfo.html)'
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[解析URL](urlInfo.html)'
+- en: Gone are the days of parsing a URL to find out the host name, filename, and
+    other information. With a valid URL object you can call any of its accessor methods
+    to get all of that information from the URL without doing any string parsing!
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 过去需要解析URL以查找主机名、文件名和其他信息的日子已经一去不复返了。有了有效的URL对象，您可以调用其任何访问器方法，从URL中获取所有这些信息，而无需进行任何字符串解析！
+- en: '[Reading Directly from a URL](readingURL.html)'
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[直接从URL读取](readingURL.html)'
+- en: This section shows how your Java programs can read from a URL using the `openStream()`
+    method.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节展示了您的Java程序如何使用`openStream()`方法从URL中读取信息。
+- en: '[Connecting to a URL](connecting.html)'
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[连接到URL](connecting.html)'
+- en: If you want to do more than just read from a URL, you can connect to it by calling
+    `openConnection()` on the URL. The `openConnection()` method returns a URLConnection
+    object that you can use for more general communications with the URL, such as
+    reading from it, writing to it, or querying it for content and other information.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想要的不仅仅是从URL中读取信息，您可以通过在URL上调用`openConnection()`来连接到它。`openConnection()`方法返回一个URLConnection对象，您可以用它进行更一般的与URL通信，如从中读取、向其中写入或查询其内容和其他信息。
+- en: '[Reading from and Writing to a URLConnection](readingWriting.html)'
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[从URLConnection读取和写入](readingWriting.html)'
+- en: Some URLs, such as many that are connected to cgi-bin scripts, allow you to
+    (or even require you to) write information to the URL. For example, a search script
+    may require detailed query data to be written to the URL before the search can
+    be performed. This section shows you how to write to a URL and how to get results
+    back.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些URL（例如许多与cgi-bin脚本相关的URL）允许您（甚至要求您）向URL写入信息。例如，搜索脚本可能要求在执行搜索之前向URL写入详细的查询数据。本节展示了如何向URL写入信息以及如何获取结果。

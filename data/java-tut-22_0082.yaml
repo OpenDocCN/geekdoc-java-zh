@@ -1,0 +1,102 @@
+- en: Implementing an Interface
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 实现一个接口
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/usinginterface.html](https://docs.oracle.com/javase/tutorial/java/IandI/usinginterface.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/usinginterface.html](https://docs.oracle.com/javase/tutorial/java/IandI/usinginterface.html)
+- en: To declare a class that implements an interface, you include an `implements`
+    clause in the class declaration. Your class can implement more than one interface,
+    so the `implements` keyword is followed by a comma-separated list of the interfaces
+    implemented by the class. By convention, the `implements` clause follows the `extends`
+    clause, if there is one.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要声明一个实现接口的类，你需要在类声明中包含一个`implements`子句。你的类可以实现多个接口，因此`implements`关键字后面跟着一个逗号分隔的接口列表。按照惯例，如果有`extends`子句，则`implements`子句跟在其后。
+- en: A Sample Interface, Relatable
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例接口，Relatable
+- en: Consider an interface that defines how to compare the size of objects.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑一个定义如何比较对象大小的接口。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If you want to be able to compare the size of similar objects, no matter what
+    they are, the class that instantiates them should implement `Relatable`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想要比较相似对象的大小，无论它们是什么，实例化它们的类应该实现`Relatable`。
+- en: Any class can implement `Relatable` if there is some way to compare the relative
+    "size" of objects instantiated from the class. For strings, it could be number
+    of characters; for books, it could be number of pages; for students, it could
+    be weight; and so forth. For planar geometric objects, area would be a good choice
+    (see the `RectanglePlus` class that follows), while volume would work for three-dimensional
+    geometric objects. All such classes can implement the `isLargerThan()` method.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何类都可以实现`Relatable`，只要有一种方法可以比较从该类实例化的对象的相对“大小”。对于字符串，可以是字符数；对于书籍，可以是页数；对于学生，可以是体重；等等。对于平面几何对象，面积是一个不错的选择（参见下面的`RectanglePlus`类），而对于三维几何对象，体积也可以工作。所有这些类都可以实现`isLargerThan()`方法。
+- en: If you know that a class implements `Relatable`, then you know that you can
+    compare the size of the objects instantiated from that class.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你知道一个类实现了`Relatable`，那么你就知道可以比较从该类实例化的对象的大小。
+- en: Implementing the Relatable Interface
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 实现Relatable接口
+- en: Here is the `Rectangle` class that was presented in the [Creating Objects](../javaOO/objectcreation.html)
+    section, rewritten to implement `Relatable`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是在[创建对象](../javaOO/objectcreation.html)部分中介绍的`Rectangle`类，重写以实现`Relatable`。
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Because `RectanglePlus` implements `Relatable`, the size of any two `RectanglePlus`
+    objects can be compared.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`RectanglePlus`实现了`Relatable`，所以可以比较任意两个`RectanglePlus`对象的大小。
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The `isLargerThan` method, as defined in the `Relatable` interface,
+    takes an object of type `Relatable`. The line of code, shown in bold in the previous
+    example, casts `other` to a `RectanglePlus` instance. Type casting tells the compiler
+    what the object really is. Invoking `getArea` directly on the `other` instance
+    (`other.getArea()`) would fail to compile because the compiler does not understand
+    that `other` is actually an instance of `RectanglePlus`.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 在`Relatable`接口中定义的`isLargerThan`方法接受一个`Relatable`类型的对象。在前面的示例中加粗显示的代码行将`other`强制转换为`RectanglePlus`实例。类型转换告诉编译器对象的真实类型。直接在`other`实例上调用`getArea`（`other.getArea()`）将无法编译通过，因为编译器不知道`other`实际上是`RectanglePlus`的实例。'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

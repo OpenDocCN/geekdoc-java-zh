@@ -1,0 +1,128 @@
+- en: Why Use the JMX Technology?
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 为什么使用JMX技术？
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jmx/overview/why.html](https://docs.oracle.com/javase/tutorial/jmx/overview/why.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jmx/overview/why.html](https://docs.oracle.com/javase/tutorial/jmx/overview/why.html)
+- en: The JMX technology provides developers with a flexible means to instrument Java
+    technology-based applications (Java applications), create smart agents, implement
+    distributed management middleware and managers, and smoothly integrate these solutions
+    into existing management and monitoring systems.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JMX技术为开发人员提供了一种灵活的手段来为基于Java技术的应用程序（Java应用程序）提供仪器化，创建智能代理，实现分布式管理中间件和管理器，并将这些解决方案顺利集成到现有的管理和监控系统中。
+- en: '**The JMX technology enables Java applications to be managed without heavy
+    investment**.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**JMX技术使得Java应用程序可以在不需要大量投资的情况下进行管理**。'
+- en: A JMX technology-based agent (JMX agent) can run on most Java technology-enabled
+    devices. Consequently, Java applications can become manageable with little impact
+    on their design. A Java application needs only to embed a managed object server
+    and make some of its functionality available as one or several managed beans (MBeans)
+    registered in the object server. That is all it takes to benefit from the management
+    infrastructure.
+  id: totrans-4
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 基于JMX技术的代理（JMX代理）可以在大多数支持Java技术的设备上运行。因此，Java应用程序可以在设计上几乎没有影响地变得可管理。一个Java应用程序只需要嵌入一个托管对象服务器，并将部分功能作为一个或多个托管bean（MBeans）注册到对象服务器中。这就是从管理基础设施中受益所需的全部。
+- en: '**The JMX technology provides a standard way to manage Java applications, systems,
+    and networks**.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**JMX技术提供了一种标准的方式来管理Java应用程序、系统和网络**。'
+- en: For example, the Java Platform, Enterprise Edition (Java EE) 5 Application Server
+    conforms to the JMX architecture and consequently can be managed by using JMX
+    technology.
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 例如，Java平台企业版（Java EE）5应用服务器符合JMX架构，因此可以使用JMX技术进行管理。
+- en: '**The JMX technology can be used for out-of-the-box management of the Java
+    VM**.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**JMX技术可用于对Java虚拟机进行开箱即用的管理**。'
+- en: The Java Virtual Machine (Java VM) is highly instrumented using the JMX technology.
+    You can start a JMX agent to access the built-in Java VM instrumentation, and
+    thereby monitor and manage a Java VM remotely.
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: Java虚拟机（Java VM）使用JMX技术进行高度仪器化。您可以启动一个JMX代理来访问内置的Java VM仪器，从而远程监视和管理Java VM。
+- en: '**The JMX technology provides a scalable, dynamic management architecture**.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**JMX技术提供了一个可扩展的、动态的管理架构**。'
+- en: Every JMX agent service is an independent module that can be plugged into the
+    management agent, depending on the requirements. This component-based approach
+    means that JMX solutions can scale from small-footprint devices to large telecommunications
+    switches and beyond. The JMX specification provides a set of core agent services.
+    Additional services can be developed and dynamically loaded, unloaded, or updated
+    in the management infrastructure.
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 每个JMX代理服务都是一个独立的模块，可以根据需求插入到管理代理中。这种基于组件的方法意味着JMX解决方案可以从小型设备扩展到大型电信交换机等更大的设备。JMX规范提供了一组核心代理服务。可以开发额外的服务，并在管理基础设施中动态加载、卸载或更新这些服务。
+- en: '**The JMX technology leverages existing standard Java technologies**.'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**JMX技术利用了现有的标准Java技术**。'
+- en: Whenever needed, the JMX specification references existing Java specifications,
+    for example, the Java Naming and Directory Interface (J.N.D.I.) API.
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在需要时，JMX规范引用现有的Java规范，例如Java命名和目录接口（J.N.D.I.）API。
+- en: '**The JMX technology-based applications (JMX applications) can be created from
+    a NetBeans IDE module**.'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**基于JMX技术的应用程序（JMX应用程序）可以通过NetBeans IDE模块创建**。'
+- en: You can obtain a module from the NetBeans Update Center (select Tools -> Update
+    Center in the NetBeans interface) that enables you to create JMX applications
+    by using the NetBeans IDE. This reduces the cost of development of JMX applications.
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 您可以从NetBeans更新中心获取一个模块（在NetBeans界面中选择工具 -> 更新中心），该模块使您可以使用NetBeans IDE创建JMX应用程序。这降低了JMX应用程序开发的成本。
+- en: '**The JMX technology integrates with existing management solutions and emerging
+    technologies**.'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**JMX技术与现有的管理解决方案和新兴技术集成**。'
+- en: The JMX APIs are open interfaces that any management system vendor can implement.
+    JMX solutions can use lookup and discovery services and protocols such as Jini
+    network technology and the Service Location Protocol (SLP).
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: JMX API是任何管理系统供应商都可以实现的开放接口。JMX解决方案可以使用查找和发现服务以及诸如Jini网络技术和服务位置协议（SLP）等协议。

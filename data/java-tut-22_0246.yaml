@@ -1,0 +1,152 @@
+- en: Predefined Character Classes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 预定义字符类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/pre_char_classes.html](https://docs.oracle.com/javase/tutorial/essential/regex/pre_char_classes.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/pre_char_classes.html](https://docs.oracle.com/javase/tutorial/essential/regex/pre_char_classes.html)
+- en: 'The [`Pattern`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html)
+    API contains a number of useful *predefined character classes*, which offer convenient
+    shorthands for commonly used regular expressions:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Pattern`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html)
+    API 包含许多有用的*预定义字符类*，提供了常用正则表达式的便捷简写：'
+- en: '| Construct | Description |'
+  id: totrans-3
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造 | 描述 |'
+- en: '| `.` | Any character (may or may not match line terminators) |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| `.` | 任何字符（可能匹配行终止符，也可能不匹配） |'
+- en: '| `\d` | A digit: `[0-9]` |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\d` | 一个数字：`[0-9]` |'
+- en: '| `\D` | A non-digit: `[^0-9]` |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\D` | 一个非数字：`[^0-9]` |'
+- en: '| `\s` | A whitespace character: `[ \t\n\x0B\f\r]` |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\s` | 一个空白字符：`[ \t\n\x0B\f\r]` |'
+- en: '| `\S` | A non-whitespace character: `[^\s]` |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\S` | 一个非空白字符：`[^\s]` |'
+- en: '| `\w` | A word character: `[a-zA-Z_0-9]` |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\w` | 一个单词字符：`[a-zA-Z_0-9]` |'
+- en: '| `\W` | A non-word character: `[^\w]` |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `\W` | 一个非单词字符：`[^\w]` |'
+- en: In the table above, each construct in the left-hand column is shorthand for
+    the character class in the right-hand column. For example, `\d` means a range
+    of digits (0-9), and `\w` means a word character (any lowercase letter, any uppercase
+    letter, the underscore character, or any digit). Use the predefined classes whenever
+    possible. They make your code easier to read and eliminate errors introduced by
+    malformed character classes.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上表中，左列中的每个构造都是右列中字符类的简写。例如，`\d` 表示数字范围（0-9），`\w` 表示单词字符（任何小写字母、任何大写字母、下划线字符或任何数字）。尽可能使用预定义类。它们使您的代码更易阅读，并消除由格式不正确的字符类引入的错误。
+- en: 'Constructs beginning with a backslash are called *escaped constructs*. We previewed
+    escaped constructs in the [String Literals](literals.html) section where we mentioned
+    the use of backslash and `\Q` and `\E` for quotation. If you are using an escaped
+    construct within a string literal, you must precede the backslash with another
+    backslash for the string to compile. For example:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以反斜杠开头的构造称为*转义构造*。我们在[字符串文字](literals.html)部分预览了转义构造，其中我们提到了反斜杠和引号的使用。如果您在字符串文字中使用转义构造，必须在字符串编译之前在反斜杠前加上另一个反斜杠。例如：
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: In this example `\d` is the regular expression; the extra backslash is required
+    for the code to compile. The test harness reads the expressions directly from
+    the `Console`, however, so the extra backslash is unnecessary.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，`\d` 是正则表达式；额外的反斜杠是为了代码编译而需要的。测试工具直接从`Console`读取表达式，因此额外的反斜杠是不必要的。
+- en: The following examples demonstrate the use of predefined character classes.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例演示了预定义字符类的使用。
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'In the first three examples, the regular expression is simply `.` (the "dot"
+    metacharacter) that indicates "any character." Therefore, the match is successful
+    in all three cases (a randomly selected `@` character, a digit, and a letter).
+    The remaining examples each use a single regular expression construct from the
+    [Predefined Character Classes table](#CHART). You can refer to this table to figure
+    out the logic behind each match:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前三个例子中，正则表达式只是`.`（"点"元字符），表示"任何字符"。因此，在所有三种情况下匹配都成功（随机选择的`@`字符、一个数字和一个字母）。其余的例子每个都使用了[预定义字符类表](#CHART)中的一个正则表达式构造。您可以参考这个表格来理解每个匹配背后的逻辑：
+- en: '`\d` matches all digits'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`\d` 匹配所有数字'
+- en: '`\s` matches spaces'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`\s` 匹配空格'
+- en: '`\w` matches word characters'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`\w` 匹配单词字符'
+- en: 'Alternatively, a capital letter means the opposite:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，大写字母表示相反的意思：
+- en: '`\D` matches non-digits'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`\D` 匹配非数字'
+- en: '`\S` matches non-spaces'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`\S` 匹配非空格'
+- en: '`\W` matches non-word characters'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`\W` 匹配非单词字符'

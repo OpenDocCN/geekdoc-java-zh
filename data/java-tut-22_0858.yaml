@@ -1,0 +1,160 @@
+- en: Generate Public and Private Keys
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 生成公钥和私钥
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/step2.html](https://docs.oracle.com/javase/tutorial/security/apisign/step2.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/step2.html](https://docs.oracle.com/javase/tutorial/security/apisign/step2.html)
+- en: In order to be able to create a digital signature, you need a private key. (Its
+    corresponding public key will be needed in order to verify the authenticity of
+    the signature.)
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要能够创建数字签名，您需要一个私钥。（为了验证签名的真实性，还需要相应的公钥。）
+- en: In some cases the *key pair* (private key and corresponding public key) are
+    already available in files. In that case the program can import and use the private
+    key for signing, as shown in [Weaknesses and Alternatives](enhancements.html).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某些情况下，*密钥对*（私钥和相应的公钥）已经存在于文件中。在这种情况下，程序可以导入并使用私钥进行签名，如[Weaknesses and Alternatives](enhancements.html)中所示。
+- en: In other cases the program needs to generate the key pair. A key pair is generated
+    by using the `KeyPairGenerator` class.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在其他情况下，程序需要生成密钥对。通过使用`KeyPairGenerator`类生成密钥对。
+- en: In this example you will generate a public/private key pair for the Digital
+    Signature Algorithm (DSA). You will generate keys with a 1024-bit length.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在此示例中，您将为数字签名算法（DSA）生成公钥/私钥对。您将生成长度为1024位的密钥。
+- en: 'Generating a key pair requires several steps:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 生成密钥对需要几个步骤：
+- en: Create a Key Pair Generator
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建密钥对生成器
+- en: The first step is to get a key-pair generator object for generating keys for
+    the DSA signature algorithm.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一步是获取用于生成DSA签名算法密钥的密钥对生成器对象。
+- en: As with all engine classes, the way to get a `KeyPairGenerator` object for a
+    particular type of algorithm is to call the `getInstance` static factory method
+    on the `KeyPairGenerator` class. This method has two forms, both of which hava
+    a `String algorithm` first argument; one form also has a `String provider` second
+    argument.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与所有引擎类一样，获取特定类型算法的`KeyPairGenerator`对象的方法是在`KeyPairGenerator`类上调用`getInstance`静态工厂方法。该方法有两种形式，都有一个`String
+    algorithm`作为第一个参数；其中一种形式还有一个`String provider`作为第二个参数。
+- en: A caller may thus optionally specify the name of a provider, which will guarantee
+    that the implementation of the algorithm requested is from the named provider.
+    The sample code of this lesson always specifies the default SUN provider built
+    into the JDK.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调用者可以选择指定提供程序的名称，这将确保所请求的算法实现来自指定的提供程序。本课程的示例代码始终指定内置于JDK中的默认SUN提供程序。
+- en: Put the following statement after the
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上述声明之后放置
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'line in the file created in the previous step, [Prepare Initial Program Structure](step1.html):'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上一步创建的文件中的行，[Prepare Initial Program Structure](step1.html)：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Initialize the Key Pair Generator
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 初始化密钥对生成器
+- en: The next step is to initialize the key pair generator. All key pair generators
+    share the concepts of a keysize and a source of randomness. The `KeyPairGenerator`
+    class has an `initialize` method that takes these two types of arguments.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一步是初始化密钥对生成器。所有密钥对生成器都共享密钥大小和随机源的概念。`KeyPairGenerator`类有一个`initialize`方法，接受这两种类型的参数。
+- en: The keysize for a DSA key generator is the key length (in bits), which you will
+    set to 1024.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: DSA密钥生成器的密钥大小是密钥长度（以位为单位），您将设置为1024。
+- en: The source of randomness must be an instance of the `SecureRandom` class that
+    provides a cryptographically strong random number generator (RNG). For more information
+    about `SecureRandom`, see the [SecureRandom API Specification](https://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html)
+    and the [Java Cryptography Architecture Reference Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html#SecureRandom)
+    .
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 随机源必须是`SecureRandom`类的实例，提供一个密码学强随机数生成器（RNG）。有关`SecureRandom`的更多信息，请参阅[SecureRandom
+    API Specification](https://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html)和[Java
+    Cryptography Architecture Reference Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html#SecureRandom)。
+- en: The following example requests an instance of `SecureRandom` that uses the SHA1PRNG
+    algorithm, as provided by the built-in SUN provider. The example then passes this
+    `SecureRandom` instance to the key-pair generator initialization method.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例请求一个使用内置SUN提供程序提供的SHA1PRNG算法的`SecureRandom`实例。然后将此`SecureRandom`实例传递给密钥对生成器初始化方法。
+- en: '[PRE2]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Some situations require strong random values, such as when creating high-value
+    and long-lived secrets like RSA public and private keys. To help guide applications
+    in selecting a suitable strong `SecureRandom` implementation, starting from JDK
+    8 Java distributions include a list of known strong `SecureRandom` implementations
+    in the `securerandom.strongAlgorithms` property of the `java.security.Security`
+    class. When you are creating such data, you should consider using `SecureRandom.getInstanceStrong()`,
+    as it obtains an instance of the known strong algorithms.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有些情况需要强随机值，比如创建高价值和长期存在的秘密，如RSA公钥和私钥。为了帮助应用程序选择合适的强`SecureRandom`实现，从JDK 8开始，Java发行版在`java.security.Security`类的`securerandom.strongAlgorithms`属性中包含了已知的强`SecureRandom`实现列表。当您创建这样的数据时，应考虑使用`SecureRandom.getInstanceStrong()`，因为它获取已知强算法的实例。
+- en: Generate the Pair of Keys
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 生成密钥对
+- en: The final step is to generate the key pair and to store the keys in `PrivateKey`
+    and `PublicKey` objects.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一步是生成密钥对，并将密钥存储在`PrivateKey`和`PublicKey`对象中。
+- en: '[PRE3]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

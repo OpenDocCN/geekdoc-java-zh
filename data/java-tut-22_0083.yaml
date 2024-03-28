@@ -1,0 +1,59 @@
+- en: Using an Interface as a Type
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用接口作为类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/interfaceAsType.html](https://docs.oracle.com/javase/tutorial/java/IandI/interfaceAsType.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/interfaceAsType.html](https://docs.oracle.com/javase/tutorial/java/IandI/interfaceAsType.html)
+- en: When you define a new interface, you are defining a new reference data type.
+    You can use interface names anywhere you can use any other data type name. If
+    you define a reference variable whose type is an interface, any object you assign
+    to it *must* be an instance of a class that implements the interface.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你定义一个新接口时，你正在定义一个新的引用数据类型。你可以在任何可以使用其他数据类型名称的地方使用接口名称。如果你定义一个类型为接口的引用变量，那么你分配给它的任何对象*必须*是实现了该接口的类的实例。
+- en: 'As an example, here is a method for finding the largest object in a pair of
+    objects, for *any* objects that are instantiated from a class that implements
+    `Relatable`:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 举例来说，这里有一种方法可以找到一对对象中最大的对象，适用于*任何*从实现了`Relatable`接口的类实例化的对象：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: By casting `object1` to a `Relatable` type, it can invoke the `isLargerThan`
+    method.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过将`object1`强制转换为`Relatable`类型，它可以调用`isLargerThan`方法。
+- en: "If you make a point of implementing `Relatable` in a wide variety of classes,\
+    \ the objects instantiated from *any* of those classes can be compared with the\
+    \ `findLargest()` method\x97provided that both objects are of the same class.\
+    \ Similarly, they can all be compared with the following methods:"
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你坚持在各种类中实现`Relatable`，那么从*任何*这些类实例化的对象都可以使用`findLargest()`方法进行比较——前提是这两个对象属于同一类。同样，它们也可以使用以下方法进行比较：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: These methods work for any "relatable" objects, no matter what their class inheritance
+    is. When they implement `Relatable`, they can be of both their own class (or superclass)
+    type and a `Relatable` type. This gives them some of the advantages of multiple
+    inheritance, where they can have behavior from both a superclass and an interface.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些方法适用于任何“可比较”的对象，无论它们的类继承关系如何。当它们实现了`Relatable`接口时，它们可以是自己类（或超类）类型和`Relatable`类型。这使它们具有多重继承的一些优势，可以同时具有来自超类和接口的行为。

@@ -1,0 +1,513 @@
+- en: General Information about Writing Event Listeners
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 编写事件监听器的一般信息
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/generalrules.html](https://docs.oracle.com/javase/tutorial/uiswing/events/generalrules.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 当设计程序时，您可能希望在一个不是公共的类中实现您的事件监听器，而是在更隐蔽的地方。私有实现是更安全的实现。
+- en: This section discusses several design considerations to keep in mind when implementing
+    event handlers in your application. We then introduce you to event objects small
+    objects that describe each event. In particular, we talk about `EventObject`,
+    the superclass for all AWT and Swing events. Next, we introduce the concepts of
+    low-level events and semantic events, recommending that you prefer semantic events
+    when possible. The remainder of this section discusses implementation techniques
+    you might use in some event listeners or see in event listeners created by other
+    people or by GUI builders.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节讨论了在应用程序中实现事件处理程序时要牢记的几个设计考虑。然后我们向您介绍了事件对象，这些小对象描述了每个事件。特别是，我们谈到了低级事件和语义事件的概念，建议您在可能的情况下优先选择语义事件。本节的其余部分讨论了您可能在一些事件监听器中使用的实现技术，或者在其他人或GUI构建器创建的事件监听器中看到的技术。
+- en: '[Design Considerations](#design)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设计考虑](#design)'
+- en: '[Getting Event Information: Event Objects](#eventobjects)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[获取事件信息：事件对象](#eventobjects)'
+- en: '[Concepts: Low-Level Events and Semantic Events](#twokinds)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[概念：低级事件和语义事件](#twokinds)'
+- en: '[Event Adapters](#eventAdapters)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[事件适配器](#eventAdapters)'
+- en: '[Inner Classes and Anonymous Inner Classes](#innerClasses)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取事件信息：事件对象
+- en: '[The EventHandler Class](#eventHandlers)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/generalrules.html](https://docs.oracle.com/javase/tutorial/uiswing/events/generalrules.html)
+- en: Design Considerations
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设计考虑
+- en: The most important rule to keep in mind about event listeners is that they should
+    execute very quickly. Because all drawing and event-listening methods are executed
+    in the same thread, a slow event-listener method can make the program seem unresponsive
+    and slow to repaint itself. If you need to perform some lengthy operation as the
+    result of an event, do it by starting up another thread (or somehow sending a
+    request to another thread) to perform the operation. For help on using threads,
+    see [Concurrency in Swing](../concurrency/index.html).
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 关于事件监听器最重要的规则是它们应该执行得非常快速。因为所有绘图和事件监听方法都在同一个线程中执行，一个慢速的事件监听器方法会使程序看起来无响应且重绘速度缓慢。如果需要作为事件结果执行一些耗时操作，请通过启动另一个线程（或以某种方式发送请求到另一个线程）来执行操作。有关使用线程的帮助，请参阅[Swing中的并发性](../concurrency/index.html)。
+- en: You have many choices on how to implement an event listener. We can not recommend
+    a specific approach because one solution would not suit all situations. However,
+    we can give you some hints and show you some techniques that you might see, even
+    if you do not use the same solution in your program.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您有许多选择来实现事件监听器。我们无法推荐特定的方法，因为一个解决方案并不适用于所有情况。但是，我们可以给您一些提示，并展示一些您可能看到的技术，即使您在程序中没有使用相同的解决方案。
+- en: For example, you might choose to implement separate classes for different kinds
+    of event listeners. This can be an easy architecture to maintain, but many classes
+    can also mean reduced performance.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，您可能选择为不同类型的事件监听器实现单独的类。这种架构易于维护，但许多类也可能意味着性能降低。
+- en: When designing your program, you might want to implement your event listeners
+    in a class that is not public, but somewhere more hidden. A private implementation
+    is a more secure implementation.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[内部类和匿名内部类](#innerClasses)'
+- en: If you have a very specific kind of simple event listener, you might be able
+    to avoid creating a class at all by using the `EventHandler` class.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有一种非常特定的简单事件监听器，您可能可以通过使用`EventHandler`类而根本不创建类来避免。
+- en: 'Getting Event Information: Event Objects'
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[EventHandler类](#eventHandlers)'
+- en: Every event-listener method has a single argument an object that inherits from
+    the [`EventObject`](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html)
+    class. Although the argument always descends from `EventObject`, its type is generally
+    specified more precisely. For example, the argument for methods that handle mouse
+    events is an instance of `MouseEvent`, where `MouseEvent` is an indirect subclass
+    of `EventObject`.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个事件监听器方法都有一个参数，即从[`EventObject`](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html)类继承的对象。尽管参数总是继承自`EventObject`，但其类型通常更加精确地指定。例如，处理鼠标事件的方法的参数是`MouseEvent`的实例，其中`MouseEvent`是`EventObject`的间接子类。
+- en: 'The `EventObject` class defines one very useful method:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`EventObject` 类定义了一个非常有用的方法：'
+- en: '**`Object getSource()`**'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**`Object getSource()`**'
+- en: Returns the object that fired the event.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回触发事件的对象。
+- en: Note that the `getSource` method returns an `Object`. Event classes sometimes
+    define methods similar to `getSource`, but that have more restricted return types.
+    For example, the `ComponentEvent` class defines a `getComponent` method that just
+    like `getSource` returns the object that fired the event. The difference is that
+    `getComponent` always returns a `Component`. Each how-to page for event listeners
+    mentions whether you should use `getSource` or another method to get the event
+    source.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，`getSource` 方法返回一个 `Object`。事件类有时定义类似于 `getSource` 的方法，但返回类型更受限制。例如，`ComponentEvent`
+    类定义了一个 `getComponent` 方法，就像 `getSource` 一样返回触发事件的对象。不同之处在于 `getComponent` 总是返回一个
+    `Component`。每个事件监听器的操作页面都会提到你应该使用 `getSource` 还是其他方法来获取事件源。
+- en: Often, an event class defines methods that return information about the event.
+    For example, you can query a `MouseEvent` object for information about where the
+    event occurred, how many clicks the user made, which modifier keys were pressed,
+    and so on.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，事件类定义了返回有关事件信息的方法。例如，你可以查询 `MouseEvent` 对象以获取有关事件发生位置、用户点击次数、按下的修改键等信息。
+- en: 'Concepts: Low-Level Events and Semantic Events'
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 概念：低级事件和语义事件
+- en: 'Events can be divided into two groups: *low-level* events and *semantic* events.
+    Low-level events represent window-system occurrences or low-level input. Everything
+    else is a semantic event.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事件可以分为两组：*低级* 事件和 *语义* 事件。低级事件代表窗口系统发生或低级输入。其他一切都是语义事件。
+- en: Examples of low-level events include mouse and key events both of which result
+    directly from user input. Examples of semantic events include action and item
+    events. A semantic event might be triggered by user input; for example, a button
+    customarily fires an action event when the user clicks it, and a text field fires
+    an action event when the user presses *Enter*. However, some semantic events are
+    not triggered by low-level events, at all. For example, a table-model event might
+    be fired when a table model receives new data from a database.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 低级事件的示例包括鼠标和键盘事件，这两者都直接由用户输入引起。语义事件的示例包括动作和项目事件。语义事件可能由用户输入触发；例如，当用户点击按钮时，按钮通常会触发动作事件，当用户按下
+    *Enter* 键时，文本字段会触发动作事件。然而，有些语义事件根本不是由低级事件触发的。例如，当表模型从数据库接收新数据时，可能会触发表模型事件。
+- en: Whenever possible, you should listen for semantic events rather than low-level
+    events. That way, you can make your code as robust and portable as possible. For
+    example, listening for action events on buttons, rather than mouse events, means
+    that the button will react appropriately when the user tries to activate the button
+    using a keyboard alternative or a look-and-feel-specific gesture. When dealing
+    with a compound component such as a combo box, it is imperative that you stick
+    to semantic events, since you have no reliable way of registering listeners on
+    all the look-and-feel-specific components that might be used to form the compound
+    component.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽可能监听语义事件而不是低级事件。这样，你可以使你的代码尽可能健壮和可移植。例如，监听按钮上的动作事件，而不是鼠标事件，意味着当用户尝试使用键盘替代方案或外观特定手势激活按钮时，按钮将做出适当反应。处理复合组件（如组合框）时，必须坚持使用语义事件，因为你没有可靠的方法在所有可能用于形成复合组件的外观特定组件上注册监听器。
+- en: Event Adapters
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 事件适配器
+- en: 'Some listener interfaces contain more than one method. For example, the `MouseListener`
+    interface contains five methods: `mousePressed`, `mouseReleased`, `mouseEntered`,
+    `mouseExited`, and `mouseClicked`. Even if you care only about mouse clicks, if
+    your class directly implements `MouseListener`, then you must implement all five
+    `MouseListener` methods. Methods for those events you do not care about can have
+    empty bodies. Here is an example:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些监听器接口包含多个方法。例如，`MouseListener` 接口包含五个方法：`mousePressed`、`mouseReleased`、`mouseEntered`、`mouseExited`
+    和 `mouseClicked`。即使你只关心鼠标点击，如果你的类直接实现了 `MouseListener`，那么你必须实现所有五个 `MouseListener`
+    方法。对于你不关心的事件，方法可以留空。这里是一个例子：
+- en: '[PRE0]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The resulting collection of empty method bodies can make code harder to read
+    and maintain. To help you avoid implementing empty method bodies, the API generally
+    includes an *adapter* class for each listener interface with more than one method.
+    (The [Listener API Table](api.html) lists all the listeners and their adapters.)
+    For example, the `MouseAdapter` class implements the `MouseListener` interface.
+    An adapter class implements empty versions of all its interface's methods.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一系列空方法体的结果可能会使代码更难阅读和维护。为了帮助您避免实现空方法体，API通常为每个具有多个方法的监听器接口包含一个*适配器*类。（[Listener
+    API Table](api.html)列出了所有监听器及其适配器。）例如，`MouseAdapter`类实现了`MouseListener`接口。适配器类实现了其接口所有方法的空版本。
+- en: To use an adapter, you create a subclass of it and override only the methods
+    of interest, rather than directly implementing all methods of the listener interface.
+    Here is an example of modifying the preceding code to extend `MouseAdapter`. By
+    extending `MouseAdapter`, it inherits empty definitions of all five of the methods
+    that `MouseListener` contains.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用适配器，您创建一个它的子类并仅重写感兴趣的方法，而不是直接实现监听器接口的所有方法。以下是修改前述代码以扩展`MouseAdapter`的示例。通过扩展`MouseAdapter`，它继承了`MouseListener`包含的所有五个方法的空定义。
+- en: '[PRE1]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Inner Classes and Anonymous Inner Classes
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 内部类和匿名内部类
+- en: What if you want to use an adapter class, but do not want your public class
+    to inherit from an adapter class? For example, suppose you write an applet, and
+    you want your `Applet` subclass to contain some code to handle mouse events. Since
+    the Java language does not permit multiple inheritance, your class cannot extend
+    both the `Applet` and `MouseAdapter` classes. A solution is to define an *inner
+    class* a class inside of your `Applet` subclass that extends the `MouseAdapter`
+    class.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您想使用适配器类，但不希望您的公共类继承自适配器类怎么办？例如，假设您编写了一个小程序，并且希望您的`Applet`子类包含一些处理鼠标事件的代码。由于Java语言不允许多重继承，您的类不能同时扩展`Applet`和`MouseAdapter`类。解决方案是定义一个*内部类*，即在`Applet`子类内部扩展`MouseAdapter`类。
+- en: Inner classes can also be useful for event listeners that implement one or more
+    interfaces directly.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内部类还可以用于直接实现一个或多个接口的事件监听器。
+- en: '[PRE2]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '* * *'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Performance note:**'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**性能注意：**'
+- en: When considering whether to use an inner class, keep in mind that application
+    startup time and memory footprint are typically directly proportional to the number
+    of classes you load. The more classes you create, the longer your program takes
+    to start up and the more memory it will take. As an application developer you
+    have to balance this with other design constraints you may have. We are not suggesting
+    you turn your application into a single monolithic class in hopes of cutting down
+    startup time and memory footprint this would lead to unnecessary headaches and
+    maintenance burdens.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在考虑是否使用内部类时，请记住应用程序启动时间和内存占用量通常与加载的类数量成正比。您创建的类越多，程序启动时间越长，占用的内存也越多。作为应用程序开发人员，您必须在其他设计约束条件下平衡这一点。我们并不建议您将应用程序变成一个单一的庞大类，希望缩短启动时间和内存占用量，这将导致不必要的麻烦和维护负担。
+- en: '* * *'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: You can create an inner class without specifying a name this is known as an
+    *anonymous inner class*. While it might look strange at first glance, anonymous
+    inner classes can make your code easier to read because the class is defined where
+    it is referenced. However, you need to weigh the convenience against possible
+    performance implications of increasing the number of classes.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '您可以创建一个不指定名称的内部类，这被称为*匿名内部类*。虽然乍一看可能会觉得奇怪，但匿名内部类可以使您的代码更易于阅读，因为类是在引用它的地方定义的。但是，您需要权衡方便性与增加类数量可能带来的性能影响。 '
+- en: 'Here is an example of using an anonymous inner class:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是使用匿名内部类的示例：
+- en: '[PRE3]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '* * *'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: One drawback of anonymous inner classes is that they can not be seen by the
+    long-term persistence mechanism. For more information see the API documentation
+    for the [JavaBeans™ package](https://docs.oracle.com/javase/8/docs/api/java/beans/package-summary.html#package_description)
+    and the [Bean Persistence](../../javabeans/advanced/persistence.html) lesson in
+    the [JavaBeans](../../javabeans/) trail.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 匿名内部类的一个缺点是它们无法被长期持久性机制所看到。有关更多信息，请参阅[JavaBeans™ package](https://docs.oracle.com/javase/8/docs/api/java/beans/package-summary.html#package_description)的API文档以及[JavaBeans](../../javabeans/)
+    trail中的[Bean Persistence](../../javabeans/advanced/persistence.html)课程。
+- en: '* * *'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Inner classes work even if your event listener needs access to private instance
+    variables from the enclosing class. As long as you do not declare an inner class
+    to be `static`, an inner class can refer to instance variables and methods just
+    as if its code is in the containing class. To make a local variable available
+    to an inner class, just save a copy of the variable as a `final` local variable.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内部类即使需要访问封闭类的私有实例变量，也可以正常工作。只要不将内部类声明为`static`，内部类就可以像在包含类中一样引用实例变量和方法。要使局部变量对内部类可用，只需将变量的副本保存为`final`局部变量。
+- en: To refer to the enclosing instance, you can use `*EnclosingClass*.this`. For
+    more information about inner classes, see [Nested Classes](../../java/javaOO/nested.html).
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要引用封闭实例，可以使用`*EnclosingClass*.this`。有关内部类的更多信息，请参见[Nested Classes](../../java/javaOO/nested.html)。
+- en: The EventHandler Class
+  id: totrans-49
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: EventHandler类
+- en: 'An [`EventHandler`](https://docs.oracle.com/javase/8/docs/api/java/beans/EventHandler.html)
+    class supports dynamic generation of simple, one-statement event listeners. Although
+    `EventHandler` is only useful for a certain type of extremely simple event listeners,
+    it is worth mentioning for two reasons. It is useful for:'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`EventHandler`](https://docs.oracle.com/javase/8/docs/api/java/beans/EventHandler.html)类支持简单、一语句事件监听器的动态生成。虽然`EventHandler`仅对一种极其简单的事件监听器类型有用，但由于两个原因值得一提。它适用于：'
+- en: Making an event listener that persistence can see and yet does not clog up your
+    own classes with event listener interfaces and methods.
+  id: totrans-51
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建一个事件监听器，持久性可以看到，但不会用事件监听器接口和方法堵塞自己的类。
+- en: Not adding to the number of classes defined in an application this can help
+    performance.
+  id: totrans-52
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 不增加应用程序中定义的类的数量可以提高性能。
+- en: Creating an `EventHandler` by hand is difficult. An `EventHandler` must be carefully
+    constructed. If you make a mistake, you would not be notified at compile time
+    it will throw an obscure exception at runtime. For this reason, `EventHandler`s
+    are best created by a GUI builder. `EventHandler`s should be carefully documented.
+    Otherwise you run the risk of producing hard-to-read code.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 手动创建`EventHandler`很困难。`EventHandler`必须小心构建。如果出错，编译时不会通知您，它会在运行时抛出一个晦涩的异常。因此，最好由GUI构建器创建`EventHandler`。`EventHandler`应该仔细记录。否则，您可能会产生难以阅读的代码。
+- en: The `EventHandler` class is intended to be used by interactive tools, such as
+    application builders, that allow developers to make connections between beans.
+    Typically connections are made from a user interface bean (the event source) to
+    an application logic bean (the target). The most effective connections of this
+    kind isolate the application logic from the user interface. For example, the `EventHandler`
+    for a connection from a JCheckBox to a method that accepts a boolean value can
+    deal with extracting the state of the check box and passing it directly to the
+    method so that the method is isolated from the user interface layer.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`EventHandler`类旨在供交互式工具使用，例如应用程序构建器，允许开发人员在bean之间建立连接。通常，连接是从用户界面bean（事件源）到应用程序逻辑bean（目标）进行的。这种连接的最有效方式是将应用程序逻辑与用户界面隔离开来。例如，从JCheckBox到接受布尔值的方法的连接的`EventHandler`可以处理提取复选框状态并直接传递给方法，使方法与用户界面层隔离开来。'
+- en: Inner classes are another, more general way to handle events from user interfaces.
+    The `EventHandler` class handles only a subset of what is possible using inner
+    classes. However, `EventHandler` works better with the long-term persistence scheme
+    than inner classes. Also, using `EventHandler` in large applications in which
+    the same interface is implemented many times can reduce the disk and memory footprint
+    of the application.
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内部类是处理用户界面事件的另一种更通用的方式。`EventHandler`类仅处理使用内部类可能实现的一部分功能。但是，`EventHandler`与长期持久性方案的配合效果比内部类更好。此外，在大型应用程序中，使用`EventHandler`可以减少应用程序的磁盘和内存占用。
+- en: Examples of Using `EventHandler` The simplest use of `EventHandler` is to install
+    a listener that calls a method on the target object with no arguments. In the
+    following example we create an ActionListener that invokes the toFront method
+    on an instance of `javax.swing.JFrame`.
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`EventHandler`的示例`EventHandler`的最简单用法是安装一个调用目标对象上没有参数的方法的监听器。在以下示例中，我们创建一个ActionListener，调用`javax.swing.JFrame`实例上的`toFront`方法。
+- en: '[PRE4]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'When myButton is pressed, the statement frame.toFront() will be executed. One
+    could get the same effect, with some additional compile-time type safety, by defining
+    a new implementation of the ActionListener interface and adding an instance of
+    it to the button:'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当按下`myButton`时，语句`frame.toFront()`将被执行。通过定义`ActionListener`接口的新实现并将其实例添加到按钮中，也可以获得相同的效果，并获得一些额外的编译时类型安全性：
+- en: '[PRE5]'
+  id: totrans-59
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The next simplest use of `EventHandler` is to extract a property value from
+    the first argument of the method in the listener interface (typically an event
+    object) and use it to set the value of a property in the target object. In the
+    following example we create an ActionListener that sets the nextFocusableComponent
+    property of the target (myButton) object to the value of the "source" property
+    of the event.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个最简单的`EventHandler`的用法是从监听器接口的方法的第一个参数（通常是事件对象）中提取一个属性值，并将其用于设置目标对象的属性值。在下面的示例中，我们创建了一个`ActionListener`，将目标对象（myButton）的`nextFocusableComponent`属性设置为事件的`source`属性的值。
+- en: '[PRE6]'
+  id: totrans-61
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'This would correspond to the following inner class implementation:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这对应于以下内部类实现：
+- en: '[PRE7]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'It is also possible to create an `EventHandler` that just passes the incoming
+    event object to the target''s action. If the fourth `EventHandler.create` argument
+    is an empty string, then the event is just passed along:'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 也可以创建一个仅将传入事件对象传递给目标动作的`EventHandler`。如果第四个`EventHandler.create`参数是一个空字符串，那么事件就会被简单地传递下去：
+- en: '[PRE8]'
+  id: totrans-65
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'This would correspond to the following inner class implementation:'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这对应于以下内部类实现：
+- en: '[PRE9]'
+  id: totrans-67
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Probably the most common use of `EventHandler` is to extract a property value
+    from the source of the event object and set this value as the value of a property
+    of the target object. In the following example we create an ActionListener that
+    sets the "label" property of the target object to the value of the "text" property
+    of the source (the value of the "source" property) of the event.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可能最常见的`EventHandler`用法是从事件对象的源中提取一个属性值，并将此值设置为目标对象的属性值。在下面的示例中，我们创建了一个`ActionListener`，将目标对象的`label`属性设置为事件源（事件的`source`属性的值）的`text`属性的值。
+- en: '[PRE10]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'This would correspond to the following inner class implementation:'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这对应于以下内部类实现：
+- en: '[PRE11]'
+  id: totrans-71
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'

@@ -1,0 +1,76 @@
+- en: When to Use SAX
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 何时使用 SAX
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/sax/when.html](https://docs.oracle.com/javase/tutorial/jaxp/sax/when.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/sax/when.html](https://docs.oracle.com/javase/tutorial/jaxp/sax/when.html)
+- en: It is helpful to understand the SAX event model when you want to convert existing
+    data to XML. The key to the conversion process is to modify an existing application
+    to deliver SAX events as it reads the data.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你想将现有数据转换为 XML 时，了解 SAX 事件模型是很有帮助的。转换过程的关键是修改现有应用程序，在读取数据时生成 SAX 事件。
+- en: SAX is fast and efficient, but its event model makes it most useful for such
+    state-independent filtering. For example, a SAX parser calls one method in your
+    application when an element tag is encountered and calls a different method when
+    text is found. If the processing you are doing is state-independent (meaning that
+    it does not depend on the elements that have come before), then SAX works fine.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SAX 是快速高效的，但其事件模型使其最适用于状态无关的过滤。例如，SAX 解析器在遇到元素标签时调用应用程序中的一个方法，并在找到文本时调用不同的方法。如果你正在进行的处理是状态无关的（意味着它不依赖于之前出现的元素），那么
+    SAX 就可以很好地工作。
+- en: On the other hand, for state-dependent processing, where the program needs to
+    do one thing with the data under element A but something different with the data
+    under element B, then a pull parser such as the Streaming API for XML (StAX) would
+    be a better choice. With a pull parser, you get the next node, whatever it happens
+    to be, at any point in the code that you ask for it. So it is easy to vary the
+    way you process text (for example), because you can process it multiple places
+    in the program (for more detail, see [Further Information](info.html)).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，对于状态相关处理，当程序需要在元素A下对数据执行一项操作，但在元素B下需要执行不同的操作时，那么像 XML 流 API（StAX）这样的拉取解析器可能是更好的选择。使用拉取解析器，你可以在代码中的任何位置请求下一个节点，无论它是什么。因此，你可以轻松地改变处理文本的方式（例如），因为你可以在程序中的多个位置处理它（更多细节，请参见[更多信息](info.html)）。
+- en: SAX requires much less memory than DOM, because SAX does not construct an internal
+    representation (tree structure) of the XML data, as a DOM does. Instead, SAX simply
+    sends data to the application as it is read; your application can then do whatever
+    it wants to do with the data it sees.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SAX 需要比 DOM 更少的内存，因为 SAX 不构造 XML 数据的内部表示（树结构），而 DOM 则会。相反，SAX 只是在读取时将数据发送给应用程序；然后你的应用程序可以对看到的数据进行任何操作。
+- en: Pull parsers and the SAX API both act like a serial I/O stream. You see the
+    data as it streams in, but you cannot go back to an earlier position or leap ahead
+    to a different position. In general, such parsers work well when you simply want
+    to read data and have the application act on it.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 拉取解析器和 SAX API 都像串行 I/O 流一样工作。你可以看到数据随着流入，但不能回到较早的位置或跳到不同的位置。一般来说，这样的解析器在你只想读取数据并让应用程序对其进行操作时效果很好。
+- en: But when you need to modify an XML structure - especially when you need to modify
+    it interactively - an in-memory structure makes more sense. DOM is one such model.
+    However, although DOM provides many powerful capabilities for large-scale documents
+    (like books and articles), it also requires a lot of complex coding. The details
+    of that process are highlighted in [When to Use DOM](../dom/when.html) in the
+    next lesson.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，当你需要修改 XML 结构 - 特别是当你需要交互式地修改它时 - 使用内存结构更有意义。DOM 就是这样的模型之一。然而，尽管 DOM 为大型文档（如书籍和文章）提供了许多强大的功能，但它也需要大量复杂的编码。该过程的详细信息在下一课程的[何时使用
+    DOM](../dom/when.html)中进行了强调。
+- en: For simpler applications, that complexity may well be unnecessary. For faster
+    development and simpler applications, one of the object-oriented XML-programming
+    standards, such as JDOM ( [http://www.jdom.org](http://www.jdom.org)) and DOM4J
+    ( [http://www.dom4j.org/](http://www.dom4j.org/)), might make more sense.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于更简单的应用程序，这种复杂性可能是不必要的。对于更快速的开发和更简单的应用程序，其中一个面向对象的 XML 编程标准，如 JDOM（[http://www.jdom.org](http://www.jdom.org)）和
+    DOM4J（[http://www.dom4j.org/](http://www.dom4j.org/)），可能更合适。

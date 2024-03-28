@@ -1,0 +1,335 @@
+- en: Using Predefined Formats
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用预定义格式
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/numberFormat.html](https://docs.oracle.com/javase/tutorial/i18n/format/numberFormat.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/format/numberFormat.html](https://docs.oracle.com/javase/tutorial/i18n/format/numberFormat.html)
+- en: By invoking the methods provided by the [`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)
+    class, you can format numbers, currencies, and percentages according to [`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html).
+    The material that follows demonstrates formatting techniques with a sample program
+    called [`NumberFormatDemo.java`](examples/NumberFormatDemo.java).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过调用[`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)类提供的方法，你可以根据[`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)格式化数字、货币和百分比。接下来的内容演示了如何使用一个名为[`NumberFormatDemo.java`](examples/NumberFormatDemo.java)的示例程序进行格式化技术。
+- en: Numbers
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 数字
+- en: You can use the [`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)
+    methods to format primitive-type numbers, such as `double`, and their corresponding
+    wrapper objects, such as [`Double`](https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用[`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)方法来格式化原始类型数字，比如`double`，以及它们对应的包装对象，比如[`Double`](https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html)。
+- en: The following code example formats a [`Double`](https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html)
+    according to [`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html).
+    Invoking the [`getNumberInstance`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html#getNumberInstance-java.util.Locale-)
+    method returns a locale-specific instance of [`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html).
+    The [`format`](https://docs.oracle.com/javase/8/docs/api/java/text/Format.html#format-java.lang.Object-)
+    method accepts the [`Double`](https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html)
+    as an argument and returns the formatted number in a [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码示例根据[`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)格式化一个[`Double`](https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html)。调用[`getNumberInstance`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html#getNumberInstance-java.util.Locale-)方法返回一个特定于语言环境的[`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)实例。[`format`](https://docs.oracle.com/javase/8/docs/api/java/text/Format.html#format-java.lang.Object-)方法接受[`Double`](https://docs.oracle.com/javase/8/docs/api/java/lang/Double.html)作为参数，并以[`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)形式返回格式化的数字。
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This example prints the following; it shows how the format of the same number
+    varies with [`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html):'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个例子打印如下内容；它展示了相同数字的格式如何随着[`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)的不同而变化：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Using Digit Shapes Other Than Arabic Numerals
+  id: totrans-9
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使用阿拉伯数字以外的数字形状
+- en: By default, when text contains numeric values, those values are displayed using
+    Arabic digits. When other Unicode digit shapes are preferred, use the [`java.awt.font.NumericShaper`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html)
+    class. The `NumericShaper` API enables you to display a numeric value represented
+    internally as an ASCII value in any Unicode digit shape. See [Converting Latin
+    Digits to Other Unicode Digits](../text/shapedDigits.html) for more information.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，当文本包含数字值时，这些值将使用阿拉伯数字显示。如果希望使用其他Unicode数字形状，请使用[`java.awt.font.NumericShaper`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/NumericShaper.html)类。`NumericShaper`
+    API使您能够以任何Unicode数字形状显示作为ASCII值内部表示的数字值。有关更多信息，请参见[将拉丁数字转换为其他Unicode数字](../text/shapedDigits.html)。
+- en: In addition, some locales have variant codes that specify that Unicode digit
+    shapes be used in place of Arabic digits, such as the locale for the Thai language.
+    See the section [Variant Code](../locale/create.html#variant-code) in [Creating
+    a Locale](../locale/create.html) for more information.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，一些语言环境具有变体代码，指定使用Unicode数字形状代替阿拉伯数字，比如泰语的语言环境。有关更多信息，请参见[创建语言环境](../locale/create.html#variant-code)中的[变体代码](../locale/create.html)部分。
+- en: Currencies
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 货币
+- en: If you are writing business applications, you will probably need to format and
+    display currencies. You format currencies in the same manner as numbers, except
+    that you call [`getCurrencyInstance`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html#getCurrencyInstance-java.util.Locale-)
+    to create a formatter. When you invoke the [`format`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html#format-double-)
+    method, it returns a [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+    that includes the formatted number and the appropriate currency sign.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在编写业务应用程序，可能需要格式化和显示货币。您可以像格式化数字一样格式化货币，只是调用[`getCurrencyInstance`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html#getCurrencyInstance-java.util.Locale-)来创建格式化程序。当调用[`format`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html#format-double-)方法时，它会返回一个包含格式化数字和适当货币符号的[`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)。
+- en: 'This code example shows how to format currency in a locale-specific manner:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码示例展示了如何以区域特定���方式格式化货币：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The output generated by the preceding lines of code is as follows:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由上述代码生成的输出如下所示：
+- en: '[PRE3]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: At first glance, this output may look wrong to you because the numeric values
+    are all the same. Of course, 9 876 543,21 € is not equivalent to $9,876,543.21\.
+    However, bear in mind that the [`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)
+    class is unaware of exchange rates. The methods belonging to the [`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)
+    class format currencies but do not convert them.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 乍一看，这个输出可能看起来对您来说是错误的，因为数字值都是相同的。当然，9 876 543,21 €不等同于$9,876,543.21。然而，请记住，[`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)类不知道汇率。属于[`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)类的方法格式化货币，但不会转换它们。
+- en: Note that the [`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)
+    class is designed so that there is never more than one [`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)
+    instance for any given currency. Therefore, there is no public constructor. As
+    demonstrated in the previous code example, you obtain a [`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)
+    instance using the [`getInstance`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getInstance-java.util.Locale-)
+    methods.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，[`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)类设计为任何给定货币都不会有多个[`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)实例。因此，没有公共构造函数。如前面的代码示例所示，您可以使用[`getInstance`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getInstance-java.util.Locale-)方法获取[`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)实例。
+- en: 'The sample [`InternationalizedMortgageCalculator.java`](examples/InternationalizedMortgageCalculator.java)
+    also demonstrates how to use the [`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)
+    class. (Note that this sample does not convert currency values.) The following
+    uses the en-US locale:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例[`InternationalizedMortgageCalculator.java`](examples/InternationalizedMortgageCalculator.java)还演示了如何使用[`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)类。（请注意，此示例不会转换货币值。）以下使用en-US区域设置：
+- en: '![Mortgage Calculator, en-US locale](../Images/eedc16110eba9cb8aae31edccfdd45c0.png)'
+  id: totrans-21
+  prefs: []
+  type: TYPE_IMG
+  zh: '![抵押贷款计算器，en-US区域设置](../Images/eedc16110eba9cb8aae31edccfdd45c0.png)'
+- en: 'The following uses the en-UK locale:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下使用en-UK区域设置：
+- en: '![Mortgage Calculator, en-UK locale](../Images/76dea77f5323c96b651702172f395070.png)'
+  id: totrans-23
+  prefs: []
+  type: TYPE_IMG
+  zh: '![抵押贷款计算器，en-UK区域设置](../Images/76dea77f5323c96b651702172f395070.png)'
+- en: 'The sample [`InternationalizedMortgageCalculator.java`](examples/InternationalizedMortgageCalculator.java)
+    requires the following resource files:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例[`InternationalizedMortgageCalculator.java`](examples/InternationalizedMortgageCalculator.java)需要以下资源文件：
+- en: '[`resources/Resources.properties`](examples/resources/Resources.properties)'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`resources/Resources.properties`](examples/resources/Resources.properties)'
+- en: '[`resources/Resources_ar.properties`](examples/resources/Resources_ar.properties)'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`resources/Resources_ar.properties`](examples/resources/Resources_ar.properties)'
+- en: '[`resources/Resources_fr.properties`](examples/resources/Resources_fr.properties)'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`resources/Resources_fr.properties`](examples/resources/Resources_fr.properties)'
+- en: 'The [`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)
+    class contains other methods to retrieve currency related information:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)类包含其他方法来检索与货币相关的信息：'
+- en: '[`getAvailableCurrencies`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getAvailableCurrencies--)
+    : Returns all available currencies in the JDK'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`getAvailableCurrencies`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getAvailableCurrencies--)：返回JDK中所有可用的货币'
+- en: '[`getCurrencyCode`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getCurrencyCode--)
+    : Returns the ISO 4217 numeric code for a [`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)
+    instance'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`getCurrencyCode`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getCurrencyCode--)：返回[`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)实例的ISO
+    4217数字代码'
+- en: '[`getSymbol`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getSymbol--)
+    : Returns the symbol for a [`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)
+    instance. You can optionally specify as an argument a [`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)
+    object. Consider the following excerpt:'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`getSymbol`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getSymbol--)：返回[`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)实例的符号。您可以选择性地将[`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)对象作为参数。考虑以下摘录：'
+- en: '[PRE4]'
+  id: totrans-32
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The excerpt prints the following:'
+  id: totrans-33
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 该摘录打印如下内容：
+- en: '[PRE5]'
+  id: totrans-34
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: This excerpt demonstrates that the symbol of a currency can vary depending on
+    the locale.
+  id: totrans-35
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此摘录演示了货币符号可以根据区域设置而变化。
+- en: '[`getDisplayName`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getDisplayName--)
+    : Returns the display name for a [`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)
+    instance. Like the [`getSymbol`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getSymbol--)
+    method, you can optionally specify a [`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)
+    object.'
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`getDisplayName`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getDisplayName--)：返回[`Currency`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html)实例的显示名称。与[`getSymbol`](https://docs.oracle.com/javase/8/docs/api/java/util/Currency.html#getSymbol--)方法类似，您可以选择性地指定一个[`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)对象。'
+- en: Extensible Support for ISO 4217 Currency Codes
+  id: totrans-37
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: ISO 4217货币代码的可扩展支持
+- en: '[ISO 4217](http://www.iso.org/iso/support/faqs/faqs_widely_used_standards/widely_used_standards_other/currency_codes.htm)
+    is a standard published by the International Standards Organization. It specifies
+    three-letter codes (and equivalent three-digit numeric codes) to represent currencies
+    and funds. This standard is maintained by an external agency and is released independent
+    of the Java SE platform.'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[ISO 4217](http://www.iso.org/iso/support/faqs/faqs_widely_used_standards/widely_used_standards_other/currency_codes.htm)是国际标准化组织发布的标准。它指定三个字母代码（以及等效的三位数字代码）来表示货币和资金。此标准由外部机构维护，并独立于Java
+    SE平台发布。'
+- en: 'Suppose that a country adopts a different currency and the ISO 4217 maintenance
+    agency releases a currency update. To implement this update and thereby supersede
+    the default currency at runtime, create a properties file named `*<JAVA_HOME>*/lib/currency.properties`.
+    This file contains the key/value pairs of the [ISO 3166](http://www.iso.org/iso/country_codes/iso_3166_code_lists/country_names_and_code_elements.htm)
+    country code, and the ISO 4217 currency data. The value part consists of three
+    comma-separated ISO 4217 currency values: an alphabetic code, a numeric code,
+    and a minor unit. Any lines beginning with the hash character (`#`), are treated
+    as comment lines. For example:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设一个国家采用了不同的货币，并且ISO 4217维护机构发布了一个货币更新。要实现此更新并在运行时取代默认货币，请创建一个名为`*<JAVA_HOME>*/lib/currency.properties`的属性文件。此文件包含[ISO
+    3166](http://www.iso.org/iso/country_codes/iso_3166_code_lists/country_names_and_code_elements.htm)国家代码和ISO
+    4217货币数据的键/值对。值部分包括三个逗号分隔的ISO 4217货币值：字母代码、数字代码和小单位。任何以井号字符（`#`）开头的行都被视为注释行。例如：
+- en: '[PRE6]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '`CAD` stands for the Canadian dollar; `124` is the numeric code for the Canadian
+    dollar; and `2` is the minor unit, which is the number of decimal places the currency
+    requires to represent fractional currencies. For example, the following properties
+    file will supersede the default Canadian currency to a Canadian dollar that does
+    not have any units smaller than the dollar:'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CAD`代表加拿大元；`124`是加拿大元的数字代码；`2`是小单位，表示货币需要表示分数货币的小数位数。例如，以下属性文件将把默认的加拿大货币替换为没有比加拿大元更小单位的加拿大元：'
+- en: '[PRE7]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Percentages
+  id: totrans-43
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 百分比
+- en: You can also use the methods of the [`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)
+    class to format percentages. To get the locale-specific formatter, invoke the
+    [`getPercentInstance`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html#getPercentInstance-java.util.Locale-)
+    method. With this formatter, a decimal fraction such as 0.75 is displayed as 75%.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以使用[`NumberFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html)类的方法来格式化百分比。要获取特定于区域设置的格式化程序，请调用[`getPercentInstance`](https://docs.oracle.com/javase/8/docs/api/java/text/NumberFormat.html#getPercentInstance-java.util.Locale-)方法。使用这个格式化程序，例如小数分数0.75将显示为75%。
+- en: The following code sample shows how to format a percentage.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码示例显示了如何格式化百分比。
+- en: '[PRE8]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'This sample prints the following:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例打印如下内容：
+- en: '[PRE9]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'

@@ -1,0 +1,912 @@
+- en: How to Use Spinners
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用旋转器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/spinner.html](https://docs.oracle.com/javase/tutorial/uiswing/components/spinner.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/spinner.html](https://docs.oracle.com/javase/tutorial/uiswing/components/spinner.html)
+- en: "Spinners are similar to [combo boxes](combobox.html) and [lists](list.html)\
+    \ in that they let the user choose from a range of values. Like editable combo\
+    \ boxes, spinners allow the user to type in a value. Unlike combo boxes, spinners\
+    \ do not have a drop-down list that can cover up other components. Because spinners\
+    \ do not display possible values \x97 only the current value is visible \x97 they\
+    \ are often used instead of combo boxes or lists when the set of possible values\
+    \ is extremely large. However, spinners should only be used when the possible\
+    \ values and their sequence are obvious."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 旋转器类似于[组合框](combobox.html)和[列表](list.html)，允许用户从一系列值中选择。与可编辑的组合框类似，旋转器允许用户输入值。与组合框不同，旋转器没有可以覆盖其他组件的下拉列表。因为旋转器不显示可能值
+    - 只有当前值可见 - 当可能值集合非常大时，通常使用旋转器代替组合框或列表。但是，只有在可能值及其顺序明显时才应使用旋转器。
+- en: 'A spinner is a compound component with three subcomponents: two small buttons
+    and an *editor*. The editor can be any `JComponent`, but by default it is implemented
+    as a panel that contains a [formatted text field](formattedtextfield.html). The
+    spinner''s possible and current values are managed by its *model*.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 旋转器是一个复合组件，包含三个子组件：两个小按钮和一个*编辑器*。编辑器可以是任何`JComponent`，但默认情况下实现为包含[格式化文本字段](formattedtextfield.html)的面板。旋转器的可能值和当前值由其*模型*管理。
+- en: 'Here is a picture of an application named `SpinnerDemo` that has three spinners
+    used to specify dates:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个名为`SpinnerDemo`的应用程序的图片，其中有三个用于指定日期的旋转器：
+- en: '![SpinnerDemo shows 3 kinds of spinners](../Images/ecd4f967f5d41b9703a520eeed91bafd.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![SpinnerDemo显示了3种旋转器](../Images/ecd4f967f5d41b9703a520eeed91bafd.png)'
+- en: The code for the main class can be found in [`SpinnerDemo.java`](../examples/components/SpinnerDemoProject/src/components/SpinnerDemo.java).
+    The Month spinner displays the name of the first month in the user's locale. The
+    possible values for this spinner are specified using an array of strings. The
+    Year spinner displays one value of a range of integers, initialized to the current
+    year. The Another Date spinner displays one value in a range of `Date` objects
+    (initially the current date) in a custom format that shows just a month and year.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 主类的代码可以在[`SpinnerDemo.java`](../examples/components/SpinnerDemoProject/src/components/SpinnerDemo.java)中找到。月份旋转器显示用户所在地区的第一个月的名称。此旋转器的可能值是使用字符串数组指定的。年份旋转器显示整数范围内的一个值，初始化为当前年份。另一个日期旋转器显示`Date`对象范围内的一个值（最初是当前日期），以自定义格式显示仅月份和年份。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run SpinnerDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#SpinnerDemo).[![Launches
+    the SpinnerDemo Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SpinnerDemoProject/SpinnerDemo.jnlp)
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行SpinnerDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#SpinnerDemo)。[![启动SpinnerDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SpinnerDemoProject/SpinnerDemo.jnlp)
+- en: With the Month spinner, use the arrow buttons or keys to cycle forward and backward
+    through the possible values.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用月份旋转器时，使用箭头按钮或键向前和向后循环浏览可能值。
+- en: "Note that the lowest value is the first month of the year (for example, January)\
+    \ and the highest is the last (for example, December). The exact values depend\
+    \ on your locale. Also note that the values do not cycle \x97 you cannot use the\
+    \ up arrow button or key to go from December directly to January \x97 because\
+    \ the standard spinner models do not support cycling."
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 请注意，最小值是一年中的第一个月（例如，一月），最大值是最后一个月（例如，十二月）。确切的值取决于您所在地区。还要注意，这些值不会循环 - 您不能使用上箭头按钮或键直接从十二月跳到一月
+    - 因为标准旋转器模型不支持循环。
+- en: "Type in a valid month name for your locale \x97 for example, July."
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 输入您所在地区的有效月份名称，例如，七月。
+- en: Note that the spinner automatically completes the month name.
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 请注意，旋转器会自动完成月份名称。
+- en: "Moving on to the Year spinner, try typing a year over 100 years ago \x97 for\
+    \ example, 1800 \x97 and then click on another spinner or press the Tab key to\
+    \ move the focus out of the spinner."
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: "接下来是年份旋转器，尝试输入一个100年前的年份 \x97 例如，1800 \x97 然后单击另一个旋转器或按 Tab 键移出旋转器的焦点。"
+- en: Because this program restricts the spinner's model to numbers within 100 years
+    of the current year, 1800 is invalid. When the focus moves out of the spinner,
+    the displayed text changes back to the last valid value.
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 因为此程序将旋转器的模型限制在当前年份的100年内的数字范围内，所以1800是无效的。当焦点移出旋转器时，显示的文本会更改回上一个有效值。
+- en: Moving to the Another Date spinner, use the arrow buttons or keys to change
+    the date.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 移动到另一个日期旋转器，使用箭头按钮或键来更改日期。
+- en: "Note that by default the first part of the date \x97 in this case, the month\
+    \ number \x97 changes. You can change which part of the date changes either by\
+    \ clicking the mouse or using the arrow keys to move to another part of the date."
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: "请注意，默认情况下日期的第一部分 \x97 在本例中是月份数字 \x97 会更改。您可以通过单击鼠标或使用箭头键移动到日期的另一部分来更改日期的哪一部分更改。"
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'To create a spinner, first create its model and then pass the model into the
+    [JSpinner](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html)
+    constructor. For example:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建一个旋转器，首先创建其模型，然后将模型传递给 [JSpinner](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html)
+    构造函数。例如：
+- en: '[PRE0]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The rest of this section covers the following topics:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的其余部分涵盖以下主题：
+- en: '[Using Standard Spinner Models and Editors](#standard)'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用标准旋转器模型和编辑器](#standard)'
+- en: '[Specifying Spinner Formatting](#format)'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[指定旋转器格式](#format)'
+- en: '[Creating Custom Spinner Models and Editors](#model)'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建自定义旋转器模型和编辑器](#model)'
+- en: '[Detecting Spinner Value Changes](#change)'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检测旋转器值的更改](#change)'
+- en: '[The Spinner API](#api)'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[旋转器 API](#api)'
+- en: '[Examples That Use Spinners](#eg)'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用旋转器的示例](#eg)'
+- en: Using Standard Spinner Models and Editors
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用标准旋转器模型和编辑器
+- en: 'The Swing API provides three spinner models:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing API 提供了三种旋转器模型：
+- en: '[SpinnerListModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerListModel.html)'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[SpinnerListModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerListModel.html)'
+- en: The `SpinnerListModel` is a model whose values are defined by an array of objects
+    or a `List` object. The Month spinner in the `SpinnerDemo` example uses this model,
+    initialized with an array derived from the value returned by the `getMonths` method
+    of the `java.text.DateFormatSymbols` class. See [`SpinnerDemo.java`](../examples/components/SpinnerDemoProject/src/components/SpinnerDemo.java)
+    for details.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SpinnerListModel` 是一个模型，其值由对象数组或 `List` 对象定义。`SpinnerDemo` 示例中的月份旋转器使用了这个模型，初始化为从
+    `java.text.DateFormatSymbols` 类的 `getMonths` 方法返回的值派生的数组。有关详细信息，请参见 [`SpinnerDemo.java`](../examples/components/SpinnerDemoProject/src/components/SpinnerDemo.java)。'
+- en: '[SpinnerNumberModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html)'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[SpinnerNumberModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html)'
+- en: "The `SpinnerNumberModel` supports sequences of numbers which can be expressed\
+    \ as `double` objects, `int` objects, or `Number` objects. You can specify the\
+    \ minimum and maximum allowable values, as well as the *step size* \x97 the amount\
+    \ of each increment or decrement. The Year spinner uses this model, created with\
+    \ the following code:"
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "`SpinnerNumberModel` 支持可以表示为 `double` 对象、`int` 对象或 `Number` 对象的数字序列。您可以指定允许的最小和最大值，以及*步长*\
+    \ \x97 每次增加或减少的量。年份旋转器使用了这个模型，使用以下代码创建："
+- en: '[PRE1]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '[SpinnerDateModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html)'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[SpinnerDateModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html)'
+- en: 'The `SpinnerDateModel` supports sequences of `Date` objects. You can specify
+    the minimum and maximum dates, as well as the field (such as `Calendar.YEAR`)
+    to increment or decrement. Note, however, that some types of look and feel ignore
+    the specified field, and instead change the field that appears selected. The Another
+    Date spinner uses this model, created with the following code:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SpinnerDateModel` 支持 `Date` 对象的序列。您可以指定最小和最大日期，以及要增加或减少的字段（例如 `Calendar.YEAR`）。但请注意，某些类型的外观和感觉会忽略指定的字段，而是更改所选的字段。另一个日期旋转器使用了这个模型，使用以下代码创建：'
+- en: '[PRE2]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: "When you set the spinner's model, the spinner's editor is automatically set.\
+    \ The Swing API provides an editor class corresponding to each of the three model\
+    \ classes listed above. These classes \x97 [JSpinner.ListEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.ListEditor.html),\
+    \ [JSpinner.NumberEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.NumberEditor.html),\
+    \ and [JSpinner.DateEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DateEditor.html)\
+    \ \x97 are all subclasses of the [JSpinner.DefaultEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DefaultEditor.html)\
+    \ class that feature editable formatted text fields. If you use a model that does\
+    \ not have an editor associated with it, the editor is by default a `JSpinner.DefaultEditor`\
+    \ instance with a non-editable formatted text field."
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "当您设置微调器模型时，微调器的编辑器会自动设置。Swing API为上述三个模型类中的每一个提供了相应的编辑器类。这些类 \x97 [JSpinner.ListEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.ListEditor.html)、[JSpinner.NumberEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.NumberEditor.html)\
+    \ 和 [JSpinner.DateEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DateEditor.html)\
+    \ \x97 都是 [JSpinner.DefaultEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DefaultEditor.html)\
+    \ 类的子类，具有可编辑的格式化文本字段。如果使用没有与之关联的编辑器的模型，则编辑器默认为具有不可编辑格式化文本字段的`JSpinner.DefaultEditor`实例。"
+- en: Specifying Spinner Formatting
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定微调器格式
+- en: To change the formatting used in a standard spinner editor, you can create and
+    set the editor yourself.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要更改标准微调器编辑器中使用的格式，您可以自行创建并设置编辑器。
+- en: The `JSpinner.NumberEditor` and `JSpinner.DateEditor` classes have constructors
+    that allow you to create an editor that formats its data in a particular way.
+    For example, the following code sets up the Another Date spinner so that instead
+    of using the default date format, which is long and includes the time, it shows
+    just a month and year in a compact way.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JSpinner.NumberEditor` 和 `JSpinner.DateEditor` 类具有构造函数，允许您创建以特定方式格式化其数据的编辑器。例如，以下代码设置了另一个日期微调器，以便不使用默认的长日期格式（包括时间），而是以紧凑的方式显示月份和年份。'
+- en: '[PRE3]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '* * *'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: You can play with date formats by running `ComboBoxDemo2` example. Click the
+    Launch button to run ComboBoxDemo2 using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#ComboBoxDemo2).
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过运行`ComboBoxDemo2`示例来尝试日期格式。单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行ComboBoxDemo2（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#ComboBoxDemo2)。
+- en: '[![Launches the ComboBoxDemo2 Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ComboBoxDemo2Project/ComboBoxDemo2.jnlp)'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 ComboBoxDemo2 应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ComboBoxDemo2Project/ComboBoxDemo2.jnlp)'
+- en: For information about format strings, see the [Formatting](../../i18n/format/index.html)
+    lesson of the Internationalization trail.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关格式字符串的信息，请参阅国际化教程中的[格式化](../../i18n/format/index.html)部分。
+- en: '* * *'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'To change the formatting when using a default editor, you can obtain the editor''s
+    formatted text field and invoke methods on it. You can call those methods using
+    the `getTextField` method defined in the `JSpinner.DefaultEditor` class. Note
+    that the Swing-provided editors are not formatted text fields. Instead, they are
+    the `JPanel` instances that contain a formatted text field. Here is an example
+    of getting and invoking methods on the editor''s formatted text field:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在使用默认编辑器时更改格式，您可以获取编辑器的格式化文本字段并调用其方法。您可以使用`JSpinner.DefaultEditor`类中定义的`getTextField`方法调用这些方法。请注意，Swing提供的编辑器不是格式化文本字段。相反，它们是包含格式化文本字段的`JPanel`实例。以下是获取并调用编辑器格式化文本字段方法的示例：
+- en: '[PRE4]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Creating Custom Spinner Models and Editors
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建自定义微调器模型和编辑器
+- en: If the existing spinner models or editors do not meet your needs, you can create
+    your own.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果现有的微调器模型或编辑器不符合您的需求，您可以创建自己的。
+- en: The easiest route to creating a custom spinner model is to create a subclass
+    of an existing `AbstractSpinnerModel` subclass that already does most of what
+    you need. An alternative is to implement your own class by extending [`AbstractSpinnerModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractSpinnerModel.html)
+    class, which implements the event notifications required for all spinner models.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建自定义微调器模型的最简单方法是创建现有`AbstractSpinnerModel`子类的子类，该子类已经实现了大部分您需要的内容。另一种方法是通过扩展[`AbstractSpinnerModel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractSpinnerModel.html)类来实现自己的类，该类实现了所有微调器模型所需的事件通知。
+- en: The following subclass of `SpinnerListModel` implements a spinner model that
+    cycles through an array of objects. It also lets you specify a second spinner
+    model that will be updated whenever the cycle begins again. For example, if the
+    array of objects is a list of months, the linked model could be for a spinner
+    that displays the year. When the month flips over from December to January the
+    year is incremented. Similarly, when the month flips back from January to December
+    the year is decremented.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的`SpinnerListModel`子类实现了一个循环遍历对象数组的微调器模型。它还允许您指定第二个微调器模型，每当循环重新开始时将更新该模型。例如，如果对象数组是一个月份列表，则链接的模型可以用于显示年份的微调器。当月份从十二月翻转到一月时，年份会增加。类似地，当月份从一月翻回到十二月时，年份会减少。
+- en: '[PRE5]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The `CyclingSpinnerListModel` model is used for the Month spinner in the `SpinnerDemo2`
+    example, an example that is almost identical to the `SpinnerDemo`. Click the Launch
+    button to run SpinnerDemo2 using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#SpinnerDemo2).
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CyclingSpinnerListModel`模型用于`SpinnerDemo2`示例中的月份微调器，该示例几乎与`SpinnerDemo`相同。单击启动按钮以使用[Java™
+    Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行SpinnerDemo2（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#SpinnerDemo2)。'
+- en: '[![Launches the SpinnerDemo2 Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SpinnerDemo2Project/SpinnerDemo2.jnlp)'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动SpinnerDemo2应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SpinnerDemo2Project/SpinnerDemo2.jnlp)'
+- en: As we mentioned before, if you implement a spinner model that does not descend
+    from `SpinnerListModel`, `SpinnerNumberModel`, or `SpinnerDateModel`, then the
+    spinner's default editor is a non-editable instance of `JSpinner.DefaultEditor`.
+    As you have already seen, you can set a spinner's editor by invoking the `setEditor`
+    method on the spinner after the spinner's model property has been set. An alternative
+    to using `setEditor` is to create a subclass of the `JSpinner` class and override
+    its `createEditor` method so that it returns a particular kind of editor whenever
+    the spinner model is of a certain type.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如我们之前提到的，如果您实现的微调器模型不是从`SpinnerListModel`、`SpinnerNumberModel`或`SpinnerDateModel`继承的，那么微调器的默认编辑器是`JSpinner.DefaultEditor`的不可编辑实例。正如您已经看到的，您可以在设置微调器的模型属性后，通过调用微调器的`setEditor`方法来设置微调器的编辑器。使用`setEditor`的替代方法是创建`JSpinner`类的子类，并覆盖其`createEditor`方法，以便在微调器模型是某种类型时返回特定类型的编辑器。
+- en: In theory at least, you can use any `JComponent` instance as an editor. Possibilities
+    include using a subclass of a standard component such as `JLabel`, or a component
+    you have implemented from scratch, or a subclass of `JSpinner.DefaultEditor`.
+    The only requirements are that the editor must be updated to reflect changes in
+    the spinner's value, and it must have a reasonable preferred size. The editor
+    should generally also set its tool tip text to whatever tool tip text has been
+    specified for the spinner. An example of implementing an editor is provided in
+    the next section.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 理论上，您可以使用任何`JComponent`实例作为编辑器。可能的选择包括使用标准组件的子类，如`JLabel`，或者您从头开始实现的组件，或者`JSpinner.DefaultEditor`的子类。唯一的要求是编辑器必须更新以反映微调器值的更改，并且必须具有合理的首选大小。编辑器通常还应将其工具提示文本设置为微调器指定的工具提示文本。下一节提供了实现编辑器的示例。
+- en: Detecting Spinner Value Changes
+  id: totrans-60
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检测微调器值更改
+- en: You can detect that a spinner's value has changed by registering a change listener
+    on either the spinner or its model. Here is an example of implementing such a
+    change listener. This example is from `SpinnerDemo3`, which is based on `SpinnerDemo`
+    and uses a change listener to change the color of some text to match the value
+    of the Another Date spinner. Click the Launch button to run SpinnerDemo3 using
+    [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#SpinnerDemo3).
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过在微调器或其模型上注册更改侦听器来检测微调器的值已更改。以下是实现此类更改侦听器的示例。此示例来自`SpinnerDemo3`，它基于`SpinnerDemo`，并使用更改侦听器将某些文本的颜色更改为与另一个日期微调器的值匹配。单击“启动”按钮以使用[Java™
+    Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行
+    SpinnerDemo3（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#SpinnerDemo3)。
+- en: '[![Launches the SpinnerDemo3 Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SpinnerDemo3Project/SpinnerDemo3.jnlp)'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 SpinnerDemo3 应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SpinnerDemo3Project/SpinnerDemo3.jnlp)'
+- en: '[PRE6]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The following example implements an editor which has a change listener so that
+    it can reflect the spinner's current value. This particular editor displays a
+    solid color of gray, ranging anywhere from white to black. Click the Launch button
+    to run SpinnerDemo4 using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#SpinnerDemo4).
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例实现了一个具有更改侦听器的编辑器，以便它可以反映微调器的当前值。此特定编辑器显示了从白色到黑色的任何位置的灰色实色。单击“启动”按钮以使用[Java™
+    Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行
+    SpinnerDemo4（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#SpinnerDemo4)。
+- en: '[![Launches the SpinnerDemo4 Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SpinnerDemo4Project/SpinnerDemo4.jnlp)'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 SpinnerDemo4 应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SpinnerDemo4Project/SpinnerDemo4.jnlp)'
+- en: '[PRE7]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The Spinner API
+  id: totrans-67
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 微调器 API
+- en: The following tables list some of the commonly used API for using spinners.
+    If you need to deal directly with the editor's formatted text field, you should
+    also see [The FormattedTextField API](formattedtextfield.html#api). Other methods
+    you might use are listed in the API tables in [The JComponent Class](jcomponent.html#api).
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了一些常用的用于使用微调器的 API。如果您需要直接处理编辑器的格式化文本字段，还应查看[格式化文本字段 API](formattedtextfield.html#api)。您可能使用的其他方法列在[JComponent
+    类的 API 表中](jcomponent.html#api)。
+- en: '[Classes Related to Spinners](#newclassesapi)'
+  id: totrans-69
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[与微调器相关的类](#newclassesapi)'
+- en: '[Useful JSpinner Constructors and Methods](#jspinnerapi)'
+  id: totrans-70
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[JSpinner 构造函数和方法](#jspinnerapi)'
+- en: '[Useful Editor Constructors and Methods](#editorapi)'
+  id: totrans-71
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[有用的��辑器构造函数和方法](#editorapi)'
+- en: '[SpinnerListModel Methods](#listapi)'
+  id: totrans-72
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[SpinnerListModel 方法](#listapi)'
+- en: '[SpinnerDateModel Methods](#dateapi)'
+  id: totrans-73
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[SpinnerDateModel 方法](#dateapi)'
+- en: '[SpinnerNumberModel Methods](#numberapi)'
+  id: totrans-74
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[SpinnerNumberModel 方法](#numberapi)'
+- en: Classes Related to Spinners
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与微调器相关的类
+- en: '| Class or Interface | Purpose |'
+  id: totrans-76
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类或接口 | 目的 |'
+- en: '| [JSpinner](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html)
+    | A single-line input field that allows the user to select a number or object
+    value from an ordered sequence. |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JSpinner](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html)
+    | 允许用户从有序序列中选择数字或对象值的单行输入字段。 |'
+- en: '| [SpinnerModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerModel.html)
+    | The interface implemented by all spinner models. |'
+  id: totrans-78
+  prefs: []
+  type: TYPE_TB
+  zh: '| [SpinnerModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerModel.html)
+    | 所有微调器模型实现的接口。 |'
+- en: '| [AbstractSpinnerModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractSpinnerModel.html)
+    | The usual superclass for spinner model implementations. |'
+  id: totrans-79
+  prefs: []
+  type: TYPE_TB
+  zh: '| [AbstractSpinnerModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractSpinnerModel.html)
+    | 微调器模型实现的通常超类。 |'
+- en: '| [SpinnerListModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerListModel.html)
+    | A subclass of `AbstractSpinnerModel` whose values are defined by an array or
+    a `List`. |'
+  id: totrans-80
+  prefs: []
+  type: TYPE_TB
+  zh: '| [SpinnerListModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerListModel.html)
+    | 其值由数组或`List`定义的`AbstractSpinnerModel`的子类。 |'
+- en: '| [SpinnerDateModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html)
+    | A subclass of `AbstractSpinnerModel` that supports sequences of `Date` instances.
+    |'
+  id: totrans-81
+  prefs: []
+  type: TYPE_TB
+  zh: '| [SpinnerDateModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html)
+    | 支持`Date`实例序列的`AbstractSpinnerModel`的子类。 |'
+- en: '| [SpinnerNumberModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html)
+    | A subclass of `AbstractSpinnerModel` that supports sequences of numbers. |'
+  id: totrans-82
+  prefs: []
+  type: TYPE_TB
+  zh: '| [SpinnerNumberModel](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html)
+    | 支持数字序列的`AbstractSpinnerModel`的子类。 |'
+- en: '| [JSpinner.DefaultEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DefaultEditor.html)
+    | Implements an uneditable component that displays the spinner''s value. Subclasses
+    of this class are generally more specialized (and editable). |'
+  id: totrans-83
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JSpinner.DefaultEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DefaultEditor.html)
+    | 实现一个显示微调器值的不可编辑组件。该类的子类通常更专业化（可编辑）。 |'
+- en: '| [JSpinner.ListEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.ListEditor.html)
+    | A subclass of `JSpinner.DefaultEditor` whose values are defined by an array
+    or a `List`. |'
+  id: totrans-84
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JSpinner.ListEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.ListEditor.html)
+    | `JSpinner.DefaultEditor`的子类，其值由数组或`List`定义。 |'
+- en: '| [JSpinner.DateEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DateEditor.html)
+    | A subclass of `JSpinner.DefaultEditor` that supports sequences of `Date` instances.
+    |'
+  id: totrans-85
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JSpinner.DateEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DateEditor.html)
+    | 支持`Date`实例序列的`JSpinner.DefaultEditor`的子类。 |'
+- en: '| [JSpinner.NumberEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.NumberEditor.html)
+    | A subclass of `JSpinner.DefaultEditor` that supports sequences of numbers. |'
+  id: totrans-86
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JSpinner.NumberEditor](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.NumberEditor.html)
+    | 支持数字序列的`JSpinner.DefaultEditor`的子类。 |'
+- en: Useful JSpinner Constructors and Methods
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有用的JSpinner构造函数和方法
+- en: '| Constructor or Method | Purpose |'
+  id: totrans-88
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数或方法 | 目的 |'
+- en: '| [JSpinner()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#JSpinner--)
+    [JSpinner(SpinnerModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#JSpinner-javax.swing.SpinnerModel-)
+    | Creates a new `JSpinner`. The no-argument constructor creates a spinner with
+    an integer `SpinnerNumberModel` with an initial value of 0 and no minimum or maximum
+    limits. The optional parameter on the second constructor allows you to specify
+    your own `SpinnerModel`. |'
+  id: totrans-89
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JSpinner()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#JSpinner--)
+    [JSpinner(SpinnerModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#JSpinner-javax.swing.SpinnerModel-)
+    | 创建一个新的`JSpinner`。无参数构造函数创建一个带有整数`SpinnerNumberModel`的微调器，初始值为0，没有最小或最大限制。第二个构造函数上的可选参数允许您指定自己的`SpinnerModel`。
+    |'
+- en: '| [void setValue(java.lang.Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#setValue-java.lang.Object-)
+    [Object getValue()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#getValue--)
+    | Sets or gets the currently displayed element of the sequence. |'
+  id: totrans-90
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setValue(java.lang.Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#setValue-java.lang.Object-)
+    [Object getValue()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#getValue--)
+    | 设置或获取当前显示的序列元素。 |'
+- en: '| [Object getNextValue()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#getNextValue--)
+    [Object getPreviousValue()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#getPreviousValue--)
+    | Gets the object in the sequence that comes before or after the object returned
+    by the `getValue` method. |'
+  id: totrans-91
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getNextValue()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#getNextValue--)
+    [Object getPreviousValue()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#getPreviousValue--)
+    | 获取`getValue`方法返回的对象之前或之后的序列中的对象。 |'
+- en: '| [SpinnerModel getModel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#getModel--)
+    [void setModel(SpinnerModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#setModel-javax.swing.SpinnerModel-)
+    | Gets or sets the spinner''s model. |'
+  id: totrans-92
+  prefs: []
+  type: TYPE_TB
+  zh: '| [SpinnerModel getModel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#getModel--)
+    [void setModel(SpinnerModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#setModel-javax.swing.SpinnerModel-)
+    | 获取或设置微调器的模型。 |'
+- en: '| [JComponent getEditor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#getEditor--)
+    [void setEditor(JComponent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#setEditor-javax.swing.JComponent-)
+    | Gets or sets the spinner''s editor, which is often an object of type `JSpinner.DefaultEditor`.
+    |'
+  id: totrans-93
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JComponent getEditor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#getEditor--)
+    [void setEditor(JComponent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#setEditor-javax.swing.JComponent-)
+    | 获取或设置微调器的编辑器，通常是`JSpinner.DefaultEditor`类型的对象。 |'
+- en: '| [protected JComponent createEditor(SpinnerModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#createEditor-javax.swing.SpinnerModel-)
+    | Called by the `JSpinner` constructors to create the spinner''s editor. Override
+    this method to associate an editor with a particular type of model. |'
+  id: totrans-94
+  prefs: []
+  type: TYPE_TB
+  zh: '| [protected JComponent createEditor(SpinnerModel)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.html#createEditor-javax.swing.SpinnerModel-)
+    | `JSpinner`构造函数调用此方法来创建微调器的编辑器。重写此方法以将编辑器与特定类型的模型关联起来。 |'
+- en: Useful Editor Constructors and Methods
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有用的编辑器构造函数和方法
+- en: '| Constructor or Method | Purpose |'
+  id: totrans-96
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数或方法 | 目的 |'
+- en: '| [JSpinner.NumberEditor(JSpinner, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.NumberEditor.html#JSpinner.NumberEditor-javax.swing.JSpinner-java.lang.String-)
+    | Creates a `JSpinner.NumberEditor` instance that displays and allows editing
+    of the number value of the specified spinner. The string argument specifies the
+    format to use to display the number. See the API documentation for [DecimalFormat](https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html)
+    for information about decimal format strings. |'
+  id: totrans-97
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JSpinner.NumberEditor(JSpinner, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.NumberEditor.html#JSpinner.NumberEditor-javax.swing.JSpinner-java.lang.String-)
+    | 创建一个`JSpinner.NumberEditor`实例，显示并允许编辑指定微调器的数字值。字符串参数指定用于显示数字的格式。有关十进制格式字符串的信息，请参阅[DecimalFormat](https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html)的API文档。
+    |'
+- en: '| [JSpinner.DateEditor(JSpinner, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DateEditor.html#JSpinner.DateEditor-javax.swing.JSpinner-java.lang.String-)
+    | Creates a `JSpinner.DateEditor` instance that displays and allows editing of
+    the `Date` value of the specified spinner. The string argument specifies the format
+    to use to display the date. See the API documentation for [SimpleDateFormat](https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html)
+    for information about date format strings. |'
+  id: totrans-98
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JSpinner.DateEditor(JSpinner, String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DateEditor.html#JSpinner.DateEditor-javax.swing.JSpinner-java.lang.String-)
+    | 创建一个`JSpinner.DateEditor`实例，显示并允许编辑指定微调器的`Date`值。字符串参数指定用于显示日期的格式。有关日期格式字符串的信息，请参阅[SimpleDateFormat](https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html)的API文档。
+    |'
+- en: '| [JFormattedTextField getTextField()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DefaultEditor.html#getTextField--)
+    *(defined in `JSpinner.DefaultEditor`)* | Gets the formatted text field that provides
+    the main GUI for this editor. |'
+  id: totrans-99
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JFormattedTextField getTextField()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JSpinner.DefaultEditor.html#getTextField--)
+    *(在`JSpinner.DefaultEditor`中定义)* | 获取提供此编辑器主要GUI的格式化文本字段。 |'
+- en: SpinnerListModel Methods
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SpinnerListModel 方法
+- en: '| Method | Purpose |'
+  id: totrans-101
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setList(List)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerListModel.html#setList-java.util.List-)
+    [List getList()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerListModel.html#getList--)
+    | Sets or gets the `List` that defines the sequence for this model. |'
+  id: totrans-102
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setList(List)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerListModel.html#setList-java.util.List-)
+    [List getList()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerListModel.html#getList--)
+    | 设置或获取定义此模型序列的`List`。 |'
+- en: SpinnerDateModel Methods
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SpinnerDateModel 方法
+- en: '| Method | Purpose |'
+  id: totrans-104
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '|  |'
+  id: totrans-105
+  prefs: []
+  type: TYPE_TB
+  zh: '|  |'
+- en: '| [void setValue(Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#setValue-java.lang.Object-)
+    [Date getDate()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#getDate--)'
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setValue(Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#setValue-java.lang.Object-)
+    [Date getDate()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#getDate--)'
+- en: '[Object getValue()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#getValue--)
+    | Sets or gets the current `Date` for this sequence. |'
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Object getValue()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#getValue--)
+    | 设置或获取此序列的当前`Date`。 |'
+- en: '| [void setStart(Comparable)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#setStart-java.lang.Comparable-)
+    [Comparable getStart()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#getStart--)
+    | Sets or gets the first `Date` in this sequence. Use `null` to specify that the
+    spinner has no lower limit. |'
+  id: totrans-108
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setStart(Comparable)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#setStart-java.lang.Comparable-)
+    [Comparable getStart()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#getStart--)
+    | 设置或获取此序列中的第一个`Date`。使用`null`指定微调器没有下限。 |'
+- en: '| [void setEnd(Comparable)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#setEnd-java.lang.Comparable-)
+    [Comparable getEnd()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#getEnd--)
+    | Sets or gets the last `Date` in this sequence. Use `null` to specify that the
+    spinner has no upper limit. |'
+  id: totrans-109
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setEnd(Comparable)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#setEnd-java.lang.Comparable-)
+    [Comparable getEnd()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#getEnd--)
+    | 设置或获取此序列中的最后一个`Date`。使用`null`指定微调器没有上限。 |'
+- en: '| [void setCalendarField(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#setCalendarField-int-)
+    [int getCalendarField()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#getCalendarField--)
+    | Sets or gets the size of the date value increment used by the `getNextValue`
+    and `getPreviousValue` methods. This property is *not* used when the user explicitly
+    increases or decreases the value; instead, the selected part of the formatted
+    text field is incremented or decremented. The specified parameter must be one
+    of the following constants, defined in `Calendar`: `ERA`, `YEAR`, `MONTH`, `WEEK_OF_YEAR`,
+    `WEEK_OF_MONTH`, `DAY_OF_MONTH`, `DAY_OF_YEAR`, `DAY_OF_WEEK`, `DAY_OF_WEEK_IN_MONTH`,
+    `AM_PM`, `HOUR_OF_DAY`, `MINUTE`, `SECOND`, `MILLISECOND`. |'
+  id: totrans-110
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setCalendarField(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#setCalendarField-int-)
+    [int getCalendarField()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerDateModel.html#getCalendarField--)
+    | 设置或获取`getNextValue`和`getPreviousValue`方法使用的日期值增量的大小。当用户明确增加或减少值时，不使用此属性；相反，格式化文本字段的选定部分会增加或减少。指定的参数必须是`Calendar`中定义的以下常量之一：`ERA`、`YEAR`、`MONTH`、`WEEK_OF_YEAR`、`WEEK_OF_MONTH`、`DAY_OF_MONTH`、`DAY_OF_YEAR`、`DAY_OF_WEEK`、`DAY_OF_WEEK_IN_MONTH`、`AM_PM`、`HOUR_OF_DAY`、`MINUTE`、`SECOND`、`MILLISECOND`。
+    |'
+- en: SpinnerNumberModel Methods
+  id: totrans-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 微调器数字模型方法
+- en: '| Method | Purpose |'
+  id: totrans-112
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '|  |'
+  id: totrans-113
+  prefs: []
+  type: TYPE_TB
+  zh: '|  |'
+- en: '| [void setValue(Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#setValue-java.lang.Object-)
+    [Number getNumber()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#getNumber--)
+    | Sets or gets the current value for this sequence. |'
+  id: totrans-114
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setValue(Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#setValue-java.lang.Object-)
+    [Number getNumber()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#getNumber--)
+    | 设置或获取此序列的当前值。 |'
+- en: '| [void setMaximum(Comparable)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#setMaximum-java.lang.Comparable-)
+    [Comparable getMaximum()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#getMaximum--)
+    | Sets or gets the upper bound for numbers in this sequence. If the maximum is
+    `null`, there is no upper bound. |'
+  id: totrans-115
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setMaximum(Comparable)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#setMaximum-java.lang.Comparable-)
+    [Comparable getMaximum()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#getMaximum--)
+    | 设置或获取此序列中数字的上限。如果最大值为`null`，则没有上限。 |'
+- en: '| [void setMinimum(Comparable)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#setMinimum-java.lang.Comparable-)
+    [Comparable getMinimum()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#getMinimum--)
+    | Sets or gets the lower bound for numbers in this sequence. If the minimum is
+    `null`, there is no lower bound. |'
+  id: totrans-116
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setMinimum(Comparable)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#setMinimum-java.lang.Comparable-)
+    [Comparable getMinimum()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#getMinimum--)
+    | 设置或获取此序列中数字的下限。如果最小值为`null`，则没有下限。 |'
+- en: '| [void setStepSize(Number)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#setStepSize-java.lang.Number-)
+    [Number getStepSize()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#getStepSize--)
+    | Sets or gets the increment used by `getNextValue` and `getPreviousValue` methods.
+    |'
+  id: totrans-117
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setStepSize(Number)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#setStepSize-java.lang.Number-)
+    [Number getStepSize()](https://docs.oracle.com/javase/8/docs/api/javax/swing/SpinnerNumberModel.html#getStepSize--)
+    | 设置或获取`getNextValue`和`getPreviousValue`方法使用的增量。 |'
+- en: Examples That Use Spinners
+  id: totrans-118
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用微调器的示例
+- en: This table lists examples that use spinners and points to where those examples
+    are described.
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个表格列出了使用Spinner的示例，并指向这些示例的描述位置。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-120
+  prefs: []
+  type: TYPE_TB
+  zh: 示例 | 描述位置 | 备注 |
+- en: '| [`SpinnerDemo`](../examples/components/index.html#SpinnerDemo) | This section
+    | Uses all three standard spinner model classes. Contains the code to use a custom
+    spinner model, but the code is turned off by default. |'
+  id: totrans-121
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SpinnerDemo`](../examples/components/index.html#SpinnerDemo) | 这一部分 | 使用了所有三种标准的Spinner模型类。
+    包含使用自定义Spinner模型的代码，但默认情况下该代码被关闭。 |'
+- en: '| [`SpinnerDemo2`](../examples/components/index.html#SpinnerDemo2) | This section
+    | A `SpinnerDemo` subclass that uses the custom spinner model for its Months spinner.
+    |'
+  id: totrans-122
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SpinnerDemo2`](../examples/components/index.html#SpinnerDemo2) | 这一部分 |
+    一个`SpinnerDemo`的子类，使用自定义的Spinner模型来显示月份的Spinner。 |'
+- en: '| [`SpinnerDemo3`](../examples/components/index.html#SpinnerDemo3) | This section
+    | Based on SpinnerDemo, this application shows how to listen for changes in a
+    spinner''s value. |'
+  id: totrans-123
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SpinnerDemo3`](../examples/components/index.html#SpinnerDemo3) | 这一部分 |
+    基于SpinnerDemo，该应用程序展示了如何监听Spinner值的变化。 |'
+- en: '| [`SpinnerDemo4`](../examples/components/index.html#SpinnerDemo4) | This section
+    | Implements a custom model and a custom editor for a spinner that displays shades
+    of gray. |'
+  id: totrans-124
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SpinnerDemo4`](../examples/components/index.html#SpinnerDemo4) | 这一部分 |
+    实现了一个自定义模型和一个自定义编辑器，用于显示灰度的Spinner。 |'

@@ -1,0 +1,64 @@
+- en: Concurrent Collections
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 并发集合
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/collections.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/collections.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/collections.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/collections.html)
+- en: 'The `java.util.concurrent` package includes a number of additions to the Java
+    Collections Framework. These are most easily categorized by the collection interfaces
+    provided:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.util.concurrent` 包包含了许多对 Java 集合框架的补充。这些最容易通过提供的集合接口进行分类：'
+- en: '[`BlockingQueue`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/BlockingQueue.html)
+    defines a first-in-first-out data structure that blocks or times out when you
+    attempt to add to a full queue, or retrieve from an empty queue.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`BlockingQueue`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/BlockingQueue.html)
+    定义了一个先进先出的数据结构，当尝试向满队列添加或从空队列检索时会阻塞或超时。'
+- en: '[`ConcurrentMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentMap.html)
+    is a subinterface of [`java.util.Map`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html)
+    that defines useful atomic operations. These operations remove or replace a key-value
+    pair only if the key is present, or add a key-value pair only if the key is absent.
+    Making these operations atomic helps avoid synchronization. The standard general-purpose
+    implementation of `ConcurrentMap` is [`ConcurrentHashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html),
+    which is a concurrent analog of [`HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html).'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`ConcurrentMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentMap.html)
+    是 [`java.util.Map`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html)
+    的子接口，定义了有用的原子操作。这些操作仅在键存在时移除或替换键值对，或仅在键不存在时添加键值对。使这些操作原子化有助于避免同步。`ConcurrentMap`
+    的标准通用实现是 [`ConcurrentHashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html)，它是
+    [`HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html)
+    的并发模拟。'
+- en: '[`ConcurrentNavigableMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentNavigableMap.html)
+    is a subinterface of `ConcurrentMap` that supports approximate matches. The standard
+    general-purpose implementation of `ConcurrentNavigableMap` is [`ConcurrentSkipListMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentSkipListMap.html),
+    which is a concurrent analog of [`TreeMap`](https://docs.oracle.com/javase/8/docs/api/java/util/TreeMap.html).'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`ConcurrentNavigableMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentNavigableMap.html)
+    是 `ConcurrentMap` 的子接口，支持近似匹配。`ConcurrentNavigableMap` 的标准通用实现是 [`ConcurrentSkipListMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentSkipListMap.html)，它是
+    [`TreeMap`](https://docs.oracle.com/javase/8/docs/api/java/util/TreeMap.html)
+    的并发模拟。'
+- en: All of these collections help avoid [Memory Consistency Errors](memconsist.html)
+    by defining a happens-before relationship between an operation that adds an object
+    to the collection with subsequent operations that access or remove that object.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有这些集合都有助于避免[内存一致性错误](memconsist.html)，通过定义将一个对象添加到集合的操作与随后访问或移除该对象的操作之间的happens-before关系。

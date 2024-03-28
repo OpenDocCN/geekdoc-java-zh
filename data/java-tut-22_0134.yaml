@@ -1,0 +1,115 @@
+- en: Effects of Type Erasure and Bridge Methods
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 类型擦除和桥接方法的影响
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/bridgeMethods.html](https://docs.oracle.com/javase/tutorial/java/generics/bridgeMethods.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/bridgeMethods.html](https://docs.oracle.com/javase/tutorial/java/generics/bridgeMethods.html)
+- en: Sometimes type erasure causes a situation that you may not have anticipated.
+    The following example shows how this can occur. The following example shows how
+    a compiler sometimes creates a synthetic method, which is called a *bridge method*,
+    as part of the type erasure process.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时类型擦除会导致一个你可能没有预料到的情况。以下示例展示了这种情况是如何发生的。有时编译器会在类型擦除过程中创建一个合成方法，称为*桥接方法*。
+- en: 'Given the following two classes:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 给定以下两个类：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Consider the following code:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑以下代码：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'After type erasure, this code becomes:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 经过类型擦除后，这段代码变成：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The next section explains why a `ClassCastException` is thrown at the `n.setData("Hello");`
+    statement.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一节将解释为什么在 `n.setData("Hello");` 语句处抛出 `ClassCastException`。
+- en: Bridge Methods
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 桥接方法
+- en: When compiling a class or interface that extends a parameterized class or implements
+    a parameterized interface, the compiler may need to create a synthetic method,
+    which is called a bridge method, as part of the type erasure process. You normally
+    don't need to worry about bridge methods, but you might be puzzled if one appears
+    in a stack trace.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当编译一个继承参数化类或实现参数化接口的类或接口时，编译器可能需要创建一个合成方法，称为桥接方法，作为类型擦除过程的一部分。通常情况下，你不需要担心桥接方法，但如果在堆栈跟踪中出现一个，你可能会感到困惑。
+- en: 'After type erasure, the `Node` and `MyNode` classes become:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 经过类型擦除后，`Node` 和 `MyNode` 类变成：
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: After type erasure, the method signatures do not match; the `Node.setData(T)`
+    method becomes `Node.setData(Object)`. As a result, the `MyNode.setData(Integer)`
+    method does not override the `Node.setData(Object)` method.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 经过类型擦除后，方法签名不匹配；`Node.setData(T)` 方法变成了 `Node.setData(Object)`。因此，`MyNode.setData(Integer)`
+    方法不会覆盖 `Node.setData(Object)` 方法。
+- en: To solve this problem and preserve the [polymorphism](../IandI/polymorphism.html)
+    of generic types after type erasure, the Java compiler generates a bridge method
+    to ensure that subtyping works as expected.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了解决这个问题并在类型擦除后保留泛型类型的[多态性](../IandI/polymorphism.html)，Java编译器生成一个桥接方法来确保子类型化按预期工作。
+- en: 'For the `MyNode` class, the compiler generates the following bridge method
+    for `setData`:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于 `MyNode` 类，编译器为 `setData` 生成了以下桥接方法：
+- en: '[PRE4]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The bridge method `MyNode.setData(object)` delegates to the original `MyNode.setData(Integer)`
+    method. As a result, the `n.setData("Hello");` statement calls the method `MyNode.setData(Object)`,
+    and a `ClassCastException` is thrown because `"Hello"` can't be cast to `Integer`.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 桥接方法 `MyNode.setData(object)` 委托给原始的 `MyNode.setData(Integer)` 方法。因此，`n.setData("Hello");`
+    语句调用了 `MyNode.setData(Object)` 方法，由于 `"Hello"` 无法转换为 `Integer`，导致抛出 `ClassCastException`。

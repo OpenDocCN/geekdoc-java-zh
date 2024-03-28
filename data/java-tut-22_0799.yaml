@@ -1,0 +1,460 @@
+- en: Processing Limit Definitions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 处理限制定义
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/limits/limits.html](https://docs.oracle.com/javase/tutorial/jaxp/limits/limits.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/limits/limits.html](https://docs.oracle.com/javase/tutorial/jaxp/limits/limits.html)
+- en: The following list describes the JAXP XML Processing Limits supported in the
+    JDK. These limits can be specified through the factory APIs, system properties,
+    and the `jaxp.properties` file.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下列表描述了JDK支持的JAXP XML处理限制。这些限制可以通过工厂API、系统属性和`jaxp.properties`文件指定。
+- en: entityExpansionLimit
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: entityExpansionLimit
+- en: '| Attribute | Description |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性 | 描述 |'
+- en: '| Name | `http://www.oracle.com/xml/jaxp/properties/entityExpansionLimit` |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | `http://www.oracle.com/xml/jaxp/properties/entityExpansionLimit` |'
+- en: '| Definition | Limit the number of entity expansions. |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| 定义 | 限制实体扩展的数量。 |'
+- en: '| Value | A positive integer. A value less than or equal to 0 indicates no
+    limit. If the value is not an integer, a `NumericFormatException` is thrown. |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 一个正整数。小于或等于0的值表示没有限制。如果值不是整数，则会抛出`NumericFormatException`异常。 |'
+- en: '| Default value | 64000 |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| 默认值 | 64000 |'
+- en: '| System property | `jdk.xml.entityExpansionLimit` |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| 系统属性 | `jdk.xml.entityExpansionLimit` |'
+- en: '| Since | 7u45, 8 |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| 自从 | 7u45, 8 |'
+- en: elementAttributeLimit
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: elementAttributeLimit
+- en: '| Attribute | Description |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性 | 描述 |'
+- en: '| Name | `http://www.oracle.com/xml/jaxp/properties/elementAttributeLimit`
+    |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | `http://www.oracle.com/xml/jaxp/properties/elementAttributeLimit` |'
+- en: '| Definition | Limit the number of attributes an element can have. |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| 定义 | 限制元素可以拥有的属性数量。 |'
+- en: '| Value | A positive integer. A value less than or equal to 0 indicates no
+    limit. If the value is not an integer, a `NumericFormatException` is thrown. |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 一个正整数。小于或等于0的值表示没有限制。如果值不是整数，则会抛出`NumericFormatException`异常。 |'
+- en: '| Default value | 10000 |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| 默认值 | 10000 |'
+- en: '| System property | `jdk.xml.elementAttributeLimit` |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| 系��属性 | `jdk.xml.elementAttributeLimit` |'
+- en: '| Since | 7u45, 8 |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| 自从 | 7u45, 8 |'
+- en: maxOccurLimit
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: maxOccurLimit
+- en: '| Attribute | Description |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性 | 描述 |'
+- en: '| Name | `http://www.oracle.com/xml/jaxp/properties/maxOccurLimit` |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | `http://www.oracle.com/xml/jaxp/properties/maxOccurLimit` |'
+- en: '| Definition | Limit the number of content model nodes that may be created
+    when building a grammar for a W3C XML Schema that contains `maxOccurs` attributes
+    with values other than "unbounded". |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| 定义 | 限制在构建包含值不是"unbounded"的`maxOccurs`属性的W3C XML Schema的语法时可以创建的内容模型节点的数量。
+    |'
+- en: '| Value | A positive integer. A value less than or equal to 0 indicates no
+    limit. If the value is not an integer, a `NumericFormatException` is thrown. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 一个正整数。小于或等于0的值表示没有限制。如果值不是整数，则会抛出`NumericFormatException`异常。 |'
+- en: '| Default value | 5000 |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| 默认值 | 5000 |'
+- en: '| System property | `jdk.xml.maxOccurLimit` |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| 系统属性 | `jdk.xml.maxOccurLimit` |'
+- en: '| Since | 7u45, 8 |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| 自从 | 7u45, 8 |'
+- en: totalEntitySizeLimit
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: totalEntitySizeLimit
+- en: '| Attribute | Description |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性 | 描述 |'
+- en: '| Name | `http://www.oracle.com/xml/jaxp/properties/totalEntitySizeLimit` |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | `http://www.oracle.com/xml/jaxp/properties/totalEntitySizeLimit` |'
+- en: '| Definition | Limit the total size of all entities that include general and
+    parameter entities. The size is calculated as an aggregation of all entities.
+    |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| 定义 | 限制包含通用实体和参数实体的所有实体的总大小。大小是所有实体的聚合计算。 |'
+- en: '| Value | A positive integer. A value less than or equal to 0 indicates no
+    limit. If the value is not an integer, a `NumericFormatException` is thrown. |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 一个正整数。小于或等于0的值表示没有限制。如果值不是整数，则会抛出`NumericFormatException`异常。 |'
+- en: '| Default value | 5x10^7 |'
+  id: totrans-32
+  prefs: []
+  type: TYPE_TB
+  zh: '| 默认值 | 5x10^7 |'
+- en: '| System property | `jdk.xml.totalEntitySizeLimit` |'
+  id: totrans-33
+  prefs: []
+  type: TYPE_TB
+  zh: '| 系统属性 | `jdk.xml.totalEntitySizeLimit` |'
+- en: '| Since | 7u45, 8 |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| 自从 | 7u45, 8 |'
+- en: maxGeneralEntitySizeLimit
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: maxGeneralEntitySizeLimit
+- en: '| Attribute | Description |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性 | 描述 |'
+- en: '| Name | `http://www.oracle.com/xml/jaxp/properties/maxGeneralEntitySizeLimit`
+    |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | `http://www.oracle.com/xml/jaxp/properties/maxGeneralEntitySizeLimit`
+    |'
+- en: '| Definition | Limit the maximum size of any general entities. |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| 定义 | 限制任何通用实体的最大大小。 |'
+- en: '| Value | A positive integer. A value less than or equal to 0 indicates no
+    limit. If the value is not an integer, a `NumericFormatException` is thrown. |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 一个正整数。小于或等于0的值表示没有限制。如果值不是整数，则会抛出`NumericFormatException`异常。 |'
+- en: '| Default value | 0 |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| 默认值 | 0 |'
+- en: '| System property | `jdk.xml.maxGeneralEntitySizeLimit` |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| 系统属性 | `jdk.xml.maxGeneralEntitySizeLimit` |'
+- en: '| Since | 7u45, 8 |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| 自从 | 7u45, 8 |'
+- en: maxParameterEntitySizeLimit
+  id: totrans-43
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: maxParameterEntitySizeLimit
+- en: '| Attribute | Description |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性 | 描述 |'
+- en: '| Name | `http://www.oracle.com/xml/jaxp/properties/maxParameterEntitySizeLimit`
+    |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | `http://www.oracle.com/xml/jaxp/properties/maxParameterEntitySizeLimit`
+    |'
+- en: '| Definition | Limit the maximum size of any parameter entities, including
+    the result of nesting multiple parameter entities. |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| 定义 | 限制任何参数实体的最大大小，包括嵌套多个参数实体的结果。 |'
+- en: '| Value | A positive integer. A value less than or equal to 0 indicates no
+    limit. If the value is not an integer, a `NumericFormatException` is thrown. |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 一个正整数。小于或等于0的值表示没有限制。如果值不是整数，则会抛出`NumericFormatException`异常。 |'
+- en: '| Default value | 1000000 |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| 默认值 | 1000000 |'
+- en: '| System property | `jdk.xml.maxParameterEntitySizeLimit` |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| 系统属性 | `jdk.xml.maxParameterEntitySizeLimit` |'
+- en: '| Since | 7u45, 8 |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| 自JDK 7u45, 8起 |'
+- en: entityReplacementLimit
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: entityReplacementLimit
+- en: '| Attribute | Description |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性 | 描述 |'
+- en: '| Name | `http://www.oracle.com/xml/jaxp/properties/entityReplacementLimit`
+    |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | `http://www.oracle.com/xml/jaxp/properties/entityReplacementLimit` |'
+- en: '| Definition | Limit the total number of nodes in all entity references. |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| 定义 | 限制所有实体引用中节点的总数。 |'
+- en: '| Value | A positive integer. A value less than or equal to 0 indicates no
+    limit. If the value is not an integer, a `NumericFormatException` is thrown. |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 一个正整数。小于或等于0的值表示没有限制。如果值不是整数，则会抛出`NumericFormatException`异常。 |'
+- en: '| Default value | 3000000 |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '| 默认值 | 3000000 |'
+- en: '| System property | `jdk.xml.entityReplacementLimit` |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '| 系统属性 | `jdk.xml.entityReplacementLimit` |'
+- en: '| Since | 7u111, 8u101 |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| 自JDK 7u111, 8u101起 |'
+- en: maxElementDepth
+  id: totrans-59
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: maxElementDepth
+- en: '| Attribute | Description |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性 | 描述 |'
+- en: '| Name | `http://www.oracle.com/xml/jaxp/properties/maxElementDepth` |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | `http://www.oracle.com/xml/jaxp/properties/maxElementDepth` |'
+- en: '| Definition | Limit the maximum element depth. |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_TB
+  zh: '| 定义 | 限制最大元素深度。 |'
+- en: '| Value | A positive integer. A value less than or equal to 0 indicates no
+    limit. If the value is not an integer, a `NumericFormatException` is thrown. |'
+  id: totrans-63
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 一个正整数。小于或等于0的值表示没有限制。如果值不是整数，则会抛出`NumericFormatException`异常。 |'
+- en: '| Default value | 0 |'
+  id: totrans-64
+  prefs: []
+  type: TYPE_TB
+  zh: '| 默认值 | 0 |'
+- en: '| System property | `jdk.xml.maxElementDepth` |'
+  id: totrans-65
+  prefs: []
+  type: TYPE_TB
+  zh: '| 系统属性 | `jdk.xml.maxElementDepth` |'
+- en: '| Since | 7u65, 8u11 |'
+  id: totrans-66
+  prefs: []
+  type: TYPE_TB
+  zh: '| 自JDK 7u65, 8u11起 |'
+- en: maxXMLNameLimit
+  id: totrans-67
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: maxXMLNameLimit
+- en: '| Attribute | Description |'
+  id: totrans-68
+  prefs: []
+  type: TYPE_TB
+  zh: '| 属性 | 描述 |'
+- en: '| Name | `http://www.oracle.com/xml/jaxp/properties/maxXMLNameLimit` |'
+  id: totrans-69
+  prefs: []
+  type: TYPE_TB
+  zh: '| 名称 | `http://www.oracle.com/xml/jaxp/properties/maxXMLNameLimit` |'
+- en: '| Definition | Limit the maximum size of XML names, including element name,
+    attribute name and namespace prefix and URI. |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '| 定义 | 限制XML名称的最大大小，包括元素名称、属性名称和命名空间前缀和URI。 |'
+- en: '| Value | A positive integer. A value less than or equal to 0 indicates no
+    limit. If the value is not an integer, a `NumericFormatException` is thrown. |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| 值 | 一个正整数。小于或等于0的值表示没有限制。如果值不是整数，则会抛出`NumericFormatException`异常。 |'
+- en: '| Default value | 1000 |'
+  id: totrans-72
+  prefs: []
+  type: TYPE_TB
+  zh: '| 默认值 | 1000 |'
+- en: '| System property | `jdk.xml.maxXMLNameLimit` |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '| 系统属性 | `jdk.xml.maxXMLNameLimit` |'
+- en: '| Since | 7u91, 8u65 |'
+  id: totrans-74
+  prefs: []
+  type: TYPE_TB
+  zh: '| 自JDK 7u91, 8u65起 |'
+- en: Legacy System Properties
+  id: totrans-75
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 旧版系统属性
+- en: These properties, which were introduced since JDK 5.0 and 6, continue to be
+    supported for backward compatibility.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些属性自JDK 5.0和6起被引入，并继续为向后兼容性而受支持。
+- en: '| System Property | Since | New System Property |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_TB
+  zh: '| 系统属性 | 自JDK 5.0和6起 | 新系统属性 |'
+- en: '| entityExpansionLimit | 1.5 | jdk.xml.entityExpansionLimit |'
+  id: totrans-78
+  prefs: []
+  type: TYPE_TB
+  zh: '| entityExpansionLimit | 1.5 | jdk.xml.entityExpansionLimit |'
+- en: '| elementAttributeLimit | 1.5 | jdk.xml.elementAttributeLimit |'
+  id: totrans-79
+  prefs: []
+  type: TYPE_TB
+  zh: '| elementAttributeLimit | 1.5 | jdk.xml.elementAttributeLimit |'
+- en: '| maxOccurLimit | 1.6 | jdk.xml.maxOccur |'
+  id: totrans-80
+  prefs: []
+  type: TYPE_TB
+  zh: '| maxOccurLimit | 1.6 | jdk.xml.maxOccur |'
+- en: '{java.home}/lib/jaxp.properties'
+  id: totrans-81
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '{java.home}/lib/jaxp.properties'
+- en: 'The system properties can be specified in the `jaxp.properties` file to define
+    the behavior for all invocations of the JDK or JRE. The format is `system-property-name=value`.
+    For example:'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以在`jaxp.properties`文件中指定系统属性，以定义JDK或JRE的所有调用的行为。格式为`system-property-name=value`。例如：
+- en: '[PRE0]'
+  id: totrans-83
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'

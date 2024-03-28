@@ -1,0 +1,60 @@
+- en: Constructors
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 构造函数
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/ctor.html](https://docs.oracle.com/javase/tutorial/reflect/member/ctor.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/ctor.html](https://docs.oracle.com/javase/tutorial/reflect/member/ctor.html)
+- en: A *constructor* is used in the creation of an object that is an instance of
+    a class. Typically it performs operations required to initialize the class before
+    methods are invoked or fields are accessed. Constructors are never inherited.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*构造函数* 用于创建一个属于类的实例的对象。通常在调用方法或访问字段之前执行初始化类所需的操作。构造函数不会被继承。'
+- en: 'Similar to methods, reflection provides APIs to discover and retrieve the constructors
+    of a class and obtain declaration information such as the modifiers, parameters,
+    annotations, and thrown exceptions. New instances of classes may also be created
+    using a specified constructor. The key classes used when working with constructors
+    are [`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)
+    and [`java.lang.reflect.Constructor`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html).
+    Common operations involving constructors are covered in the following sections:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与方法类似，反射提供了API来发现和检索类的构造函数，并获取声明信息，如修饰符、参数、注解和抛出的异常。还可以使用指定的构造函数创建类的新实例。在处理构造函数时使用的关键类是[`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)
+    和 [`java.lang.reflect.Constructor`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html)。涵盖了涉及构造函数的常见操作的以下部分：
+- en: '[Finding Constructors](ctorLocation.html) illustrates how to retrieve constructors
+    with specific parameters'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[查找构造函数](ctorLocation.html) 说明了如何检索具有特定参数的构造函数'
+- en: '[Retrieving and Parsing Constructor Modifiers](ctorModifiers.html) shows how
+    to obtain the modifiers of a constructor declaration and other information about
+    the constructor'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[检索和解析构造函数修饰符](ctorModifiers.html) 展示了如何获取构造函数声明的修饰符以及有关构造函数的其他信息'
+- en: '[Creating New Class Instances](ctorInstance.html) shows how to instantiate
+    an instance of an object by invoking its constructor'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建新的类实例](ctorInstance.html) 展示了如何通过调用其构造函数实例化对象的实例'
+- en: '[Troubleshooting](ctorTrouble.html) describes common errors which may be encountered
+    while finding or invoking constructors'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[故障排除](ctorTrouble.html) 描述了在查找或调用构造函数时可能遇到的常见错误'

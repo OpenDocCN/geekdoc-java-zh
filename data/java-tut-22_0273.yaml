@@ -1,0 +1,150 @@
+- en: Handling Initialization Status With Event Handlers
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用事件处理程序处理初始化状态
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/appletStatus.html](https://docs.oracle.com/javase/tutorial/deployment/applet/appletStatus.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/appletStatus.html](https://docs.oracle.com/javase/tutorial/deployment/applet/appletStatus.html)
+- en: An applet cannot handle requests from JavaScript code in the web page until
+    the applet has been initialized. A call to an applet method or access to an applet
+    variable from JavaScript code will be blocked until the applet's `init()` method
+    is complete or the applet first invokes JavaScript code from the web page in which
+    it is deployed. As the JavaScript implementation is single-threaded in many browsers,
+    the web page may appear to be frozen during applet startup.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 applet 初始化之前，applet 无法处理来自网页中 JavaScript 代码的请求。从 JavaScript 代码调用 applet 方法或访问
+    applet 变量将被阻塞，直到 applet 的`init()`方法完成或 applet 首次从部署的网页中调用 JavaScript 代码。由于许多浏览器中
+    JavaScript 实现是单线程的，因此在 applet 启动期间，网页可能会出现冻结的情况。
+- en: Beginning in the JDK 7 release, you can check the `status` variable of the applet
+    while it is loading to determine if the applet is ready to handle requests from
+    JavaScript code. You can also register event handlers that will automatically
+    be invoked during various stages of applet initialization. To leverage this functionality,
+    the applet should be deployed with the `java_status_events` parameter set to `"true"`.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从 JDK 7 版本开始，您可以在 applet 加载时检查`status`变量，以确定 applet 是否准备好处理来自 JavaScript 代码的请求。您还可以注册事件处理程序，在
+    applet 初始化的各个阶段自动调用。为了利用这个功能，应该将 applet 部署时的`java_status_events`参数设置为`"true"`。
+- en: In the Status and Event Handler example, JavaScript code registers an `onLoad`
+    handler with the applet. The `onLoad` handler is automatically invoked by the
+    Java Plug-in software when the applet has been initialized. The `onLoad` handler
+    invokes other methods of the applet to draw the graph on the web page. The `init`
+    method of the [``DrawingApplet``](examples/applet_StatusAndCallback/src/DrawingApplet.java)
+    class sleeps for two seconds to simulate a long applet initialization period.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在状态和事件处理程序示例中，JavaScript 代码向 applet 注册了一个`onLoad`处理程序。当 applet 初始化完成时，Java 插件软件会自动调用`onLoad`处理程序。`onLoad`处理程序调用
+    applet 的其他方法，在网页上绘制图形。[``DrawingApplet``](examples/applet_StatusAndCallback/src/DrawingApplet.java)
+    类的`init`方法休眠两秒，模拟长时间的 applet 初始化过程。
+- en: The following steps describe how to register event handlers and check an applet's
+    status. See [Applet Status and Event Handlers](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/applet_dev_guide.html#JSDPG719)
+    for a complete list of applet status values and applet events for which event
+    handlers can be registered.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下步骤描述了如何注册事件处理程序并检查 applet 的状态。请参阅[Applet 状态和事件处理程序](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/applet_dev_guide.html#JSDPG719)，了解可以注册事件处理程序的完整的
+    applet 状态值和 applet 事件列表。
+- en: Create a JavaScript function to register event handlers. The following code
+    snippet shows the `registerAppletStateHandler` function that registers an `onLoad`
+    event handler if the applet has not already loaded.
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个 JavaScript 函数来注册事件处理程序。以下代码片段显示了`registerAppletStateHandler`函数，如果 applet
+    尚未加载，则注册一个`onLoad`事件处理程序。
+- en: '[PRE0]'
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Invoke the previously created `registerAppletStateHandler` function in the `body`
+    tag's onload method. This ensures that the HTML tag for the applet has been created
+    in the Document Object Model (DOM) tree of the web page before the applet's event
+    handlers are registered.
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在`body`标签的 onload 方法中调用先前创建的`registerAppletStateHandler`函数。这样可以确保在注册 applet
+    的事件处理程序之前，applet 的 HTML 标签已经在网页的文档对象模型（DOM）树中创建。
+- en: '[PRE1]'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Deploy the applet with the `java_status_events` parameter set to `"true"`.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将 applet 部署时的`java_status_events`参数设置为`"true"`。
+- en: '[PRE2]'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Open [``AppletPage.html``](examples/dist/applet_StatusAndCallback/AppletPage.html)
+    in a browser to view the behavior of applet event handlers. In the [``AppletPageUpdatedDuringLoading.html``](examples/dist/applet_StatusAndCallback/AppletPageUpdatedDuringLoading.html)
+    page, the `status` variable of the applet is checked to determine if the applet
+    has been loaded. Based on the status, the web page is continuously updated while
+    the applet is being loaded.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在浏览器中打开[``AppletPage.html``](examples/dist/applet_StatusAndCallback/AppletPage.html)以查看
+    applet 事件处理程序的行为。在[``AppletPageUpdatedDuringLoading.html``](examples/dist/applet_StatusAndCallback/AppletPageUpdatedDuringLoading.html)页面中，检查
+    applet 的`status`变量以确定 applet 是否已加载。根据状态，当 applet 被加载时，网页会持续更新。
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到 applet 运行，请安装至少 [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    版本。'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到示例运行，您可能需要在浏览器中启用 JavaScript 解释器，以便 Deployment Toolkit 脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[Download source code](examplesIndex.html#StatusEventHandler) for the *Status
+    and Event Handler* example to experiment further.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#StatusEventHandler) 以进一步进行实验的 *状态和事件处理程序* 示例。'

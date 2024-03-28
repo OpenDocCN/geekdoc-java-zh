@@ -1,0 +1,125 @@
+- en: Invoking Methods
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 调用方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/methodInvocation.html](https://docs.oracle.com/javase/tutorial/reflect/member/methodInvocation.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/methodInvocation.html](https://docs.oracle.com/javase/tutorial/reflect/member/methodInvocation.html)
+- en: Reflection provides a means for invoking methods on a class. Typically, this
+    would only be necessary if it is not possible to cast an instance of the class
+    to the desired type in non-reflective code. Methods are invoked with [`java.lang.reflect.Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-).
+    The first argument is the object instance on which this particular method is to
+    be invoked. (If the method is `static`, the first argument should be `null`.)
+    Subsequent arguments are the method's parameters. If the underlying method throws
+    an exception, it will be wrapped by an [`java.lang.reflect.InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html).
+    The method's original exception may be retrieved using the exception chaining
+    mechanism's [`InvocationTargetException.getCause()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html#getCause--)
+    method.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 反射提供了一种在类上调用方法的方式。通常，只有在非反射代码中无法将类的实例强制转换为所需类型时才需要这样做。方法是使用[`java.lang.reflect.Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-)来调用的。第一个参数是要调用该特定方法的对象实例。（如果方法是`static`，第一个参数应为`null`。）后续参数是方法的参数。如果底层方法抛出异常，它将被[`java.lang.reflect.InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html)包装。可以使用异常链接机制的[`InvocationTargetException.getCause()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html#getCause--)方法检索方法的原始异常。
+- en: Finding and Invoking a Method with a Specific Declaration
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 查找和调用具有特定声明的方法
+- en: Consider a test suite which uses reflection to invoke private test methods in
+    a given class. The [``Deet``](example/Deet.java) example searches for `public`
+    methods in a class which begin with the string "`test`", have a boolean return
+    type, and a single [`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)
+    parameter. It then invokes each matching method.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑一个测试套件，它使用反射来调用给定类中的私有测试方法。[``Deet``](example/Deet.java)示例搜索类中以字符串"`test`"开头，具有布尔返回类型和单个[`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)参数的`public`方法。然后调用每个匹配的方法。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '`Deet` invokes [`getDeclaredMethods()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredMethods--)
+    which will return all methods explicitly declared in the class. Also, [`Class.isAssignableFrom()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isAssignableFrom-java.lang.Class-)
+    is used to determine whether the parameters of the located method are compatible
+    with the desired invocation. Technically the code could have tested whether the
+    following statement is `true` since [`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)
+    is `final`:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Deet`调用[`getDeclaredMethods()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredMethods--)，它将返回类中明确声明的所有方法。此外，使用[`Class.isAssignableFrom()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isAssignableFrom-java.lang.Class-)来确定定位方法的参数是否与所需调用兼容。从技术上讲，代码可以测试以下语句是否为`true`，因为[`Locale`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html)是`final`的：'
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: However, [`Class.isAssignableFrom()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isAssignableFrom-java.lang.Class-)
+    is more general.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，[`Class.isAssignableFrom()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isAssignableFrom-java.lang.Class-)更通用。
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '[PRE3]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: First, note that only `testDeet()` meets the declaration restrictions enforced
+    by the code. Next, when `testDeet()` is passed an invalid argument it throws an
+    unchecked [`java.util.MissingResourceException`](https://docs.oracle.com/javase/8/docs/api/java/util/MissingResourceException.html).
+    In reflection, there is no distinction in the handling of checked versus unchecked
+    exceptions. They are all wrapped in an [`InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html)
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，请注意只有`testDeet()`符合代码强制执行的声明限制。接下来，当`testDeet()`传递无效参数时，它会抛出一个未经检查的[`java.util.MissingResourceException`](https://docs.oracle.com/javase/8/docs/api/java/util/MissingResourceException.html)。在反射中，对于已检查和未检查的异常处理没有区别。它们都被包装在一个[`InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html)中。
+- en: Invoking Methods with a Variable Number of Arguments
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 调用具有可变数量参数的方法
+- en: '[`Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-)
+    may be used to pass a variable number of arguments to a method. The key concept
+    to understand is that methods of variable arity are implemented as if the variable
+    arguments are packed in an array.'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-)可用于向方法传递可变数量的参数。要理解的关键概念是，可变参数的方法被实现为如果可变参数被打包在一个数组中。'
+- en: The [``InvokeMain``](example/InvokeMain.java) example illustrates how to invoke
+    the `main()` entry point in any class and pass a set of arguments determined at
+    runtime.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``InvokeMain``](example/InvokeMain.java)示例演示了如何调用任何类中的`main()`入口点，并在运行时传递一组参数。'
+- en: '[PRE4]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: First, to find the `main()` method the code searches for a class with the name
+    "main" with a single parameter that is an array of [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+    Since `main()` is `static`, `null` is the first argument to [`Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-).
+    The second argument is the array of arguments to be passed.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，为了找到`main()`方法，代码会搜索一个名为"main"的类，该类有一个参数，参数是一个[`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)数组。由于`main()`是`static`的，`null`是传递给[`Method.invoke()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html#invoke-java.lang.Object-java.lang.Object...-)的第一个参数。第二个参数是要传递的参数数组。
+- en: '[PRE5]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'

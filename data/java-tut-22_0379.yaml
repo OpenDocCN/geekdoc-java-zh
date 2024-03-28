@@ -1,0 +1,494 @@
+- en: How to Use Labels
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用标签
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/label.html](https://docs.oracle.com/javase/tutorial/uiswing/components/label.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/label.html](https://docs.oracle.com/javase/tutorial/uiswing/components/label.html)
+- en: With the [`JLabel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html)
+    class, you can display unselectable text and images. If you need to create a component
+    that displays a string, an image, or both, you can do so by using or extending
+    `JLabel`. If the component is interactive and has a certain state, use a [button](button.html)
+    instead of a label.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[`JLabel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html)类，您可以显示不可选择的文本和图像。如果您需要创建一个显示字符串、图像或两者的组件，可以使用或扩展`JLabel`来实现。如果组件是交互式的并具有某种状态，请使用[按钮](button.html)而不是标签。
+- en: By specifying HTML code in a label's text, you can give the label various characteristics
+    such as multiple lines, multiple fonts or multiple colors. If the label uses just
+    a single color or font, you can avoid the overhead of HTML processing by using
+    the `setForeground` or `setFont` method instead. See [Using HTML in Swing Components](html.html)
+    for details.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过在标签文本中指定 HTML 代码，您可以赋予标签各种特性，如多行、多字体或多颜色。如果标签仅使用单一颜色或字体，您可以通过使用`setForeground`或`setFont`方法来避免
+    HTML 处理的开销。有关详细信息，请参阅[在 Swing 组件中使用 HTML](html.html)。
+- en: Note that labels are not opaque by default. If you need to paint the label's
+    background, it is recommended that you turn its opacity property to "true". The
+    following code snippet shows how to do this.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，默认情况下标签不是不透明的。如果您需要绘制标签的背景，建议将其不透明属性设置为"true"。以下代码片段显示了如何实现这一点。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The following picture introduces an application that displays three labels.
+    The window is divided into three rows of equal height; the label in each row is
+    as wide as possible.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图片介绍了一个显示三个标签的应用程序。窗口被分为三行等高；每行中的标签尽可能宽。
+- en: '![A snapshot of LabelDemo, which uses labels with text and icons.](../Images/dd78495f649dca956bf097892d93d98a.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![LabelDemo 的快照，使用带有文本和图标的标签。](../Images/dd78495f649dca956bf097892d93d98a.png)'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: Click the Launch button to run the Label Demo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#LabelDemo).[![Launches
+    the LabelDemo Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/LabelDemoProject/LabelDemo.jnlp)
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行
+    Label Demo（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参阅[示例索引](../examples/components/index.html#LabelDemo)。[![启动
+    LabelDemo 应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/LabelDemoProject/LabelDemo.jnlp)
+- en: Resize the window so you can see how the labels' contents are placed within
+    the labels' drawing area.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调整窗口大小，以查看标签内容如何放置在标签的绘图区域内。
+- en: "All the label contents have default vertical alignment \x97 that is, the label\
+    \ contents are centered vertically in the label's drawing area. The top label,\
+    \ which contains both an image and text, has horizontal center alignment. The\
+    \ second label, which contains just text, has left (leading) alignment, which\
+    \ is the default for text-only labels in left-to-right languages. The third label,\
+    \ which contains just an image, has horizontal center alignment, which is the\
+    \ default for image-only labels."
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 所有标签内容都具有默认的垂直对齐方式——即，标签内容在标签绘图区域中垂直居中。包含图像和文本的顶部标签具有水平居中对齐。只包含文本的第二个标签具有左侧（leading）对齐，这是从左到右语言中仅包含文本标签的默认值。只包含图像的第三个标签具有水平居中对齐，这是仅包含图像标签的默认值。
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Below is the code from [`LabelDemo.java`](../examples/components/LabelDemoProject/src/components/LabelDemo.java)
+    that creates the labels in the previous example.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是[`LabelDemo.java`](../examples/components/LabelDemoProject/src/components/LabelDemo.java)中创建上述示例标签的代码。
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The code for the `createImageIcon` method is similar to that used throughout
+    this tutorial. You can find it in [How to Use Icons](../components/icon.html).
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`createImageIcon` 方法的代码与本教程中使用的代码类似。您可以在[如何使用图标](../components/icon.html)中找到它。'
+- en: 'Often, a label describes another component. When this occurs, you can improve
+    your program''s accessibility by using the `setLabelFor` method to identify the
+    component that the label describes. For example:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，标签描述另一个组件。当发生这种情况时，您可以通过使用`setLabelFor`方法来提高程序的可访问性，以标识标签描述的组件。例如：
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The preceding code, taken from the `FormattedTextFieldDemo` example discussed
+    in [How to Use Formatted Text Fields](formattedtextfield.html), lets assistive
+    technologies know that the label (`amountLabel`) provides information about the
+    formatted text field (`amountField`). For more information about assistive technologies,
+    see [How to Support Assistive Technologies](../misc/access.html).
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的代码取自[如何使用格式化文本字段](formattedtextfield.html)中讨论的`FormattedTextFieldDemo`示例，让辅助技术知道标签（`amountLabel`）提供有关格式化文本字段（`amountField`）的信息。有关辅助技术的更多信息，请参阅[如何支持辅助技术](../misc/access.html)。
+- en: The Label API
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 标签 API
+- en: 'The following tables list the commonly used `JLabel` constructors and methods.
+    Other methods you are likely to call are defined by the `Component` and `JComponent`
+    classes. They include `setFont`, `setForeground`, `setBorder`, `setOpaque`, and
+    `setBackground`. See [The JComponent Class](jcomponent.html) for details. The
+    API for using labels falls into three categories:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的`JLabel`构造函数和方法。您可能要调用的其他方法由`Component`和`JComponent`类定义。它们包括`setFont`、`setForeground`、`setBorder`、`setOpaque`和`setBackground`。有关详细信息，请参阅[The
+    JComponent Class](jcomponent.html)。使用标签的 API 分为三类：
+- en: '[Setting or Getting the Label''s Contents](#contentsapi)'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置或获取标签内容](#contentsapi)'
+- en: '[Fine Tuning the Label''s Appearance](#looksapi)'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[调整标签外观](#looksapi)'
+- en: '[Supporting Accessibility](#accessapi)'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[支持辅助功能](#accessapi)'
+- en: '* * *'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: "In the following API, do not confuse label alignment with X and Y alignment.\
+    \ X and Y alignment are used by layout managers and can affect the way any component\
+    \ \x97 not just a label \x97 is sized or positioned. Label alignment, on the other\
+    \ hand, has no effect on a label's size or position. Label alignment simply determines\
+    \ where, inside the label's painting area, the label's contents are positioned.\
+    \ Typically, the label's painting area is exactly the size needed to paint on\
+    \ the label and thus label alignment is irrelevant. For more information about\
+    \ X and Y alignment, see [How to Use BoxLayout](../layout/box.html)."
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在以下 API 中，不要将标签对齐与 X 和 Y 对齐混淆。X 和 Y 对齐由布局管理器使用，可以影响任何组件的大小或位置，而不仅仅是标签。另一方面，标签对齐对标签的大小或位置没有影响。标签对齐仅确定标签内容在标签绘制区域内的位置。通常，标签的绘制区域正好足以在标签上绘制，因此标签对齐是无关紧要的。有关
+    X 和 Y 对齐的更多信息，请参阅[如何使用 BoxLayout](../layout/box.html)。
+- en: '* * *'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Setting or Getting the Label's Contents
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置或获取标签内容
+- en: '| Method or Constructor | Purpose |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法或构造函数 | 目的 |'
+- en: '| [JLabel(Icon)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel-javax.swing.Icon-)
+    [JLabel(Icon, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel-javax.swing.Icon-int-)'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [JLabel(Icon)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel-javax.swing.Icon-)
+    [JLabel(Icon, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel-javax.swing.Icon-int-)'
+- en: '[JLabel(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel-java.lang.String-)'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JLabel(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel-java.lang.String-)'
+- en: '[JLabel(String, Icon, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel-java.lang.String-javax.swing.Icon-int-)'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JLabel(String, Icon, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel-java.lang.String-javax.swing.Icon-int-)'
+- en: '[JLabel(String, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel-java.lang.String-int-)'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JLabel(String, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel-java.lang.String-int-)'
+- en: '[JLabel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel--)
+    | Creates a `JLabel` instance, initializing it to have the specified text/image/alignment.
+    The `int` argument specifies the horizontal alignment of the label''s contents
+    within its drawing area. The horizontal alignment must be one of the following
+    constants defined in the [`SwingConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingConstants.html)
+    interface (which `JLabel` implements): `LEFT`, `CENTER`, `RIGHT`, `LEADING`, or
+    `TRAILING`. For ease of localization, we strongly recommend using `LEADING` and
+    `TRAILING`, rather than `LEFT` and `RIGHT`. |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JLabel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#JLabel--)
+    | 创建一个`JLabel`实例，将其初始化为具有指定的文本/图像/对齐方式。`int`参数指定标签内容在其绘图区域内的水平对齐方式。水平对齐必须是`SwingConstants`接口中定义的以下常量之一（`JLabel`实现的接口）：`LEFT`、`CENTER`、`RIGHT`、`LEADING`或`TRAILING`。为了方便本地化，我们强烈建议使用`LEADING`和`TRAILING`，而不是`LEFT`和`RIGHT`。'
+- en: '| [void setText(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setText-java.lang.String-)
+    [String getText()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getText--)
+    | Sets or gets the text displayed by the label. You can use HTML tags to format
+    the text, as described in [Using HTML in Swing Components](html.html). |'
+  id: totrans-36
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setText(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setText-java.lang.String-)
+    [String getText()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getText--)
+    | 设置或获取标签显示的文本。您可以使用HTML标记格式化文本，如[在Swing组件中使用HTML](html.html)中所述。'
+- en: '| [void setIcon(Icon)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setIcon-javax.swing.Icon-)
+    [Icon getIcon()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getIcon--)
+    | Sets or gets the image displayed by the label. |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setIcon(Icon)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setIcon-javax.swing.Icon-)
+    [Icon getIcon()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getIcon--)
+    | 设置或获取标签显示的图像。'
+- en: '| [void setDisplayedMnemonic(char)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setDisplayedMnemonic-char-)
+    [char getDisplayedMnemonic()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getDisplayedMnemonic--)
+    | Sets or gets the letter that should look like a keyboard alternative. This is
+    helpful when a label describes a component (such as a text field) that has a keyboard
+    alternative but cannot display it. If the labelFor property is also set (using
+    `setLabelFor`), then when the user activates the mnemonic, the keyboard focus
+    is transferred to the component specified by the labelFor property. |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setDisplayedMnemonic(char)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setDisplayedMnemonic-char-)
+    [char getDisplayedMnemonic()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getDisplayedMnemonic--)
+    | 设置或获取应该看起来像键盘替代的字母。当标签描述无法显示键盘替代但具有键盘替代的组件（如文本字段）时，这很有帮助。如果还设置了labelFor属性（使用`setLabelFor`），那么当用户激活助记键时，键盘焦点将转移到由labelFor属性指定的组件。'
+- en: '| [void setDisplayedMnemonicIndex(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setDisplayedMnemonicIndex-int-)
+    [int getDisplayedMnemonicIndex()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getDisplayedMnemonicIndex--)
+    | Sets or gets a hint as to which character in the text should be decorated to
+    represent the mnemonic. This is useful when you have two instances of the same
+    character and wish to decorate the second instance. For example, `setDisplayedMnemonicIndex(5)`
+    decorates the character that is at position 5 (that is, the 6th character in the
+    text). Not all types of look and feel may support this feature. |'
+  id: totrans-39
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setDisplayedMnemonicIndex(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setDisplayedMnemonicIndex-int-)
+    [int getDisplayedMnemonicIndex()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getDisplayedMnemonicIndex--)
+    | 设置或获取文本中应该被装饰以表示助记键的字符的提示。当您有两个相同字符的实例并希望装饰第二个实例时，这很有用。例如，`setDisplayedMnemonicIndex(5)`装饰文本中位置为5的字符（即文本中的第6个字符）。并非所有类型的外观和感觉都支持此功能。'
+- en: '| [void setDisabledIcon(Icon)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setDisabledIcon-javax.swing.Icon-)
+    [Icon getDisabledIcon()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getDisabledIcon--)
+    | Sets or gets the image displayed by the label when it is disabled. If you do
+    not specify a disabled image, then the look and feel creates one by manipulating
+    the default image. |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setDisabledIcon(Icon)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setDisabledIcon-javax.swing.Icon-)
+    [Icon getDisabledIcon()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getDisabledIcon--)
+    | 设置或获取标签在禁用时显示的图像。如果不指定禁用图像，则外观会通过操作��认图像来创建一个。 |'
+- en: Fine Tuning the Label's Appearance
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调整标签外观
+- en: '| Method | Purpose |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setHorizontalAlignment(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setHorizontalAlignment-int-)
+    [void setVerticalAlignment(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setVerticalAlignment-int-)'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setHorizontalAlignment(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setHorizontalAlignment-int-)
+    [void setVerticalAlignment(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setVerticalAlignment-int-)'
+- en: '[int getHorizontalAlignment()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getHorizontalAlignment--)'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[int getHorizontalAlignment()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getHorizontalAlignment--)'
+- en: '[int getVerticalAlignment()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getVerticalAlignment--)
+    | Sets or gets the area on the label where its contents should be placed. The
+    [`SwingConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingConstants.html)
+    interface defines five possible values for horizontal alignment: `LEFT`, `CENTER`
+    (the default for image-only labels), `RIGHT`, `LEADING` (the default for text-only
+    labels), `TRAILING`. For vertical alignment: `TOP`, `CENTER` (the default), and
+    `BOTTOM`. |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[int getVerticalAlignment()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getVerticalAlignment--)
+    | 设置或获取标签内容应放置的区域。[`SwingConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingConstants.html)
+    接口定义了水平对齐的五个可能值：`LEFT`、`CENTER`（仅图像标签的默认值）、`RIGHT`、`LEADING`（仅文本标签的默认值）、`TRAILING`。垂直对齐有：`TOP`、`CENTER`（默认）和
+    `BOTTOM`。 |'
+- en: '| [void setHorizontalTextPosition(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setHorizontalTextPosition-int-)
+    [void setVerticalTextPosition(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setVerticalTextPosition-int-)'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setHorizontalTextPosition(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setHorizontalTextPosition-int-)
+    [void setVerticalTextPosition(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setVerticalTextPosition-int-)'
+- en: '[int getHorizontalTextPosition()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getHorizontalTextPosition--)'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[int getHorizontalTextPosition()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getHorizontalTextPosition--)'
+- en: '[int getVerticalTextPosition()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getVerticalTextPosition--)
+    | Sets or gets the location where the label''s text will be placed, relative to
+    the label''s image. The [`SwingConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingConstants.html)
+    interface defines five possible values for horizontal position: `LEADING`, `LEFT`,
+    `CENTER`, `RIGHT`, and `TRAILING` (the default). For vertical position: `TOP`,
+    `CENTER` (the default), and `BOTTOM`. |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[int getVerticalTextPosition()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getVerticalTextPosition--)
+    | 设置或获取标签文本相对于标签图像放置的位置。[`SwingConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingConstants.html)
+    接口定义了水平位置的五个可能值：`LEADING`、`LEFT`、`CENTER`、`RIGHT` 和 `TRAILING`（默认）。垂直位置有：`TOP`、`CENTER`（默认）和
+    `BOTTOM`。 |'
+- en: '| [void setIconTextGap(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setIconTextGap-int-)
+    [int getIconTextGap()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getIconTextGap--)
+    | Sets or gets the number of pixels between the label''s text and its image. |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setIconTextGap(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setIconTextGap-int-)
+    [int getIconTextGap()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getIconTextGap--)
+    | 设置或获取标签文本与图像之间的像素数。 |'
+- en: Supporting Accessibility
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 支持辅助功能
+- en: '| Method | Purpose |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setLabelFor(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setLabelFor-java.awt.Component-)
+    [Component getLabelFor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getLabelFor--)
+    | Sets or gets which component the label describes. |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setLabelFor(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#setLabelFor-java.awt.Component-)
+    [Component getLabelFor()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLabel.html#getLabelFor--)
+    | 设置或获取标签描述的组件。 |'
+- en: Examples That Use Labels
+  id: totrans-53
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用标签的示例
+- en: The following table lists some of the many examples that use labels.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了一些使用标签的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`LabelDemo`](../examples/components/index.html#LabelDemo) | This section
+    | Shows how to specify horizontal and vertical alignment as well as how to align
+    a label''s text and image. |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`LabelDemo`](../examples/components/index.html#LabelDemo) | 本节 | 展示了如何指定水平和垂直对齐，以及如何对齐标签的文本和图像。
+    |'
+- en: '| [`HtmlDemo`](../examples/components/index.html#HtmlDemo) | [Using HTML in
+    Swing Components](html.html) | Lets you experiment with specifying HTML text for
+    a label. |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`HtmlDemo`](../examples/components/index.html#HtmlDemo) | [在Swing组件中使用HTML](html.html)
+    | 让您尝试为标签指定HTML文本。 |'
+- en: '| [`BoxAlignmentDemo`](../examples/layout/index.html#BoxAlignmentDemo) | [Fixing
+    Alignment Problems](../layout/box.html#alignment) | Demonstrates possible alignment
+    problems when using a label in a vertical box layout. Shows how to solve the problem.
+    |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`BoxAlignmentDemo`](../examples/layout/index.html#BoxAlignmentDemo) | [解决对齐问题](../layout/box.html#alignment)
+    | 演示了在垂直盒式布局中使用标签可能出现的对齐问题。展示了如何解决这个问题。 |'
+- en: '| [`DialogDemo`](../examples/components/index.html#DialogDemo) | [How to Use
+    Dialogs](dialog.html) | Uses a changeable label to display instructions and provide
+    feedback. |'
+  id: totrans-59
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`DialogDemo`](../examples/components/index.html#DialogDemo) | [如何使用对话框](dialog.html)
+    | 使用可变标签显示说明并提供反馈。 |'
+- en: '| [`SplitPaneDemo`](../examples/components/index.html#SplitPaneDemo) | [How
+    to Use Split Panes](splitpane.html) and [How to Use Lists](list.html) | Displays
+    an image using a label inside of a scroll pane. |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SplitPaneDemo`](../examples/components/index.html#SplitPaneDemo) | [如何使用分割窗格](splitpane.html)
+    和 [如何使用列表](list.html) | 在滚动窗格内使用标签显示图像。 |'
+- en: '| [`SliderDemo2`](../examples/components/index.html#SliderDemo2) | [How to
+    Use Sliders](slider.html) | Uses `JLabel` to provide labels for a slider. |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SliderDemo2`](../examples/components/index.html#SliderDemo2) | [如何使用滑块](slider.html)
+    | 使用`JLabel`为滑块提供标签。 |'
+- en: '| [`TableDialogEditDemo`](../examples/components/index.html#TableDialogEditDemo)
+    | [How to Use Tables](table.html) | Implements a label subclass, `ColorRenderer`,
+    to display colors in table cells. |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TableDialogEditDemo`](../examples/components/index.html#TableDialogEditDemo)
+    | [如何使用表格](table.html) | 实现了一个标签子类`ColorRenderer`，用于在表格单元格中显示颜色。 |'
+- en: '| [`FormattedTextFieldDemo`](../examples/components/index.html#FormattedTextFieldDemo)
+    | [How to Use Formatted Text Fields](formattedtextfield.html) | Has four rows,
+    each containing a label and the formatted text field it describes. |'
+  id: totrans-63
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`FormattedTextFieldDemo`](../examples/components/index.html#FormattedTextFieldDemo)
+    | [如何使用格式化文本字段](formattedtextfield.html) | 包含四行，每行包含一个标签和描述它的格式化文本字段。 |'
+- en: '| [`TextComponentDemo`](../examples/components/index.html#TextComponentDemo)
+    | [Text Component Features](generaltext.html) | `TextComponentDemo` has an inner
+    class (`CaretListenerLabel`) that extends `JLabel` to provide a label that listens
+    for events, updating itself based on the events. |'
+  id: totrans-64
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextComponentDemo`](../examples/components/index.html#TextComponentDemo)
+    | [文本组件特性](generaltext.html) | `TextComponentDemo`有一个内部类(`CaretListenerLabel`)，它扩展了`JLabel`以提供一个监听事件的标签，根据事件更新自身。
+    |'
+- en: '| [`ColorChooserDemo`](../examples/components/index.html#ColorChooserDemo)
+    | [How to Use Color Choosers](colorchooser.html) | Uses an opaque label to display
+    the currently chosen color against a fixed-color background. |'
+  id: totrans-65
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ColorChooserDemo`](../examples/components/index.html#ColorChooserDemo)
+    | [如何使用颜色选择器](colorchooser.html) | 使用不透明标签来显示当前选择的颜色在固定颜色背景上。 |'
+- en: 'See the [Using JavaFX UI Controls: Label](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/label.htm)
+    tutorial to learn about JavaFX labeled controls.'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[使用JavaFX UI控件：标签](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/label.htm)教程，了解JavaFX标签控件。

@@ -1,0 +1,43 @@
+- en: Setting Up a Web Server
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 设置Web服务器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/webstart/settingUpWebServerMimeType.html](https://docs.oracle.com/javase/tutorial/deployment/webstart/settingUpWebServerMimeType.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/webstart/settingUpWebServerMimeType.html](https://docs.oracle.com/javase/tutorial/deployment/webstart/settingUpWebServerMimeType.html)
+- en: You might need to configure your web server to handle Java Network Launch Protocol
+    (JNLP) files. If the web server is not set up properly, the Java Web Start application
+    will not launch when you click on the link to the JNLP file.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能需要配置您的web服务器来处理Java网络启动协议（JNLP）文件。如果web服务器没有正确设置，当您单击JNLP文件的链接时，Java Web启动应用程序将无法启动。
+- en: Configure the web server so that files with the `.jnlp` extension are set to
+    the `application/x-java-jnlp-file` MIME type.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 配置web服务器，使具有`.jnlp`扩展名的文件设置为`application/x-java-jnlp-file` MIME类型。
+- en: The specific steps to set up the JNLP MIME type will vary depending on the web
+    server. As an example, to configure an Apache web server, you should add the following
+    line to the `mime.types` file.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置JNLP MIME类型的具体步骤将根据web服务器的不同而有所变化。例如，要配置Apache web服务器，您应该在`mime.types`文件中添加以下行。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: For other web servers, check the documentation for instructions on setting MIME
+    types.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于其他web服务器，请查阅文档以获取设置MIME类型的说明。

@@ -1,0 +1,46 @@
+- en: Rename
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 重命名
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/rename.html](https://docs.oracle.com/javase/tutorial/jndi/ops/rename.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/rename.html](https://docs.oracle.com/javase/tutorial/jndi/ops/rename.html)
+- en: You can rename an object in a context by using [`Context.rename()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#rename-javax.naming.Name-javax.naming.Name-).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用[`Context.rename()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#rename-javax.naming.Name-javax.naming.Name-)在上下文中重命名对象。
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '![Renaming an object](../Images/21a0b8a98c930f5b0ef50d1dd971319b.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![重命名对象](../Images/21a0b8a98c930f5b0ef50d1dd971319b.png)'
+- en: '[`This example`](examples/Rename.java) renames the object that was bound to
+    `"cn=Scott Seligman"` to `"cn=Scott S"`. After verifying that the object got renamed,
+    the program renames it to its original name (`"cn=Scott Seligman"`), as follows.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`这个例子`](examples/Rename.java) 将绑定到`"cn=Scott Seligman"`的对象重命名为`"cn=Scott S"`。在验证对象已重命名后，程序将其重新命名为原始名称（`"cn=Scott
+    Seligman"`）。'
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: For more examples on renaming of LDAP entries check out the [Advanced Topics
+    for LDAP users](../ldap/rename.html) lesson.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 欲了解更多关于LDAP条目重命名的示例，请查看[LDAP用户的高级主题](../ldap/rename.html)课程。

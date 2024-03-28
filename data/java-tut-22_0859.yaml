@@ -1,0 +1,97 @@
+- en: Sign the Data
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 对数据进行签名
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/step3.html](https://docs.oracle.com/javase/tutorial/security/apisign/step3.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/apisign/step3.html](https://docs.oracle.com/javase/tutorial/security/apisign/step3.html)
+- en: Now that you have created a public key and a private key, you are ready to sign
+    the data. In this example you will sign the data contained in a file. `GenSig`
+    gets the file name from the command line. A digital signature is created (or verified)
+    using an instance of the `Signature` class.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您已经创建了公钥和私钥，可以准备对数据进行签名。在此示例中，您将对文件中包含的数据进行签名。`GenSig` 从命令行获取文件名。使用 `Signature`
+    类的实例创建数字签名。
+- en: Signing data, generating a digital signature for that data, is done with the
+    following steps.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对数据进行签名，生成该数据的数字签名，需要执行以下步骤。
+- en: '**Get a Signature Object**: The following gets a `Signature` object for generating
+    or verifying signatures using the DSA algorithm, the same algorithm for which
+    the program generated keys in the previous step, [Generate Public and Private
+    Keys](step2.html).'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**获取签名对象**：以下获取一个 `Signature` 对象，用于使用 DSA 算法生成或验证签名，该算法与程序在上一步中生成密钥的算法相同，[生成公钥和私钥](step2.html)。'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Note: When specifying the signature algorithm name, you should also include
+    the name of the message digest algorithm used by the signature algorithm. SHA1withDSA
+    is a way of specifying the DSA signature algorithm, using the SHA-1 message digest
+    algorithm.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意：在指定签名算法名称时，还应包括签名算法使用的消息摘要算法的名称。SHA1withDSA 是指定 DSA 签名算法的一种方式，使用 SHA-1 消息摘要算法。
+- en: Initialize the Signature Object
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 初始化签名对象
+- en: Before a `Signature` object can be used for signing or verifying, it must be
+    initialized. The initialization method for signing requires a private key. Use
+    the private key placed into the `PrivateKey` object named `priv` in the previous
+    step.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 `Signature` 对象用于签名或验证之前，必须进行初始化。签名的初始化方法需要一个私钥。使用前一步中放入名为 `priv` 的 `PrivateKey`
+    对象中的私钥。
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '**Supply the Signature Object the Data to Be Signed** This program will use
+    the data from the file whose name is specified as the first (and only) command
+    line argument. The program will read in the data a buffer at a time and will supply
+    it to the `Signature` object by calling the `update` method.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**向签名对象提供要签名的数据** 该程序将使用作为第一个（也是唯一的）命令行参数指定的文件名中的数据。程序将逐个缓冲区读取数据，并通过调用 `update`
+    方法将其提供给 `Signature` 对象。'
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Generate the Signature
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 生成签名
+- en: Once all of the data has been supplied to the `Signature` object, you can generate
+    the digital signature of that data.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦所有数据都已提供给 `Signature` 对象，就可以生成该数据的数字签名。
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

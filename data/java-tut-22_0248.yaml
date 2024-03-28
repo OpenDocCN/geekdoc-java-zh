@@ -1,0 +1,160 @@
+- en: Capturing Groups
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 捕获组
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/groups.html](https://docs.oracle.com/javase/tutorial/essential/regex/groups.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/groups.html](https://docs.oracle.com/javase/tutorial/essential/regex/groups.html)
+- en: In the [previous section](quant.html), we saw how quantifiers attach to one
+    character, character class, or capturing group at a time. But until now, we have
+    not discussed the notion of capturing groups in any detail.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在[上一节](quant.html)中，我们看到量词如何附加到一个字符、字符类或捕获组上。但直到现在，我们还没有详细讨论捕获组的概念。
+- en: '*Capturing groups* are a way to treat multiple characters as a single unit.
+    They are created by placing the characters to be grouped inside a set of parentheses.
+    For example, the regular expression `(dog)` creates a single group containing
+    the letters `"d" "o"` and `"g"`. The portion of the input string that matches
+    the capturing group will be saved in memory for later recall via backreferences
+    (as discussed below in the section, [Backreferences](#backref)).'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*捕获组*是将多个字符视为单个单元的一种方式。它们是通过将要分组的字符放在一对括号中创建的。例如，正则表达式`(dog)`创建了一个包含字母`"d"
+    "o"`和`"g"`的单个组。与捕获组匹配的输入字符串部分将被保存在内存中，以便稍后通过反向引用进行调用（如下面在[反向引用](#backref)部分中讨论）。'
+- en: Numbering
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编号
+- en: 'As described in the [`Pattern`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html)
+    API, capturing groups are numbered by counting their opening parentheses from
+    left to right. In the expression `((A)(B(C)))`, for example, there are four such
+    groups:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[`Pattern`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html)
+    API中所述，通过从左到右计算其开括号来对捕获组进行编号。例如，在表达式`((A)(B(C)))`中，有四个这样的组：
+- en: '`((A)(B(C)))`'
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`((A)(B(C)))`'
+- en: '`(A)`'
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`(A)`'
+- en: '`(B(C))`'
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`(B(C))`'
+- en: '`(C)`'
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '`(C)`'
+- en: To find out how many groups are present in the expression, call the `groupCount`
+    method on a matcher object. The `groupCount` method returns an `int` showing the
+    number of capturing groups present in the matcher's pattern. In this example,
+    `groupCount` would return the number `4`, showing that the pattern contains 4
+    capturing groups.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要找出表达式中存在多少组，请在匹配器对象上调用`groupCount`方法。`groupCount`方法返回一个`int`，显示匹配器模式中存在的捕获组数。在这个例子中，`groupCount`将返回数字`4`，显示该模式包含4个捕获组。
+- en: There is also a special group, group 0, which always represents the entire expression.
+    This group is not included in the total reported by `groupCount`. Groups beginning
+    with `(?` are pure, *non-capturing groups* that do not capture text and do not
+    count towards the group total. (You'll see examples of non-capturing groups later
+    in the section [Methods of the Pattern Class](pattern.html).)
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还有一个特殊组，组0，它始终表示整个表达式。这个组不包括在`groupCount`报告的总数中。以`(?`开头的组是纯粹的、*非捕获组*，不捕获文本，也不计入组总数。（您将在[Pattern类的方法](pattern.html)部分后面看到非捕获组的示例。）
+- en: 'It''s important to understand how groups are numbered because some `Matcher`
+    methods accept an `int` specifying a particular group number as a parameter:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 重要的是要理解组是如何编号的，因为一些`Matcher`方法接受一个指定特定组号的`int`作为参数：
+- en: '[`public int start(int group)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#start-int-):
+    Returns the start index of the subsequence captured by the given group during
+    the previous match operation.'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public int start(int group)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#start-int-)：返回在先前匹配操作期间由给定组捕获的子序列的起始索引。'
+- en: '[`public int end (int group)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#end-int-):
+    Returns the index of the last character, plus one, of the subsequence captured
+    by the given group during the previous match operation.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public int end (int group)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#end-int-)：返回在先前匹配操作期间由给定组捕获的子序列的最后一个字符的索引加一。'
+- en: '[`public String group (int group)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#group-int-):
+    Returns the input subsequence captured by the given group during the previous
+    match operation.'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String group (int group)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#group-int-)：返回在先前匹配操作期间由给定组捕获的输入子序列。'
+- en: Backreferences
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 反向引用
+- en: The section of the input string matching the capturing group(s) is saved in
+    memory for later recall via *backreference*. A backreference is specified in the
+    regular expression as a backslash (`\`) followed by a digit indicating the number
+    of the group to be recalled. For example, the expression `(\d\d)` defines one
+    capturing group matching two digits in a row, which can be recalled later in the
+    expression via the backreference `\1`.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 匹配捕获组的输入字符串部分将被保存在内存中，以便通过*反向引用*进行后续调用。反向引用在正则表达式中被指定为反斜杠（`\`）后跟表示要调用的组的数字。例如，表达式`(\d\d)`定义了一个捕获组，匹配连续两个数字，可以在表达式中通过反向引用`\1`稍后调用。
+- en: 'To match any 2 digits, followed by the exact same two digits, you would use
+    `(\d\d)\1` as the regular expression:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要匹配任意两个数字，后跟完全相同的两个数字，您可以使用`(\d\d)\1`作为正则表达式：
+- en: '[PRE0]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'If you change the last two digits the match will fail:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果更改最后两个数字，匹配将失败：
+- en: '[PRE1]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'For nested capturing groups, backreferencing works in exactly the same way:
+    Specify a backslash followed by the number of the group to be recalled.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于嵌套的捕获组，反向引用的工作方式完全相同：指定一个反斜杠，后跟要调用的组的编号。

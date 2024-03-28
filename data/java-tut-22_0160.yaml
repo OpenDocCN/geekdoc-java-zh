@@ -1,0 +1,76 @@
+- en: "Unchecked Exceptions \x97 The Controversy"
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: "未检查异常 \x97 争议"
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/runtime.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/runtime.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/runtime.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/runtime.html)
+- en: Because the Java programming language does not require methods to catch or to
+    specify unchecked exceptions (`RuntimeException`, `Error`, and their subclasses),
+    programmers may be tempted to write code that throws only unchecked exceptions
+    or to make all their exception subclasses inherit from `RuntimeException`. Both
+    of these shortcuts allow programmers to write code without bothering with compiler
+    errors and without bothering to specify or to catch any exceptions. Although this
+    may seem convenient to the programmer, it sidesteps the intent of the `catch`
+    or `specify` requirement and can cause problems for others using your classes.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为Java编程语言不要求方法捕获或指定未检查异常（`RuntimeException`，`Error`及其子类），程序员可能会倾向于编写仅抛出未检查异常的代码，或者使所有异常子类继承自`RuntimeException`。这两种捷径使程序员能够编写代码，而不必理会编译器错误，也不必指定或捕获任何异常。尽管这对程序员来说可能很方便，但它绕过了`catch`或`specify`要求的意图，可能会给使用您的类的其他人造成问题。
+- en: Why did the designers decide to force a method to specify all uncaught checked
+    exceptions that can be thrown within its scope? Any `Exception` that can be thrown
+    by a method is part of the method's public programming interface. Those who call
+    a method must know about the exceptions that a method can throw so that they can
+    decide what to do about them. These exceptions are as much a part of that method's
+    programming interface as its parameters and `return` value.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设计者为什么决定强制一种方法来指定在其范围内可能抛出的所有未捕获的已检查异常？方法可能抛出的任何`Exception`都是方法的公共编程接口的一部分。调用方法的人必须了解方法可能抛出的异常，以便他们可以决定如何处理这些异常。这些异常与方法的编程接口一样重要，就像它的参数和`return`值一样。
+- en: 'The next question might be: "If it''s so good to document a method''s API,
+    including the exceptions it can throw, why not specify runtime exceptions too?"
+    Runtime exceptions represent problems that are the result of a programming problem,
+    and as such, the API client code cannot reasonably be expected to recover from
+    them or to handle them in any way. Such problems include arithmetic exceptions,
+    such as dividing by zero; pointer exceptions, such as trying to access an object
+    through a null reference; and indexing exceptions, such as attempting to access
+    an array element through an index that is too large or too small.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个问题可能是：“如果记录方法的API，包括它可能抛出的异常是如此重要，为什么不也指定运行时异常呢？”运行时异常代表的是由编程问题导致的问题，因此，API客户端代码不能合理地预期从中恢复或以任何方式处理它们。这些问题包括算术异常，例如除以零；指针异常，例如尝试通过空引用访问对象；以及索引异常，例如尝试通过太大或太小的索引访问数组元素。
+- en: Runtime exceptions can occur anywhere in a program, and in a typical one they
+    can be very numerous. Having to add runtime exceptions in every method declaration
+    would reduce a program's clarity. Thus, the compiler does not require that you
+    catch or specify runtime exceptions (although you can).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行时异常可能在程序的任何地方发生，在典型情况下可能非常多。在每个方法声明中添加运行时异常会降低程序的清晰度。因此，编译器不要求您捕获或指定运行时异常（尽管您可以）。
+- en: One case where it is common practice to throw a `RuntimeException` is when the
+    user calls a method incorrectly. For example, a method can check if one of its
+    arguments is incorrectly `null`. If an argument is `null`, the method might throw
+    a `NullPointerException`, which is an *unchecked* exception.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个常见的情况是抛出`RuntimeException`的情况是当用户错误调用方法时。例如，一个方法可以检查其参数是否不正确为`null`。如果参数为`null`，方法可能会抛出`NullPointerException`，这是一个*未检查*异常。
+- en: Generally speaking, do not throw a `RuntimeException` or create a subclass of
+    `RuntimeException` simply because you don't want to be bothered with specifying
+    the exceptions your methods can throw.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一般来说，不要仅仅因为不想麻烦指定方法可能抛出的异常而抛出`RuntimeException`或创建`RuntimeException`的子类。
+- en: 'Here''s the bottom line guideline: If a client can reasonably be expected to
+    recover from an exception, make it a checked exception. If a client cannot do
+    anything to recover from the exception, make it an unchecked exception.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是底线指导原则：如果客户端可以合理地预期从异常中恢复，那么将其作为已检查异常。如果客户端无法从异常中恢复，那么将其作为未检查异常。

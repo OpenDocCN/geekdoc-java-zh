@@ -1,0 +1,128 @@
+- en: TransferSupport Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: TransferSupport 类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/transfersupport.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/transfersupport.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/transfersupport.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/transfersupport.html)
+- en: The [`TransferSupport`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html)
+    class serves two functions. As the name suggests, its first function is to support
+    the transfer process and for that purpose it provides several utility methods
+    used to access the details of the data transfer. The following list shows the
+    methods that can be used to obtain information from the `TransferHandler`. Several
+    of these methods are related to drop actions, which will be discussed in [Setting
+    the Drop Mode](dropmodes.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`TransferSupport`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html)类有两个功能。正如其名称所示，它的第一个功能是支持传输过程，为此提供了几个实用方法用于访问数据传输的详细信息。以下列表显示了可以用于从`TransferHandler`获取信息的方法。其中几个方法与放置操作有关，将在[设置放置模式](dropmodes.html)中讨论。'
+- en: '[`Component getComponent()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getComponent--)—
+    This method returns the target component of the transfer.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Component getComponent()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getComponent--)—
+    这个方法返回传输的目标组件。'
+- en: '[`int getDropAction()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getDropAction--)
+    — This method returns the chosen action (`COPY`, `MOVE` or `LINK`) when the transfer
+    is a drop. If the transfer is not a drop, this method throws an exception.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`int getDropAction()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getDropAction--)
+    — 这个方法在传输为放置操作时返回选择的操作（`COPY`，`MOVE`或`LINK`）。如果传输不是一个放置操作，这个方法会抛出异常。'
+- en: '[`int getUserDropAction()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getUserDropAction--)
+    — This method returns the user''s chosen drop action. For example, if the user
+    simultaneously holds Control and Shift during the drag gesture, this indicates
+    an `ACTION_LINK` action. For more information on user drop actions, see the API
+    for [`DropTargetDragEvent`](https://docs.oracle.com/javase/8/docs/api/java/awt/dnd/DropTargetDragEvent.html).
+    If the transfer is not a drop, this method throws an exception.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`int getUserDropAction()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getUserDropAction--)
+    — 这个方法返回用户选择的放置操作。例如，如果用户在拖动手势期间同时按住 Control 和 Shift 键，这表示一个`ACTION_LINK`操作。有关用户放置操作的更多信息，请参阅[`DropTargetDragEvent`](https://docs.oracle.com/javase/8/docs/api/java/awt/dnd/DropTargetDragEvent.html)的
+    API。如果传输不是一个放置操作，这个方法会抛出异常。'
+- en: '[`int getSourceDropActions()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getSourceDropActions--)
+    — This method returns the set of actions supported by the source component. If
+    the transfer is not a drop, this method throws an exception.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`int getSourceDropActions()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getSourceDropActions--)
+    — 这个方法返回源组件支持的操作集。如果传输不是一个放置操作，这个方法会抛出异常。'
+- en: '[`DataFlavor[] getDataFlavors()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getDataFlavors--)
+    — This method returns all the data flavors supported by this component. For example,
+    a component might support files and text, or text and color. If the transfer is
+    not a drop, this method throws an exception.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`DataFlavor[] getDataFlavors()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getDataFlavors--)
+    — 这个方法返回此组件支持的所有数据 flavors。例如，一个组件可能支持文件和文本，或者文本和颜色。如果传输不是一个放置操作，这个方法会抛出异常。'
+- en: '[`boolean isDataFlavorSupported(DataFlavor)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#isDataFlavorSupported-java.awt.datatransfer.DataFlavor-)
+    — This method returns true if the specified `DataFlavor` is supported. The [`DataFlavor`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html)
+    indicates the type of data represented, such as an image (`imageFlavor`), a string
+    (`stringFlavor`), a list of files (`javaFileListFlavor`), and so on.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`boolean isDataFlavorSupported(DataFlavor)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#isDataFlavorSupported-java.awt.datatransfer.DataFlavor-)
+    — 这个方法在指定的`DataFlavor`受支持时返回 true。[`DataFlavor`](https://docs.oracle.com/javase/8/docs/api/java/awt/datatransfer/DataFlavor.html)指示表示的数据类型，例如图像（`imageFlavor`），字符串（`stringFlavor`），文件列表（`javaFileListFlavor`）等。'
+- en: '[`Transferable getTransferable()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getTransferable--)
+    — This method returns the `Transferable` data for this transfer. It is more efficient
+    to use one of these methods to query information about the transfer than to fetch
+    the transferable and query it, so this method is not recommended unless you cannot
+    get the information another way.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Transferable getTransferable()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getTransferable--)
+    — 此方法返回此传输的`Transferable`数据。 使用这些方法之一查询有关传输的信息比获取传输并查询它更有效，因此不建议使用此方法，除非您无法以其他方式获取信息。'
+- en: '[`DropLocation getDropLocation()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getDropLocation--)
+    — This method returns the drop location in the component. Components with built-in
+    drop support, such as list, table and tree, override this method to return more
+    useful data. For example, the version of this method for the `JList` component
+    returns the index in the list where the drop occurred. If the transfer is not
+    a drop, this method throws an exception.'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`DropLocation getDropLocation()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#getDropLocation--)
+    — 此方法返回组件中的放置位置。 具有内置拖放支持的组件，例如列表、表格和树，会重写此方法以返回更有用的数据。 例如，`JList`组件的此方法版本返回发生拖放的列表中的索引。
+    如果传输不是拖放，则此方法会引发异常。'
+- en: Sample Import Methods
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 样本导入方法
+- en: 'Now that you are familiar with the `TransferSupport` utility methods, let us
+    look at sample `canImport` and `importData` methods:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在您熟悉了`TransferSupport`实用程序方法，让我们看看样本`canImport`和`importData`方法：
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Next we look at how you can set the drop mode for selected components.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来我们将看看如何为选定的组件设置拖放模式。

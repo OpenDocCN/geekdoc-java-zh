@@ -1,0 +1,117 @@
+- en: Creating the Demo Application (Step 2)
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建演示应用程序（第2步）
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/step2.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/step2.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/step2.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/step2.html)
+- en: Next, we will add a custom drawing surface to the frame. For this we will create
+    a subclass of `javax.swing.JPanel` (a generic lightweight container) which will
+    supply the code for rendering our custom painting.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，我们将向框架添加一个自定义绘图表面。为此，我们将创建一个 `javax.swing.JPanel` 的子类（一个通用的轻量级容器），它将提供渲染我们自定义绘图的代码。
+- en: '![Creating a New Project within the GUI](../Images/ab6febd9863bbe7f4087de17ce549c53.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![在 GUI 中创建新项目](../Images/ab6febd9863bbe7f4087de17ce549c53.png)'
+- en: A javax.swing.JPanel Subclass
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个 javax.swing.JPanel 子类
+- en: Click the Launch button to run SwingPaintDemo2 using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/painting/index.html#SwingPaintDemo2).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用 [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    运行 SwingPaintDemo2（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考
+    [示例索引](../examples/painting/index.html#SwingPaintDemo2)。
+- en: '[![Launches the SwingPaintDemo2 example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SwingPaintDemo2Project/SwingPaintDemo2.jnlp)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 SwingPaintDemo2 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SwingPaintDemo2Project/SwingPaintDemo2.jnlp)'
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The first change you will notice is that we are now importing a number of additional
+    classes, such as `JPanel`, `Color`, and `Graphics`. Since some of the older AWT
+    classes are still used in modern Swing applications, it is normal to see the `java.awt`
+    package in a few of the import statements. We have also defined a custom `JPanel`
+    subclass, called `MyPanel`, which comprises the majority of the new code.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你将注意到的第一个变化是我们现在导入了许多额外的类，比如 `JPanel`、`Color` 和 `Graphics`。由于一些旧的 AWT 类仍然在现代
+    Swing 应用程序中使用，所以在一些导入语句中看到 `java.awt` 包是正常的。我们还定义了一个名为 `MyPanel` 的自定义 `JPanel`
+    子类，它包含了大部分新代码。
+- en: The `MyPanel` class definition has a constructor that sets a black border around
+    its edges. This is a subtle detail that might be difficult to see at first (if
+    it is, just comment out the invocation of `setBorder` and then recompile.) `MyPanel`
+    also overrides `getPreferredSize`, which returns the desired width and height
+    of the panel (in this case 250 is the width, 200 is the height.) Because of this,
+    the `SwingPaintDemo` class no longer needs to specify the size of the frame in
+    pixels. It simply adds the panel to the frame and then invokes `pack`.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MyPanel` 类定义有一个构造函数，它在其边缘周围设置了黑色边框。这是一个细微的细节，一开始可能很难看到（如果看不到，只需注释掉 `setBorder`
+    的调用，然后重新编译）。`MyPanel` 还重写了 `getPreferredSize`，它返回面板的期望宽度和高度（在本例中，宽度为250，高度为200）。因此，`SwingPaintDemo`
+    类不再需要指定框架的像素大小。它只需将面板添加到框架中，然后调用 `pack`。'
+- en: The `paintComponent` method is where all of your custom painting takes place.
+    This method is defined by `javax.swing.JComponent` and then overridden by your
+    subclasses to provide their custom behavior. Its sole parameter, a [`java.awt.Graphics`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html)
+    object, exposes a number of methods for drawing 2D shapes and obtaining information
+    about the application's graphics environment. In most cases the object that is
+    actually received by this method will be an instance of [`java.awt.Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)
+    (a `Graphics` subclass), which provides support for sophisticated 2D graphics
+    rendering.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`paintComponent` 方法是所有自定义绘制发生的地方。这个方法由 `javax.swing.JComponent` 定义，然后被你的子类重写以提供它们的自定义行为。它唯一的参数，一个
+    [`java.awt.Graphics`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics.html)
+    对象，提供了许多用于绘制2D形状和获取有关应用程序图形环境信息的方法。在大多数情况下，实际接收到这个方法的对象将是 [`java.awt.Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)
+    的一个实例（`Graphics` 的子类），它提供了对复杂的2D图形渲染的支持。'
+- en: Most of the standard Swing components have their look and feel implemented by
+    separate "UI Delegate" objects. The invocation of `super.paintComponent(g)` passes
+    the graphics context off to the component's UI delegate, which paints the panel's
+    background. For a closer look at this process, see the section entitled "Painting
+    and the UI Delegate" in the aforementioned SDN article.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数标准的Swing组件都通过单独的"UI Delegate"对象实现其外观和感觉。调用`super.paintComponent(g)`将图形上下文传递给组件的UI代理，后者绘制面板的背景。要更仔细地了解这个过程，请参见上述SDN文章中标题为"绘制和UI代理"的部分。
+- en: 'Exercises:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 练习：
+- en: Now that you have drawn some custom text to the screen, try minimizing and restoring
+    the application as you did before.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 现在你已经向屏幕绘制了一些自定义文本，请尝试像之前那样最小化和恢复应用程序。
+- en: Obscure a part of the text with another window, then move that window out of
+    the way to re-expose the custom text. In both cases, the painting subsystem will
+    determine that the component is damaged and will ensure that your `paintComponent`
+    method is invoked.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 用另一个窗口遮挡文本的一部分，然后将该窗口移开以重新显示自定义文本。在这两种情况下，绘制子系统将确定组件已损坏，并确保调用你的`paintComponent`方法。

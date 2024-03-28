@@ -1,0 +1,420 @@
+- en: The StringBuilder Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: StringBuilder 类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/data/buffers.html](https://docs.oracle.com/javase/tutorial/java/data/buffers.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/data/buffers.html](https://docs.oracle.com/javase/tutorial/java/data/buffers.html)
+- en: '[`StringBuilder`](https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html)
+    objects are like [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+    objects, except that they can be modified. Internally, these objects are treated
+    like variable-length arrays that contain a sequence of characters. At any point,
+    the length and content of the sequence can be changed through method invocations.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`StringBuilder`](https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html)
+    对象类似于 [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+    对象，不同之处在于它们可以被修改。在内部，这些对象被视为包含一系列字符的可变长度数组。在任何时候，通过方法调用可以更改序列的长度和内容。'
+- en: Strings should always be used unless string builders offer an advantage in terms
+    of simpler code (see the sample program at the end of this section) or better
+    performance. For example, if you need to concatenate a large number of strings,
+    appending to a `StringBuilder` object is more efficient.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除非字符串生成器在代码更简单（请参见本节末尾的示例程序）或性能更好方面提供优势，否则应始终使用字符串。例如，如果需要连接大量字符串，则追加到`StringBuilder`对象更有效率。
+- en: Length and Capacity
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 长度和容量
+- en: The `StringBuilder` class, like the `String` class, has a `length()` method
+    that returns the length of the character sequence in the builder.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`StringBuilder` 类，类似于 `String` 类，具有返回生成器中字符序列长度的 `length()` 方法。'
+- en: Unlike strings, every string builder also has a *capacity*, the number of character
+    spaces that have been allocated. The capacity, which is returned by the `capacity()`
+    method, is always greater than or equal to the length (usually greater than) and
+    will automatically expand as necessary to accommodate additions to the string
+    builder.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与字符串不同，每个字符串生成器还有一个*容量*，即已分配的字符空间数。容量由 `capacity()` 方法返回，始终大于或等于长度（通常大于），并且会根据需要自动扩展以容纳对字符串生成器的添加。
+- en: '`StringBuilder` Constructors'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`StringBuilder` 构造函数'
+- en: '| Constructor | Description |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数 | 描述 |'
+- en: '| `StringBuilder()` | Creates an empty string builder with a capacity of 16
+    (16 empty elements). |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `StringBuilder()` | 创建一个容量为16（16个空元素）的空字符串生成器。 |'
+- en: '| `StringBuilder(CharSequence cs)` | Constructs a string builder containing
+    the same characters as the specified `CharSequence`, plus an extra 16 empty elements
+    trailing the `CharSequence`. |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `StringBuilder(CharSequence cs)` | 构造一个包含与指定 `CharSequence` 相同字符的字符串生成器，`CharSequence`
+    后面还有额外的16个空元素。 |'
+- en: '| `StringBuilder(int initCapacity)` | Creates an empty string builder with
+    the specified initial capacity. |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| `StringBuilder(int initCapacity)` | 创建一个具有指定初始容量的空字符串生成器。 |'
+- en: '| `StringBuilder(String s)` | Creates a string builder whose value is initialized
+    by the specified string, plus an extra 16 empty elements trailing the string.
+    |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| `StringBuilder(String s)` | 创建一个字符串生成器，其值由指定的字符串初始化，字符串后面还有额外的16个空元素。 |'
+- en: For example, the following code
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，以下代码
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'will produce a string builder with a length of 9 and a capacity of 16:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 会生成一个长度为9，容量为16的字符串生成器：
+- en: '![A string builder''s length is the number of characters it contains; a string
+    builder''s capacity is the number of character spaces that have been allocated.](../Images/868b0844016a508d492263f408986654.png)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_IMG
+  zh: '![字符串生成器的长度是它包含的字符数；字符串生成器的容量是已分配的字符空间数。](../Images/868b0844016a508d492263f408986654.png)'
+- en: 'The `StringBuilder` class has some methods related to length and capacity that
+    the `String` class does not have:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`StringBuilder` 类有一些与长度和容量相关的方法，而 `String` 类没有：'
+- en: Length and Capacity Methods
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 长度和容量方法
+- en: '| Method | Description |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `void setLength(int newLength)` | Sets the length of the character sequence.
+    If `newLength` is less than `length()`, the last characters in the character sequence
+    are truncated. If `newLength` is greater than `length()`, null characters are
+    added at the end of the character sequence. |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| `void setLength(int newLength)` | 设置字符序列的长度。如果`newLength`小于`length()`，则字符序列中的最后字符将被截断。如果`newLength`大于`length()`，则在字符序列的末尾添加空字符。
+    |'
+- en: '| `void ensureCapacity(int minCapacity)` | Ensures that the capacity is at
+    least equal to the specified minimum. |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| `void ensureCapacity(int minCapacity)` | 确保容量至少等于指定的最小值。 |'
+- en: A number of operations (for example, `append()`, `insert()`, or `setLength()`)
+    can increase the length of the character sequence in the string builder so that
+    the resultant `length()` would be greater than the current `capacity()`. When
+    this happens, the capacity is automatically increased.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些操作（例如，`append()`，`insert()`或`setLength()`）可以增加字符串构建器中字符序列的长度，使得结果的`length()`大于当前的`capacity()`。当这种情况发生时，容量会自动增加。
+- en: StringBuilder Operations
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: StringBuilder操作
+- en: The principal operations on a `StringBuilder` that are not available in `String`
+    are the `append()` and `insert()` methods, which are overloaded so as to accept
+    data of any type. Each converts its argument to a string and then appends or inserts
+    the characters of that string to the character sequence in the string builder.
+    The append method always adds these characters at the end of the existing character
+    sequence, while the insert method adds the characters at a specified point.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`StringBuilder`上的主要操作，这些操作在`String`中不可用，是`append()`和`insert()`方法，这些方法被重载以接受任何类型的数据。每个方法将其参数转换为字符串，然后将该字符串的字符附加或插入到字符串构建器中的字符序列中。`append`方法总是在现有字符序列的末尾添加这些字符，而`insert`方法在指定点添加字符。'
+- en: Here are a number of the methods of the `StringBuilder` class.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是`StringBuilder`类的一些方法。
+- en: Various `StringBuilder` Methods
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 各种`StringBuilder`方法
+- en: '| Method | Description |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 描述 |'
+- en: '| `StringBuilder append(boolean b) StringBuilder append(char c)'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `StringBuilder append(boolean b) StringBuilder append(char c)'
+- en: StringBuilder append(char[] str)
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder append(char[] str)
+- en: StringBuilder append(char[] str, int offset, int len)
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder append(char[] str, int offset, int len)
+- en: StringBuilder append(double d)
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder append(double d)
+- en: StringBuilder append(float f)
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder append(float f)
+- en: StringBuilder append(int i)
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder append(int i)
+- en: StringBuilder append(long lng)
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder append(long lng)
+- en: StringBuilder append(Object obj)
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder append(Object obj)
+- en: StringBuilder append(String s)` | Appends the argument to this string builder.
+    The data is converted to a string before the append operation takes place. |
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder append(String s)` | 将参数附加到此字符串构建器。在附加操作发生之前，数据将被转换为字符串。 |
+- en: '| `StringBuilder delete(int start, int end) StringBuilder deleteCharAt(int
+    index)` | The first method deletes the subsequence from start to end-1 (inclusive)
+    in the `StringBuilder`''s char sequence. The second method deletes the character
+    located at `index`. |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| `StringBuilder delete(int start, int end) StringBuilder deleteCharAt(int
+    index)` | 第一个方法删除`StringBuilder`的字符序列中从`start`到`end-1`（包括`end-1`）的子序列。第二个方法删除位于`index`处的字符。
+    |'
+- en: '| `StringBuilder insert(int offset, boolean b) StringBuilder insert(int offset,
+    char c)'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| `StringBuilder insert(int offset, boolean b) StringBuilder insert(int offset,
+    char c)'
+- en: StringBuilder insert(int offset, char[] str)
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder insert(int offset, char[] str)
+- en: StringBuilder insert(int index, char[] str, int offset, int len)
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder insert(int index, char[] str, int offset, int len)
+- en: StringBuilder insert(int offset, double d)
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder insert(int offset, double d)
+- en: StringBuilder insert(int offset, float f)
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder insert(int offset, float f)
+- en: StringBuilder insert(int offset, int i)
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder insert(int offset, int i)
+- en: StringBuilder insert(int offset, long lng)
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder insert(int offset, long lng)
+- en: StringBuilder insert(int offset, Object obj)
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder insert(int offset, Object obj)
+- en: StringBuilder insert(int offset, String s)` | Inserts the second argument into
+    the string builder. The first integer argument indicates the index before which
+    the data is to be inserted. The data is converted to a string before the insert
+    operation takes place. |
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: StringBuilder insert(int offset, String s)` | 将第二个参数插入到字符串构建器中。第一个整数参数表示要插入数据之前的索引。在插入操作发生之前，数据将被转换为字符串。
+    |
+- en: '| `StringBuilder replace(int start, int end, String s) void setCharAt(int index,
+    char c)` | Replaces the specified character(s) in this string builder. |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| `StringBuilder replace(int start, int end, String s) void setCharAt(int index,
+    char c)` | 替换此字符串构建器中指定的字符。 |'
+- en: '| `StringBuilder reverse()` | Reverses the sequence of characters in this string
+    builder. |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| `StringBuilder reverse()` | 反转此字符串构建器中的字符序列。 |'
+- en: '| `String toString()` | Returns a string that contains the character sequence
+    in the builder. |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| `String toString()` | 返回一个包含构建器中字符序列的字符串。 |'
+- en: '* * *'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** You can use any `String` method on a `StringBuilder` object by first
+    converting the string builder to a string with the `toString()` method of the
+    `StringBuilder` class. Then convert the string back into a string builder using
+    the `StringBuilder(String str)` constructor.'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 您可以通过首先使用`StringBuilder`类的`toString()`方法将字符串构建器转换为字符串，然后使用`StringBuilder(String
+    str)`构造函数将字符串转换回字符串构建器，从而在`StringBuilder`对象上使用任何`String`方法。'
+- en: '* * *'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: An Example
+  id: totrans-53
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例
+- en: The `StringDemo` program that was listed in the section titled "Strings" is
+    an example of a program that would be more efficient if a `StringBuilder` were
+    used instead of a `String`.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在标题为“字符串”的部分列出的`StringDemo`程序是一个例子，如果使用`StringBuilder`而不是`String`会更有效率。
+- en: '`StringDemo` reversed a palindrome. Here, once again, is its listing:'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`StringDemo`反转了一个回文。这里再次列出它的代码：'
+- en: '[PRE1]'
+  id: totrans-56
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Running the program produces this output:'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行程序会产生这个输出：
+- en: '[PRE2]'
+  id: totrans-58
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: To accomplish the string reversal, the program converts the string to an array
+    of characters (first `for` loop), reverses the array into a second array (second
+    `for` loop), and then converts back to a string.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了实现字符串反转，程序将字符串转换为字符数组（第一个`for`循环），将数组反转为第二个数组（第二个`for`循环），然后再转换回字符串。
+- en: 'If you convert the `palindrome` string to a string builder, you can use the
+    `reverse()` method in the `StringBuilder` class. It makes the code simpler and
+    easier to read:'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你将`palindrome`字符串转换为一个字符串生成器，你可以使用`StringBuilder`类中的`reverse()`方法。这样代码会更简单，更易于阅读：
+- en: '[PRE3]'
+  id: totrans-61
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'Running this program produces the same output:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行这个程序会产生相同的输出：
+- en: '[PRE4]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Note that `println()` prints a string builder, as in:'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，`println()`打印一个字符串生成器，如下所示：
+- en: '[PRE5]'
+  id: totrans-65
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: because `sb.toString()` is called implicitly, as it is with any other object
+    in a `println()` invocation.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`sb.toString()`会被隐式调用，就像在`println()`调用中对任何其他对象一样。
+- en: '* * *'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** There is also a `StringBuffer` class that is *exactly* the same as
+    the `StringBuilder` class, except that it is thread-safe by virtue of having its
+    methods synchronized. Threads will be discussed in the lesson on concurrency.'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 还有一个`StringBuffer`类，与`StringBuilder`类*完全*相同，唯一的区别是它的方法是同步的，因此是线程安全的。线程将在并发课程中讨论。'
+- en: '* * *'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

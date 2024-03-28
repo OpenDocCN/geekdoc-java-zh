@@ -1,0 +1,86 @@
+- en: Deployment Best Practices
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 部署最佳实践
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/bestPractices.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/bestPractices.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/bestPractices.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/bestPractices.html)
+- en: You can improve the user experience of your rich Internet application (RIA)
+    using the best practices described in this topic.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以通过本主题中描述的最佳实践来提高富互联网应用程序（RIA）的用户体验。
+- en: Sign the RIA using a certificate from a recognized certificate authority. Make
+    sure that all artifacts are signed, and that the certificate has not expired.
+    See [Signing and Verifying JAR Files](../jar/signindex.html) for information on
+    signing.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用来自认可证书颁发机构的证书对RIA进行签名。确保所有工件都已签名，并且证书尚未过期。请参阅[签署和验证JAR文件](../jar/signindex.html)以获取有关签名的信息。
+- en: Request the minimum level of permissions that is needed. If the RIA does not
+    require unrestricted access to a user's system, specify the permission level to
+    be sandbox. See [Security in Rich Internet Applications](../doingMoreWithRIA/security.html)
+    for more security guidelines.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 请求所需的最低权限级别。如果RIA不需要对用户系统的无限制访问，请指定权限级别为沙盒。请参阅[富互联网应用程序中的安全性](../doingMoreWithRIA/security.html)以获取更多安全指南。
+- en: Optimize the size of JAR files and related resources so that your RIA can load
+    quickly. See [Reducing the Download Time](../deploymentInDepth/reducingDownloadTime.html)
+    for optimization techniques.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 优化JAR文件和相关资源的大小，以便您的RIA可以快速加载。请参阅[减少下载时间](../deploymentInDepth/reducingDownloadTime.html)以获取优化技巧。
+- en: Enable the version download protocol and use background update checks to enable
+    your RIA to start quickly. See [Avoiding Unnecessary Update Checks](../deploymentInDepth/avoidingUnnecessaryUpdateChecks.html)
+    to learn more about the version download protocol and update checks.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 启用版本下载协议并使用后台更新检查以使您的RIA快速启动。请参阅[避免不必要的更新检查](../deploymentInDepth/avoidingUnnecessaryUpdateChecks.html)以了解更多关于版本下载协议和更新检查的信息。
+- en: Make sure that the client has the required version of the Java Runtime Environment
+    software. See [Ensuring the Presence of the JRE Software](../deploymentInDepth/ensuringJRE.html)
+    for details on how the Deployment Toolkit script can be used for this purpose.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 确保客户端具有所需版本的Java运行时环境软件。请参阅[确保JRE软件的存在](../deploymentInDepth/ensuringJRE.html)以了解部署工具包脚本如何用于此目的的详细信息。
+- en: Embed the contents of your applet's JNLP file in the `<applet>` tag to avoid
+    loading the JNLP file from the network. This feature was introduced in the Java
+    SE 7 release. See [Embedding JNLP File in Applet Tag](../deploymentInDepth/embeddingJNLPFileInWebPage.html)
+    to learn how to embed the contents of the applet's JNLP file in the web page.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将applet的JNLP文件内容嵌入`<applet>`标签中，以避免从网络加载JNLP文件。此功能是在Java SE 7版本中引入的。请参阅[在Applet标签中嵌入JNLP文件](../deploymentInDepth/embeddingJNLPFileInWebPage.html)以了解如何在网页中嵌入applet的JNLP文件内容。
+- en: 'Preload your Java Web Start application, if possible. If you plan to deploy
+    your RIA as a Java Web Start application in an enterprise where you have some
+    administrative control, you can preload your application to various clients so
+    that it is cached and ready to use. Use the following command to preload your
+    Java Web Start application:'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如有可能，预加载您的Java Web Start应用程序。如果您计划将RIA部署为具有一定管理控制权的企业中的Java Web Start应用程序，则可以将应用程序预加载到各个客户端，以便缓存并准备使用。使用以下命令预加载您的Java
+    Web Start应用程序：
+- en: '[PRE0]'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'

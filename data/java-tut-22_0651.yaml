@@ -1,0 +1,377 @@
+- en: Physical and Logical Fonts
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 物理和逻辑字体
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/text/fonts.html](https://docs.oracle.com/javase/tutorial/2d/text/fonts.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/text/fonts.html](https://docs.oracle.com/javase/tutorial/2d/text/fonts.html)
+- en: 'There are two types of fonts: physical fonts and logical fonts. Physical fonts
+    are the actual font libraries consisting of, for example, TrueType or PostScript
+    Type 1 fonts. The physical fonts may be Time, Helvetica, Courier, or any number
+    of other fonts, including international fonts. Logical fonts are the following
+    five font families: Serif, SansSerif, Monospaced, Dialog, and DialogInput. These
+    logical fonts are not actual font libraries. Instead, the logical font names are
+    mapped to physical fonts by the Java runtime environment.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两种字体：物理字体和逻辑字体。物理字体是实际的字体库，包括 TrueType 或 PostScript Type 1 字体。物理字体可以是 Time、Helvetica、Courier
+    或任何其他字体，包括国际字体。逻辑字体是以下五个字体系列：Serif、SansSerif、Monospaced、Dialog 和 DialogInput。这些逻辑字体不是实际的字体库。相反，Java
+    运行时环境通过逻辑字体名称将其映射到物理字体。
+- en: 'This section helps you determine which type of font to use in your application.
+    It covers the following topics:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节帮助您确定在应用程序中使用哪种字体。它涵盖以下主题：
+- en: '[Physical Fonts](#physical-fonts)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[物理字体](#physical-fonts)'
+- en: '[Lucidia Fonts](#lucidia-fonts)'
+  id: totrans-5
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Lucidia 字体](#lucidia-fonts)'
+- en: '[Bundling Physical Fonts with Your Application](#bundling-physical-fonts-with-your-application)'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[将物理字体与您的应用程序捆绑](#bundling-physical-fonts-with-your-application)'
+- en: '[Logical Fonts](#logical-fonts)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[逻辑字体](#logical-fonts)'
+- en: '[Advantages and Disadvantages of Using Physical and Logical Fonts](#advantages-and-disadvantages)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用物理和逻辑字体的优缺点](#advantages-and-disadvantages)'
+- en: '[Font Configuration Files](#font-configuration-files)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[字体配置文件](#font-configuration-files)'
+- en: Physical Fonts
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 物理字体
+- en: 'Physical fonts are the actual font libraries containing glyph data and tables
+    to map from character sequences to glyph sequences, using a font technology such
+    as TrueType or PostScript Type 1\. To obtain the names of all available font families
+    installed in your system, call the following:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 物理字体是包含字形数据和表的实际字体库，使用 TrueType 或 PostScript Type 1 等字体技术，以将字符序列映射到字形序列。要获取系统中安装的所有可用字体系列的名称，请调用以下内容：
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The FontSelector sample program (available in [`FontSelector.java`](examples/FontSelector.java))
+    illustrates how to locate and select these fonts.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: FontSelector 示例程序（在 [`FontSelector.java`](examples/FontSelector.java) 中��用）演示了如何定位和选择这些字体。
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Applications should not assume that any particular physical font
+    is present. However, the logical fonts are a safe choice because they are always
+    present. See [Logical Fonts](#logical-fonts) for more information.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 应用程序不应假设任何特定的物理字体存在。然而，逻辑字体是一个安全的选择，因为它们始终存在。有关更多信息，请参阅[逻辑字体](#logical-fonts)。'
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: <applet code="FontSelector" archive="examples/lib/FontSelectorApplet.jar" alt="FontSelector
+    applet" width="500" height="300"><param name="permissions" value="sandbox"></applet>
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="FontSelector" archive="examples/lib/FontSelectorApplet.jar" alt="FontSelector
+    applet" width="500" height="300"><param name="permissions" value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到 applet 运行，请至少安装[Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    版本。'
+- en: '* * *'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Lucidia Fonts
+  id: totrans-21
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: Lucidia 字体
+- en: Oracle's JREs contain this family of physical fonts, which is also licensed
+    for use in other implementations of the Java platform. These fonts are physical
+    fonts, but do not depend on the host operating system.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Oracle 的 JRE 包含这一系列物理字体，也被许可用于其他 Java 平台的实现。这些字体是物理字体，但不依赖于主机操作系统。
+- en: Applications using these fonts can achieve the same look wherever these fonts
+    are available. Also, these fonts cover a large range of languages (especially
+    European and Middle Eastern), so you can create fully multilingual applications
+    for the supported languages. However, these fonts may not be available in all
+    JREs. Also, they currently do not cover the complete Unicode character set; in
+    particular, Chinese, Japanese, and Korean are not supported.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用这些字体的应用程序可以在这些字体可用的任何地方实现相同的外观。此外，这些字体涵盖了大量的语言（特别是欧洲和中东地区），因此您可以为支持的语言创建完全多语言的应用程序。然而，这些字体可能不在所有
+    JRE 中可用。此外，它们目前不涵盖完整的 Unicode 字符集；特别是，不支持中文、日文和韩文。
+- en: Bundling Physical Fonts with Your Application
+  id: totrans-24
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 将物理字体与您的应用程序捆绑
+- en: Sometimes, an application cannot depend on a font being installed on the system,
+    usually because the font is a custom font that is not otherwise available. In
+    this case, you must bundle the font files with your application.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时，应用程序不能依赖于系统上安装的字体，通常是因为该字体是一种不可用的自定义字体。在这种情况下，必须将字体文件与应用程序捆绑在一起。
+- en: 'Use one of these methods to create a `Font` object from an existing physical
+    font:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用以下方法之一从现有物理字体创建 `Font` 对象：
+- en: '[PRE1]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'To create a `Font` object from a TrueType font, the formal parameter `fontFormat`
+    must be the constant `Font.TRUETYPE_FONT`. The following example creates a `Font`
+    object from the TrueType font file `A.ttf`:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要从 TrueType 字体创建 `Font` 对象，形式参数 `fontFormat` 必须是常量 `Font.TRUETYPE_FONT`。以下示例从
+    TrueType 字体文件 `A.ttf` 创建 `Font` 对象：
+- en: '[PRE2]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Accessing the font directly from a file is simpler and more convenient. However,
+    you might require an `InputStream` object if your code is unable to access file
+    system resources, or if the font is packaged in a Java Archive (JAR) file along
+    with the rest of the application or applet.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 直接从文件访问字体更简单、更方便。但是，如果您的代码无法访问文件系统资源，或者字体与应用程序或小程序的其余部分一起打包在 Java 存档（JAR）文件中，则可能需要一个
+    `InputStream` 对象。
+- en: 'The `createFont` method creates a new `Font` object with a point size of 1
+    and style `PLAIN`. This base font can then be used with the `Font.deriveFont`
+    methods to derive new `Font` objects with varying sizes, styles, transforms and
+    font features. For example:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`createFont` 方法创建一个具有点大小为 1 和样式 `PLAIN` 的新 `Font` 对象。然后可以使用 `Font.deriveFont`
+    方法将此基础字体用于派生具有不同大小、样式、变换和字体特性的新 `Font` 对象。例如：'
+- en: '[PRE3]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: It is important to use the `deriveFont` method because fonts that are created
+    by an application are not part of the set of fonts known to the underlying font
+    system. Because the `deriveFont` method works from the originally created font,
+    it does not have this limitation.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `deriveFont` 方法很重要，因为应用程序创建的字体不属于底层字体系统所知的字体集。由于 `deriveFont` 方法是从最初创建的字体工作的，因此它没有这种限制。
+- en: 'The solution for this problem is to register the created font with the graphics
+    environment. For example:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 解决此问题的方法是将创建的字体注册到图形环境中。例如：
+- en: '[PRE4]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: After registering the font with the graphics environment, the font is available
+    in calls to `getAvailableFontFamilyNames()` and can be used in font constructors.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在将字体注册到图形环境后，该字体可以在调用 `getAvailableFontFamilyNames()` 时使用，并且可以在字体构造函数中使用。
+- en: Logical Fonts
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 逻辑字体
+- en: 'Java SE defines the following five logical font families:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java SE 定义了以下五个逻辑字体系列：
+- en: '`Dialog`'
+  id: totrans-39
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Dialog`'
+- en: '`DialogInput`'
+  id: totrans-40
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`DialogInput`'
+- en: '`Monospaced`'
+  id: totrans-41
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Monospaced`'
+- en: '`Serif`'
+  id: totrans-42
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Serif`'
+- en: '`SansSerif`'
+  id: totrans-43
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SansSerif`'
+- en: These fonts are available on any Java platform and can be thought of as aliases
+    for some underlying font that has the properties implied by its name. A Serif
+    font is a font similar to Times New Roman, which is commonly used in print. A
+    Sans Serif font is more typical for onscreen use.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些字体在任何 Java 平台上都可用，并且可以被视为某些具有其名称所暗示属性的基础字体的别名。Serif 字体类似于 Times New Roman，通常用于印刷。Sans
+    Serif 字体更适合屏幕使用。
+- en: These fonts can be customized for the locale of the user. In addition these
+    fonts support the widest range of code points (Unicode characters).
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些字体可以根据用户的语言环境进行定制。此外，这些字体支持最广泛的代码点（Unicode 字符）范围。
+- en: Apart from the family, fonts have other attributes, the most important of which
+    are *style* and *size*. Styles are **Bold** and *Italic*.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了字体系列，字体还具有其他属性，其中最重要的是 *样式* 和 *大小*。样式有 **Bold** 和 *Italic*。
+- en: 'The default font used by the Java 2D API is 12 pt Dialog. This font is a typical
+    point size for reading text on a normal 72–120 DPI display device. An application
+    can create an instance of this font directly by specifying the following:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D API 使用的默认字体是 12 磅的 Dialog。这种字体是在普通 72-120 DPI 显示设备上阅读文本的典型字号。应用程序可以通过指定以下内容直接创建此字体的实例：
+- en: '[PRE5]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: Advantages and Disadvantages of Using Physical and Logical Fonts
+  id: totrans-49
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用物理和逻辑字体的优缺点
+- en: Physical fonts enable an application take full advantage of all available fonts,
+    to accomplish both different text appearances and maximum language coverage. However,
+    it is substantially more difficult to create applications that use physical fonts.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 物理字体使应用程序能够充分利用所有可用字体，实现不同的文本外观和最大的语言覆盖范围。然而，创建使用物理字体的应用程序要困难得多。
+- en: Bundling physical fonts with your application enables you to create applications
+    that have the same look everywhere, and to have full control over which applications
+    you want to support. However, bundled fonts may be quite big, especially if you
+    want your applications to support Chinese, Japanese, and Korean. In addition,
+    you may need to resolve licensing issues.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将物理字体与您的应用程序捆绑在一起，可以使您创建的应用程序在任何地方看起来都一样，并且可以完全控制您想要支持的应用程序。然而，捆绑的字体可能会很大，特别是如果您希望您的应用程序支持中文、日文和韩文。此外，您可能需要解决许可问题。
+- en: 'Logical font names are guaranteed to work anywhere, and they enable text rendering
+    in at least the language that the host operating system is localized for (often
+    a much larger range of languages). However, The physical fonts used for rendering
+    the text vary between different implementations, host operating systems, and locales,
+    so an application can not achieve the same look everywhere. Also, the mapping
+    mechanisms occasionally limit the range of characters that can be rendered. The
+    latter used to be a big problem on JRE versions before 5.0: for example, Japanese
+    text could only be rendered on Japanese localized host operating systems, not
+    on other localized systems even if Japanese fonts have been installed. For applications
+    using 2D font rendering, this problem is much rarer with JRE version 5.0 and later,
+    because the mapping mechanism now generally recognizes and uses fonts for all
+    supported writing systems if they are installed.'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 逻辑字体名称保证在任何地方都能正常工作，并且它们至少能够在主机操作系统本地化的语言中进行文本呈现（通常支持更广泛的语言范围）。然而，用于呈现文本的物理字体在不同的实现、主机操作系统和区域设置之间会有所不同，因此应用程序无法在任何地方实现相同的外观。此外，映射机制有时会限制可以呈现的字符范围。这在
+    JRE 版本 5.0 之前曾经是一个大问题：例如，日文文本只能在日本本地化的主机操作系统上呈现，而在其他本地化系统上即使安装了日文字体也无法呈现。对于使用
+    2D 字体呈现的应用程序，在 JRE 版本 5.0 及更高版本中，这个问题要少得多，因为映射机制现在通常会识别并使用所有支持的书写系统的字体（如果已安装）。
+- en: Font Configuration Files
+  id: totrans-53
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 字体配置文件
+- en: The Java SE runtime environment uses font configuration files to map logical
+    font names to physical fonts. There are several files to support different mappings
+    depending on the host operating system version. The files are located in the `lib`
+    directory within the JRE installation. You can edit or create your own font configuration
+    files to adjust the mappings to your particular system setup. See [Font Configuration
+    Files](https://docs.oracle.com/javase/8/docs/technotes/guides/intl/fontconfig.html)
+    for more information.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java SE 运行时环境使用字体配置文件将逻辑字体名称映射到物理字体。根据主机操作系统版本的不同映射，有几个文件支持不同的映射。这些文件位于 JRE
+    安装的 `lib` 目录中。您可以编辑或创建自己的字体配置文件，以调整映射到您特定系统设置的映射。有关更多信息，请参阅[字体配置文件](https://docs.oracle.com/javase/8/docs/technotes/guides/intl/fontconfig.html)。

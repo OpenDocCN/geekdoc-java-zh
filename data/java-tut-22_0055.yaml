@@ -1,0 +1,95 @@
+- en: Using the this Keyword
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用 this 关键字
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/thiskey.html](https://docs.oracle.com/javase/tutorial/java/javaOO/thiskey.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/thiskey.html](https://docs.oracle.com/javase/tutorial/java/javaOO/thiskey.html)
+- en: "Within an instance method or a constructor, `this` is a reference to the *current\
+    \ object* \x97 the object whose method or constructor is being called. You can\
+    \ refer to any member of the current object from within an instance method or\
+    \ a constructor by using `this`."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "在实例方法或构造函数中，`this`是对*当前对象*的引用 \x97 即正在调用其方法或构造函数的对象。你可以通过使用`this`从实例方法或构造函数中引用当前对象的任何成员。"
+- en: Using `this` with a Field
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用`this`与字段
+- en: The most common reason for using the `this` keyword is because a field is shadowed
+    by a method or constructor parameter.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`this`关键字的最常见原因是因为字段被方法或构造函数参数遮蔽。
+- en: For example, the `Point` class was written like this
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，`Point`类是这样写的
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'but it could have been written like this:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但它也可以这样写：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: "Each argument to the constructor shadows one of the object's fields \x97 inside\
+    \ the constructor **`x`** is a local copy of the constructor's first argument.\
+    \ To refer to the `Point` field **`x`**, the constructor must use `this.x`."
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "每个构造函数的参数都会遮蔽对象的一个字段 \x97 在构造函数内部，**`x`** 是构造函数第一个参数的一个本地副本。要引用`Point`字段的**`x`**，构造函数必须使用`this.x`。"
+- en: Using `this` with a Constructor
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用`this`与构造函数
+- en: From within a constructor, you can also use the `this` keyword to call another
+    constructor in the same class. Doing so is called an *explicit constructor invocation*.
+    Here's another `Rectangle` class, with a different implementation from the one
+    in the [Objects](../javaOO/objects.html) section.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在构造函数内部，你也可以使用`this`关键字来调用同一类中的另一个构造函数。这样做被称为*显式构造函数调用*。这里有另一个`Rectangle`类，与[Objects](../javaOO/objects.html)部分中的实现不同。
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: This class contains a set of constructors. Each constructor initializes some
+    or all of the rectangle's member variables. The constructors provide a default
+    value for any member variable whose initial value is not provided by an argument.
+    For example, the no-argument constructor creates a 1x1 `Rectangle` at coordinates
+    0,0\. The two-argument constructor calls the four-argument constructor, passing
+    in the width and height but always using the 0,0 coordinates. As before, the compiler
+    determines which constructor to call, based on the number and the type of arguments.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该类包含一组构造函数。每个构造函数都初始化矩形的一些或全部成员变量。构造函数为任何未由参数提供初始值的成员变量提供默认值。例如，无参数构造函数在坐标0,0处创建一个1x1的`Rectangle`。两个参数的构造函数调用四个参数的构造函数，传入宽度和高度，但始终使用0,0坐标。与以前一样，编译器根据参数的数量和类型确定要调用的构造函数。
+- en: If present, the invocation of another constructor must be the first line in
+    the constructor.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果存在，调用另一个构造函数必须是构造函数中的第一行。

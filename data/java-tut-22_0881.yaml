@@ -1,0 +1,309 @@
+- en: Download Extensions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 下载扩展
+- en: 原文：[https://docs.oracle.com/javase/tutorial/ext/basics/download.html](https://docs.oracle.com/javase/tutorial/ext/basics/download.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/ext/basics/download.html](https://docs.oracle.com/javase/tutorial/ext/basics/download.html)
+- en: 'Download extensions are sets of classes (and related resources) in JAR files.
+    A JAR file''s manifest can contain headers that refer to one or more download
+    extensions. The extensions can be referenced in one of two ways:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下载扩展是JAR文件中的一组类（和相关资源）。JAR文件的清单可以包含引用一个或多个下载扩展的头部。这些扩展可以通过以下两种方式引用：
+- en: by a `Class-Path` header
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过`Class-Path`头部
+- en: by an `Extension-List` header
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通过`Extension-List`头部
+- en: Note that at most one of each is allowed in a manifest. Download extensions
+    indicated by a `Class-Path` header are downloaded only for the lifetime of the
+    application that downloads them, such as a web browser. Their advantage is that
+    nothing is installed on the client; their disadvantage is that they are downloaded
+    each time they are needed. Download extensions that are downloaded by an `Extension-List`
+    header are installed into the `/lib/ext` directory of the JRE that downloads them.
+    Their advantage is that they are downloaded the first time they're needed; subsequently
+    they can be used without downloading. But, as shown later in this tutorial, they
+    are more complex to deploy.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，清单中最多只允许一个。通过`Class-Path`头部指示的下载扩展仅在下载它们的应用程序（如Web浏览器）的生命周期内下载。它们的优点是客户端上没有安装任何内容；缺点是每次需要时都会下载它们。通过`Extension-List`头部下载的下载扩展将安装到下载它们的JRE的`/lib/ext`目录中。它们的优点是第一次需要时下载，随后可以在不下载的情况下使用。但是，正如本教程后面所示，它们部署起来更加复杂。
+- en: 'Since download extensions that use the `Class-Path` headers are simpler, let''s
+    consider them first. Assume for example that `a.jar` and `b.jar` are two JAR files
+    in the same directory, and that the manifest of `a.jar` contains this header:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于使用`Class-Path`头部的下载扩展更简单，让我们先考虑它们。例如假设`a.jar`和`b.jar`是同一目录中的两个JAR文件，并且`a.jar`的清单包含了这个头部：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Then the classes in `b.jar` serve as extension classes for purposes of the classes
+    in `a.jar`. The classes in `a.jar` can invoke classes in `b.jar` without `b.jar`'s
+    classes having to be named on the class path. `a.jar` may or may not itself be
+    an extension. If `b.jar` weren't in the same directory as `a.jar`, then the value
+    of the `Class-Path` header should be set to the relative pathname of `b.jar`.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么`b.jar`中的类将作为`a.jar`中的类的扩展类。`a.jar`中的类可以调用`b.jar`中的类，而无需将`b.jar`中的类命名在类路径中。`a.jar`本身可能是扩展，也可能不是。如果`b.jar`不在与`a.jar`相同的目录中，那么`Class-Path`头部的值应设置为`b.jar`的相对路径名。
+- en: There's nothing special about the classes that are playing the role of a download
+    extension. They are treated as extensions solely because they're referenced by
+    the manifest of some other JAR file.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 扮演下载扩展角色的类没有任何特殊之处。它们之所以被视为扩展，仅仅是因为它们被某个其他JAR文件的清单引用。
+- en: To get a better understanding of how download extensions work, let's create
+    one and put it to use.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了更好地理解下载扩展的工作原理，让我们创建一个并投入使用。
+- en: An Example
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例
+- en: 'Suppose you want to create an applet that makes use of the `RectangleArea`
+    class of the previous section:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想要创建一个小程序，其中使用了前一节中的`RectangleArea`类：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: In the previous section, you made the `RectangleArea` class into an installed
+    extension by placing the JAR file containing it into the `lib/ext` directory of
+    the JRE. By making it an installed extension, you enabled any application to use
+    the `RectangleArea` class as if it were part of the Java platform.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在前一节中，你将`RectangleArea`类放入JRE的`lib/ext`目录中，将其转换为已安装扩展。通过将其转换为已安装扩展，任何应用程序都可以使用`RectangleArea`类，就好像它是Java平台的一部分。
+- en: 'If you want to be able to use the `RectangleArea` class from an applet, the
+    situation is a little different. Suppose, for example, that you have an applet,
+    `AreaApplet`, that makes use of class `RectangleArea`:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想要在小程序中使用`RectangleArea`类，情况会有些不同。例如，假设你有一个名为`AreaApplet`的小程序，其中使用了`RectangleArea`类：
+- en: '[PRE2]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: This applet instantiates a 10 `x` 5 rectangle and then displays the rectangle's
+    area by using the `RectangleArea.area` method.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此小程序实例化一个10 `x` 5的矩形，然后使用`RectangleArea.area`方法显示矩形的面积。
+- en: However, you can't assume that everyone who downloads and uses your applet is
+    going to have the `RectangleArea` class available on their system, as an installed
+    extension or otherwise. One way around that problem is to make the `RectangleArea`
+    class available from the server side, and you can do that by using it as a download
+    extension.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，你不能假设每个下载并使用你的小程序的人都会在他们的系统上有`RectangleArea`类可用，作为已安装的扩展或其他方式。解决这个问题的一种方法是从服务器端提供`RectangleArea`类，并且你可以通过将其作为下载扩展来实现。
+- en: 'To see how that''s done, let''s assume that you''ve bundled `AreaApplet` in
+    a JAR file called `AreaApplet.jar` and that the class `RectangleArea` is bundled
+    in `RectangleArea.jar`. In order for `RectangleArea.jar` to be treated as a download
+    extension, `RectangleArea.jar` must be listed in the `Class-Path` header in `AreaApplet.jar`''s
+    manifest. `AreaApplet.jar`''s manifest might look like this, for example:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解如何做到这一点，让我们假设你已经将`AreaApplet`捆绑在名为`AreaApplet.jar`的 JAR 文件中，并且类`RectangleArea`捆绑在`RectangleArea.jar`中。为了使`RectangleArea.jar`被视为下载扩展，`RectangleArea.jar`必须在`AreaApplet.jar`的清单中的`Class-Path`头中列出。例如，`AreaApplet.jar`的清单可能如下所示：
+- en: '[PRE3]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The value of the `Class-Path` header in this manifest is `RectangleArea.jar`
+    with no path specified, indicating that `RectangleArea.jar` is located in the
+    same directory as the applet's JAR file.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个清单中`Class-Path`头的值是`RectangleArea.jar`，没有指定路径，表示`RectangleArea.jar`位于与小程序的
+    JAR 文件相同的目录中。
+- en: More about the Class-Path Header
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 关于`Class-Path`头的更多信息
+- en: 'If an applet or application uses more than one extension, you can list multiple
+    URLs in a manifest. For example, the following is a valid header:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个小程序或应用程序使用多个扩展，你可以在清单中列出多个 URL。例如，以下是一个有效的头部：
+- en: '[PRE4]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: In the `Class-Path` header any URLs listed that don't end with '`/`' are assumed
+    to be JAR files. URLs ending in '`/`' indicate directories. In the preceding example,
+    `images/` might be a directory containing resources needed by the applet or the
+    application.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`Class-Path`头中，列出的任何不以'`/`'结尾的 URL 都被假定为 JAR 文件。以'`/`'结尾的 URL 表示目录。在上面的例子中，`images/`可能是一个包含小程序或应用程序所需资源的目录。
+- en: 'Note that only one `Class-Path` header is allowed in a manifest file, and that
+    each line in a manifest must be no more than 72 characters long. If you need to
+    specify more class path entries than will fit on one line, you can extend them
+    onto subsequent continuation lines. Begin each continuation line with two spaces.
+    For example:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，清单文件中只允许一个`Class-Path`头，并且清单中的每一行不能超过 72 个字符。如果需要指定的类路径条目超过一行的空间，可以将它们延伸到后续的续行上。每个续行都以两个空格开头。例如：
+- en: '[PRE5]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: A future release may remove the limitation of having only one instance of each
+    header, and of limiting lines to only 72 characters.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 未来的版本可能会取消每个标题只能有一个实例的限制，以及将行限制为仅有 72 个字符。
+- en: Download extensions can be "daisy chained", meaning that the manifest of one
+    download extension can have a `Class-Path` header that refers to a second extension,
+    which can refer to a third extension, and so on.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下载扩展可以“串联”，意味着一个下载扩展的清单可以有一个引用第二个扩展的`Class-Path`头，第二个扩展可以引用第三个扩展，依此类推。
+- en: Installing Download Extensions
+  id: totrans-30
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 安装下载扩展
+- en: In the above example, the extension downloaded by the applet is available only
+    while the browser which loaded the applet is still running. However, applets can
+    trigger installation of extensions, if additional information is included in the
+    manifests of both the applet and the extension.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上面的例子中，小程序下载的扩展仅在加载小程序的浏览器仍在运行时可用。然而，如果在小程序和扩展的清单中包含了额外的信息，小程序可以触发扩展的安装。
+- en: Since this mechanism extends the platform's core API, its use should be judiciously
+    applied. It is rarely appropriate for interfaces used by a single, or small set
+    of applications. All visible symbols should follow reverse domain name and class
+    hierarchy conventions.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于这种机制扩展了平台的核心 API，其使用应谨慎。它很少适用于仅由单个或少量应用程序使用的接口。所有可见的符号应遵循反向域名和类层次结构约定。
+- en: 'The basic requirements are that both the applet and the extensions it uses
+    provide version information in their manifests, and that they be signed. The version
+    information allows Java Plug-in to ensure that the extension code has the version
+    expected by the applet. For example, the `AreaApplet` could specify an `areatest`
+    extension in its manifest:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基本要求是小程序和它使用的扩展在它们的清单中提供版本信息，并且它们被签名。版本信息允许 Java 插件确保扩展代码具有小程序期望的版本。例如，`AreaApplet`可以在其清单中指定一个`areatest`扩展：
+- en: '[PRE6]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The manifest in `area.jar` would provide corresponding information:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`area.jar`中的清单将提供相应的信息：'
+- en: '[PRE7]'
+  id: totrans-36
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Both the applet and the extension must be signed, by the same signer. Signing
+    the jar files will modify them in-place, providing more information in their manifest
+    files. Signing helps ensure that only trusted code gets installed. A simple way
+    to sign jar files is to first create a keystore, and then use that to hold certificates
+    for the applet and extension. For example:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序和扩展程序都必须由相同的签名者签名。对jar文件进行签名会直接修改它们，在清单文件中提供更多信息。签名有助于确保只有可信任的代码被安装。签署jar文件的简单方法是首先创建一个密钥库，然后使用该密钥库保存用于应用程序和扩展程序的证书。例如：
+- en: '[PRE8]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'You will be prompted for the keystore and key passwords. After generating a
+    key, the jar files can be signed:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您将被要求输入密钥库和密钥密码。生成密钥后，jar文件可以被签名：
+- en: '[PRE9]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: You will be prompted for the keystore and key passwords. More information on
+    `keytool`, `jarsigner`, and other security tools is at the [Summary of Tools for
+    the Java 2 Platform Security](https://docs.oracle.com/javase/8/docs/technotes/guides/security/SecurityToolsSummary.html).
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您将被要求输入密钥库和密钥密码。有关`keytool`、`jarsigner`和其他安全工具的更多信息，请参阅[Java 2平台安全工具概述](https://docs.oracle.com/javase/8/docs/technotes/guides/security/SecurityToolsSummary.html)。
+- en: 'Here is `AreaDemo.html`, which loads the applet and causes the extension code
+    to be downloaded and installed:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是`AreaDemo.html`，它加载应用程序并导致扩展程序代码被下载并安装：
+- en: '[PRE10]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: When the page is loaded for the first time, the user is told that the applet
+    requires installation of the extension. A subsequent dialog informs the user about
+    the signed applet. Accepting both installs the extension in the `lib/ext` folder
+    of the JRE and runs the applet.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当页面首次加载时，用户会被告知该应用程序需要安装扩展程序。随后的对话框会通知用户有关已签名的应用程序。接受两者会将扩展程序安装在JRE的`lib/ext`文件夹中并运行应用程序。
+- en: After restarting the web browser and load the same web page, only the dialog
+    about the applet's signer is presented, because `area.jar` is already installed.
+    This is also true if `AreaDemo.html` is opened in a different web browser (assuming
+    both browsers use the same JRE).
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 重新启动Web浏览器并加载相同的网页后，只会显示有关应用程序签名者的对话框，因为`area.jar`已经安装。如果在不同的Web浏览器中打开`AreaDemo.html`（假设两个浏览器都使用相同的JRE），情况也是如此。

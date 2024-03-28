@@ -1,0 +1,44 @@
+- en: Anonymous
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 匿名
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/anonymous.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/anonymous.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/anonymous.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/anonymous.html)
+- en: As just stated, the default authentication mechanism is `"none"` if no authentication
+    environment properties have been set. If the client sets the [`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION)
+    environment property to `"none"`, then the authentication mechanism is `"none"`
+    and all other authentication environment properties are ignored. You would want
+    to do this explicitly only to ensure that any other authentication properties
+    that might have been set are ignored. In either case, the client will be treated
+    as an *anonymous* client. This means that the server does not know or care who
+    the client is and will allow the client to access (read and update) any data that
+    has been configured to be accessible by any unauthenticated client.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如刚才所述，如果没有设置任何身份验证环境属性，那么默认的身份验证机制是`"none"`。如果客户端将[`Context.SECURITY_AUTHENTICATION`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#SECURITY_AUTHENTICATION)环境属性设置为`"none"`，那么身份验证机制就是`"none"`，所有其他身份验证环境属性都将被忽略。您只有在明确希望忽略可能已设置的任何其他身份验证属性时才需要这样做。无论哪种情况，客户端都将被视为*匿名*客户端。这意味着服务器不知道也不关心客户端是谁，并且将允许客户端访问（读取和更新）任何已配置为可被任何未经身份验证的客户端访问的数据。
+- en: Because none of the directory examples in the [Naming and Directory Operations](../ops/index.html)
+    lesson set any of the authentication environment properties, all of them use anonymous
+    authentication.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为[Naming and Directory Operations](../ops/index.html)课程中的所有目录示例都没有设置任何身份验证环境属性，所以它们都使用匿名身份验证。
+- en: Here is [`an example`](examples/None.java) that explicitly sets the `Context.SECURITY_AUTHENTICATION`
+    property to `"none"` (even though doing this is not strictly necessary because
+    that is the default).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个[`示例`](examples/None.java)，明确将`Context.SECURITY_AUTHENTICATION`属性设置为`"none"`（尽管这样做并不是严格必要的，因为这是默认值）。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'

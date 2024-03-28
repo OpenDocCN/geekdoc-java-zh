@@ -1,0 +1,137 @@
+- en: Class Literals as Runtime-Type Tokens
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 类字面量作为运行时类型标记
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/literals.html](https://docs.oracle.com/javase/tutorial/extra/generics/literals.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/literals.html](https://docs.oracle.com/javase/tutorial/extra/generics/literals.html)
+- en: One of the changes in JDK 5.0 is that the class `java.lang.Class` is generic.
+    It's an interesting example of using genericity for something other than a container
+    class.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JDK 5.0 中的一个变化是类`java.lang.Class`是泛型的。这是一个有趣的例子，使用泛型性来做除了容器类之外的事情。
+- en: Now that `Class` has a type parameter `T`, you might well ask, what does `T`
+    stand for? It stands for the type that the `Class` object is representing.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在`Class`有一个类型参数`T`，你可能会问，`T`代表什么？它代表`Class`对象所代表的类型。
+- en: For example, the type of `String.class` is `Class<String>`, and the type of
+    `Serializable.class` is `Class<Serializable>`. This can be used to improve the
+    type safety of your reflection code.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，`String.class`的类型是`Class<String>`，`Serializable.class`的类型是`Class<Serializable>`。这可以用来提高反射代码的类型安全性。
+- en: In particular, since the `newInstance()` method in `Class` now returns a `T`,
+    you can get more precise types when creating objects reflectively.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 特别是，由于`Class`中的`newInstance()`方法现在返回一个`T`，在通过反射创建对象时可以获得更精确的类型。
+- en: For example, suppose you need to write a utility method that performs a database
+    query, given as a string of SQL, and returns a collection of objects in the database
+    that match that query.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，假设你需要编写一个实用方法，执行数据库查询，给定一个 SQL 字符串，并返回与该查询匹配的数据库中的对象集合。
+- en: 'One way is to pass in a factory object explicitly, writing code like:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一种方法是显式传递一个工厂对象，在调用点编写代码如下：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: You can call this either as
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以这样调用
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: or you can declare a class `EmpInfoFactory` to support the `Factory` interface
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者你可以声明一个类`EmpInfoFactory`来支持`Factory`接口
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: and call it
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 并调用它
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The downside of this solution is that it requires either:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种解决方案的缺点是需要：
+- en: the use of verbose anonymous factory classes at the call site, or
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用冗长的匿名工厂类在调用点，或者
+- en: declaring a factory class for every type used and passing a factory instance
+    at the call site, which is somewhat unnatural.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 为每种使用的类型声明一个工厂类，并在调用点传递一个工厂实例，这有点不自然。
+- en: 'It is natural to use the class literal as a factory object, which can then
+    be used by reflection. Today (without generics) the code might be written:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将类字面量作为工厂对象是很自然的，然后可以通过反射来使用。今天（没有泛型的情况下）代码可能会这样写：
+- en: '[PRE4]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'However, this would not give us a collection of the precise type we desire.
+    Now that `Class` is generic, we can instead write the following:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，这不会给我们提供我们想要的精确类型的集合。现在`Class`是泛型的，我们可以改为写如下代码：
+- en: '[PRE5]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The above code gives us the precise type of collection in a type safe way.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 上面的代码以类型安全的方式给出了我们想要的精确类型的集合。
+- en: This technique of using class literals as run time type tokens is a very useful
+    trick to know. It's an idiom that's used extensively in the new APIs for manipulating
+    annotations, for example.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用类字面量作为运行时类型标记的技术是一个非常有用的技巧。这是一个在新的用于操作注解的 API 中广泛使用的习语。

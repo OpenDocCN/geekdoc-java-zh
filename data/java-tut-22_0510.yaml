@@ -1,0 +1,34 @@
+- en: 'Lesson: Performing Custom Painting'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：执行自定义绘制
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/index.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/index.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/index.html)
+- en: This lesson describes custom painting in Swing. Many programs will get by just
+    fine without writing their own painting code; they will simply use the standard
+    GUI components that are already available in the Swing API. But if you need specific
+    control over how your graphics are drawn, then this lesson is for you. We will
+    explore custom painting by creating a simple GUI application that draws a shape
+    in response to the user's mouse activity. By intentionally keeping its design
+    simple, we can focus on the underlying painting concepts, which in turn will relate
+    to other GUI applications that you develop in the future.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这节课描述了Swing中的自定义绘制。许多程序可以很好地运行而无需编写自己的绘制代码；它们将简单地使用Swing API中已经可用的标准GUI组件。但是，如果您需要对图形的绘制方式进行特定控制，那么这节课就是为您准备的。我们将通过创建一个简单的GUI应用程序来探讨自定义绘制，该应用程序根据用户的鼠标活动绘制形状。通过故意保持其设计简单，我们可以专注于底层绘制概念，这将与您将来开发的其他GUI应用程序相关联。
+- en: This lesson explains each concept in steps as you construct the demo application.
+    It presents the code as soon as possible with a minimum amount of background reading.
+    Custom painting in Swing is similar to custom painting in AWT, but since we do
+    not recommend writing your applications entirely with the AWT, its painting mechanism
+    is not specifically discussed here. You may find it useful to read this lesson
+    followed by the in-depth discussion in the article, [Painting in AWT and Swing](http://www.oracle.com/technetwork/java/painting-140037.html).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这节课在构建演示应用程序时逐步解释每个概念。它尽可能快地呈现代码，最小化背景阅读量。在Swing中进行自定义绘制类似于在AWT中进行自定义绘制，但由于我们不建议完全使用AWT编写应用程序，因此这里不特别讨论其绘制机制。您可能会发现在阅读本课程后阅读文章《[AWT和Swing中的绘制](http://www.oracle.com/technetwork/java/painting-140037.html)》中的深入讨论很有用。

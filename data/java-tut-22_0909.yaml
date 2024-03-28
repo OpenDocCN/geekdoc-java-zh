@@ -1,0 +1,245 @@
+- en: Troubleshooting
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 故障排除
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/ctorTrouble.html](https://docs.oracle.com/javase/tutorial/reflect/member/ctorTrouble.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/ctorTrouble.html](https://docs.oracle.com/javase/tutorial/reflect/member/ctorTrouble.html)
+- en: The following problems are sometimes encountered by developers when trying to
+    invoke constructors via reflection.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 开发人员在尝试通过反射调用构造函数时，有时会遇到以下问题。
+- en: InstantiationException Due to Missing Zero-Argument Constructor
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 由于缺少零参数构造函数而导致的InstantiationException
+- en: 'The [`ConstructorTrouble`](example/ConstructorTrouble.java) example illustrates
+    what happens when code attempts to create a new instance of a class using [`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)
+    and there is no accessible zero-argument constructor:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`ConstructorTrouble`](example/ConstructorTrouble.java) 示例说明了当代码尝试使用[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)创建类的新实例时，且没有可访问的零参数构造函数时会发生什么：'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:** There a number of different reasons an [`InstantiationException`](https://docs.oracle.com/javase/8/docs/api/java/lang/InstantiationException.html)
+    can occur. In this case, the problem is that the presence of the constructor with
+    an `int` argument prevents the compiler from generating the default (or zero-argument)
+    constructor and there is no explicit zero-argument constructor in the code. Remember
+    that [`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)
+    behaves very much like the `new` keyword and will fail whenever `new` would fail.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：**[`InstantiationException`](https://docs.oracle.com/javase/8/docs/api/java/lang/InstantiationException.html)可能发生的原因有很多。在这种情况下，问题在于具有`int`参数的构造函数的存在阻止了编译器生成默认（或零参数）构造函数，并且代码中没有显式的零参数构造函数。请记住，[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)的行为非常类似于`new`关键字，只要`new`失败，它就会失败。'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Class.newInstance() Throws Unexpected Exception
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Class.newInstance() 抛出意外异常
+- en: The [`ConstructorTroubleToo`](example/ConstructorTroubleToo.java) example shows
+    an unresolvable problem in [`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--).
+    Namely, it propagates any exception — checked or unchecked — thrown by the constructor.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`ConstructorTroubleToo`](example/ConstructorTroubleToo.java) 示例展示了在[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)中出现的无法解决的问题。即，它传播构造函数抛出的任何异常（已检查或未检查）。'
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: This situation is unique to reflection. Normally, it is impossible to write
+    code which ignores a checked exception because it would not compile. It is possible
+    to wrap any exception thrown by a constructor by using [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    rather than [`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--).
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种情况是反射独有的。通常情况下，不可能编写忽略已检查异常的代码，因为这样的代码不会编译。可以通过使用[`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)而不是[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)来包装构造函数抛出的任何异常。
+- en: '[PRE4]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: If an [`InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html)
+    is thrown, the method was invoked. Diagnosis of the problem would be the same
+    as if the constructor was called directly and threw the exception that is retrieved
+    by [`InvocationTargetException.getCause()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html#getCause--).
+    This exception does not indicate a problem with the reflection package or its
+    usage.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果抛出[`InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html)，则表示方法已被调用。对问题的诊断与直接调用构造函数并抛出异常，然后通过[`InvocationTargetException.getCause()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html#getCause--)检索到的异常相同。此异常并不表示反射包或其使用存在问题。
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:** It is preferable to use [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    over [`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)
+    because the former API permits examination and handling of arbitrary exceptions
+    thrown by constructors.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：**最好使用[`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)而不是[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)，因为前者的API允许检查和处理构造函数抛出的任意异常。'
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Problems Locating or Invoking the Correct Constructor
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定位或调用正确构造函数的问题
+- en: The [`ConstructorTroubleAgain`](example/ConstructorTroubleAgain.java) class
+    illustrates various ways in which incorrect code can fail to locate or invoke
+    the expected constructor.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`ConstructorTroubleAgain`](example/ConstructorTroubleAgain.java)类展示了代码错误可能无法定位或调用预期构造函数的各种方式。'
+- en: '[PRE5]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '[PRE6]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: An [`IllegalArgumentException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html)
+    is thrown because the zero-argument constructor was requested and an attempt was
+    made to pass an argument. The same exception would be thrown if the constructor
+    was passed an argument of the wrong type.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 抛出[`IllegalArgumentException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html)是因为请求零参数构造函数并尝试传递参数。如果构造函数传递了错误类型的参数，也会抛出相同的异常。
+- en: '[PRE7]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: This exception may occur if the developer mistakenly believes that reflection
+    will autobox or unbox types. Boxing (conversion of a primitive to a reference
+    type) occurs only during compilation. There is no opportunity in reflection for
+    this operation to occur, so the specific type must be used when locating a constructor.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果开发人员错误地认为反射会自动装箱或拆箱类型，则可能会出现此异常。装箱（将原始类型转换为引用类型）仅在编译期间发生。在反射中没有机会进行此操作，因此在定位构造函数时必须使用特定类型。
+- en: '[PRE8]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Here, it might be expected that the constructor taking a [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+    argument would be invoked since `newInstance()` was invoked with the more specific
+    `String` type. However it is too late! The constructor which was found is already
+    the constructor with an [`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)
+    argument. `newInstance()` makes no attempt to do method resolution; it simply
+    operates on the existing constructor object.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，可能期望调用接受[`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)参数的构造函数，因为使用了更具体的`String`类型调用了`newInstance()`。然而，为时已晚！找到的构造函数已经是接受[`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)参数的构造函数。`newInstance()`不会尝试进行方法解析；它只是在现有构造函数对象上操作。
+- en: '* * *'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:** An important difference between `new` and [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    is that `new` performs method argument type checking, boxing, and method resolution.
+    None of these occur in reflection, where explicit choices must be made.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：** `new`和[`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)之间的一个重要区别是，`new`执行方法参数类型检查、装箱和方法解析。在反射中，这些都不会发生，必须做出明确选择。'
+- en: '* * *'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: IllegalAccessException When Attempting to Invoke an Inaccessible Constructor
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 尝试调用不可访问构造函数时出现IllegalAccessException
+- en: An [`IllegalAccessException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalAccessException.html)
+    may be thrown if an attempt is made to invoke a private or otherwise inaccessible
+    constructor. The [`ConstructorTroubleAccess`](example/ConstructorTroubleAccess.java)
+    example illustrates the resulting stack trace.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果尝试调用私有或其他不可访问的构造函数，则可能会抛出[`IllegalAccessException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalAccessException.html)。[`ConstructorTroubleAccess`](example/ConstructorTroubleAccess.java)示例展示了产生的堆栈跟踪。
+- en: '[PRE9]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: '[PRE10]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: '* * *'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:** An access restriction exists which prevents reflective invocation
+    of constructors which normally would not be accessible via direct invocation.
+    (This includes, but is not limited to, private constructors in a separate class
+    and public constructors in a separate private class.) However, `Constructor` is
+    declared to extend [`AccessibleObject`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html)
+    which provides the ability to suppress this check via [`AccessibleObject.setAccessible()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html#setAccessible-boolean-).'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：** 存在访问限制，阻止通过直接调用无法访问的构造函数进行反射调用。（这包括但不限于在单独类中的私有构造函数和在单独私有类中的公共构造函数。）但是，`Constructor`被声明为扩展[`AccessibleObject`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html)，它提供了通过[`AccessibleObject.setAccessible()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html#setAccessible-boolean-)来抑制此检查的能力。'
+- en: '* * *'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

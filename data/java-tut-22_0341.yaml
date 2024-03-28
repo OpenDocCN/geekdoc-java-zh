@@ -1,0 +1,115 @@
+- en: Enhancing Security with Manifest Attributes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用清单属性增强安全性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/secman.html](https://docs.oracle.com/javase/tutorial/deployment/jar/secman.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/secman.html](https://docs.oracle.com/javase/tutorial/deployment/jar/secman.html)
+- en: The following JAR file manifest attributes are available to help ensure the
+    security of your applet or Java Web Start application. Only the `Permissions`
+    attribute is required.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下JAR文件清单属性可帮助确保您的applet或Java Web Start应用程序的安全性。只有`Permissions`属性是必需的。
+- en: The `Permissions` attribute is used to ensure that the application requests
+    only the level of permissions that is specified in the applet tag or JNLP file
+    used to invoke the application. Use this attribute to help prevent someone from
+    re-deploying an application that is signed with your certificate and running it
+    at a different privilege level.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Permissions`属性用于确保应用程序仅请求在用于调用应用程序的applet标记或JNLP文件中指定的权限级别。使用此属性可帮助防止有人重新部署使用您的证书签名的应用程序，并以不同的特权级别运行。'
+- en: This attribute is required in the manifest for the main JAR file. See [Permissions
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG896)
+    in the Java Platform, Standard Edition Deployment Guide for more information.
+  id: totrans-4
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此属性在主JAR文件的清单中是必需的。有关更多信息，请参阅Java平台标准版部署指南中的[Permissions Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG896)。
+- en: The `Codebase` attribute is used to ensure that the code base of the JAR file
+    is restricted to specific domains. Use this attribute to prevent someone from
+    re-deploying your application on another website for malicious purposes. See [Codebase
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG897)
+    in the Java Platform, Standard Edition Deployment Guide for more information.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Codebase`属性用于确保JAR文件的代码库受限于特定域。使用此属性可防止有人出于恶意目的在另一个网站上重新部署您的应用程序。有关更多信息，请参阅Java平台标准版部署指南中的[Codebase
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG897)。'
+- en: The `Application-Name` attribute is used to provide the title that is shown
+    in the security prompts for signed applications. See [Application-Name Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG899)
+    in the Java Platform, Standard Edition Deployment Guide for more information.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Application-Name`属性用于提供签名应用程序安全提示中显示的标题。有关更多信息，请参阅Java平台标准版部署指南中的[Application-Name
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG899)。'
+- en: The `Application-Library-Allowable-Codebase` attribute is used to identify the
+    locations where your application is expected to be found. Use this attribute to
+    reduce the number of locations shown in the security prompt when the JAR file
+    is in a different location than the JNLP file or the HTML page. See [Application-Library-Allowable-Codebase
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG900)
+    in the Java Platform, Standard Edition Deployment Guide for more information.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Application-Library-Allowable-Codebase`属性用于标识您的应用程序预期被找到的位置。使用此属性可减少JAR文件位于不同位置时在安全提示中显示的位置数量。有关更多信息，请参阅Java平台标准版部署指南中的[Application-Library-Allowable-Codebase
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG900)。'
+- en: The `Caller-Allowable-Codebase` attribute is used to identify the domains from
+    which JavaScript code can make calls to your application. Use this attribute to
+    prevent unknown JavaScript code from accessing your application. See [Caller-Allowable-Codebase
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG901)
+    in the Java Platform, Standard Edition Deployment Guide for more information.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Caller-Allowable-Codebase`属性用于标识可以从中JavaScript代码调用您的应用程序的域。使用此属性可防止未知的JavaScript代码访问您的应用程序。有关更多信息，请参阅Java平台标准版部署指南中的[Caller-Allowable-Codebase
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG901)。'
+- en: The `Entry-Point` attribute is used to identify the classes that are allowed
+    to be used as entry points to your RIA. Use this attribute to prevent unauthorized
+    code from being run from other available entry points in the JAR file. See [Entry-Point
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG902)
+    in the Java Platform, Standard Edition Deployment Guide for more information.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Entry-Point`属性用于标识允许用作RIA入口点的类。使用此属性可防止未经授权的代码从JAR文件中的其他可用入口点运行。有关更多信息，请参阅Java平台标准版部署指南中的[Entry-Point
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG902)。'
+- en: The `Trusted-Only` attribute is used to prevent untrusted components from being
+    loaded. See [Trusted-Only Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG903)
+    in the Java Platform, Standard Edition Deployment Guide for more information.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Trusted-Only`属性用于防止加载不受信任的组件。有关更多信息，请参阅Java平台标准版部署指南中的[Trusted-Only Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG903)。'
+- en: The `Trusted-Library` attribute is used to allow calls between privileged Java
+    code and sandbox Java code without prompting the user for permission. See [Trusted-Library
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG904)
+    in the Java Platform, Standard Edition Deployment Guide for more information.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Trusted-Library`属性用于允许特权Java代码和沙箱Java代码之间的调用，而无需提示用户进行权限确认。有关更多信息，请参阅Java平台标准版部署指南中的[Trusted-Library
+    Attribute](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html#JSDPG904)。'
+- en: See [Modifying a Manifest File](modman.html) for information on adding these
+    attributes to the manifest file.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关如何将这些属性添加到清单文件中的信息，请参阅[修改清单文件](modman.html)。

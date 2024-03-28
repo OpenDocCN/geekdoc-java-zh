@@ -1,0 +1,218 @@
+- en: Installed Extensions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 已安装的扩展
+- en: 原文：[https://docs.oracle.com/javase/tutorial/ext/basics/install.html](https://docs.oracle.com/javase/tutorial/ext/basics/install.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/ext/basics/install.html](https://docs.oracle.com/javase/tutorial/ext/basics/install.html)
+- en: Installed extensions are JAR files in the `lib/ext` directory of the Java Runtime
+    Environment (JRE™) software. As its name implies, the JRE is the runtime portion
+    of the Java Development Kit containing the platform's core API but without development
+    tools such as compilers and debuggers. The JRE is available either by itself or
+    as part of the Java Development Kit.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 已安装的扩展是JRE™软件的`lib/ext`目录中的JAR文件。顾名思义，JRE是Java开发工具包的运行时部分，包含平台的核心API，但不包括编译器和调试器等开发工具。JRE可以单独使用，也可以作为Java开发工具包的一部分使用。
+- en: 'The JRE is a strict subset of the JDK software. A subset of the JDK software
+    directory tree looks like this:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JRE是JDK软件的严格子集。JDK软件目录树的子集如下所示：
+- en: '![JDK software directory tree](../Images/9372ae044b5781bd22e4d422b9847c65.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![JDK软件目录树](../Images/9372ae044b5781bd22e4d422b9847c65.png)'
+- en: The JRE consists of those directories within the highlighted box in the diagram.
+    Whether your JRE is stand-alone or part of the JDK software, any JAR file in the
+    `lib/ext` of the JRE directory is automatically treated by the runtime environment
+    as an extension.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JRE由图中突出显示的目录组成。无论您的JRE是独立的还是作为JDK软件的一部分，JRE目录中的`lib/ext`中的任何JAR文件都会被运行时环境自动视为扩展。
+- en: Since installed extensions extend the platform's core API, use them judiciously.
+    They are rarely appropriate for interfaces used by a single, or small set of applications.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于安装的扩展会扩展平台的核心API，请谨慎使用。它们很少适用于仅由单个或少量应用程序使用的接口。
+- en: Furthermore, since the symbols defined by installed extensions will be visible
+    in all Java processes, care should be taken to ensure that all visible symbols
+    follow the appropriate "reverse domain name" and "class hierarchy" conventions.
+    For example, `com.mycompany.MyClass`.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，由于安装的扩展定义的符号将在所有Java进程中可见，因此应注意确保所有可见符号遵循适当的“反向域名”和“类层次结构”约定。例如，`com.mycompany.MyClass`。
+- en: 'As of Java 6, extension JAR files may also be placed in a location that is
+    independent of any particular JRE, so that extensions can be shared by all JREs
+    that are installed on a system. Prior to Java 6, the value of `java.ext.dirs`
+    referred to a single directory, but as of Java 6 it is a list of directories (like
+    `CLASSPATH`) that specifies the locations in which extensions are searched for.
+    The first element of the path is always the `lib/ext` directory of the JRE. The
+    second element is a directory outside of the JRE. This other location allows extension
+    JAR files to be installed once and used by several JREs installed on that system.
+    The location varies depending on the operating system:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从Java 6开始，扩展JAR文件也可以放置在与任何特定JRE无关的位置，以便扩展可以被安装在系统上安装的所有JRE共享。在Java 6之前，`java.ext.dirs`的值指的是单个目录，但是从Java
+    6开始，它是一个目录列表（类似于`CLASSPATH`），指定扩展被搜索的位置。路径的第一个元素始终是JRE的`lib/ext`目录。第二个元素是JRE之外的目录。这个其他位置允许扩展JAR文件只安装一次，并被安装在该系统上安装的几个JRE使用。位置因操作系统而异：
+- en: 'Solaris™ Operating System: `/usr/jdk/packages/lib/ext`'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 'Solaris™操作系统: `/usr/jdk/packages/lib/ext`'
+- en: 'Linux: `/usr/java/packages/lib/ext`'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 'Linux: `/usr/java/packages/lib/ext`'
+- en: 'Microsoft Windows: `%SystemRoot%\Sun\Java\lib\ext`'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 'Microsoft Windows: `%SystemRoot%\Sun\Java\lib\ext`'
+- en: Note that an installed extension placed in one of the above directories extends
+    the platform of *each* of the JREs (Java 6 or later) on that system.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，放置在上述任一目录中的安装扩展会扩展该系统上*每个*JRE（Java 6或更高版本）的平台。
+- en: A Simple Example
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个简单的例子
+- en: 'Let''s create a simple installed extension. Our extension consists of one class,
+    `RectangleArea`, that computes the areas of rectangles:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们创建一个简单的已安装扩展。我们的扩展由一个类`RectangleArea`组成，用于计算矩形的面积：
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This class has a single method, `area`, that takes an instance of `java.awt.Rectangle`
+    and returns the rectangle's area.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此类有一个名为`area`的方法，该方法接受一个`java.awt.Rectangle`的实例并返回矩形的面积。
+- en: 'Suppose that you want to test `RectangleArea` with an application called `AreaApp`:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想要使用名为`AreaApp`的应用程序测试`RectangleArea`：
+- en: '[PRE1]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This application instantiates a 10 `x` 5 rectangle, and then prints out the
+    rectangle's area using the `RectangleArea.area` method.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此应用程序实例化一个10 `x` 5的矩形，然后使用`RectangleArea.area`方法打印出矩形的面积。
+- en: Running AreaApp Without the Extension Mechanism
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在没有扩展机制的情况下运行AreaApp
+- en: Let's first review how you would run the `AreaApp` application without using
+    the extension mechanism. We'll assume that the `RectangleArea` class is bundled
+    in a JAR file named `area.jar`.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们首先回顾一下如何在不使用扩展机制的情况下运行`AreaApp`应用程序。我们假设`RectangleArea`类被捆绑在名为`area.jar`的JAR文件中。
+- en: 'The `RectangleArea` class is not part of the Java platform, of course, so you
+    would need to place the `area.jar` file on the class path in order to run `AreaApp`
+    without getting a runtime exception. If `area.jar` was in the directory `/home/user`,
+    for example, you could use this command:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当然，`RectangleArea`类不是Java平台的一部分，因此您需要将`area.jar`文件放在类路径上才能运行`AreaApp`而不会出现运行时异常。例如，如果`area.jar`在目录`/home/user`中，您可以使用以下命令：
+- en: '[PRE2]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The class path specified in this command contains both the current directory,
+    containing `AreaApp.class`, and the path to the JAR file containing the `RectangleArea`
+    package. You would get the desired output by running this command:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此命令中指定的类路径包含当前目录，其中包含`AreaApp.class`，以及包含`RectangleArea`包的JAR文件的路径。通过运行此命令，您将获得所需的输出：
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Running AreaApp by Using the Extension Mechanism
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用扩展机制运行AreaApp
+- en: Now let's look at how you would run `AreaApp` by using the `RectangleArea` class
+    as an extension.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在让我们看看如何通过将`RectangleArea`类作为扩展来运行`AreaApp`。
+- en: To make the `RectangleArea` class into an extension, you place the file `area.jar`
+    in the `lib/ext` directory of the JRE. Doing so automatically gives the `RectangleArea`
+    the status of being an installed extension.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将`RectangleArea`类变成一个扩展，您需要将文件`area.jar`放在JRE的`lib/ext`目录中。这样做会自动将`RectangleArea`赋予已安装扩展的状态。
+- en: 'With `area.jar` installed as an extension, you can run `AreaApp` without needing
+    to specify the class path:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将`area.jar`安装为扩展后，您可以运行`AreaApp`而无需指定类路径：
+- en: '[PRE4]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Because you're using `area.jar` as an installed extension, the runtime environment
+    will be able to find and to load the `RectangleArea` class even though you haven't
+    specified it on the class path. Similarly, any applet or application being run
+    by any user on your system would be able to find and use the `RectangleArea` class.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为您正在使用`area.jar`作为已安装的扩展，运行时环境将能够找到并加载`RectangleArea`类，即使您没有在类路径上指定它。同样，任何用户在您的系统上运行的小程序或应用程序都可以找到并使用`RectangleArea`类。
+- en: If there are multiple JREs (Java 6 or later) installed on a system and want
+    the `RectangleArea` class to be available as an extension to all of them, instead
+    of installing it in the `lib/ext` directory of a particular JRE, install it in
+    the system-wide location. For example, on system running Linux, install `area.jar`
+    in the directory `/usr/java/packages/lib/ext`. Then `AreaApp` can run using different
+    JREs that are installed on that system, for example if different browsers are
+    configured to use different JREs.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果系统上安装了多个JRE（Java 6或更高版本），并且希望`RectangleArea`类作为所有JRE的扩展可用，而不是将其安装在特定JRE的`lib/ext`目录中，请将其安装在系统范围的位置。例如，在运行Linux的系统上，将`area.jar`安装在目录`/usr/java/packages/lib/ext`中。然后`AreaApp`可以在安装在该系统上的不同JRE上运行，例如，如果不同的浏览器配置为使用不同的JRE。

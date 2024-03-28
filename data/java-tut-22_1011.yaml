@@ -1,0 +1,138 @@
+- en: More LDAP Operations
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 更多 LDAP 操作
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/rename.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/rename.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/rename.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/rename.html)
+- en: The rest of the LDAP lesson covers how the JNDI provides ability to perform
+    certain interesting LDAP operations.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP 课程的其余部分介绍了 JNDI 提供的执行某些有趣的 LDAP 操作的能力。
+- en: Renaming Objects
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 重命名对象
+- en: 'You use [`Context.rename()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#rename-javax.naming.Name-javax.naming.Name-)
+    to rename an object in the directory. In the [LDAP v2](http://www.ietf.org/rfc/rfc1777.txt),
+    this corresponds to the "modify RDN" operation that renames an entry within the
+    same context (that is, renaming a sibling). In the [LDAP v3](http://www.ietf.org/rfc/rfc2251.txt),
+    this corresponds to the "modify DN" operation, which is like "modify RDN," except
+    that the old and new entries need not be in the same context. You can use `Context.rename()`
+    to rename a leaf entry or an interior node. The example shown in the [Naming and
+    Directory Operations](../ops/rename.html) lesson renames a leaf entry. The following
+    [`code`](examples/RenameInterior.java) renames an interior node from `"ou=NewHires"`
+    to `"ou=OldHires"`:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用[`Context.rename()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#rename-javax.naming.Name-javax.naming.Name-)来重命名目录中的对象。在[LDAP
+    v2](http://www.ietf.org/rfc/rfc1777.txt)中，这对应于“修改 RDN”操作，该操作将在同一上下文中重命名条目（即重命名同级）。在[LDAP
+    v3](http://www.ietf.org/rfc/rfc2251.txt)中，这对应于“修改 DN”操作，类似于“修改 RDN”，只是旧条目和新条目不需要在同一上下文中。您可以使用`Context.rename()`来重命名叶条目或内部节点。在[Naming
+    and Directory Operations](../ops/rename.html)课程中展示的示例重命名了一个叶条目。以下[`代码`](examples/RenameInterior.java)将内部节点从`"ou=NewHires"`重命名为`"ou=OldHires"`：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The [Oracle Directory Server v5.2](http://www.oracle.com/technetwork/testcontent/index-085178.html)
+    does not support renaming interior nodes. If you run this example, then you will
+    get a [`ContextNotEmptyException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ContextNotEmptyException.html).'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** [Oracle Directory Server v5.2](http://www.oracle.com/technetwork/testcontent/index-085178.html)
+    不支持重命名内部节点。如果您运行此示例，则会收到[`ContextNotEmptyException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ContextNotEmptyException.html)。'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Renaming to a Different Part of the DIT
+  id: totrans-9
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 将条目重命名为 DIT 的不同部分
+- en: With the LDAP v3, you can rename an entry to a different part of the DIT. To
+    do this by using `Context.rename()`, you must use a context that is the common
+    ancestor for both the new and the old entries. For example, to rename `"cn=C.
+    User, ou=NewHires, o=JNDITutorial"` to `"cn=C. User, ou=People, o=JNDITutorial"`,
+    you must use the context named by `"o=JNDITutorial"`. Following is [`an example`](examples/RenameDiffParent.java)
+    that demonstrates this. If you try to run this example against an LDAP v2 server,
+    then you will get an [`InvalidNameException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/InvalidNameException.html)
+    because version 2 does not support this feature.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 LDAP v3，您可以将条目重命名为 DIT 的不同部分。要通过`Context.rename()`实现此目的，必须使用一个既是新条目又是旧条目的共同祖先的上下文。例如，要将`"cn=C.
+    User, ou=NewHires, o=JNDITutorial"`重命名为`"cn=C. User, ou=People, o=JNDITutorial"`，您必须使用由`"o=JNDITutorial"`命名的上下文。以下是演示此操作的[`示例`](examples/RenameDiffParent.java)。如果您尝试在
+    LDAP v2 服务器上运行此示例，则会收到[`InvalidNameException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/InvalidNameException.html)，因为版本
+    2 不支持此功能。
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The [Oracle Directory Server v5.2](http://www.oracle.com/technetwork/testcontent/index-085178.html)
+    does not support renaming with different parent nodes. If you run this example
+    by using that server, then you will get a [`OperationNotSupportedException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/OperationNotSupportedException.html)
+    (indicating a "protocol error").'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** [Oracle Directory Server v5.2](http://www.oracle.com/technetwork/testcontent/index-085178.html)
+    不支持使用不同父节点进行重命名。如果您使用该服务器运行此示例，则会收到[`OperationNotSupportedException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/OperationNotSupportedException.html)（表示“协议错误”）。'
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Keeping the Old Name Attributes
+  id: totrans-15
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 保留旧名称属性
+- en: In the LDAP, when you rename an entry, you have the option of keeping the entry's
+    old RDN as an attribute of the updated entry. For example, if you rename the entry
+    `"cn=C. User"` to `"cn=Claude User"`, you can specify whether you want the old
+    RDN `"cn=C. User"` to be kept as an attribute.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 LDAP 中，当您重命名条目时，您可以选择将条目的旧 RDN 保留为更新后条目的属性。例如，如果您将条目`"cn=C. User"`重命名为`"cn=Claude
+    User"`，您可以指定是否要保留旧 RDN`"cn=C. User"`作为属性。
+- en: To specify whether you want to keep the old name attribute when you use `Context.rename()`,
+    use the `"java.naming.ldap.deleteRDN"` environment property. If this property's
+    value is `"true"` (the default), the old RDN is removed. If its value is `"false"`,
+    then the old RDN is kept as an attribute of the updated entry. The complete example
+    is [`here`](examples/RenameKeepRDN.java).
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要指定在使用`Context.rename()`时是否要保留旧名称属性，请使用`"java.naming.ldap.deleteRDN"`环境属性。如果此属性的值为`"true"`（默认值），则旧的RDN将被移除。如果其值为`"false"`，则旧的RDN将保留为更新条目的属性。完整示例在[`这里`](examples/RenameKeepRDN.java)。
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'

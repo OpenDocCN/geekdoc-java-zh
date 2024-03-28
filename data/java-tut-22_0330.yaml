@@ -1,0 +1,130 @@
+- en: Viewing the Contents of a JAR File
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 查看 JAR 文件的内容
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/view.html](https://docs.oracle.com/javase/tutorial/deployment/jar/view.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/view.html](https://docs.oracle.com/javase/tutorial/deployment/jar/view.html)
+- en: 'The basic format of the command for viewing the contents of a JAR file is:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看 JAR 文件内容的基本命令格式为：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Let''s look at the options and argument used in this command:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看看此命令中使用的选项和参数：
+- en: The `t` option indicates that you want to view the *table* of contents of the
+    JAR file.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`t` 选项表示您想查看 JAR 文件的*目录*。'
+- en: The `f` option indicates that the JAR file whose contents are to be viewed is
+    specified on the command line.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`f` 选项表示要查看其内容的 JAR 文件在命令行上指定。'
+- en: The `jar-file` argument is the path and name of the JAR file whose contents
+    you want to view.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`jar-file` 参数是您想要查看其内容的 JAR 文件的路径和名称。'
+- en: The `t` and `f` options can appear in either order, but there must not be any
+    space between them.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`t` 和 `f` 选项可以以任意顺序出现，但它们之间不能有任何空格。'
+- en: This command will display the JAR file's table of contents to `stdout`.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此命令将 JAR 文件的目录显示到 `stdout`。
+- en: You can optionally add the verbose option, `v`, to produce additional information
+    about file sizes and last-modified dates in the output.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以选择添加详细选项 `v`，以在输出中生成有关文件大小和最后修改日期的附加信息。
+- en: An Example
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例
+- en: 'Let''s use the Jar tool to list the contents of the `TicTacToe.jar` file we
+    created in the previous section:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们使用 Jar 工具列出我们在上一节中创建的 `TicTacToe.jar` 文件的内容：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'This command displays the contents of the JAR file to `stdout`:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此命令将 JAR 文件的内容显示到 `stdout`：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The JAR file contains the `TicTacToe` class file and the audio and images directory,
+    as expected. The output also shows that the JAR file contains a default manifest
+    file, `META-INF/MANIFEST.MF`, which was automatically placed in the archive by
+    the JAR tool. For more information, see the [Understanding the Default Manifest](defman.html)
+    section.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JAR 文件包含了 `TicTacToe` 类文件以及音频和图像目录，正如预期的那样。 输出还显示 JAR 文件包含一个默认清单文件 `META-INF/MANIFEST.MF`，该文件是由
+    JAR 工具自动放置在存档中的。 有关更多信息，请参阅[理解默认清单](defman.html)部分。
+- en: All pathnames are displayed with forward slashes, regardless of the platform
+    or operating system you're using. Paths in JAR files are always relative; you'll
+    never see a path beginning with `C:`, for example.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有路径名都显示为正斜杠，无论您使用的是哪个平台或操作系统。 JAR 文件中的路径始终是相对的；例如，您永远不会看到以 `C:` 开头的路径。
+- en: 'The JAR tool will display additional information if you use the `v` option:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果使用 `v` 选项，JAR 工具将显示附加信息：
+- en: '[PRE3]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'For example, the verbose output for the TicTacToe JAR file would look similar
+    to this:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，TicTacToe JAR 文件的详细输出将类似于以下内容：
+- en: '[PRE4]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'

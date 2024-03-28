@@ -1,0 +1,62 @@
+- en: Pre-Requisites for Packaging Self-Contained Applications
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 打包自包含应用程序的先决条件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/prereqs.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/prereqs.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/prereqs.html](https://docs.oracle.com/javase/tutorial/deployment/selfContainedApps/prereqs.html)
+- en: The Java Development Kit (JDK) is required to compile and package your application.
+    The installable bundle must be created on the platform on which the self-contained
+    application will run. For example, if your application runs on Windows and Linux,
+    you must run the packaging tool on Windows to create a `.exe` or `.msi` bundle,
+    and run the packaging tool on Linux to create a `.rpm` or `.deb` file.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 编译和打包应用程序需要Java开发工具包（JDK）。可安装的捆绑包必须在自包含应用程序将运行的平台上创建。例如，如果您的应用程序在Windows和Linux上运行，您必须在Windows上运行打包工具来创建`.exe`或`.msi`捆绑包，并在Linux上运行打包工具来创建`.rpm`或`.deb`文件。
+- en: Third party tools are required to create the installable bundle. The following
+    table identifies the tools for each supported platform.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建可安装的捆绑包需要第三方工具。以下表格标识了每个支持平台的工具。
+- en: '| Platform | Format | Tool |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| 平台 | 格式 | 工具 |'
+- en: '| Windows | EXE | Inno Setup 5 or later |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| Windows | EXE | Inno Setup 5 或更高版本 |'
+- en: '| Windows | MSI | WiX Toolset 3.8 or later |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| Windows | MSI | WiX Toolset 3.8 或更高版本 |'
+- en: '| Linux | RPM | RPMBuild |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| Linux | RPM | RPMBuild |'
+- en: '| Linux | DEB | Debian packaging tools |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| Linux | DEB | Debian打包工具 |'
+- en: '| OS X | DMG |   |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| OS X | DMG |   |'
+- en: '| OS X | PKG |   |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| OS X | PKG |   |'

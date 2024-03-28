@@ -1,0 +1,37 @@
+- en: 'Lesson: Processing Limits'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 'Lesson: 处理限制'
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/limits/index.html](https://docs.oracle.com/javase/tutorial/jaxp/limits/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/limits/index.html](https://docs.oracle.com/javase/tutorial/jaxp/limits/index.html)
+- en: XML processing can sometimes be a memory intensive operation. Applications,
+    especially those that accept XML, XSD and XSL from untrusted sources, should take
+    steps to guard against excessive memory consumption by using the JAXP processing
+    limits provided in the JDK.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: XML 处理有时可能是一个消耗大量内存的操作。应用程序，特别是那些接受来自不受信任来源的 XML、XSD 和 XSL 的应用程序，应该通过使用 JDK
+    提供的 JAXP 处理限制来防范过度的内存消耗。
+- en: Developers should evaluate their application's requirements and operating environment
+    to determine the acceptable limits for their system configurations and set these
+    limits accordingly. The size related limits can be used to prevent malformed XML
+    sources from being processed without consuming large amount of memory, while an
+    `EntityExpansionLimit` will allow an application to control memory consumption
+    under an acceptable level.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 开发人员应该评估他们应用程序的需求和运行环境，以确定系统配置的可接受限制，并相应地设置这些限制。与大小相关的限制可用于防止处理畸形的 XML 源时消耗大量内存，而`EntityExpansionLimit`将允许应用程序在可接受水平下控制内存消耗。
+- en: In this tutorial, you are introduced to the limits, and you will learn how to
+    use them properly.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本教程中，您将了解这些限制，并学习如何正确使用它们。

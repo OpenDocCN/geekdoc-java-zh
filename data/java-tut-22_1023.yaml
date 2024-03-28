@@ -1,0 +1,182 @@
+- en: Serializable Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 可序列化对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/objects/serial.html](https://docs.oracle.com/javase/tutorial/jndi/objects/serial.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/objects/serial.html](https://docs.oracle.com/javase/tutorial/jndi/objects/serial.html)
+- en: To *serialize* an object means to convert its state to a byte stream so that
+    the byte stream can be reverted back into a copy of the object. A Java object
+    is *serializable* if its class or any of its superclasses implements either the
+    `java.io.Serializable` interface or its subinterface, `java.io.Externalizable`.
+    *Deserialization* is the process of converting the serialized form of an object
+    back into a copy of the object.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*序列化* 一个对象意味着将其状态转换为字节流，以便可以将字节流还原为对象的副本。如果其类或其任何超类实现了 `java.io.Serializable`
+    接口或其子接口 `java.io.Externalizable`，则 Java 对象是 *可序列化* 的。*反序列化* 是将对象的序列化形式转换回对象的过程。'
+- en: For example, the `java.awt.Button` class implements the `Serializable` interface,
+    so you can serialize a `java.awt.Button` object and store that serialized state
+    in a file. Later, you can read back the serialized state and deserialize into
+    a `java.awt.Button` object.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，`java.awt.Button` 类实现了 `Serializable` 接口，因此您可以序列化一个 `java.awt.Button` 对象并将该序列化状态存储在文件中。稍后，您可以读取序列化状态并将其反序列化为一个
+    `java.awt.Button` 对象。
+- en: The Java platform specifies a default way by which serializable objects are
+    serialized. A (Java) class can override this default serialization and define
+    its own way of serializing objects of that class. The [Object Serialization Specification](https://docs.oracle.com/javase/8/docs/technotes/guides/serialization/index.html)
+    describes object serialization in detail.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 平台规定了可序列化对象序列化的默认方式。一个（Java）类可以覆盖这种默认序列化，并定义其自己的序列化对象的方式。[对象序列化规范](https://docs.oracle.com/javase/8/docs/technotes/guides/serialization/index.html)详细描述了对象序列化。
+- en: When an object is serialized, information that identifies its class is recorded
+    in the serialized stream. However, the class's definition ("class file") itself
+    is not recorded. It is the responsibility of the system that is deserializing
+    the object to determine how to locate and load the necessary class files. For
+    example, a Java application might include in its classpath a JAR file that contains
+    the class files of the serialized object(s) or load the class definitions by using
+    information stored in the directory, as explained later in this lesson.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当对象被序列化时，用于标识其类的信息被记录在序列化流中。然而，类的定义（"类文件"）本身并未记录。反序列化对象的系统有责任确定如何定位和加载必要的类文件。例如，一个
+    Java 应用程序可能在其类路径中包含一个包含序列化对象的类文件的 JAR 文件，或者通过使用存储在目录中的信息加载类定义，如本课程后面解释的那样。
+- en: Binding a Serializable Object
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 绑定可序列化对象
+- en: You can store a serializable object in the directory if the underlying service
+    provider supports that action, as does Oracle's LDAP service provider.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果底层服务提供程序支持该操作，您可以将可序列化对象存储在目录中，就像 Oracle 的 LDAP 服务提供程序一样。
+- en: The following example invokes [`Context.bind`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#bind-javax.naming.Name-java.lang.Object-)
+    to bind an AWT button to the name `"cn=Button"`. To associate attributes with
+    the new binding, you use [`DirContext.bind`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#bind-javax.naming.Name-java.lang.Object-javax.naming.directory.Attributes-).
+    To overwrite an existing binding, use [`Context.rebind`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#rebind-javax.naming.Name-java.lang.Object-)
+    and [`DirContext.rebind`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#rebind-javax.naming.Name-java.lang.Object-javax.naming.directory.Attributes-).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例调用 [`Context.bind`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#bind-javax.naming.Name-java.lang.Object-)
+    将 AWT 按钮绑定到名称 `"cn=Button"`。要将属性与新绑定关联起来，您可以使用 [`DirContext.bind`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#bind-javax.naming.Name-java.lang.Object-javax.naming.directory.Attributes-)。要覆盖现有绑定，使用
+    [`Context.rebind`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#rebind-javax.naming.Name-java.lang.Object-)
+    和 [`DirContext.rebind`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#rebind-javax.naming.Name-java.lang.Object-javax.naming.directory.Attributes-)。
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: You can then read the object back using [`Context.lookup`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#lookup-javax.naming.Name-),
+    as follows.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用 [`Context.lookup`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#lookup-javax.naming.Name-)
+    读取对象，如下所示。
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Running [`this example`](examples/SerObj.java) produces the following output.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行 [`此示例`](examples/SerObj.java) 会产生以下输出。
+- en: '[PRE2]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Specifying a Codebase
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定代码库
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The procedures described here are for binding a serializable object
+    in a directory service that follows the schema defined in [RFC 2713](http://www.ietf.org/rfc/rfc2713.txt).
+    These procedures might not be generally applicable to other naming and directory
+    services that support binding a serializable object with a specified codebase.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 这里描述的程序适用于在遵循[RFC 2713](http://www.ietf.org/rfc/rfc2713.txt)中定义的模式的目录服务中绑定可序列化对象。这些程序可能不适用于支持将可序列化对象与指定代码库绑定的其他命名和目录服务。'
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: When a serialized object is bound in the directory as shown in the previous
+    example, applications that read the serialized object from the directory must
+    have access to the class definitions necessary to deserialize the object.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当一个序列化对象像前面的例子中所示绑定在目录中时，从目录中读取序列化对象的应用程序必须能够访问必要的类定义以对对象进行反序列化。
+- en: Alternatively, you can record a *codebase* with the serialized object in the
+    directory, either when you bind the object or subsequently by adding an attribute
+    by using [`DirContext.modifyAttributes`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#modifyAttributes-javax.naming.Name-int-javax.naming.directory.Attributes-).
+    You can use any attribute to record this codebase and have your application read
+    that attribute from the directory and use it appropriately. Or you can use the
+    `"javaCodebase"` attribute specified in . In the latter case, Oracle's LDAP service
+    provider will automatically use the attribute to load the class definitions as
+    needed. `"javaCodebase"` should contain the URL of a codebase directory or a JAR
+    file. If the codebase contains more than one URL, then each URL must be separated
+    by a space character.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，你可以在目录中记录一个*代码库*，无论是在绑定对象时还是随后通过使用[`DirContext.modifyAttributes`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#modifyAttributes-javax.naming.Name-int-javax.naming.directory.Attributes-)添加属性。你可以使用任何属性来记录这个代码库，并让你的应用程序从目录中读取该属性并适当使用它。或者你可以使用在中指定的`"javaCodebase"`属性。在后一种情况下，Oracle的LDAP服务提供者将自动使用该属性根据需要加载类定义。`"javaCodebase"`应包含代码库目录或JAR文件的URL。如果代码库包含多个URL，则每个URL必须用空格字符分隔。
+- en: The following example resembles the one for binding a `java.awt.Button`. It
+    differs in that it uses a user-defined `Serializable` class, [``Flower``](examples/Flower.java),
+    and supplies a `"javaCodebase"` attribute that contains the location of `Flower`'s
+    class definition. Here's the code that does the binding.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例类似于绑定`java.awt.Button`的示例。不同之处在于它使用了一个用户定义的`Serializable`类，[``Flower``](examples/Flower.java)，并提供了一个包含`Flower`类定义位置的`"javaCodebase"`属性。以下是执行绑定的代码。
+- en: '[PRE3]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: When you run [`this example`](examples/SerObjWithCodebase.java), you must supply
+    the URL of the location at which the class file `Flower.class` was installed.
+    For example, if `Flower.class` was installed at the Web server `web1`, in the
+    directory `example/classes`, then you would run this example as follows.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你运行[`这个例子`](examples/SerObjWithCodebase.java)时，你必须提供`Flower.class`类文件安装位置的URL。例如，如果`Flower.class`安装在Web服务器`web1`上，目录为`example/classes`，那么你可以按照以下方式运行这个例子。
+- en: '[PRE4]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Afterward, you may remove `Flower.class` from your classpath and run any program
+    that looks up or lists this object without directly referencing the `Flower` class.
+    If your program references `Flower` directly, then you must make its class file
+    available for compilation and execution.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 之后，你可以从类路径中删除`Flower.class`并运行任何查找或列出此对象的程序，而无需直接引用`Flower`类。如果你的程序直接引用`Flower`，那么你必须使其类文件可供编译和执行。

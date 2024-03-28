@@ -1,0 +1,132 @@
+- en: Security in Rich Internet Applications
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 丰富互联网应用程序中的安全性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/security.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/security.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/security.html](https://docs.oracle.com/javase/tutorial/deployment/doingMoreWithRIA/security.html)
+- en: 'The security model behind rich Internet applications (RIAs) works to protect
+    the user from malicious Internet applications. This topic discusses security aspects
+    that are common to applets and Java Web Start applications. See the following
+    topics for more information:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 丰富互联网应用程序（RIAs）背后的安全模型旨在保护用户免受恶意互联网应用程序的侵害。本主题讨论了适用于小程序和 Java Web Start 应用程序的安全方面。有关更多信息，请参阅以下主题：
+- en: '[What Applets Can and Cannot Do](../applet/security.html)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[小程序的能力和限制](../applet/security.html)'
+- en: '[Java Web Start and Security](../webstart/security.html)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Java Web Start 和安全性](../webstart/security.html)'
+- en: RIAs can be restricted to the Java security sandbox or request permission to
+    access resources outside the sandbox. The first time an RIA is launched, the user
+    is prompted for permission to run. The dialog shown provides information about
+    the signer's certificate and indicates if the RIA requests permission to run outside
+    the sandbox. The user can then make an informed decision about running the application.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: RIAs 可以限制在 Java 安全沙箱中运行，或请求权限访问安全沙箱之外的资源。第一次启动 RIA 时，用户将被提示是否允许运行。显示的对话框提供有关签名者证书的信息，并指示
+    RIA 是否请求在安全沙箱之外运行的权限。用户随后可以做出知情决定是否运行应用程序。
+- en: Apply the following guidelines to help secure your RIAs.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请遵循��下准则来帮助保护您的 RIAs。
+- en: Sign the JAR file of the RIA with a certificate from a recognized certificate
+    authority. For more information, see the [Signing and Verifying JAR Files](../jar/signindex.html)
+    topic.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用来自认可的证书颁发机构的证书对 RIA 的 JAR 文件进行签名。有关更多信息，请参阅 [签署和验证 JAR 文件](../jar/signindex.html)
+    主题。
+- en: If the RIA requires access outside of the security sandbox, specify the `all-permissions`
+    element in the JNLP file for the RIA. Otherwise, let the RIA default to running
+    in the security sandbox. The following code snippet shows the `all-permissions`
+    element in the RIA's JNLP file.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果 RIA 需要访问安全沙箱之外的资源，请在 RIA 的 JNLP 文件中指定 `all-permissions` 元素。否则，让 RIA 默认在安全沙箱中运行。以下代码片段显示了
+    RIA 的 JNLP 文件中的 `all-permissions` 元素。
+- en: '[PRE0]'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If the applet tag is used, see [Deploying With the Applet Tag](../applet/html.html)
+    for information on setting the permissions level.
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如果使用 applet 标签，请参阅 [使用 applet 标签部署](../applet/html.html) 以获取有关设置权限级别的信息。
+- en: A JNLP file can only include JAR files signed by the same certificate. If you
+    have JAR files that are signed using different certificates, specify them in separate
+    JNLP files. In the RIA's main JNLP file, specify the `component-desc` element
+    to include the other JNLP files as component extensions. See [Structure of the
+    JNLP File](../deploymentInDepth/jnlpFileSyntax.html) for information.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个 JNLP 文件只能包含由相同证书签名的 JAR 文件。如果您有使用不同证书签名的 JAR 文件，请在单独的 JNLP 文件中指定它们。在 RIA
+    的主 JNLP 文件中，使用 `component-desc` 元素来包含其他 JNLP 文件作为组件扩展。有关详细信息，请参阅 [JNLP 文件的结构](../deploymentInDepth/jnlpFileSyntax.html)。
+- en: The security model for RIAs does not allow JavaScript code from a web page to
+    invoke security-sensitive code in a signed JAR file unless you explicitly enable
+    this. In the signed JAR file, wrap the section of code that you want JavaScript
+    code to be able to invoke in a [`AccessController.doPrivileged`](https://docs.oracle.com/javase/8/docs/api/java/security/AccessController.html)
+    block. This allows the JavaScript code to run with elevated permissions when executing
+    the code in the `doPrivileged` code block.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于 RIAs 的安全模型不允许来自网页的 JavaScript 代码调用签名 JAR 文件中的安全敏感代码，除非您明确启用此功能。在签名的 JAR 文件中，将您希望
+    JavaScript 代码能够调用的代码部分包装在 [`AccessController.doPrivileged`](https://docs.oracle.com/javase/8/docs/api/java/security/AccessController.html)
+    块中。这样，当执行 `doPrivileged` 代码块中的代码时，JavaScript 代码可以以提升的权限运行。
+- en: Avoid mixing privileged and sandbox components in a RIA, if possible, as they
+    can raise security warnings about mixed code. See [Mixing Privileged Code and
+    Sandbox Code](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/mixed_code.html)
+    for more information.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 尽量避免在 RIA 中混合特权和沙箱组件，因为它们可能会引发有关混合代码的安全警告。有关更多信息，请参阅 [混合特权代码和沙箱代码](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/mixed_code.html)。
+- en: Include the `Permissions` and `Codebase` attributes in the JAR file manifest
+    to ensure that your RIA requests only the permissions you specify, and that the
+    RIA is accessed from the correct location. See [JAR File Manifest Attributes for
+    Security](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html)
+    for information.
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在 JAR 文件清单中包含`Permissions`和`Codebase`属性，以确保您的 RIA 请求仅限于您指定的权限，并且该 RIA 是从正确的位置访问的。查看[用于安全性的JAR文件清单属性](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/manifest.html)获取更多信息。
+- en: JAR file manifest attributes enable you to restrict access to your RIA and help
+    to ensure that your code is not tampered with. See [Enhancing Security with Manifest
+    Attributes](../jar/secman.html) for information on all of the JAR file manifest
+    attributes that are available.
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: JAR 文件清单属性使您能够限制对您的 RIA 的访问，并有助于确保您的代码不被篡改。查看[使用清单属性增强安全性](../jar/secman.html)获取所有可用的
+    JAR 文件清单属性的信息。

@@ -1,0 +1,75 @@
+- en: Type Annotations and Pluggable Type Systems
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 类型注解和可插拔类型系统
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/annotations/type_annotations.html](https://docs.oracle.com/javase/tutorial/java/annotations/type_annotations.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/annotations/type_annotations.html](https://docs.oracle.com/javase/tutorial/java/annotations/type_annotations.html)
+- en: Before the Java SE 8 release, annotations could only be applied to declarations.
+    As of the Java SE 8 release, annotations can also be applied to any *type use*.
+    This means that annotations can be used anywhere you use a type. A few examples
+    of where types are used are class instance creation expressions (`new`), casts,
+    `implements` clauses, and `throws` clauses. This form of annotation is called
+    a *type annotation* and several examples are provided in [Annotations Basics](basics.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java SE 8发布之前，注解只能应用于声明。从Java SE 8发布开始，注解也可以应用于任何*类型使用*。这意味着注解可以在使用类型的任何地方使用。一些类型使用的示例包括类实例创建表达式（`new`）、强制转换、`implements`子句和`throws`子句。这种形式的注解称为*类型注解*，[注解基础知识](basics.html)提供了几个示例。
+- en: Type annotations were created to support improved analysis of Java programs
+    way of ensuring stronger type checking. The Java SE 8 release does not provide
+    a type checking framework, but it allows you to write (or download) a type checking
+    framework that is implemented as one or more pluggable modules that are used in
+    conjunction with the Java compiler.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类型注解是为了支持改进Java程序的分析方式以确保更强的类型检查而创建的。Java SE 8发布没有提供类型检查框架，但允许您编写（或下载）一个作为一个或多个可插拔模块实现的类型检查框架，这些模块与Java编译器一起使用。
+- en: 'For example, you want to ensure that a particular variable in your program
+    is never assigned to null; you want to avoid triggering a `NullPointerException`.
+    You can write a custom plug-in to check for this. You would then modify your code
+    to annotate that particular variable, indicating that it is never assigned to
+    null. The variable declaration might look like this:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，您希望确保程序中的特定变量永远不会被赋予null；您希望避免触发`NullPointerException`。您可以编写一个自定义插件来检查这一点。然后，您将修改代码以注释该特定变量，指示它永远不会被赋予null。变量声明可能如下所示：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: When you compile the code, including the `NonNull` module at the command line,
+    the compiler prints a warning if it detects a potential problem, allowing you
+    to modify the code to avoid the error. After you correct the code to remove all
+    warnings, this particular error will not occur when the program runs.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您在命令行中编译代码时，包括`NonNull`模块，如果编译器检测到潜在问题，它会打印警告，让您修改代码以避免错误。在您纠正代码以消除所有警告后，当程序运行时，这种特定错误将不会发生。
+- en: You can use multiple type-checking modules where each module checks for a different
+    kind of error. In this way, you can build on top of the Java type system, adding
+    specific checks when and where you want them.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用多个类型检查模块，每个模块检查不同类型的错误。通过这种方式，您可以在需要时在Java类型系统的基础上构建，添加特定的检查。
+- en: With the judicious use of type annotations and the presence of pluggable type
+    checkers, you can write code that is stronger and less prone to error.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过谨慎使用类型注解和存在可插拔类型检查器，您可以编写更强大且更不容易出错的代码。
+- en: In many cases, you do not have to write your own type checking modules. There
+    are third parties who have done the work for you. For example, you might want
+    to take advantage of the Checker Framework created by the University of Washington.
+    This framework includes a `NonNull` module, as well as a regular expression module,
+    and a mutex lock module. For more information, see the [Checker Framework](http://types.cs.washington.edu/checker-framework/).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在许多情况下，您不必编写自己的类型检查模块。有第三方已经为您完成了这项工作。例如，您可能希望利用华盛顿大学创建的检查器框架。该框架包括一个`NonNull`模块，以及一个正则表达式模块和一个互斥锁模块。更多信息，请参阅[检查器框架](http://types.cs.washington.edu/checker-framework/)。

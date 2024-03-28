@@ -1,0 +1,337 @@
+- en: Methods of the Matcher Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Matcher类的方法
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/matcher.html](https://docs.oracle.com/javase/tutorial/essential/regex/matcher.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/matcher.html](https://docs.oracle.com/javase/tutorial/essential/regex/matcher.html)
+- en: This section describes some additional useful methods of the `Matcher` class.
+    For convenience, the methods listed below are grouped according to functionality.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了`Matcher`类的一些额外有用的方法。为方便起见，下面列出的方法根据功能进行了分组。
+- en: Index Methods
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 索引方法
+- en: '*Index methods* provide useful index values that show precisely where the match
+    was found in the input string:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*索引方法*提供了有用的索引值，精确显示匹配在输入字符串中的位置：'
+- en: '[`public int start()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#start--):
+    Returns the start index of the previous match.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public int start()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#start--):
+    返回先前匹配的起始索引。'
+- en: '[`public int start(int group)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#start-int-):
+    Returns the start index of the subsequence captured by the given group during
+    the previous match operation.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public int start(int group)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#start-int-):
+    返回在先前匹配操作期间由给定组捕获的子序列的起始索引。'
+- en: '[`public int end()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#end--):
+    Returns the offset after the last character matched.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public int end()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#end--):
+    返回匹配的最后一个字符后的偏移量。'
+- en: '[`public int end(int group)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#end-int-):
+    Returns the offset after the last character of the subsequence captured by the
+    given group during the previous match operation.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public int end(int group)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#end-int-):
+    返回在先前匹配操作期间由给定组捕获的子序列的最后一个字符后的偏移量。'
+- en: Study Methods
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 学习方法
+- en: '*Study methods* review the input string and return a boolean indicating whether
+    or not the pattern is found.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*学习方法*审查输入字符串并返回一个布尔值，指示模式是否被找到。'
+- en: '[`public boolean lookingAt()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#lookingAt--):
+    Attempts to match the input sequence, starting at the beginning of the region,
+    against the pattern.'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public boolean lookingAt()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#lookingAt--):
+    尝试从区域的开头开始匹配输入序列与模式。'
+- en: '[`public boolean find()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#find--):
+    Attempts to find the next subsequence of the input sequence that matches the pattern.'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public boolean find()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#find--):
+    尝试查找与模式匹配的输入序列的下一个子序列。'
+- en: '[`public boolean find(int start)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#find-int-):
+    Resets this matcher and then attempts to find the next subsequence of the input
+    sequence that matches the pattern, starting at the specified index.'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public boolean find(int start)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#find-int-):
+    重置此匹配器，然后尝试查找从指定索引开始的输入序列的下一个与模式匹配的子序列。'
+- en: '[`public boolean matches()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#matches--):
+    Attempts to match the entire region against the pattern.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public boolean matches()`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#matches--):
+    尝试将整个区域与模式匹配。'
+- en: Replacement Methods
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 替换方法
+- en: '*Replacement methods* are useful methods for replacing text in an input string.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*替换方法*是用于替换输入字符串中文本的有用方法。'
+- en: '[`public Matcher appendReplacement(StringBuffer sb, String replacement)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#appendReplacement-java.lang.StringBuffer-java.lang.String-):
+    Implements a non-terminal append-and-replace step.'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public Matcher appendReplacement(StringBuffer sb, String replacement)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#appendReplacement-java.lang.StringBuffer-java.lang.String-):
+    实现了一个非终端追加和替换步骤。'
+- en: '[`public StringBuffer appendTail(StringBuffer sb)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#appendTail-java.lang.StringBuffer-):
+    Implements a terminal append-and-replace step.'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public StringBuffer appendTail(StringBuffer sb)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#appendTail-java.lang.StringBuffer-):
+    实现了一个终端追加和替换步骤。'
+- en: '[`public String replaceAll(String replacement)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#replaceAll-java.lang.String-):
+    Replaces every subsequence of the input sequence that matches the pattern with
+    the given replacement string.'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String replaceAll(String replacement)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#replaceAll-java.lang.String-)：用给定替换字符串替换与模式匹配的输入序列的每个子序列。'
+- en: '[`public String replaceFirst(String replacement)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#replaceFirst-java.lang.String-):
+    Replaces the first subsequence of the input sequence that matches the pattern
+    with the given replacement string.'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String replaceFirst(String replacement)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#replaceFirst-java.lang.String-)：用给定的替换字符串替换与模式匹配的输入序列的第一个子序列。'
+- en: '[`public static String quoteReplacement(String s)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#quoteReplacement-java.lang.String-):
+    Returns a literal replacement `String` for the specified `String`. This method
+    produces a `String` that will work as a literal replacement `s` in the `appendReplacement`
+    method of the `Matcher` class. The `String` produced will match the sequence of
+    characters in `s` treated as a literal sequence. Slashes (`''\''`) and dollar
+    signs (`''$''`) will be given no special meaning.'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public static String quoteReplacement(String s)`](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Matcher.html#quoteReplacement-java.lang.String-)：为指定的`String`返回一个字面替换`String`。此方法生成一个将作为`Matcher`类的`appendReplacement`方法中的字面替换`s`的`String`。生成的`String`将匹配将`s`视为字面序列处理的字符序列。反斜杠（`''\''`）和美元符号（`''$''`）将不被赋予特殊含义。'
+- en: Using the `start` and `end` Methods
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用 `start` 和 `end` 方法
+- en: Here's an example, [`MatcherDemo.java`](examples/MatcherDemo.java), that counts
+    the number of times the word "dog" appears in the input string.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个例子，[`MatcherDemo.java`](examples/MatcherDemo.java)，它计算输入字符串中单词"dog"出现的次数。
+- en: '[PRE0]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[PRE1]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: You can see that this example uses word boundaries to ensure that the letters
+    `"d" "o" "g"` are not merely a substring in a longer word. It also gives some
+    useful information about where in the input string the match has occurred. The
+    `start` method returns the start index of the subsequence captured by the given
+    group during the previous match operation, and `end` returns the index of the
+    last character matched, plus one.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以看到，此示例使用单词边界来确保字母`"d" "o" "g"`不仅仅是更长单词的子字符串。它还提供了有关匹配发生在输入字符串的哪个位置的一些有用信息。`start`
+    方法返回在先前匹配操作期间由给定组捕获的子序列的起始索引，而 `end` 返回匹配的最后一个字符的索引加一。
+- en: Using the `matches` and `lookingAt` Methods
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用 `matches` 和 `lookingAt` 方法
+- en: 'The `matches` and `lookingAt` methods both attempt to match an input sequence
+    against a pattern. The difference, however, is that `matches` requires the entire
+    input sequence to be matched, while `lookingAt` does not. Both methods always
+    start at the beginning of the input string. Here''s the full code, [`MatchesLooking.java`](examples/MatchesLooking.java):'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`matches` 和 `lookingAt` 方法都尝试将输入序列与模式进行匹配。然而，不同之处在于 `matches` 要求整个输入序列匹配，而
+    `lookingAt` 则不需要。这两种方法始终从输入字符串的开头开始。以下是完整代码，[`MatchesLooking.java`](examples/MatchesLooking.java)：'
+- en: '[PRE2]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '[PRE3]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Using `replaceFirst(String)` and `replaceAll(String)`
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用 `replaceFirst(String)` 和 `replaceAll(String)`
+- en: 'The `replaceFirst` and `replaceAll` methods replace text that matches a given
+    regular expression. As their names indicate, `replaceFirst` replaces the first
+    occurrence, and `replaceAll` replaces all occurrences. Here''s the [`ReplaceDemo.java`](examples/ReplaceDemo.java)
+    code:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`replaceFirst` 和 `replaceAll` 方法替换与给定正则表达式匹配的文本。正如它们的名称所示，`replaceFirst` 替换第一次出现，而
+    `replaceAll` 替换所有出现。以下是 [`ReplaceDemo.java`](examples/ReplaceDemo.java) 代码：'
+- en: '[PRE4]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '[PRE5]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: In this first version, all occurrences of `dog` are replaced with `cat`. But
+    why stop here? Rather than replace a simple literal like `dog`, you can replace
+    text that matches *any* regular expression. The API for this method states that
+    "given the regular expression `a*b`, the input `aabfooaabfooabfoob`, and the replacement
+    string `-`, an invocation of this method on a matcher for that expression would
+    yield the string `-foo-foo-foo-`."
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个第一个版本中，所有 `dog` 的出现都被替换为 `cat`。但为什么要停在这里呢？与其仅替换简单的文字`dog`，不如替换与*任何*正则表达式匹配的文本。该方法的
+    API 表明，“给定正则表达式`a*b`，输入`aabfooaabfooabfoob`，替换字符串为`-`，对该表达式的匹配器调用此方法将产生字符串`-foo-foo-foo-`。”
+- en: 'Here''s the [`ReplaceDemo2.java`](examples/ReplaceDemo2.java) code:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是 [`ReplaceDemo2.java`](examples/ReplaceDemo2.java) 代码：
+- en: '[PRE6]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '[PRE7]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: To replace only the first occurrence of the pattern, simply call `replaceFirst`
+    instead of `replaceAll`. It accepts the same parameter.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要仅替换模式的第一次出现，只需调用 `replaceFirst` 而不是 `replaceAll`。它接受相同的参数。
+- en: Using `appendReplacement(StringBuffer,String)` and `appendTail(StringBuffer)`
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用 `appendReplacement(StringBuffer,String)` 和 `appendTail(StringBuffer)`
+- en: The `Matcher` class also provides `appendReplacement` and `appendTail` methods
+    for text replacement. The following example, [`RegexDemo.java`](examples/RegexDemo.java    ),
+    uses these two methods to achieve the same effect as `replaceAll`.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Matcher` 类还提供了 `appendReplacement` 和 `appendTail` 方法用于文本替换。下面的示例，[`RegexDemo.java`](examples/RegexDemo.java)
+    ，使用这两种方法实现与 `replaceAll` 相同的效果。'
+- en: '[PRE8]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: '[PRE9]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Matcher Method Equivalents in `java.lang.String`
+  id: totrans-44
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`java.lang.String` 中的 `Matcher` 方法等效'
+- en: 'For convenience, the `String` class mimics a couple of `Matcher` methods as
+    well:'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为方便起见，`String` 类也模仿了一些 `Matcher` 方法：
+- en: '[`public String replaceFirst(String regex, String replacement)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#replaceFirst-java.lang.String-java.lang.String-):
+    Replaces the first substring of this string that matches the given regular expression
+    with the given replacement. An invocation of this method of the form `*str*.replaceFirst(*regex*,
+    *repl*)` yields exactly the same result as the expression `Pattern.compile(*regex*).matcher(*str*).replaceFirst(*repl*)`'
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String replaceFirst(String regex, String replacement)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#replaceFirst-java.lang.String-java.lang.String-)：用给定的替换内容替换此字符串匹配给定正则表达式的第一个子字符串。形式为
+    `*str*.replaceFirst(*regex*, *repl*)` 的此方法调用产生的结果与表达式 `Pattern.compile(*regex*).matcher(*str*).replaceFirst(*repl*)`
+    完全相同。'
+- en: '[`public String replaceAll(String regex, String replacement)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#replaceAll-java.lang.String-java.lang.String-):
+    Replaces each substring of this string that matches the given regular expression
+    with the given replacement. An invocation of this method of the form `*str*.replaceAll(*regex*,
+    *repl*)` yields exactly the same result as the expression `Pattern.compile(*regex*).matcher(*str*).replaceAll(*repl*)`'
+  id: totrans-47
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`public String replaceAll(String regex, String replacement)`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#replaceAll-java.lang.String-java.lang.String-)：用给定的替换内容替换此字符串中与给定正则表达式匹配的每个子字符串。形式为
+    `*str*.replaceAll(*regex*, *repl*)` 的此方法调用产生的结果与表达式 `Pattern.compile(*regex*).matcher(*str*).replaceAll(*repl*)`
+    完全相同。'

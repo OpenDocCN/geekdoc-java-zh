@@ -1,0 +1,204 @@
+- en: Simple API for XML APIs
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 简单的XML API
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/intro/simple.html](https://docs.oracle.com/javase/tutorial/jaxp/intro/simple.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/intro/simple.html](https://docs.oracle.com/javase/tutorial/jaxp/intro/simple.html)
+- en: The basic outline of the SAX parsing APIs is shown in [Figure 1-1](#gcezl).
+    To start the process, an instance of the `SAXParserFactory` class is used to generate
+    an instance of the parser.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: SAX解析API的基本概述如[图1-1](#gcezl)所示。要启动该过程，需要使用`SAXParserFactory`类的一个实例来生成解析器的一个实例。
+- en: Figure 1-1 SAX APIs
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 图1-1 SAX API
+- en: '![The SAX APIs](../Images/a5c19e73860b8327ec4460afcd0fcdf5.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![SAX API](../Images/a5c19e73860b8327ec4460afcd0fcdf5.png)'
+- en: The parser wraps a `SAXReader` object. When the parser's `parse()` method is
+    invoked, the reader invokes one of several callback methods implemented in the
+    application. Those methods are defined by the interfaces `ContentHandler`, `ErrorHandler`,
+    `DTDHandler`, and `EntityResolver`.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 解析器包装了一个`SAXReader`对象。当调用解析器的`parse()`方法时，阅读器会调用应用程序中实现的几个回调方法之一。这些方法由`ContentHandler`、`ErrorHandler`、`DTDHandler`和`EntityResolver`接口定义。
+- en: 'Here is a summary of the key SAX APIs:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是关键的SAX API摘要：
+- en: '`SAXParserFactory`'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SAXParserFactory`'
+- en: A `SAXParserFactory` object creates an instance of the parser determined by
+    the system property, `javax.xml.parsers.SAXParserFactory`.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SAXParserFactory`对象根据系统属性`javax.xml.parsers.SAXParserFactory`创建解析器的实例。'
+- en: '`SAXParser`'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SAXParser`'
+- en: The `SAXParser` interface defines several kinds of `parse()` methods. In general,
+    you pass an XML data source and a `DefaultHandler` object to the parser, which
+    processes the XML and invokes the appropriate methods in the handler object.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SAXParser`接口定义了几种`parse()`方法。通常情况下，你会将XML数据源和一个`DefaultHandler`对象传递给解析器，解析器会处理XML并调用处理程序对象中适当的方法。'
+- en: '`SAXReader`'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SAXReader`'
+- en: The `SAXParser` wraps a `SAXReader`. Typically, you do not care about that,
+    but every once in a while you need to get hold of it using `SAXParser`'s `getXMLReader()`
+    so that you can configure it. It is the `SAXReader` that carries on the conversation
+    with the SAX event handlers you define.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SAXParser`包装了一个`SAXReader`。通常情况下，你不需要关心这一点，但偶尔你需要使用`SAXParser`的`getXMLReader()`来获取它，以便进行配置。`SAXReader`与你定义的SAX事件处理程序进行交互。'
+- en: '`DefaultHandler`'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DefaultHandler`'
+- en: Not shown in the diagram, a `DefaultHandler` implements the `ContentHandler`,
+    `ErrorHandler`, `DTDHandler`, and `EntityResolver` interfaces (with null methods),
+    so you can override only the ones you are interested in.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在图中未显示的是，`DefaultHandler`实现了`ContentHandler`、`ErrorHandler`、`DTDHandler`和`EntityResolver`接口（带有空方法），因此你只需要覆盖你感兴趣的方法。
+- en: '`ContentHandler`'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ContentHandler`'
+- en: Methods such as `startDocument`, `endDocument`, `startElement`, and `endElement`
+    are invoked when an XML tag is recognized. This interface also defines the methods
+    `characters()` and `processingInstruction()`, which are invoked when the parser
+    encounters the text in an XML element or an inline processing instruction, respectively.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当识别到XML标签时，诸如`startDocument`、`endDocument`、`startElement`和`endElement`等方法会被调用。该接口还定义了`characters()`和`processingInstruction()`方法，当解析器遇到XML元素中的文本或内联处理指令时会被调用。
+- en: '`ErrorHandler`'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ErrorHandler`'
+- en: Methods `error()`, `fatalError()`, and `warning()` are invoked in response to
+    various parsing errors. The default error handler throws an exception for fatal
+    errors and ignores other errors (including validation errors). This is one reason
+    you need to know something about the SAX parser, even if you are using the DOM.
+    Sometimes, the application may be able to recover from a validation error. Other
+    times, it may need to generate an exception. To ensure the correct handling, you
+    will need to supply your own error handler to the parser.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`error()`、`fatalError()`和`warning()`会在响应各种解析错误时被调用。默认的错误处理程序对于致命错误会抛出异常，并忽略其他错误（包括验证错误）。这就是为什么即使使用DOM，你也需要了解一些关于SAX解析器的知识的原因。有时，应用程序可能能够从验证错误中恢复。其他时候，可能需要生成异常。为确保正确处理，你需要向解析器提供自己的错误处理程序。
+- en: '`DTDHandler`'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DTDHandler`'
+- en: Defines methods you will generally never be called upon to use. Used when processing
+    a DTD to recognize and act on declarations for an unparsed entity.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 定义了通常不会被调用的方法。在处理DTD时用于识别和处理未解析实体的声明。
+- en: '`EntityResolver`'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`EntityResolver`'
+- en: The `resolveEntity` method is invoked when the parser must identify data identified
+    by a URI. In most cases, a URI is simply a URL, which specifies the location of
+    a document, but in some cases the document may be identified by a URN - a public
+    identifier, or name, that is unique in the web space. The public identifier may
+    be specified in addition to the URL. The `EntityResolver` can then use the public
+    identifier instead of the URL to find the document-for example, to access a local
+    copy of the document if one exists.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当解析器必须识别由URI标识的数据时，将调用`resolveEntity`方法。在大多数情况下，URI只是一个URL，指定了文档的位置，但在某些情况下，文档可能由URN标识-在网络空间中是唯一的公共标识符或名称。公共标识符可以在URL之外指定。`EntityResolver`然后可以使用公共标识符而不是URL来查找文档-例如，如果存在本地副本，则可以访问文档。
+- en: A typical application implements most of the `ContentHandler` methods, at a
+    minimum. Because the default implementations of the interfaces ignore all inputs
+    except for fatal errors, a robust implementation may also want to implement the
+    `ErrorHandler` methods.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个典型的应用程序至少实现了大部分`ContentHandler`方法。因为接口的默认实现除了致命错误外忽略所有输入，一个健壮的实现可能还想要实现`ErrorHandler`方法。
+- en: SAX Packages
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: SAX 包
+- en: The SAX parser is defined in the packages listed in the following [Table ](#gceyy).
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 'SAX解析器在下表中列出的包中定义。 '
+- en: Table  SAX Packages
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表 SAX 包
+- en: '| Packages | Description |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| 包 | 描述 |'
+- en: '| `org.xml.sax` | Defines the SAX interfaces. The name `org.xml` is the package
+    prefix that was settled on by the group that defined the SAX API. |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| `org.xml.sax` | 定义了SAX接口。`org.xml`是由定义SAX API的组确定的包前缀。 |'
+- en: '| `org.xml.sax.ext` | Defines SAX extensions that are used for doing more sophisticated
+    SAX processing-for example, to process a document type definition (DTD) or to
+    see the detailed syntax for a file. |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| `org.xml.sax.ext` | 定义了用于执行更复杂的SAX处理的SAX扩展-例如，处理文档类型定义（DTD）或查看文件的详细语法。 |'
+- en: '| `org.xml.sax.helpers` | Contains helper classes that make it easier to use
+    SAX-for example, by defining a default handler that has null methods for all the
+    interfaces, so that you only need to override the ones you actually want to implement.
+    |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| `org.xml.sax.helpers` | 包含一些辅助类，使得使用SAX更加容易-例如，通过定义一个默认处理程序，其中所有接口的方法都是空方法，这样你只需要重写你真正想要实现的方法。
+    |'
+- en: '| `javax.xml.parsers` | Defines the `SAXParserFactory` class, which returns
+    the `SAXParser`. Also defines exception classes for reporting errors. |'
+  id: totrans-31
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.xml.parsers` | 定义了`SAXParserFactory`类，该类返回`SAXParser`。还定义了用于报告错误的异常类。
+    |'

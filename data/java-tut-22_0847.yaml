@@ -1,0 +1,69 @@
+- en: Steps for the Contract Sender
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 合同发送方的步骤
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolfilex/sender.html](https://docs.oracle.com/javase/tutorial/security/toolfilex/sender.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/toolfilex/sender.html](https://docs.oracle.com/javase/tutorial/security/toolfilex/sender.html)
+- en: The steps outlined here for the contract sender are *basically the same* as
+    those listed for a code signer in the [Signing Code and Granting It Permissions](../toolsign/index.html)
+    lesson. Here, however, you are pretending to be Stan Smith rather than Susan Jones
+    and are storing a data file rather than a class file in the JAR file to be signed.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此处为合同发送方概述的步骤与[签署代码并授予权限](../toolsign/index.html)课程中列出的代码签署者的步骤*基本相同*。然而，在这里，您假装是Stan
+    Smith而不是Susan Jones，并且在要签名的JAR文件中存储数据文件而不是类文件。
+- en: The steps you take as the contract sender are as follows.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为合同发送方，您需要执行以下步骤。
+- en: '[Create a JAR File Containing the Contract](step1.html), using the `jar` tool.'
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[创建包含合同的JAR文件](step1.html)，使用`jar`工具。'
+- en: '[Generate Keys](step2.html) (if they don''t already exist), using the `keytool`
+    `-genkey` command.'
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[生成密钥](step2.html)（如果尚未存在），使用`keytool`的`-genkey`命令。'
+- en: '*Optional Step*: Generate a certificate signing request (CSR) for the public
+    key certificate, and import the response from the certification authority. For
+    simplicity and since you are only pretending to be Stan Smith, this step is omitted.
+    See [Generating a Certificate Signing Request (CSR) for a Public Key Certificate](../sigcert/index.html#GenCSR)
+    for more information.'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '*可选步骤*：为公钥证书生成证书签名请求（CSR），并导入认证机构的响应。为简单起见，由于您只是假装是Stan Smith，因此省略了此步骤。有关更多信息，请参见[为公钥证书生成证书签名请求（CSR）](../sigcert/index.html#GenCSR)。'
+- en: '[Sign the JAR File](step3.html), using the `jarsigner` tool and the private
+    key generated in step 2.'
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[对JAR文件进行签名](step3.html)，使用`jarsigner`工具和第2步生成的私钥。'
+- en: '[Export the Public Key Certificate](step4.html), using the `keytool` `-export`
+    command. Then supply the signed JAR file and the certificate to the receiver,
+    Ruth.'
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[导出公钥证书](step4.html)，使用`keytool`的`-export`命令。然后将签名的JAR文件和证书提供给接收方Ruth。'
+- en: '![Steps for the Contract Sender](../Images/157aab9d2ca909f3806c56a3898cabb1.png)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_IMG
+  zh: '![合同发送方的步骤](../Images/157aab9d2ca909f3806c56a3898cabb1.png)'

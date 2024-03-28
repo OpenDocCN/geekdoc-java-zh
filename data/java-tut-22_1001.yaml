@@ -1,0 +1,129 @@
+- en: How LDAP Operations Map to JNDI APIs
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: LDAP 操作如何映射到 JNDI API
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/operations.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/operations.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/operations.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/operations.html)
+- en: The LDAP defines a set of operations or requests (see [RFC 2251](http://www.ietf.org/rfc/rfc2251.txt)).
+    In the JNDI, these map to operations on the [`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html)
+    and [`LdapContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapContext.html)
+    interfaces (which are sub interfaces of [`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)).
+    For example, when a caller invokes a `DirContext` method, the LDAP service provider
+    implements the method by sending LDAP requests to the LDAP server.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP 定义了一组操作或请求（参见 [RFC 2251](http://www.ietf.org/rfc/rfc2251.txt)）。在 JNDI 中，这些映射到
+    [`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html)
+    和 [`LdapContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapContext.html)
+    接口上的操作（它们是 [`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)
+    的子接口）。例如，当调用者调用 `DirContext` 方法时，LDAP 服务提供程序通过向 LDAP 服务器发送 LDAP 请求来实现该方法。
+- en: The following table shows how operations in the LDAP correspond to JNDI methods.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表显示了 LDAP 中的操作如何对应到 JNDI 方法。
+- en: '| LDAP Operation | Corresponding JNDI Methods |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| LDAP 操作 | 对应的 JNDI 方法 |'
+- en: '| bind | The corresponding way of creating an initial connection to the LDAP
+    server in the JNDI is the creation of an [`InitialDirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/InitialDirContext.html).
+    When the application creates an initial context, it supplies client authentication
+    information via environment properties. To change that authentication information
+    for an existing context, use [`Context.addToEnvironment()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#addToEnvironment-java.lang.String-java.lang.Object-)
+    and [`Context.removeFromEnvironment()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#removeFromEnvironment-java.lang.String-).
+    |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| 绑定 | JNDI 中创建与 LDAP 服务器的初始连接的对应方式是创建一个 [`InitialDirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/InitialDirContext.html)。当应用程序创建初始上下文时，通过环境属性提供客户端身份验证信息。要更改现有上下文的身份验证信息，请使用
+    [`Context.addToEnvironment()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#addToEnvironment-java.lang.String-java.lang.Object-)
+    和 [`Context.removeFromEnvironment()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#removeFromEnvironment-java.lang.String-)。
+    |'
+- en: '| unbind | [`Context.close()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#close)
+    is used to free resources used by a context. It differs from the LDAP "unbind"
+    operation in that within a given service provider implementation, resources can
+    be shared among contexts, so closing one context won''t free all of the resources
+    if those resources are being shared with another context. Make sure to close all
+    contexts if your intent is to free all resources. |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| 解绑 | [`Context.close()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#close)
+    用于释放上下文使用的资源。它与 LDAP 的 "unbind" 操作不同之处在于，在给定的服务提供程序实现中，资源可以在上下文之间共享，因此关闭一个上下文不会释放所有资源，如果这些资源正在与另一个上下文共享。如果您的意图是释放所有资源，请确保关闭所有上下文。
+    |'
+- en: '| search | The corresponding method in the JNDI is the overloading of [`DirContext.search()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-java.lang.String-java.lang.String-javax.naming.directory.SearchControls-)
+    that accepts a search filter ( [RFC 2254](http://www.ietf.org/rfc/rfc2254.txt)).
+    See the [filter](../ops/filter.html) example. |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| 搜索 | JNDI 中对应的方法是重载 [`DirContext.search()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-java.lang.String-java.lang.String-javax.naming.directory.SearchControls-)，接受一个搜索过滤器（[RFC
+    2254](http://www.ietf.org/rfc/rfc2254.txt)）。查看 [过滤器](../ops/filter.html) 示例。 |'
+- en: '| modify | The corresponding method in the JNDI is the overloading of [`DirContext.modifyAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#modifyAttributes-java.lang.String-javax.naming.directory.ModificationItem:A-)
+    that accepts an array of [`DirContext.ModificationItem`s](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/ModificationItem.html).
+    See the [Modify Attributes](../ops/modattrs.html) section for an example. |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| 修改 | JNDI 中对应的方法是重载 [`DirContext.modifyAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#modifyAttributes-java.lang.String-javax.naming.directory.ModificationItem:A-)，接受一个
+    [`DirContext.ModificationItem` 数组](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/ModificationItem.html)。查看
+    [修改属性](../ops/modattrs.html) 部分的示例。 |'
+- en: '| add | The corresponding methods in the JNDI are [`DirContext.bind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#bind-java.lang.String-java.lang.Object-javax.naming.directory.Attributes-)
+    and [`DirContext.createSubcontext()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#createSubcontext-java.lang.String-javax.naming.directory.Attributes-).
+    You can use either to add a new LDAP entry. Using `bind()`, you can specify not
+    only a set of attributes for the new entry but also a Java object to be added
+    along with the attributes. See the [Add, replace bindings with Attributes](../ops/bindattr.html)
+    section for an example. |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| add | JNDI中对应的方法是[`DirContext.bind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#bind-java.lang.String-java.lang.Object-javax.naming.directory.Attributes-)和[`DirContext.createSubcontext()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#createSubcontext-java.lang.String-javax.naming.directory.Attributes-)。您可以使用其中任一方法来添加新的LDAP条目。使用`bind()`，您不仅可以为新条目指定一组属性，还可以指定要与属性一起添加的Java对象。请参阅[使用Attributes添加、替换绑定](../ops/bindattr.html)部分以获取示例。
+    |'
+- en: '| delete | The corresponding methods in the JNDI are [`Context.unbind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#unbind-java.lang.String-)
+    and [`Context.destroySubcontext()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#destroySubcontext-java.lang.String-).
+    You can use either to remove an LDAP entry. |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| delete | JNDI中对应的方法是[`Context.unbind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#unbind-java.lang.String-)和[`Context.destroySubcontext()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#destroySubcontext-java.lang.String-)。您可以使用其中任一方法来删除LDAP条目。
+    |'
+- en: '| modify DN/RDN | The corresponding method in the JNDI is [`Context.rename()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#rename-java.lang.String-java.lang.String-).
+    See the [Renaming Objects](../ldap/rename.html) section for more details. |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| modify DN/RDN | JNDI中对应的方法是[`Context.rename()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#rename-java.lang.String-java.lang.String-)。请参阅[重命名对象](../ldap/rename.html)部分以获取更多详细信息。
+    |'
+- en: '| compare | The corresponding operation in the JNDI is a suitably constrained
+    [`DirContext.search()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-java.lang.String-javax.naming.directory.Attributes-java.lang.String:A-).
+    See the [LDAP Compare](../ldap/compare.html) section for an example. |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| compare | JNDI中对应的操作是一个适当受限的[`DirContext.search()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-java.lang.String-javax.naming.directory.Attributes-java.lang.String:A-)。请参阅[LDAP比较](../ldap/compare.html)部分以获取示例。
+    |'
+- en: '| abandon | When you close a context, all of its outstanding requests are abandoned.
+    Similarly, when you close a [`NamingEnumeration`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html),
+    the corresponding LDAP "search" request is abandoned. |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| abandon | 当您关闭一个上下文时，所有未完成的请求都会被放弃。同样，当您关闭一个[`NamingEnumeration`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html)时，相应的LDAP“搜索”请求也会被放弃。
+    |'
+- en: '| extended operation | The corresponding method in the JNDI is [`LdapContext.extendedOperation()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapContext.html#extendedOperation-javax.naming.ldap.ExtendedRequest-).
+    See the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/ext/index.html)
+    for more details. |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| extended operation | JNDI中对应的方法是[`LdapContext.extendedOperation()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/LdapContext.html#extendedOperation-javax.naming.ldap.ExtendedRequest-)。请参阅[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/ext/index.html)以获取更多详细信息。
+    |'

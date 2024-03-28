@@ -1,0 +1,57 @@
+- en: ExampleGame
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: ExampleGame
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/userperm/game.html](https://docs.oracle.com/javase/tutorial/security/userperm/game.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/userperm/game.html](https://docs.oracle.com/javase/tutorial/security/userperm/game.html)
+- en: Below is the source code for `ExampleGame`. For simplicity, `ExampleGame` does
+    not actually contain code to play a game. It simply retrieves or updates a user's
+    high score.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是`ExampleGame`的源代码。为简单起见，`ExampleGame`实际上并不包含玩游戏的代码。它只是检索或更新用户的最高分。
+- en: 'To see what the user''s current high score value is, you could run:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要查看用户当前的最高分值，您可以运行：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To set a new high score value for the user, you could run:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要为用户设置新的最高分值，您可以运行：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: To retrieve the user's current high score, `ExampleGame` simply instantiates
+    a `HighScore` object and makes a call to its `getHighScore` method. To set a new
+    high score for the user, `ExampleGame` instantiates a `HighScore` object and calls
+    `setHighScore`, passing it the user's new high score.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要检索用户当前的最高分，`ExampleGame`只需实例化一个`HighScore`对象并调用其`getHighScore`方法。要为用户设置新的最高分，`ExampleGame`实例化一个`HighScore`对象并调用`setHighScore`，将用户的新最高分传递给它。
+- en: 'Here is the source code for `ExampleGame`, [`ExampleGame.java`](examples/com/gamedev/games/ExampleGame.java):'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '这里是`ExampleGame`的源代码，[`ExampleGame.java`](examples/com/gamedev/games/ExampleGame.java):'
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'

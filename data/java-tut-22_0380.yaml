@@ -1,0 +1,635 @@
+- en: How to Use Layered Panes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用分层窗格
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html](https://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html](https://docs.oracle.com/javase/tutorial/uiswing/components/layeredpane.html)
+- en: 'A layered pane is a Swing container that provides a third dimension for positioning
+    components: *depth*, also known as *Z order*. When adding a component to a layered
+    pane, you specify its depth as an integer. The higher the number, closer the component
+    is to the "top" position within the container. If components overlap, the "closer"
+    components are drawn on top of components at a lower depth. The relationship between
+    components at the same depth is determined by their positions within the depth.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分层窗格是一个提供第三维度用于定位组件的Swing容器：*深度*，也称为*Z顺序*。将组件添加到分层窗格时，您将其深度指定为整数。数字越高，组件越接近容器内的“顶部”位置。如果组件重叠，那么“更接近”的组件将绘制在深度较低的组件之上。在相同深度的组件之间的关系由它们在深度内的位置决定。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: The AWT Container has an API that allows you to manipulate component *Z order*.
+    For more information, see the [AWT Focus Specification](https://docs.oracle.com/javase/8/docs/api/java/awt/doc-files/FocusSpec.html#ZOrder).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: AWT容器具有一个API，允许您操纵组件的*Z顺序*。更多信息，请参阅[AWT焦点规范](https://docs.oracle.com/javase/8/docs/api/java/awt/doc-files/FocusSpec.html#ZOrder)。
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: "Every Swing container that has a [root pane](rootpane.html) \x97 such as [`JFrame`](frame.html),\
+    \ [`JApplet`](applet.html), [`JDialog`](dialog.html), or [`JInternalFrame`](internalframe.html)\
+    \ \x97 automatically has a layered pane. Most programs do not explicitly use the\
+    \ root pane's layered pane, so this section will not discuss it. You can find\
+    \ information about it in [The Root Pane](toplevel.html#rootpane), which provides\
+    \ an overview, and [The Layered Pane](rootpane.html#layeredpane), which has further\
+    \ details. This section tells you how to create your own layered pane and use\
+    \ it anywhere you can use a regular Swing container."
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "每个具有[根窗格](rootpane.html)的Swing容器 \x97 例如[`JFrame`](frame.html)、[`JApplet`](applet.html)、[`JDialog`](dialog.html)或[`JInternalFrame`](internalframe.html)\
+    \ \x97 都会自动拥有一个分层窗格。大多数程序不会显式使用根窗格的分层窗格，因此本节不会讨论它。您可以在[根窗格](toplevel.html#rootpane)中找到有关它的信息，该部分提供了概述，以及[分层窗格](rootpane.html#layeredpane)，其中包含更多详细信息。本节告诉您如何创建自己的分层窗格，并在任何可以使用常规Swing容器的地方使用它。"
+- en: Swing provides two layered pane classes. The first, [`JLayeredPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html),
+    is the class that root panes use and is the class used by the example in this
+    section. The second, `JDesktopPane`, is a `JLayeredPane` subclass that is specialized
+    for the task of holding internal frames. For examples of using `JDesktopPane`,
+    see [How to Use Internal Frames](internalframe.html).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing提供了两个分层窗格类。第一个是[`JLayeredPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html)，是根窗格使用的类，也是本节示例中使用的类。第二个是`JDesktopPane`，是一个专门用于容纳内部窗格的`JLayeredPane`子类。有关使用`JDesktopPane`的示例，请参阅[如何使用内部窗格](internalframe.html)。
+- en: 'Here is a picture of an application that creates a layered pane and places
+    overlapping, colored [labels](label.html) at different depths:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个创建分层窗格并在不同深度放置重叠的彩色[标签](label.html)的应用程序图片：
+- en: '![A snapshot of LayeredPaneDemo](../Images/8a2f5f2d86c0655947941d788c6cddea.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_IMG
+  zh: '![LayeredPaneDemo的快照](../Images/8a2f5f2d86c0655947941d788c6cddea.png)'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this::**'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run the LayeredPane Demo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#LayeredPaneDemo).[![Launches
+    the TreeDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/LayeredPaneDemoProject/LayeredPaneDemo.jnlp)
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行LayeredPane
+    Demo（[下载JDK 7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参阅[示例索引](../examples/components/index.html#LayeredPaneDemo)。[![启动TreeDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/LayeredPaneDemoProject/LayeredPaneDemo.jnlp)
+- en: Move the mouse around in the lower part of the window. The image of Duke drags
+    behind the green and red labels, but in front of the other three labels.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在窗口的下部四处移动鼠标。杜克的图像在绿色和红色标签后面拖动，但在其他三个标签前面。
+- en: "Use the combo box at the top of the window to change Duke's depth. Use the\
+    \ check box to set whether Duke is in the top position \x97 position 0 \x97 within\
+    \ the current depth."
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: "使用窗口顶部的组合框更改杜克的深度。使用复选框设置杜克是否在当前深度内的顶部位置 \x97 位置0。"
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Here is the code from [`LayeredPaneDemo.java`](../examples/components/LayeredPaneDemoProject/src/components/LayeredPaneDemo.java)
+    that creates the layered pane:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是[`LayeredPaneDemo.java`](../examples/components/LayeredPaneDemoProject/src/components/LayeredPaneDemo.java)中创建分层窗格的代码：
+- en: '[PRE0]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: "The code uses `JLayeredPane`'s only constructor \x97 the no-argument constructor\
+    \ \x97 to create the layered pane. The rest of the code uses methods inherited\
+    \ from superclasses to give the layered pane a preferred size and a border, and\
+    \ add a mouse-motion listener to it. The mouse-motion listener just moves the\
+    \ Duke image around in response to mouse movement. Although we do not show the\
+    \ code here, the example adds the layered pane to the frame's content pane."
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "代码使用了`JLayeredPane`的唯一构造函数 \x97 无参数构造函数 \x97 来创建分层窗格。其余代码使用从超类继承的方法为分层窗格设置首选大小和边框，并向其添加鼠标移动监听器。鼠标移动监听器只是根据鼠标移动来移动杜克形象。虽然我们这里没有展示代码，但示例将分层窗格添加到了框架的内容窗格中。"
+- en: "As we will show you a bit later, you add components to a layered pane using\
+    \ an `add` method. When adding a component to a layered pane, you specify the\
+    \ component depth, and optionally, its position within its depth. The layered\
+    \ pane in the demo program contains six labels \x97 the five colored labels and\
+    \ a sixth one that displays the Duke image. As the program demonstrates, both\
+    \ the depth of a component and its position within that depth can change dynamically."
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "正如我们稍后将展示的，您可以使用`add`方法将组件添加到分层窗格中。当向分层窗格添加组件时，您需要指定组件的深度，并可选地指定其在深度内的位置。演示程序中的分层窗格包含六个标签\
+    \ \x97 五个彩色标签和一个显示杜克形象的标签。正如程序所示，组件的深度和其在该深度内的位置都可以动态更改。"
+- en: 'The rest of this section covers these topics:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的其余部分涵盖了以下主题：
+- en: '[Adding Components and Setting Component Depth](#depth)'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[添加组件和设置组件深度](#depth)'
+- en: '[Setting a Component Position Within Its Depth](#position)'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置组件在其深度内的位置](#position)'
+- en: '[Laying Out Components in a Layered Pane](#layout)'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在分层窗格中布局组件](#layout)'
+- en: '[The Layered Pane API](#api)'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[分层窗格API](#api)'
+- en: '[Examples that Use Layered Panes](#eg)'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用分层窗格的示例](#eg)'
+- en: Adding Components and Setting Component Depth
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 添加组件和设置组件深度
+- en: 'Here is the code from the sample program that adds the colored labels to the
+    layered pane:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是示例程序中将彩色标签添加到分层窗格的代码：
+- en: '[PRE1]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: You can find the implementation of the `createColoredLabel` method in the source
+    code for the program. It just creates an opaque `JLabel` initialized with a background
+    color, a border, some text, and a size.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在程序的源代码中找到`createColoredLabel`方法的实现。它只是创建了一个带有背景颜色、边框、一些文本和大小的不透明`JLabel`。
+- en: The example program uses a two-argument version of the `add` method. The first
+    argument is the component to add, the second is an `Integer` object, specifying
+    the depth. This program uses the `for` loop iteration variable to specify depths.
+    The actual values do not matter much. What matters is the relative value of the
+    depths and that you are consistent within your program in how you use each depth.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例程序使用了`add`方法的两个参数版本。第一个参数是要添加的组件，第二个是一个`Integer`对象，指定深度。该程序使用`for`循环迭代变量来指定深度。实际值并不重要，重要的是深度的相对值以及在程序中如何一致地使用每个深度。
+- en: '* * *'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: If you use the root pane's layered pane, be sure to use its depth conventions.
+    Refer to [The Layered Pane](rootpane.html#layeredpane) for details. That section
+    shows you how to modify `LayeredPaneDemo` to use the root pane's layered pane.
+    With the modifications, you can see how the dragging Duke image relates to the
+    combo box in the control panel.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您使用根窗格的分层窗格，请确保使用其深度约定。有关详细信息，请参阅[分层窗格](rootpane.html#layeredpane)。该部分向您展示如何修改`LayeredPaneDemo`以使用根窗格的分层窗格。通过这些修改，您可以看到拖动杜克形象与控制面板中的组合框之间的关系。
+- en: '* * *'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'As you can see from the example program, if components overlap, components
+    at a higher depth are on top of components at a lower depth. To change a component
+    depth dynamically, use the `setLayer` method. In the example, the user can change
+    Duke''s layer by making a selection from the combo box. Here is the `actionPerformed`
+    method of the action listener registered on the combo box:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如示例程序所示，如果组件重叠，深度较高的组件位于深度较低的组件之上。要动态更改组件深度，请使用`setLayer`方法。在示例中，用户可以通过从组合框中进行选择来更改Duke的层。以下是注册在组合框上的动作监听器的`actionPerformed`方法：
+- en: '[PRE2]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The `setLayer` method used here takes three arguments: the component whose
+    depth is to be set, the new depth, and the position within the depth. `JLayeredPane`
+    has a two-argument version of `setLayer` that takes only the component and the
+    new depth. That method puts the component at the bottom position in its depth.'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里使用的`setLayer`方法需要三个参数：要设置深度的组件、新深度以及深度内的位置。`JLayeredPane`有一个只接受组件和新深度两个参数的`setLayer`版本。该方法将组件放在其深度的底部位置。
+- en: '* * *'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**A note of caution:**'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: When adding a component to a layered pane you specify the layer with an `Integer`.
+    When using `setLayer` to change a component's layer, you use an `int`. You might
+    think that if you use an `int` instead of an `Integer` with the `add` method,
+    the compiler would complain or your program would throw an illegal argument exception.
+    But the compiler says nothing, which results in a [common layered pane problem](problems.html#layeredpane).
+    You can use the API tables at the end of this section to check the types of the
+    arguments and return values for methods that deal with layers.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将组件添加到分层窗格时，您需要用一个`Integer`指定层。当使用`setLayer`来更改组件的层时，您需要使用一个`int`。您可能会认为，如果您在`add`方法中使用`int`而不是`Integer`，编译器会抱怨或您的程序会抛出非法参数异常。但编译器什么也不说，这导致了一个[常见的分层窗格问题](problems.html#layeredpane)。您可以使用本节末尾的API表格来检查处理层的方法的参数和返回值的类型。
+- en: '* * *'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Setting a Component's Position Within Its Depth
+  id: totrans-43
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置组件在其深度内的位置
+- en: The following code creates the label that displays Duke's image, and then adds
+    the label to the layered pane.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码创建显示Duke图像的标签，然后将标签添加到分层窗格中。
+- en: '[PRE3]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: This code uses the three-argument version of the `add` method. The third argument
+    specifies the Duke label position within its depth, which determines the component's
+    relationship with other components at the same depth.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此代码使用`add`方法的三个参数版本。第三个参数指定了Duke标签在其深度内的位置，这决定了组件与同一深度的其他组件的关系。
+- en: Positions are specified with an `int` between -1 and (*n* - 1), where *n* is
+    the number of components at the depth. Unlike layer numbers, the smaller the position
+    number, the higher the component within its depth. Using -1 is the same as using
+    *n* - 1; it indicates the bottom-most position. Using 0 specifies that the component
+    should be in the top-most position within its depth. As the following figure shows,
+    with the exception of -1, a lower position number indicates a higher position
+    within a depth.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 位置用介于-1和(*n* - 1)之间的`int`指定，其中*n*是深度中组件的数量。与层号不同，位置数字越小，组件在其深度内的位置越高。使用-1与使用*n*
+    - 1相同；它表示最底部的位置。使用0指定组件应位于其深度内的最顶部位置。如下图所示，除了-1外，较低的位置数字表示深度内的较高位置。
+- en: '![How positions affect layering](../Images/1d7992644d66f96433d2e3b7c751266e.png)'
+  id: totrans-48
+  prefs: []
+  type: TYPE_IMG
+  zh: '![位置如何影响分层](../Images/1d7992644d66f96433d2e3b7c751266e.png)'
+- en: 'A component''s position within its layer can change dynamically. In the example,
+    you can use the check box to determine whether Duke label is in the top position
+    at its depth. Here''s the `actionPerformed` method for the action listener registered
+    on the check box:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组件在其层内的位置可以动态改变。在示例中，您可以使用复选框确定Duke标签是否在其深度的顶部位置。以下是注册在复选框上的动作监听器的`actionPerformed`方法：
+- en: '[PRE4]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: When the user selects the check box, the `moveToFront` method moves Duke to
+    the front (position 0). And when the user deselects check box, Duke gets moved
+    to the back with the `moveToBack` method. You can also use the `setPosition` method
+    or the three-argument version of `setLayer` to change a component's position.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户选择复选框时，`moveToFront`方法将Duke移至最前面（位置0）。当用户取消选择复选框时，Duke将通过`moveToBack`方法移至最后。您还可以使用`setPosition`方法或`setLayer`的三个参数版本来更改组件的位置。
+- en: Laying Out Components in a Layered Pane
+  id: totrans-52
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在分层窗格中布置组件
+- en: By default a layered pane has no layout manager. This means that you typically
+    have to write the code that positions and sizes the components you put in a layered
+    pane.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，分层窗格没有布局管理器。这意味着你通常需要编写代码来定位和调整分层窗格中放置的组件的位置和大小。
+- en: 'The example uses the `setBounds` method to set the size and position of each
+    of the labels:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例使用`setBounds`方法来设置每个标签的大小和位置：
+- en: '[PRE5]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'When the user moves the mouse around, the program calls `setPosition` to change
+    Duke''s position:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户移动鼠标时，程序调用`setPosition`来改变杜克的位置：
+- en: '[PRE6]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Although a layered pane has no layout manager by default, you can still assign
+    a layout manager to the layered pane. All of the layout managers provided by the
+    Java platform arrange the components as if they were all on one layer. Here is
+    a version of the previous demo that sets the layered pane's layout manager to
+    an instance of `GridLayout`, using that layout manager to lay out six colored
+    labels.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管默认情况下分层窗格没有布局管理器，但你仍然可以为分层窗格分配布局管理器。Java 平台提供的所有布局管理器都会将组件排列得好像它们都在一个层上。以下是将分层窗格的布局管理器设置为`GridLayout`实例的上一个演示的版本，使用该布局管理器来布置六个彩色标签。
+- en: '![A snapshot of LayeredPaneDemo2](../Images/f8d4e3ad19b4e61256224d3e64ff13bb.png)'
+  id: totrans-59
+  prefs: []
+  type: TYPE_IMG
+  zh: '![LayeredPaneDemo2的快照](../Images/f8d4e3ad19b4e61256224d3e64ff13bb.png)'
+- en: You can find the code for this program in [`LayeredPaneDemo2.java`](../examples/components/LayeredPaneDemo2Project/src/components/LayeredPaneDemo2.java).
+    You can [run LayeredPaneDemo2](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/LayeredPaneDemo2Project/LayeredPaneDemo2.jnlp)
+    ( [download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    If you want to compile the example, consult the [example index](../examples/components/index.html#LayeredPaneDemo2)
+    for a list of all necessary files.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在[`LayeredPaneDemo2.java`](../examples/components/LayeredPaneDemo2Project/src/components/LayeredPaneDemo2.java)中找到此程序的代码。你可以[运行
+    LayeredPaneDemo2](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/LayeredPaneDemo2Project/LayeredPaneDemo2.jnlp)（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。如果你想编译示例，请查阅[示例索引](../examples/components/index.html#LayeredPaneDemo2)以获取所有必要文件的列表。
+- en: Many programs use intermediate containers (such as panels) and their layout
+    managers to lay out components on the same layer, but use absolute positioning
+    to lay out components on different layers. For more information about absolute
+    positioning, see [Doing Without a Layout Manager (Absolute Positioning)](../layout/none.html).
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多程序使用中间容器（如面板）及其布局管理器在同一层上布置组件，但使用绝对定位在不同层上布置组件。有关绝对定位的更多信息，请参阅[无布局管理器（绝对定位）](../layout/none.html)。
+- en: The Layered Pane API
+  id: totrans-62
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 分层窗格 API
+- en: The following tables list the commonly used `JLayeredPane` constructors and
+    methods. Other methods you are most likely to invoke on a `JLayeredPane` object
+    are those it inherits from its superclasses, such as `setBorder`, `setPreferredSize`,
+    and so on. See [The JComponent API](jcomponent.html#api) for tables of commonly
+    used inherited methods.
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的`JLayeredPane`构造函数和方法。你最有可能在`JLayeredPane`对象上调用的其他方法是它从超类继承的方法，如`setBorder`、`setPreferredSize`等。请参阅[The
+    JComponent API](jcomponent.html#api)以获取常用继承方法的表格。
+- en: 'The API for using layered pane falls into these categories:'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用分层窗格的 API 分为以下几类：
+- en: '[Creating or Getting a Layered Pane](#creating)'
+  id: totrans-65
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建或获取分层窗格](#creating)'
+- en: '[Layering Components](#layers)'
+  id: totrans-66
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[组件分层](#layers)'
+- en: '[Setting Component''s Intra-Layer Positions](#positions)'
+  id: totrans-67
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置组件的层内位置](#positions)'
+- en: Creating or Getting a Layered Pane
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建或获取分层窗格
+- en: '| Method or Constructor | Purpose |'
+  id: totrans-69
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法或构造函数 | 目的 |'
+- en: '| [JLayeredPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#JLayeredPane--)
+    | Create a layered pane. |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JLayeredPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#JLayeredPane--)
+    | 创建一个分层窗格。 |'
+- en: '| [JLayeredPane getLayeredPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getLayeredPane--)
+    *(in `JApplet`, `JDialog`, `JFrame`, and `JInternalFrame`)* | Get the automatic
+    layered pane in an applet, dialog, frame, or internal frame. |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JLayeredPane getLayeredPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getLayeredPane--)
+    *(在`JApplet`、`JDialog`、`JFrame`和`JInternalFrame`中)* | 获取 applet、对话框、框架或内部框架中的自动分层窗格。
+    |'
+- en: Layering Components
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 组件分层
+- en: '| Method | Purpose |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void add(Component)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-)
+    [void add(Component, Object)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-java.lang.Object-)'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void add(Component)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-)
+    [void add(Component, Object)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-java.lang.Object-)'
+- en: '[void add(Component, Object, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-java.lang.Object-int-)
+    | Add the specified component to the layered pane. The second argument, when present,
+    is an `Integer` that indicates the layer. The third argument, when present, indicates
+    the component''s position within its layer. If you use the one-argument version
+    of this method, the component is added to layer 0\. If you use the one- or two-argument
+    version of this method, the component is placed underneath all other components
+    currently in the same layer. |'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[void add(Component, Object, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-java.lang.Object-int-)
+    | 将指定组件添加到分层窗格。第二个参数（如果存在）是一个`Integer`，表示层级。第三个参数（如果存在）表示组件在其层级内的位置。如果使用此方法的一参数版本，则组件将添加到层级0。如果使用此方法的一或两参数版本，则组件将放置在当前位于同一层级中的所有其他组件的下方。'
+- en: '| [void setLayer(Component, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#setLayer-java.awt.Component-int-)
+    [void setLayer(Component, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#setLayer-java.awt.Component-int-int-)
+    | Change the component''s layer. The second argument indicates the layer. The
+    third argument, when present, indicates the component''s position within its layer.
+    |'
+  id: totrans-76
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setLayer(Component, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#setLayer-java.awt.Component-int-)
+    [void setLayer(Component, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#setLayer-java.awt.Component-int-int-)
+    | 更改组件的层级。第二个参数表示层级。第三个参数（如果存在）表示组件在其层级内的位置。'
+- en: '| [int getLayer(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#getLayer-java.awt.Component-)
+    [int getLayer(JComponent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#getLayer-javax.swing.JComponent-)
+    | Get the layer for the specified component. |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getLayer(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#getLayer-java.awt.Component-)
+    [int getLayer(JComponent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#getLayer-javax.swing.JComponent-)
+    | 获取指定组件的层级。'
+- en: '| [int getComponentCountInLayer(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#getComponentCountInLayer-int-)
+    | Get the number of components in the specified layer. The value returned by this
+    method can be useful for computing position values. |'
+  id: totrans-78
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getComponentCountInLayer(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#getComponentCountInLayer-int-)
+    | 获取指定层级中组件的数量。此方法返回的值对于计算位置值可能很有用。'
+- en: '| [Component[] getComponentsInLayer(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#getComponentsInLayer-int-)
+    | Get an array of all the components in the specified layer. |'
+  id: totrans-79
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Component[] getComponentsInLayer(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#getComponentsInLayer-int-)
+    | 获取指定层级中所有组件的数组。'
+- en: '| [int highestLayer()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#highestLayer--)
+    [int lowestLayer()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#lowestLayer--)
+    | Compute the highest or lowest layer currently in use. |'
+  id: totrans-80
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int highestLayer()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#highestLayer--)
+    [int lowestLayer()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#lowestLayer--)
+    | 计算当前使用的最高或最低层级。'
+- en: Setting Components' Intra-Layer Positions
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置组件的层内位置
+- en: '| Method | Purpose |'
+  id: totrans-82
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setPosition(Component, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#setPosition-java.awt.Component-int-)
+    [int getPosition(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#getPosition-java.awt.Component-)
+    | Set or get the position for the specified component within its layer. |'
+  id: totrans-83
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setPosition(Component, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#setPosition-java.awt.Component-int-)
+    [int getPosition(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#getPosition-java.awt.Component-)
+    | 设置或获取指定组件在其层级内的位置。'
+- en: '| [void moveToFront(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#moveToFront-java.awt.Component-)
+    [void moveToBack(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#moveToBack-java.awt.Component-)
+    | Move the specified component to the front or back of its layer. |'
+  id: totrans-84
+  prefs: []
+  type: TYPE_TB
+  zh: '| [将组件移至前端或后端](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#moveToFront-java.awt.Component-)
+    [将组件移至后端](https://docs.oracle.com/javase/8/docs/api/javax/swing/JLayeredPane.html#moveToBack-java.awt.Component-)
+    | 将指定的组件移至其所在层的前端或后端。 |'
+- en: Examples that Use Layered Panes
+  id: totrans-85
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用层叠窗格的示例
+- en: This table shows the examples that use `JLayeredPane` and where those examples
+    are described.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个表格展示了使用`JLayeredPane`的示例以及这些示例的描述位置。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-87
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`LayeredPaneDemo`](../examples/components/index.html#LayeredPaneDemo) |
+    This section | Illustrates layers and intra-layer positions of a `JLayeredPane`.
+    |'
+  id: totrans-88
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`LayeredPaneDemo`](../examples/components/index.html#LayeredPaneDemo) |
+    本节 | 展示了`JLayeredPane`的层和层内位置。 |'
+- en: '| [`LayeredPaneDemo2`](../examples/components/index.html#LayeredPaneDemo2)
+    | This section | Uses a layout manager to help lay out the components in a layered
+    pane. |'
+  id: totrans-89
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`LayeredPaneDemo2`](../examples/components/index.html#LayeredPaneDemo2)
+    | 本节 | 使用布局管理器来帮助布置层叠窗格中的组件。 |'
+- en: '| [`RootLayeredPaneDemo`](../examples/components/index.html#RootLayeredPaneDemo)
+    | [The Layered Pane](rootpane.html#examplemods) | A version of [`LayeredPaneDemo`](../examples/components/index.html#LayeredPaneDemo)
+    modified to use the root pane''s layered pane. |'
+  id: totrans-90
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`RootLayeredPaneDemo`](../examples/components/index.html#RootLayeredPaneDemo)
+    | [层叠窗格](rootpane.html#examplemods) | 一个修改过的版本的[`LayeredPaneDemo`](../examples/components/index.html#LayeredPaneDemo)，用于使用根窗格的层叠窗格。
+    |'
+- en: '| [`InternalFrameDemo`](../examples/components/index.html#InternalFrameDemo)
+    | [How to Use Internal Frames](internalframe.html) | Uses a `JDesktopFrame` to
+    manage internal frames. |'
+  id: totrans-91
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`InternalFrameDemo`](../examples/components/index.html#InternalFrameDemo)
+    | [如何使用内部框架](internalframe.html) | 使用`JDesktopFrame`来管理内部框架。 |'

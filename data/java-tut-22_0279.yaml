@@ -1,0 +1,184 @@
+- en: Network Client Applet Example
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 网络客户端小程序示例
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/clientExample.html](https://docs.oracle.com/javase/tutorial/deployment/applet/clientExample.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/clientExample.html](https://docs.oracle.com/javase/tutorial/deployment/applet/clientExample.html)
+- en: The [`QuoteClientApplet`](examples/QuoteClientApplet.java) class allows you
+    to fetch quotations from a server-side application that runs on the same host
+    as this applet. This class also displays the quotation received from the server.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`QuoteClientApplet`](examples/QuoteClientApplet.java)类允许您从与此小程序运行在同一主机上的服务器端应用程序中获取引语。该类还显示从服务器收到的引语。'
+- en: The [`QuoteServer.java`](examples/QuoteServer.java) and [`QuoteServerThread.java`](examples/QuoteServerThread.java)
+    classes make up the server-side application that returns quotations. Here's a
+    text file ( [`one-liners.txt`](examples/one-liners.txt)) that contains a number
+    of quotations.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`QuoteServer.java`](examples/QuoteServer.java)和[`QuoteServerThread.java`](examples/QuoteServerThread.java)类构成返回引语的服务器端应用程序。这里有一个文本文件([`one-liners.txt`](examples/one-liners.txt))，其中包含许多引语。'
+- en: Perform the following steps to test `QuoteClientApplet`.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 执行以下步骤来测试`QuoteClientApplet`。
+- en: Download and save the following files to your local machine.
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 下载并保存以下文件到您的本地计算机。
+- en: '[`QuoteClientApplet`](examples/QuoteClientApplet.java)'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`QuoteClientApplet`](examples/QuoteClientApplet.java)'
+- en: '[`QuoteServer.java`](examples/QuoteServer.java)'
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`QuoteServer.java`](examples/QuoteServer.java)'
+- en: '[`QuoteServerThread.java`](examples/QuoteServerThread.java)'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`QuoteServerThread.java`](examples/QuoteServerThread.java)'
+- en: '[`one-liners.txt`](examples/one-liners.txt)'
+  id: totrans-9
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`one-liners.txt`](examples/one-liners.txt)'
+- en: '[`quoteApplet.html`](examples/quoteApplet.html)'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`quoteApplet.html`](examples/quoteApplet.html)'
+- en: Include the following HTML code in a web page to deploy `QuoteClientApplet`.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在网页中包含以下HTML代码以部署`QuoteClientApplet`。
+- en: '[PRE0]'
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Alternatively, you can use the [`quoteApplet.html`](examples/quoteApplet.html)
+    page that already contains this HTML code.
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 或者，您可以使用已包含此HTML代码的[`quoteApplet.html`](examples/quoteApplet.html)页面。
+- en: Compile the `QuoteClientApplet.java` class. Copy the generated class files to
+    the same directory where you saved your web page.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编译`QuoteClientApplet.java`类。将生成的类文件复制到保存网页的相同目录中。
+- en: Compile the classes for the server-side application, `QuoteServer.java` and
+    `QuoteServerThread.java`.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编译服务器端应用程序的类，`QuoteServer.java`和`QuoteServerThread.java`。
+- en: Copy the file `one-liners.txt` to the directory that has the class files for
+    the server-side application (generated in the previous step).
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将文件`one-liners.txt`复制到具有服务器端应用程序类文件（在上一步生成）的目录中。
+- en: Start the server-side application.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 启动服务器端应用程序。
+- en: '[PRE1]'
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: You should see a message with the port number, as shown in the following example.
+    Note the port number.
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 您应该看到一个带有端口号的消息，如下例所示。请注意端口号。
+- en: '[PRE2]'
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Open the web page containing your applet in a browser by entering the URL of
+    the web page. The host name in the URL should be the same as the name of the host
+    on which the server-side application is running.
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在浏览器中打开包含小程序的网页，输入网页的URL。URL中的主机名应与运行服务器端应用程序的主机名相同。
+- en: For example, if the server-side application is running on a machine named `JohnDoeMachine`,
+    you should enter a similar URL. The exact port number and path will vary depending
+    on your web server setup.
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 例如，如果服务器端应用程序在名为`JohnDoeMachine`的计算机上运行，则应输入类似的URL。确切的端口号和路径将根据您的Web服务器设置而变化。
+- en: '[PRE3]'
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The `QuoteClientApplet` will be displayed on the web page.
+  id: totrans-24
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '`QuoteClientApplet`将显示在网页上。'
+- en: Enter the port number of your server-side application in the applet's text field
+    and click OK. A quotation is displayed.
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在小程序的文本字段中输入服务器端应用程序的端口号，然后单击“确定”。将显示一个引语。
+- en: Here is a screen capture of the applet in action.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是小程序运行时的屏幕截图。
+- en: '![QuoteServer Sample Output](../Images/6b8419ac8920a910e066a7461669c705.png)**`QuoteServer`
+    Sample Output**'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![QuoteServer示例输出](../Images/6b8419ac8920a910e066a7461669c705.png)**`QuoteServer`示例输出**'

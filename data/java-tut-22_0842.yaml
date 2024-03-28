@@ -1,0 +1,90 @@
+- en: Specify the Keystore
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 指定密钥库
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/wstep2.html](https://docs.oracle.com/javase/tutorial/security/toolsign/wstep2.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/toolsign/wstep2.html](https://docs.oracle.com/javase/tutorial/security/toolsign/wstep2.html)
+- en: For this lesson you will grant all code in JAR files signed by the alias susan
+    read access to all files in the `C:\TestData\` directory. You need to
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于本课程，您将授予别名为 susan 的 JAR 文件中的所有代码对`C:\TestData\`目录中所有文件的读取访问权限。您需要
+- en: Specify the keystore containing the certificate information aliased by susan
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 指定包含别名为 susan 的证书信息的密钥库
+- en: Create the policy entry granting the permission
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建授予权限的策略条目
+- en: The keystore is the one named `exampleraystore` created in the [Import the Certificate
+    as a Trusted Certificate](rstep2.html) step.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 密钥库是在[将证书导入为受信任的证书](rstep2.html)步骤中创建的名为`exampleraystore`的密钥库。
+- en: To specify the keystore, choose the **Change Keystore** command in the **Edit**
+    menu of the main Policy Tool window. This brings up a dialog box in which you
+    can specify the keystore URL and the keystore type.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要指定密钥库，请在主策略工具窗口的**编辑**菜单中选择**更改密钥库**命令。这将弹出一个对话框，您可以在其中指定密钥库 URL 和密钥库类型。
+- en: To specify the keystore named `exampleraystore` in the `Test` directory on the
+    `C:` drive, type the following `file` URL into the text box labeled New KeyStore
+    URL
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要指定名为`exampleraystore`的密钥库，位于`C:`驱动器上的`Test`目录中，请在标记为“New KeyStore URL”的文本框中键入以下`file`
+    URL
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: You can leave the text box labeled New KeyStore Type blank if the keystore type
+    is the default one, as specified in the security properties file. Your keystore
+    will be the default type, so leave the text box blank.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果密钥库类型是默认类型，可以将标记为“New KeyStore Type”的文本框留空，如安全属性文件中所指定的那样。您的密钥库将是默认类型，因此请将文本框留空。
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The New KeyStore URL value is a URL and thus should always use slashes
+    (never backslashes) as the directory separator.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** “New KeyStore URL”值是一个 URL，因此应始终使用斜杠（而不是反斜杠）作为目录分隔符。'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: When you are done specifying the keystore URL, choose **OK**. The text box labeled
+    Keystore is now filled in with the URL.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您完成指定密钥库 URL 后，请选择**确定**。标记为密钥库的文本框现在填入了 URL。
+- en: Next, you need to specify the new policy entry.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，您需要指定新的策略条目。

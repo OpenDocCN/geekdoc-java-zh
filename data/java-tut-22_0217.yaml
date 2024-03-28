@@ -1,0 +1,65 @@
+- en: High Level Concurrency Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 高级并发对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/highlevel.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/highlevel.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/highlevel.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/highlevel.html)
+- en: So far, this lesson has focused on the low-level APIs that have been part of
+    the Java platform from the very beginning. These APIs are adequate for very basic
+    tasks, but higher-level building blocks are needed for more advanced tasks. This
+    is especially true for massively concurrent applications that fully exploit today's
+    multiprocessor and multi-core systems.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，本课程已经专注于Java平台从一开始就存在的低级API。这些API对于非常基本的任务是足够的，但对于更高级的任务需要更高级的构建块。这对于充分利用当今的多处理器和多核系统的大规模并发应用程序尤为重要。
+- en: In this section we'll look at some of the high-level concurrency features introduced
+    with version 5.0 of the Java platform. Most of these features are implemented
+    in the new `java.util.concurrent` packages. There are also new concurrent data
+    structures in the Java Collections Framework.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本节中，我们将介绍Java平台5.0版本引入的一些高级并发特性。这些特性大多数都是在新的`java.util.concurrent`包中实现的。Java集合框架中还有新的并发数据结构。
+- en: '[Lock objects](newlocks.html) support locking idioms that simplify many concurrent
+    applications.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[锁对象](newlocks.html)支持简化许多并发应用程序的锁定习语。'
+- en: '[Executors](executors.html) define a high-level API for launching and managing
+    threads. Executor implementations provided by `java.util.concurrent` provide thread
+    pool management suitable for large-scale applications.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[执行器](executors.html)定义了一个用于启动和管理线程的高级API。`java.util.concurrent`提供的执行器实现提供了适用于大规模应用程序的线程池管理。'
+- en: '[Concurrent collections](collections.html) make it easier to manage large collections
+    of data, and can greatly reduce the need for synchronization.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[并发集合](collections.html)使得管理大量数据集变得更加容易，并且可以大大减少同步的需求。'
+- en: '[Atomic variables](atomicvars.html) have features that minimize synchronization
+    and help avoid memory consistency errors.'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[原子变量](atomicvars.html)具有最小化同步和避免内存一致性错误的特性。'
+- en: '[`ThreadLocalRandom`](threadlocalrandom.html) (in JDK 7) provides efficient
+    generation of pseudo-random numbers from multiple threads.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`ThreadLocalRandom`](threadlocalrandom.html)（在JDK 7中）提供了多线程有效生成伪随机数的功能。'

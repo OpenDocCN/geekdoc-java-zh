@@ -1,0 +1,128 @@
+- en: The SortedMap Interface
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 排序地图接口
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/sorted-map.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/sorted-map.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/sorted-map.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/sorted-map.html)
+- en: 'A [`SortedMap`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html)
+    is a [`Map`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html) that
+    maintains its entries in ascending order, sorted according to the keys'' natural
+    ordering, or according to a `Comparator` provided at the time of the `SortedMap`
+    creation. Natural ordering and `Comparator`s are discussed in the [Object Ordering](order.html)
+    section. The `SortedMap` interface provides operations for normal `Map` operations
+    and for the following:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个[`SortedMap`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html)是一个维护其条目按升序排列的[`Map`](https://docs.oracle.com/javase/8/docs/api/java/util/Map.html)，根据键的自然顺序排序，或者根据在创建`SortedMap`时提供的`Comparator`排序。自然排序和`Comparator`在[对象排序](order.html)部分讨论。`SortedMap`接口提供了常规`Map`操作以及以下操作：
+- en: "`Range view` \x97 performs arbitrary range operations on the sorted map"
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Range view` \x97 在排序地图上执行任意范围操作"
+- en: "`Endpoints` \x97 returns the first or the last key in the sorted map"
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Endpoints` \x97 返回排序地图中的第一个或最后一个键"
+- en: "`Comparator access` \x97 returns the `Comparator`, if any, used to sort the\
+    \ map"
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Comparator access` \x97 返回用于对地图进行排序的`Comparator`（如果有的话）。"
+- en: The following interface is the `Map` analog of [`SortedSet`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedSet.html).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下接口是[`SortedSet`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedSet.html)的`Map`模拟。
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Map Operations
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 地图操作
+- en: 'The operations `SortedMap` inherits from `Map` behave identically on sorted
+    maps and normal maps with two exceptions:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SortedMap`从`Map`继承的操作在排序地图和普通地图上的行为相同，有两个例外：'
+- en: The `Iterator` returned by the `iterator` operation on any of the sorted map's
+    `Collection` views traverse the collections in order.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 任何排序地图的`Collection`视图上的`iterator`操作返回的`Iterator`按顺序遍历集合。
+- en: The arrays returned by the `Collection` views' `toArray` operations contain
+    the keys, values, or entries in order.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Collection`视图的`toArray`操作返回的数组按顺序包含键、值或条目。'
+- en: Although it isn't guaranteed by the interface, the `toString` method of the
+    `Collection` views in all the Java platform's `SortedMap` implementations returns
+    a string containing all the elements of the view, in order.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然接口不能保证，但Java平台所有`SortedMap`实现中`Collection`视图的`toString`方法返回一个字符串，其中包含视图中的所有元素，按顺序排列。
+- en: Standard Constructors
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 标准构造函数
+- en: By convention, all general-purpose `Map` implementations provide a standard
+    conversion constructor that takes a `Map`; `SortedMap` implementations are no
+    exception. In `TreeMap`, this constructor creates an instance that orders its
+    entries according to their keys' natural ordering. This was probably a mistake.
+    It would have been better to check dynamically to see whether the specified `Map`
+    instance was a `SortedMap` and, if so, to sort the new map according to the same
+    criterion (comparator or natural ordering). Because `TreeMap` took the approach
+    it did, it also provides a constructor that takes a `SortedMap` and returns a
+    new `TreeMap` containing the same mappings as the given `SortedMap`, sorted according
+    to the same criterion. Note that it is the compile-time type of the argument,
+    not its runtime type, that determines whether the `SortedMap` constructor is invoked
+    in preference to the ordinary `map` constructor.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 按照惯例，所有通用`Map`实现都提供一个标准转换构造函数，接受一个`Map`；`SortedMap`实现也不例外。在`TreeMap`中，这个构造函数创建一个根据其键的自然顺序排序其条目的实例。这可能是一个错误。最好动态检查指定的`Map`实例是否是`SortedMap`，如果是，则根据相同的标准（比较器或自然顺序）对新地图进行排序。因为`TreeMap`采取了它的方法，它还提供了一个接受`SortedMap`的构造函数，并返回一个包含与给定`SortedMap`相同映射的新`TreeMap`，根据相同标准排序。请注意，参数的编译时类型，而不是运行时类型，决定了是否优先调用`SortedMap`构造函数而不是普通的`map`构造函数。
+- en: '`SortedMap` implementations also provide, by convention, a constructor that
+    takes a `Comparator` and returns an empty map sorted according to the specified
+    `Comparator`. If `null` is passed to this constructor, it returns a `Map` that
+    sorts its mappings according to their keys'' natural ordering.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 按照惯例，`SortedMap`实现还提供一个接受`Comparator`的构造函数，并返回根据指定`Comparator`排序的空地图。如果将`null`传递给此构造函数，则返回一个根据其键的自然顺序对其映射进行排序的`Map`。
+- en: Comparison to SortedSet
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 与SortedSet的比较
+- en: Because this interface is a precise `Map` analog of `SortedSet`, all the idioms
+    and code examples in [The SortedSet Interface](sorted-set.html) section apply
+    to `SortedMap` with only trivial modifications.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为这个接口是`SortedSet`的精确`Map`模拟，所以在[SortedSet接口](sorted-set.html)部分中的所有习语和代码示例都适用于`SortedMap`，只需进行微不足道的修改。

@@ -1,0 +1,156 @@
+- en: Declaring Member Variables
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 声明成员变量
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/variables.html](https://docs.oracle.com/javase/tutorial/java/javaOO/variables.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/variables.html](https://docs.oracle.com/javase/tutorial/java/javaOO/variables.html)
+- en: 'There are several kinds of variables:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有几种类型的变量：
+- en: "Member variables in a class\x97these are called *fields*."
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "类中的成员变量\x97这些被称为*字段*。"
+- en: "Variables in a method or block of code\x97these are called *local variables*."
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "方法或代码块中的变量\x97这些被称为*局部变量*。"
+- en: "Variables in method declarations\x97these are called *parameters*."
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "方法声明中的变量\x97这些被称为*参数*。"
+- en: 'The `Bicycle` class uses the following lines of code to define its fields:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Bicycle` 类使用以下代码行来定义其字段：'
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Field declarations are composed of three components, in order:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 字段声明由三个组件组成，顺序为：
+- en: Zero or more modifiers, such as `public` or `private`.
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 零个或多个修饰符，比如`public`或`private`。
+- en: The field's type.
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 字段的类型。
+- en: The field's name.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 字段的名称。
+- en: The fields of `Bicycle` are named `cadence`, `gear`, and `speed` and are all
+    of data type integer (`int`). The `public` keyword identifies these fields as
+    public members, accessible by any object that can access the class.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Bicycle` 的字段名为`cadence`、`gear`和`speed`，都是整数类型（`int`）。`public`关键字将这些字段标识为公共成员，可被任何可以访问该类的对象访问。'
+- en: Access Modifiers
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 访问修饰符
+- en: The first (left-most) modifier used lets you control what other classes have
+    access to a member field. For the moment, consider only `public` and `private`.
+    Other access modifiers will be discussed later.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用的第一个（最左边的）修饰符让你控制其他类对成员字段的访问权限。目前，只考虑`public`和`private`。其他访问修饰符将在后面讨论。
+- en: "`public` modifier\x97the field is accessible from all classes."
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`public`修饰符\x97该字段可从所有类访问。"
+- en: "`private` modifier\x97the field is accessible only within its own class."
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`private`修饰符\x97该字段只能在其自身类中访问。"
+- en: 'In the spirit of encapsulation, it is common to make fields private. This means
+    that they can only be *directly* accessed from the Bicycle class. We still need
+    access to these values, however. This can be done *indirectly* by adding public
+    methods that obtain the field values for us:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 符合封装原则，通常会将字段设为私有。这意味着它们只能从`Bicycle`类*直接*访问。然而，我们仍然需要访问这些值。这可以通过添加获取字段值的公共方法*间接*完成：
+- en: '[PRE1]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Types
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 类型
+- en: All variables must have a type. You can use primitive types such as `int`, `float`,
+    `boolean`, etc. Or you can use reference types, such as strings, arrays, or objects.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有变量必须有一个类型。你可以使用原始类型如`int`、`float`、`boolean`等。或者你可以使用引用类型，比如字符串、数组或对象。
+- en: Variable Names
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 变量名
+- en: "All variables, whether they are fields, local variables, or parameters, follow\
+    \ the same naming rules and conventions that were covered in the Language Basics\
+    \ lesson, [Variables\x97Naming](../../java/nutsandbolts/variables.html#naming)."
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "所有变量，无论是字段、局部变量还是参数，都遵循在语言基础课程中介绍的相同的命名规则和约定，[变量\x97命名](../../java/nutsandbolts/variables.html#naming)。"
+- en: In this lesson, be aware that the same naming rules and conventions are used
+    for method and class names, except that
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这节课中，请注意方法和类名使用相同的命名规则和约定，除了
+- en: the first letter of a class name should be capitalized, and
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 类名的第一个字母应大写，而
+- en: the first (or only) word in a method name should be a verb.
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 方法名的第一个（或唯一）单词应该是动词。

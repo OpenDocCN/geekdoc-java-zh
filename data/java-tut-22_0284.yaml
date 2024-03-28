@@ -1,0 +1,157 @@
+- en: Developing a Java Web Start Application
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 开发Java Web Start应用程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/webstart/developing.html](https://docs.oracle.com/javase/tutorial/deployment/webstart/developing.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/webstart/developing.html](https://docs.oracle.com/javase/tutorial/deployment/webstart/developing.html)
+- en: 'Software designed by using [component-based architecture](../index.html#componentBasedArch)
+    can easily be developed and deployed as a Java Web Start application. Consider
+    the example of a Java Web Start application with a Swing-based graphical user
+    interface (GUI). With component-based design, the GUI can be built with smaller
+    building blocks or components. The following general steps are used to create
+    an application''s GUI:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[基于组件的架构](../index.html#componentBasedArch)设计的软件可以轻松地开发和部署为Java Web Start应用程序。考虑具有基于Swing的图形用户界面（GUI）的Java
+    Web Start应用程序的示例。通过基于组件的设计，GUI可以使用更小的构建块或组件构建。以下是用于创建应用程序GUI的一般步骤：
+- en: Create a `MyTopJPanel` class that is a subclass of `JPanel`. Lay out your application's
+    GUI components in the constructor of the `MyTopJPanel` class.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建一个`MyTopJPanel`类，它是`JPanel`的子类。在`MyTopJPanel`类的构造函数中布局应用程序的GUI组件。
+- en: Create a class called `MyApplication` that is a subclass of the `JFrame` class.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建一个名为`MyApplication`的类，它是`JFrame`类的子类。
+- en: In the `main` method of the `MyApplication` class, instantiate the `MyTopJPanel`
+    class and set it as the content pane of the `JFrame`.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在`MyApplication`类的`main`方法中，实例化`MyTopJPanel`类，并将其设置为`JFrame`的内容窗格。
+- en: The following sections explore these steps in greater detail by using the Dynamic
+    Tree Demo application. If you are not familiar with Swing, see [Creating a GUI
+    with Swing](../../uiswing/index.html) to learn more about using Swing GUI components.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下各节通过使用Dynamic Tree Demo应用程序更详细地探讨了这些步骤。如果您对Swing不熟悉，请参阅[使用Swing创建GUI](../../uiswing/index.html)以了解更多关于使用Swing
+    GUI组件的信息。
+- en: Click the following Launch button to launch the Dynamic Tree Demo application.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击以下启动按钮以启动Dynamic Tree Demo应用程序。
+- en: //&lt;![CDATA[ var url = "https://docs.oracle.com/javase/tutorialJWS/samples/deployment/dynamictree_webstartJWSProject/dynamictree_webstart.jnlp";
+    deployJava.createWebStartLaunchButton(url, '1.7.0'); //]]&gt;
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: //&lt;![CDATA[ var url = "https://docs.oracle.com/javase/tutorialJWS/samples/deployment/dynamictree_webstartJWSProject/dynamictree_webstart.jnlp";
+    deployJava.createWebStartLaunchButton(url, '1.7.0'); //]]&gt;
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到示例运行，请确保在浏览器中启用JavaScript解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Creating the Top `JPanel` Class
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建顶级`JPanel`类
+- en: Create a class that is a subclass of `JPanel`. This top `JPanel` acts as a container
+    for all your other UI components. In the following example, the `DynamicTreePanel`
+    class is the topmost `JPanel`. The constructor of the `DynamicTreePanel` class
+    invokes other methods to create and lay out the UI controls properly.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建一个`JPanel`的子类。这个顶级`JPanel`充当所有其他UI组件的容器。在下面的示例中，`DynamicTreePanel`类是最顶层的`JPanel`。`DynamicTreePanel`类的构造函数调用其他方法来正确创建和布局UI控件。
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Creating the Application
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建应用程序
+- en: For an application that has a Swing-based GUI, create a class that is a subclass
+    of `javax.swing.JFrame`.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于具有基于Swing的GUI的应用程序，请创建一个是`javax.swing.JFrame`的子类的类。
+- en: Instantiate your top `JPanel` class and set it as the content pane of the `JFrame`
+    in the application's `main` method. The `main` method of the `DynamicTreeApplication`
+    class invokes the `createGUI` method in the AWT Event Dispatcher thread.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在应用程序的`main`方法中，实例化您的顶级`JPanel`类，并将其设置为`JFrame`的内容窗格。`DynamicTreeApplication`类的`main`方法在AWT事件分发线程中调用`createGUI`方法。
+- en: '[PRE1]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Benefits of Separating Core Functionality From the Final Deployment Mechanism
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 将核心功能与最终部署机制分离的好处
+- en: Another way to create an application is to just remove the layer of abstraction
+    (separate top `JPanel`) and lay out all the controls in the application's `main`
+    method itself. The downside to creating the GUI directly in the application's
+    `main` method is that it will be more difficult to deploy your functionality as
+    an applet, if you choose to do so later.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种创建应用程序的方法是去掉抽象层（单独的顶级`JPanel`）并在应用程序的`main`方法中布局所有控件。直接在应用程序的`main`方法中创建GUI的缺点是，如果以后选择将功能部署为小程序，部署将更加困难。
+- en: In the Dynamic Tree Demo example, the core functionality is separated into the
+    `DynamicTreePanel` class. It is now trivial to drop the `DynamicTreePanel` class
+    into a `JApplet` and deploy it as an applet.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在动态树演示示例中，核心功能被分离到`DynamicTreePanel`类中。现在，将`DynamicTreePanel`类放入`JApplet`中并将其部署为小程序变得非常简单。
+- en: Hence, to preserve portability and keep deployment options open, follow component-based
+    design as described in this topic.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，为了保持可移植性并保持部署选项开放，请按照本主题中描述的基于组件的设计方法进行操作。
+- en: '[Download source code](examplesIndex.html#DynamicTreeDemo) for the *Dynamic
+    Tree Demo* example to experiment further.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#DynamicTreeDemo)以进一步进行*动态树演示*示例的实验。'

@@ -1,0 +1,92 @@
+- en: The catch Blocks
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 异常处理块
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/catch.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/catch.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/catch.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/catch.html)
+- en: You associate exception handlers with a `try` block by providing one or more
+    `catch` blocks directly after the `try` block. No code can be between the end
+    of the `try` block and the beginning of the first `catch` block.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过在`try`块后直接提供一个或多个`catch`块，将异常处理程序与`try`块关联起来。在`try`块结束和第一个`catch`块开始之间不能有任何代码。
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Each `catch` block is an exception handler that handles the type of exception
+    indicated by its argument. The argument type, `*ExceptionType*`, declares the
+    type of exception that the handler can handle and must be the name of a class
+    that inherits from the `Throwable` class. The handler can refer to the exception
+    with `*name*`.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个`catch`块都是一个异常处理程序，处理其参数指示的异常类型。参数类型`*ExceptionType*`声明了处理程序可以处理的异常类型，必须是从`Throwable`类继承的类名。处理程序可以使用`*name*`引用异常。
+- en: The `catch` block contains code that is executed if and when the exception handler
+    is invoked. The runtime system invokes the exception handler when the handler
+    is the first one in the call stack whose `*ExceptionType*` matches the type of
+    the exception thrown. The system considers it a match if the thrown object can
+    legally be assigned to the exception handler's argument.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`catch`块包含在异常处理程序被调用时执行的代码。当处理程序是调用堆栈中第一个`*ExceptionType*`与抛出异常类型匹配的处理程序时，运行时系统会调用异常处理程序。如果抛出的对象可以合法地分配给异常处理程序的参数，则系统认为它匹配。'
+- en: 'The following are two exception handlers for the `writeList` method:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是`writeList`方法的两个异常处理程序：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Exception handlers can do more than just print error messages or halt the program.
+    They can do error recovery, prompt the user to make a decision, or propagate the
+    error up to a higher-level handler using chained exceptions, as described in the
+    [Chained Exceptions](chained.html) section.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 异常处理程序不仅可以打印错误消息或停止程序。它们可以进行错误恢复，提示用户做出决定，或者使用链式异常将错误传播到更高级别的处理程序，如[链式异常](chained.html)部分所述。
+- en: Catching More Than One Type of Exception with One Exception Handler
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用一个异常处理程序捕获多种类型的异常
+- en: In Java SE 7 and later, a single `catch` block can handle more than one type
+    of exception. This feature can reduce code duplication and lessen the temptation
+    to catch an overly broad exception.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java SE 7及更高版本中，单个`catch`块可以处理多种类型的异常。这个特性可以减少代码重复，并减少捕获过于宽泛异常的诱惑。
+- en: 'In the `catch` clause, specify the types of exceptions that block can handle,
+    and separate each exception type with a vertical bar (`|`):'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`catch`子句中，指定阻止处理的异常类型，并用竖线(`|`)分隔每种异常类型：
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '**Note**: If a `catch` block handles more than one exception type, then the
+    `catch` parameter is implicitly `final`. In this example, the `catch` parameter
+    `ex` is `final` and therefore you cannot assign any values to it within the `catch`
+    block.'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：如果一个`catch`块处理多种异常类型，则`catch`参数隐式为`final`。在这个例子中，`catch`参数`ex`是`final`，因此您不能在`catch`块内为其分配任何值。'

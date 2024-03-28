@@ -1,0 +1,75 @@
+- en: Summary
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 摘要
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/summary.html](https://docs.oracle.com/javase/tutorial/datetime/iso/summary.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/summary.html](https://docs.oracle.com/javase/tutorial/datetime/iso/summary.html)
+- en: 'The `java.time` package contains many classes that your programs can use to
+    represent time and date. This is a very rich API. The key entry points for ISO-based
+    dates are as follows:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.time` 包含许多类，您的程序可以使用这些类来表示时间和日期。这是一个非常丰富的 API。基于 ISO 的日期的关键入口点如下：'
+- en: The `Instant` class provides a machine view of the timeline.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Instant` 类提供了时间线的机器视图。'
+- en: The `LocalDate`, `LocalTime`, and `LocalDateTime` classes provide a human view
+    of date and time without any reference to time zone.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`LocalDate`、`LocalTime` 和 `LocalDateTime` 类提供了日期和时间的人类视图，没有任何关于时区的参考。'
+- en: The `ZoneId`, `ZoneRules`, and `ZoneOffset` classes describe time zones, time
+    zone offsets, and time zone rules.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ZoneId`、`ZoneRules` 和 `ZoneOffset` 类描述时区、时区偏移和时区规则。'
+- en: The `ZonedDateTime` class represents date and time with a time zone. The `OffsetDateTime`
+    and `OffsetTime` classes represent date and time, or time, respectively. These
+    classes take a time zone offset into account.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ZonedDateTime` 类表示带有时区的日期和时间。`OffsetDateTime` 和 `OffsetTime` 类分别表示日期和时间，或仅时间。这些类考虑了时区偏移。'
+- en: The `Duration` class measures an amount of time in seconds and nanoseconds.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Duration` 类以秒和纳秒来衡量时间量。'
+- en: The `Period` class measures an amount of time using years, months, and days.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Period` 类使用年、月和日来衡量时间量。'
+- en: Other non-ISO calendar systems can be represented using the `java.time.chrono`
+    package. This package is beyond the scope of this tutorial, though the [Non-ISO
+    Date Conversion](nonIso.html) page provides information about converting an ISO-based
+    date to another calendar system.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其他非 ISO 日历系统可以使用 `java.time.chrono` 包来表示。尽管本教程不涵盖此包，但 [非 ISO 日期转换](nonIso.html)
+    页面提供了关于将基于 ISO 的日期转换为其他日历系统的信息。
+- en: 'The Date Time API was developed as part of the Java community process under
+    the designation of JSR 310\. For more information, see [JSR 310: Date and Time
+    API](http://jcp.org/en/jsr/detail?id=310).'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '日期时间 API 是作为 Java 社区流程的一部分开发的，其编号为 JSR 310。更多信息，请参阅 [JSR 310: 日期和时间 API](http://jcp.org/en/jsr/detail?id=310)。'

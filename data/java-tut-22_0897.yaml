@@ -1,0 +1,77 @@
+- en: Getting and Setting Field Values
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 获取和设置字段值
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/fieldValues.html](https://docs.oracle.com/javase/tutorial/reflect/member/fieldValues.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/fieldValues.html](https://docs.oracle.com/javase/tutorial/reflect/member/fieldValues.html)
+- en: Given an instance of a class, it is possible to use reflection to set the values
+    of fields in that class. This is typically done only in special circumstances
+    when setting the values in the usual way is not possible. Because such access
+    usually violates the design intentions of the class, it should be used with the
+    utmost discretion.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 给定一个类的实例，可以使用反射来设置该类中字段的值。通常只在特殊情况下进行此操作，当通常方式无法设置值时。由于这种访问通常违反了类的设计意图，应该谨慎使用。
+- en: The [``Book``](example/Book.java) class illustrates how to set the values for
+    long, array, and enum field types. Methods for getting and setting other primitive
+    types are described in [`Field`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#method_summary).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``Book``](example/Book.java)类演示了如何设置长整型、数组和枚举字段类型的值。获取和设置其他基本类型的方法在[`Field`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#method_summary)中有描述。'
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This is the corresponding output:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是相应的输出：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Setting a field''s value via reflection has a certain amount of performance
+    overhead because various operations must occur such as validating access permissions.
+    From the runtime''s point of view, the effects are the same, and the operation
+    is as atomic as if the value was changed in the class code directly.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 通过反射设置字段的值会带来一定的性能开销，因为必须执行各种操作，如验证访问权限。从运行时的角度来看，效果是相同的，操作与直接在类代码中更改值一样原子。'
+- en: 'Use of reflection can cause some runtime optimizations to be lost. For example,
+    the following code is highly likely be optimized by a Java virtual machine:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用反射可能导致一些运行时优化丢失。例如，以下代码很可能会被Java虚拟机优化：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Equivalent code using `Field.set*()` may not.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`Field.set*()`的等效代码可能不会。
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

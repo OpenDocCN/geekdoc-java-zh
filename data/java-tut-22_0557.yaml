@@ -1,0 +1,188 @@
+- en: 'Lesson: Standard Calendar'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：标准日历
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/index.html](https://docs.oracle.com/javase/tutorial/datetime/iso/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/index.html](https://docs.oracle.com/javase/tutorial/datetime/iso/index.html)
+- en: The core of the Date-Time API is the [java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html)
+    package. The classes defined in `java.time` base their calendar system on the
+    ISO calendar, which is the world standard for representing date and time. The
+    ISO calendar follows the proleptic Gregorian rules. The Gregorian calendar was
+    introduced in 1582; in the *proleptic* Gregorian calendar, dates are extended
+    backwards from that time to create a consistent, unified timeline and to simplify
+    date calculations.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间API的核心是[java.time](https://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html)包。`java.time`中定义的类基于ISO日历系统，这是代表日期和时间的世界标准。ISO日历遵循普罗列普提克格里高利规则。格里高利日历于1582年引入；在*普罗列普提克*格里高利日历中，日期从那时开始向前延伸，以创建一致的、统一的时间线，并简化日期计算。
+- en: 'This lesson covers the following topics:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程涵盖以下主题：
+- en: '[Overview](overview.html)'
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[概述](overview.html)'
+- en: This section compares the concepts of human time and machine time provides a
+    table of the primary temporal-based classes in the `java.time` package.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分比较了人类时间和机器时间的概念，并提供了`java.time`包中主要基于时间的类的表格。
+- en: '[DayOfWeek and Month Enums](enum.html)'
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[星期几和月份枚举](enum.html)'
+- en: This section discusses the enum that defines the days of the week (`DayOfWeek`)
+    and the enum that defines months (`Month`).
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分讨论了定义星期几（`DayOfWeek`）和定义月份（`Month`）的枚举。
+- en: '[Date Classes](date.html)'
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[日期类](date.html)'
+- en: This section shows the temporal-based classes that deal only with dates, without
+    time or time zones. The four classes are `LocalDate`, `YearMonth`, `MonthDay`
+    and `Year`.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分展示了仅处理日期而不涉及时间或时区的基于时间的类。这四个类分别是`LocalDate`、`YearMonth`、`MonthDay`和`Year`。
+- en: '[Date and Time Classes](datetime.html)'
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[日期和时间类](datetime.html)'
+- en: This section presents the `LocalTime` and `LocalDateTime` classes, which deal
+    with time, and date and time, respectively, but without time zones.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分介绍了处理时间和日期时间的`LocalTime`和`LocalDateTime`类，但不涉及时区。
+- en: '[Time Zone and Offset Classes](timezones.html)'
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[时区和偏移类](timezones.html)'
+- en: This section discusses the temporal-based classes that store time zone (or time
+    zone offset) information, `ZonedDateTime`, `OffsetDateTime`, and `OffsetTime`.
+    The supporting classes, `ZoneId`, `ZoneRules`, and `ZoneOffset`, are also discussed.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分讨论了存储时区（或时区偏移）信息的基于时间的类，`ZonedDateTime`、`OffsetDateTime`和`OffsetTime`。还讨论了支持类`ZoneId`、`ZoneRules`和`ZoneOffset`。
+- en: '[Instant Class](instant.html)'
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[Instant类](instant.html)'
+- en: This section discusses the `Instant` class, which represents an instantaneous
+    moment on the timeline.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分讨论了`Instant`类，它表示时间轴上的瞬时时刻。
+- en: '[Parsing and Formatting](format.html)'
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[解析和格式化](format.html)'
+- en: This section provides an overview of how to use the predefined formatters to
+    format and parse date and time values.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分概述了如何使用预定义的格式化程序来格式化和解析日期和时间值。
+- en: '[The Temporal Package](temporal.html)'
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[时间包](temporal.html)'
+- en: This section presents an overview of the `java.time.temporal` package, which
+    supports the temporal classes, fields (`TemporalField` and `ChronoField`) and
+    units (`TemporalUnit` and `ChronoUnit`). This section also explains how to use
+    a temporal adjuster to retrieve an adjusted time value, such as "the first Tuesday
+    after April 11", and how to perform a temporal query.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分概述了`java.time.temporal`包，支持时间类、字段（`TemporalField`和`ChronoField`）和单位（`TemporalUnit`和`ChronoUnit`）。这一部分还解释了如何使用时间调整器来检索调整后的时间值，比如“4月11日后的第一个星期二”，以及如何执行时间查询。
+- en: '[Period and Duration](period.html)'
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[周期和持续时间](period.html)'
+- en: This section explains how to calculate an amount of time, using both the `Period`
+    and `Duration` classes, as well as the `ChronoUnit.between` method.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分解释了如何计算一段时间，使用了`Period`和`Duration`类，以及`ChronoUnit.between`方法。
+- en: '[Clock](clock.html)'
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[时钟](clock.html)'
+- en: This section provides a brief overview of the `Clock` class. You can use this
+    class to provide an alternative clock to the system clock.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分简要介绍了`Clock`类。您可以使用这个类来提供一个替代时钟来替代系统时钟。
+- en: '[Non-ISO Date Conversion](nonIso.html)'
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[非ISO日期转换](nonIso.html)'
+- en: This section explains how to convert from a date in the ISO calendar system
+    to a date in a non-ISO calendar system, such as a `JapaneseDate` or a `ThaiBuddhistDate`.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一部分解释了如何将ISO日历系统中的日期转换为非ISO日历系统中的日期，比如`JapaneseDate`或`ThaiBuddhistDate`。
+- en: '[Legacy Date-Time Code](legacy.html)'
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[遗留日期时间代码](legacy.html)'
+- en: This section offers some tips on how to convert older `java.util.Date` and `java.util.Calendar`
+    code to the Date-Time API.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节提供了一些关于如何将旧的`java.util.Date`和`java.util.Calendar`代码转换为日期时间 API 的技巧。
+- en: '[Summary](summary.html)'
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[摘要](summary.html)'
+- en: This section provides a summary of the Standard Calendar lesson.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节提供了标准日历课程的摘要。

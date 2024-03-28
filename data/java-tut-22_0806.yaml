@@ -1,0 +1,328 @@
+- en: An Overview of RMI Applications
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: RMI 应用概述
+- en: 原文：[https://docs.oracle.com/javase/tutorial/rmi/overview.html](https://docs.oracle.com/javase/tutorial/rmi/overview.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/rmi/overview.html](https://docs.oracle.com/javase/tutorial/rmi/overview.html)
+- en: RMI applications often comprise two separate programs, a server and a client.
+    A typical server program creates some remote objects, makes references to these
+    objects accessible, and waits for clients to invoke methods on these objects.
+    A typical client program obtains a remote reference to one or more remote objects
+    on a server and then invokes methods on them. RMI provides the mechanism by which
+    the server and the client communicate and pass information back and forth. Such
+    an application is sometimes referred to as a *distributed object application*.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: RMI 应用程序通常由两个独立的程序组成，一个服务器和一个客户端。典型的服务器程序创建一些远程对象，使这些对象的引用可访问，并等待客户端调用这些对象的方法。典型的客户端程序获取服务器上一个或多个远程对象的远程引用，然后调用这些对象的方法。RMI
+    提供了服务器和客户端进行通信和传递信息的机制。这样的应用有时被称为*分布式对象应用*。
+- en: 'Distributed object applications need to do the following:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分布式对象应用需要执行以下操作：
+- en: '**Locate remote objects.** Applications can use various mechanisms to obtain
+    references to remote objects. For example, an application can register its remote
+    objects with RMI''s simple naming facility, the RMI registry. Alternatively, an
+    application can pass and return remote object references as part of other remote
+    invocations.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**定位远程对象。** 应用程序可以使用各种机制获取对远程对象的引用。例如，应用程序可以使用 RMI 的简单命名设施，即 RMI 注册表，注册其远程对象。另外，应用程序可以将远程对象引用作为其他远程调用的一部分传递和返回。'
+- en: '**Communicate with remote objects.** Details of communication between remote
+    objects are handled by RMI. To the programmer, remote communication looks similar
+    to regular Java method invocations.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**与远程对象通信。** 远程对象之间的通信细节由RMI处理。对于程序员来说，远程通信看起来类似于常规的Java方法调用。'
+- en: '**Load class definitions for objects that are passed around.** Because RMI
+    enables objects to be passed back and forth, it provides mechanisms for loading
+    an object''s class definitions as well as for transmitting an object''s data.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**加载传递的对象的类定义。** 因为 RMI 允许对象来回传递，它提供了加载对象的类定义以及传输对象数据的机制。'
+- en: The following illustration depicts an RMI distributed application that uses
+    the RMI registry to obtain a reference to a remote object. The server calls the
+    registry to associate (or bind) a name with a remote object. The client looks
+    up the remote object by its name in the server's registry and then invokes a method
+    on it. The illustration also shows that the RMI system uses an existing web server
+    to load class definitions, from server to client and from client to server, for
+    objects when needed.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下插图描述了一个使用 RMI 注册表获取远程对象引用的 RMI 分布式应用程序。服务器调用注册表将名称与远程对象关联（或绑定）。客户端在服务器的注册表中按名称查找远程对象，然后调用其方法。插图还显示了
+    RMI 系统使用现有的 Web 服务器在需要时从服务器到客户端和从客户端到服务器加载类定义的过程。
+- en: '![the RMI system, using an existing web server, communicates from serve to
+    client and from client to server](../Images/517eb79aa97a7f8fe1d27eab71b4387e.png)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_IMG
+  zh: '![RMI 系统，使用现有的 Web 服务器，从服务器到客户端和从客户端到服务器进行通信](../Images/517eb79aa97a7f8fe1d27eab71b4387e.png)'
+- en: Advantages of Dynamic Code Loading
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 动态代码加载的优势
+- en: One of the central and unique features of RMI is its ability to download the
+    definition of an object's class if the class is not defined in the receiver's
+    Java virtual machine. All of the types and behavior of an object, previously available
+    only in a single Java virtual machine, can be transmitted to another, possibly
+    remote, Java virtual machine. RMI passes objects by their actual classes, so the
+    behavior of the objects is not changed when they are sent to another Java virtual
+    machine. This capability enables new types and behaviors to be introduced into
+    a remote Java virtual machine, thus dynamically extending the behavior of an application.
+    The compute engine example in this trail uses this capability to introduce new
+    behavior to a distributed program.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: RMI 的一个核心和独特特性是，如果接收方的 Java 虚拟机中未定义类的定义，它可以下载对象类的定义。一个对象的所有类型和行为，以前仅在单个 Java
+    虚拟机中可用，可以传输到另一个可能是远程的 Java 虚拟机。RMI 通过其实际类传递对象，因此当它们被发送到另一个 Java 虚拟机时，对象的行为不会改变。这种能力使得可以将新类型和行为引入到远程
+    Java 虚拟机中，从而动态扩展应用程序的行为。本教程中的计算引擎示例使用了这种能力来向分布式程序引入新行为。
+- en: Remote Interfaces, Objects, and Methods
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 远程接口、对象和方法
+- en: Like any other Java application, a distributed application built by using Java
+    RMI is made up of interfaces and classes. The interfaces declare methods. The
+    classes implement the methods declared in the interfaces and, perhaps, declare
+    additional methods as well. In a distributed application, some implementations
+    might reside in some Java virtual machines but not others. Objects with methods
+    that can be invoked across Java virtual machines are called *remote objects*.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与任何其他Java应用程序一样，使用Java RMI构建的分布式应用程序由接口和类组成。接口声明方法。类实现接口中声明的方法，并且可能还声明其他方法。在分布式应用程序中，一些实现可能驻留在一些Java虚拟机中，而另一些则不在。具有可以在Java虚拟机之间调用的方法的对象称为*远程对象*。
+- en: 'An object becomes remote by implementing a *remote interface*, which has the
+    following characteristics:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过实现*远程接口*，对象变成远程对象，具有以下特征：
+- en: A remote interface extends the interface `java.rmi.Remote`.
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个远程接口扩展接口`java.rmi.Remote`。
+- en: Each method of the interface declares `java.rmi.RemoteException` in its `throws`
+    clause, in addition to any application-specific exceptions.
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 接口的每个方法在其`throws`子句中声明`java.rmi.RemoteException`，除了任何特定于应用程序的异常。
+- en: RMI treats a remote object differently from a non-remote object when the object
+    is passed from one Java virtual machine to another Java virtual machine. Rather
+    than making a copy of the implementation object in the receiving Java virtual
+    machine, RMI passes a remote *stub* for a remote object. The stub acts as the
+    local representative, or proxy, for the remote object and basically is, to the
+    client, the remote reference. The client invokes a method on the local stub, which
+    is responsible for carrying out the method invocation on the remote object.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当对象从一个Java虚拟机传递到另一个Java虚拟机时，RMI会将远程对象与非远程对象区别对待。RMI不会在接收Java虚拟机中复制实现对象，而是传递一个远程对象的远程*存根*。存根充当远程对象的本地代表或代理，并且基本上是客户端的远程引用。客户端在本地存根上调用方法，本地存根负责在远程对象上执行方法调用。
+- en: A stub for a remote object implements the same set of remote interfaces that
+    the remote object implements. This property enables a stub to be cast to any of
+    the interfaces that the remote object implements. However, *only* those methods
+    defined in a remote interface are available to be called from the receiving Java
+    virtual machine.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个远程对象的存根实现了远程对象实现的相同一组远程接口。这个属性使得一个存根可以被转换为远程对象实现的任何接口。然而，*只有*在远程接口中定义的方法才能从接收Java虚拟机中调用。
+- en: Creating Distributed Applications by Using RMI
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用RMI创建分布式应用程序
+- en: 'Using RMI to develop a distributed application involves these general steps:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用RMI开发分布式应用程序涉及以下一般步骤：
+- en: Designing and implementing the components of your distributed application.
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 设计和实现分布式应用程序的组件。
+- en: Compiling sources.
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编译源代码。
+- en: Making classes network accessible.
+  id: totrans-22
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使类可网络访问。
+- en: Starting the application.
+  id: totrans-23
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 启动应用程序。
+- en: Designing and Implementing the Application Components
+  id: totrans-24
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 设计和实现应用程序组件
+- en: 'First, determine your application architecture, including which components
+    are local objects and which components are remotely accessible. This step includes:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，确定您的应用程序架构，包括哪些组件是本地对象，哪些组件是可远程访问的。这一步包括：
+- en: '**Defining the remote interfaces.** A remote interface specifies the methods
+    that can be invoked remotely by a client. Clients program to remote interfaces,
+    not to the implementation classes of those interfaces. The design of such interfaces
+    includes the determination of the types of objects that will be used as the parameters
+    and return values for these methods. If any of these interfaces or classes do
+    not yet exist, you need to define them as well.'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**定义远程接口。** 远程接口指定客户端可以远程调用的方法。客户端编程针对远程接口，而不是针对这些接口的实现类。这些接口的设计包括确定将用作这些方法的参数和返回值的对象类型。如果这些接口或类中的任何一个尚不存在，您也需要定义它们。'
+- en: '**Implementing the remote objects.** Remote objects must implement one or more
+    remote interfaces. The remote object class may include implementations of other
+    interfaces and methods that are available only locally. If any local classes are
+    to be used for parameters or return values of any of these methods, they must
+    be implemented as well.'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**实现远程对象。** 远程对象必须实现一个或多个远程接口。远程对象类可能包括其他仅在本地可用的接口和方法的实现。如果要将任何本地类用作这些方法的参数或返回值，那么它们也必须被实现。'
+- en: '**Implementing the clients.** Clients that use remote objects can be implemented
+    at any time after the remote interfaces are defined, including after the remote
+    objects have been deployed.'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '**实现客户端。** 使用远程对象的客户端可以在定义远程接口之后的任何时间实现，包括在部署远程对象之后。'
+- en: Compiling Sources
+  id: totrans-29
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 编译源代码
+- en: As with any Java program, you use the `javac` compiler to compile the source
+    files. The source files contain the declarations of the remote interfaces, their
+    implementations, any other server classes, and the client classes.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与任何 Java 程序一样，您使用`javac`编译器来编译源文件。源文件包含远程接口的声明、它们的实现、任何其他服务器类以及客户端类。
+- en: '* * *'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** With versions prior to Java Platform, Standard Edition 5.0, an additional
+    step was required to build stub classes, by using the `rmic` compiler. However,
+    this step is no longer necessary.'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 在 Java 平台标准版 5.0 之前的版本中，需要通过使用`rmic`编译器来构建存根类，但现在不再需要这一步骤。'
+- en: '* * *'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Making Classes Network Accessible
+  id: totrans-34
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 使类能够在网络中访问
+- en: In this step, you make certain class definitions network accessible, such as
+    the definitions for the remote interfaces and their associated types, and the
+    definitions for classes that need to be downloaded to the clients or servers.
+    Classes definitions are typically made network accessible through a web server.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这一步中，您需要使某些类定义能够在网络中访问，例如远程接口及其关联类型的定义，以及需要下载到客户端或服务器的类的定义。通常通过 Web 服务器使类定义能够在网络中访问。
+- en: Starting the Application
+  id: totrans-36
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 启动应用程序
+- en: Starting the application includes running the RMI remote object registry, the
+    server, and the client.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 启动应用程序包括运行 RMI 远程对象注册表、服务器和客户端。
+- en: The rest of this section walks through the steps used to create a compute engine.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的其余部分将介绍创建计算引擎所使用的步骤。
+- en: Building a Generic Compute Engine
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 构建通用计算引擎
+- en: This trail focuses on a simple, yet powerful, distributed application called
+    a *compute engine*. The compute engine is a remote object on the server that takes
+    tasks from clients, runs the tasks, and returns any results. The tasks are run
+    on the machine where the server is running. This type of distributed application
+    can enable a number of client machines to make use of a particularly powerful
+    machine or a machine that has specialized hardware.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程专注于一个简单但强大的分布式应用程序，称为*计算引擎*。计算引擎是服务器上的一个远程对象，它接收来自客户端的任务，运行这些任务，并返回任何结果。这些任务在运行服务器的机器上执行。这种类型的分布式应用程序可以让多台客户端机器利用特别强大或具有专门硬件的机器。
+- en: The novel aspect of the compute engine is that the tasks it runs do not need
+    to be defined when the compute engine is written or started. New kinds of tasks
+    can be created at any time and then given to the compute engine to be run. The
+    only requirement of a task is that its class implement a particular interface.
+    The code needed to accomplish the task can be downloaded by the RMI system to
+    the compute engine. Then, the compute engine runs the task, using the resources
+    on the machine on which the compute engine is running.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 计算引擎的新颖之处在于它运行的任务不需要在编写或启动计算引擎时定义。可以随时创建新类型的任务，然后将其交给计算引擎运行。任务的唯一要求是其类实现特定接口。RMI
+    系统可以将执行任务所需的代码下载到计算引擎中。然后，计算引擎在运行它的机器上利用资源运行任务。
+- en: The ability to perform arbitrary tasks is enabled by the dynamic nature of the
+    Java platform, which is extended to the network by RMI. RMI dynamically loads
+    the task code into the compute engine's Java virtual machine and runs the task
+    without prior knowledge of the class that implements the task. Such an application,
+    which has the ability to download code dynamically, is often called a *behavior-based
+    application*. Such applications usually require full agent-enabled infrastructures.
+    With RMI, such applications are part of the basic mechanisms for distributed computing
+    on the Java platform.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 执行任意任务的能力是由 Java 平台的动态特性实现的，通过 RMI 扩展到网络。RMI 动态加载任务代码到计算引擎的 Java 虚拟机中，并在没有实现任务的类的先验知识的情况下运行任务。这种具有动态下载代码能力的应用程序通常被称为*基于行为的应用程序*。这些应用程序通常需要完整的代理启用基础设施。在
+    Java 平台上，这些应用程序是分布式计算的基本机制之一。

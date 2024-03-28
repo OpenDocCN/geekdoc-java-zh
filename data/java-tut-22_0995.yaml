@@ -1,0 +1,49 @@
+- en: Result Count
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 结果计数
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/countlimit.html](https://docs.oracle.com/javase/tutorial/jndi/ops/countlimit.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/countlimit.html](https://docs.oracle.com/javase/tutorial/jndi/ops/countlimit.html)
+- en: Sometimes, a query might produce too many answers and you want to limit the
+    number of answers returned. You can do this by using the count limit search control.
+    By default, a search does not have a count limit—it will return all answers that
+    it finds. To set the count limit of a search, pass the number to [`SearchControls.setCountLimit()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#setCountLimit-long-).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时，查询可能产生太多答案，你希望限制返回的答案数量。你可以通过使用计数限制搜索控件来实现这一点。默认情况下，搜索没有计数限制 - 它将返回它找到的所有答案。要设置搜索的计数限制，请将数字传递给[`SearchControls.setCountLimit()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#setCountLimit-long-)。
+- en: '[`The following example`](examples/SearchCountLimit.java) sets the count limit
+    to 1.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`以下示例`](examples/SearchCountLimit.java)将计数限制设置为1。'
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If the program attempts to get more than the count limit number of results,
+    then a [`SizeLimitExceededException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/SizeLimitExceededException.html)
+    will be thrown. So if a program has set a count limit, then it should either differentiate
+    this exception from other [`NamingException`s](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingException.html)
+    or keep track of the count limit and not request more than that number of results.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果程序尝试获取超过计数限制数量的结果，那么将抛出[`SizeLimitExceededException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/SizeLimitExceededException.html)。因此，如果程序设置了计数限制，则应该区分此异常和其他[`NamingException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingException.html)，或者跟踪计数限制并不请求超过该数量的结果。
+- en: Specifying a count limit for a search is one way of controlling the resources
+    (such as memory and network bandwidth) that your application consumes. Other ways
+    to control the resources consumed are to narrow your [search filter](filter.html)
+    (be more specific about what you seek), start your search in the appropriate context,
+    and use the appropriate [scope](scope.html).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定搜索的计数限制是控制应用程序消耗资源（如内存和网络带宽）的一种方式。控制消耗资源的其他方法包括缩小你的[搜索过滤器](filter.html)（更具体地说明你要寻找什么）、在适当的上下文中开始搜索，并使用适当的[范围](scope.html)。

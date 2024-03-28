@@ -1,0 +1,148 @@
+- en: Extracting the Contents of a JAR File
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 提取JAR文件内容
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/unpack.html](https://docs.oracle.com/javase/tutorial/deployment/jar/unpack.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/unpack.html](https://docs.oracle.com/javase/tutorial/deployment/jar/unpack.html)
+- en: 'The basic command to use for extracting the contents of a JAR file is:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于提取JAR文件内容的基本命令是：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Let''s look at the options and arguments in this command:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看看这个命令中的选项和参数：
+- en: The `x` option indicates that you want to *extract* files from the JAR archive.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`x`选项表示您要从JAR存档中*提取*文件。'
+- en: The `f` options indicates that the JAR *file* from which files are to be extracted
+    is specified on the command line, rather than through stdin.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`f`选项表示要从命令行指定的JAR *文件*中提取文件，而不是通过stdin。'
+- en: The `jar-file` argument is the filename (or path and filename) of the JAR file
+    from which to extract files.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`jar-file`参数是要从中提取文件的JAR文件的文件名（或路径和文件名）。'
+- en: '`archived-file(s)` is an optional argument consisting of a space-separated
+    list of the files to be extracted from the archive. If this argument is not present,
+    the Jar tool will extract all the files in the archive.'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`archived-file(s)`是一个可选参数，由一个以空格分隔的文件列表组成，用于从存档中提取文件。如果没有此参数，Jar工具将提取存档中的所有文件。'
+- en: As usual, the order in which the `x` and `f` options appear in the command doesn't
+    matter, but there must not be a space between them.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，命令中`x`和`f`选项的顺序无关紧要，但它们之间不能有空格。
+- en: When extracting files, the Jar tool makes copies of the desired files and writes
+    them to the current directory, reproducing the directory structure that the files
+    have in the archive. The original JAR file remains unchanged.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在提取文件时，Jar工具会复制所需文件并将其写入当前目录，复制文件在存档中的目录结构。原始JAR文件保持不变。
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Caution:** When it extracts files, the Jar tool will overwrite any existing
+    files having the same pathname as the extracted files.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 当提取文件时，Jar工具将覆盖与提取文件具有相同路径名的任何现有文件。'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: An Example
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例
+- en: 'Let''s extract some files from the TicTacToe JAR file we''ve been using in
+    previous sections. Recall that the contents of `TicTacToe.jar` are:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们从之前部分中使用的TicTacToe JAR文件中提取一些文件。回想一下，`TicTacToe.jar`的内容是：
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Suppose you want to extract the `TicTacToe` class file and the `cross.gif`
+    image file. To do so, you can use this command:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您想要提取`TicTacToe`类文件和`cross.gif`图像文件。为此，您可以使用以下命令：
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'This command does two things:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个命令做了两件事：
+- en: It places a copy of `TicTacToe.class` in the current directory.
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它在当前目录中放置了`TicTacToe.class`的副本。
+- en: It creates the directory `images`, if it doesn't already exist, and places a
+    copy of `cross.gif` within it.
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果`images`目录不存在，它会创建该目录，并在其中放置`cross.gif`的副本。
+- en: The original TicTacToe JAR file remains unchanged.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 原始TicTacToe JAR文件保持不变。
+- en: 'As many files as desired can be extracted from the JAR file in the same way.
+    When the command doesn''t specify which files to extract, the Jar tool extracts
+    all files in the archive. For example, you can extract all the files in the TicTacToe
+    archive by using this command:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以以相同的方式从JAR文件中提取任意数量的文件。当命令没有指定要提取哪些文件时，Jar工具将提取存档中的所有文件。例如，您可以使用以下命令提取TicTacToe存档中的所有文件：
+- en: '[PRE3]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

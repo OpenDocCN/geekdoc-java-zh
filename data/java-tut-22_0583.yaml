@@ -1,0 +1,533 @@
+- en: Creating a Locale
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建 Locale
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/create.html](https://docs.oracle.com/javase/tutorial/i18n/locale/create.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/create.html](https://docs.oracle.com/javase/tutorial/i18n/locale/create.html)
+- en: There are several ways to create a `Locale` object. Regardless of the technique
+    used, creation can be as simple as specifying the language code. However, you
+    can further distinguish the locale by setting the region (also referred to as
+    "country") and variant codes. If you are using the JDK 7 release or later, you
+    can also specify the script code and Unicode locale extensions.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有几种方法可以创建 `Locale` 对象。无论使用哪种技术，创建可以简单地指定语言代码。但是，您还可以通过设置区域（也称为“国家”）和变体代码来进一步区分区域。如果您使用
+    JDK 7 发布或更高版本，还可以指定脚本代码和 Unicode 区域扩展。
+- en: 'The four ways to create a `Locale` object are:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建 `Locale` 对象的四种方法是：
+- en: '[`Locale.Builder` Class](#builder)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Locale.Builder` 类](#builder)'
+- en: '[`Locale` Constructors](#constructors)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Locale` 构造函数](#constructors)'
+- en: '[`Locale.forLanguageTag` Factory Method](#factory)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Locale.forLanguageTag` 工厂方法](#factory)'
+- en: '[`Locale` Constants](#constants)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Locale` 常量](#constants)'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Version Note:** The `Locale.Builder` class and the `forLanguageTag` method
+    were added in the Java SE 7 release.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**版本说明：** `Locale.Builder` 类和 `forLanguageTag` 方法是在 Java SE 7 发布中添加的。'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '`LocaleBuilder` Class'
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`LocaleBuilder` 类'
+- en: 'The [`Locale.Builder`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.Builder.html)
+    utility class can be used to construct a `Locale` object that conforms to the
+    IETF BCP 47 syntax. For example, to specify the French language and the country
+    of Canada, you could invoke the `Locale.Builder` constructor and then chain the
+    setter methods as follows:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Locale.Builder`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.Builder.html)
+    实用类可用于构造符合 IETF BCP 47 语法的 `Locale` 对象。例如，要指定法语和加拿大国家，您可以调用 `Locale.Builder` 构造函数，然后链接设置器方法如下：'
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The next example creates `Locale` objects for the English language in the United
+    States and Great Britain:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个示例创建了英语在美国和英国的 `Locale` 对象：
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The final example creates a `Locale` object for the Russian language:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一个示例创建了俄语的 `Locale` 对象：
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '`Locale` Constructors'
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`Locale` 构造函数'
+- en: 'There are three constructors available in the `Locale` class for creating a
+    `Locale` object:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Locale` 类有三个可用的构造函数用于创建 `Locale` 对象：'
+- en: '[`Locale(String language)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#Locale-java.lang.String-)'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Locale(String language)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#Locale-java.lang.String-)'
+- en: '[`Locale(String language, String country)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#Locale-java.lang.String-java.lang.String-)'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Locale(String language, String country)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#Locale-java.lang.String-java.lang.String-)'
+- en: '[`Locale(String language, String country, String variant)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#Locale-java.lang.String-java.lang.String-java.lang.String-)'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Locale(String language, String country, String variant)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#Locale-java.lang.String-java.lang.String-java.lang.String-)'
+- en: The following examples create `Locale` objects for the French language in Canada,
+    the English language in the U.S. and Great Britain, and the Russian language.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例创建了法语在加拿大，英语在美国和英国，以及俄语的 `Locale` 对象。
+- en: '[PRE3]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: It is not possible to set a script code on a `Locale` object in a release earlier
+    than JDK 7.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 JDK 7 之前的版本中，无法在 `Locale` 对象上设置脚本代码。
+- en: '`forLanguageTag` Factory Method'
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`forLanguageTag` 工厂方法'
+- en: 'If you have a language tag string that conforms to the IETF BCP 47 standard,
+    you can use the [`forLanguageTag(String)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#forLanguageTag-java.lang.String-)
+    factory method, which was introduced in the Java SE 7 release. For example:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您有符合 IETF BCP 47 标准的语言标记字符串，可以使用在 Java SE 7 发布中引入的 [`forLanguageTag(String)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#forLanguageTag-java.lang.String-)
+    工厂方法。例如：
+- en: '[PRE4]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '`Locale` Constants'
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`Locale` 常量'
+- en: 'For your convenience the `Locale` class provides [constants](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#field_summary)
+    for some languages and countries. For example:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了方便起见，`Locale` 类为一些语言和国家提供了[常量](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#field_summary)。例如：
+- en: '[PRE5]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'When you specify a language constant, the region portion of the `Locale` is
+    undefined. The next three statements create equivalent `Locale` objects:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您指定语言常量时，`Locale` 的区域部分是未定义的。下面的三个语句创建等效的 `Locale` 对象：
+- en: '[PRE6]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The `Locale` objects created by the following three statements are also equivalent:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由以下三个语句创建的`Locale`对象也是等效的：
+- en: '[PRE7]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: Codes
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 代码
+- en: The following sections discuss the language code and the optional script, region,
+    and variant codes.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下部分讨论语言代码和可选的脚本、地区和变体代码。
+- en: Language Code
+  id: totrans-38
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 语言代码
+- en: The language code is either two or three lowercase letters that conform to the
+    ISO 639 standard. You can find a full list of the ISO 639 codes at [http://www.loc.gov/standards/iso639-2/php/code_list.php](http://www.loc.gov/standards/iso639-2/php/code_list.php).
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 语言代码是符合ISO 639标准的两个或三个��写字母。您可以在[http://www.loc.gov/standards/iso639-2/php/code_list.php](http://www.loc.gov/standards/iso639-2/php/code_list.php)找到ISO
+    639代码的完整列表。
+- en: The following table lists a few of the language codes.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了一些语言代码。
+- en: Sample Language Codes
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例语言代码
+- en: '| Language Code | Description |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| 语言代码 | 描述 |'
+- en: '| --- | --- |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `de` | German |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| `de` | 德语 |'
+- en: '| `en` | English |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| `en` | 英语 |'
+- en: '| `fr` | French |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| `fr` | 法语 |'
+- en: '| `ru` | Russian |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| `ru` | 俄语 |'
+- en: '| `ja` | Japanese |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| `ja` | 日语 |'
+- en: '| `jv` | Javanese |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| `jv` | 爪哇语 |'
+- en: '| `ko` | Korean |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| `ko` | 韩语 |'
+- en: '| `zh` | Chinese |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| `zh` | 中文 |'
+- en: Script Code
+  id: totrans-52
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 脚本代码
+- en: The script code begins with an uppercase letter followed by three lowercase
+    letters and conforms to the ISO 15924 standard. You can find a full list of the
+    ISO 15924 codes at [http://unicode.org/iso15924/iso15924-codes.html](http://unicode.org/iso15924/iso15924-codes.html).
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 脚本代码以大写字母开头，后跟三个小写字母，并符合ISO 15924标准。您可以在[http://unicode.org/iso15924/iso15924-codes.html](http://unicode.org/iso15924/iso15924-codes.html)找到ISO
+    15924代码的完整列表。
+- en: The following table lists a few of the script codes.
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了一些脚本代码。
+- en: Sample Script Codes
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例脚本代码
+- en: '| Script Code | Description |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '| 脚本代码 | 描述 |'
+- en: '| --- | --- |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '| --- | --- |'
+- en: '| `Arab` | Arabic |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Arab` | 阿拉伯语 |'
+- en: '| `Cyrl` | Cyrillic |'
+  id: totrans-59
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Cyrl` | 西里尔字母 |'
+- en: '| `Kana` | Katakana |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Kana` | 片假名 |'
+- en: '| `Latn` | Latin |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '| `Latn` | 拉丁字母 |'
+- en: 'There are three methods for retrieving the script information for a `Locale`:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有三种方法可以检索`Locale`的脚本信息：
+- en: "[`getScript()`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getScript--)\
+    \ \x96 returns the 4-letter script code for a `Locale` object. If no script is\
+    \ defined for the locale, an empty string is returned."
+  id: totrans-63
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[`getScript()`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getScript--)\
+    \ \x96 返回`Locale`对象的4字母脚本代码。如果未为区域设置定义脚本，则返回空字符串。"
+- en: "[`getDisplayScript()`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getDisplayScript--)\
+    \ \x96 returns a name for the locale's script that is appropriate for display\
+    \ to the user. If possible, the name will be localized for the default locale.\
+    \ So, for example, if the script code is \"Latn,\" the display script name returned\
+    \ would be the string \"Latin\" for an English language locale."
+  id: totrans-64
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[`getDisplayScript()`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getDisplayScript--)\
+    \ \x96 返回适合显示给用户的区域设置脚本的名称。如果可能，名称将针对默认区域设置进行本地化。因此，例如，如果脚本代码是\"Latn\"，则返回的显示脚本名称将在英语语言区域设置下为\"\
+    Latin\"。"
+- en: "[`getDisplayScript(Locale)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getDisplayScript-java.util.Locale-)\
+    \ \x96 returns the display name of the specified `Locale` localized, if possible,\
+    \ for the locale."
+  id: totrans-65
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[`getDisplayScript(Locale)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getDisplayScript-java.util.Locale-)\
+    \ \x96 返回指定`Locale`的显示名称，如果可能的话进行本地化。"
+- en: Region Code
+  id: totrans-66
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 地区代码
+- en: The region (country) code consists of either two or three uppercase letters
+    that conform to the ISO 3166 standard, or three numbers that conform to the UN
+    M.49 standard. A copy of the codes can be found at [http://www.chemie.fu-berlin.de/diverse/doc/ISO_3166.html](http://www.chemie.fu-berlin.de/diverse/doc/ISO_3166.html).
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 地区（国家）代码由符合ISO 3166标准的两个或三个大写字母组成，或者符合UN M.49标准的三个数字。代码的副本可以在[http://www.chemie.fu-berlin.de/diverse/doc/ISO_3166.html](http://www.chemie.fu-berlin.de/diverse/doc/ISO_3166.html)找到。
+- en: The following table contains several sample country and region codes.
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格包含几个示例国家和地区代码。
+- en: Sample Region Codes
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例地区代码
+- en: '| A-2 Code | A-3 Code | Numeric Code | Description |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '| A-2代码 | A-3代码 | 数字代码 | 描述 |'
+- en: '| `AU` | `AUS` | `036` | Australia |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| `AU` | `AUS` | `036` | 澳大利亚 |'
+- en: '| `BR` | `BRA` | `076` | Brazil |'
+  id: totrans-72
+  prefs: []
+  type: TYPE_TB
+  zh: '| `BR` | `BRA` | `076` | 巴西 |'
+- en: '| `CA` | `CAN` | `124` | Canada |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '| `CA` | `CAN` | `124` | 加拿大 |'
+- en: '| `CN` | `CHN` | `156` | China |'
+  id: totrans-74
+  prefs: []
+  type: TYPE_TB
+  zh: '| `CN` | `CHN` | `156` | 中国 |'
+- en: '| `DE` | `DEU` | `276` | Germany |'
+  id: totrans-75
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DE` | `DEU` | `276` | 德国 |'
+- en: '| `FR` | `FRA` | `250` | France |'
+  id: totrans-76
+  prefs: []
+  type: TYPE_TB
+  zh: '| `FR` | `FRA` | `250` | 法国 |'
+- en: '| `IN` | `IND` | `356` | India |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_TB
+  zh: '| `IN` | `IND` | `356` | 印度 |'
+- en: '| `RU` | `RUS` | `643` | Russian Federation |'
+  id: totrans-78
+  prefs: []
+  type: TYPE_TB
+  zh: '| `RU` | `RUS` | `643` | 俄罗斯联邦 |'
+- en: '| `US` | `USA` | `840` | United States |'
+  id: totrans-79
+  prefs: []
+  type: TYPE_TB
+  zh: '| `US` | `USA` | `840` | 美国 |'
+- en: Variant Code
+  id: totrans-80
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 变体代码
+- en: The optional `variant` code can be used to further distinguish your `Locale`.
+    For example, the variant code can be used to indicate dialectical differences
+    that are not covered by the region code.
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可选的`variant`代码可用于进一步区分您的`Locale`。例如，变体代码可用于指示区域代码未涵盖的方言差异。
+- en: '* * *'
+  id: totrans-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Version Note:**  Prior to the Java SE 7 release, the variant code was sometimes
+    used to identify differences that were not specific to the language or region.
+    For example, it might have been used to identify differences between computing
+    platforms, such as Windows or UNIX. Under the IETF BCP 47 standard, this use is
+    discouraged.'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**版本说明：** 在 Java SE 7 发布之前，变体代码有时用于标识不特定于语言或区域的差异。例如，它可能已用于标识计算平台之间的差异，如 Windows
+    或 UNIX。根据 IETF BCP 47 标准，不鼓励此用法。'
+- en: To define non-language-specific variations relevant to your environment, use
+    the extensions mechanism, as explained in [BCP 47 Extensions](extensions.html).
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要定义与您的环境相关的非语言特定变体，请使用扩展机制，如[BCP 47 扩展](extensions.html)中所解释的那样。
+- en: '* * *'
+  id: totrans-85
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: As of the Java SE 7 release, which conforms to the IETF BCP 47 standard, the
+    variant code is used specifically to indicate additional variations that define
+    a language or its dialects. The IETF BCP 47 standard imposes syntactic restrictions
+    on the variant subtag. You can see a list of variant codes (search for *variant*)
+    at [http://www.iana.org/assignments/language-subtag-registry](http://www.iana.org/assignments/language-subtag-registry).
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自 Java SE 7 发布以来，符合 IETF BCP 47 标准的变体代码专门用于指示定义语言或其方言的附加变体。IETF BCP 47 标准对变体子标记施加了语法限制。您可以在[http://www.iana.org/assignments/language-subtag-registry](http://www.iana.org/assignments/language-subtag-registry)上查看变体代码列表（搜索*变体*）。
+- en: 'For example, Java SE uses the variant code to support the Thai language. By
+    convention, a `NumberFormat` object for the `th` and `th_TH` locales will use
+    common Arabic digit shapes, or Arabic numerals, to format Thai numbers. However,
+    a `NumberFormat` for the `th_TH_TH` locale uses Thai digit shapes. The excerpt
+    from [`ThaiDigits.java`](examples/ThaiDigits.java) demonstrates this:'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，Java SE 使用变体代码支持泰语。按照惯例，`th` 和 `th_TH` 区域设置的`NumberFormat`对象将使用常见的阿拉伯数字形状或阿拉伯数字来格式化泰国数字。然而，`th_TH_TH`
+    区域设置的`NumberFormat`将使用泰国数字形状。[`ThaiDigits.java`](examples/ThaiDigits.java)中的摘录演示了这一点：
+- en: '[PRE8]'
+  id: totrans-88
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'The following is a screenshot of this sample:'
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是此示例的屏幕截图：
+- en: '![Screenshot of Sample ThaiDigits.java](../Images/8cf88a3d71992ec73f3c1a8215f78b8b.png)'
+  id: totrans-90
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Sample ThaiDigits.java 的屏幕截图](../Images/8cf88a3d71992ec73f3c1a8215f78b8b.png)'

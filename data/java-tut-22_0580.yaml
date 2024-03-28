@@ -1,0 +1,225 @@
+- en: Internationalizing the Sample Program
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 国际化示例程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/intro/steps.html](https://docs.oracle.com/javase/tutorial/i18n/intro/steps.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/intro/steps.html](https://docs.oracle.com/javase/tutorial/i18n/intro/steps.html)
+- en: If you look at the internationalized source code, you'll notice that the hardcoded
+    English messages have been removed. Because the messages are no longer hardcoded
+    and because the language code is specified at run time, the same executable can
+    be distributed worldwide. No recompilation is required for localization. The program
+    has been internationalized.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你查看国际化的源代码，你会注意到硬编码的英文消息已经被移除。因为消息不再是硬编码的，而且语言代码在运行时指定，同一个可执行文件可以在全球范围内分发。本地化不需要重新编译。该程序已经国际化。
+- en: You may be wondering what happened to the text of the messages or what the language
+    and country codes mean. Don't worry. You'll learn about these concepts as you
+    step through the process of internationalizing the sample program.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能想知道消息的文本发生了什么变化，或者语言和国家代码的含义是什么。别担心。当你逐步学习国际化示例程序的过程中，你会了解这些概念。
+- en: 1\. Create the Properties Files
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 1\. 创建属性文件
+- en: A properties file stores information about the characteristics of a program
+    or environment. A properties file is in plain-text format. You can create the
+    file with just about any text editor.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个属性文件存储了关于程序或环境特性的信息。属性文件是纯文本格式。你可以用几乎任何文本编辑器创建这个文件。
+- en: 'In the example the properties files store the translatable text of the messages
+    to be displayed. Before the program was internationalized, the English version
+    of this text was hardcoded in the `System.out.println` statements. The default
+    properties file, which is called `MessagesBundle.properties`, contains the following
+    lines:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在示例中，属性文件存储了要显示的可翻译消息的文本。在程序国际化之前，这些文本的英文版本是硬编码在`System.out.println`语句中的。默认的属性文件名为`MessagesBundle.properties`，包含以下内容：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Now that the messages are in a properties file, they can be translated into
+    various languages. No changes to the source code are required. The French translator
+    has created a properties file called `MessagesBundle_fr_FR.properties`, which
+    contains these lines:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在消息已经在一个属性文件中，它们可以被翻译成各种语言。不需要对源代码进行任何更改。法语翻译者创建了一个名为`MessagesBundle_fr_FR.properties`的属性文件，其中包含以下内容：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Notice that the values to the right side of the equal sign have been translated
+    but that the keys on the left side have not been changed. These keys must not
+    change, because they will be referenced when your program fetches the translated
+    text.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意等号右侧的值已经被翻译，但左侧的键没有改变。这些键不能改变，因为当你的程序获取翻译后的文本时会引用这些键。
+- en: The name of the properties file is important. For example, the name of the `MessagesBundle_fr_FR.properties`
+    file contains the `fr` language code and the `FR` country code. These codes are
+    also used when creating a `Locale` object.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性文件的名称很重要。例如，`MessagesBundle_fr_FR.properties`文件的名称包含了`fr`语言代码和`FR`国家代码。在创建`Locale`对象时也会使用这些代码。
+- en: 2\. Define the Locale
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 2\. 定义Locale
+- en: 'The `Locale` object identifies a particular language and country. The following
+    statement defines a `Locale` for which the language is English and the country
+    is the United States:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Locale`对象标识特定的语言和国家。以下语句定义了一个`Locale`，其中语言为英语，国家为美国：'
+- en: '[PRE2]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The next example creates `Locale` objects for the French language in Canada
+    and in France:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个示例创建了法语语言在加拿大和法国的`Locale`对象：
+- en: '[PRE3]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The program is flexible. Instead of using hardcoded language and country codes,
+    the program gets them from the command line at run time:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序是灵活的。程序不再使用硬编码的语言和国家代码，而是在运行时从命令行获取它们：
+- en: '[PRE4]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '`Locale` objects are only identifiers. After defining a `Locale`, you pass
+    it to other objects that perform useful tasks, such as formatting dates and numbers.
+    These objects are *locale-sensitive* because their behavior varies according to
+    `Locale`. A `ResourceBundle` is an example of a locale-sensitive object.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Locale`对象只是标识符。在定义了一个`Locale`之后，你可以将它传递给执行有用任务的其他对象，比如格式化日期和数字。这些对象是*区域敏感*的，因为它们的行为根据`Locale`的不同而变化。`ResourceBundle`就是一个区域敏感的对象的例子。'
+- en: 3\. Create a ResourceBundle
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 3\. 创建ResourceBundle
+- en: '`ResourceBundle` objects contain locale-specific objects. You use `ResourceBundle`
+    objects to isolate locale-sensitive data, such as translatable text. In the sample
+    program the `ResourceBundle` is backed by the properties files that contain the
+    message text we want to display.'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ResourceBundle`对象包含特定于区域设置的对象。你可以使用`ResourceBundle`对象来隔离与区域设置相关的数据，比如可翻译的文本。在示例程序中，`ResourceBundle`由包含我们想要显示的消息文本的属性文件支持。'
+- en: 'The `ResourceBundle` is created as follows:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ResourceBundle`的创建方式如下：'
+- en: '[PRE5]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The arguments passed to the `getBundle` method identify which properties file
+    will be accessed. The first argument, `MessagesBundle`, refers to this family
+    of properties files:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传递给`getBundle`方法的参数标识将要访问的属性文件。第一个参数`MessagesBundle`指的是这一系列属性文件：
+- en: '[PRE6]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The `Locale`, which is the second argument of `getBundle`, specifies which of
+    the `MessagesBundle` files is chosen. When the `Locale` was created, the language
+    code and the country code were passed to its constructor. Note that the language
+    and country codes follow `MessagesBundle` in the names of the properties files.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Locale`是`getBundle`的第二个参数，指定了选择哪个`MessagesBundle`文件。创建`Locale`时，语言代码和国家代码被传递给其构造函数。请注意，语言和国家代码在属性文件的名称中跟随`MessagesBundle`。'
+- en: Now all you have to do is get the translated messages from the `ResourceBundle`.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在你只需要从`ResourceBundle`中获取翻译后的消息即可。
+- en: 4\. Fetch the Text from the ResourceBundle
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 4\. 从ResourceBundle中获取文本
+- en: 'The properties files contain key-value pairs. The values consist of the translated
+    text that the program will display. You specify the keys when fetching the translated
+    messages from the `ResourceBundle` with the `getString` method. For example, to
+    retrieve the message identified by the greetings key, you invoke `getString` as
+    follows:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 属性文件包含键值对。值包含了程序将显示的翻译文本。在从`ResourceBundle`中获取翻译后的消息时，你需要使用`getString`方法指定键。例如，要检索由`greetings`键标识的消息，你可以这样调用`getString`：
+- en: '[PRE7]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The sample program uses the key `greetings` because it reflects the content
+    of the message, but it could have used another `String`, such as `s1` or `msg1`.
+    Just remember that the key is hardcoded in the program and it must be present
+    in the properties files. If your translators accidentally modify the keys in the
+    properties files, `getString` won't be able to find the messages.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例程序使用了键`greetings`，因为它反映了消息的内容，但也可以使用另一个`String`，比如`s1`或`msg1`。只需记住，键是硬编码在程序中的，必须存在于属性文件中。如果你的翻译人员意外修改了属性文件中的键，`getString`将无法找到消息。
+- en: Conclusion
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 结论
+- en: That's it. As you can see, internationalizing a program isn't too difficult.
+    It requires some planning and a little extra coding, but the benefits are enormous.
+    To provide you with an overview of the internationalization process, the sample
+    program in this lesson was intentionally kept simple. As you read the lessons
+    that follow, you'll learn about the more advanced internationalization features
+    of the Java programming language.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这就是全部。正如你所看到的，国际化一个程序并不太困难。它需要一些规划和一点额外的编码，但好处是巨大的。为了让你了解国际化过程的概况，本课程中的示例程序被故意保持简单。在接下来的课程中，你将了解Java编程语言更高级的国际化特性。

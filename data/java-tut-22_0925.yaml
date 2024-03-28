@@ -1,0 +1,132 @@
+- en: What Is a URL?
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 什么是URL？
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/definition.html](https://docs.oracle.com/javase/tutorial/networking/urls/definition.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/urls/definition.html](https://docs.oracle.com/javase/tutorial/networking/urls/definition.html)
+- en: If you've been surfing the Web, you have undoubtedly heard the term URL and
+    have used URLs to access HTML pages from the Web.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您一直在浏览网络，您无疑听说过URL这个术语，并且已经使用URL从网络访问HTML页面。
+- en: It's often easiest, although not entirely accurate, to think of a URL as the
+    name of a file on the World Wide Web because most URLs refer to a file on some
+    machine on the network. However, remember that URLs also can point to other resources
+    on the network, such as database queries and command output.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管不完全准确，但通常最容易将URL视为全球网络上文件的名称，因为大多数URL指向网络上某台机器上的文件。但请记住，URL也可以指向网络上的其他资源，例如数据库查询和命令输出。
+- en: '* * *'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Definition:**'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义：**'
+- en: URL is an acronym for *Uniform Resource Locator* and is a reference (an address)
+    to a resource on the Internet.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: URL是*统一资源定位符*的缩写，是指向互联网上资源的引用（地址）。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'A URL has two main components:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: URL有两个主要组成部分：
+- en: 'Protocol identifier: For the URL `http://example.com`, the protocol identifier
+    is `http`.'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 协议标识符：对于URL `http://example.com`，协议标识符是 `http`。
+- en: 'Resource name: For the URL `http://example.com`, the resource name is `example.com`.'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 资源名称：对于URL `http://example.com`，资源名称是 `example.com`。
+- en: Note that the protocol identifier and the resource name are separated by a colon
+    and two forward slashes. The protocol identifier indicates the name of the protocol
+    to be used to fetch the resource. The example uses the Hypertext Transfer Protocol
+    (HTTP), which is typically used to serve up hypertext documents. HTTP is just
+    one of many different protocols used to access different types of resources on
+    the net. Other protocols include File Transfer Protocol (FTP), Gopher, File, and
+    News.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，协议标识符和资源名称之间用冒号和两个正斜杠分隔。协议标识符指示要用于获取资源的协议的名称。此示例使用超文本传输协议（HTTP），通常用于提供超文本文档。HTTP只是用于访问网络上不同类型资源的许多不同协议之一。其他协议包括文件传输协议（FTP）、Gopher、文件和新闻。
+- en: 'The resource name is the complete address to the resource. The format of the
+    resource name depends entirely on the protocol used, but for many protocols, including
+    HTTP, the resource name contains one or more of the following components:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 资源名称是资源的完整地址。资源名称的格式完全取决于所使用的协议，但对于许多协议，包括HTTP，资源名称包含以下一个或多个组件：
+- en: '**Host Name**'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**主机名**'
+- en: The name of the machine on which the resource lives.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 存储资源的机器名称。
+- en: '**Filename**'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**文件名**'
+- en: The pathname to the file on the machine.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 机器上文件的路径名。
+- en: '**Port Number**'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**端口号**'
+- en: The port number to which to connect (typically optional).
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要连接的端口号（通常是可选的）。
+- en: '**Reference**'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**参考**'
+- en: A reference to a named anchor within a resource that usually identifies a specific
+    location within a file (typically optional).
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指向资源内命名锚点的参考，通常标识文件内的特定位置（通常是可选的）。
+- en: For many protocols, the host name and the filename are required, while the port
+    number and reference are optional. For example, the resource name for an HTTP
+    URL must specify a server on the network (Host Name) and the path to the document
+    on that machine (Filename); it also can specify a port number and a reference.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于许多协议，主机名和文件名是必需的，而端口号和参考是可选的。例如，HTTP URL的资源名称必须指定网络上的服务器（主机名）和该机器上文档的路径（文件名）；它还可以指定端口号和参考。

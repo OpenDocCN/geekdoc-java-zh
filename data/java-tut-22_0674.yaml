@@ -1,0 +1,211 @@
+- en: Controlling Rendering Quality
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 控制渲染质量
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/advanced/quality.html](https://docs.oracle.com/javase/tutorial/2d/advanced/quality.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/advanced/quality.html](https://docs.oracle.com/javase/tutorial/2d/advanced/quality.html)
+- en: Use the [`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)
+    class rendering hints attribute to specify whether you want objects to be rendered
+    as quickly as possible or whether you prefer that the rendering quality be as
+    high as possible.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)类的渲染提示属性来指定您是希望对象尽可能快地呈现还是您更喜欢呈现质量尽可能高。
+- en: To set or change the rendering hints attribute in the `Graphics2D` context,
+    construct a [`RenderingHints`](https://docs.oracle.com/javase/8/docs/api/java/awt/RenderingHints.html)
+    object and pass it into `Graphics2D` by using the `setRenderingHints` method.
+    If you just want to set one hint, you can call `Graphics2D` `setRenderingHint`
+    and specify the key-value pair for the hint you want to set. (The key-value pairs
+    are defined in the `RenderingHints` class.)
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要设置或更改`Graphics2D`上下文中的渲染提示属性，请构造一个[`RenderingHints`](https://docs.oracle.com/javase/8/docs/api/java/awt/RenderingHints.html)对象，并通过使用`setRenderingHints`方法将其传递给`Graphics2D`。如果您只想设置一个提示，可以调用`Graphics2D`的`setRenderingHint`并指定要设置的提示的键值对。（键值对在`RenderingHints`类中定义。）
+- en: 'For example, to set a preference for antialiasing to be used if possible, you
+    could use `setRenderingHint`:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，要设置抗锯齿首选项（如果可能的话），您可以使用`setRenderingHint`：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Not all platforms support modification of the rendering mode, so
+    specifying rendering hints does not guarantee that they will be used.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**并非所有平台都支持修改渲染模式，因此指定渲染提示并不保证它们会被使用。'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '`RenderingHints` supports the following types of hints:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`RenderingHints`支持以下类型的提示：'
+- en: '| Hint | Key | Values |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| 提示 | 键 | 值 |'
+- en: '| **Antialiasing** | `KEY_ANTIALIASING` | `VALUE_ANTIALIAS_ON` `VALUE_ANTIALIAS_OFF`'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| **抗锯齿** | `KEY_ANTIALIASING` | `VALUE_ANTIALIAS_ON` `VALUE_ANTIALIAS_OFF`'
+- en: '`VALUE_ANTIALIAS_DEFAULT` |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_ANTIALIAS_DEFAULT` |'
+- en: '| **Alpha Interpolation** | `KEY_ALPHA_INTERPOLATION` | `VALUE_ALPHA_INTERPOLATION_QUALITY`
+    `VALUE_ALPHA_INTERPOLATION_SPEED`'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| **Alpha插值** | `KEY_ALPHA_INTERPOLATION` | `VALUE_ALPHA_INTERPOLATION_QUALITY`
+    `VALUE_ALPHA_INTERPOLATION_SPEED`'
+- en: '`VALUE_ALPHA_INTERPOLATION_DEFAULT` |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_ALPHA_INTERPOLATION_DEFAULT` |'
+- en: '| **Color Rendering** | `KEY_COLOR_RENDERING` | `VALUE_COLOR_RENDER_QUALITY`
+    `VALUE_COLOR_RENDER_SPEED`'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| **颜色渲染** | `KEY_COLOR_RENDERING` | `VALUE_COLOR_RENDER_QUALITY` `VALUE_COLOR_RENDER_SPEED`'
+- en: '`VALUE_COLOR_RENDER_DEFAULT` |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_COLOR_RENDER_DEFAULT` |'
+- en: '| **Dithering** | `KEY_DITHERING` | `VALUE_DITHER_DISABLE` `VALUE_DITHER_ENABLE`'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| **抖动** | `KEY_DITHERING` | `VALUE_DITHER_DISABLE` `VALUE_DITHER_ENABLE`'
+- en: '`VALUE_DITHER_DEFAULT` |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_DITHER_DEFAULT` |'
+- en: '| **Fractional Text Metrics** | `KEY_FRACTIONALMETRICS` | `VALUE_FRACTIONALMETRICS_ON`
+    `VALUE_FRACTIONALMETRICS_OFF`'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| **分数文本度量** | `KEY_FRACTIONALMETRICS` | `VALUE_FRACTIONALMETRICS_ON` `VALUE_FRACTIONALMETRICS_OFF`'
+- en: '`VALUE_FRACTIONALMETRICS_DEFAULT` |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_FRACTIONALMETRICS_DEFAULT` |'
+- en: '| **Image Interpolation** | `KEY_INTERPOLATION` | `VALUE_INTERPOLATION_BICUBIC`
+    `VALUE_INTERPOLATION_BILINEAR`'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| **图像插值** | `KEY_INTERPOLATION` | `VALUE_INTERPOLATION_BICUBIC` `VALUE_INTERPOLATION_BILINEAR`'
+- en: '`VALUE_INTERPOLATION_NEAREST_NEIGHBOR` |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_INTERPOLATION_NEAREST_NEIGHBOR` |'
+- en: '| **Rendering** | `KEY_RENDERING` | `VALUE_RENDER_QUALITY` `VALUE_RENDER_SPEED`'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| **渲染** | `KEY_RENDERING` | `VALUE_RENDER_QUALITY` `VALUE_RENDER_SPEED`'
+- en: '`VALUE_RENDER_DEFAULT` |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_RENDER_DEFAULT` |'
+- en: '| **Stroke Normalization Control** | `KEY_STROKE_CONTROL` | `VALUE_STROKE_NORMALIZE`
+    `VALUE_STROKE_DEFAULT`'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| **笔画规范化控制** | `KEY_STROKE_CONTROL` | `VALUE_STROKE_NORMALIZE` `VALUE_STROKE_DEFAULT`'
+- en: '`VALUE_STROKE_PURE` |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_STROKE_PURE` |'
+- en: '| **Text Antialiasing** | `KEY_TEXT_ANTIALIASING` | `VALUE_TEXT_ANTIALIAS_ON`
+    `VALUE_TEXT_ANTIALIAS_OFF`'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| **文本抗锯齿** | `KEY_TEXT_ANTIALIASING` | `VALUE_TEXT_ANTIALIAS_ON` `VALUE_TEXT_ANTIALIAS_OFF`'
+- en: '`VALUE_TEXT_ANTIALIAS_DEFAULT`'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_TEXT_ANTIALIAS_DEFAULT`'
+- en: '`VALUE_TEXT_ANTIALIAS_GASP`'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_TEXT_ANTIALIAS_GASP`'
+- en: '`VALUE_TEXT_ANTIALIAS_LCD_HRGB`'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_TEXT_ANTIALIAS_LCD_HRGB`'
+- en: '`VALUE_TEXT_ANTIALIAS_LCD_HBGR`'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_TEXT_ANTIALIAS_LCD_HBGR`'
+- en: '`VALUE_TEXT_ANTIALIAS_LCD_VRGB`'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_TEXT_ANTIALIAS_LCD_VRGB`'
+- en: '`VALUE_TEXT_ANTIALIAS_LCD_VBGR`'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`VALUE_TEXT_ANTIALIAS_LCD_VBGR`'
+- en: '|'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '|'
+- en: '| **LCD Text Contrast** | `KEY_TEXT_LCD_CONTRAST` | Values should be a positive
+    integer in the range 100 to 250\. A lower value (such as 100) corresponds to higher
+    contrast text when displaying dark text on a light background. A higher value
+    (such as 200) corresponds to lower contrast text when displaying dark text on
+    a light background. A typical useful value is in the narrow range 140-180\. If
+    no value is specified, a system or implementation default value will be applied.
+    |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| **LCD 文本对比度** | `KEY_TEXT_LCD_CONTRAST` | 值应为范围在100到250之间的正整数。较低的值（如100）对应于在浅色背景上显示深色文本时更高的对比度。较高的值（如200）对应于在浅色背景上显示深色文本时较低的对比度。一个典型有用的值在140-180的狭窄范围内。如果未指定值，则将应用系统或实现默认值。
+    |'
+- en: When a hint is set to default, the platform rendering default is used.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当提示设置为默认时，使用平台渲染默认值。

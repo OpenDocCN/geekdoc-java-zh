@@ -1,0 +1,131 @@
+- en: The Catch or Specify Requirement
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 捕获或指定要求
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/catchOrDeclare.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/catchOrDeclare.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/exceptions/catchOrDeclare.html](https://docs.oracle.com/javase/tutorial/essential/exceptions/catchOrDeclare.html)
+- en: 'Valid Java programming language code must honor the *Catch or Specify Requirement*.
+    This means that code that might throw certain exceptions must be enclosed by either
+    of the following:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有效的Java编程语言代码必须遵守*捕获或指定要求*。这意味着可能引发某些异常的代码必须被以下之一包围：
+- en: A `try` statement that catches the exception. The `try` must provide a handler
+    for the exception, as described in [Catching and Handling Exceptions](handling.html).
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个捕获异常的`try`语句。`try`必须提供异常处理程序，如[Catching and Handling Exceptions](handling.html)中所述。
+- en: A method that specifies that it can throw the exception. The method must provide
+    a `throws` clause that lists the exception, as described in [Specifying the Exceptions
+    Thrown by a Method](declaring.html).
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 指定可能引发异常的方法。该方法必须提供列出异常的`throws`子句，如[Specifying the Exceptions Thrown by a Method](declaring.html)中所述。
+- en: Code that fails to honor the Catch or Specify Requirement will not compile.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 未遵守捕获或指定要求的代码将无法编译。
+- en: Not all exceptions are subject to the Catch or Specify Requirement. To understand
+    why, we need to look at the three basic categories of exceptions, only one of
+    which is subject to the Requirement.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 并非所有异常都受捕获或指定要求的约束。要理解原因，我们需要看一下三种基本类别的异常，其中只有一种受到该要求的约束。
+- en: The Three Kinds of Exceptions
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 三种异常类型
+- en: The first kind of exception is the *checked exception*. These are exceptional
+    conditions that a well-written application should anticipate and recover from.
+    For example, suppose an application prompts a user for an input file name, then
+    opens the file by passing the name to the constructor for `java.io.FileReader`.
+    Normally, the user provides the name of an existing, readable file, so the construction
+    of the `FileReader` object succeeds, and the execution of the application proceeds
+    normally. But sometimes the user supplies the name of a nonexistent file, and
+    the constructor throws `java.io.FileNotFoundException`. A well-written program
+    will catch this exception and notify the user of the mistake, possibly prompting
+    for a corrected file name.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一种异常是*受检异常*。这些是一个良好编写的应用程序应该预料并从中恢复的异常情况。例如，假设一个应用程序提示用户输入文件名，然后通过将名称传递给`java.io.FileReader`的构造函数来打开文件。通常，用户提供现有的可读文件的名称，因此`FileReader`对象的构造成功，应用程序的执行正常进行。但有时用户提供不存在文件的名称，构造函数会抛出`java.io.FileNotFoundException`。一个良好编写的程序将捕获此异常并通知用户错误，可能提示更正的文件名。
+- en: Checked exceptions *are subject* to the Catch or Specify Requirement. All exceptions
+    are checked exceptions, except for those indicated by `Error`, `RuntimeException`,
+    and their subclasses.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*受检异常*受到捕获或指定要求的约束。所有异常都是受检异常，除了由`Error`、`RuntimeException`及其子类指示的异常。'
+- en: "The second kind of exception is the *error*. These are exceptional conditions\
+    \ that are external to the application, and that the application usually cannot\
+    \ anticipate or recover from. For example, suppose that an application successfully\
+    \ opens a file for input, but is unable to read the file because of a hardware\
+    \ or system malfunction. The unsuccessful read will throw `java.io.IOError`. An\
+    \ application might choose to catch this exception, in order to notify the user\
+    \ of the problem \x97 but it also might make sense for the program to print a\
+    \ stack trace and exit."
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第二种异常是*错误*。这些是应用程序外部的异常情况，应用程序通常无法预料或从中恢复。例如，假设一个应用程序成功打开一个输入文件，但由于硬件或系统故障无法读取文件。读取失败将抛出`java.io.IOError`。应用程序可能选择捕获此异常，以通知用户问题，但程序打印堆栈跟踪并退出也是有道理的。
+- en: Errors *are not subject* to the Catch or Specify Requirement. Errors are those
+    exceptions indicated by `Error` and its subclasses.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 错误*不受*捕获或指定要求的约束。错误是由`Error`及其子类指示的异常。
+- en: The third kind of exception is the *runtime exception*. These are exceptional
+    conditions that are internal to the application, and that the application usually
+    cannot anticipate or recover from. These usually indicate programming bugs, such
+    as logic errors or improper use of an API. For example, consider the application
+    described previously that passes a file name to the constructor for `FileReader`.
+    If a logic error causes a `null` to be passed to the constructor, the constructor
+    will throw `NullPointerException`. The application can catch this exception, but
+    it probably makes more sense to eliminate the bug that caused the exception to
+    occur.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第三种异常是*运行时异常*。这些是应用程序内部的异常情况，应用程序通常无法预料或恢复。这通常表示编程错误，如逻辑错误或不正确使用API。例如，考虑先前描述的应用程序将文件名传递给`FileReader`构造函数。如果逻辑错误导致将`null`传递给构造函数，则构造函数将抛出`NullPointerException`。应用程序可以捕获此异常，但更有意义的是消除导致异常发生的错误。
+- en: Runtime exceptions *are not subject* to the Catch or Specify Requirement. Runtime
+    exceptions are those indicated by `RuntimeException` and its subclasses.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行时异常*不受*捕获或指定要求的约束。运行时异常是由`RuntimeException`及其子类指示的异常。
+- en: Errors and runtime exceptions are collectively known as *unchecked exceptions*.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 错误和运行时异常统称为*未经检查的异常*。
+- en: Bypassing Catch or Specify
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 绕过捕获或指定
+- en: "Some programmers consider the Catch or Specify Requirement a serious flaw in\
+    \ the exception mechanism and bypass it by using unchecked exceptions in place\
+    \ of checked exceptions. In general, this is not recommended. The section [Unchecked\
+    \ Exceptions \x97 The Controversy](runtime.html) talks about when it is appropriate\
+    \ to use unchecked exceptions."
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些程序员认为捕获或指定要求是异常机制中的一个严重缺陷，并通过在需要检查的异常位置使用未经检查的异常来绕过它。一般来说，这是不推荐的。章节[未经检查的异常
+    - 争议](runtime.html)讨论了何时适合使用未经检查的异常。

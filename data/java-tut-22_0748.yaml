@@ -1,0 +1,317 @@
+- en: 'Lesson: Notifications'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教训：通知
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jmx/notifs/index.html](https://docs.oracle.com/javase/tutorial/jmx/notifs/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jmx/notifs/index.html](https://docs.oracle.com/javase/tutorial/jmx/notifs/index.html)
+- en: The JMX API defines a mechanism to enable MBeans to generate notifications,
+    for example, to signal a state change, a detected event, or a problem.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JMX API定义了一种机制，使MBeans能够生成通知，例如，用于表示状态变化、检测到的事件或问题。
+- en: To generate notifications, an MBean must implement the interface [`NotificationEmitter`](https://docs.oracle.com/javase/8/docs/api/javax/management/NotificationEmitter.html)
+    or extend [`NotificationBroadcasterSupport`](https://docs.oracle.com/javase/8/docs/api/javax/management/NotificationBroadcasterSupport.html).
+    To send a notification, you need to construct an instance of the class [`javax.management.Notification`](https://docs.oracle.com/javase/8/docs/api/javax/management/Notification.html)
+    or a subclass (such as [`AttributeChangedNotification`](https://docs.oracle.com/javase/8/docs/api/javax/management/AttributeChangeNotification.html)),
+    and pass the instance to [`NotificationBroadcasterSupport.sendNotification`](https://docs.oracle.com/javase/8/docs/api/javax/management/NotificationBroadcasterSupport.html#sendNotification-javax.management.Notification).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要生成通知，MBean必须实现接口[`NotificationEmitter`](https://docs.oracle.com/javase/8/docs/api/javax/management/NotificationEmitter.html)或扩展[`NotificationBroadcasterSupport`](https://docs.oracle.com/javase/8/docs/api/javax/management/NotificationBroadcasterSupport.html)。要发送通知，您需要构造类[`javax.management.Notification`](https://docs.oracle.com/javase/8/docs/api/javax/management/Notification.html)或其子类（例如[`AttributeChangedNotification`](https://docs.oracle.com/javase/8/docs/api/javax/management/AttributeChangeNotification.html)）的实例，并将实例传递给[`NotificationBroadcasterSupport.sendNotification`](https://docs.oracle.com/javase/8/docs/api/javax/management/NotificationBroadcasterSupport.html#sendNotification-javax.management.Notification)。
+- en: Every notification has a source. The source is the object name of the MBean
+    that generated the notification.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个通知都有一个来源。来源是生成通知的MBean的对象名称。
+- en: Every notification has a sequence number. This number can be used to order notifications
+    coming from the same source when order matters and there is a risk of the notifications
+    being handled in the wrong order. The sequence number can be zero, but preferably
+    the number increments for each notification from a given MBean.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个通知都有一个序列号。当顺序很重要且存在通知被错误处理的风险时，可以使用此编号来对来自同一来源的通知进行排序。序列号可以为零，但最好对于来自给定MBean的每个通知递增。
+- en: 'The [`Hello`](../examples/Hello.java) MBean implementation in [Standard MBeans](../mbeans/standard.html)
+    actually implements the notification mechanism. However, this code was omitted
+    in that lesson for the sake of simplicity. The complete code for `Hello` follows:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Hello`](../examples/Hello.java) MBean在[标准MBeans](../mbeans/standard.html)中实际上实现了通知机制。但是，出于简单起见，该课程中省略了此代码。`Hello`的完整代码如下：'
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This `Hello` MBean implementation extends the `NotificationBroadcasterSupport`
+    class. `NotificationBroadcasterSupport` implements the `NotificationEmitter` interface.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此`Hello` MBean实现扩展了`NotificationBroadcasterSupport`类。`NotificationBroadcasterSupport`实现了`NotificationEmitter`接口。
+- en: The operations and attributes are set in the same way as in the standard MBean
+    example, with the exception that the `CacheSize` attribute's setter method now
+    defines a value of `oldSize`. This value records the `CacheSize` attribute's value
+    prior to the set operation.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 操作和属性的设置方式与标准MBean示例中的方式相同，唯一的例外是`CacheSize`属性的setter方法现在定义了一个值`oldSize`。此值记录了在设置操作之前`CacheSize`属性的值。
+- en: The notification is constructed from an instance, `n`, of the JMX class `AttributeChangeNotification`,
+    which extends `javax.management.Notification`. The notification is constructed
+    within the definition of the `setCacheSize()` method from the following information.
+    This information is passed to `AttributeChangeNotification` as parameters.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通知是从JMX类`AttributeChangeNotification`的实例`n`构造的，该类扩展了`javax.management.Notification`。通知是在`setCacheSize()`方法的定义中从以下信息构造的。这些信息作为参数传递给`AttributeChangeNotification`。
+- en: The object name of the source of the notification, namely the `Hello` MBean,
+    represented by `this`
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通知来源的对象名称，即`Hello` MBean，由`this`表示
+- en: A sequence number, namely `sequenceNumber`, that is set to 1 and that increases
+    incrementally
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 一个序列号，即`sequenceNumber`，设置为1，并逐渐增加
+- en: A timestamp
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 时间戳
+- en: The content of the notification message
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 通知消息的内容
+- en: The name of the attribute that has changed, in this case, `CacheSize`
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 已更改的属性名称，本例中为`CacheSize`
+- en: The type of attribute that has changed
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 已更改的属性类型
+- en: The old attribute value, in this case, `oldSize`
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 旧属性值，在本例中为`oldSize`
+- en: The new attribute value, in this case, `this.cacheSize`
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 新属性值，在本例中为`this.cacheSize`
+- en: The notification `n` is then passed to the `NotificationBroadcasterSupport.sendNotification()`
+    method.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，通知`n`被传递给`NotificationBroadcasterSupport.sendNotification()`方法。
+- en: Finally, the [`MBeanNotificationInfo`](https://docs.oracle.com/javase/8/docs/api/javax/management/MBeanNotificationInfo.html)
+    instance is defined to describe the characteristics of the different notification
+    instances generated by the MBean for a given type of notification. In this case
+    the type of notifications sent is `AttributeChangeNotification` notifications.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，[`MBeanNotificationInfo`](https://docs.oracle.com/javase/8/docs/api/javax/management/MBeanNotificationInfo.html)实例被定义，以描述MBean为给定类型的通知生成的不同通知实例的特征。在本例中，发送的通知类型是`AttributeChangeNotification`通知。
+- en: Running the MBean Notification Example
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行MBean通知示例
+- en: Once again, you will use JConsole to interact with the `Hello` MBean, this time
+    to send and receive notifications. This example requires version 6 of the Java
+    SE platform.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次使用JConsole与`Hello` MBean交互，这次是为了发送和接收通知。此示例需要Java SE平台的第6版。
+- en: If you have not done so already, save [`jmx_examples.zip`](../examples/jmx_examples.zip)
+    into your `work_dir` directory.
+  id: totrans-23
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果尚未这样做，请将[`jmx_examples.zip`](../examples/jmx_examples.zip)保存到您的`work_dir`目录中。
+- en: Unzip the bundle of sample classes by using the following command in a terminal
+    window.
+  id: totrans-24
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在终端窗口中使用以下命令解压示例类的捆绑包。
+- en: '[PRE1]'
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Compile the example Java classes from within the `work_dir` directory.
+  id: totrans-26
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从`work_dir`目录中编译示例Java类。
+- en: '[PRE2]'
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Start the `Main` application.
+  id: totrans-28
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 启动`Main`应用程序。
+- en: '[PRE3]'
+  id: totrans-29
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: A confirmation that `Main` is waiting for something to happen is generated.
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 生成一个确认，表示`Main`正在等待某些事件发生。
+- en: Start JConsole in a different terminal window on the same machine.
+  id: totrans-31
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在同一台机器的不同终端窗口中启动JConsole。
+- en: '[PRE4]'
+  id: totrans-32
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The New Connection dialog box is displayed, presenting a list of running JMX
+    agents that you can connect to.
+  id: totrans-33
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示新连接对话框，呈现可以连接的正在运行的JMX代理列表。
+- en: In the New Connection dialog box, select `com.example.Main` from the list and
+    click Connect.
+  id: totrans-34
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在新连接对话框中，从列表中选择`com.example.Main`并点击连接。
+- en: A summary of your platform's current activity is displayed.
+  id: totrans-35
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 显示您平台当前活动的摘要。
+- en: Click the MBeans tab.
+  id: totrans-36
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击MBeans选项卡。
+- en: This panel shows all the MBeans that are currently registered in the MBean server.
+  id: totrans-37
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 此面板显示当前在MBean服务器中注册的所有MBeans。
+- en: In the left frame, expand the `com.example` node in the MBean tree.
+  id: totrans-38
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在左侧框架中，展开MBean树中的`com.example`节点。
+- en: You see the example MBean `Hello` that was created and registered by `Hello`.
+    If you click `Hello`, you see its Notifications node in the MBean tree.
+  id: totrans-39
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 您会看到由`Hello`创建和注册的示例MBean`Hello`。如果点击`Hello`，您会看到其在MBean树中的通知节点。
+- en: Expand the Notifications node of the `Hello` MBean in the MBean tree.
+  id: totrans-40
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 展开MBean树中`Hello` MBean的通知节点。
+- en: Note that the panel is blank.
+  id: totrans-41
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 请注意，面板为空白。
+- en: Click the Subscribe button.
+  id: totrans-42
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击订阅按钮。
+- en: The current number of notifications received (0) is displayed in the Notifications
+    node label.
+  id: totrans-43
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 当前接收的通知数量（0）显示在通知节点标签中。
+- en: Expand the Attributes node of the `Hello` MBean in the MBean tree, and change
+    the value of the `CacheSize` attribute to 150.
+  id: totrans-44
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 展开MBean树中`Hello` MBean的属性节点，并将`CacheSize`属性的值更改为150。
+- en: In the terminal window in which you started `Main`, a confirmation of this attribute
+    change is displayed. Note that the number of received notifications displayed
+    in the Notifications node has changed to 1.
+  id: totrans-45
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在启动`Main`的终端窗口中，会显示对此属性更改的确认。请注意，显示在通知节点中的接收通知数量已更改为1。
+- en: Expand again the Notifications node of the `Hello` MBean in the MBean tree.
+  id: totrans-46
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次展开MBean树中`Hello` MBean的通知节点。
+- en: The details of the notification are displayed.
+  id: totrans-47
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 通知的详细信息将被显示。
+- en: To close JConsole, select Connection -> Exit.
+  id: totrans-48
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 要关闭JConsole，请选择连接 -> 退出。

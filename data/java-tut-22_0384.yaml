@@ -1,0 +1,214 @@
+- en: How to Use Password Fields
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用密码字段
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/passwordfield.html](https://docs.oracle.com/javase/tutorial/uiswing/components/passwordfield.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/passwordfield.html](https://docs.oracle.com/javase/tutorial/uiswing/components/passwordfield.html)
+- en: The [`JPasswordField`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html)
+    class, a subclass of `JTextField`, provides specialized text fields for password
+    entry. For security reasons, a password field does not show the characters that
+    the user types. Instead, the field displays a character different from the one
+    typed, such as an asterisk '*'. As another security precaution, a password field
+    stores its value as an array of characters, rather than as a string. Like an ordinary
+    [text field](textfield.html), a password field fires an [action event](../events/actionlistener.html)
+    when the user indicates that text entry is complete, for example by pressing the
+    Enter button.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`JPasswordField`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html)类是`JTextField`的子类，为密码输入提供了专门的文本字段。出于安全原因，密码字段不显示用户输入的字符。相反，该字段显示与键入字符不同的字符，例如星号''*''。作为另一个安全预防措施，密码字段将其值存储为字符数组，而不是字符串。与普通的[文本字段](textfield.html)一样，当用户指示文本输入完成时，例如按下回车按钮时，密码字段会触发[操作事件](../events/actionlistener.html)。'
+- en: Here is a picture of a demo that opens a small window and prompts the user to
+    type in a password.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个演示的图片，打开一个小窗口并提示用户输入密码。
+- en: '![A snapshot of PasswordDemo, which uses a password field](../Images/25fbc754c8288cddee910c3ef5b957fe.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![使用密码字段的PasswordDemo快照](../Images/25fbc754c8288cddee910c3ef5b957fe.png)'
+- en: Click the Launch button to run PasswordDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#PasswordDemo).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行PasswordDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#PasswordDemo)。
+- en: '[![Launches the PasswordDemo Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/PasswordDemoProject/PasswordDemo.jnlp)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动PasswordDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/PasswordDemoProject/PasswordDemo.jnlp)'
+- en: 'The password is "bugaboo". The password "bugaboo" is an example only. Use secure
+    authentication methods in production systems. You can find the entire code for
+    this program in [``PasswordDemo.java``](../examples/components/PasswordDemoProject/src/components/PasswordDemo.java).
+    Here is the code that creates and sets up the password field:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 密码是"bugaboo"。密码"bugaboo"仅为示例。在生产系统中使用安全的身份验证方法。您可以在[``PasswordDemo.java``](../examples/components/PasswordDemoProject/src/components/PasswordDemo.java)中找到此程序的完整代码。以下是创建和设置密码字段的代码：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The argument passed into the `JPasswordField` constructor indicates the preferred
+    size of the field, which is at least 10 columns wide in this case. By default
+    a password field displays a dot for each character typed. If you want to change
+    the echo character, call the `setEchoChar` method. The code then adds an action
+    listener to the password field, which checks the value typed in by the user. Here
+    is the implementation of the action listener''s `actionPerformed` method:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传递给`JPasswordField`构造函数的参数指示字段的首选大小，在这种情况下至少为10列宽。默认情况下，密码字段显示每个键入字符的点。如果要更改回显字符，请调用`setEchoChar`方法。然后，代码向密码字段添加了一个操作监听器，该监听器检查用户键入的值。以下是操作监听器的`actionPerformed`方法的实现：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Security note:** To further enhance security, once you are finished with
+    the character array returned by the `getPassword` method, you should set each
+    of its elements to zero. The preceding code snippet shows how to do this.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**安全提示：** 为了进一步增强安全性，一旦您完成了`getPassword`方法返回的字符数组，您应该将其每个元素都设置为零。前面的代码片段展示了如何做到这一点。'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'A program that uses a password field typically validates the password before
+    completing any actions that require the password. This program calls a private
+    method, `isPasswordCorrect`, that compares the value returned by the `getPassword`
+    method to a value stored in a character array. Here is its code:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常使用密码字段的程序在执行需要密码的任何操作之前会验证密码。该程序调用一个私有方法 `isPasswordCorrect`，该方���将 `getPassword`
+    方法返回的值与存储在字符数组中的值进行比较。以下是其代码：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The Password Field API
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 密码字段 API
+- en: The following tables list the commonly used `JPasswordField` constructors and
+    methods. For information on the API that password fields inherit, see [How to
+    Use Text Fields](textfield.html).
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的 `JPasswordField` 构造函数和方法。有关密码字段继承的 API 信息，请参阅[如何使用文本字段](textfield.html)。
+- en: Commonly Used JPasswordField Constructors and Methods
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 常用的 JPasswordField 构造函数和方法
+- en: '| Constructor or Method | Purpose |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数或方法 | 目的 |'
+- en: '| [JPasswordField()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#JPasswordField--)
+    [JPasswordField(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#JPasswordField-java.lang.String-)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [JPasswordField()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#JPasswordField--)
+    [JPasswordField(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#JPasswordField-java.lang.String-)'
+- en: '[JPasswordField(String, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#JPasswordField-java.lang.String-int-)'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JPasswordField(String, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#JPasswordField-java.lang.String-int-)'
+- en: '[JPasswordField(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#JPasswordField-int-)'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JPasswordField(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#JPasswordField-int-)'
+- en: '[JPasswordField(Document, String, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#JPasswordField-javax.swing.text.Document-java.lang.String-int-)
+    | Creates a password field. When present, the `int` argument specifies the desired
+    width in columns. The `String` argument contains the field''s initial text. The
+    `Document` argument provides a custom model for the field. |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JPasswordField(Document, String, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#JPasswordField-javax.swing.text.Document-java.lang.String-int-)
+    | 创建一个密码字段。当存在时，`int`参数指定所需的列宽。`String`参数包含字段的初始文本。`Document`参数为字段提供自定义模型。 |'
+- en: '| [char[] getPassword()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#getPassword--)
+    | Returns the password as an array of characters. |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| [char[] getPassword()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#getPassword--)
+    | 将密码作为字符数组返回。 |'
+- en: '| [void setEchoChar(char)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#setEchoChar-char-)
+    [char getEchoChar()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#getEchoChar--)
+    | Sets or gets the echo character which is displayed instead of the actual characters
+    typed by the user. |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setEchoChar(char)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#setEchoChar-char-)
+    [char getEchoChar()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPasswordField.html#getEchoChar--)
+    | 设置或获取代替用户键入的实际字符显示的回显字符。 |'
+- en: '| [void addActionListener(ActionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#addActionListener-java.awt.event.ActionListener-)
+    [void removeActionListener(ActionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#removeActionListener-java.awt.event.ActionListener-)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void addActionListener(ActionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#addActionListener-java.awt.event.ActionListener-)
+    [void removeActionListener(ActionListener)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#removeActionListener-java.awt.event.ActionListener-)'
+- en: '*(defined in `JTextField`)* | Adds or removes an action listener. |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在 `JTextField` 中定义)* | 添加或移除动作监听器。 |'
+- en: '| [void selectAll()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#selectAll--)
+    *(defined in `JTextComponent`)* | Selects all characters in the password field.
+    |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void selectAll()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#selectAll--)
+    *(在 `JTextComponent` 中定义)* | 选择密码字段中的所有字符。 |'
+- en: Examples That Use Password Fields
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用密码字段的示例
+- en: '[PasswordDemo](../examples/components/index.html#PasswordDemo) is the Tutorial''s
+    only example that uses a `JPasswordField` object. However, the Tutorial has many
+    examples that use `JTextField` objects, whose API is inherited by `JPasswordField`.
+    See [Examples That Use Text Fields](textfield.html#eg) for further information.'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[PasswordDemo](../examples/components/index.html#PasswordDemo) 是教程中唯一使用 `JPasswordField`
+    对象的示例。然而，教程中有许多示例使用 `JTextField` 对象，其 API 被 `JPasswordField` 继承。有关更多信息，请参阅[使用文本字段的示例](textfield.html#eg)。'
+- en: If you are programming in JavaFX, see [Password Fields](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/password-field.htm).
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你正在使用JavaFX进行编程，请查看[密码字段](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/password-field.htm)。

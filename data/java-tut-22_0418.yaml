@@ -1,0 +1,459 @@
+- en: How to Use Actions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用动作
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/action.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/action.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/action.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/action.html)
+- en: An [`Action`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html)
+    can be used to separate functionality and state from a component. For example,
+    if you have two or more components that perform the same function, consider using
+    an `Action` object to implement the function. An `Action` object is an [action
+    listener](../events/actionlistener.html) that provides not only action-event handling,
+    but also centralized handling of the state of action-event-firing components such
+    as [tool bar buttons](../components/toolbar.html), [menu items](../components/menu.html),
+    [common buttons](../components/button.html), and [text fields](../components/textfield.html).
+    The state that an action can handle includes text, icon, mnemonic, enabled, and
+    selected status.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Action`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html)可用于将功能和状态与组件分离。例如，如果有两个或更多执行相同功能的组件，请考虑使用`Action`对象来实现该功能。`Action`对象是一个[action
+    listener](../events/actionlistener.html)，不仅提供动作事件处理，还提供对动作事件触发组件的状态的集中处理，例如[工具栏按钮](../components/toolbar.html)、[菜单项](../components/menu.html)、[常用按钮](../components/button.html)和[文本字段](../components/textfield.html)。动作可以处理的状态包括文本、图标、助记键、启用和选定状态。'
+- en: 'You typically attach an action to a component using the `setAction` method.
+    Here''s what happens when `setAction` is invoked on a component:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常使用`setAction`方法将动作附加到组件。当在组件上调用`setAction`时会发生什么：
+- en: The component's state is updated to match the state of the `Action`. For example,
+    if the `Action`'s text and icon values were set, the component's text and icon
+    are set to those values.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 组件的状态会更新以匹配`Action`的状态。例如，如果`Action`的文本和图标值已设置，则组件的文本和图标将设置为这些值。
+- en: The `Action` object is registered as an action listener on the component.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Action`对象在组件上注册为动作监听器。'
+- en: If the state of the `Action` changes, the component's state is updated to match
+    the `Action`. For example, if you change the enabled status of the action, all
+    components it's attached to change their enabled states to match the action.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果`Action`的状态发生变化，组件的状态将更新以匹配`Action`。例如，如果更改动作的启用状态，则所有附加到它的组件将更改其启用状态以匹配动作。
+- en: 'Here''s an example of creating a tool-bar button and menu item that perform
+    the same function:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个示例，创建一个工具栏按钮和菜单项，执行相同的功能：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To create an `Action` object, you generally create a subclass of [`AbstractAction`](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html)
+    and then instantiate it. In your subclass, you must implement the `actionPerformed`
+    method to react appropriately when the action event occurs. Here''s an example
+    of creating and instantiating an `AbstractAction` subclass:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建一个`Action`对象，通常创建[`AbstractAction`](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html)的子类，然后实例化它。在子类中，必须实现`actionPerformed`方法，在动作事件发生时做出适当反应。这里有一个创建和实例化`AbstractAction`子类的示例：
+- en: '[PRE1]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: When the action created by the preceding code is attached to a button and a
+    menu item, the button and menu item display the text and icon associated with
+    the action. The `L` character is used for mnemonics on the button and menu item,
+    and their tool-tip text is set to the `SHORT_DESCRIPTION` string followed by a
+    representation of the mnemonic key.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当前面的代码创建的动作附加到按钮和菜单项时，按钮和菜单项将显示与动作关联的文本和图标。按钮和菜单项上使用`L`字符作为助记键，并且它们的工具提示文本设置为`SHORT_DESCRIPTION`字符串，后跟助记键的表示。
+- en: For example, we have provided a simple example, [`ActionDemo.java`](../examples/misc/ActionDemoProject/src/misc/ActionDemo.java),
+    which defines three actions. Each action is attached to a button and a menu item.
+    Thanks to the mnemonic values set for each button's action, the key sequence `Alt-L`
+    activates the left button, `Alt-M` the middle button, and `Alt-R` the right button.
+    The tool tip for the left button displays *This is the left button. Alt-L.* All
+    of this configuration occurs automatically, without the program making explicit
+    calls to set the mnemonic or tool-tip text. As we'll show later, the program *does*
+    make calls to set the button text, but only to avoid using the values already
+    set by the actions.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，我们提供了一个简单的示例，[`ActionDemo.java`](../examples/misc/ActionDemoProject/src/misc/ActionDemo.java)，定义了三个操作。每个操作都附加到一个按钮和一个菜单项。由于为每个按钮的操作设置了助记符值，按键序列`Alt-L`激活左按钮，`Alt-M`激活中间按钮，`Alt-R`激活右按钮。左按钮的工具提示显示*这是左按钮。Alt-L.*
+    所有这些配置都是自动完成的，程序不需要显式调用设置助记符或工具提示文本。正如我们稍后将展示的，程序确实调用设置按钮文本，但只是为了避免使用操作已设置的值。
+- en: '![A snapshot of ActionDemo, which uses actions to coordinate menus and buttons.](../Images/3a13aeb4435421e4b81ef2b78ccb2507.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ActionDemo的快照，使用操作协调菜单和按钮。](../Images/3a13aeb4435421e4b81ef2b78ccb2507.png)'
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run ActionDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Or, to compile and run the example yourself, consult the [example index](../examples/misc/index.html#ActionDemo).
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行ActionDemo（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/misc/index.html#ActionDemo)。
+- en: '[![Launches the ActionDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ActionDemoProject/ActionDemo.jnlp)'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '[![启动ActionDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ActionDemoProject/ActionDemo.jnlp)'
+- en: Choose the top item from the left menu (**Menu > Go left**).
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从左侧菜单中选择顶部项目（**菜单 > 向左**）。
+- en: The text area displays some text identifying both the event source and the action
+    listener that received the event.
+  id: totrans-19
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 文本区域显示一些文本，标识事件源和接收事件的操作监听器。
+- en: Click the leftmost button in the tool bar.
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击工具栏中最左边的按钮。
+- en: 'The text area again displays information about the event. Note that although
+    the source of the events is different, both events were detected by the same action
+    listener: the `Action` object attached to the components.'
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 文本区域再次显示有关事件的信息。请注意，尽管事件的来源不同，但两个事件都是由相同的操作监听器检测到的：附加到组件的`Action`对象。
+- en: Choose the top item from the **Action State** menu.
+  id: totrans-22
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从**操作状态**菜单中选择顶部项目。
+- en: This disables the "Go left" `Action` object, which in turn disables its associated
+    menu item and button.
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这将禁用“向左”`Action`对象，进而禁用其关联的菜单项和按钮。
+- en: '* * *'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Here is what the user sees when the "Go left" action is disabled:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当“向左”操作被禁用时，用户看到的情况如下：
+- en: '| ![A snapshot of ActionDemo when ](../Images/2ceeb884287d2e47a91f29156540fa4e.png)
+    | ![A snapshot of ActionDemo when ](../Images/d0135996b4a53393c7c10d5b2ab30994.png)
+    |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![ActionDemo的快照](../Images/2ceeb884287d2e47a91f29156540fa4e.png) | ![ActionDemo的快照](../Images/d0135996b4a53393c7c10d5b2ab30994.png)
+    |'
+- en: 'Here''s the code that disables the "Go left" action:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是禁用“向左”操作的代码：
+- en: '[PRE2]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'After you create components using an `Action`, you might well need to customize
+    them. For example, you might want to customize the appearance of one of the components
+    by adding or deleting the icon or text. For example, [`ActionDemo.java`](../examples/misc/ActionDemoProject/src/misc/ActionDemo.java)
+    has no icons in its menus, and no text in its buttons. Here''s the code that accomplishes
+    this:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在使用`Action`创建组件后，您可能需要自定义它们。例如，您可能希望通过添加或删除图标或文本来自定义其中一个组件的外观。例如，[`ActionDemo.java`](../examples/misc/ActionDemoProject/src/misc/ActionDemo.java)的菜单中没有图标，按钮中也没有文本。以下是实现此目的的代码：
+- en: '[PRE3]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: We chose to create an icon-only button and a text-only menu item from the same
+    action by setting the icon property to `null` and the text to an empty string.
+    However, if a property of the `Action` changes, the widget may try to reset the
+    icon and text from the `Action` again.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们选择通过将图标属性设置为`null`，将文本设置为空字符串，从同一个操作中创建一个仅图标的按钮和一个仅文本的菜单项。然而，如果`Action`的属性发生变化，小部件可能会尝试再次从`Action`中重置图标和文本。
+- en: The Action API
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 操作API
+- en: 'The following tables list the commonly used `Action` constructors and methods.
+    The API for using `Action` objects falls into three categories:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的`Action`构造函数和方法。 使用`Action`对象的API分为三类：
+- en: '[Components that Support set/getAction](#actioncomponents)'
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[支持设置/获取操作的组件](#actioncomponents)'
+- en: '[Creating and Using an AbstractAction](#actionapi)'
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建和使用 AbstractAction](#actionapi)'
+- en: '[Action Properties](#properties)'
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[操作属性](#properties)'
+- en: Components that Support set/getAction
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 支持设置/获取操作的组件
+- en: '| Class | Purpose |'
+  id: totrans-38
+  prefs: []
+  type: TYPE_TB
+  zh: '| 类 | 目的 |'
+- en: '| [AbstractButton](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractButton.html#setAction-javax.swing.Action-)
+    [JComboBox](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComboBox.html#setAction-javax.swing.Action-)'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [AbstractButton](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractButton.html#setAction-javax.swing.Action-)
+    [JComboBox](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComboBox.html#setAction-javax.swing.Action-)'
+- en: '[JTextField](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#setAction-javax.swing.Action-)
+    | These components and their subclasses may have an action directly assigned to
+    them via `setAction`. For further information about components that are often
+    associated with actions, see the sections on [tool bar buttons](../components/toolbar.html),
+    [menu items](../components/menu.html), [common buttons](../components/button.html),
+    and [text fields](../components/textfield.html). For details on which properties
+    each component takes from the `Action`, see the API documentation for the relevant
+    class''s [`configurePropertiesFromAction`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JMenuItem.html#configurePropertiesFromAction-javax.swing.Action-)
+    method. Also refer to the [`buttonActions`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#buttonActions)
+    table. |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JTextField](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextField.html#setAction-javax.swing.Action-)
+    | 这些组件及其子类可以通过`setAction`直接分配一个操作。 有关通常与操作关联的组件的更多信息，请参阅关于[工具栏按钮](../components/toolbar.html)、[菜单项](../components/menu.html)、[常见按钮](../components/button.html)和[文本字段](../components/textfield.html)的部分。
+    有关每个组件从`Action`中获取哪些属性的详细信息，请参阅相关类的API文档[`configurePropertiesFromAction`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JMenuItem.html#configurePropertiesFromAction-javax.swing.Action-)方法。
+    还请参考[`buttonActions`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#buttonActions)表。
+    |'
+- en: Creating and Using an AbstractAction
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建和使用 AbstractAction
+- en: '| Constructor or Method | Purpose |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数或方法 | 目的 |'
+- en: '| [AbstractAction()](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#AbstractAction--)
+    [AbstractAction(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#AbstractAction-java.lang.String-)'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [AbstractAction()](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#AbstractAction--)
+    [AbstractAction(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#AbstractAction-java.lang.String-)'
+- en: '[AbstractAction(String, Icon)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#AbstractAction-java.lang.String-javax.swing.Icon-)
+    | Create an `Action` object. Through arguments, you can specify the text and icon
+    to be used in the components that the action is attached to. |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[AbstractAction(String, Icon)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#AbstractAction-java.lang.String-javax.swing.Icon-)
+    | 创建一个`Action`对象。 通过参数，您可以指定要在操作附加到的组件中使用的文本和图标。 |'
+- en: '| [void setEnabled(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#setEnabled-boolean-)
+    [boolean isEnabled()](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#isEnabled--)
+    | Set or get whether the components the action controls are enabled. Invoking
+    `setEnabled(false)` disables all the components that the action controls. Similarly,
+    invoking `setEnabled(true)` enables the action''s components. |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setEnabled(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#setEnabled-boolean-)
+    [boolean isEnabled()](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#isEnabled--)
+    | 设置或获取操作控制的组件是否启用。 调用`setEnabled(false)`会禁用操作控制的所有组件。 类似地，调用`setEnabled(true)`会启用操作的组件。
+    |'
+- en: '| [void putValue(String, Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#putValue-java.lang.String-java.lang.Object-)
+    [Object getValue(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#getValue-java.lang.String-)
+    | Set or get an object associated with a specified key. Used for setting and getting
+    properties associated with an action. |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void putValue(String, Object)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#putValue-java.lang.String-java.lang.Object-)
+    [Object getValue(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/AbstractAction.html#getValue-java.lang.String-)
+    | 设置或获取与指定键关联的对象。 用于设置和获取与操作关联的属性。 |'
+- en: Action Properties
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 操作属性
+- en: This table defines the properties that can be set on an action. The second column
+    lists which components automatically use the properties (and what method is specifically
+    called). For example, setting the `ACCELERATOR_KEY` on an action that is then
+    attached to a menu item, means that `JMenuItem.setAccelerator(KeyStroke)` is called
+    automatically.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该表定义了可以在动作上设置的属性。第二列列出了哪些组件会自动使用这些属性（以及具体调用的方法）。例如，在附加到菜单项的动作上设置`ACCELERATOR_KEY`，意味着将自动调用`JMenuItem.setAccelerator(KeyStroke)`。
+- en: '| Property | Auto-Applied to: Class'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| 属性 | 自动应用于：类'
+- en: '*(Method Called)* | Purpose |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(调用方法)* | 目的 |'
+- en: '| [ACCELERATOR_KEY](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#ACCELERATOR_KEY)
+    | `JMenuItem` (*setAccelerator*) | The `KeyStroke` to be used as the accelerator
+    for the action. For a discussion of accelerators versus mnemonics, see [Enabling
+    Keyboard Operation.](../components/menu.html#mnemonic) |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| [ACCELERATOR_KEY](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#ACCELERATOR_KEY)
+    | `JMenuItem` (*setAccelerator*) | 用作动作加速器的`KeyStroke`。有关加速器与助记键的讨论，请参见[启用键盘操作。](../components/menu.html#mnemonic)
+    |'
+- en: '| [ACTION_COMMAND_KEY](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#ACTION_COMMAND_KEY)
+    | `AbstractButton`, `JCheckBox`, `JRadioButton` (*setActionCommand*) | The command
+    string associated with the `ActionEvent`. |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| [ACTION_COMMAND_KEY](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#ACTION_COMMAND_KEY)
+    | `AbstractButton`, `JCheckBox`, `JRadioButton` (*setActionCommand*) | 与`ActionEvent`相关联的命令字符串。
+    |'
+- en: '| [LONG_DESCRIPTION](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#LONG_DESCRIPTION)
+    | None | The longer description for the action. Can be used for context-sensitive
+    help. |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| [LONG_DESCRIPTION](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#LONG_DESCRIPTION)
+    | 无 | 动作的更长描述。可用于上下文相关的帮助。 |'
+- en: '| [MNEMONIC_KEY](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#MNEMONIC_KEY)
+    | `AbstractButton`, `JMenuItem`, `JCheckBox`, `JRadioButton` (*setMnemonic*) |
+    The mnemonic for the action. For a discussion of accelerators versus mnemonics,
+    see [Enabling Keyboard Operation.](../components/menu.html#mnemonic) |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| [MNEMONIC_KEY](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#MNEMONIC_KEY)
+    | `AbstractButton`, `JMenuItem`, `JCheckBox`, `JRadioButton` (*setMnemonic*) |
+    动作的助记键。有关加速器与助记键的讨论，请参见[启用键盘操作。](../components/menu.html#mnemonic) |'
+- en: '| [NAME](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#NAME)
+    | `AbstractButton`, `JMenuItem`, `JCheckBox`, `JRadioButton` (*setText*) | The
+    name of the action. You can set this property when creating the action using the
+    `AbstractAction(String)` or `AbstractAction(String, Icon)` constructors. |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| [NAME](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#NAME)
+    | `AbstractButton`, `JMenuItem`, `JCheckBox`, `JRadioButton` (*setText*) | 动作的名称。您可以在使用`AbstractAction(String)`或`AbstractAction(String,
+    Icon)`构造函数创建动作时设置此属性。 |'
+- en: '| [SHORT_DESCRIPTION](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#SHORT_DESCRIPTION)
+    | `AbstractButton`, `JCheckBox`, `JRadioButton` (*setToolTipText*) | The short
+    description of the action. |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '| [SHORT_DESCRIPTION](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#SHORT_DESCRIPTION)
+    | `AbstractButton`, `JCheckBox`, `JRadioButton` (*setToolTipText*) | 动作的简短描述。
+    |'
+- en: '| [SMALL_ICON](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#SMALL_ICON)
+    | `AbstractButton`, `JMenuItem` (*setIcon*) | The icon for the action used in
+    the tool bar or on a button. You can set this property when creating the action
+    using the `AbstractAction(name, icon)` constructor. |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '| [SMALL_ICON](https://docs.oracle.com/javase/8/docs/api/javax/swing/Action.html#SMALL_ICON)
+    | `AbstractButton`, `JMenuItem` (*setIcon*) | 工具栏或按钮上用于动作的图标。您可以在使用`AbstractAction(name,
+    icon)`构造函数创建动作时设置此属性。 |'
+- en: Examples that Use Actions
+  id: totrans-58
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用动作的示例
+- en: The following examples use `Action` objects.
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例使用`Action`对象。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`ActionDemo`](../examples/misc/index.html#ActionDemo) | This section | Uses
+    actions to bind buttons and menu items to the same function. |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ActionDemo`](../examples/misc/index.html#ActionDemo) | 本节 | 使用动作将按钮和菜单项绑定到同一个函数。
+    |'
+- en: '| [`TextComponentDemo`](../examples/components/index.html#TextComponentDemo)
+    | [Text Component Features](../components/generaltext.html) | Uses text actions
+    to create menu items for text editing commands, such as cut, copy, and paste,
+    and to bind key strokes to caret movement. Also implements custom `AbstractAction`
+    subclasses to implement undo and redo. The text action discussion begins in [Concepts:
+    About Editor Kits](../components/generaltext.html#editorkits). |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextComponentDemo`](../examples/components/index.html#TextComponentDemo)
+    | [文本组件特性](../components/generaltext.html) | 使用文本操作创建菜单项，用于文本编辑命令，如剪切、复制和粘贴，并将按键绑定到插入符移动。还实现了自定义`AbstractAction`子类来实现撤销和重做。关于文本操作的讨论始于[概念：关于编辑器工具包](../components/generaltext.html#editorkits)。
+    |'

@@ -1,0 +1,109 @@
+- en: How to Write a Table Model Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写表模型监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/tablemodellistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/tablemodellistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/tablemodellistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/tablemodellistener.html)
+- en: Upon instantiation, each [`JTable`](../components/table.html) object is passed
+    a table model object that manages the data it displays. By default, a `JTable`
+    object inherits a `DefaultTable` object if no custom `TableModel` object is specified,
+    but by default, this model only manages strings. To handle objects, perform calculations,
+    or to retrieve data from databases or other programs, you must design your own
+    custom `TableModel` object, which implements the `TableModel` interface. See [Creating
+    a Table Model](../components/table.html#data) for details.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在实例化时，每个[`JTable`](../components/table.html)对象都传递一个管理其显示数据的表模型对象。如果没有指定自定义的`TableModel`对象，默认情况下，`JTable`对象继承一个`DefaultTable`对象，但默认情况下，此模型仅管理字符串。要处理对象、执行计算或从数据库或其他程序检索数据，必须设计自己的自定义`TableModel`对象，该对象实现`TableModel`接口。详细信息请参见[创建表模型](../components/table.html#data)。
+- en: To detect changes to the data managed by a table model object, the `JTable`
+    class needs to implement the `TableModelListener` interface, call `addTableModelListener()`
+    to catch events, and then override `tableChanged()` to respond to listener events.
+    See [Listening for Data Changes](../components/table.html#modelchange) for details.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要检测表模型对象管理的数据的更改，`JTable`类需要实现`TableModelListener`接口，调用`addTableModelListener()`来捕获事件，然后重写`tableChanged()`来响应监听器事件。详细信息请参见[监听数据更改](../components/table.html#modelchange)。
+- en: The Table Model Listener API
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 表模型监听器API
+- en: The TableModelListener Interface
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: TableModelListener接口
+- en: '*Because `TableModelListener` has only one method, it has no corresponding
+    adapter class.*'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*因为`TableModelListener`只有一个方法，所以没有相应的适配器类。*'
+- en: '| Method | Purpose |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [tableChanged(TableModelEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelListener.html#tableChanged-javax.swing.event.TableModelEvent-)
+    | Called when the structure of or data in the table has changed. |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| [tableChanged(TableModelEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelListener.html#tableChanged-javax.swing.event.TableModelEvent-)
+    | 当表的结构或数据发生更改时调用。'
+- en: The TableModelEvent API
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: TableModelEvent API
+- en: '| Method | Purpose |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*in `java.util.EventObject`*) | Return the object that fired the event. |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)（*在`java.util.EventObject`中*）
+    | 返回触发事件的对象。'
+- en: '| [int getFirstRow()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelEvent.html#getFirstRow--)
+    | Return the index of the first row that changed. `TableModelEvent.HEADER_ROW`
+    specifies the table header. |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getFirstRow()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelEvent.html#getFirstRow--)
+    | 返回更改的第一行的索引。`TableModelEvent.HEADER_ROW`指定表头。'
+- en: '| [int getLastRow()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelEvent.html#getLastRow--)
+    | The last row that changed. Again, `HEADER_ROW` is a possible value. |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getLastRow()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelEvent.html#getLastRow--)
+    | 更改的最后一行。同样，`HEADER_ROW`是可能的值。'
+- en: '| [int getColumn()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelEvent.html#getColumn--)
+    | Return the index of the column that changed. The constant `TableModelEvent.ALL_COLUMNS`
+    specifies that all the columns might have changed. |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getColumn()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelEvent.html#getColumn--)
+    | 返回更改的列的索引。常量`TableModelEvent.ALL_COLUMNS`指定所有列可能已更改。'
+- en: '| [int getType()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelEvent.html#getType--)
+    | What happened to the changed cells. The returned value is one of the following:
+    `TableModelEvent.INSERT`, `TableModelEvent.DELETE`, or `TableModelEvent.UPDATE`.
+    |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getType()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TableModelEvent.html#getType--)
+    | 更改的单元格发生了什么。返回值是以下之一：`TableModelEvent.INSERT`、`TableModelEvent.DELETE`或`TableModelEvent.UPDATE`。'

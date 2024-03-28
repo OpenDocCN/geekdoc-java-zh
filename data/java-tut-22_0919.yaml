@@ -1,0 +1,114 @@
+- en: Troubleshooting
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 故障排除
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/special/enumTrouble.html](https://docs.oracle.com/javase/tutorial/reflect/special/enumTrouble.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/special/enumTrouble.html](https://docs.oracle.com/javase/tutorial/reflect/special/enumTrouble.html)
+- en: The following examples show problems which may be encountered when using enumerated
+    types.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例展示了在使用枚举类型时可能遇到的问题。
+- en: IllegalArgumentException When Attempting to Instantiate an Enum Type
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 尝试实例化枚举类型时出现IllegalArgumentException
+- en: As has been mentioned, instantiation of enum types is forbidden. The [``EnumTrouble``](example/EnumTrouble.java)
+    example attempts this.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如前面提到的，实例化枚举类型是被禁止的。[``EnumTrouble``](example/EnumTrouble.java)示例尝试这样做。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:** It is a compile-time error to attempt to explicitly instantiate an
+    enum because that would prevent the defined enum constants from being unique.
+    This restriction is also enforced in reflective code. Code which attempts to instantiate
+    classes using their default constructors should invoke [`Class.isEnum()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isEnum--)
+    first to determine if the class is an enum.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：** 明确实例化枚举是一种编译时错误，因为这将阻止定义的枚举常量保持唯一。这种限制也在反射代码中执行。试图使用默认构造函数实例化类的代码应该首先调用[`Class.isEnum()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#isEnum--)来确定该类是否为枚举。'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: IllegalArgumentException when Setting a Field with an Incompatible Enum Type
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置具有不兼容枚举类型的字段时出现IllegalArgumentException
+- en: Fields storing enums set with the appropriate enum type. (Actually, fields of
+    *any* type must be set with compatible types.) The [``EnumTroubleToo``](example/EnumTroubleToo.java)
+    example produces the expected error.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 存储枚举的字段应该设置为适当的枚举类型。（实际上，*任何*类型的字段都必须设置为兼容的类型。）[``EnumTroubleToo``](example/EnumTroubleToo.java)示例会产生预期的错误。
+- en: '[PRE2]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:** Strictly speaking, any attempt to set a field of type `X` to a value
+    of type `Y` can only succeed if the following statement holds:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：** 严格来说，将类型为`X`的字段设置为类型为`Y`的值只有在以下语句成立时才能成功：'
+- en: '[PRE4]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The code could be modified to perform the following test to verify whether
+    the types are compatible:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 代码可以修改以执行以下测试，以验证类型是否兼容：
+- en: '[PRE5]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

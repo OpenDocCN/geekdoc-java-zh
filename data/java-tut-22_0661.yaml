@@ -1,0 +1,131 @@
+- en: Creating and Drawing to an Image
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建和绘制图像
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/images/drawonimage.html](https://docs.oracle.com/javase/tutorial/2d/images/drawonimage.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/images/drawonimage.html](https://docs.oracle.com/javase/tutorial/2d/images/drawonimage.html)
+- en: We already know how to load an existing image, which was created and stored
+    in your system or in any network location. But, you probably would like also to
+    create an new image as a pixel data buffer.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们已经知道如何加载现有图像，该图像在您的系统中创建并存储，或者在任何网络位置。但是，您可能还想创建一个新图像作为像素数据缓冲区。
+- en: 'In this case, you can create a `BufferedImage` object manually, using three
+    constructors of this class:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种情况下，您可以手动创建一个 `BufferedImage` 对象，使用该类的三个构造函数：
+- en: new BufferedImage(width, height, type) - constructs a `BufferedImage` of one
+    of the predefined image types.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`new BufferedImage(width, height, type)` - 构造一个预定义图像类型的 `BufferedImage`。'
+- en: 'new BufferedImage(width, height, type, colorModel) - constructs a `BufferedImage`
+    of one of the predefined image types: `TYPE_BYTE_BINARY` or `TYPE_BYTE_INDEXED`.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`new BufferedImage(width, height, type, colorModel)` - 构造一个预定义图像类型的 `BufferedImage`：`TYPE_BYTE_BINARY`
+    或 `TYPE_BYTE_INDEXED`。'
+- en: '`new BufferedImage(colorModel, raster, premultiplied, properties)` - constructs
+    a new `BufferedImage` with a specified `ColorModel` and `Raster`.'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`new BufferedImage(colorModel, raster, premultiplied, properties)` - 使用指定的
+    `ColorModel` 和 `Raster` 构造一个新的 `BufferedImage`。'
+- en: On the other hand, we can use methods of the `Component` class. These methods
+    can analyze the display resolution for the given `Component` or `GraphicsConfiguration`
+    and create an image of an appropriate type.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，我们可以使用 `Component` 类的方法。这些方法可以分析给定 `Component` 或 `GraphicsConfiguration`
+    的显示分辨率，并创建一个适当类型的图像。
+- en: '`Component.createImage(width, height)`'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Component.createImage(width, height)`'
+- en: '`GraphicsConfiguration.createCompatibleImage(width, height)`'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`GraphicsConfiguration.createCompatibleImage(width, height)`'
+- en: '`GraphicsConfiguration.createCompatibleImage(width, height, transparency)`'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`GraphicsConfiguration.createCompatibleImage(width, height, transparency)`'
+- en: GraphicsConfiguration returns an object of BufferedImage type, but the Component
+    returns an object of `Image type`, if you need a BufferedImage object instead
+    then you can perform an `instanceof` and cast to a `BufferedImage` in your code.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: GraphicsConfiguration 返回一个 BufferedImage 类型的对象，但 Component 返回一个 Image 类型的对象，如果您需要一个
+    BufferedImage 对象，那么您可以在代码中执行 `instanceof` 并转换为 BufferedImage。
+- en: 'As was already mentioned in the previous lessons, we can render images not
+    only on screen. An images itself can be considered as a drawing surface. You can
+    use a `createGraphics()` method of the `BufferedImage` class for this purpose:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如在之前的课程中已经提到的，我们不仅可以在屏幕上渲染图像。图像本身可以被视为一个绘图表面。您可以使用 `BufferedImage` 类的 `createGraphics()`
+    方法来实现这一目的：
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Another interesting use of off-screen images is an automatic*double buffering*.
+    This feature allows to avoid flicker in animated images by drawing an image to
+    a back buffer and then copying that buffer onto the screen instead of drawing
+    directly to the screen.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个有趣的离屏图像的用途是自动*双缓冲*。这个功能允许通过将图像绘制到后备缓冲区，然后将该缓冲区复制到屏幕上，而不是直接绘制到屏幕上，从而避免动画图像的闪烁。
+- en: 'Java 2D also allows access to hardware acceleration for off-screen images,
+    which can provide the better performance of rendering to and copying from these
+    images. You can get the benefit of this functionality by using the following methods
+    of the `Image` class:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D 还允许访问用于离屏图像的硬件加速，这可以提供更好的渲染性能以及从这些图像复制。您可以通过使用 `Image` 类的以下方法来获得此功能的好处：
+- en: The `getCapabilities` method allows you to determine whether the image is currently
+    accelerated.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getCapabilities` 方法允许您确定图像当前是否加速。'
+- en: The `setAccelerationPriority` method lets you set a hint about how important
+    acceleration is for the image.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`setAccelerationPriority` 方法允许您设置有关图像加速重要性的提示。'
+- en: The `getAccelerationPriority` method gets a hint about the acceleration importance.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getAccelerationPriority` 方法获取有关加速重要性的提示。'

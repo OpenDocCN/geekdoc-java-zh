@@ -1,0 +1,178 @@
+- en: Search Results
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 搜索结果
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/result.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/result.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/result.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/result.html)
+- en: 'When you use the search methods in the [`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html)
+    interface, you get back a [`NamingEnumeration`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html).
+    Each item in `NamingEnumeration` is a [`SearchResult`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchResult.html),
+    which contains the following information:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您在[`DirContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html)接口中使用搜索方法时，您将获得一个[`NamingEnumeration`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingEnumeration.html)。`NamingEnumeration`中的每个项目都是一个[`SearchResult`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchResult.html)，其中包含以下信息：
+- en: '[Name](#NAME)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[名称](#NAME)'
+- en: '[Object](#OBJ)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[对象](#OBJ)'
+- en: '[Class name](#CLASS)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[类名](#CLASS)'
+- en: '[Attributes](#ATTRS)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[属性](#ATTRS)'
+- en: Name
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 名称
+- en: Each `SearchResult` contains the name of the LDAP entry that satisfied the search
+    filter. You obtain the name of the entry by using [`getName()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getName--).
+    This method returns the [`composite name`](https://docs.oracle.com/javase/8/docs/api/javax/naming/CompositeName.html)
+    of the LDAP entry *relative* to the *target context*. The target context is the
+    context to which the `name` parameter resolves. In LDAP parlance, the target context
+    is the *base object* for the search. Here's an example.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个`SearchResult`包含满足搜索过滤器的LDAP条目的名称。您可以通过使用[`getName()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getName--)来获取条目的名称。该方法返回LDAP条目相对于*目标上下文*的[`复合名称`](https://docs.oracle.com/javase/8/docs/api/javax/naming/CompositeName.html)。目标上下文是`name`参数解析到的上下文。在LDAP术语中，目标上下文是搜索的*基本对象*。以下是一个示例。
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The target context in this example is that named by `"ou=NewHires"`. The names
+    in `SearchResult`s in `answer` are relative to `"ou=NewHires"`. For example, if
+    `getName()` returns `"cn=J. Duke"`, then its name relative to `ctx` will be `"cn=J.
+    Duke, ou=NewHires"`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本示例中，目标上下文由`"ou=NewHires"`命名。`answer`中的`SearchResult`中的名称相对于`"ou=NewHires"`。例如，如果`getName()`返回`"cn=J.
+    Duke"`，那么相对于`ctx`的名称将是`"cn=J. Duke, ou=NewHires"`。
+- en: If you performed the search by using [`SearchControls.SUBTREE_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#SUBTREE_SCOPE)
+    or [`SearchControls.OBJECT_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#OBJECT_SCOPE)
+    and the target context itself satisfied the search filter, then the name returned
+    will be "" (the empty name) because that is the name relative to the target context.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您使用[`SearchControls.SUBTREE_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#SUBTREE_SCOPE)或[`SearchControls.OBJECT_SCOPE`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#OBJECT_SCOPE)执行搜索，并且目标上下文本身满足搜索过滤器，则返回的名称将是""（空名称），因为这是相对于目标上下文的名称。
+- en: This isn't the whole story. If the search involves referrals (see the [JNDI
+    Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/referral/index.html))
+    or dereferencing aliases (see the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/aliases.html)
+    ), then the corresponding `SearchResult`s will have names that are not relative
+    to the target context. Instead, they will be URLs that refer directly to the entry.
+    To determine whether the name returned by `getName()` is relative or absolute,
+    use [`isRelative()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#isRelative--).
+    If this method returns `true`, then the name is relative to the target context;
+    if it returns `false`, the name is a URL.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这并不是全部。如果搜索涉及引荐（请参阅[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/referral/index.html)）或解引用别名（请参阅[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/aliases.html)），那么相应的`SearchResult`将具有不相对于目标上下文的名称。相反，它们将是直接引用条目的URL。要确定`getName()`返回的名称是相对还是绝对，请使用[`isRelative()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#isRelative--)。如果此方法返回`true`，则名称相对于目标上下文；如果返回`false`，则名称是一个URL。
+- en: If the name is a URL and you need to use that URL, then you can pass it to the
+    initial context, which understands URLs (see the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/url.html)).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果名称是一个URL，您需要使用该URL，则可以将其传递给了解URL的初始上下文（请参阅[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/url.html)）。
+- en: If you need to get the entry's full DN, you can use [`NameClassPair.getNameInNamespace()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getNameInNamespace--).
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您需要获取条目的完整DN，可以使用[`NameClassPair.getNameInNamespace()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getNameInNamespace--)。
+- en: Object
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 对象
+- en: If the search was conducted requesting that the entry's object be returned [(`SearchControls.setReturningObjFlag()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#setReturningObjFlag-boolean-)
+    was invoked with `true`), then `SearchResult` will contain an object that represents
+    the entry. To retrieve this object, you invoke [`getObject()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Binding.html#getObject--).
+    If a `java.io.Serializable`, [`Referenceable`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Referenceable.html),
+    or [`Reference`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Reference.html)
+    object was previously bound to that LDAP name, then the attributes from the entry
+    are used to reconstruct that object (see the example in the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/objects/reading/search.html)).
+    Otherwise, the attributes from the entry are used to create a `DirContext` instance
+    that represents the LDAP entry. In either case, the LDAP provider invokes [`DirectoryManager.getObjectInstance()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/spi/DirectoryManager.html#getObjectInstance-java.lang.Object-javax.naming.Name-javax.naming.Context-java.util.Hashtable-javax.naming.directory.Attributes-)
+    on the object and returns the results.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果搜索是请求返回条目对象的（使用[`SearchControls.setReturningObjFlag()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#setReturningObjFlag-boolean-)调用为`true`），那么`SearchResult`将包含表示条目的对象。要检索此对象，您需要调用[`getObject()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Binding.html#getObject--)。如果之前将`java.io.Serializable`、[`Referenceable`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Referenceable.html)或[`Reference`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Reference.html)对象绑定到LDAP名称，则使用来自条目的属性来重建该对象（请参阅[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/objects/reading/search.html)中的示例）。否则，使用来自条目的属性创建代表LDAP条目的`DirContext`实例。在任一情况下，LDAP提供程序会在对象上调用[`DirectoryManager.getObjectInstance()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/spi/DirectoryManager.html#getObjectInstance-java.lang.Object-javax.naming.Name-javax.naming.Context-java.util.Hashtable-javax.naming.directory.Attributes-)并返回结果。
+- en: Class Name
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 类名
+- en: If the search was conducted requesting that the entry's object be returned,
+    then the class name is derived from the returned object. If the search requested
+    attributes that included the retrieval of the `"javaClassName"` attribute of the
+    LDAP entry, then the class name is the value of that attribute. Otherwise, the
+    class name is `"javax.naming.directory.DirContext"`. The class name is obtained
+    from [`getClassName()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getClassName--).
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果搜索是请求返回条目对象，则类名是从返回的对象派生的。如果搜索请求包括检索LDAP条目的`"javaClassName"`属性，则类名是该属性的值。否则，类名为`"javax.naming.directory.DirContext"`。类名是从[`getClassName()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameClassPair.html#getClassName--)获取的。
+- en: Attributes
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 属性
+- en: When you perform a search, you can select the return attributes either by supplying
+    a parameter to one of the [`search()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-javax.naming.directory.Attributes-java.lang.String:A-)
+    methods or by setting the search controls using [`SearchControls.setReturningAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#setReturningAttributes-java.lang.String:A-)
+    . If no attributes have been specified explicitly, then all of the LDAP entry's
+    attributes are returned. To specify that no attributes be returned, you must pass
+    an empty array (`new String[0]`).
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当执行搜索时，您可以通过向其中一个[`search()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/DirContext.html#search-javax.naming.Name-javax.naming.directory.Attributes-java.lang.String:A-)方法提供参数或使用[`SearchControls.setReturningAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchControls.html#setReturningAttributes-java.lang.String:A-)设置搜索控件来选择返回属性。如果没有明确指定属性，则将返回所有LDAP条目的属性。要指定不返回任何属性，必须传递一个空数组（`new
+    String[0]`）。
+- en: To retrieve the LDAP entry's attributes, you invoke [`getAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchResult.html#getAttributes--)
+    on the `SearchResult`.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要检索LDAP条目的属性，您需要在`SearchResult`上调用[`getAttributes()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/directory/SearchResult.html#getAttributes--)。
+- en: Response Controls
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 响应控件
+- en: See the [Controls and Extensions](https://docs.oracle.com/javase/jndi/tutorial/ldap/ext/response.html)
+    lesson of the JNDI Tutorial for details on how to retrieve a search result's response
+    controls.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/ext/response.html)中的“控件和扩展”课程，了解如何检索搜索结果的响应控件的详细信息。

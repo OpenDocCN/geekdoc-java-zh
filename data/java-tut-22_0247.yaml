@@ -1,0 +1,354 @@
+- en: Quantifiers
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 量词
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/quant.html](https://docs.oracle.com/javase/tutorial/essential/regex/quant.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/regex/quant.html](https://docs.oracle.com/javase/tutorial/essential/regex/quant.html)
+- en: '*Quantifiers* allow you to specify the number of occurrences to match against.
+    For convenience, the three sections of the Pattern API specification describing
+    greedy, reluctant, and possessive quantifiers are presented below. At first glance
+    it may appear that the quantifiers `X?`, `X??` and `X?+` do exactly the same thing,
+    since they all promise to match "`X`, once or not at all". There are subtle implementation
+    differences which will be explained near the end of this section.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*量词*允许您指定要匹配的出现次数。为方便起见，下面呈现了Pattern API规范的三个部分，描述了贪婪、勉强和占有量词。乍一看，似乎量词`X?`、`X??`和`X?+`做的事情完全相同，因为它们都承诺匹配"`X`，一次或零次"。有微妙的实现差异，将在本节末尾解释。'
+- en: '| Greedy | Reluctant | Possessive | Meaning |'
+  id: totrans-3
+  prefs: []
+  type: TYPE_TB
+  zh: '| 贪婪 | 勉强 | 占有 | 含义 |'
+- en: '| `X?` | `X??` | `X?+` | `X`, once or not at all |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| `X?` | `X??` | `X?+` | `X`，一次或零次'
+- en: '| `X*` | `X*?` | `X*+` | `X`, zero or more times |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| `X*` | `X*?` | `X*+` | `X`，零次或多次'
+- en: '| `X+` | `X+?` | `X++` | `X`, one or more times |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| `X+` | `X+?` | `X++` | `X`，一次或多次'
+- en: '| `X{n}` | `X{n}?` | `X{n}+` | `X`, exactly *`n`* times |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| `X{n}` | `X{n}?` | `X{n}+` | `X`，恰好*`n`*次'
+- en: '| `X{n,}` | `X{n,}?` | `X{n,}+` | `X`, at least *`n`* times |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| `X{n,}` | `X{n,}?` | `X{n,}+` | `X`，至少*`n`*次'
+- en: '| `X{n,m}` | `X{n,m}?` | `X{n,m}+` | `X`, at least *`n`* but not more than
+    *`m`* times |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| `X{n,m}` | `X{n,m}?` | `X{n,m}+` | `X`，至少*`n`*次但不超过*`m`*次'
+- en: 'Let''s start our look at greedy quantifiers by creating three different regular
+    expressions: the letter "a" followed by either `?`, `*`, or `+`. Let''s see what
+    happens when these expressions are tested against an empty input string `""`:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们通过创建三个不同的正则表达式来开始我们对贪婪量词的研究：字母"a"后面跟着`?`、`*`或`+`。让我们看看当这些表达式针对空输入字符串`""`进行测试时会发生什么：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Zero-Length Matches
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 零长度匹配
+- en: 'In the above example, the match is successful in the first two cases because
+    the expressions `a?` and `a*` both allow for zero occurrences of the letter `a`.
+    You''ll also notice that the start and end indices are both zero, which is unlike
+    any of the examples we''ve seen so far. The empty input string `""` has no length,
+    so the test simply matches nothing at index 0\. Matches of this sort are known
+    as a *zero-length matches*. A zero-length match can occur in several cases: in
+    an empty input string, at the beginning of an input string, after the last character
+    of an input string, or in between any two characters of an input string. Zero-length
+    matches are easily identifiable because they always start and end at the same
+    index position.'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在上面的例子中，前两种情况匹配成功，因为表达式`a?`和`a*`都允许字母`a`出现零次。您还会注意到开始和结束索引都是零，这与我们迄今为止看到的任何示例都不同。空输入字符串`""`没有长度，因此测试只是在索引0处匹配到了空。这种匹配称为*零长度匹配*。零长度匹配可以出现在几种情况下：在空输入字符串中，在输入字符串的开头，在输入字符串的最后一个字符之后，或在输入字符串的任意两个字符之间。零长度匹配很容易识别，因为它们始终从相同的索引位置开始和结束。
+- en: 'Let''s explore zero-length matches with a few more examples. Change the input
+    string to a single letter "a" and you''ll notice something interesting:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们通过几个例子来探索零长度匹配。将输入字符串更改为单个字母"a"，您会注意到一些有趣的事情：
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: All three quantifiers found the letter "a", but the first two also found a zero-length
+    match at index 1; that is, after the last character of the input string. Remember,
+    the matcher sees the character "a" as sitting in the cell between index 0 and
+    index 1, and our test harness loops until it can no longer find a match. Depending
+    on the quantifier used, the presence of "nothing" at the index after the last
+    character may or may not trigger a match.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有三个量词都找到了字母"a"，但前两个还在索引1处找到了零长度匹配；也就是说，在输入字符串的最后一个字符之后。请记住，匹配器将字符"a"视为位于索引0和索引1之间的单元格中，我们的测试工具循环直到无法找到匹配。根据使用的量词，最后一个字符后面的“无内容”可能会或可能不会触发匹配。
+- en: 'Now change the input string to the letter "a" five times in a row and you''ll
+    get the following:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在将输入字符串更改为连续五次的字母"a"，您将得到以下结果：
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The expression `a?` finds an individual match for each character, since it
+    matches when "a" appears zero or one times. The expression `a*` finds two separate
+    matches: all of the letter "a"''s in the first match, then the zero-length match
+    after the last character at index 5\. And finally, `a+` matches all occurrences
+    of the letter "a", ignoring the presence of "nothing" at the last index.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表达式 `a?` 为每个字符找到一个匹配，因为它匹配 "a" 出现零次或一次时。表达式 `a*` 找到两个单独的匹配：第一个匹配中的所有字母 "a"，然后是索引
+    5 处最后一个字符后的零长度匹配。最后，`a+` 匹配所有字母 "a" 的出现，忽略最后索引处的 "nothing" 的存在。
+- en: At this point, you might be wondering what the results would be if the first
+    two quantifiers encounter a letter other than "a". For example, what happens if
+    it encounters the letter "b", as in "ababaaaab"?
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此时，您可能想知道如果前两个量词遇到除 "a" 外的字母会发生什么。例如，如果它遇到字母 "b"，比如 "ababaaaab" 会发生什么？
+- en: 'Let''s find out:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们来看看：
+- en: '[PRE3]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Even though the letter "b" appears in cells 1, 3, and 8, the output reports
+    a zero-length match at those locations. The regular expression `a?` is not specifically
+    looking for the letter "b"; it's merely looking for the presence (or lack thereof)
+    of the letter "a". If the quantifier allows for a match of "a" zero times, anything
+    in the input string that's not an "a" will show up as a zero-length match. The
+    remaining a's are matched according to the rules discussed in the previous examples.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管字母 "b" 出现在单元格 1、3 和 8 中，输出报告在这些位置上的零长度匹配。正则表达式 `a?` 并不是专门寻找字母 "b"；它只是查找字母
+    "a" 的存在（或不存在）。如果量词允许 "a" 匹配零次，那么输入字符串中不是 "a" 的任何内容都会显示为零长度匹配。剩下的 a 根据前面示例中讨论的规则进行匹配。
+- en: 'To match a pattern exactly *n* number of times, simply specify the number inside
+    a set of braces:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要精确匹配一个模式 *n* 次，只需在大括号内指定数字：
+- en: '[PRE4]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Here, the regular expression `a{3}` is searching for three occurrences of the
+    letter "a" in a row. The first test fails because the input string does not have
+    enough a''s to match against. The second test contains exactly 3 a''s in the input
+    string, which triggers a match. The third test also triggers a match because there
+    are exactly 3 a''s at the beginning of the input string. Anything following that
+    is irrelevant to the first match. If the pattern should appear again after that
+    point, it would trigger subsequent matches:'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，正则表达式 `a{3}` 在连续三个字母 "a" 中搜索三次出现的情况。第一个测试失败，因为输入字符串中没有足够的 a 与之匹配。第二个测试包含输入字符串中恰好
+    3 个 a，触发了匹配。第三个测试也触发了匹配，因为输入字符串开头恰好有 3 个 a。在此之后的任何内容都与第一个匹配无关。如果在那之后再次出现该模式，将触发后续的匹配：
+- en: '[PRE5]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'To require a pattern to appear at least *n* times, add a comma after the number:'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要求模式至少出现 *n* 次，数字后加逗号：
+- en: '[PRE6]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: With the same input string, this test finds only one match, because the 9 a's
+    in a row satisfy the need for "at least" 3 a's.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用相同的输入字符串，此测试仅找到一个匹配，因为连续 9 个 a 满足 "至少" 3 个 a 的需求。
+- en: 'Finally, to specify an upper limit on the number of occurrences, add a second
+    number inside the braces:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，要指定出现次数的上限，在大括号内添加第二个数字：
+- en: '[PRE7]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: "Here the first match is forced to stop at the upper limit of 6 characters.\
+    \ The second match includes whatever is left over, which happens to be three a's\
+    \ \x97 the minimum number of characters allowed for this match. If the input string\
+    \ were one character shorter, there would not be a second match since only two\
+    \ a's would remain."
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个匹配强制停在 6 个字符的上限处。第二个匹配包括剩下的内容，这恰好是三个 a，这是允许的最小字符数。如果输入字符串短了一个字符，就不会有第二个匹配，因为只剩下两个
+    a。
+- en: Capturing Groups and Character Classes with Quantifiers
+  id: totrans-34
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 捕获组和带量词的字符类
+- en: Until now, we've only tested quantifiers on input strings containing one character.
+    In fact, quantifiers can only attach to one character at a time, so the regular
+    expression "abc+" would mean "a, followed by b, followed by c one or more times".
+    It would not mean "abc" one or more times. However, quantifiers can also attach
+    to [Character Classes](char_classes.html) and [Capturing Groups](groups.html),
+    such as `[abc]+` (a or b or c, one or more times) or `(abc)+` (the group "abc",
+    one or more times).
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们只在包含一个字符的输入字符串上测试了量词。实际上，量词只能附加到一个字符上，因此正则表达式 "abc+" 意味着 "a，后跟 b，后跟
+    c 一次或多次"。它不意味着 "abc" 一次或多次。然而，量词也可以附加到[字符类](char_classes.html)和[捕获组](groups.html)，例如
+    `[abc]+`（a 或 b 或 c，一次或多次）或 `(abc)+`（组 "abc"，一次或多次）。
+- en: Let's illustrate by specifying the group `(dog)`, three times in a row.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们通过连续三次指定组`(dog)`来说明。
+- en: '[PRE8]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Here the first example finds three matches, since the quantifier applies to
+    the entire capturing group. Remove the parentheses, however, and the match fails
+    because the quantifier `{3}` now applies only to the letter "g".
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第一个例子中找到三个匹配，因为量词应用于整个捕获组。然而，去掉括号，匹配失败，因为量词`{3}`现在仅适用于字母"g"。
+- en: 'Similarly, we can apply a quantifier to an entire character class:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，我们可以将一个量词应用于整个字符类：
+- en: '[PRE9]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Here the quantifier `{3}` applies to the entire character class in the first
+    example, but only to the letter "c" in the second.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在第一个例子中，量词`{3}`应用于整个字符类，但在第二个例子中仅应用于字母"c"。
+- en: Differences Among Greedy, Reluctant, and Possessive Quantifiers
+  id: totrans-42
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 贪婪、勉强和占有量词之间的区别
+- en: There are subtle differences among greedy, reluctant, and possessive quantifiers.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 贪婪、勉强和占有量词之间存在微妙的区别。
+- en: Greedy quantifiers are considered "greedy" because they force the matcher to
+    read in, or *eat*, the entire input string prior to attempting the first match.
+    If the first match attempt (the entire input string) fails, the matcher backs
+    off the input string by one character and tries again, repeating the process until
+    a match is found or there are no more characters left to back off from. Depending
+    on the quantifier used in the expression, the last thing it will try matching
+    against is 1 or 0 characters.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 贪婪量词被认为是"贪婪"的，因为它们强制匹配器在尝试第一次匹配之前读取或*吞掉*整个输入字符串。如果第一次匹配尝试（整个输入字符串）失败，匹配器会向后退一个字符并重试，重复这个过程直到找到匹配或没有更多字符可以后退。根据表达式中使用的量词，它将尝试匹配的最后一件事是1个或0个字符。
+- en: 'The reluctant quantifiers, however, take the opposite approach: They start
+    at the beginning of the input string, then reluctantly eat one character at a
+    time looking for a match. The last thing they try is the entire input string.'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，勉强量词采取相反的方法：它们从输入字符串的开头开始，然后不情愿地一次吃掉一个字符寻找匹配。它们尝试的最后一件事是整个输入字符串。
+- en: Finally, the possessive quantifiers always eat the entire input string, trying
+    once (and only once) for a match. Unlike the greedy quantifiers, possessive quantifiers
+    never back off, even if doing so would allow the overall match to succeed.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，占有量词总是吞掉整个输入字符串，尝试一次（仅一次）匹配。与贪婪量词不同，占有量词永远不会后退，即使这样做可以使整体匹配成功。
+- en: To illustrate, consider the input string `xfooxxxxxxfoo`.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了说明，考虑输入字符串`xfooxxxxxxfoo`。
+- en: '[PRE10]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: The first example uses the greedy quantifier `.*` to find "anything", zero or
+    more times, followed by the letters `"f" "o" "o"`. Because the quantifier is greedy,
+    the `.*` portion of the expression first eats the entire input string. At this
+    point, the overall expression cannot succeed, because the last three letters (`"f"
+    "o" "o"`) have already been consumed. So the matcher slowly backs off one letter
+    at a time until the rightmost occurrence of "foo" has been regurgitated, at which
+    point the match succeeds and the search ends.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个例子使用贪婪量词`.*`来找到"任何东西"，零次或多次，然后是字母`"f" "o" "o"`。因为量词是贪婪的，表达式的`.*`部分首先吞掉整个输入字符串。此时，整体表达式无法成功，因为最后三个字母（`"f"
+    "o" "o"`）已经被消耗。因此，匹配器慢慢地一次后退一个字母，直到最右边的"foo"出现，匹配成功并结束搜索。
+- en: The second example, however, is reluctant, so it starts by first consuming "nothing".
+    Because "foo" doesn't appear at the beginning of the string, it's forced to swallow
+    the first letter (an "x"), which triggers the first match at 0 and 4\. Our test
+    harness continues the process until the input string is exhausted. It finds another
+    match at 4 and 13.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，第二个例子是勉强的，因此它首先消耗"nothing"。因为"foo"不出现在字符串的开头，它被迫吞下第一个字母（一个"x"），这触发了第一个匹配在0和4。我们的测试工具继续这个过程直到输入字符串耗尽。它在4和13找到另一个匹配。
+- en: The third example fails to find a match because the quantifier is possessive.
+    In this case, the entire input string is consumed by `.*+`, leaving nothing left
+    over to satisfy the "foo" at the end of the expression. Use a possessive quantifier
+    for situations where you want to seize all of something without ever backing off;
+    it will outperform the equivalent greedy quantifier in cases where the match is
+    not immediately found.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第三个例子无法找到匹配，因为量词是占有的。在这种情况下，整个输入字符串被`.*+`消耗，没有剩余内容来满足表达式末尾的"foo"。在想要占有所有内容而永远不后退的情况下使用占有量词；在匹配不立即找到的情况下，它将优于等效的贪婪量词。

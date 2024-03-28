@@ -1,0 +1,157 @@
+- en: 'Lesson: Using Swing Components'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：使用 Swing 组件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/index.html](https://docs.oracle.com/javase/tutorial/uiswing/components/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/index.html](https://docs.oracle.com/javase/tutorial/uiswing/components/index.html)
+- en: '[Examples Index](../examples/components/index.html)'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[示例索引](../examples/components/index.html)'
+- en: This lesson gives you the background information you need to use the Swing components,
+    and then describes every Swing component. It assumes that you have successfully
+    compiled and run a program that uses Swing components, and that you are familiar
+    with basic Swing concepts. These prerequisites are covered in [Getting Started
+    with Swing](../start/index.html) and [Learning Swing with the NetBeans IDE](../learn/index.html).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程为您提供了使用 Swing 组件所需的背景信息，然后描述了每个 Swing 组件。它假定您已成功编译和运行了使用 Swing 组件的程序，并且熟悉基本的
+    Swing 概念。这些先决条件在[开始使用 Swing](../start/index.html)和[使用 NetBeans IDE 学习 Swing](../learn/index.html)中有所涵盖。
+- en: '[Using Top-Level Containers](toplevel.html)'
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用顶层容器](toplevel.html)'
+- en: "Discusses how to use the features shared by the `JFrame`, `JDialog`, and `JApplet`\
+    \ classes \x97 content panes, menu bars, and root panes. It also discusses the\
+    \ *containment hierarchy*, which refers to the tree of components contained by\
+    \ a top-level container."
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 讨论了如何使用`JFrame`、`JDialog`和`JApplet`类共享的功能——内容窗格、菜单栏和根窗格。还讨论了*包含层次结构*，指的是顶层容器包含的组件树。
+- en: '[The JComponent Class](jcomponent.html)'
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[JComponent 类](jcomponent.html)'
+- en: "Tells you about the features `JComponent` provides to its subclasses \x97 which\
+    \ include almost all Swing components \x97 and gives tips on how to take advantage\
+    \ of these features. This section ends with API tables describing the commonly\
+    \ used API defined by `JComponent` and its superclasses, `Container` and `Component`."
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 告诉你`JComponent`为其子类（几乎所有 Swing 组件）提供的功能，并提供如何利用这些功能的提示。本节以 API 表结束，描述了`JComponent`及其超类`Container`和`Component`定义的常用
+    API。
+- en: '[Using Text Components](text.html)'
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用文本组件](text.html)'
+- en: Describes the features and API shared by all components that descend from `JTextComponent`.
+    You probably do not need to read this section if you are just using text fields
+    (formatted or not) or text areas.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 描述了所有从`JTextComponent`继承的组件共享的功能和 API。如果您只是使用文本字段（格式化或非格式化）或文本区域，您可能不需要阅读本节。
+- en: '[How to...](componentlist.html)'
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[如何...](componentlist.html)'
+- en: Sections on how to use each Swing component, in alphabetical order. We do not
+    expect you to read these sections in order. Instead, we recommend reading the
+    relevant "How to" sections once you are ready to start using Swing components
+    in your own programs. For example, if your program needs a frame, a label, a button,
+    and a color chooser, you should read [How to Make Frames](frame.html), [How to
+    Use Labels](label.html), [How to Use Buttons](button.html), and [How to Use Color
+    Choosers](colorchooser.html).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 按字母顺序列出如何使用每个 Swing 组件的部分。我们不希望您按顺序阅读这些部分。相反，我们建议在准备开始在自己的程序中使用 Swing 组件时阅读相关的“如何”部分。例如，如果您的程序需要一个框架、一个标签、一个按钮和一个颜色选择器，您应该阅读[如何制作框架](frame.html)、[如何使用标签](label.html)、[如何使用按钮](button.html)和[如何使用颜色选择器](colorchooser.html)。
+- en: '[Using HTML in Swing Components](html.html)'
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[在 Swing 组件中使用 HTML](html.html)'
+- en: Describes how to vary the font, color, or other formatting of text displayed
+    by Swing components by using HTML tags.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 描述了如何通过使用 HTML 标签来改变 Swing 组件显示的文本的字体、颜色或其他格式。
+- en: '[Using Models](model.html)'
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用模型](model.html)'
+- en: Tells you about the Swing model architecture. This variation on Model-View-Controller
+    (MVC) means that you can, if you wish, specify how the data and state of a Swing
+    component are stored and retrieved. The benefits are the ability to share data
+    and state between components, and to greatly improve the performance of components
+    such as tables that display large amounts of data.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 告诉您关于 Swing 模型架构。这种 Model-View-Controller（MVC）的变体意味着您可以（如果愿意）指定 Swing 组件的数据和状态如何存储和检索。其好处是能够在组件之间共享数据和状态，并大大提高显示大量数据的表格等组件的性能。
+- en: '[Using Borders](border.html)'
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用边框](border.html)'
+- en: Borders are very handy for drawing lines, titles, and empty space around the
+    edges of components. (You might have noticed that the examples in this trail use
+    a lot of borders.) This section tells you how to add a border to any `JComponent`.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 边框非常方便，用于在组件的边缘周围绘制线条、标题和空白空间。（您可能已经注意到，本教程中的示例使用了许多边框。）本节告诉您如何向任何`JComponent`添加边框。
+- en: '[Using Icons](icon.html)'
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[使用图标](icon.html)'
+- en: Many Swing components can display icons. Usually, icons are implemented as instances
+    of the `ImageIcon` class.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多Swing组件可以显示图标。通常，图标是作为`ImageIcon`类的实例实现的。
+- en: '[Solving Common Component Problems](problems.html)'
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[解决常见组件问题](problems.html)'
+- en: This section discusses solutions to common component-related problems.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节讨论了常见组件相关问题的解决方案。
+- en: If you are interested in using JavaFX to create your GUI, see [Using JavaFX
+    Charts](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/charts.htm)
+    and [Using JavaFX UI Controls](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/ui_controls.htm).
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你对使用JavaFX创建GUI感兴趣，请参阅[使用JavaFX图表](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/charts.htm)和[使用JavaFX
+    UI控件](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/ui_controls.htm)。

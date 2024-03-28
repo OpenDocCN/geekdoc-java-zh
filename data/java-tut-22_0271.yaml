@@ -1,0 +1,155 @@
+- en: Invoking JavaScript Code From an Applet
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 从小程序调用JavaScript代码
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/invokingJavaScriptFromApplet.html](https://docs.oracle.com/javase/tutorial/deployment/applet/invokingJavaScriptFromApplet.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/invokingJavaScriptFromApplet.html](https://docs.oracle.com/javase/tutorial/deployment/applet/invokingJavaScriptFromApplet.html)
+- en: Java applets can invoke JavaScript functions present in the same web page as
+    the applet. The [LiveConnect Specification](http://www.oracle.com/technetwork/java/javase/plugin2-142482.html#LIVECONNECT)
+    describes details about how JavaScript code communicates with Java code.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java小程序可以调用与小程序在同一网页中的JavaScript函数。[LiveConnect规范](http://www.oracle.com/technetwork/java/javase/plugin2-142482.html#LIVECONNECT)描述了JavaScript代码如何与Java代码通信的详细信息。
+- en: The `netscape.javascript.JSObject` class enables Java applets to retrieve a
+    reference to JavaScript objects and interact with the web page. The Data Summary
+    applet described next invokes JavaScript code to retrieve information from the
+    web page and writes a data summary back to the web page.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`netscape.javascript.JSObject`类使Java小程序能够检索对JavaScript对象的引用并与网页交互。接下来描述的数据摘要小程序调用JavaScript代码从网页中检索信息，并将数据摘要写回网页。'
+- en: Assume you have a web page with a few JavaScript functions. The example [``AppletPage.html``](examples/dist/applet_InvokingJavaScriptFromApplet/AppletPage.html)
+    has JavaScript functions to retrieve age, address, and phone numbers. There is
+    also a variable called `userName` which has no value at the outset.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设您有一个带有几个JavaScript函数的网页。示例[``AppletPage.html``](examples/dist/applet_InvokingJavaScriptFromApplet/AppletPage.html)具有用于检索年龄、地址和电话号码的JavaScript函数。还有一个名为`userName`的变量，一开始没有值。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Next, consider an applet class called `DataSummaryApplet`. The `DataSummaryApplet`
+    class performs the following operations.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，考虑一个名为`DataSummaryApplet`的小程序类。`DataSummaryApplet`类执行以下操作。
+- en: Invokes the `JSObject`'s `setMember` method to set the `userName` variable to
+    "John Doe".
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用`JSObject`的`setMember`方法将`userName`变量设置为"John Doe"。
+- en: Retrieves the age, address, and phone numbers and builds a string containing
+    a summary of this data.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 检索年龄、地址和电话号码，并构建包含这些数据摘要的字符串。
+- en: Invokes the `writeSummary` JavaScript function to write the summary back to
+    the web page.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用`writeSummary` JavaScript函数将摘要写回网页。
+- en: 'This applet first needs to retrieve a reference to `JSObject` as follows:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该小程序首先需要按以下方式检索对`JSObject`的引用：
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Put the preceding statement in a try ...catch.. block to handle `netscape.javascript.JSException`.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将前述语句放入try...catch...块中以处理`netscape.javascript.JSException`。
+- en: Now that the applet has a reference to `JSObject`, it can invoke the relevant
+    JavaScript functions by using the `eval` and `call` methods of `JSObject`.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，小程序已经有了对`JSObject`的引用，它可以通过`JSObject`的`eval`和`call`方法调用相关的JavaScript函数。
+- en: '[PRE2]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: To compile Java code that has a reference to classes in the `netscape.javascript`
+    package, include `<your JDK path>/jre/lib/plugin.jar` in your classpath. At runtime,
+    the Java Plug-in software automatically makes these classes available to applets.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要编译具有对`netscape.javascript`包中类的引用的Java代码，请在类路径中包含`<您的JDK路径>/jre/lib/plugin.jar`。在运行时，Java插件软件会自动使这些类对小程序可用。
+- en: 'The Data Summary applet displays the following result on the web page:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 数据摘要小程序在网页上显示以下结果：
+- en: '[PRE3]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Open [``AppletPage.html``](examples/dist/applet_InvokingJavaScriptFromApplet/AppletPage.html)
+    in a browser to view the Data Summary applet .
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在浏览器中打开[``AppletPage.html``](examples/dist/applet_InvokingJavaScriptFromApplet/AppletPage.html)以查看数据摘要小程序。
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，请安装至少[Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到示例运行，请确保在浏览器中启用JavaScript解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[Download source code](examplesIndex.html#InvokingJavaScriptFromApplet) for
+    the *Invoking JavaScript Code From Applet* example to experiment further.'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#InvokingJavaScriptFromApplet)以进一步实验*从小程序调用JavaScript代码*示例。'

@@ -1,0 +1,42 @@
+- en: Executors
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Executors
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/executors.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/executors.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/executors.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/executors.html)
+- en: In all of the previous examples, there's a close connection between the task
+    being done by a new thread, as defined by its `Runnable` object, and the thread
+    itself, as defined by a `Thread` object. This works well for small applications,
+    but in large-scale applications, it makes sense to separate thread management
+    and creation from the rest of the application. Objects that encapsulate these
+    functions are known as *executors*. The following subsections describe executors
+    in detail.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在所有先前的示例中，新线程执行的任务与其`Runnable`对象定义的线程本身（由`Thread`对象定义）之间存在密切联系。这对于小型应用程序效果很好，但在大型应用程序中，将线程管理和创建与应用程序的其余部分分离是有意义的。封装这些功能的对象称为*executors*。以下小节详细描述了executors。
+- en: '[Executor Interfaces](exinter.html) define the three executor object types.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Executor Interfaces](exinter.html) 定义了三种executor对象类型。'
+- en: '[Thread Pools](pools.html) are the most common kind of executor implementation.'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Thread Pools](pools.html) 是最常见的executor实现类型。'
+- en: '[Fork/Join](forkjoin.html) is a framework (new in JDK 7) for taking advantage
+    of multiple processors.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Fork/Join](forkjoin.html) 是一个利用多处理器的框架（JDK 7中新增）。'

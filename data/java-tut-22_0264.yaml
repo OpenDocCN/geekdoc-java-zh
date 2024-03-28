@@ -1,0 +1,284 @@
+- en: Deploying an Applet
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 部署一个 Applet
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/deployingApplet.html](https://docs.oracle.com/javase/tutorial/deployment/applet/deployingApplet.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 译文：[https://docs.oracle.com/javase/tutorial/deployment/applet/deployingApplet.html](https://docs.oracle.com/javase/tutorial/deployment/applet/deployingApplet.html)
+- en: To deploy your Java applet, first compile the source code, package it as a JAR
+    file, and sign the JAR file.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要部署您的 Java applet，首先编译源代码，将其打包为 JAR 文件，并对 JAR 文件进行签名。
+- en: Java applets can be launched in two ways.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java applet 可以以两种方式启动。
+- en: You can launch your applet by using Java Network Launch Protocol (JNLP). Applets
+    launched by using JNLP have access to powerful JNLP APIs and extensions.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以使用 Java 网络启动协议（JNLP）启动您的 applet。使用 JNLP 启动的 applet 可以访问强大的 JNLP API 和扩展。
+- en: Alternatively, you can launch an applet by specifying the applet's launch properties
+    directly in the applet tag. However, this old way of deploying applets imposes
+    severe security restrictions on the applet.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 或者，您可以通过直接在 applet 标记中指定 applet 的启动属性来启动 applet。然而，这种部署 applet 的旧方法对 applet
+    施加了严格的安全限制。
+- en: The Deployment Toolkit script contains useful JavaScript functions that can
+    be used to deploy applets in a web page.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 部署工具包脚本包含可用于在网页中部署 applet 的有用 JavaScript 函数。
+- en: If you are unfamiliar with these deployment technologies, review the [Deployment
+    In-Depth](../deploymentInDepth/index.html) lesson before proceeding further.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您对这些部署技术不熟悉，请在继续之前查看 [深入部署](../deploymentInDepth/index.html) 课程。
+- en: Here are some step-by-step instructions to package and deploy your applet. The
+    Dynamic Tree Demo applet is used to illustrate applet deployment. You might want
+    to set up build scripts to execute some of the following steps.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是一些逐步说明，用于打包和部署您的 applet。Dynamic Tree Demo applet 用于说明 applet 的部署。您可能希望设置构建脚本来执行以下一些步骤。
+- en: '//&lt;![CDATA[ var attributes = { code:''appletComponentArch.DynamicTreeApplet.class'',
+    archive:''examples/dist/applet_ComponentArch_DynamicTreeDemo/DynamicTreeDemo.jar'',
+    width:300, height:300} ; var parameters = {jnlp_href: ''examples/dist/applet_ComponentArch_DynamicTreeDemo/dynamictree_applet.jnlp''}
+    ; deployJava.runApplet(attributes, parameters, ''1.7''); //]]&gt;'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '//&lt;![CDATA[ var attributes = { code:''appletComponentArch.DynamicTreeApplet.class'',
+    archive:''examples/dist/applet_ComponentArch_DynamicTreeDemo/DynamicTreeDemo.jar'',
+    width:300, height:300} ; var parameters = {jnlp_href: ''examples/dist/applet_ComponentArch_DynamicTreeDemo/dynamictree_applet.jnlp''}
+    ; deployJava.runApplet(attributes, parameters, ''1.7''); //]]&gt;'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到示例运行，请确保在浏览器中启用 JavaScript 解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Compile your applet's Java code and make sure all class files and resources
+    such as images are in a separate directory.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编译您的 applet 的 Java 代码，并确保所有类文件和资源（如图像）位于单独的目录中。
+- en: In the case of the DynamicTree Demo applet, the compiled classes are placed
+    in the `build/classes/appletComponentArch` directory.
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在 DynamicTree Demo applet 的情况下，编译后的类文件将放置在 `build/classes/appletComponentArch`
+    目录中。
+- en: Create a text file that contains any JAR file manifest attributes that your
+    applet needs.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个包含您的 applet 需要的任何 JAR 文件清单属性的文本文件。
+- en: For the DynamicTree Demo applet, create a file named `mymanifest.txt` in the
+    `build/classes` directory, and add the `Permissions`, `Codebase`, and `Application-Name`
+    attributes. The applet does not require access to the user's system resources,
+    so use `sandbox` for the permissions. Use the domain from which you will load
+    the sample for the code base, for example, `myserver.com`. Add the following attributes
+    to the `mymanifest.txt` file.
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 对于 DynamicTree Demo applet，创建一个名为 `mymanifest.txt` 的文件在 `build/classes` 目录中，并添加
+    `Permissions`、`Codebase` 和 `Application-Name` 属性。该 applet 不需要访问用户系统资源，因此对于权限使用
+    `sandbox`。对于代码库，使用您将加载示例的域，例如 `myserver.com`。将以下属性添加到 `mymanifest.txt` 文件中。
+- en: '[PRE0]'
+  id: totrans-17
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Other manifest attributes are available to restrict an applet to using only
+    trusted code, and to provide security for applets that need to make calls between
+    privileged Java code and sandbox Java code, or have JavaScript code that calls
+    the applet. See the [Enhancing Security with Manifest Attributes](../jar/secman.html)
+    lesson to learn more about the manifest attributes that are available.
+  id: totrans-18
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 其他清单属性可用于限制 applet 仅使用受信任的代码，并为需要在特权 Java 代码和沙箱 Java 代码之间进行调用，或者具有调用 applet
+    的 JavaScript 代码的 applet 提供安全性。请参阅 [使用清单属性增强安全性](../jar/secman.html) 课程以了解更多可用的清单属性。
+- en: Create a JAR file containing your applet's class files and resources. Include
+    the manifest attributes in the `mymanifest.txt` file that you created in the previous
+    step.
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建一个包含您 applet 的类文件和资源的 JAR 文件。在您之前创建的 `mymanifest.txt` 文件中包含清单属性。
+- en: For example, the following command creates a JAR file with the class files in
+    the `build/classes/appletComponentArch` directory and the manifest file in the
+    `build/classes` directory.
+  id: totrans-20
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 例如，以下命令将创建一个 JAR 文件，其中包含 `build/classes/appletComponentArch` 目录中的类文件和 `build/classes`
+    目录中的清单文件。
+- en: '[PRE1]'
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: See the [Packaging Programs in JAR Files](../jar/index.html) lesson to learn
+    more about creating and using JAR files.
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 参阅 [在 JAR 文件中打包程序](../jar/index.html) 课程，了解有关创建和使用 JAR 文件的更多信息。
+- en: Sign the JAR file for your applet and time stamp the signature. Use a valid,
+    current code signing certificate issued by a trusted certificate authority to
+    provide your users with assurance that it is safe to run the applet.
+  id: totrans-23
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 为您的 applet 签署 JAR 文件并为签名加上时间戳。使用由受信任的证书颁发机构颁发的有效的当前代码签名证书，向用户提供确保可以安全运行 applet
+    的保证。
+- en: See the [Signing JAR Files](../jar/signing.html) lesson for more information.
+  id: totrans-24
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 请参阅 [签署 JAR 文件](../jar/signing.html) 课程以获取更多信息。
+- en: If you want to use a signed JNLP file for security, create the JNLP file as
+    described in the next step and include it in the JAR file before the JAR file
+    is signed. See [Signed JNLP Files](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/signedJNLP.html)
+    in the Java Platform, Standard Edition Deployment Guide for information.
+  id: totrans-25
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如果您想要使用签名的 JNLP 文件以确保安全性，请按照下一步中描述的方式创建 JNLP 文件，并在签名 JAR 文件之前将其包含在 JAR 文件中。有关详细信息，请参阅
+    Java 平台标准版部署指南中的 [签名的 JNLP 文件](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/signedJNLP.html)。
+- en: Create a JNLP file that describes how your applet should be launched.
+  id: totrans-26
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建描述您的 applet 应如何启动的 JNLP 文件。
+- en: Here is the JNLP file used to launch the Dynamic Tree Demo applet.
+  id: totrans-27
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 这是用于启动动态树演示 applet 的 JNLP 文件。
+- en: 'The source for [``dynamictree_applet.jnlp``](examples/applet_ComponentArch_DynamicTreeDemo/src/dynamictree_applet.jnlp)
+    follows:'
+  id: totrans-28
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: '[``dynamictree_applet.jnlp``](examples/applet_ComponentArch_DynamicTreeDemo/src/dynamictree_applet.jnlp)
+    的源代码如下：'
+- en: '[PRE2]'
+  id: totrans-29
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Note that the security element for requesting additional permissions is not
+    present in the JNLP file, therefore the applet runs only in the security sandbox.
+  id: totrans-30
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 请注意，JNLP 文件中不存在请求额外权限的安全元素，因此 applet 仅在安全沙箱中运行。
+- en: The topic, [Structure of the JNLP File](../deploymentInDepth/jnlpFileSyntax.html),
+    describes JNLP file syntax and options.
+  id: totrans-31
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 主题，[JNLP 文件的结构](../deploymentInDepth/jnlpFileSyntax.html)，描述了 JNLP 文件的语法和选项。
+- en: Create the HTML page that will display the applet. Invoke Deployment Toolkit
+    functions to deploy the applet.
+  id: totrans-32
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 创建将显示 applet 的 HTML 页面。调用部署工具包函数以部署 applet。
+- en: In our example, the Dynamic Tree Demo applet is deployed in [``AppletPage.html``](examples/dist/applet_ComponentArch_DynamicTreeDemo/AppletPage.html).
+  id: totrans-33
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在我们的示例中，动态树演示 applet 部署在 [``AppletPage.html``](examples/dist/applet_ComponentArch_DynamicTreeDemo/AppletPage.html)
+    中。
+- en: '[PRE3]'
+  id: totrans-34
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Place the applet's JAR file, JNLP file and HTML page in the appropriate folder(s).
+  id: totrans-35
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将 applet 的 JAR 文件、JNLP 文件和 HTML 页面放置在适当的文件夹中。
+- en: For this example, place `DynamicTreeDemo.jar`, `dynamictree_applet.jnlp`, and
+    `AppletPage.html` in the same directory on the local machine or a web server.
+    A web server is preferred. To run from the local machine, you must add your application
+    to the exception site list, which is managed from the Security tab of the Java
+    Control Panel.
+  id: totrans-36
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 对于此示例，请将 `DynamicTreeDemo.jar`、`dynamictree_applet.jnlp` 和 `AppletPage.html`
+    放置在本地计算机或 Web 服务器上的同一目录中。建议使用 Web 服务器。要从本地计算机运行，必须将应用程序添加到例外站点列表中，该列表可从 Java 控制面板的安全选项卡中管理。
+- en: Open the applet's HTML page in a browser to view the applet. Agree to run the
+    applet when prompted. Check the Java Console log for error and debugging messages.
+  id: totrans-37
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在浏览器中打开 applet 的 HTML 页面以查看 applet。在提示时同意运行 applet。检查 Java 控制台日志以查看错误和调试消息。
+- en: '[Download source code](examplesIndex.html#ComponentArchDynamicTreeDemo) for
+    the *Dynamic Tree Demo Applet* example to experiment further.'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#ComponentArchDynamicTreeDemo) 以进一步尝试 *动态树演示 applet*
+    示例。'

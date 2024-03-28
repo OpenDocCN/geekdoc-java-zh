@@ -1,0 +1,122 @@
+- en: 'Questions and Exercises: Creating and Using Packages'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习：创建和使用包
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/package/QandE/packages-questions.html](https://docs.oracle.com/javase/tutorial/java/package/QandE/packages-questions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/package/QandE/packages-questions.html](https://docs.oracle.com/javase/tutorial/java/package/QandE/packages-questions.html)
+- en: Questions
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 问题
+- en: Assume you have written some classes. Belatedly, you decide they should be split
+    into three packages, as listed in the following table. Furthermore, assume the
+    classes are currently in the default package (they have no `package` statements).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你已经编写了一些类。突然间，你决定将它们分成三个包，如下表所列。此外，假设这些类当前位于默认包中（没有`package`语句）。
+- en: Destination Packages
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 目标包
+- en: '| Package Name | Class Name |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| 包名称 | 类名称 |'
+- en: '| `mygame.server` | `Server` |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| `mygame.server` | `Server` |'
+- en: '| `mygame.shared` | `Utilities` |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| `mygame.shared` | `Utilities` |'
+- en: '| `mygame.client` | `Client` |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| `mygame.client` | `Client` |'
+- en: Which line of code will you need to add to each source file to put each class
+    in the right package?
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 你需要在每个源文件中添加哪行代码才能将每个类放在正确的包中？
+- en: To adhere to the directory structure, you will need to create some subdirectories
+    in the development directory and put source files in the correct subdirectories.
+    What subdirectories must you create? Which subdirectory does each source file
+    go in?
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 为了遵循目录结构，你需要在开发目录中创建一些子目录，并将源文件放在正确的子目录中。你需要创建哪些子目录？每个源文件应放在哪个子目录中？
+- en: Do you think you'll need to make any other changes to the source files to make
+    them compile correctly? If so, what?
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 你认为你需要对源文件进行其他任何更改才能使它们正确编译吗？如果需要，是什么？
+- en: Exercises
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 练习
+- en: Download the source files as listed here.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下载列在这里的源文件。
+- en: '[`Client`](question/Client.java)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Client`](question/Client.java)'
+- en: '[`Server`](question/Server.java)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Server`](question/Server.java)'
+- en: '[`Utilities`](question/Utilities.java)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Utilities`](question/Utilities.java)'
+- en: Implement the changes you proposed in questions 1 through 3 using the source
+    files you just downloaded.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用刚刚下载的源文件实现你在问题1到3中提出的更改。
+- en: Compile the revised source files. (*Hint:* If you're invoking the compiler from
+    the command line (as opposed to using a builder), invoke the compiler from the
+    directory that contains the `mygame` directory you just created.)
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 编译修改后的源文件。（*提示：如果你是从命令行调用编译器（而不是使用构建工具），请从包含你刚刚创建的`mygame`目录的目录中调用编译器。*）
+- en: '[Check your answers.](packages-answers.html)'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[检查你的答案。](packages-answers.html)'

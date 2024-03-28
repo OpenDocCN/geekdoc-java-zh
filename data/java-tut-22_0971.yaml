@@ -1,0 +1,270 @@
+- en: 'Lesson: Naming and Directory Concepts'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教训：命名和目录概念
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/concepts/index.html](https://docs.oracle.com/javase/tutorial/jndi/concepts/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/concepts/index.html](https://docs.oracle.com/javase/tutorial/jndi/concepts/index.html)
+- en: Naming Concepts
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 命名概念
+- en: A fundamental facility in any computing system is the *naming service*--the
+    means by which names are associated with objects and objects are found based on
+    their names. When using almost any computer program or system, you are always
+    naming one object or another. For example, when you use an electronic mail system,
+    you must provide the name of the recipient. To access a file in the computer,
+    you must supply its name. A naming service allows you to look up an object given
+    its name.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在任何计算系统中的一个基本设施是*命名服务*——通过名称与对象关联并根据其名称找到对象的方法。在几乎任何计算机程序或系统中使用时，您总是在命名一个对象或另一个对象。例如，当您使用电子邮件系统时，必须提供收件人的名称。要访问计算机中的文件，必须提供其名称。命名服务允许您根据名称查找对象。
+- en: '![A name is used to reference an object.](../Images/68fa50d9f94bbb8eb4519a4cb277a760.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![名称用于引用对象。](../Images/68fa50d9f94bbb8eb4519a4cb277a760.png)'
+- en: A naming service's primary function is to map people friendly names to objects,
+    such as addresses, identifiers, or objects typically used by computer programs.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 命名服务的主要功能是将人们友好的名称映射到对象，例如地址、标识符或通常由计算机程序使用的对象。
+- en: 'For example, the [Internet Domain Name System (DNS)](http://www.ietf.org/rfc/rfc1034.txt)
+    maps machine names to IP Addresses:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，[Internet域名系统（DNS）](http://www.ietf.org/rfc/rfc1034.txt)将机器名称映射到IP地址：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: A file system maps a filename to a file reference that a program can use to
+    access the contents of the file.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件系统将文件名映射到程序可以使用的文件引用，以访问文件的内容。
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: These two examples also illustrate the wide range of scale at which naming services
+    exist—from naming an object on the Internet to naming a file on the local file
+    system.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这两个示例也说明了命名服务存在的广泛规模范围——从在互联网上命名对象到在本地文件系统上命名文件。
+- en: Names
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 名称
+- en: To look up an object in a naming system, you supply it the *name* of the object.
+    The naming system determines the syntax that the name must follow. This syntax
+    is sometimes called the naming systems *naming convention*. A name is made up
+    components. A name's representation consist of a component separator marking the
+    components of the name.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在命名系统中查找对象，您需要提供对象的*名称*。命名系统确定名称必须遵循的语法。这种语法有时被称为命名系统的*命名约定*。名称由组件组成。名称的表示包括一个组件分隔符，标记名称的组件。
+- en: '| Naming System | Component Separator | Names |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| 命名系统 | 组件分隔符 | 名称 |'
+- en: '| UNIX file system | "/" | /usr/hello |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| UNIX文件系统 | "/" | /usr/hello |'
+- en: '| DNS | "." | sales.Wiz.COM |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| DNS | "." | sales.Wiz.COM |'
+- en: '| LDAP | "," and "=" | cn=Rosanna Lee, o=Sun, c=US |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| LDAP | "," 和 "=" | cn=Rosanna Lee, o=Sun, c=US |'
+- en: The UNIX file system's naming convention is that a file is named from its path
+    relative to the root of the file system, with each component in the path separated
+    from left to right using the forward slash character ("/"). The UNIX *pathname*,
+    `/usr/hello`, for example, names a file `hello` in the file directory `usr`, which
+    is located in the root of the file system.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: UNIX文件系统的命名约定是，文件的命名来自于相对于文件系统根目录的路径，路径中的每个组件从左到右使用斜杠字符("/")分隔。例如，UNIX的*路径名*
+    `/usr/hello`，命名了位于文件系统根目录中的文件目录`usr`中的文件`hello`。
+- en: DNS naming convention calls for components in the DNS name to be ordered from
+    right to left and delimited by the dot character ("."). Thus the DNS name `sales.Wiz.COM`
+    names a DNS entry with the name `sales`, relative to the DNS entry `Wiz.COM`.
+    The DNS entry `Wiz.COM`, in turn, names an entry with the name `Wiz` in the `COM`
+    entry.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: DNS命名约定要求DNS名称中的组件从右到左排序，并用点字符(".")分隔。因此，DNS名称`sales.Wiz.COM`命名了一个名为`sales`的DNS条目，相对于DNS条目`Wiz.COM`。而DNS条目`Wiz.COM`又命名了一个名为`Wiz`的条目，位于`COM`条目中。
+- en: The [Lightweight Directory Access Protocol (LDAP)](http://www.ietf.org/rfc/rfc2251.txt)
+    naming convention orders components from right to left, delimited by the comma
+    character (","). Thus the LDAP name `cn=Rosanna Lee, o=Sun, c=US` names an LDAP
+    entry `cn=Rosanna Lee`, relative to the entry `o=Sun`, which in turn, is relative
+    to `c=us`. LDAP has the further rule that each component of the name must be a
+    name/value pair with the name and value separated by an equals character ("=").
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[轻量级目录访问协议（LDAP）](http://www.ietf.org/rfc/rfc2251.txt)命名约定按从右到左的顺序排列组件，以逗号字符（“,”）分隔。因此，LDAP名称`cn=Rosanna
+    Lee, o=Sun, c=US`指定了一个LDAP条目`cn=Rosanna Lee`，相对于条目`o=Sun`，后者又相对于`c=us`。LDAP还有一个规则，即名称的每个组件必须是一个名称/值对，名称和值之间用等号字符（“=”）分隔。'
+- en: Bindings
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 绑定
+- en: The association of a name with an object is called a *binding*. A file name
+    is *bound* to a file.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 名称与对象的关联称为*绑定*。文件名绑定到文件。
+- en: The DNS contains bindings that map machine names to IP addresses. An LDAP name
+    is bound to an LDAP entry.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: DNS包含将机器名称映射到IP地址的绑定。LDAP名称绑定到LDAP条目。
+- en: References and Addresses
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 参考和地址
+- en: Depending on the naming service, some objects cannot be stored directly by the
+    naming service; that is, a copy of the object cannot be placed inside the naming
+    service. Instead, they must be stored by reference; that is, a *pointer* or *reference*
+    to the object is placed inside the naming service. A reference represents information
+    about how to access an object. Typically, it is a compact representation that
+    can be used to communicate with the object, while the object itself might contain
+    more state information. Using the reference, you can contact the object and obtain
+    more information about the object.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据命名服务的不同，一些对象无法直接存储在命名服务中；也就是说，不能将对象的副本放入命名服务中。相反，它们必须通过引用存储；也就是说，将指向对象的*指针*或*引用*放入命名服务中。引用表示如何访问对象的信息。通常，它是一种紧凑的表示形式，可用于与对象通信，而对象本身可能包含更多状态信息。使用引用，您可以联系对象并获取有关对象的更多信息。
+- en: For example, an airplane object might contain a list of the airplane's passengers
+    and crew, its flight plan, and fuel and instrument status, and its flight number
+    and departure time. By contrast, an airplane object reference might contain only
+    its flight number and departure time. The reference is a much more compact representation
+    of information about the airplane object and can be used to obtain additional
+    information. A file object, for example, is accessed using a *file reference*.
+    A printer object, for example, might contain the state of the printer, such as
+    its current queue and the amount of paper in the paper tray. A printer object
+    reference, on the other hand, might contain only information on how to reach the
+    printer, such as its print server name and printing protocol.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，飞机对象可能包含飞机的乘客和机组人员列表，其飞行计划，燃料和仪表状态，以及其航班号和起飞时间。相比之下，飞机对象引用可能只包含其航班号和起飞时间。引用是关于飞机对象信息的更紧凑表示，并可用于获取附加信息。例如，文件对象使用*文件引用*访问。另外，打印机对象可能包含打印机的状态，如当前队列和纸盒中的纸张量。另一方面，打印机对象引用可能只包含有关如何到达打印机的信息，如其打印服务器名称和打印协议。
+- en: 'Although in general a reference can contain any arbitrary information, it is
+    useful to refer to its contents as *addresses* (or communication end points):
+    specific information about how to access the object.'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管一般来说引用可以包含任意信息，但将其内容称为*地址*（或通信终点）是有用的：关于如何访问对象的具体信息。
+- en: For simplicity, this tutorial uses "object" to refer to both objects and object
+    references when a distinction between the two is not required.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为简单起见，本教程在不需要区分两者时使用“对象”来指代对象和对象引用。
+- en: Context
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 上下文
+- en: A *context* is a set of name-to-object bindings. Every context has an associated
+    naming convention. A context always provides a lookup (*resolution*) operation
+    that returns the object, it typically also provides operations such as those for
+    binding names, unbinding names, and listing bound names. A name in one context
+    object can be bound to another context object (called a *subcontext*) that has
+    the same naming convention.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*上下文*是一组名称到对象的绑定。每个上下文都有一个相关的命名约定。上下文始终提供一个查找（*解析*）操作，返回对象，通常还提供绑定名称、解绑名称和列出绑定名称等操作。一个上下文对象中的名称可以绑定到另一个具有相同命名约定的上下文对象（称为*子上下文*）。'
+- en: '![Several examples of contexts, bound to subcontexts.](../Images/62086fc2065763b608516d9adc409443.png)'
+  id: totrans-30
+  prefs: []
+  type: TYPE_IMG
+  zh: '![几个上下文示例，绑定到子上下文。](../Images/62086fc2065763b608516d9adc409443.png)'
+- en: A file directory, such as `/usr`, in the UNIX file system represents a context.
+    A file directory named relative to another file directory represents a subcontext
+    (UNIX users refer to this as a *subdirectory*). That is, in a file directory `/usr/bin`,
+    the directory `bin` is a subcontext of `usr`. A DNS domain, such as `COM`, represents
+    a context. A DNS domain named relative to another DNS domain represents a subcontext.
+    For the DNS domain `Sun.COM`, the DNS domain `Sun` is a subcontext of `COM`.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: UNIX文件系统中的文件目录，例如`/usr`，代表一个上下文。相对于另一个文件目录命名的文件目录代表一个子上下文（UNIX用户将其称为*子目录*）。也就是说，在文件目录`/usr/bin`中，目录`bin`是`usr`的子上下文。DNS域，例如`COM`，代表一个上下文。相对于另一个DNS域命名的DNS域代表一个子上下文。对于DNS域`Sun.COM`，DNS域`Sun`是`COM`的子上下文。
+- en: Finally, an LDAP entry, such as `c=us`, represents a context. An LDAP entry
+    named relative to another LDAP entry represents a subcontext. For the LDAP entry
+    `o=sun,c=us`, the entry `o=sun` is a subcontext of `c=us`.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，LDAP条目，例如`c=us`，代表一个上下文。相对于另一个LDAP条目命名的LDAP条目代表一个子上下文。对于LDAP条目`o=sun,c=us`，条目`o=sun`是`c=us`的子上下文。
+- en: Naming Systems and Namespaces
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 命名系统和命名空间
+- en: A *naming system* is a connected set of contexts of the same type (they have
+    the same naming convention) and provides a common set of operations.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*命名系统*是同一类型上下文的连接集合（它们具有相同的命名约定），并提供一组共同的操作。'
+- en: A system that implements the DNS is a naming system. A system that communicates
+    using the LDAP is a naming system.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现DNS的系统是一个命名系统。使用LDAP进行通信的系统也是一个命名系统。
+- en: A naming system provides a *naming service* to its customers for performing
+    naming-related operations. A naming service is accessed through its own interface.
+    The DNS offers a naming service that maps machine names to IP addresses. LDAP
+    offers a naming service that maps LDAP names to LDAP entries. A file system offers
+    a naming service that maps filenames to files and directories.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 命名系统为其客户提供*命名服务*，用于执行与命名相关的操作。命名服务通过其自己的接口访问。DNS提供将机器名称映射到IP地址的命名服务。LDAP提供将LDAP名称映射到LDAP条目的命名服务。文件系统提供将文件名映射到文件和目录的命名服务。
+- en: A *namespace* is the set of all possible names in a naming system. The UNIX
+    file system has a namespace consisting of all of the names of files and directories
+    in that file system. The DNS namespace contains names of DNS domains and entries.
+    The LDAP namespace contains names of LDAP entries.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*命名空间*是命名系统中所有可能名称的集合。UNIX文件系统具有一个命名空间，其中包含该文件系统中所有文件和目录的名称。DNS命名空间包含DNS域和条目的名称。LDAP命名空间包含LDAP条目的名称。'

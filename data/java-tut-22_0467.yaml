@@ -1,0 +1,38 @@
+- en: Showing the Drop Location
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 显示放置位置
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/showdroploc.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/showdroploc.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/showdroploc.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/showdroploc.html)
+- en: Generally during a drag operation, a component gives visual feedback when it
+    can accept the data. It might highlight the drop location, or it might show a
+    caret or a horizontal line where the insertion would occur. Swing renders the
+    drop location when the `canImport` method for the component's `TransferHandler`
+    returns true.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常在拖放操作期间，组件在可以接受数据时会给出视觉反馈。它可能会突出显示放置位置，或者显示插入位置的插入符或水平线。当组件的`TransferHandler`的`canImport`方法返回true时，Swing会渲染放置位置。
+- en: To control this programmatically, you can use the [`setShowDropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#setShowDropLocation-boolean-)
+    method. Calling this method with `true` causes the visual feedback for the drop
+    location to always be displayed, even if the drop will not be accepted. Calling
+    this method with `false` prevents any visual feedback, even if the drop will be
+    accepted. You always invoke this method from `canImport`.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要在程序中控制这一点，您可以使用[`setShowDropLocation`](https://docs.oracle.com/javase/8/docs/api/javax/swing/TransferHandler.TransferSupport.html#setShowDropLocation-boolean-)方法。调用此方法并传入`true`会导致始终显示放置位置的视觉反馈，即使放置操作不被接受。调用此方法并传入`false`会阻止任何视觉反馈，即使放置操作将被接受。您始终要从`canImport`中调用此方法。
+- en: The [Demo - LocationSensitiveDemo](locsensitivedemo.html) page includes a combo
+    box that enables you to choose to always show the drop location, or never show
+    the drop location, or the default behavior. But first we will talk about location
+    sensitive drop.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[演示 - LocationSensitiveDemo](locsensitivedemo.html)页面包括一个下拉框，让您可以选择始终显示放置位置、从不显示放置位置或默认行为。但首先我们将讨论位置敏感的放置。'

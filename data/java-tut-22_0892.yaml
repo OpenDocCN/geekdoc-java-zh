@@ -1,0 +1,157 @@
+- en: Troubleshooting
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 故障排除
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/class/classTrouble.html](https://docs.oracle.com/javase/tutorial/reflect/class/classTrouble.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/class/classTrouble.html](https://docs.oracle.com/javase/tutorial/reflect/class/classTrouble.html)
+- en: The following examples show typical errors which may be encountered when reflecting
+    on classes.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例展示了在反射类时可能遇到的典型错误。
+- en: 'Compiler Warning: "Note: ... uses unchecked or unsafe operations"'
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编译器警告："注意：...使用了未经检查或不安全的操作"
+- en: 'When a method is invoked, the types of the argument values are checked and
+    possibly converted. [``ClassWarning``](example/ClassWarning.java) invokes [`getMethod()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getMethod-java.lang.String-java.lang.Class...-)
+    to cause a typical unchecked conversion warning:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当调用方法时，会检查参数值的类型并可能进行转换。[`ClassWarning`](example/ClassWarning.java)调用[`getMethod()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getMethod-java.lang.String-java.lang.Class...-)会导致典型的未经检查的转换警告：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Many library methods have been retrofitted with generic declarations including
+    several in [`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html).
+    Since `c` is declared as a *raw* type (has no type parameters) and the corresponding
+    parameter of [`getMethod()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getMethod-java.lang.String-java.lang.Class...-)
+    is a parameterized type, an unchecked conversion occurs. The compiler is required
+    to generate a warning. (See [*The Java Language Specification, Java SE 7 Edition*](https://docs.oracle.com/javase/specs/jls/se7/html/index.html),
+    sections [Unchecked Conversion](https://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.1.9)
+    and [Method Invocation Conversion](https://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.3).)
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多库方法已经使用了泛型声明，包括[`Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)中的几个方法。由于`c`声明为*原始*类型（没有类型参数），并且[`getMethod()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getMethod-java.lang.String-java.lang.Class...-)的相应参数是参数化类型，因此会发生未经检查的转换。编译器需要生成警告。（参见[*Java语言规范，Java
+    SE 7版*](https://docs.oracle.com/javase/specs/jls/se7/html/index.html)，章节[未经检查的转换](https://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.1.9)和[方法调用转换](https://docs.oracle.com/javase/specs/jls/se7/html/jls-5.html#jls-5.3)。）
+- en: 'There are two possible solutions. The more preferable it to modify the declaration
+    of `c` to include an appropriate generic type. In this case, the declaration should
+    be:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两种可能的解决方案。更可取的是修改`c`的声明以包含适当的通用类型。在这种情况下，声明应为：
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Alternatively, the warning could be explicitly suppressed using the predefined
+    annotation [`@SuppressWarnings`](https://docs.oracle.com/javase/8/docs/api/java/lang/SuppressWarnings.html)
+    preceding the problematic statement.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，可以在有问题的语句之前使用预定义的注释[`@SuppressWarnings`](https://docs.oracle.com/javase/8/docs/api/java/lang/SuppressWarnings.html)来明确抑制警告。
+- en: '[PRE3]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:** As a general principle, warnings should not be ignored as they may
+    indicate the presence of a bug. Parameterized declarations should be used as appropriate.
+    If that is not possible (perhaps because an application must interact with a library
+    vendor''s code), annotate the offending line using [`@SuppressWarnings`](https://docs.oracle.com/javase/8/docs/api/java/lang/SuppressWarnings.html).'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：** 作为一个一般原则，不应忽略警告，因为它们可能表明存在错误。应适当使用参数化声明。如果不可能（也许是因为应用程序必须与库供应商的代码交互），则可以使用[`@SuppressWarnings`](https://docs.oracle.com/javase/8/docs/api/java/lang/SuppressWarnings.html)对有问题的行进行注释。'
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: InstantiationException when the Constructor is Not Accessible
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 当构造函数不可访问时会出现InstantiationException
+- en: '[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)
+    will throw an [`InstantiationException`](https://docs.oracle.com/javase/8/docs/api/java/lang/InstantiationException.html)
+    if an attempt is made to create a new instance of the class and the zero-argument
+    constructor is not visible. The [``ClassTrouble``](example/ClassTrouble.java)
+    example illustrates the resulting stack trace.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)如果尝试创建一个类的新实例且零参数构造函数不可见，则会抛出[`InstantiationException`](https://docs.oracle.com/javase/8/docs/api/java/lang/InstantiationException.html)。[``ClassTrouble``](example/ClassTrouble.java)示例展示了生成的堆栈跟踪。'
+- en: '[PRE4]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: '[PRE5]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)
+    behaves very much like the `new` keyword and will fail for the same reasons `new`
+    would fail. The typical solution in reflection is to take advantage of the [`java.lang.reflect.AccessibleObject`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html)
+    class which provides the ability to suppress access control checks; however, this
+    approach will not work because [`java.lang.Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)
+    does not extend [`AccessibleObject`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html).
+    The only solution is to modify the code to use [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    which does extend [`AccessibleObject`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html).'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)的行为非常类似于`new`关键字，并且会因为与`new`相同的原因而失败。在反射中的典型解决方案是利用[`java.lang.reflect.AccessibleObject`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html)类，该类提供了抑制访问控制检查的能力；然而，这种方法不起作用，因为[`java.lang.Class`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html)不扩展[`AccessibleObject`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html)。唯一的解决方案是修改代码以使用[`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)，该方法确实扩展了[`AccessibleObject`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/AccessibleObject.html)。'
+- en: '* * *'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tip:** In general, it is preferable to use [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    for the reasons described in the [Creating New Class Instances](../member/ctorInstance.html)
+    section in the [Members](../member/index.html) lesson.'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**提示：** 一般来说，最好使用[`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)，原因在[创建新类实例](../member/ctorInstance.html)部分的[成员](../member/index.html)课程中有描述。'
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Additional examples of potential problems using [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    may be found in the [Constructor Troubleshooting](../member/ctorTrouble.html)
+    section of the [Members](../member/index.html) lesson.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用[`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)可能会出现潜在问题的其他示例，可以在[构造函数故障排除](../member/ctorTrouble.html)部分的[成员](../member/index.html)课程中找到。

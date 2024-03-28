@@ -1,0 +1,147 @@
+- en: Parsing and Formatting
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 解析和格式化
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/format.html](https://docs.oracle.com/javase/tutorial/datetime/iso/format.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/format.html](https://docs.oracle.com/javase/tutorial/datetime/iso/format.html)
+- en: 'The temporal-based classes in the Date-Time API provide `parse` methods for
+    parsing a string that contains date and time information. These classes also provide
+    `format` methods for formatting temporal-based objects for display. In both cases,
+    the process is similar: you provide a pattern to the `DateTimeFormatter` to create
+    a formatter object. This formatter is then passed to the `parse` or `format` method.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 日期时间 API 中基于时间的类提供了用于解析包含日期和时间信息的字符串的`parse`方法。这些类还提供了用于为显示格式化基于时间的对象的`format`方法。在这两种情况下，过程是相似的：您提供一个模式给`DateTimeFormatter`来创建一个格式化程序对象。然后将此格式化程序传递给`parse`或`format`方法。
+- en: The `DateTimeFormatter` class provides numerous [predefined formatters](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#predefined),
+    or you can define your own.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DateTimeFormatter` 类提供了许多[预定义的格式化程序](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#predefined)��或者您可以定义自己的格式化程序。'
+- en: The `parse` and the `format` methods throw an exception if a problem occurs
+    during the conversion process. Therefore, your parse code should catch the `DateTimeParseException`
+    error and your format code should catch the `DateTimeException` error. For more
+    information on exception handing, see [Catching and Handling Exceptions](../../essential/exceptions/handling.html).
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在转换过程中出现问题，`parse` 和 `format` 方法会抛出异常。因此，您的解析代码应捕获`DateTimeParseException`错误，您的格式化代码应捕获`DateTimeException`错误。有关异常处理的更多信息，请参阅[捕获和处理异常](../../essential/exceptions/handling.html)。
+- en: The `DateTimeFormatter` class is both immutable and thread-safe; it can (and
+    should) be assigned to a static constant where appropriate.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DateTimeFormatter` 类既是不可变的又是线程安全的；在适当的情况下，应该将其分配给静态常量。'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Version Note:** The `java.time` date-time objects can be used directly with
+    `java.util.Formatter` and `String.format` by using the familiar pattern-based
+    formatting that was used with the legacy `java.util.Date` and `java.util.Calendar`
+    classes.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**版本说明：** `java.time` 日期时间对象可以直接与`java.util.Formatter`和`String.format`一起使用，方法是使用与旧的`java.util.Date`和`java.util.Calendar`类一起使用的熟悉基于模式的格式化。'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Parsing
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 解析
+- en: The one-argument [`parse(CharSequence)`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#parse-java.lang.CharSequence-)
+    method in the `LocalDate` class uses the `ISO_LOCAL_DATE` formatter. To specify
+    a different formatter, you can use the two-argument [`parse(CharSequence, DateTimeFormatter)`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#parse-java.lang.CharSequence-java.time.format.DateTimeFormatter-)
+    method. The following example uses the predefined `BASIC_ISO_DATE` formatter,
+    which uses the format `19590709` for July 9, 1959.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`LocalDate` 类中的单参数[`parse(CharSequence)`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#parse-java.lang.CharSequence-)方法使用`ISO_LOCAL_DATE`格式化程序。要指定不同的格式化程序，可以使用两个参数的[`parse(CharSequence,
+    DateTimeFormatter)`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#parse-java.lang.CharSequence-java.time.format.DateTimeFormatter-)方法。以下示例使用预定义的`BASIC_ISO_DATE`格式化程序，该格式使用`19590709`表示1959年7月9日。'
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'You can also define a formatter using your own pattern. The following code,
+    from the [``Parse``](examples/Parse.java) example, creates a formatter that applies
+    a format of "MMM d yyyy". This format specifies three characters to represent
+    the month, one digit to represent day of the month, and four digits to represent
+    the year. A formatter created using this pattern would recognize strings such
+    as "Jan 3 2003" or "Mar 23 1994". However, to specify the format as "MMM dd yyyy",
+    with two characters for day of the month, then you would have to always use two
+    characters, padding with a zero for a one-digit date: "Jun 03 2003".'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以使用自己的模式定义格式化程序。以下代码来自[``Parse``](examples/Parse.java)示例，创建了一个应用格式为"MMM d
+    yyyy"的格式化程序。该格式指定三个字符表示月份，一个数字表示日期，四个数字表示年份。使用此模式创建的格式化程序将识别诸如"Jan 3 2003"或"Mar
+    23 1994"之类的字符串。但是，要将格式指定为"MMM dd yyyy"，日期的两个字符，则您必须始终使用两个字符，对于一位数日期，用零填充："Jun
+    03 2003"。
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The documentation for the `DateTimeFormatter` class specifies the [full list
+    of symbols](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns)
+    that you can use to specify a pattern for formatting or parsing.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DateTimeFormatter` 类的文档指定了您可以使用的[符号的完整列表](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns)来指定格式化或解析的模式。'
+- en: The `StringConverter` example on the [Non-ISO Date Conversion](nonIso.html)
+    page provides another example of a date formatter.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[非ISO日期转换](nonIso.html)页面上的`StringConverter`示例提供了另一个日期格式化的示例。'
+- en: Formatting
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 格式化
+- en: The [`format(DateTimeFormatter)`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#format-java.time.format.DateTimeFormatter-)
+    method converts a temporal-based object to a string representation using the specified
+    format. The following code, from the [``Flight``](examples/Flight.java) example,
+    converts an instance of `ZonedDateTime` using the format "MMM d yyy hh:mm a".
+    The date is defined in the same manner as was used for the previous parsing example,
+    but this pattern also includes the hour, minutes, and a.m. and p.m. components.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`format(DateTimeFormatter)`](https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html#format-java.time.format.DateTimeFormatter-)
+    方法使用指定的格式将基于时间的对象转换为字符串表示。以下代码来自 [``Flight``](examples/Flight.java) 示例，使用格式"MMM
+    d yyy hh:mm a"转换了一个`ZonedDateTime`实例。日期的定义方式与之前的解析示例相同，但此模式还包括小时、分钟以及上午和下午组件。'
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The output for this example, which prints both the arrival and departure time,
+    is as follows:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例的输出，打印了到达和离开时间，如下所示：
+- en: '[PRE3]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

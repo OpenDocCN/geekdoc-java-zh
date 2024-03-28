@@ -1,0 +1,175 @@
+- en: Supporting User Interaction
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 支持用户交互
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/advanced/user.html](https://docs.oracle.com/javase/tutorial/2d/advanced/user.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/advanced/user.html](https://docs.oracle.com/javase/tutorial/2d/advanced/user.html)
+- en: To enable the user to interact with the graphics you display, you need to be
+    able to determine when the user clicks on one of them. The `hit` method of the
+    [`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)
+    class provides a way to easily determine whether a mouse click occurred over a
+    particular [`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)
+    object. Alternatively you can get the location of the mouse click and call `contains`
+    on the `Shape` to determine whether the click was within the bounds of the `Shape`.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了让用户与您显示的图形进行交互，您需要能够确定用户何时点击其中一个图形。[`Graphics2D`](https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html)
+    类的 `hit` 方法提供了一种简单确定鼠标点击是否发生在特定 [`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)
+    对象上的方法。或者，您可以获取鼠标点击的位置并在 `Shape` 上调用 `contains` 方法来确定点击是否在 `Shape` 的边界内。
+- en: If you are using primitive text, you can perform simple hit testing by getting
+    the outline `Shape` that corresponds to the text and then calling `hit` or `contains`
+    with that `Shape`. Supporting text editing requires much more sophisticated hit
+    testing. If you want to allow the user to edit text, you should generally use
+    one of the Swing editable text components. If you are working with primitive text
+    and are using the [`TextLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/TextLayout.html)
+    class to manage the shaping and positioning of the text, you can also use `TextLayout`
+    to perform hit testing for text editing. For more information see the chapter
+    Text and Fonts in the [Java 2D Programmer's Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/2d/spec/j2d-bookTOC.html)
+    or see the HitTestSample example below, which uses a `TextLayout` to perform simple
+    hit-testing.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您使用基本文本，可以通过获取与文本对应的轮廓 `Shape`，然后使用该 `Shape` 调用 `hit` 或 `contains` 方法来执行简单的点击测试。支持文本编辑需要更复杂的点击测试。如果要允许用户编辑文本，通常应使用
+    Swing 可编辑文本组件之一。如果您使用基本文本并使用 [`TextLayout`](https://docs.oracle.com/javase/8/docs/api/java/awt/font/TextLayout.html)
+    类来管理文本的形状和位置，则还可以使用 `TextLayout` 来执行文本编辑的点击测试。有关更多信息，请参阅 [Java 2D 程序员指南](https://docs.oracle.com/javase/8/docs/technotes/guides/2d/spec/j2d-bookTOC.html)
+    中的文本和字体章节，或查看下面的 HitTestSample 示例，该示例使用 `TextLayout` 执行简单的点击测试。
+- en: 'Example: ShapeMover'
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例：ShapeMover
+- en: This applet allows the user to drag a `Shape` around within the applet window.
+    The `Shape` is redrawn at every mouse location to provide feedback as the user
+    drags it.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此小程序允许用户在小程序窗口内拖动 `Shape`。`Shape` 在每个鼠标位置重新绘制，以提供用户拖动时的反馈。
+- en: <applet code="ShapeMover" archive="examples/lib/ShapeMoverApplet.jar" width="550"
+    height="250" alt="ShapeMover applet"><param name="permissions" value="sandbox"></applet>
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="ShapeMover" archive="examples/lib/ShapeMoverApplet.jar" width="550"
+    height="250" alt="ShapeMover applet"><param name="permissions" value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，请至少安装 [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    版本。'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[`ShapeMover.java`](examples/ShapeMover.java) contains the complete code for
+    this applet.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`ShapeMover.java`](examples/ShapeMover.java) 包含了此小程序的完整代码。'
+- en: The `contains` method is called to determine whether the cursor is within the
+    bounds of the rectangle when the mouse is pressed. If it is, the location of the
+    rectangle is updated.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当鼠标按下时，调用 `contains` 方法来确定光标是否在矩形的边界内。如果是，则更新矩形的位置。
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: You might notice that redrawing the `Shape` at every mouse location is slow,
+    because the filled rectangle is rerendered every time it is moved. Using double
+    buffering can eliminate this problem. If you use Swing, the drawing will be double
+    buffered automatically; you don't have to change the rendering code at all. The
+    code for a Swing version of this program is [`SwingShapeMover.java`](examples/SwingShapeMover.java).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能会注意到，在每个鼠标位置重新绘制 `Shape` 是很慢的，因为填充的矩形每次移动时都会重新渲染。使用双缓冲可以消除这个问题。如果使用 Swing，绘图将自动双缓冲；您无需更改渲染代码。这个程序的
+    Swing 版本的代码是 [`SwingShapeMover.java`](examples/SwingShapeMover.java)。
+- en: 'Example: HitTestSample'
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 示例：HitTestSample
+- en: This application illustrates hit testing by drawing the default caret wherever
+    the user clicks on the `TextLayout`, as shown in the following figure.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个应用程序通过在用户点击 `TextLayout` 上的位置绘制默认插入符来说明点击测试，如下图所示。
+- en: <applet code="HitTestSample" archive="examples/lib/HitTestSampleApplet.jar"
+    width="400" height="250" alt="HitTestSample applet"><param name="permissions"
+    value="sandbox"></applet>
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="HitTestSample" archive="examples/lib/HitTestSampleApplet.jar"
+    width="400" height="250" alt="HitTestSample applet"><param name="permissions"
+    value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果你看不到小程序在运行，你需要至少安装 [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    版本。'
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[``HitTestSample.java``](examples/HitTestSample.java) contains the complete
+    code for this applet.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``HitTestSample.java``](examples/HitTestSample.java) 包含了这个小程序的完整代码。'
+- en: The `mouseClicked` method uses `TextLayout.hitTestChar` to return a `java.awt.font.TextHitInfo`
+    object that contains the mouse click location (the insertion index) in the `TextLayout`
+    object.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`mouseClicked` 方法使用 `TextLayout.hitTestChar` 返回一个包含鼠标点击位置（插入索引）的 `java.awt.font.TextHitInfo`
+    对象在 `TextLayout` 对象中。'
+- en: Information returned by the `TextLayout` `getAscent`, `getDescent`, and `getAdvance`
+    methods is used to compute the location of the origin for the `TextLayout` object
+    so it is horizontally and vertically centered.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextLayout` 的 `getAscent`、`getDescent` 和 `getAdvance` 方法返回的信息被用来计算 `TextLayout`
+    对象的原点位置，使其水平和垂直居中。'
+- en: '[PRE1]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

@@ -1,0 +1,287 @@
+- en: Passing Information to a Method or a Constructor
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 向方法或构造函数传递信息
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html](https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html](https://docs.oracle.com/javase/tutorial/java/javaOO/arguments.html)
+- en: 'The declaration for a method or a constructor declares the number and the type
+    of the arguments for that method or constructor. For example, the following is
+    a method that computes the monthly payments for a home loan, based on the amount
+    of the loan, the interest rate, the length of the loan (the number of periods),
+    and the future value of the loan:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法或构造函数的声明声明了该方法或构造函数的参数的数量和类型。例如，以下是一个计算房屋贷款月供的方法，基于贷款金额、利率、贷款期限（期数）和贷款的未来价值：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This method has four parameters: the loan amount, the interest rate, the future
+    value and the number of periods. The first three are double-precision floating
+    point numbers, and the fourth is an integer. The parameters are used in the method
+    body and at runtime will take on the values of the arguments that are passed in.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该方法有四个参数：贷款金额、利率、未来价值和期数。前三个是双精度浮点数，第四个是整数。这些参数在方法体中被使用，并在运行时将采用传递的参数的值。
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** *Parameters* refers to the list of variables in a method declaration.
+    *Arguments* are the actual values that are passed in when the method is invoked.
+    When you invoke a method, the arguments used must match the declaration''s parameters
+    in type and order.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** *参数*指的是方法声明中的变量列表。*参数*是在调用方法时传递的实际值。当您调用方法时，使用的参数必须与声明的参数在类型和顺序上匹配。'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Parameter Types
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 参数类型
+- en: You can use any data type for a parameter of a method or a constructor. This
+    includes primitive data types, such as doubles, floats, and integers, as you saw
+    in the `computePayment` method, and reference data types, such as objects and
+    arrays.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以为方法或构造函数的参数使用任何数据类型。这包括原始数据类型，如双精度、浮点数和整数，就像您在`computePayment`方法中看到的那样，以及引用数据类型，如对象和数组。
+- en: 'Here''s an example of a method that accepts an array as an argument. In this
+    example, the method creates a new `Polygon` object and initializes it from an
+    array of `Point` objects (assume that `Point` is a class that represents an x,
+    y coordinate):'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个接受数组作为参数的方法的示例。在这个示例中，该方法创建一个新的`Polygon`对象，并从一个`Point`对象数组中初始化它（假设`Point`是表示x、y坐标的类）：
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** If you want to pass a method into a method, then use a [lambda expression](lambdaexpressions.html)
+    or a [method reference](methodreferences.html).'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**如果您想将一个方法传递给另一个方法，那么请使用[lambda表达式](lambdaexpressions.html)或[方法引用](methodreferences.html)。'
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Arbitrary Number of Arguments
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 任意数量的参数
+- en: You can use a construct called *varargs* to pass an arbitrary number of values
+    to a method. You use varargs when you don't know how many of a particular type
+    of argument will be passed to the method. It's a shortcut to creating an array
+    manually (the previous method could have used varargs rather than an array).
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用称为*varargs*的构造来传递任意数量的值给方法。当您不知道将传递给方法的特定类型的参数有多少时，可以使用varargs。这是一种快捷方式，可以手动创建数组（前一个方法可以使用varargs而不是数组）。
+- en: To use varargs, you follow the type of the last parameter by an ellipsis (three
+    dots, ...), then a space, and the parameter name. The method can then be called
+    with any number of that parameter, including none.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用varargs，您需要在最后一个参数的类型后面加上省略号（三个点，...），然后是一个空格和参数名。然后该方法可以使用任意数量的该参数调用，包括零个。
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: You can see that, inside the method, `corners` is treated like an array. The
+    method can be called either with an array or with a sequence of arguments. The
+    code in the method body will treat the parameter as an array in either case.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以看到，在方法内部，`corners`被视为数组。该方法可以使用数组或一系列参数调用。方法体中的代码将在任何情况下将参数视为数组。
+- en: 'You will most commonly see varargs with the printing methods; for example,
+    this `printf` method:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您最常见地会在打印方法中看到varargs；例如，这个`printf`方法：
+- en: '[PRE3]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'allows you to print an arbitrary number of objects. It can be called like this:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 允许您打印任意数量的对象。可以这样调用：
+- en: '[PRE4]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: or like this
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者像这样
+- en: '[PRE5]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: or with yet a different number of arguments.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者使用不同数量的参数。
+- en: Parameter Names
+  id: totrans-27
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 参数名称
+- en: When you declare a parameter to a method or a constructor, you provide a name
+    for that parameter. This name is used within the method body to refer to the passed-in
+    argument.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您向方法或构造函数声明参数时，为该参数提供一个名称。此名称在方法体内用于引用传入的参数。
+- en: The name of a parameter must be unique in its scope. It cannot be the same as
+    the name of another parameter for the same method or constructor, and it cannot
+    be the name of a local variable within the method or constructor.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参数的名称在其作用域内必须是唯一的。它不能与同一方法或构造函数的另一个参数的名称相同，也不能与方法或构造函数内的局部变量的名称相同。
+- en: 'A parameter can have the same name as one of the class''s fields. If this is
+    the case, the parameter is said to *shadow* the field. Shadowing fields can make
+    your code difficult to read and is conventionally used only within constructors
+    and methods that set a particular field. For example, consider the following `Circle`
+    class and its `setOrigin` method:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参数可以与类的字段之一具有相同的名称。如果是这种情况，则说参数遮蔽了字段。字段遮蔽可能会使您的代码难以阅读，并且通常仅在设置特定字段的构造函数和方法中使用。例如，考虑以下
+    `Circle` 类及其 `setOrigin` 方法：
+- en: '[PRE6]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The `Circle` class has three fields: `x`, `y`, and `radius`. The `setOrigin`
+    method has two parameters, each of which has the same name as one of the fields.
+    Each method parameter shadows the field that shares its name. So using the simple
+    names `x` or `y` within the body of the method refers to the parameter, *not*
+    to the field. To access the field, you must use a qualified name. This will be
+    discussed later in this lesson in the section titled "Using the `this` Keyword."'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Circle` 类有三个字段：`x`、`y` 和 `radius`。`setOrigin` 方法有两个参数，每个参数的名称与一个字段的名称相同。每个方法参数都会遮蔽与其名称相同的字段。因此，在方法体内使用简单名称
+    `x` 或 `y` 指的是参数，*而不是*字段。要访问字段，必须使用限定名称。这将在本课程的后面部分“使用 `this` 关键字”中讨论。'
+- en: Passing Primitive Data Type Arguments
+  id: totrans-33
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 传递原始数据类型参数
+- en: 'Primitive arguments, such as an `int` or a `double`, are passed into methods
+    *by value*. This means that any changes to the values of the parameters exist
+    only within the scope of the method. When the method returns, the parameters are
+    gone and any changes to them are lost. Here is an example:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 原始参数，如 `int` 或 `double`，是通过值传递给方法的。这意味着对参数值的任何更改仅存在于方法的范围内。当方法返回时，参数消失，对它们的任何更改都将丢失。以下是一个例子：
+- en: '[PRE7]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'When you run this program, the output is:'
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行此程序时，输出为：
+- en: '[PRE8]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: Passing Reference Data Type Arguments
+  id: totrans-38
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 传递引用数据类型参数
+- en: Reference data type parameters, such as objects, are also passed into methods
+    *by value*. This means that when the method returns, the passed-in reference still
+    references the same object as before. *However*, the values of the object's fields
+    *can* be changed in the method, if they have the proper access level.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 引用数据类型参数，如对象，也是通过值传递给方法的。这意味着当方法返回时，传入的引用仍然引用与之前相同的对象。*但是*，如果对象的字段值具有适当的访问级别，则可以在方法中更改对象的字段值。
+- en: 'For example, consider a method in an arbitrary class that moves `Circle` objects:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，考虑一个在任意类中移动 `Circle` 对象的方法：
+- en: '[PRE9]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'Let the method be invoked with these arguments:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让方法使用这些参数被调用：
+- en: '[PRE10]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: Inside the method, `circle` initially refers to `myCircle`. The method changes
+    the x and y coordinates of the object that `circle` references (that is, `myCircle`)
+    by 23 and 56, respectively. These changes will persist when the method returns.
+    Then `circle` is assigned a reference to a new `Circle` object with `x = y = 0`.
+    This reassignment has no permanence, however, because the reference was passed
+    in by value and cannot change. Within the method, the object pointed to by `circle`
+    has changed, but, when the method returns, `myCircle` still references the same
+    `Circle` object as before the method was called.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在方法内部，`circle` 最初指向 `myCircle`。该方法更改了 `circle` 引用的对象（即 `myCircle`）的 x 和 y 坐标分别为
+    23 和 56。这些更改将在方法返回时保留。然后 `circle` 被赋予一个新的 `Circle` 对象的引用，其中 `x = y = 0`。然而，这种重新赋值并不具有永久性，因为引用是通过值传递的，不能更改。在方法内部，`circle`
+    指向的对象已经改变，但是，当方法返回时，`myCircle` 仍然引用与调用方法之前相同的 `Circle` 对象。

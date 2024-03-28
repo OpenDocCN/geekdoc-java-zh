@@ -1,0 +1,427 @@
+- en: Parallelism
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 并行性
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/streams/parallelism.html](https://docs.oracle.com/javase/tutorial/collections/streams/parallelism.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/streams/parallelism.html](https://docs.oracle.com/javase/tutorial/collections/streams/parallelism.html)
+- en: Parallel computing involves dividing a problem into subproblems, solving those
+    problems simultaneously (in parallel, with each subproblem running in a separate
+    thread), and then combining the results of the solutions to the subproblems. Java
+    SE provides the [fork/join framework](../../essential/concurrency/forkjoin.html),
+    which enables you to more easily implement parallel computing in your applications.
+    However, with this framework, you must specify how the problems are subdivided
+    (partitioned). With aggregate operations, the Java runtime performs this partitioning
+    and combining of solutions for you.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 并行计算涉及将问题分解为子问题，同时解决这些问题（并行执行，每个子问题在单独的线程中运行），然后将这些子问题的解决方案合并。Java SE提供了[分支/合并框架](../../essential/concurrency/forkjoin.html)，它使您能够更轻松地在应用程序中实现并行计算。然而，使用此框架时，您必须指定如何将问题细分（分区）。使用聚合操作，Java运行时为您执行此分区和解决方案的合并。
+- en: One difficulty in implementing parallelism in applications that use collections
+    is that collections are not thread-safe, which means that multiple threads cannot
+    manipulate a collection without introducing [thread interference](../../essential/concurrency/interfere.html)
+    or [memory consistency errors](../../essential/concurrency/memconsist.html). The
+    Collections Framework provides [synchronization wrappers](../../collections/implementations/wrapper.html),
+    which add automatic synchronization to an arbitrary collection, making it thread-safe.
+    However, synchronization introduces [thread contention](../../essential/concurrency/sync.html#thread_contention).
+    You want to avoid thread contention because it prevents threads from running in
+    parallel. Aggregate operations and parallel streams enable you to implement parallelism
+    with non-thread-safe collections provided that you do not modify the collection
+    while you are operating on it.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在使用集合的应用程序中实现并行性的一个困难在于集合不是线程安全的，这意味着多个线程不能在不引入[线程干扰](../../essential/concurrency/interfere.html)或[内存一致性错误](../../essential/concurrency/memconsist.html)的情况下操作集合。集合框架提供了[同步包装器](../../collections/implementations/wrapper.html)，它可以为任意集合添加自动同步，使其线程安全。然而，同步会引入[线程争用](../../essential/concurrency/sync.html#thread_contention)。你应该避免线程争用，因为它会阻止线程并行运行。聚合操作和并行流使你能够在非线程安全的集合上实现并行性，前提是在操作集合时不修改它。
+- en: Note that parallelism is not automatically faster than performing operations
+    serially, although it can be if you have enough data and processor cores. While
+    aggregate operations enable you to more easily implement parallelism, it is still
+    your responsibility to determine if your application is suitable for parallelism.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，并行性并不自动比串行执行操作更快，尽管在有足够数据和处理器核心的情况下可能会更快。虽然聚合操作使您更容易实现并行性，但确定您的应用程序是否适合并行性仍然是您的责任。
+- en: 'This section covers the following topics:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下主题：
+- en: '[Executing Streams in Parallel](#executing_streams_in_parallel)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[并行执行流](#executing_streams_in_parallel)'
+- en: '[Concurrent Reduction](#concurrent_reduction)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[并发归约](#concurrent_reduction)'
+- en: '[Ordering](#ordering)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[顺序](#ordering)'
+- en: '[Side Effects](#side_effects)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[副作用](#side_effects)'
+- en: '[Laziness](#laziness)'
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[懒惰性](#laziness)'
+- en: '[Interference](#interference)'
+  id: totrans-11
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[干扰](#interference)'
+- en: '[Stateful Lambda Expressions](#stateful_lambda_expressions)'
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[有状态的Lambda表达式](#stateful_lambda_expressions)'
+- en: You can find the code excerpts described in this section in the example [`ParallelismExamples`](examples/ParallelismExamples.java).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在示例[`ParallelismExamples`](examples/ParallelismExamples.java)中找到本节中描述的代码摘录。
+- en: Executing Streams in Parallel
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 并行执行流
+- en: You can execute streams in serial or in parallel. When a stream executes in
+    parallel, the Java runtime partitions the stream into multiple substreams. Aggregate
+    operations iterate over and process these substreams in parallel and then combine
+    the results.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以串行或并行执行流。当流并行执行时，Java运行时将流分成多个子流。聚合操作并行迭代和处理这些子流，然后将结果合并。
+- en: 'When you create a stream, it is always a serial stream unless otherwise specified.
+    To create a parallel stream, invoke the operation [`Collection.parallelStream`](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html#parallelStream--).
+    Alternatively, invoke the operation [`BaseStream.parallel`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/BaseStream.html#parallel--).
+    For example, the following statement calculates the average age of all male members
+    in parallel:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您创建一个流时，除非另有说明，它总是一个串行流。要创建一个并行流，请调用操作[`Collection.parallelStream`](https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html#parallelStream--)。或者，调用操作[`BaseStream.parallel`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/BaseStream.html#parallel--)。例如，以下语句计算所有男性成员的平均年龄：
+- en: '[PRE0]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Concurrent Reduction
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 并发减少
+- en: 'Consider again the following example (which is described in the section [Reduction](../../collections/streams/reduction.html))
+    that groups members by gender. This example invokes the `collect` operation, which
+    reduces the collection `roster` into a `Map`:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次考虑以下示例（在[减少](../../collections/streams/reduction.html)部分中描述），该示例按性别对成员进行分组。此示例调用`collect`操作，将集合`roster`减少为`Map`：
+- en: '[PRE1]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The following is the parallel equivalent:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是并行等价的：
+- en: '[PRE2]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'This is called a *concurrent reduction*. The Java runtime performs a concurrent
+    reduction if all of the following are true for a particular pipeline that contains
+    the `collect` operation:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这被称为*并发减少*。如果包含`collect`操作的特定管道满足以下所有条件，则Java运行时执行并发减少：
+- en: The stream is parallel.
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 流是并行的。
+- en: The parameter of the `collect` operation, the collector, has the characteristic
+    [`Collector.Characteristics.CONCURRENT`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.Characteristics.html#CONCURRENT).
+    To determine the characteristics of a collector, invoke the [`Collector.characteristics`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.Characteristics.html)
+    method.
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`collect`操作的参数，收集器，具有特征[`Collector.Characteristics.CONCURRENT`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.Characteristics.html#CONCURRENT)。要确定收集器的特征，请调用[`Collector.characteristics`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.Characteristics.html)方法。'
+- en: Either the stream is unordered, or the collector has the characteristic [`Collector.Characteristics.UNORDERED`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.Characteristics.html#UNORDERED).
+    To ensure that the stream is unordered, invoke the [`BaseStream.unordered`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/BaseStream.html#unordered--)
+    operation.
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 流要么是无序的，要么收集器具有特征[`Collector.Characteristics.UNORDERED`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.Characteristics.html#UNORDERED)。要确保流是无序的，请调用[`BaseStream.unordered`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/BaseStream.html#unordered--)操作。
+- en: '**Note**: This example returns an instance of [`ConcurrentMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentMap.html)
+    instead of `Map` and invokes the [`groupingByConcurrent`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#groupingByConcurrent-java.util.function.Function-)
+    operation instead of `groupingBy`. (See the section [Concurrent Collections](../../essential/concurrency/collections.html)
+    for more information about `ConcurrentMap`.) Unlike the operation `groupingByConcurrent`,
+    the operation `groupingBy` performs poorly with parallel streams. (This is because
+    it operates by merging two maps by key, which is computationally expensive.) Similarly,
+    the operation [`Collectors.toConcurrentMap`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toConcurrentMap-java.util.function.Function-java.util.function.Function-)
+    performs better with parallel streams than the operation [`Collectors.toMap`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toMap-java.util.function.Function-java.util.function.Function-).'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：此示例返回一个[`ConcurrentMap`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentMap.html)的实例，而不是`Map`，并调用[`groupingByConcurrent`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#groupingByConcurrent-java.util.function.Function-)操作，而不是`groupingBy`。（有关`ConcurrentMap`的更多信息，请参见[并发集合](../../essential/concurrency/collections.html)部分。）与操作`groupingByConcurrent`不同，操作`groupingBy`在并行流中表现不佳。（这是因为它通过键合并两个映射，这在计算上是昂贵的。）同样，操作[`Collectors.toConcurrentMap`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toConcurrentMap-java.util.function.Function-java.util.function.Function-)在并行流中的性能优于操作[`Collectors.toMap`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toMap-java.util.function.Function-java.util.function.Function-)。'
+- en: Ordering
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 排序
+- en: 'The order in which a pipeline processes the elements of a stream depends on
+    whether the stream is executed in serial or in parallel, the source of the stream,
+    and intermediate operations. For example, consider the following example that
+    prints the elements of an instance of `ArrayList` with the `forEach` operation
+    several times:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 流水线处理流的元素的顺序取决于流是串行执行还是并行执行、流的来源以及中间操作。例如，考虑以下示例，该示例多次使用`forEach`操作打印`ArrayList`实例的元素：
+- en: '[PRE3]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'This example consists of five pipelines. It prints output similar to the following:'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例包含五个流水线。它打印类似以下的输出：
+- en: '[PRE4]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'This example does the following:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例执行以下操作：
+- en: The first pipeline prints the elements of the list `listOfIntegers` in the order
+    that they were added to the list.
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 第一个流水线按照它们添加到列表中的顺序打印`listOfIntegers`列表的元素。
+- en: The second pipeline prints the elements of `listOfIntegers` after it was sorted
+    by the method [`Collections.sort`](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#sort-java.util.List-).
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 第二个流水线在使用[`Collections.sort`](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#sort-java.util.List-)方法对`listOfIntegers`进行排序后打印元素。
+- en: The third and fourth pipelines print the elements of the list in an apparently
+    random order. Remember that stream operations use internal iteration when processing
+    elements of a stream. Consequently, when you execute a stream in parallel, the
+    Java compiler and runtime determine the order in which to process the stream's
+    elements to maximize the benefits of parallel computing unless otherwise specified
+    by the stream operation.
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 第三和第四个流水线以一种看似随机的顺序打印列表的元素。请记住，流操作在处理流的元素时使用内部迭代。因此，当您并行执行流时，除非流操作另有规定，否则Java编译器和运行时会确定处理流元素的顺序，以最大化并行计算的好处。
+- en: The fifth pipeline uses the method [`forEachOrdered`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#forEachOrdered-java.util.function.Consumer-),
+    which processes the elements of the stream in the order specified by its source,
+    regardless of whether you executed the stream in serial or parallel. Note that
+    you may lose the benefits of parallelism if you use operations like `forEachOrdered`
+    with parallel streams.
+  id: totrans-37
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 第五个流水线使用[`forEachOrdered`](https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#forEachOrdered-java.util.function.Consumer-)方法，该方法按照其来源指定的顺序处理流的元素，无论您是串行还是并行执行流。请注意，如果您在并行流中使用类似`forEachOrdered`的操作，可能会丧失并行性的好处。
+- en: Side Effects
+  id: totrans-38
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 副作用
+- en: A method or an expression has a side effect if, in addition to returning or
+    producing a value, it also modifies the state of the computer. Examples include
+    mutable reductions (operations that use the `collect` operation; see the section
+    [Reduction](../../collections/streams/reduction.html) for more information) as
+    well as invoking the `System.out.println` method for debugging. The JDK handles
+    certain side effects in pipelines well. In particular, the `collect` method is
+    designed to perform the most common stream operations that have side effects in
+    a parallel-safe manner. Operations like `forEach` and `peek` are designed for
+    side effects; a lambda expression that returns void, such as one that invokes
+    `System.out.println`, can do nothing but have side effects. Even so, you should
+    use the `forEach` and `peek` operations with care; if you use one of these operations
+    with a parallel stream, then the Java runtime may invoke the lambda expression
+    that you specified as its parameter concurrently from multiple threads. In addition,
+    never pass as parameters lambda expressions that have side effects in operations
+    such as `filter` and `map`. The following sections discuss [interference](#interference)
+    and [stateful lambda expressions](#stateful_lambda_expressions), both of which
+    can be sources of side effects and can return inconsistent or unpredictable results,
+    especially in parallel streams. However, the concept of [laziness](#laziness)
+    is discussed first, because it has a direct effect on interference.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个方法或表达式除了返回或产生一个值外，还修改了计算机的状态，那么它就具有副作用。例如，可变归约（使用`collect`操作的操作；有关更多信息，请参见[Reduction](../../collections/streams/reduction.html)部分）以及调用`System.out.println`方法进行调试。JDK在流水线中处理某些副作用很好。特别是，`collect`方法被设计为以并行安全的方式执行具有副作用的最常见流操作。`forEach`和`peek`等操作是为了副作用而设计的；一个返回void的Lambda表达式，比如调用`System.out.println`的Lambda表达式，除了具有副作用外什么也做不了。即便如此，你应该谨慎使用`forEach`和`peek`操作；如果你在并行流中使用其中一个操作，那么Java运行时可能会从多个线程同时调用你指定为参数的Lambda表达式。此外，永远不要在`filter`和`map`等操作中传递具有副作用的Lambda表达式作为参数。接下来的章节讨论[干扰](#interference)和[有状态的Lambda表达式](#stateful_lambda_expressions)，它们都可能是副作用的来源，并且可能返回不一致或不可预测的结果，特别是在并行流中。然而，首先讨论[懒惰](#laziness)的概念，因为它对干扰有直接影响。
+- en: Laziness
+  id: totrans-40
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 懒惰
+- en: All intermediate operations are *lazy*. An expression, method, or algorithm
+    is lazy if its value is evaluated only when it is required. (An algorithm is *eager*
+    if it is evaluated or processed immediately.) Intermediate operations are lazy
+    because they do not start processing the contents of the stream until the terminal
+    operation commences. Processing streams lazily enables the Java compiler and runtime
+    to optimize how they process streams. For example, in a pipeline such as the `filter`-`mapToInt`-`average`
+    example described in the section [Aggregate Operations](../../collections/streams/index.html),
+    the `average` operation could obtain the first several integers from the stream
+    created by the `mapToInt` operation, which obtains elements from the `filter`
+    operation. The `average` operation would repeat this process until it had obtained
+    all required elements from the stream, and then it would calculate the average.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有中间操作都是*懒惰*的。如果一个表达式、方法或算法只有在需要时才会被评估，那么它就是懒惰的（如果算法立即被评估或处理，则是*急切*的）。中间操作是懒惰的，因为它们直到终端操作开始才开始处理流的内容。懒惰地处理流使得Java编译器和运行时能够优化它们处理流的方式。例如，在像`filter`-`mapToInt`-`average`这样的流水线中，`average`操作可以从`mapToInt`操作创建的流中获取前几个整数，而这些整数是从`filter`操作获取的。`average`操作会重复这个过程，直到它从流中获取了所有需要的元素，然后计算平均值。
+- en: Interference
+  id: totrans-42
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 干扰
+- en: 'Lambda expressions in stream operations should not *interfere*. Interference
+    occurs when the source of a stream is modified while a pipeline processes the
+    stream. For example, the following code attempts to concatenate the strings contained
+    in the `List` `listOfStrings`. However, it throws a `ConcurrentModificationException`:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 流操作中的Lambda表达式不应该*干扰*。当流的源在流水线处理流时被修改时就会发生干扰。例如，下面的代码尝试连接`List` `listOfStrings`
+    中包含的字符串。然而，它会抛出`ConcurrentModificationException`：
+- en: '[PRE5]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: This example concatenates the strings contained in `listOfStrings` into an `Optional<String>`
+    value with the `reduce` operation, which is a terminal operation. However, the
+    pipeline here invokes the intermediate operation `peek`, which attempts to add
+    a new element to `listOfStrings`. Remember, all intermediate operations are lazy.
+    This means that the pipeline in this example begins execution when the operation
+    `get` is invoked, and ends execution when the `get` operation completes. The argument
+    of the `peek` operation attempts to modify the stream source during the execution
+    of the pipeline, which causes the Java runtime to throw a `ConcurrentModificationException`.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例使用`reduce`操作将`listOfStrings` 中包含的字符串连接成一个`Optional<String>` 值，`reduce`是一个终端操作。然而，此处的管道调用了中间操作`peek`，它试图向`listOfStrings`添加一个新元素。请记住，所有中间操作都是惰性的。这意味着在此示例中，管道在调用操作`get`时开始执行，并在`get`操作完成时结束执行。`peek`操作的参数在管道执行过程中尝试修改流源，这会导致Java运行时抛出`ConcurrentModificationException`。
+- en: Stateful Lambda Expressions
+  id: totrans-46
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 有状态的Lambda表达式
+- en: 'Avoid using *stateful lambda expressions* as parameters in stream operations.
+    A stateful lambda expression is one whose result depends on any state that might
+    change during the execution of a pipeline. The following example adds elements
+    from the `List` `listOfIntegers` to a new `List` instance with the `map` intermediate
+    operation. It does this twice, first with a serial stream and then with a parallel
+    stream:'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 避免在流操作中将*有状态的lambda表达式*用作参数。有状态的lambda表达式是指其结果取决于在管道执行过程中可能发生变化的任何状态。以下示例使用`map`中间操作将`List`
+    `listOfIntegers` 中的元素添加到新的`List`实例中。它分别使用串行流和并行流执行两次：
+- en: '[PRE6]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'The lambda expression `e -> { parallelStorage.add(e); return e; }` is a stateful
+    lambda expression. Its result can vary every time the code is run. This example
+    prints the following:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Lambda表达式`e -> { parallelStorage.add(e); return e; }`是一个有状态的lambda表达式。其结果可能每次运行代码时都会有所不同。此示例打印如下内容：
+- en: '[PRE7]'
+  id: totrans-50
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The operation `forEachOrdered` processes elements in the order specified by
+    the stream, regardless of whether the stream is executed in serial or parallel.
+    However, when a stream is executed in parallel, the `map` operation processes
+    elements of the stream specified by the Java runtime and compiler. Consequently,
+    the order in which the lambda expression `e -> { parallelStorage.add(e); return
+    e; }` adds elements to the `List` `parallelStorage` can vary every time the code
+    is run. For deterministic and predictable results, ensure that lambda expression
+    parameters in stream operations are not stateful.
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 操作`forEachOrdered`按照流指定的顺序处理元素，无论流是串行还是并行执行。然而，当流并行执行时，`map`操作处理由Java运行时和编译器指定的流元素。因此，lambda表达式`e
+    -> { parallelStorage.add(e); return e; }`向`List` `parallelStorage`添加元素的顺序可能每次运行代码时都会有所不同。为了获得确定性和可预测的结果，请确保流操作中的lambda表达式参数不是有状态的。
+- en: '**Note**: This example invokes the method [`synchronizedList`](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#synchronizedList-java.util.List-)
+    so that the `List` `parallelStorage` is thread-safe. Remember that collections
+    are not thread-safe. This means that multiple threads should not access a particular
+    collection at the same time. Suppose that you do not invoke the method `synchronizedList`
+    when creating `parallelStorage`:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：此示例调用了方法[`synchronizedList`](https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html#synchronizedList-java.util.List-)，以使`List`
+    `parallelStorage` 线程安全。请记住，集合不是线程安全的。这意味着多个线程不应同时访问特定集合。假设在创建`parallelStorage`时未调用方法`synchronizedList`：'
+- en: '[PRE8]'
+  id: totrans-53
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: 'The example behaves erratically because multiple threads access and modify
+    `parallelStorage` without a mechanism like synchronization to schedule when a
+    particular thread may access the `List` instance. Consequently, the example could
+    print output similar to the following:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例行为不稳定，因为多个线程访问和修改`parallelStorage`而没有像同步这样的机制来安排特定线程何时可以访问`List`实例。因此，该示例可能打印类似以下内容的输出：
+- en: '[PRE9]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'

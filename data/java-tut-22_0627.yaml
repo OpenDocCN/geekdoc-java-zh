@@ -1,0 +1,101 @@
+- en: Byte Encodings and Strings
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 字节编码和字符串
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/string.html](https://docs.oracle.com/javase/tutorial/i18n/text/string.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/string.html](https://docs.oracle.com/javase/tutorial/i18n/text/string.html)
+- en: If a byte array contains non-Unicode text, you can convert the text to Unicode
+    with one of the `String` constructor methods. Conversely, you can convert a `String`
+    object into a byte array of non-Unicode characters with the `String.getBytes`
+    method. When invoking either of these methods, you specify the encoding identifier
+    as one of the parameters.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果字节数组包含非 Unicode 文本，您可以使用 `String` 构造方法之一将文本转换为 Unicode。反之，您可以使用 `String.getBytes`
+    方法将 `String` 对象转换为非 Unicode 字符的字节数组。在调用这些方法时，您需要将编码标识符作为参数之一指定。
+- en: The example that follows converts characters between UTF-8 and Unicode. UTF-8
+    is a transmission format for Unicode that is safe for UNIX file systems. The full
+    source code for the example is in the file [`StringConverter.java`](examples/StringConverter.java).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的示例将字符在 UTF-8 和 Unicode 之间进行转换。UTF-8 是一种对 UNIX 文件系统安全的 Unicode 传输格式。示例的完整源代码在文件
+    [`StringConverter.java`](examples/StringConverter.java) 中。
+- en: 'The `StringConverter` program starts by creating a `String` containing Unicode
+    characters:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`StringConverter` 程序首先创建一个包含 Unicode 字符的 `String`：'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'When printed, the `String` named `original` appears as:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当打印时，名为 `original` 的 `String` 如下所示：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'To convert the `String` object to UTF-8, invoke the `getBytes` method and specify
+    the appropriate encoding identifier as a parameter. The `getBytes` method returns
+    an array of bytes in UTF-8 format. To create a `String` object from an array of
+    non-Unicode bytes, invoke the `String` constructor with the encoding parameter.
+    The code that makes these calls is enclosed in a `try` block, in case the specified
+    encoding is unsupported:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将 `String` 对象转换为 UTF-8，调用 `getBytes` 方法并指定适当的编码标识符作为参数。`getBytes` 方法以 UTF-8
+    格式返回一个字节数组。要从非 Unicode 字节的数组创建 `String` 对象，请使用带有编码参数的 `String` 构造方法。执行这些调用的代码被封装在一个
+    `try` 块中，以防指定的编码不受支持：
+- en: '[PRE2]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The `StringConverter` program prints out the values in the `utf8Bytes` and
+    `defaultBytes` arrays to demonstrate an important point: The length of the converted
+    text might not be the same as the length of the source text. Some Unicode characters
+    translate into single bytes, others into pairs or triplets of bytes.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`StringConverter` 程序打印出 `utf8Bytes` 和 `defaultBytes` 数组中的值，以演示一个重要的观点：转换后的文本长度可能与源文本长度不同。一些
+    Unicode 字符转换为单个字节，而另一些转换为一对或三元组字节。'
+- en: 'The `printBytes` method displays the byte arrays by invoking the `byteToHex`
+    method, which is defined in the source file, [`UnicodeFormatter.java`](examples/UnicodeFormatter.java).
+    Here is the `printBytes` method:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`printBytes` 方法通过调用在源文件 [`UnicodeFormatter.java`](examples/UnicodeFormatter.java)
+    中定义的 `byteToHex` 方法来显示字节数组。以下是 `printBytes` 方法：'
+- en: '[PRE3]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The output of the `printBytes` method follows. Note that only the first and
+    last bytes, the A and C characters, are the same in both arrays:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`printBytes` 方法的输出如下。请注意，只有第一个和最后一个字节，即 A 和 C 字符，在两个数组中是相同的：'
+- en: '[PRE4]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'

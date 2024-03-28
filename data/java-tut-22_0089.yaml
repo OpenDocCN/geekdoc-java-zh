@@ -1,0 +1,63 @@
+- en: Multiple Inheritance of State, Implementation, and Type
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 状态、实现和类型的多重继承
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/multipleinheritance.html](https://docs.oracle.com/javase/tutorial/java/IandI/multipleinheritance.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/multipleinheritance.html](https://docs.oracle.com/javase/tutorial/java/IandI/multipleinheritance.html)
+- en: One significant difference between classes and interfaces is that classes can
+    have fields whereas interfaces cannot. In addition, you can instantiate a class
+    to create an object, which you cannot do with interfaces. As explained in the
+    section [What Is an Object?](../../java/concepts/object.html), an object stores
+    its state in fields, which are defined in classes. One reason why the Java programming
+    language does not permit you to extend more than one class is to avoid the issues
+    of *multiple inheritance of state*, which is the ability to inherit fields from
+    multiple classes. For example, suppose that you are able to define a new class
+    that extends multiple classes. When you create an object by instantiating that
+    class, that object will inherit fields from all of the class's superclasses. What
+    if methods or constructors from different superclasses instantiate the same field?
+    Which method or constructor will take precedence? Because interfaces do not contain
+    fields, you do not have to worry about problems that result from multiple inheritance
+    of state.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类和接口之间的一个重要区别是类可以有字段，而接口不能。此外，您可以实例化一个类来创建一个对象，而接口不能这样做。正如在[什么是对象？](../../java/concepts/object.html)一节中所解释的，对象将其状态存储在字段中，这些字段在类中定义。Java编程语言不允许您扩展多个类的一个原因是为了避免*状态的多重继承*问题，即从多个类继承字段的能力。例如，假设您能够定义一个新类，该类扩展多个类。当您通过实例化该类创建对象时，该对象将从所有超类继承字段。如果不同超类的方法或构造函数实例化相同字段会怎样？哪个方法或构造函数将优先？由于接口不包含字段，您不必担心由于状态的多重继承而导致的问题。
+- en: '*Multiple inheritance of implementation* is the ability to inherit method definitions
+    from multiple classes. Problems arise with this type of multiple inheritance,
+    such as name conflicts and ambiguity. When compilers of programming languages
+    that support this type of multiple inheritance encounter superclasses that contain
+    methods with the same name, they sometimes cannot determine which member or method
+    to access or invoke. In addition, a programmer can unwittingly introduce a name
+    conflict by adding a new method to a superclass. [Default methods](../../java/IandI/defaultmethods.html)
+    introduce one form of multiple inheritance of implementation. A class can implement
+    more than one interface, which can contain default methods that have the same
+    name. The Java compiler provides some rules to determine which default method
+    a particular class uses.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*实现的多重继承*是从多个类继承方法定义的能力。这种类型的多重继承会引发问题，例如名称冲突和模糊性。当支持这种类型多重继承的编程语言的编译器遇到包含相同名称方法的超类时，有时无法确定要访问或调用哪个成员或方法。此外，程序员可能会通过向超类添加新方法无意中引入名称冲突。[默认方法](../../java/IandI/defaultmethods.html)引入了一种实现的多重继承形式。一个类可以实现多个接口，这些接口可以包含具有相同名称的默认方法。Java编译器提供了一些规则来确定特定类使用哪个默认方法。'
+- en: 'The Java programming language supports *multiple inheritance of type*, which
+    is the ability of a class to implement more than one interface. An object can
+    have multiple types: the type of its own class and the types of all the interfaces
+    that the class implements. This means that if a variable is declared to be the
+    type of an interface, then its value can reference any object that is instantiated
+    from any class that implements the interface. This is discussed in the section
+    [Using an Interface as a Type](../../java/IandI/interfaceAsType.html).'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编程语言支持*类型的多重继承*，即一个类可以实现多个接口的能力。一个对象可以有多种类型：它自己类的类型以及类实现的所有接口的类型。这意味着如果一个变量声明为接口的类型，那么它的值可以引用任何实例化自实现该接口的任何类的对象。这在[将接口用作类型](../../java/IandI/interfaceAsType.html)一节中讨论。
+- en: As with multiple inheritance of implementation, a class can inherit different
+    implementations of a method defined (as default or static) in the interfaces that
+    it extends. In this case, the compiler or the user must decide which one to use.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与多重继承实现一样，一个类可以继承在其扩展的接口中定义的方法的不同实现（作为默认或静态）。在这种情况下，编译器或用户必须决定使用哪一个。

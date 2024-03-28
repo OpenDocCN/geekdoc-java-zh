@@ -1,0 +1,148 @@
+- en: How to Write a Tree Model Listener
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何编写树模型监听器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/treemodellistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/treemodellistener.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/events/treemodellistener.html](https://docs.oracle.com/javase/tutorial/uiswing/events/treemodellistener.html)
+- en: By implementing a tree model listener, you can detect when the data displayed
+    by a [tree](../components/tree.html) changes. You can use a tree model listener
+    to detect when the user edits tree nodes. All notifications describe changes relative
+    to a node in the tree. For details, read [Dynamically Changing a Tree](../components/tree.html#dynamic).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过实现树模型监听器，您可以检测到由[树](../components/tree.html)显示的数据何时发生更改。您可以使用树模型监听器来检测用户何时编辑树节点。所有通知都描述相对于树中的节点的更改。有关详细信息，请阅读[动态更改树](../components/tree.html#dynamic)。
+- en: The Tree Model Listener API
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 树模型监听器 API
+- en: The TreeModelListener Interface
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 树模型监听器接口
+- en: '*`TreeModelListener` has no adapter class.*'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*`TreeModelListener`没有适配器类。*'
+- en: '| Method | Purpose |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [treeNodesChanged(TreeModelEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesChanged-javax.swing.event.TreeModelEvent-)
+    | Called when one or more sibling nodes have changed in some way. |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| [treeNodesChanged(TreeModelEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesChanged-javax.swing.event.TreeModelEvent-)
+    | 当一个或多个兄弟节点以某种方式发生更改时调用。 |'
+- en: '| [treeNodesInserted(TreeModelEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesInserted-javax.swing.event.TreeModelEvent-)
+    | Called after nodes have been inserted into the tree. |'
+  id: totrans-8
+  prefs: []
+  type: TYPE_TB
+  zh: '| [treeNodesInserted(TreeModelEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesInserted-javax.swing.event.TreeModelEvent-)
+    | 在节点插入到树中后调用。 |'
+- en: '| [treeNodesRemoved(TreeModelEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesRemoved-javax.swing.event.TreeModelEvent-)
+    | Called after nodes have been removed from the tree. |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| [treeNodesRemoved(TreeModelEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeNodesRemoved-javax.swing.event.TreeModelEvent-)
+    | 在节点从树中移除后调用。 |'
+- en: '| [treeStructureChanged(TreeModelEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeStructureChanged-javax.swing.event.TreeModelEvent-)
+    | Called after the tree''s structure has drastically changed from the current
+    node on down. This event applies to all nodes connected to this node. |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| [treeStructureChanged(TreeModelEvent)](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelListener.html#treeStructureChanged-javax.swing.event.TreeModelEvent-)
+    | 在树的结构从当前节点开始发生重大变化后调用。此事件适用于与此节点连接的所有节点。 |'
+- en: The TreeModelEvent API
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 树模型事件 API
+- en: '| Method | Purpose |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [Object getSource()](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*in `java.util.EventObject`*) | Return the object that fired the event. |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| [获取源对象](https://docs.oracle.com/javase/8/docs/api/java/util/EventObject.html#getSource--)
+    (*在`java.util.EventObject`中*) | 返回触发事件的对象。 |'
+- en: '| [int[] getChildIndices()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelEvent.html#getChildIndices--)
+    | For `treeNodesChanged`, `treeNodesInserted`, and `treeNodesRemoved`, returns
+    the indices of the changed, inserted, or deleted nodes, respectively. Returns
+    nothing useful for `treeStructureChanged`. |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| [获取子索引](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelEvent.html#getChildIndices--)
+    | 对于`treeNodesChanged`、`treeNodesInserted`和`treeNodesRemoved`，分别返回更改、插入或删除的节点的索引。对于`treeStructureChanged`没有有用的返回。
+    |'
+- en: '| [Object[] getChildren()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelEvent.html#getChildren--)
+    | Returns the objects corresponding to the child indices. |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| [获取子节点](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelEvent.html#getChildren--)
+    | 返回与子索引对应的对象。 |'
+- en: '| [Object[] getPath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelEvent.html#getPath--)
+    | Returns the path to the parent of the changed, inserted, or deleted nodes. For
+    `treeStructureChanged`, returns the path to the node beneath which the structure
+    has changed. |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| [获取路径](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelEvent.html#getPath--)
+    | 返回更改、插入或删除节点的父节点的路径。对于`treeStructureChanged`，返回结构发生变化的节点下方的路径。 |'
+- en: '| [TreePath getTreePath()](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelEvent.html#getTreePath--)
+    | Returns the same thing as `getPath`, but as a [`TreePath`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreePath.html)
+    object. |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| [获取树路径](https://docs.oracle.com/javase/8/docs/api/javax/swing/event/TreeModelEvent.html#getTreePath--)
+    | 返回与`getPath`相同的内容，但作为[`TreePath`](https://docs.oracle.com/javase/8/docs/api/javax/swing/tree/TreePath.html)对象。
+    |'
+- en: Examples that Use Tree Model Listeners
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用树模型监听器的示例
+- en: The following table lists the examples that use tree expansion listeners.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了使用树展开监听器的示例。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`DynamicTreeDemo`](../examples/components/index.html#DynamicTreeDemo) |
+    [How to Use Trees](../components/tree.html#dynamic) | The `DynamicTree` class
+    implements a tree model listener to detect when the user has edited a node''s
+    data. |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`DynamicTreeDemo`](../examples/components/index.html#DynamicTreeDemo) |
+    [如何使用树](../components/tree.html#dynamic) | `DynamicTree` 类实现了树模型监听器，以便检测用户何时编辑了节点的数据。
+    |'

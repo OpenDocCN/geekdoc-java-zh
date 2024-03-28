@@ -1,0 +1,152 @@
+- en: Defining and Using Applet Parameters
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 定义和使用 Applet 参数
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/param.html](https://docs.oracle.com/javase/tutorial/deployment/applet/param.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/param.html](https://docs.oracle.com/javase/tutorial/deployment/applet/param.html)
+- en: Parameters are to Java applets what command-line arguments are to applications.
+    They enable the user to customize the applet's operation. By defining parameters,
+    you can increase your applet's flexibility, making your applet work in multiple
+    situations without recoding and recompiling it.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参数对于 Java applet 就像命令行参数对于应用程序一样重要。它们使用户能够自定义 applet 的操作。通过定义参数，你可以增加 applet
+    的灵活性，使其在多种情况下工作而无需重新编码和重新编译。
+- en: Specifying an Applet's Input Parameters
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 指定 Applet 的输入参数
+- en: You can specify an applet's input parameters in the applet's Java Network Launch
+    Protocol (JNLP) file or in the `<parameter>` element of the `<applet>` tag. It
+    is usually better to specify the parameters in the applet's JNLP file so that
+    the parameters can be supplied consistently even if the applet is deployed on
+    multiple web pages. If the applet's parameters will vary by web page, then you
+    should specify the parameters in the `<parameter>` element of the `<applet>` tag.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在 applet 的 Java 网络启动协议（JNLP）文件或 `<applet>` 标签的 `<parameter>` 元素中指定 applet
+    的输入参数。通常最好在 applet 的 JNLP 文件中指定参数，这样即使 applet 部署在多个网页上，参数也可以一致提供。如果 applet 的参数会因网页而异，则应在
+    `<applet>` 标签的 `<parameter>` 元素中指定参数。
+- en: If you are unfamiliar with JNLP, see the [Java Network Launch Protocol](../deploymentInDepth/jnlp.html)
+    topic for more information.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你对 JNLP 不熟悉，请查看 [Java 网络启动协议](../deploymentInDepth/jnlp.html) 主题获取更多信息。
+- en: Consider an applet that takes three parameters. The `paramStr` and `paramInt`
+    parameters are specified in the applet's JNLP file, [``applettakesparams.jnlp``](examples/applet_AppletWithParameters/src/applettakesparams.jnlp).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑一个需要三个参数的 applet。`paramStr` 和 `paramInt` 参数在 applet 的 JNLP 文件中指定，[`applettakesparams.jnlp`](examples/applet_AppletWithParameters/src/applettakesparams.jnlp)。
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `paramOutsideJNLPFile` parameter is specified in the `parameters` variable
+    passed to the Deployment Toolkit script's `runApplet` function in [``AppletPage.html``](examples/dist/applet_AppletWithParameters/AppletPage.html).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`paramOutsideJNLPFile` 参数在传递给部署工具包脚本的 `runApplet` 函数的 `parameters` 变量中指定在 [`AppletPage.html`](examples/dist/applet_AppletWithParameters/AppletPage.html)。'
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: See [Deploying an Applet](../deploymentInDepth/runAppletFunction.html) for more
+    information about the `runApplet` function.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查看 [部署 Applet](../deploymentInDepth/runAppletFunction.html) 获取有关 `runApplet`
+    函数的更多��息。
+- en: Retrieving the Applet's Input Parameters
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检索 Applet 的输入参数
+- en: You can retrieve the applet's input parameters by using the [`getParameter`](https://docs.oracle.com/javase/8/docs/api/java/applet/Applet.html#getParameter-java.lang.String-)
+    method of the `Applet` class. The [``AppletTakesParams.java``](examples/applet_AppletWithParameters/src/AppletTakesParams.java)
+    applet retrieves and displays all its input parameters (`paramStr`, `paramInt`,
+    and `paramOutsideJNLPFile`).
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用 `Applet` 类的 [`getParameter`](https://docs.oracle.com/javase/8/docs/api/java/applet/Applet.html#getParameter-java.lang.String-)
+    方法来检索 applet 的输入参数。[`AppletTakesParams.java`](examples/applet_AppletWithParameters/src/AppletTakesParams.java)
+    applet 检索并显示其所有输入参数（`paramStr`，`paramInt` 和 `paramOutsideJNLPFile`）。
+- en: '[PRE2]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The `AppletTakesParams` applet is shown next.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面显示了 `AppletTakesParams` applet。
+- en: '//&lt;![CDATA[ var attributes = { code:''AppletTakesParams.class'', archive:''examples/dist/applet_AppletWithParameters/applet_AppletWithParameters.jar'',
+    width:800, height:50} ; var parameters = { jnlp_href: ''examples/dist/applet_AppletWithParameters/applettakesparams.jnlp'',
+    paramOutsideJNLPFile: ''fooOutsideJNLP'' }; deployJava.runApplet(attributes, parameters,
+    ''1.6''); //]]&gt;'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '//&lt;![CDATA[ var attributes = { code:''AppletTakesParams.class'', archive:''examples/dist/applet_AppletWithParameters/applet_AppletWithParameters.jar'',
+    width:800, height:50} ; var parameters = { jnlp_href: ''examples/dist/applet_AppletWithParameters/applettakesparams.jnlp'',
+    paramOutsideJNLPFile: ''fooOutsideJNLP'' }; deployJava.runApplet(attributes, parameters,
+    ''1.6''); //]]&gt;'
+- en: '* * *'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果你看不到 applet 运行，你需要安装至少 [Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    版本。'
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果你看不到示例运行，可能需要在浏览器中启用 JavaScript 解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[Download source code](examplesIndex.html#AppletWithParameters) for the *Applet
+    With Parameters* example to experiment further.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#AppletWithParameters) 以进一步进行实验。'

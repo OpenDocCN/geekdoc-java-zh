@@ -1,0 +1,72 @@
+- en: Arrays
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 数组
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/special/array.html](https://docs.oracle.com/javase/tutorial/reflect/special/array.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/special/array.html](https://docs.oracle.com/javase/tutorial/reflect/special/array.html)
+- en: An *array* is an object of reference type which contains a fixed number of components
+    of the same type; the length of an array is immutable. Creating an instance of
+    an array requires knowledge of the length and component type. Each component may
+    be a primitive type (such as `byte`, `int`, or `double`), a reference type (such
+    as [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html),
+    [`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html), or
+    [`java.nio.CharBuffer`](https://docs.oracle.com/javase/8/docs/api/java/nio/CharBuffer.html)),
+    or an array. Multi-dimensional arrays are really just arrays which contain components
+    of array type.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个*数组*是引用类型的对象，包含固定数量的相同类型的组件；数组的长度是不可变的。创建数组的实例需要知道长度和组件类型。每个组件可以是原始类型（如`byte`、`int`或`double`），引用类型（如[`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)、[`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)或[`java.nio.CharBuffer`](https://docs.oracle.com/javase/8/docs/api/java/nio/CharBuffer.html)），或者是数组。多维数组实际上只是包含数组类型组件的数组。
+- en: Arrays are implemented in the Java virtual machine. The only methods on arrays
+    are those inherited from [`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html).
+    The length of an array is not part of its type; arrays have a `length` field which
+    is accessible via [`java.lang.reflect.Array.getLength()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Array.html#getLength-java.lang.Object-).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 数组在Java虚拟机中实现。数组上的唯一方法是从[`Object`](https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html)继承的方法。数组的长度不是其类型的一部分；数组有一个`length`字段，可以通过[`java.lang.reflect.Array.getLength()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Array.html#getLength-java.lang.Object-)访问。
+- en: 'Reflection provides methods for accessing array types and array component types,
+    creating new arrays, and retrieving and setting array component values. The following
+    sections include examples of common operations on arrays:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 反射提供了访问数组类型和数组组件类型、创建新数组以及检索和设置数组组件值的方法。以下各节包括对数组上常见操作的示例：
+- en: '[Identifying Array Types](arrayComponents.html) describes how to determine
+    if a class member is a field of array type'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[识别数组类型](arrayComponents.html)描述了如何确定类成员是否是数组类型的字段'
+- en: '[Creating New Arrays](arrayInstance.html) illustrates how to create new instances
+    of arrays with simple and complex component types'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建新数组](arrayInstance.html)演示了如何创建具有简单和复杂组件类型的新数组实例'
+- en: '[Getting and Setting Arrays and Their Components](arraySetGet.html) shows how
+    to access fields of type array and individually access array elements'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[获取和设置数组及其组件](arraySetGet.html)展示了如何访问数组类型的字段以及单独访问数组元素'
+- en: '[Troubleshooting](arrayTrouble.html) covers common errors and programming misconceptions'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[故障排除](arrayTrouble.html)涵盖了常见错误和编程误解'
+- en: All of these operations are supported via `static` methods in [`java.lang.reflect.Array`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Array.html).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有这些操作都通过[`java.lang.reflect.Array`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Array.html)中的`static`方法支持。

@@ -1,0 +1,196 @@
+- en: Controlling Access to Members of a Class
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 控制类的成员的访问
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html](https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html](https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html)
+- en: 'Access level modifiers determine whether other classes can use a particular
+    field or invoke a particular method. There are two levels of access control:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 访问级别修饰符确定其他类是否可以使用特定字段或调用特定方法。有两个访问控制级别：
+- en: "At the top level\x97`public`, or *package-private* (no explicit modifier)."
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "在顶层\x97`public`，或*包私有*（没有显式修饰符）。"
+- en: "At the member level\x97`public`, `private`, `protected`, or *package-private*\
+    \ (no explicit modifier)."
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "在成员级别\x97`public`，`private`，`protected`，或*包私有*（没有显式修饰符）。"
+- en: "A class may be declared with the modifier `public`, in which case that class\
+    \ is visible to all classes everywhere. If a class has no modifier (the default,\
+    \ also known as *package-private*), it is visible only within its own package\
+    \ (packages are named groups of related classes \x97 you will learn about them\
+    \ in a later lesson.)"
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "一个类可以用修饰符`public`声明，这样该类对所有类都是可见的。如果一个类没有修饰符（默认情况，也称为*包私有*），它只在自己的包内可见（包是相关类的命名组\
+    \ \x97 你将在后面的课程中了解它们。）"
+- en: 'At the member level, you can also use the `public` modifier or no modifier
+    (*package-private*) just as with top-level classes, and with the same meaning.
+    For members, there are two additional access modifiers: `private` and `protected`.
+    The `private` modifier specifies that the member can only be accessed in its own
+    class. The `protected` modifier specifies that the member can only be accessed
+    within its own package (as with *package-private*) and, in addition, by a subclass
+    of its class in another package.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在成员级别，你也可以像顶级类一样使用`public`修饰符或无修饰符（*包私有*），意义相同。对于成员，还有两个额外的访问修饰符：`private`和`protected`。`private`修饰符指定该成员只能在其自己的类中访问。`protected`修饰符指定该成员只能在其自己的包内访问（与*包私有*相同），并且可以由另一个包中其类的子类访问。
+- en: The following table shows the access to members permitted by each modifier.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格显示了每个修饰符允许的成员访问。
+- en: Access Levels
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 访问级别
+- en: '| Modifier | Class | Package | Subclass | World |'
+  id: totrans-9
+  prefs: []
+  type: TYPE_TB
+  zh: '| 修饰符 | 类 | 包 | 子类 | 全部 |'
+- en: '| `public` | Y | Y | Y | Y |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| `public` | Y | Y | Y | Y |'
+- en: '| `protected` | Y | Y | Y | N |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| `protected` | Y | Y | Y | N |'
+- en: '| no modifier | Y | Y | N | N |'
+  id: totrans-12
+  prefs: []
+  type: TYPE_TB
+  zh: '| 无修饰符 | Y | Y | N | N |'
+- en: '| `private` | Y | N | N | N |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| `private` | Y | N | N | N |'
+- en: The first data column indicates whether the class itself has access to the member
+    defined by the access level. As you can see, a class always has access to its
+    own members. The second column indicates whether classes in the same package as
+    the class (regardless of their parentage) have access to the member. The third
+    column indicates whether subclasses of the class declared outside this package
+    have access to the member. The fourth column indicates whether all classes have
+    access to the member.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一列数据表示类本身是否可以访问由访问级别定义的成员。正如你所看到的，类总是可以访问自己的成员。第二列表示与该类在同一包中的类（不考虑它们的父类）是否可以访问该成员。第三列表示在声明在此包之外的类的子类是否可以访问该成员。第四列表示所有类是否可以访问该成员。
+- en: Access levels affect you in two ways. First, when you use classes that come
+    from another source, such as the classes in the Java platform, access levels determine
+    which members of those classes your own classes can use. Second, when you write
+    a class, you need to decide what access level every member variable and every
+    method in your class should have.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 访问级别以两种方式影响你。首先，当你使用来自其他来源的类时，例如Java平台中的类，访问级别确定你自己的类可以使用那些类的成员。其次，当你编写一个类时，你需要决定你的类中每个成员变量和每个方法应该具有什么访问级别。
+- en: Let's look at a collection of classes and see how access levels affect visibility.
+    The following figure shows the four classes in this example and how they are related.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看一组类，并看看访问级别如何影响可见性。以下图显示了此示例中的四个类及其关系。
+- en: '![Classes and Packages of the Example Used to Illustrate Access Levels](../Images/988f082815b7a887bbc725a96dc6ea07.png)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_IMG
+  zh: '![用于说明访问级别的示例中的类和包](../Images/988f082815b7a887bbc725a96dc6ea07.png)'
+- en: Classes and Packages of the Example Used to Illustrate Access Levels
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于说明访问级别的示例中的类和包
+- en: The following table shows where the members of the Alpha class are visible for
+    each of the access modifiers that can be applied to them.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格显示了可以应用于Alpha类的成员的每个访问修饰符的可见性。
+- en: Visibility
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可见性
+- en: '| Modifier | Alpha | Beta | Alphasub | Gamma |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| 修饰符 | Alpha | Beta | Alphasub | Gamma |'
+- en: '| `public` | Y | Y | Y | Y |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| `public` | Y | Y | Y | Y |'
+- en: '| `protected` | Y | Y | Y | N |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| `protected` | Y | Y | Y | N |'
+- en: '| no modifier | Y | Y | N | N |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| 无修饰符 | Y | Y | N | N |'
+- en: '| `private` | Y | N | N | N |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| `private` | Y | N | N | N |'
+- en: '* * *'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Tips on Choosing an Access Level:**'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**选择访问级别的提示：**'
+- en: If other programmers use your class, you want to ensure that errors from misuse
+    cannot happen. Access levels can help you do this.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果其他程序员使用您的类，您希望确保不会发生误用导致的错误。访问级别可以帮助您做到这一点。
+- en: Use the most restrictive access level that makes sense for a particular member.
+    Use `private` unless you have a good reason not to.
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于特定成员，使用最严格的访问级别是有意义的。除非有充分理由，否则使用`private`。
+- en: Avoid `public` fields except for constants. (Many of the examples in the tutorial
+    use public fields. This may help to illustrate some points concisely, but is not
+    recommended for production code.) Public fields tend to link you to a particular
+    implementation and limit your flexibility in changing your code.
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 除了常量外，避免使用`public`字段。（教程中的许多示例使用公共字段。这可能有助于简洁地说明一些要点，但不建议在生产代码中使用。）公共字段往往会将您与特定实现联系起来，并限制您在更改代码时的灵活性。
+- en: '* * *'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

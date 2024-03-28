@@ -1,0 +1,124 @@
+- en: Creating the Demo Application (Step 3)
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建演示应用程序（第 3 步）
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/step3.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/step3.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/painting/step3.html](https://docs.oracle.com/javase/tutorial/uiswing/painting/step3.html)
+- en: Finally, we will add the event-handling code to programmatically repaint the
+    component whenever the user clicks or drags the mouse. To keep our custom painting
+    as efficient as possible, we will track the mouse coordinates and repaint only
+    the areas of the screen that have changed. This is a recommended best practice
+    that will keep your application running as efficiently as possible.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后，我们将添加事件处理代码，以在用户单击或拖动鼠标时以编程方式重新绘制组件。为了尽可能高效地保持我们的自定义绘画，我们将跟踪鼠标坐标并仅重新绘制屏幕上发生变化的区域。这是一个推荐的最佳实践，将使您的应用程序尽可能高效地运行。
+- en: '![The completed application, showing a red square with black border](../Images/9605119469597f14ac931e58f22b74c4.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![显示带有黑色边框的红色正方形的完成的应用程序](../Images/9605119469597f14ac931e58f22b74c4.png)'
+- en: The Completed Application
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 完成的应用程序
+- en: 'Figure 3: The Completed Application'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 图 3：完成的应用程序
+- en: Click the Launch button to run SwingPaintDemo3 using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/painting/index.html#SwingPaintDemo3).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行
+    SwingPaintDemo3（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/painting/index.html#SwingPaintDemo3)。
+- en: '[![Launches the SwingPaintDemo3 example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SwingPaintDemo3Project/SwingPaintDemo3.jnlp)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动 SwingPaintDemo3 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/SwingPaintDemo3Project/SwingPaintDemo3.jnlp)'
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This change first imports the various mouse classes from the `java.awt.event`
+    package, making the application capable of responding to the user's mouse activity.
+    The constructor has been updated to register event listeners for mouse presses
+    and drags. Whenever a `MouseEvent` received, it is forwarded to the `moveSquare`
+    method, which updates the square's coordinates and repaints the component in an
+    intelligent manner. Note that by default, any code that is placed within these
+    event handlers will be executed on the Event Dispatch Thread.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个变化首先从`java.awt.event`包中导入各种鼠标类，使应用程序能够响应用户的鼠标活动。构造函数已更新以注册鼠标按下和拖动的事件侦听器。每当接收到`MouseEvent`时，它会被转发到`moveSquare`方法，该方法会智能地更新正方形的坐标并重新绘制组件。请注意，默认情况下，放置在这些事件处理程序中的任何代码都将在事件分发线程上执行。
+- en: But the most important change is the invocation of the `repaint` method. This
+    method is defined by `java.awt.Component` and is the mechanism that allows you
+    to programmatically repaint the surface of any given component. It has a no-arg
+    version (which repaints the entire component) and a multi-arg version (which repaints
+    only the specified area.) This area is also known as the *clip*. Invoking the
+    multi-arg version of `repaint` takes a little extra effort, but guarantees that
+    your painting code will not waste cycles repainting areas of the screen that have
+    not changed.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但最重要的变化是调用`repaint`方法。这个方法由`java.awt.Component`定义，是允许你以编程方式重新绘制给定组件表面的机制。它有一个无参版本（重新绘制整个组件）和一个多参数版本（重新绘制指定区域）。这个区域也被称为*剪辑区*。调用`repaint`的多参数版本需要额外的努力，但可以保证你的绘画代码不会浪费时间重新绘制屏幕上未改变的区域。
+- en: Because we are manually setting the clip, our `moveSquare` method invokes the
+    repaint method not once, but twice. The first invocation tells Swing to repaint
+    the area of the component where the square *previously* was (the inherited behavior
+    uses the UI Delegate to fill that area with the current background color.) The
+    second invocation paints the area of the component where the square *currently*
+    is. An important point worth noting is that although we have invoked repaint twice
+    in a row in the same event handler, Swing is smart enough to take that information
+    and repaint those sections of the screen all in one single paint operation. In
+    other words, Swing will not repaint the component twice in a row, even if that
+    is what the code appears to be doing.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为我们手动设置了剪辑区域，我们的`moveSquare`方法不是一次调用repaint方法，而是两次。第一次调用告诉Swing重新绘制组件中方块*之前*所在的区域（继承的行为使用UI
+    Delegate来填充该区域的当前背景颜色）。第二次调用绘制组件中方块*当前*所在的区域。值得注意的重要一点是，尽管我们在同一个事件处理程序中连续两次调用repaint，但Swing足够智能，可以将这些信息合并在一个单一的绘制操作中重新绘制屏幕的这些部分。换句话说，Swing不会连续两次重绘组件，即使代码看起来是这样做的。
+- en: 'Exercises:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 练习：
+- en: Comment out the first invocation of repaint and note what happens when you click
+    or drag the mouse. Because that line is responsible for filling in the background,
+    you should notice that all squares remain on screen after they are painted.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将第一次调用repaint注释掉，并注意当你点击或拖动鼠标时会发生什么。因为那一行负责填充背景，你应该注意到所有方块在被绘制后仍然保留在屏幕上。
+- en: With multiple squares on screen, minimize and restore the application frame.
+    What happens? You should notice that the act of maximizing the screen causes the
+    system to entirely repaint the components surface, which will erase all squares
+    except the current one.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在屏幕上有多个方块的情况下，最小化和恢复应用程序窗口。会发生什么？你应该注意到最大化屏幕会导致系统完全重绘组件表面，这将擦除除当前方块外的所有方块。
+- en: Comment out both invocations of repaint, and add a line at the end of the paintComponent
+    method to invoke the zero-arg version of repaint instead. The application will
+    appear to be restored to its original behavior, but painting will now be less
+    efficient since the entire surface area of the component is now being painted.
+    You may notice slower performance, especially if the application is maximized.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将两次调用repaint都注释掉，并在paintComponent方法的末尾添加一行调用repaint的零参数版本。应用程序将看起来恢复到其原始行为，但现在绘制效率会降低，因为整个组件的表面区域现在都在被绘制。你可能会注意到性能变慢，特别是如果应用程序被最大化时。

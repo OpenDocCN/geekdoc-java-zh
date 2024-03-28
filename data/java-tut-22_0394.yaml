@@ -1,0 +1,549 @@
+- en: How to Use Text Areas
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用文本区域
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/textarea.html](https://docs.oracle.com/javase/tutorial/uiswing/components/textarea.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/textarea.html](https://docs.oracle.com/javase/tutorial/uiswing/components/textarea.html)
+- en: The [`JTextArea`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html)
+    class provides a component that displays multiple lines of text and optionally
+    allows the user to edit the text. If you need to obtain only one line of input
+    from the user, you should use a [text field](textfield.html). If you want the
+    text area to display its text using multiple fonts or other styles, you should
+    use an [editor pane or text pane](editorpane.html). If the displayed text has
+    a limited length and is never edited by the user, use a [label](label.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`JTextArea`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html)类提供了一个显示多行文本并允许用户编辑文本的组件。如果您只需要从用户那里获取一行输入，应该使用[文本字段](textfield.html)。如果您希望文本区域使用多种字体或其他样式显示其文本，应该使用[编辑器窗格或文本窗格](editorpane.html)。如果显示的文本长度有限且用户永远不会编辑它，请使用[标签](label.html)。'
+- en: Many of the Tutorial's examples use uneditable text areas to display program
+    output. Here is a picture of an example called `TextDemo` that enables you to
+    type text using a text field (at the top) and then appends the typed text to a
+    text area (underneath).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 教程的许多示例使用不可编辑的文本区域来显示程序输出。这里是一个名为`TextDemo`的示例的图片，它允许您使用文本字段（顶部）输入文本，然后将输入的文本附加到文本区域（底部）。
+- en: '![A snapshot of TextDemo](../Images/84de758975d07856819b79be8b3cec55.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TextDemo的快照](../Images/84de758975d07856819b79be8b3cec55.png)'
+- en: Click the Launch button to run TextDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TextDemo).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TextDemo（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TextDemo)。
+- en: '[![Launches the TextDemo application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextDemoProject/TextDemo.jnlp)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TextDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextDemoProject/TextDemo.jnlp)'
+- en: 'You can find the entire code for this program in [`TextDemo.java`](../examples/components/TextDemoProject/src/components/TextDemo.java).
+    The following code creates and initializes the text area:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在[`TextDemo.java`](../examples/components/TextDemoProject/src/components/TextDemo.java)中找到此程序的完整代码。以下代码创建并��始化了文本区域：
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The two arguments to the `JTextArea` constructor are hints as to the number
+    of rows and columns, respectively, that the text area should display. The scroll
+    pane that contains the text area pays attention to these hints when determining
+    how big the scroll pane should be.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JTextArea`构造函数的两个参数分别是文本区域应显示的行数和列数的提示。包含文本区域的滚动窗格在确定滚动窗格应有多大时会注意这些提示。'
+- en: Without the creation of the scroll pane, the text area would not automatically
+    scroll. The `JScrollPane` constructor shown in the preceding snippet sets up the
+    text area for viewing in a scroll pane, and specifies that the scroll pane's scroll
+    bars should be visible when needed. See [How to Use Scroll Panes](scrollpane.html)
+    if you want further information.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果没有创建滚动窗格，文本区域将不会自动滚动。前面代码片段中显示的`JScrollPane`构造函数设置了文本区域在滚动窗格中的显示，并指定了在需要时滚动窗格的滚动条应该可见。如果需要更多信息，请参阅[如何使用滚动窗格](scrollpane.html)。
+- en: Text areas are editable by default. The code `setEditable(false)` makes the
+    text area uneditable. It is still selectable and the user can copy data from it,
+    but the user cannot change the text area's contents directly.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文本区域默认可编辑。代码`setEditable(false)`使文本区域不可编辑。它仍然可选择，用户可以从中复制数据，但用户不能直接更改文本区域的内容。
+- en: The following code adds text to the text area. Note that the text system uses
+    the '\n' character internally to represent newlines; for details, see the API
+    documentation for [`DefaultEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html).
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码向文本区域添加文本。请注意，文本系统在内部使用'\n'字符表示换行；有关详细信息，请参阅[`DefaultEditorKit`](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/DefaultEditorKit.html)的API文档。
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Unless the user has moved the caret (insertion point) by clicking or dragging
+    in the text area, the text area automatically scrolls so that the appended text
+    is visible. You can force the text area to scroll to the bottom by moving the
+    caret to the end of the text area after the call to `append`:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除非用户通过在文本区域中点击或拖动来移动插入点，否则文本区域会自动滚动，以便显示追加的文本。您可以通过将插入点移动到文本区域末尾来强制文本区域滚动到底部，方法是在调用`append`之后将插入点移动到文本区域末尾：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Customizing Text Areas
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 自定义文本区域
+- en: You can customize text areas in several ways. For example, although a given
+    text area can display text in only one font and color, you can set which font
+    and color it uses. This customization option can be performed on any component.
+    You can also determine how the text area wraps lines and the number of characters
+    per tab. Finally, you can use the methods that the `JTextArea` class inherits
+    from the `JTextComponent` class to set properties such as the caret, support for
+    dragging, or color selection.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过多种方式自定义文本区域。例如，尽管给定的文本区域只能显示一种字体和颜色的文本，但您可以设置它使用的字体和颜色。此自定义选项可在任何组件上执行。您还可以确定文本区域如何换行以及每个制表符的字符数。最后，您可以使用`JTextArea`类从`JTextComponent`类继承的方法来设置属性，如插入点、拖动支持或颜色选择��
+- en: The following code taken from [`TextSamplerDemo.java`](../examples/components/TextSamplerDemoProject/src/components/TextSamplerDemo.java)
+    demonstrates initializing an editable text area. The text area uses the specified
+    italic font, and wraps lines between words.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的代码取自[`TextSamplerDemo.java`](../examples/components/TextSamplerDemoProject/src/components/TextSamplerDemo.java)，演示了如何初始化一个可编辑文本区域。文本区域使用指定的斜体字体，并在单词之间换行。
+- en: '[PRE3]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: "By default, a text area does not wrap lines that are too long for the display\
+    \ area. Instead, it uses one line for all the text between newline characters\
+    \ and \x97 if the text area is within a [scroll pane](scrollpane.html) \x97 allows\
+    \ itself to be scrolled horizontally. This example turns line wrapping on with\
+    \ a call to the `setLineWrap` method and then calls the `setWrapStyleWord` method\
+    \ to indicate that the text area should wrap lines at word boundaries rather than\
+    \ at character boundaries."
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，文本区域不会自动换行显示过长的行。相反，它会将所有文本行放在一个行中，直到遇到换行符，并且如果文本区域位于[滚动窗格](scrollpane.html)中，则允许水平滚动。此示例通过调用`setLineWrap`方法打开了换行显示，并调用`setWrapStyleWord`方法指示文本区域应在单词边界而不是字符边界处换行。
+- en: To provide scrolling capability, the example puts the text area in a scroll
+    pane.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了提供滚动功能，示例将文本区域放在了一个滚动窗格中。
+- en: '[PRE4]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: You might have noticed that the `JTextArea` constructor used in this example
+    does not specify the number of rows or columns. Instead, the code limits the size
+    of the text area by setting the scroll pane's preferred size.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能已经注意到，在此示例中使用的`JTextArea`构造函数没有指定行数或列数。相反，代码通过设置滚动窗格的首选大小来限制文本区域的大小。
+- en: 'Another Example: TextAreaDemo'
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 另一个示例：TextAreaDemo
+- en: "The `TextAreaDemo` example introduces an editable text area with a special\
+    \ feature \x97 a word completion function. As the user types in words, the program\
+    \ suggests hints to complete the word whenever the program's vocabulary contains\
+    \ a word that starts with what has been typed. Here is a picture of the `TextAreaDemo`\
+    \ application."
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextAreaDemo`示例介绍了一个带有特殊功能的可编辑文本区域——单词补全功能。当用户输入单词时，如果程序的词汇表中包含以已输入内容开头的单词，程序会提供补全提示。下面是`TextAreaDemo`应用程序的图片。'
+- en: '![A snapshot of TextAreaDemo](../Images/8ba4f3312e3bfa2f300ed6482be27e6f.png)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TextAreaDemo的快照](../Images/8ba4f3312e3bfa2f300ed6482be27e6f.png)'
+- en: Click the Launch button to run TextAreaDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#TextAreaDemo).
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TextAreaDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#TextAreaDemo)。
+- en: '[![Launches the TextAreaDemo Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextAreaDemoProject/TextAreaDemo.jnlp)'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![启动TextAreaDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextAreaDemoProject/TextAreaDemo.jnlp)'
+- en: You can find the entire code for this program in [`TextAreaDemo.java`](../examples/components/TextAreaDemoProject/src/components/TextAreaDemo.java).
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在[`TextAreaDemo.java`](../examples/components/TextAreaDemoProject/src/components/TextAreaDemo.java)中找到此程序的完整代码。
+- en: 'This example provides a scrolling capacity for the text area with the default
+    scroll bar policy. By default, the vertical scroll bar only appears when the display
+    area is entirely filled with text and there is no room to append new words. You
+    can provide a scroll pane of this type with the following code:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此示例为文本区域提供了默认滚动条策略的滚动功能。默认情况下，只有在显示区域完全填满文本且没有空间附加新单词时，垂直滚动条才会出现。您可以使用以下代码提供此类型的滚动窗格：
+- en: '[PRE5]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: As mentioned above, the text area is editable. You can play with the text area
+    by typing and pasting text, or by deleting some parts of text or the entire content.
+    Also try using standard key bindings for editing text within the text area.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如上所述，文本区域是可编辑的。您可以通过键入和粘贴文本，或删除部分文本或整个内容来操作文本区域。还可以尝试使用文本区域内的标准键绑定来编辑文本。
+- en: Now explore how the word completion function is implemented. Type in a word
+    like "Swing" or "special". As soon as you have typed "sw" the program shows a
+    possible completion "ing" highlighted in light-blue. Press Enter to accept the
+    completion or continue typing.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在探索单词完成功能是如何实现的。输入类似"Swing"或"special"的单词。一旦输入"sw"，程序会显示一个可能的完成"ing"，用浅蓝色突出显示。按Enter接受完成或继续输入。
+- en: 'The following code adds a document listener to the text area''s document:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码向文本区域的文档添加了文档监听器：
+- en: '[PRE6]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: When you started typing a word, the `insertUpdate` method checks whether the
+    program's vocabulary contains the typed prefix. Once a completion for the prefix
+    is found, a call to the `invokeLater` method submits a task for changing the document
+    later. It is important to remember that you cannot modify the document from within
+    the document event notification, otherwise you will get an exception. Examine
+    the following code below.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您开始输入单词时，`insertUpdate` 方法会检查程序的词汇表是否包含输入的前缀。一旦找到前缀的完成，对`invokeLater`方法的调用会提交一个任务以稍后更改文档。重要的是要记住，您不能在文档事件通知中修改文档，否则会出现异常。请查看下面的代码。
+- en: '[PRE7]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'The code shown in bold illustrates how the selection is created. The caret
+    is first set to the end of the complete word, then moved back to a position after
+    the last character typed. The `moveCaretPosition` method not only moves the caret
+    to a new position but also selects the text between the two positions. The completion
+    task is implemented with the following code:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 粗体显示的代码演示了如何创建选择。光标首先设置在完整单词的末尾，然后移回到最后一个字符输入后的位置。`moveCaretPosition` 方法不仅将光标移动到新位置，还选择两个位置之间的文本。完成任务的代码如下所示：
+- en: '[PRE8]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: The Text Area API
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文本区域 API
+- en: The following tables list the commonly used `JTextArea` constructors and methods.
+    Other methods you are likely to call are defined in `JTextComponent`, and listed
+    in [The Text Component API](textapi.html).
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的`JTextArea`构造函数和方法。您可能调用的其他方法在`JTextComponent`中定义，并在[文本组件 API](textapi.html)中列出。
+- en: You might also invoke methods on a text area that it inherits from its other
+    ancestors, such as `setPreferredSize`, `setForeground`, `setBackground`, `setFont`,
+    and so on. See [The JComponent Class](jcomponent.html) for tables of commonly
+    used inherited methods.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以调用文本区域从其其他祖先继承的方法，例如`setPreferredSize`、`setForeground`、`setBackground`、`setFont`等。请参阅[The
+    JComponent Class](jcomponent.html)以查看常用继承方法的表格。
+- en: 'The API for using text areas includes the following categories:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用文本区域的 API 包括以下类别：
+- en: '[Setting or Obtaining Contents](#contents)'
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置或获取内容](#contents)'
+- en: '[Fine Tuning Appearance](#looks)'
+  id: totrans-45
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[微调外观](#looks)'
+- en: '[Implementing Functionality](#function)'
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[实现功能](#function)'
+- en: Setting or Obtaining Contents
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置或获取内容
+- en: '| Method or Constructor | Purpose |'
+  id: totrans-48
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法或构造函数 | 目的 |'
+- en: '| [JTextArea()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#JTextArea--)
+    [JTextArea(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#JTextArea-java.lang.String-)'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [JTextArea()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#JTextArea--)
+    [JTextArea(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#JTextArea-java.lang.String-)'
+- en: '[JTextArea(String, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#JTextArea-java.lang.String-int-int-)'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JTextArea(String, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#JTextArea-java.lang.String-int-int-)'
+- en: '[JTextArea(int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#JTextArea-int-int-)
+    | Creates a text area. When present, the `String` argument contains the initial
+    text. The `int` arguments specify the desired width in columns and height in rows,
+    respectively. |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JTextArea(int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#JTextArea-int-int-)
+    | 创建文本区域。当存在时，`String`参数包含初始文本。`int`参数分别指定所需的列宽和行高。'
+- en: '| [void setText(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setText-java.lang.String-)
+    [String getText()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getText--)'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setText(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setText-java.lang.String-)
+    [String getText()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getText--)'
+- en: '*(defined in `JTextComponent`)* | Sets or obtains the text displayed by the
+    text area. |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(定义在`JTextComponent`中)* | 设置或获取文本区域显示的文本。'
+- en: Fine Tuning the Text Area's Appearance
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调整文本区域的外观
+- en: '| Method | Purpose |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setEditable(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setEditable-boolean-)
+    [boolean isEditable()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#isEditable--)'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setEditable(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#setEditable-boolean-)
+    [boolean isEditable()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#isEditable--)'
+- en: '*(defined in `JTextComponent`)* | Sets or indicates whether the user can edit
+    the text in the text area. |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(定义在`JTextComponent`中)* | 设置或指示用户是否可以编辑文本区域中的文本。'
+- en: '| [void setColumns(int);](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#setColumns-int-)
+    [int getColumns()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getColumns--)
+    | Sets or obtains the number of columns displayed by the text area. This is really
+    just a hint for computing the area''s preferred width. |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setColumns(int);](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#setColumns-int-)
+    [int getColumns()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getColumns--)
+    | 设置或获取文本区域显示的列数。这实际上只是计算区域首选宽度的提示。'
+- en: '| [void setRows(int);](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#setRows-int-)
+    [int getRows()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getRows--)
+    | Sets or obtains the number of rows displayed by the text area. This is a hint
+    for computing the area''s preferred height. |'
+  id: totrans-59
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setRows(int);](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#setRows-int-)
+    [int getRows()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getRows--)
+    | 设置或获取文本区域显示的行数。这是计算区域首选高度的提示。'
+- en: '| [int setTabSize(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#setTabSize-int-)
+    | Sets the number of characters a tab is equivalent to. |'
+  id: totrans-60
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int setTabSize(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#setTabSize-int-)
+    | 设置制表符相当于的字符数。'
+- en: '| [int setLineWrap(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#setLineWrap-boolean-)
+    | Sets whether lines are wrapped if they are too long to fit within the allocated
+    width. By default this property is false and lines are not wrapped. |'
+  id: totrans-61
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int setLineWrap(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#setLineWrap-boolean-)
+    | 设置是否在行过长无法适应分配的宽度时换行���默认情况下，此属性为false，行不会换行。'
+- en: '| [int setWrapStyleWord(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#setWrapStyleWord-boolean-)
+    | Sets whether lines can be wrapped at white space (word boundaries) or at any
+    character. By default this property is false, and lines can be wrapped (if line
+    wrapping is turned on) at any character. |'
+  id: totrans-62
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int setWrapStyleWord(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#setWrapStyleWord-boolean-)
+    | 设置行是否可以在空格（单词边界）或任何字符处换行。默认情况下，此属性为false，行可以在任何字符处换行（如果打开了换行）。'
+- en: Implementing the Text Area's Functionality
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现文本区域的功能
+- en: '| Method | Purpose |'
+  id: totrans-64
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void selectAll()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#selectAll--)
+    *(defined in `JTextComponent`)* | Selects all characters in the text area. |'
+  id: totrans-65
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void selectAll()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#selectAll--)
+    *(定义在`JTextComponent`中)* | 选择文本区域中的所有字符。'
+- en: '| [void append(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#append-java.lang.String-)
+    | Adds the specified text to the end of the text area. |'
+  id: totrans-66
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void append(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#append-java.lang.String-)
+    | 将指定的文本添加到文本区域的末尾。'
+- en: '| [void insert(String, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#insert-java.lang.String-int-)
+    | Inserts the specified text at the specified position. |'
+  id: totrans-67
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void insert(String, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#insert-java.lang.String-int-)
+    | 在指定位置插入指定的文本。 |'
+- en: '| [void replaceRange(String, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#replaceRange-java.lang.String-int-int-)
+    | Replaces the text between the indicated positions with the specified string.
+    |'
+  id: totrans-68
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void replaceRange(String, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#replaceRange-java.lang.String-int-int-)
+    | 用指定的字符串替换指定位置之间的文本。 |'
+- en: '| [int getLineCount()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getLineCount--)
+    [int getLineOfOffset(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getLineOfOffset-int-)'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [int getLineCount()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getLineCount--)
+    [int getLineOfOffset(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getLineOfOffset-int-) '
+- en: '[int getLineStartOffset(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getLineStartOffset-int-)'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[int getLineStartOffset(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getLineStartOffset-int-) '
+- en: '[int getLineEndOffset(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getLineEndOffset-int-)
+    | Utilities for finding a line number or the position of the beginning or end
+    of the specified line. |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[int getLineEndOffset(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTextArea.html#getLineEndOffset-int-)
+    | 用于查找行号或指定行的开头或结尾位置的实用程序。 |'
+- en: Examples That Use Text Areas
+  id: totrans-72
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用文本区域的示例
+- en: This table lists examples that use text areas and points to where those examples
+    are described.
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个表格列出了使用文本区域的示例，并指向这些示例的描述位置。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-74
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [TextDemo](../examples/components/index.html#TextDemo) | This section | An
+    application that appends user-entered text to a text area. |'
+  id: totrans-75
+  prefs: []
+  type: TYPE_TB
+  zh: '| [文本演示](../examples/components/index.html#TextDemo) | 本节 | 一个将用户输入的文本追加到文本区域的应用程序。
+    |'
+- en: '| [TextAreaDemo](../examples/components/index.html#TextAreaDemo) | This section
+    | An application that has a text area with a word completion function. |'
+  id: totrans-76
+  prefs: []
+  type: TYPE_TB
+  zh: '| [文本区域演示](../examples/components/index.html#TextAreaDemo) | 本节 | 一个带有单词补全功能的文本区域的应用程序。
+    |'
+- en: '| [TextSamplerDemo](../examples/components/index.html#TextSamplerDemo) | [Using
+    Text Components](text.html) | Uses one of each Swing text components. |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_TB
+  zh: '| [文本示例演示](../examples/components/index.html#TextSamplerDemo) | [使用文本组件](text.html)
+    | 使用每个 Swing 文本组件中的一个。 |'
+- en: '| [HtmlDemo](../examples/components/index.html#HtmlDemo) | [How to Use HTML
+    in Swing Components](html.html) | A text area that enables the user to type HTML
+    code to be displayed in a label. |'
+  id: totrans-78
+  prefs: []
+  type: TYPE_TB
+  zh: '| [HTML演示](../examples/components/index.html#HtmlDemo) | [如何在 Swing 组件中使用 HTML](html.html)
+    | 一个文本区域，允许用户输入 HTML 代码以在标签中显示。 |'
+- en: '| [BasicDnD](../examples/dnd/index.html#BasicDnD) | [Introduction to DnD](../dnd/intro.html)
+    | Demonstrates built-in drag-and-drop functionality of several Swing components,
+    including text areas. |'
+  id: totrans-79
+  prefs: []
+  type: TYPE_TB
+  zh: '| [基本拖放](../examples/dnd/index.html#BasicDnD) | [拖放简介](../dnd/intro.html) |
+    演示了几个 Swing 组件的内置拖放功能，包括文本区域。 |'
+- en: '| [FocusConceptsDemo](../examples/misc/index.html#FocusConceptsDemo) | [How
+    to Use the Focus Subsystem](../misc/focus.html) | Demonstrates how focus works
+    using a few components that include a text area. |'
+  id: totrans-80
+  prefs: []
+  type: TYPE_TB
+  zh: '| [焦点概念演示](../examples/misc/index.html#FocusConceptsDemo) | [如何使用焦点子系统](../misc/focus.html)
+    | 演示了焦点如何使用几个包含文本区域的组件。 |'

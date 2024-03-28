@@ -1,0 +1,503 @@
+- en: Watching a Directory for Changes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 监视目录更改
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/notification.html](https://docs.oracle.com/javase/tutorial/essential/io/notification.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/notification.html](https://docs.oracle.com/javase/tutorial/essential/io/notification.html)
+- en: 'Have you ever found yourself editing a file, using an IDE or another editor,
+    and a dialog box appears to inform you that one of the open files has changed
+    on the file system and needs to be reloaded? Or perhaps, like the NetBeans IDE,
+    the application just quietly updates the file without notifying you. The following
+    sample dialog box shows how this notification looks with the free editor, [jEdit](http://sourceforge.net/projects/jedit/):'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你是否曾经发现自己正在编辑一个文件，使用IDE或另一个编辑器，并且出现一个对话框通知您文件系统中的一个打开文件已更改并需要重新加载？或者，就像NetBeans
+    IDE一样，应用程序悄悄地更新文件而不通知您。以下示例对话框显示了使用免费编辑器[jEdit](http://sourceforge.net/projects/jedit/)时的通知外观：
+- en: '![Sample jEdit Dialog stating: The following files were changed on disk by
+    another program.](../Images/d56d78994a8db24493e12124085bc5c6.png)jEdit Dialog
+    Box Showing That a Modified File Is Detected'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![示例jEdit对话框显示：以下文件已被另一个程序更改。](../Images/d56d78994a8db24493e12124085bc5c6.png)jEdit对话框显示检测到修改的文件'
+- en: To implement this functionality, called *file change notification*, a program
+    must be able to detect what is happening to the relevant directory on the file
+    system. One way to do so is to poll the file system looking for changes, but this
+    approach is inefficient. It does not scale to applications that have hundreds
+    of open files or directories to monitor.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要实现此功能，称为*文件更改通知*，程序必须能够检测到文件系统上相关目录发生的变化。一种方法是轮询文件系统以查找更改，但这种方法效率低下。它不适用于具有数百个打开文件或目录需要监视的应用程序。
+- en: 'The `java.nio.file` package provides a file change notification API, called
+    the Watch Service API. This API enables you to register a directory (or directories)
+    with the watch service. When registering, you tell the service which types of
+    events you are interested in: file creation, file deletion, or file modification.
+    When the service detects an event of interest, it is forwarded to the registered
+    process. The registered process has a thread (or a pool of threads) dedicated
+    to watching for any events it has registered for. When an event comes in, it is
+    handled as needed.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.nio.file`包提供了一个文件更改通知API，称为Watch Service API。此API使您能够向观察服务注册目录（或目录）。在注册时，您告诉服务您感兴趣的事件类型：文件创建、文件删除或文件修改。当服务检测到感兴趣的事件时，它会转发给注册的进程。注册的进程有一个专用于监视其注册事件的线程（或线程池）。当事件发生时，根据需要进行处理。'
+- en: 'This section covers the following:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下内容：
+- en: '[Watch Service Overview](#overview)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[观察服务概述](#overview)'
+- en: '[Try It Out](#try)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[试一试](#try)'
+- en: '[Creating a Watch Service and Registering for Events](#register)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建Watch Service并注册事件](#register)'
+- en: '[Processing Events](#process)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[处理事件](#process)'
+- en: '[Retrieving the File Name](#name)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[获取文件名](#name)'
+- en: '[When to Use and Not Use This API](#concerns)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[何时使用和不使用此API](#concerns)'
+- en: Watch Service Overview
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 观察服务概述
+- en: The `WatchService` API is fairly low level, allowing you to customize it. You
+    can use it as is, or you can choose to create a high-level API on top of this
+    mechanism so that it is suited to your particular needs.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`WatchService` API相当低级，允许您自定义它。您可以直接使用它，或者您可以选择在此机制之上创建一个高级API，以使其适合您的特定需求。'
+- en: 'Here are the basic steps required to implement a watch service:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是实现观察服务所需的基本步骤：
+- en: Create a `WatchService` "watcher" for the file system.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 为文件系统创建一个`WatchService`“观察者”。
+- en: For each directory that you want monitored, register it with the watcher. When
+    registering a directory, you specify the type of events for which you want notification.
+    You receive a `WatchKey` instance for each directory that you register.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于要监视的每个目录，请将其注册到观察者中。在注册目录时，指定要接收通知的事件类型。您为每个注册的目录收到一个`WatchKey`实例。
+- en: Implement an infinite loop to wait for incoming events. When an event occurs,
+    the key is signaled and placed into the watcher's queue.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 实现一个无限循环以等待传入事件。当事件发生时，键被标记并放入观察者队列中。
+- en: Retrieve the key from the watcher's queue. You can obtain the file name from
+    the key.
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 从观察者队列中检索键。您可以从键中获取文件名。
+- en: Retrieve each pending event for the key (there might be multiple events) and
+    process as needed.
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 检索键的每个待处理事件（可能有多个事件）并根据需要处理。
+- en: Reset the key, and resume waiting for events.
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 重置键，并恢复等待事件。
+- en: 'Close the service: The watch service exits when either the thread exits or
+    when it is closed (by invoking its `closed` method).'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 关闭服务：当线程退出或调用其`closed`方法关闭服务时，监视服务将退出。
+- en: '`WatchKeys` are thread-safe and can be used with the `java.nio.concurrent`
+    package. You can dedicate a [thread pool](../concurrency/pools.html) to this effort.'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`WatchKeys`是线程安全的，可以与`java.nio.concurrent`包一起使用。您可以为此目的专门分配一个[线程池](../concurrency/pools.html)。'
+- en: Try It Out
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 试一试
+- en: 'Because this API is more advanced, try it out before proceeding. Save the [``WatchDir``](examples/WatchDir.java)
+    example to your computer, and compile it. Create a `test` directory that will
+    be passed to the example. `WatchDir` uses a single thread to process all events,
+    so it blocks keyboard input while waiting for events. Either run the program in
+    a separate window, or in the background, as follows:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于此API更为高级，请在继续之前先尝试一下。将[``WatchDir``](examples/WatchDir.java)示例保存到您的计算机上，并对其进行编译。创建一个将传递给示例的`test`目录。`WatchDir`使用单个线程处理所有事件，因此在等待事件时会阻止键盘输入。要么在单独的窗口中运行程序，要么在后台运行，如下所示：
+- en: '[PRE0]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Play with creating, deleting, and editing files in the `test` directory. When
+    any of these events occurs, a message is printed to the console. When you have
+    finished, delete the `test` directory and `WatchDir` exits. Or, if you prefer,
+    you can manually kill the process.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`test`目录中创建、删除和编辑文件。当发生任何这些事件时，将在控制台上打印消息。完成后，删除`test`目录，`WatchDir`退出。或者，如果您愿意，也可以手动终止进程。
+- en: You can also watch an entire file tree by specifying the `-r` option. When you
+    specify `-r`, `WatchDir` [walks the file tree](walk.html), registering each directory
+    with the watch service.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以通过指定`-r`选项来监视整个文件树。当您指定`-r`时，`WatchDir`[遍历文件树](walk.html)，将每个目录注册到监视服务中。
+- en: Creating a Watch Service and Registering for Events
+  id: totrans-29
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建监视服务并注册事件
+- en: 'The first step is to create a new [`WatchService`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchService.html)
+    by using the [`newWatchService`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#newWatchService--)
+    method in the `FileSystem` class, as follows:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一步是通过`FileSystem`类中的`newWatchService`方法创建一个新的[`WatchService`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchService.html)，如下所示：
+- en: '[PRE1]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Next, register one or more objects with the watch service. Any object that implements
+    the [`Watchable`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Watchable.html)
+    interface can be registered. The `Path` class implements the `Watchable` interface,
+    so each directory to be monitored is registered as a `Path` object.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，向监视服务注册一个或多个对象。任何实现了[`Watchable`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Watchable.html)接口的对象都可以注册。`Path`类实现了`Watchable`接口，因此要监视的每个目录都被注册为一个`Path`对象。
+- en: As with any `Watchable`, the `Path` class implements two `register` methods.
+    This page uses the two-argument version, [`register(WatchService, WatchEvent.Kind<?>...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#register-java.nio.file.WatchService-java.nio.file.WatchEvent.Kind...-).
+    (The three-argument version takes a `WatchEvent.Modifier`, which is not currently
+    implemented.)
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与任何`Watchable`一样，`Path`类实现了两个`register`方法。本页使用了两个参数版本的[`register(WatchService,
+    WatchEvent.Kind<?>...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html#register-java.nio.file.WatchService-java.nio.file.WatchEvent.Kind...-)。（三个参数版本接受一个`WatchEvent.Modifier`，目前尚未实现。）
+- en: 'When registering an object with the watch service, you specify the types of
+    events that you want to monitor. The supported [`StandardWatchEventKinds`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/StandardWatchEventKinds.html)
+    event types follow:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在向监视服务注册对象时，您需要指定要监视的事件类型。支持的[`StandardWatchEventKinds`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/StandardWatchEventKinds.html)事件类型如下：
+- en: '`ENTRY_CREATE` – A directory entry is created.'
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ENTRY_CREATE` – 创建目录条目。'
+- en: '`ENTRY_DELETE` – A directory entry is deleted.'
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ENTRY_DELETE` – 删除目录条目。'
+- en: '`ENTRY_MODIFY` – A directory entry is modified.'
+  id: totrans-37
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`ENTRY_MODIFY` – 修改目录条目。'
+- en: '`OVERFLOW` – Indicates that events might have been lost or discarded. You do
+    not have to register for the `OVERFLOW` event to receive it.'
+  id: totrans-38
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`OVERFLOW` – 表示事件可能已丢失或被丢弃。您无需注册`OVERFLOW`事件即可接收它。'
+- en: 'The following code snippet shows how to register a `Path` instance for all
+    three event types:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码片段显示了如何为所有三种事件类型注册`Path`实例：
+- en: '[PRE2]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Processing Events
+  id: totrans-41
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 处理事件
+- en: 'The order of events in an event processing loop follow:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事件处理循环中事件的顺序如下：
+- en: 'Get a watch key. Three methods are provided:'
+  id: totrans-43
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 获取一个监视键。提供了三种方法：
+- en: '[`poll`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchService.html#poll--)
+    – Returns a queued key, if available. Returns immediately with a `null` value,
+    if unavailable.'
+  id: totrans-44
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`poll`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchService.html#poll--)
+    – 如果可用，则返回一个排队的键。如果不可用，则立即返回`null`值。'
+- en: '[`poll(long, TimeUnit)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchService.html#poll-long-java.util.concurrent.TimeUnit-)
+    – Returns a queued key, if one is available. If a queued key is not immediately
+    available, the program waits until the specified time. The `TimeUnit` argument
+    determines whether the specified time is nanoseconds, milliseconds, or some other
+    unit of time.'
+  id: totrans-45
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`poll(long, TimeUnit)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchService.html#poll-long-java.util.concurrent.TimeUnit-)
+    – 如果有排队的键可用，则返回一个。如果没有立即可用的排队键，则程序将等待指定的时间。`TimeUnit`参数确定指定的时间是纳秒、毫秒还是其他时间单位。'
+- en: '[`take`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchService.html#take--)
+    – Returns a queued key. If no queued key is available, this method waits.'
+  id: totrans-46
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`take`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchService.html#take--)
+    – 返回一个排队的键。如果没有可用的排队键，此方法将等待。'
+- en: Process the pending events for the key. You fetch the `List` of [`WatchEvents`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchEvent.html)from
+    the [`pollEvents`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchKey.html#pollEvents--)
+    method.
+  id: totrans-47
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 处理键的待处理事件。您从[`pollEvents`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchKey.html#pollEvents--)方法中获取[`WatchEvents`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchEvent.html)的`List`。
+- en: Retrieve the type of event by using the [`kind`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchEvent.html#kind--)
+    method. No matter what events the key has registered for, it is possible to receive
+    an `OVERFLOW` event. You can choose to handle the overflow or ignore it, but you
+    should test for it.
+  id: totrans-48
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 使用[`kind`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchEvent.html#kind--)方法检索事件的类型。无论键注册了什么事件，都有可能收到`OVERFLOW`事件。您可以选择处理溢出或忽略它，但应该对其进行测试。
+- en: Retrieve the file name associated with the event. The file name is stored as
+    the context of the event, so the [`context`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchEvent.html#context--)
+    method is used to retrieve it.
+  id: totrans-49
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 检索与事件关联的文件名。文件名存储为事件的上下文，因此使用[`context`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchEvent.html#context--)方法来检索它。
+- en: After the events for the key have been processed, you need to put the key back
+    into a `ready` state by invoking [`reset`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchEvent.html#reset--).
+    If this method returns `false`, the key is no longer valid and the loop can exit.
+    This step is very **important**. If you fail to invoke `reset`, this key will
+    not receive any further events.
+  id: totrans-50
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 处理键的事件后，需要通过调用[`reset`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchEvent.html#reset--)将键放回`ready`状态。如果此方法返回`false`，则键不再有效，循环可以退出。这一步非常**重要**。如果未调用`reset`，则此键将不会接收到进一步的事件。
+- en: 'A watch key has a state. At any given time, its state might be one of the following:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 观察键具有状态。在任何给定时间，其状态可能是以下之一：
+- en: '`Ready` indicates that the key is ready to accept events. When first created,
+    a key is in the ready state.'
+  id: totrans-52
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Ready`表示键已准备好接受事件。创建时，键处于准备状态。'
+- en: '`Signaled` indicates that one or more events are queued. Once the key has been
+    signaled, it is no longer in the ready state until the [`reset`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchKey.html#reset--)
+    method is invoked.'
+  id: totrans-53
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Signaled`表示有一个或多个事件排队。一旦键被标记，它就不再处于准备状态，直到调用[`reset`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchKey.html#reset--)方法。'
+- en: '`Invalid` indicates that the key is no longer active. This state happens when
+    one of the following events occurs:'
+  id: totrans-54
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`Invalid`表示键不再活动。当发生以下事件之一时，会出现此状态：'
+- en: The process explicitly cancels the key by using the [`cancel`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchKey.html#cancel--)
+    method.
+  id: totrans-55
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 进程通过使用[`cancel`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchKey.html#cancel--)方法显式取消键。
+- en: The directory becomes inaccessible.
+  id: totrans-56
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 目录变得无法访问。
+- en: The watch service is [closed](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchService.html#close--).
+  id: totrans-57
+  prefs:
+  - PREF_IND
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 观察服务已经被[关闭](https://docs.oracle.com/javase/8/docs/api/java/nio/file/WatchService.html#close--)。
+- en: Here is an example of an event processing loop. It is taken from the [``Email``](examples/Email.java)
+    example, which watches a directory, waiting for new files to appear. When a new
+    file becomes available, it is examined to determine if it is a `text/plain` file
+    by using the [`probeContentType(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#probeContentType-java.nio.file.Path-)
+    method. The intention is that `text/plain` files will be emailed to an alias,
+    but that implementation detail is left to the reader.
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个事件处理循环的示例。它取自于 [``Email``](examples/Email.java) 示例，该示例监视一个目录，等待新文件出现。当新文件可用时，通过使用
+    [`probeContentType(Path)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#probeContentType-java.nio.file.Path-)
+    方法来检查它是否是一个 `text/plain` 文件。意图是将 `text/plain` 文件发送到一个别名，但具体实现细节留给读者。
+- en: 'The methods specific to the watch service API are shown in bold:'
+  id: totrans-59
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Watch service API 特定的方法用粗体显示：
+- en: '[PRE3]'
+  id: totrans-60
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Retrieving the File Name
+  id: totrans-61
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 检索文件名
+- en: 'The file name is retrieved from the event context. The [``Email``](examples/Email.java)
+    example retrieves the file name with this code:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件名是从事件上下文中检索的。[``Email``](examples/Email.java) 示例使用以下代码检索文件名：
+- en: '[PRE4]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'When you compile the `Email` example, it generates the following error:'
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你编译 `Email` 示例时，会生成以下错误：
+- en: '[PRE5]'
+  id: totrans-65
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'This error is a result of the line of code that casts the `WatchEvent<T>` to
+    a `WatchEvent<Path>`. The [``WatchDir``](examples/WatchDir.java) example avoids
+    this error by creating a utility `cast` method that suppresses the unchecked warning,
+    as follows:'
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个错误是由将 `WatchEvent<T>` 强制转换为 `WatchEvent<Path>` 的代码行引起的。[``WatchDir``](examples/WatchDir.java)
+    示例通过创建一个抑制未经检查警告的实用 `cast` 方法来避免这个错误，如下所示：
+- en: '[PRE6]'
+  id: totrans-67
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: If you are unfamiliar with the `@SuppressWarnings` syntax, see [Annotations](../../java/annotations/index.html).
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你对 `@SuppressWarnings` 语法不熟悉，请参见 [Annotations](../../java/annotations/index.html)。
+- en: When to Use and Not Use This API
+  id: totrans-69
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 何时使用和不使用这个 API
+- en: The Watch Service API is designed for applications that need to be notified
+    about file change events. It is well suited for any application, like an editor
+    or IDE, that potentially has many open files and needs to ensure that the files
+    are synchronized with the file system. It is also well suited for an application
+    server that watches a directory, perhaps waiting for `.jsp` or `.jar` files to
+    drop, in order to deploy them.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Watch Service API 适用于需要通知文件更改事件的应用程序。它非常适合任何可能有许多打开文件并需要确保文件与文件系统同步的应用程序，比如编辑器或
+    IDE。它也非常适合监视目录的应用服务器，也许等待 `.jsp` 或 `.jar` 文件的出现，以便部署它们。
+- en: This API is *not* designed for indexing a hard drive. Most file system implementations
+    have native support for file change notification. The Watch Service API takes
+    advantage of this support where available. However, when a file system does not
+    support this mechanism, the Watch Service will poll the file system, waiting for
+    events.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个 API *不* 是为了索引硬盘而设计的。大多数文件系统实现都原生支持文件更改通知。Watch Service API 利用了这种支持（如果可用）。然而，当文件系统不支持这种机制时，Watch
+    Service 将轮询文件系统，等待事件发生。

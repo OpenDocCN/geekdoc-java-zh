@@ -1,0 +1,64 @@
+- en: Defining an Interface
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 定义一个接口
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/interfaceDef.html](https://docs.oracle.com/javase/tutorial/java/IandI/interfaceDef.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/interfaceDef.html](https://docs.oracle.com/javase/tutorial/java/IandI/interfaceDef.html)
+- en: 'An interface declaration consists of modifiers, the keyword `interface`, the
+    interface name, a comma-separated list of parent interfaces (if any), and the
+    interface body. For example:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个接口声明由修饰符、关键字`interface`、接口名称、一个逗号分隔的父接口列表（如果有）、和接口主体组成。例如：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `public` access specifier indicates that the interface can be used by any
+    class in any package. If you do not specify that the interface is public, then
+    your interface is accessible only to classes defined in the same package as the
+    interface.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`public`访问修饰符表示接口可以被任何包中的任何类使用。如果不指定接口为public，则接口只能被与接口在同一包中定义的类访问。'
+- en: An interface can extend other interfaces, just as a class subclass or extend
+    another class. However, whereas a class can extend only one other class, an interface
+    can extend any number of interfaces. The interface declaration includes a comma-separated
+    list of all the interfaces that it extends.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个接口可以扩展其他接口，就像一个类可以子类化或扩展另一个类一样。然而，一个类只能扩展一个其他类，而一个接口可以扩展任意数量的接口。接口声明包括一个逗号分隔的所有它扩展的接口的列表。
+- en: The Interface Body
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 接口主体
+- en: The interface body can contain [abstract methods](../../java/IandI/abstract.html),
+    [default methods](../../java/IandI/defaultmethods.html), and [static methods](../../java/IandI/defaultmethods.html#static).
+    An abstract method within an interface is followed by a semicolon, but no braces
+    (an abstract method does not contain an implementation). Default methods are defined
+    with the `default` modifier, and static methods with the `static` keyword. All
+    abstract, default, and static methods in an interface are implicitly `public`,
+    so you can omit the `public` modifier.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接口主体可以包含[抽象方法](../../java/IandI/abstract.html)，[默认方法](../../java/IandI/defaultmethods.html)，和[静态方法](../../java/IandI/defaultmethods.html#static)。接口中的抽象方法后跟一个分号，但不包含大括号（抽象方法不包含实现）。默认方法使用`default`修饰符定义，静态方法使用`static`关键字定义。接口中的所有抽象、默认和静态方法都隐式地是`public`的，因此可以省略`public`修饰符。
+- en: In addition, an interface can contain constant declarations. All constant values
+    defined in an interface are implicitly `public`, `static`, and `final`. Once again,
+    you can omit these modifiers.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，一个接口可以包含常量声明。在接口中定义的所有常量值都隐式地是`public`、`static`和`final`的。再次，你可以省略这些修饰符。

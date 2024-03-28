@@ -1,0 +1,83 @@
+- en: Set up the Policy File to Grant the Required Permissions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 设置策略文件以授予所需的权限
+- en: 原文：[https://docs.oracle.com/javase/tutorial/security/tour2/step3.html](https://docs.oracle.com/javase/tutorial/security/tour2/step3.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/security/tour2/step3.html](https://docs.oracle.com/javase/tutorial/security/tour2/step3.html)
+- en: This step uses the Policy Tool utility to open the policy file named **`examplepolicy`**
+    created in the [Creating a Policy File](../tour1/index.html) lesson. You will
+    add a new policy entry granting permission for code from the directory where `GetProps.class`
+    is stored to read the `"user.home"` and the `"java.home"` property values, as
+    shown in the following figure.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这一步使用策略工具实用程序打开名为**`examplepolicy`**的策略文件，该文件是在[创建策略文件](../tour1/index.html)课程中创建的。您将添加一个新的策略条目，允许来自存储`GetProps.class`的目录的代码读取`"user.home"`和`"java.home"`属性值，如下图所示。
+- en: '![The examplepolicy policy file grants WriteFile and GetProps the permissions
+    they need  ](../Images/9911200b791be06a6bc39dee7ee2c0e1.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![示例策略文件授予`WriteFile`和`GetProps`所需的权限](../Images/9911200b791be06a6bc39dee7ee2c0e1.png)'
+- en: The steps are as follows.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 步骤如下。
+- en: '[Open the Policy File](wstep1.html)'
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[打开策略文件](wstep1.html)'
+- en: '[Grant the Required Permissions](wstep2.html)'
+  id: totrans-6
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[授予所需的权限](wstep2.html)'
+- en: '[Save the Policy File](wstep3.html)'
+  id: totrans-7
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '[保存策略文件](wstep3.html)'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note for UNIX Users:** The instructions illustrate creating the policy file
+    for a Windows system. The steps are exactly the same if you are working on a UNIX
+    system, with the following differences.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**UNIX用户注意：** 本说明演示了为Windows系统创建策略文件。如果您在UNIX系统上工作，则步骤完全相同，只有以下区别。'
+- en: You retrieve the `examplepolicy` file from the `test` directory in your home
+    directory.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您从您的主目录中的`test`目录中检索`examplepolicy`文件。
+- en: For the **CodeBase** URL in the step for granting the required permissions,
+    you can substitute `file:${user.home}/test/` for `file:/C:/Test/`. Alternatively
+    you could directly specify your home directory rather than referring to the `"user.home"`
+    property, as in `file:/home/jones/test/`.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于授予所需权限的步骤中的**CodeBase** URL，您可以将`file:${user.home}/test/`替换为`file:/C:/Test/`。或者，您可以直接指定您的主目录，而不是引用`"user.home"`属性，如`file:/home/jones/test/`。
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

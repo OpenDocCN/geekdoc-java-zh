@@ -1,0 +1,112 @@
+- en: Document Object Model APIs
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 文档对象模型 API
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/intro/dom.html](https://docs.oracle.com/javase/tutorial/jaxp/intro/dom.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/intro/dom.html](https://docs.oracle.com/javase/tutorial/jaxp/intro/dom.html)
+- en: '[The following figure ](#gceza) shows the DOM APIs in action.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下图 ](#gceza) 展示了 DOM API 的运行情况。'
+- en: Figure  DOM APIs
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 图  DOM API
+- en: '![DOM APIs](../Images/29f82be8c6756c2aeaaa366112831581.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![DOM API](../Images/29f82be8c6756c2aeaaa366112831581.png)'
+- en: You use the `javax.xml.parsers.DocumentBuilderFactory` class to get a `DocumentBuilder`
+    instance, and you use that instance to produce a `Document` object that conforms
+    to the DOM specification. The builder you get, in fact, is determined by the system
+    property `javax.xml.parsers.DocumentBuilderFactory`, which selects the factory
+    implementation that is used to produce the builder. (The platform's default value
+    can be overridden from the command line.)
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用 `javax.xml.parsers.DocumentBuilderFactory` 类获取一个 `DocumentBuilder` 实例，并使用该实例生成符合
+    DOM 规范的 `Document` 对象。实际上，您获得的构建器是由系统属性 `javax.xml.parsers.DocumentBuilderFactory`
+    决定的，该属性选择用于生成构建器的工厂实现。（可以从命令行覆盖平台的默认值。）
+- en: You can also use the `DocumentBuilder` `newDocument()` method to create an empty
+    `Document` that implements the `org.w3c.dom.Document` interface. Alternatively,
+    you can use one of the builder's parse methods to create a `Document` from existing
+    XML data. The result is a DOM tree like that shown in above [Figure ](#gceza).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以使用 `DocumentBuilder` 的 `newDocument()` 方法创建一个实现 `org.w3c.dom.Document` 接口的空
+    `Document`。或者，您可以使用构建器的解析方法之一从现有 XML 数据创建一个 `Document`。结果是一个类似上述 [图 ](#gceza)
+    中显示的 DOM 树。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** Although they are called objects, the entries in the DOM tree are
+    actually fairly low-level data structures. For example, consider this structure:
+    `<color>blue</color>`. There is an element node for the color tag, and under that
+    there is a text node that contains the data, blue! This issue will be explored
+    at length in the DOM lesson of this tutorial, but developers who are expecting
+    objects are usually surprised to find that invoking `getNodeValue()` on the element
+    node returns nothing. For a truly object-oriented tree, see the JDOM API at [http://www.jdom.org](http://www.jdom.org).'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '-   **注意 -** 尽管它们被称为对象，但 DOM 树中的条目实际上是相当低级的数据结构。例如，考虑这个结构：`<color>blue</color>`。颜色标签有一个元素节点，在其下有一个包含数据
+    blue 的文本节点！这个问题将在本教程的 DOM 课程中详细探讨，但是那些期望得到对象的开发人员通常会惊讶地发现，在元素节点上调用 `getNodeValue()`
+    不会返回任何内容。要获得真正面向对象的树，请参阅 [http://www.jdom.org](http://www.jdom.org) 上的 JDOM API。'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: DOM Packages
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: DOM 包
+- en: The Document Object Model implementation is defined in the packages listed in
+    the following [Table ](#gcezo).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文档对象模型实现在以下 [表 ](#gcezo) 中列出的包中定义。
+- en: Table  DOM Packages
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 表  DOM 包
+- en: '| Package | Description |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| 包 | 描述 |'
+- en: '| `org.w3c.dom` | Defines the DOM programming interfaces for XML (and, optionally,
+    HTML) documents, as specified by the W3C. |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| `org.w3c.dom` | 定义了 W3C 规范中 XML（以及可选的 HTML）文档的 DOM 编程接口。 |'
+- en: '| `javax.xml.parsers` | Defines the `DocumentBuilderFactory` class and the
+    `DocumentBuilder` class, which returns an object that implements the W3C Document
+    interface. The factory that is used to create the builder is determined by the
+    `javax.xml.parsers` system property, which can be set from the command line or
+    overridden when invoking the new Instance method. This package also defines the
+    `ParserConfigurationException` class for reporting errors. |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| `javax.xml.parsers` | 定义了 `DocumentBuilderFactory` 类和 `DocumentBuilder` 类，后者返回一个实现
+    W3C Document 接口的对象。用于创建构建器的工厂由 `javax.xml.parsers` 系统属性确定，可以从命令行设置或在调用 new Instance
+    方法时覆盖。此包还定义了用于报告错误的 `ParserConfigurationException` 类。 |'

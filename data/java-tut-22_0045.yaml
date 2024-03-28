@@ -1,0 +1,100 @@
+- en: Declaring Classes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 声明类
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/classdecl.html](https://docs.oracle.com/javase/tutorial/java/javaOO/classdecl.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/classdecl.html](https://docs.oracle.com/javase/tutorial/java/javaOO/classdecl.html)
+- en: 'You''ve seen classes defined in the following way:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你已经看到以下方式定义的类：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This is a *class declaration*. The *class body* (the area between the braces)
+    contains all the code that provides for the life cycle of the objects created
+    from the class: constructors for initializing new objects, declarations for the
+    fields that provide the state of the class and its objects, and methods to implement
+    the behavior of the class and its objects.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个*类声明*。*类体*（大括号之间的区域）包含了为从类创建的对象的生命周期提供支持的所有代码：用于初始化新对象的构造函数，提供类及其对象状态的字段声明，以及实现类及其对象行为的方法。
+- en: The preceding class declaration is a minimal one. It contains only those components
+    of a class declaration that are required. You can provide more information about
+    the class, such as the name of its superclass, whether it implements any interfaces,
+    and so on, at the start of the class declaration. For example,
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 前面的类声明是一个最小的类声明。它只包含了类声明中所需的组件。你可以在类声明的开头提供关于类的更多信息，比如其超类的名称，是否实现了任何接口等。例如，
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: means that `MyClass` is a subclass of `MySuperClass` and that it implements
+    the `YourInterface` interface.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 意味着`MyClass`是`MySuperClass`的子类，并且实现了`YourInterface`接口。
+- en: "You can also add modifiers like *public* or *private* at the very beginning\x97\
+    so you can see that the opening line of a class declaration can become quite complicated.\
+    \ The modifiers *public* and *private*, which determine what other classes can\
+    \ access `MyClass`, are discussed later in this lesson. The lesson on interfaces\
+    \ and inheritance will explain how and why you would use the *extends* and *implements*\
+    \ keywords in a class declaration. For the moment you do not need to worry about\
+    \ these extra complications."
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "你也可以在最开始添加像*public*或*private*这样的修饰符\x97所以你可以看到类声明的开头行可能会变得相当复杂。决定其他类能否访问`MyClass`的修饰符*public*和*private*将在本课程的后面讨论。关于接口和继承的课程将解释在类声明中为什么以及如何使用*extends*和*implements*关键字。目前你不需要担心这些额外的复杂性。"
+- en: 'In general, class declarations can include these components, in order:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一般来说，类声明可以按顺序包括这些组件：
+- en: Modifiers such as *public*, *private*, and a number of others that you will
+    encounter later. (However, note that the *private* modifier can only be applied
+    to [Nested Classes](../../java/javaOO/nested.html).)
+  id: totrans-10
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 修饰符，比如*public*、*private*以及你以后会遇到的其他一些修饰符。（但是，请注意，*private*修饰符只能应用于[嵌套类](../../java/javaOO/nested.html)。）
+- en: The class name, with the initial letter capitalized by convention.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 类名，按照约定首字母大写。
+- en: The name of the class's parent (superclass), if any, preceded by the keyword
+    *extends*. A class can only *extend* (subclass) one parent.
+  id: totrans-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 类的父类（超类）的名称，如果有的话，前面带有关键字*extends*。一个类只能*扩展*（子类化）一个父类。
+- en: A comma-separated list of interfaces implemented by the class, if any, preceded
+    by the keyword *implements*. A class can *implement* more than one interface.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 一个逗号分隔的接口列表，如果有的话，前面带有关键字*implements*。一个类可以*实现*多个接口。
+- en: The class body, surrounded by braces, {}.
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 类体，用大括号{}括起来。

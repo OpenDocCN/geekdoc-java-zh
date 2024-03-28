@@ -1,0 +1,301 @@
+- en: Method References
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 方法引用
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html](https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html](https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html)
+- en: You use [lambda expressions](lambdaexpressions.html) to create anonymous methods.
+    Sometimes, however, a lambda expression does nothing but call an existing method.
+    In those cases, it's often clearer to refer to the existing method by name. Method
+    references enable you to do this; they are compact, easy-to-read lambda expressions
+    for methods that already have a name.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用[lambda表达式](lambdaexpressions.html)来创建匿名方法。然而，有时候lambda表达式仅仅是调用一个已存在的方法。在这种情况下，通过名称引用现有方法通常更清晰。方法引用使你能够做到这一点；它们是紧凑、易读的lambda表达式，用于已经有名称的方法。
+- en: 'Consider again the [`Person`](examples/Person.java) class discussed in the
+    section [Lambda Expressions](lambdaexpressions.html):'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次考虑在[lambda表达式](lambdaexpressions.html)部分讨论的[`Person`](examples/Person.java)类：
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Suppose that the members of your social networking application are contained
+    in an array, and you want to sort the array by age. You could use the following
+    code (find the code excerpts described in this section in the example [`MethodReferencesTest`](examples/MethodReferencesTest.java)):'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你的社交网络应用的成员被包含在一个数组中，并且你想按年龄对数组进行排序。你可以使用以下代码（在示例[`MethodReferencesTest`](examples/MethodReferencesTest.java)中找到本节描述的代码片段）：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The method signature of this invocation of `sort` is the following:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此次调用`sort`的方法签名如下：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Notice that the interface `Comparator` is a functional interface. Therefore,
+    you could use a lambda expression instead of defining and then creating a new
+    instance of a class that implements `Comparator`:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意`Comparator`接口是一个函数式接口。因此，你可以使用lambda表达式来代替定义并创建一个实现`Comparator`的类的新实例：
+- en: '[PRE3]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'However, this method to compare the birth dates of two `Person` instances already
+    exists as `Person.compareByAge`. You can invoke this method instead in the body
+    of the lambda expression:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，比较两个`Person`实例的出生日期的方法`Person.compareByAge`已经存在。你可以在lambda表达式的主体中调用这个方法：
+- en: '[PRE4]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'Because this lambda expression invokes an existing method, you can use a method
+    reference instead of a lambda expression:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为这个lambda表达式调用了一个已存在的方法，你可以使用方法引用代替lambda表达式：
+- en: '[PRE5]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The method reference `Person::compareByAge` is semantically the same as the
+    lambda expression `(a, b) -> Person.compareByAge(a, b)`. Each has the following
+    characteristics:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法引用`Person::compareByAge`在语义上与lambda表达式`(a, b) -> Person.compareByAge(a, b)`相同。它们各自具有以下特征：
+- en: Its formal parameter list is copied from `Comparator<Person>.compare`, which
+    is `(Person, Person)`.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 其形式参数列表是从`Comparator<Person>.compare`复制的，即`(Person, Person)`。
+- en: Its body calls the method `Person.compareByAge`.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 其主体调用方法`Person.compareByAge`。
+- en: Kinds of Method References
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 方法引用的种类
+- en: 'There are four kinds of method references:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有四种方法引用的种类：
+- en: '| Kind | Syntax | Examples |'
+  id: totrans-20
+  prefs: []
+  type: TYPE_TB
+  zh: '| 种类 | 语法 | 示例 |'
+- en: '| Reference to a static method | `*ContainingClass*::*staticMethodName*` |
+    `Person::compareByAge` `MethodReferencesExamples::appendStrings` |'
+  id: totrans-21
+  prefs: []
+  type: TYPE_TB
+  zh: '| 引用静态方法 | `*ContainingClass*::*staticMethodName*` | `Person::compareByAge`
+    `MethodReferencesExamples::appendStrings` |'
+- en: '| Reference to an instance method of a particular object | `*containingObject*::*instanceMethodName*`
+    | `myComparisonProvider::compareByName` `myApp::appendStrings2` |'
+  id: totrans-22
+  prefs: []
+  type: TYPE_TB
+  zh: '| 引用特定对象的实例方法 | `*containingObject*::*instanceMethodName*` | `myComparisonProvider::compareByName`
+    `myApp::appendStrings2` |'
+- en: '| Reference to an instance method of an arbitrary object of a particular type
+    | `*ContainingType*::*methodName*` | `String::compareToIgnoreCase` `String::concat`
+    |'
+  id: totrans-23
+  prefs: []
+  type: TYPE_TB
+  zh: '| 引用特定类型的任意对象的实例方法 | `*ContainingType*::*methodName*` | `String::compareToIgnoreCase`
+    `String::concat` |'
+- en: '| Reference to a constructor | `*ClassName*::new` | `HashSet::new` |'
+  id: totrans-24
+  prefs: []
+  type: TYPE_TB
+  zh: '| 引用构造函数 | `*ClassName*::new` | `HashSet::new` |'
+- en: 'The following example, [`MethodReferencesExamples`](examples/MethodReferencesExamples.java),
+    contains examples of the first three types of method references:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例，[`MethodReferencesExamples`](examples/MethodReferencesExamples.java)，包含了前三种方法引用的示例：
+- en: '[PRE6]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'All the `System.out.println()` statements print the same thing: `Hello World!`'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有的`System.out.println()`语句都打印相同的内容：`Hello World!`
+- en: '[`BiFunction`](https://docs.oracle.com/javase/8/docs/api/java/util/function/BiFunction.html)
+    is one of many functional interfaces in the [`java.util.function`](https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html)
+    package. The `BiFunction` functional interface can represent a lambda expression
+    or method reference that accepts two arguments and produces a result.'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`BiFunction`](https://docs.oracle.com/javase/8/docs/api/java/util/function/BiFunction.html)是[`java.util.function`](https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html)包中许多函数接口之一。`BiFunction`函数接口可以表示接受两个参数并产生结果的lambda表达式或方法引用。'
+- en: Reference to a Static Method
+  id: totrans-29
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 静态方法引用
+- en: The method references `Person::compareByAge` and `MethodReferencesExamples::appendStrings`
+    are references to a static method.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法引用`Person::compareByAge`和`MethodReferencesExamples::appendStrings`是对静态方法的引用。
+- en: Reference to an Instance Method of a Particular Object
+  id: totrans-31
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 引用特定对象的实例方法
+- en: 'The following is an example of a reference to an instance method of a particular
+    object:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是引用特定对象实例方法的示例：
+- en: '[PRE7]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The method reference `myComparisonProvider::compareByName` invokes the method
+    `compareByName` that is part of the object `myComparisonProvider`. The JRE infers
+    the method type arguments, which in this case are `(Person, Person)`.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法引用`myComparisonProvider::compareByName`调用`myComparisonProvider`对象的`compareByName`方法。JRE推断方法类型参数，本例中为`(Person,
+    Person)`。
+- en: Similarly, the method reference `myApp::appendStrings2` invokes the method `appendStrings2`
+    that is part of the object `myApp`. The JRE infers the method type arguments,
+    which in this case are `(String, String)`.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，方法引用`myApp::appendStrings2`将调用`myApp`对象的`appendStrings2`方法。JRE推断方法类型参数，本例中为`(String,
+    String)`。
+- en: Reference to an Instance Method of an Arbitrary Object of a Particular Type
+  id: totrans-36
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 引用特定类型任意对象的实例方法
+- en: 'The following is an example of a reference to an instance method of an arbitrary
+    object of a particular type:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面是一个引用特定类型任意对象的实例方法的示例：
+- en: '[PRE8]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: The equivalent lambda expression for the method reference `String::compareToIgnoreCase`
+    would have the formal parameter list `(String a, String b)`, where `a` and `b`
+    are arbitrary names used to better describe this example. The method reference
+    would invoke the method `a.compareToIgnoreCase(b)`.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法引用`String::compareToIgnoreCase`的等效lambda表达式将具有形式参数列表`(String a, String b)`，其中`a`和`b`是用于更好描述此示例的任意名称。方法引用将调用`a.compareToIgnoreCase(b)`方法。
+- en: Similarly, the method reference `String::concat` would invoke the method `a.concat(b)`.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似地，方法引用`String::concat`将调用`a.concat(b)`方法。
+- en: Reference to a Constructor
+  id: totrans-41
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 构造函数引用
+- en: 'You can reference a constructor in the same way as a static method by using
+    the name `new`. The following method copies elements from one collection to another:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以通过使用名称`new`来引用构造函数，与引用静态方法的方式相同。以下方法将元素从一个集合复制到另一个集合：
+- en: '[PRE9]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'The functional interface `Supplier` contains one method `get` that takes no
+    arguments and returns an object. Consequently, you can invoke the method `transferElements`
+    with a lambda expression as follows:'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 函数接口`Supplier`包含一个名为`get`的方法，不接受参数并返回一个对象。因此，你可以使用lambda表达式调用方法`transferElements`，如下所示：
+- en: '[PRE10]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'You can use a constructor reference in place of the lambda expression as follows:'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用构造函数引用来替代lambda表达式，如下所示：
+- en: '[PRE11]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'The Java compiler infers that you want to create a `HashSet` collection that
+    contains elements of type `Person`. Alternatively, you can specify this as follows:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编译器推断你想要创建一个包含类型为`Person`的元素的`HashSet`集合。或者，你可以按照以下方式指定：
+- en: '[PRE12]'
+  id: totrans-49
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'

@@ -1,0 +1,134 @@
+- en: Naming Package
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 命名包
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/overview/naming.html](https://docs.oracle.com/javase/tutorial/jndi/overview/naming.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/overview/naming.html](https://docs.oracle.com/javase/tutorial/jndi/overview/naming.html)
+- en: The [`javax.naming`](https://docs.oracle.com/javase/8/docs/api/javax/naming/package-summary.html)
+    package contains classes and interfaces for accessing naming services.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`javax.naming`](https://docs.oracle.com/javase/8/docs/api/javax/naming/package-summary.html)包含用于访问命名服务的类和接口。'
+- en: Context
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 上下文
+- en: The `javax.naming` package defines a [`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)
+    interface, which is the core interface for looking up, binding/unbinding, renaming
+    objects and creating and destroying subcontexts.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`javax.naming`包定义了一个[`Context`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html)接口，这是查找、绑定/解绑、重命名对象以及创建和销毁子上下文的核心接口。'
+- en: Lookup
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 查找
+- en: The most commonly used operation is [`lookup()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#lookup-javax.naming.Name-).
+    You supply `lookup()` the name of the object you want to look up, and it returns
+    the object bound to that name.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最常用的操作是[`lookup()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#lookup-javax.naming.Name-)。您提供`lookup()`要查找的对象的名称，它将返回绑定到该名称的对象。
+- en: Bindings
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 绑定
+- en: '[`listBindings()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#listBindings-javax.naming.Name-)
+    returns an enumeration of name-to-object bindings. A binding is a tuple containing
+    the name of the bound object, the name of the object''s class, and the object
+    itself.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`listBindings()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#listBindings-javax.naming.Name-)返回一个名称到对象绑定的枚举。绑定是一个包含绑定对象的名称、对象类的名称和对象本身的元组。'
+- en: List
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 列表
+- en: '[`list()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#list-javax.naming.Name-)
+    is similar to `listBindings()`, except that it returns an enumeration of names
+    containing an object''s name and the name of the object''s class. `list()` is
+    useful for applications such as browsers that want to discover information about
+    the objects bound within a context but that don''t need all of the actual objects.
+    Although `listBindings()` provides all of the same information, it is potentially
+    a much more expensive operation.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`list()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#list-javax.naming.Name-)类似于`listBindings()`，只是它返回一个包含对象名称和对象类名称的名称枚举。`list()`对于诸如浏览器之类的应用程序很有用，这些应用程序希望发现上下文中绑定的对象的信息，但不需要所有实际对象。虽然`listBindings()`提供了相同的信息，但它可能是一个更昂贵的操作。'
+- en: Name
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 名称
+- en: '`Name` is an interface that represents a generic name—an ordered sequence of
+    zero or more components. The Naming Systems use this interface to define the names
+    that follow its conventions as described in the [Naming and Directory Concepts](../concepts/index.html)
+    lesson.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Name`是表示通用名称的接口——一个有序的零个或多个组件的序列。命名系统使用此接口来定义遵循其约定的名称，如[命名和目录概念](../concepts/index.html)课程中所述。'
+- en: References
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 引用
+- en: Objects are stored in naming and directory services in different ways. A reference
+    might be a very compact representation of an object.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对象以不同方式存储在命名和目录服务中。引用可能是对象的非常紧凑的表示。
+- en: The JNDI defines the [`Reference`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Reference.html)
+    class to represent reference. A reference contains information on how to construct
+    a copy of the object. The JNDI will attempt to turn references looked up from
+    the directory into the Java objects that they represent so that JNDI clients have
+    the illusion that what is stored in the directory are Java objects.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JNDI定义了[`Reference`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Reference.html)类来表示引用。引用包含有关如何构造对象副本的信息。JNDI将尝试将从目录查找的引用转换为它们所代表的Java对象，以便JNDI客户端产生存储在目录中的是Java对象的错觉。
+- en: The Initial Context
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 初始上下文
+- en: In the JNDI, all naming and directory operations are performed relative to a
+    context. There are no absolute roots. Therefore the JNDI defines an [`InitialContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/InitialContext.html),
+    which provides a starting point for naming and directory operations. Once you
+    have an initial context, you can use it to look up other contexts and objects.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在JNDI中，所有命名和目录操作都是相对于上下文执行的。没有绝对的根。因此，JNDI定义了一个[`InitialContext`](https://docs.oracle.com/javase/8/docs/api/javax/naming/InitialContext.html)，它提供了命名和目录操作的起始点。一旦您有了初始上下文，您可以使用它来查找其他上下文和对象。
+- en: Exceptions
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 异常
+- en: The JNDI defines a class hierarchy for exceptions that can be thrown in the
+    course of performing naming and directory operations. The root of this class hierarchy
+    is [`NamingException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingException.html).
+    Programs interested in dealing with a particular exception can catch the corresponding
+    subclass of the exception. Otherwise, they should catch `NamingException`.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JNDI定义了一个类层次结构，用于在执行命名和目录操作过程中可能抛出的异常。这个类层次结构的根是[`NamingException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NamingException.html)。对于对特定异常感兴趣的程序，可以捕获异常的相应子类。否则，它们应该捕获`NamingException`。

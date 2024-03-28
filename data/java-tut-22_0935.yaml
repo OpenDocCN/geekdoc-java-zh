@@ -1,0 +1,91 @@
+- en: 'Lesson: All About Datagrams'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教训：关于数据报的一切
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/datagrams/index.html](https://docs.oracle.com/javase/tutorial/networking/datagrams/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/datagrams/index.html](https://docs.oracle.com/javase/tutorial/networking/datagrams/index.html)
+- en: Some applications that you write to communicate over the network will not require
+    the reliable, point-to-point channel provided by TCP. Rather, your applications
+    might benefit from a mode of communication that delivers independent packages
+    of information whose arrival and order of arrival are not guaranteed.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您编写的一些用于在网络上通信的应用程序不需要TCP提供的可靠的点对点通道。相反，您的应用程序可能会从一种通信模式中受益，该模式传递独立的信息包，其到达和到达顺序不受保证。
+- en: The UDP protocol provides a mode of network communication whereby applications
+    send packets of data, called datagrams, to one another. A datagram is an independent,
+    self-contained message sent over the network whose arrival, arrival time, and
+    content are not guaranteed. The `DatagramPacket` and `DatagramSocket` classes
+    in the `java.net` package implement system-independent datagram communication
+    using UDP.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: UDP协议提供了一种网络通信模式，应用程序可以向彼此发送数据包，称为数据报。数据报是通过网络发送的独立、自包含的消息，其到达、到达时间和内容均不受保证。`java.net`包中的`DatagramPacket`和`DatagramSocket`类使用UDP实现了系统独立的数据报通信。
+- en: '[What Is a Datagram?](definition.html)'
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[什么是数据报？](definition.html)'
+- en: A datagram is an independent, self-contained message sent over the network whose
+    arrival, arrival time, and content are not guaranteed.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 数据报是通过网络发送的独立、自包含的消息，其到达、到达时间和内容均不受保证。
+- en: '[Writing a Datagram Client and Server](clientServer.html)'
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[编写数据报客户端和服务器](clientServer.html)'
+- en: This section walks you through an example that contains two Java programs that
+    use datagrams to communicate. The server side is a quote server that listens to
+    its `DatagramSocket` and sends a quotation to a client whenever the client requests
+    it. The client side is a simple program that simply makes a request of the server.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节将通过一个示例引导您，其中包含两个使用数据报进行通信的Java程序。服务器端是一个引用服务器，它监听其`DatagramSocket`并在客户端请求时向客户端发送引用。客户端是一个简单的程序，只需向服务器发出请求。
+- en: '[Broadcasting to Multiple Recipients](broadcasting.html)'
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[向多个接收方广播](broadcasting.html)'
+- en: This section modifies the quote server so that instead of sending a quotation
+    to a single client upon request, the quote server broadcasts a quote every minute
+    to as many clients as are listening. The client program must be modified accordingly.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节修改引用服务器，使其不再在请求时向单个客户端发送引用，而是每分钟向所有正在侦听的客户端广播一条引用。客户端程序必须相应地进行修改。
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: Many firewalls and routers are configured not to allow UDP packets. If you have
+    trouble connecting to a service outside your firewall, or if clients have trouble
+    connecting to your service, ask your system administrator if UDP is permitted.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多防火墙和路由器被配置为不允许UDP数据包。如果您在防火墙外部连接到服务时遇到问题，或者客户端无法连接到您的服务，请向系统管理员询问是否允许UDP。
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

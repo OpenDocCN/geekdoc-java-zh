@@ -1,0 +1,166 @@
+- en: LDAP v3
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: LDAP v3
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/ldap.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/ldap.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ldap/ldap.html](https://docs.oracle.com/javase/tutorial/jndi/ldap/ldap.html)
+- en: Internationalization
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 国际化
+- en: Internationalization is addressed via an international character set (ISO 10646)
+    to represent protocol elements that are strings (such as DNs). Version 3 also
+    differs from version 2 in that it uses UTF-8 to encode its strings.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 国际化是通过国际字符集（ISO 10646）来处理的，用于表示协议元素是字符串（如DN）。版本3还不同于版本2，它使用UTF-8来编码其字符串。
+- en: Authentication
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 认证
+- en: In addition to anonymous, simple (clear-text password) authentication, LDAP
+    v3 uses the Simple Authentication and Security Layer (SASL) authentication framework
+    ( [RFC 2222](http://www.ietf.org/rfc/rfc2222.txt)) to allow different authentication
+    mechanisms to be used with the LDAP. SASL specifies a challenge-response protocol
+    in which data is exchanged between the client and the server for the purposes
+    of authentication.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了匿名、简单（明文密码）认证外，LDAP v3还使用简单认证和安全层（SASL）认证框架（[RFC 2222](http://www.ietf.org/rfc/rfc2222.txt)）允许使用不同的认证机制与LDAP一起使用。SASL指定了一种挑战-响应协议，其中数据在客户端和服务器之间交换，用于认证目的。
+- en: 'Several SASL mechanisms are currently defined: [DIGEST-MD5](http://www.ietf.org/rfc/rfc2831.txt),
+    [CRAM-MD5](http://www.ietf.org/rfc/rfc2195.txt), [Anonymous](http://www.ietf.org/rfc/rfc2245.txt),
+    [External](http://www.ietf.org/rfc/rfc2222.txt), [S/Key](http://www.ietf.org/rfc/rfc2222.txt),
+    [GSSAPI](http://www.ietf.org/rfc/rfc2222.txt), and [Kerberos v4](http://www.ietf.org/rfc/rfc2222.txt).
+    An LDAP v3 client can use any of these SASL mechanisms, provided that the LDAP
+    v3 server supports them. Moreover, new (yet-to-be defined) SASL mechanisms can
+    be used without changes to the LDAP having to be made.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 目前定义了几种SASL机制：[DIGEST-MD5](http://www.ietf.org/rfc/rfc2831.txt), [CRAM-MD5](http://www.ietf.org/rfc/rfc2195.txt),
+    [Anonymous](http://www.ietf.org/rfc/rfc2245.txt), [External](http://www.ietf.org/rfc/rfc2222.txt),
+    [S/Key](http://www.ietf.org/rfc/rfc2222.txt), [GSSAPI](http://www.ietf.org/rfc/rfc2222.txt),
+    和 [Kerberos v4](http://www.ietf.org/rfc/rfc2222.txt)。LDAP v3客户端可以使用任何这些SASL机制，前提是LDAP
+    v3服务器支持它们。此外，可以在不必更改LDAP的情况下使用新的（尚未定义的）SASL机制。
+- en: Referrals
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 转发
+- en: A *referral* is information that a server sends back to the client indicating
+    that the requested information can be found at another location (possibly at another
+    server). In the LDAP v2, servers are supposed to handle referrals and not return
+    them to the client. This is because handling referrals can be very complicated
+    and therefore would result in more-complicated clients. As servers were built
+    and deployed, referrals were found to be useful, but not many servers supported
+    server-side referral handling. So a way was found to retrofit the protocol to
+    allow it to return referrals. This was done by placing the referral inside of
+    the error message of a "partial result" error response.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*转发*是服务器发送回客户端的信息，指示请求的信息可以在另一个位置（可能在另一个服务器上）找到。在LDAP v2中，服务器应处理转发而不将其返回给客户端。这是因为处理转发可能非常复杂，因此会导致更复杂的客户端。随着服务器的构建和部署，发现转发很有用，但并不是所有服务器都支持服务器端转发处理。因此，找到了一种方法来改进协议以允许返回转发。这是通过将转发放置在“部分结果”错误响应的错误消息中来完成的。'
+- en: The LDAP v3 has explicit support for referrals and allows servers to return
+    the referrals directly to the client. Referrals won't be covered in this lesson
+    but you can always refer to [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/referral/index.html)
+    for managing referrals in your application.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP v3明确支持转发，并允许服务器直接将转发返回给客户端。本课程不涵盖转发，但您可以随时参考[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/referral/index.html)来管理应用程序中的转发。
+- en: Deployment
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 部署
+- en: A common protocol such as the LDAP is useful for ensuring that all of the directory
+    clients and servers "speak the same language." When many different directory client
+    applications and directory servers are deployed in a network, it also is very
+    useful for all of these entities to talk about the same objects.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 诸如LDAP之类的常见协议对确保所有目录客户端和服务器“说同一种语言”非常有用。当在网络中部署许多不同的目录客户端应用程序和目录服务器时，所有这些实体讨论相同的对象也非常有用。
+- en: A *directory schema* specifies, among other things, the types of objects that
+    a directory may have and the mandatory and optional attributes that each type
+    of object may have. The LDAP v3 defines a schema ( [RFC 2252](http://www.ietf.org/rfc/rfc2252.txt)
+    and [RFC 2256](http://www.ietf.org/rfc/rfc2256.txt)) based on the X.500 standard
+    for common objects found in the network, such as countries, localities, organizations,
+    users/persons, groups, and devices. It also defines a way for a client application
+    to access the server's schema so that it can find out the types of objects and
+    attributes that a particular server supports.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*目录模式*指定了目录可能具有的对象类型以及每种对象类型可能具有的强制和可选属性，等等。LDAP v3基于X.500标准为网络中常见的对象（如国家、地点、组织、用户/人员、组和设备）定义了一个模式（[RFC
+    2252](http://www.ietf.org/rfc/rfc2252.txt)和[RFC 2256](http://www.ietf.org/rfc/rfc2256.txt)）。它还定义了客户端应用程序访问服务器模式的方法，以便了解特定服务器支持的对象和属性类型。'
+- en: The LDAP v3 further defines a set of syntaxes for representing attribute values
+    ( [RFC 2252](http://www.ietf.org/rfc/rfc2252.txt)). For writing Java Applications
+    that need to access schema please refer to the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/schema/index.html).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: LDAP v3进一步定义了一组用于表示属性值的语法（[RFC 2252](http://www.ietf.org/rfc/rfc2252.txt)）。编写需要访问模式的Java应用程序，请参考[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/schema/index.html)。
+- en: Extensions
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 扩展
+- en: In addition to the repertoire of predefined operations, such as "search" and
+    "modify," the LDAP v3 defines an *"extended" operation*. The "extended" operation
+    takes a request as an argument and returns a response. The request contains an
+    identifier that identifies the request and the arguments of the request. The response
+    contains the results of performing the request. The pair of "extended" operation
+    request/response is called an *extension*. For example, there can be an extension
+    for Start TLS, which is a request for the client to the server to activate the
+    Start TLS protocol.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了预定义的操作集合，如“搜索”和“修改”，LDAP v3还定义了一个*“扩展”操作*。 “扩展”操作以请求作为参数并返回响应。请求包含标识请求的标识符和请求的参数。响应包含执行请求的结果。
+    “扩展”操作请求/响应对称为*扩展*。例如，可以有一个用于启动TLS的扩展，这是客户端向服务器发出的激活启动TLS协议的请求。
+- en: These extensions can be standard (defined by the LDAP community) or proprietary
+    (defined by a particular directory vendor). For writing applications that need
+    to use Extensions refer to the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/ext/index.html).
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些扩展可以是标准的（由LDAP社区定义）或专有的（由特定目录供应商定义）。编写需要使用扩展的应用程序，请参考[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/ext/index.html)。
+- en: Controls
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 控制
+- en: Another way to add new features is by using a *control*. The LDAP v3 allows
+    the behavior of any operation to be modified through the use of controls. Any
+    number of controls may be sent along with an operation, and any number of controls
+    may be returned with its results. For example, you can send a Sort control along
+    with a "search" operation that tells the server to sort the results of the search
+    according to the `"name"` attribute.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一种添加新功能的方法是使用*控制*。LDAP v3允许通过使用控制来修改任何操作的行为。可以在操作中发送任意数量的控制，并且可以在其结果中返回任意数量的控制。例如，您可以在“搜索”操作中发送一个排序控制，告诉服务器根据`“name”`属性对搜索结果进行排序。
+- en: Like extensions, such controls can be standard or proprietary. The standard
+    controls are provided in the [platform](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Control.html).
+    For writing applications that need to use controls refer to the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/ldap/ext/index.html).
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 像扩展一样，这些控制可以是标准的或专有的。标准控制在[平台](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/Control.html)中提供。编写需要使用控制的应用程序，请参考[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/ldap/ext/index.html)。

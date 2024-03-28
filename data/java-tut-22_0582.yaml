@@ -1,0 +1,115 @@
+- en: 'Lesson: Setting the Locale'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：设置区域设置
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/index.html](https://docs.oracle.com/javase/tutorial/i18n/locale/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/index.html](https://docs.oracle.com/javase/tutorial/i18n/locale/index.html)
+- en: An internationalized program can display information differently throughout
+    the world. For example, the program will display different messages in Paris,
+    Tokyo, and New York. If the localization process has been fine-tuned, the program
+    will display different messages in New York and London to account for the differences
+    between American and British English. How does an internationalized program identify
+    the appropriate language and region of its end users? Easy. It references a `Locale`
+    object.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个国际化的程序可以在世界各地以不同方式显示信息。例如，该程序将在巴黎、东京和纽约显示不同的消息。如果本地化过程已经经过精细调整，该程序将显示不同的消息在纽约和伦敦，以考虑美式英语和英式英语之间的差异。一个国际化的程序如何识别其最终用户的适当语言和地区？简单。它引用一个`Locale`对象。
+- en: A `Locale` object is an identifier for a particular combination of language
+    and region. If a class varies its behavior according to `Locale`, it is said to
+    be *locale-sensitive*. For example, the `NumberFormat` class is locale-sensitive;
+    the format of the number it returns depends on the `Locale`. Thus `NumberFormat`
+    may return a number as 902 300 (France), or 902.300 (Germany), or 902,300 (United
+    States). `Locale` objects are only identifiers. The real work, such as formatting
+    and detecting word boundaries, is performed by the methods of the locale-sensitive
+    classes.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`Locale`对象是特定语言和地区组合的标识符。如果一个类根据`Locale`变化其行为，那么它被称为*区域敏感*。例如，`NumberFormat`类是区域敏感的；它返回的数字格式取决于`Locale`。因此，`NumberFormat`可能会将数字返回为902
+    300（法国）、902.300（德国）或902,300（美国）。`Locale`对象只是标识符。真正的工作，比如格式化和检测单词边界，是由区域敏感类的方法执行的。
+- en: 'The following sections explain how to work with `Locale` objects:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下各节解释了如何使用`Locale`对象：
+- en: '[Creating a Locale](create.html)'
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[创建一个Locale](create.html)'
+- en: When creating a `Locale` object, you usually specify a language code and a country
+    code. A third parameter, the variant, is optional.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在创建`Locale`对象时，通常会指定语言代码和国家代码。第三个参数，变体，是可选的。
+- en: '[BCP 47 Extensions](extensions.html)'
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[BCP 47扩展](extensions.html)'
+- en: This section shows you how to add a Unicode locale extension or a private use
+    extension to a `Locale`.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节向您展示如何向`Locale`添加Unicode区域扩展或私有使用扩展。
+- en: '[Identifying Available Locales](identify.html)'
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[识别可用的Locale](identify.html)'
+- en: Locale-sensitive classes support only certain `Locale` definitions. This section
+    shows you how to determine which `Locale` definitions are supported.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 区域敏感类仅支持特定的`Locale`定义。本节将向您展示如何确定支持哪些`Locale`定义。
+- en: '[Language Tag Filtering and Lookup](matching.html)'
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[语言标签过滤和查找](matching.html)'
+- en: This section describes the internationalization support for language tags, language
+    tags filtering, and language tags lookup.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了语言标签、语言标签过滤和语言标签查找的国际化支持。
+- en: '[The Scope of a Locale](scope.html)'
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[Locale的范围](scope.html)'
+- en: On the Java platform you do not specify a global `Locale` by setting an environment
+    variable before running the application. Instead you either rely on the default
+    Locale or assign a `Locale` to each locale-sensitive object.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java平台上，您不需要通过在运行应用程序之前设置环境变量来指定全局`Locale`。相反，您要么依赖于默认Locale，要么为每个区域敏感对象分配一个`Locale`。
+- en: '[Locale-Sensitive Services SPI](services.html)'
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[区域敏感服务SPI](services.html)'
+- en: This section explains how to enable plug-in of locale-dependent data and services.
+    These SPIs (Service Provider Interface) provides support of more locales in addition
+    to the currently available locales.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节解释了如何启用依赖于区域设置的数据和服务的插件。这些SPI（服务提供者接口）提供了对当前可用区域设置之外更多区域设置的支持。

@@ -1,0 +1,183 @@
+- en: Writing/Saving an Image
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 写入/保存图像
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/images/saveimage.html](https://docs.oracle.com/javase/tutorial/2d/images/saveimage.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/images/saveimage.html](https://docs.oracle.com/javase/tutorial/2d/images/saveimage.html)
+- en: This lesson started with an explanation for using the `javax.imageio` package,
+    to load images from an external image format into the internal `BufferedImage`
+    format used by Java 2D. Then it explains how to use the `Graphics.drawImage()`
+    to draw that image, with optional filtering.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程从解释如何使用`javax.imageio`包开始，将图像从外部图像格式加载到Java 2D使用的内部`BufferedImage`格式。然后解释如何使用`Graphics.drawImage()`来绘制该图像，可选择进行滤镜处理。
+- en: The final stage is saving a `BufferedImage` object into an external image format.
+    This may be an image that was originally loaded by the `Image I/O` class from
+    an external image format and perhaps modified using the Java 2D APIs, or it may
+    be one that was created by Java 2D.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最后一阶段是将`BufferedImage`对象保存为外部图像格式。这可能是最初由`Image I/O`类从外部图像格式加载并可能使用Java 2D API修改的图像，也可能是由Java
+    2D创建的图像。
+- en: 'The `Image I/O` class provides a simple way to save images in a variety of
+    image formats in the following example:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Image I/O`类提供了一种简单的方法，在以下示例中以各种图像格式保存图像：'
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The `BufferedImage` class implements the `RenderedImage` interface.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** `BufferedImage`类实现了`RenderedImage`接口。'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: .
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 。
+- en: The `formatName` parameter selects the image format in which to save the `BufferedImage`.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`formatName`参数选择要保存`BufferedImage`的图像格式。'
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The `ImageIO.write` method calls the code that implements PNG writing a “PNG
+    writer plug-in”. The term *plug-in* is used since `Image I/O` is extensible and
+    can support a wide range of formats.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ImageIO.write`方法调用实现PNG写入的代码，即“PNG写入插件”。术语*插件*用于`Image I/O`是可扩展的，可以支持各种格式。'
+- en: 'But the following standard image format plugins : JPEG, PNG, GIF, BMP and WBMP
+    are always be present.'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但以下标准图像格式插件：JPEG、PNG、GIF、BMP和WBMP始终存在。
+- en: 'Each image format has its advantages and disadvantages:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每种图像格式都有其优点和缺点：
+- en: '| Format | Plus | Minus |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| 格式 | 优点 | 缺点 |'
+- en: '| GIF | Supports animation, and transparent pixels | Supports only 256 colors
+    and no translucency |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| GIF | 支持动画和透明像素 | 仅支持256种颜色和不支持半透明 |'
+- en: '| PNG | Better alternative than GIF or JPG for high colour lossless images,
+    supports translucency | Doesn''t support animation |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| PNG | 比GIF或JPG更好的选择，用于高色彩无损图像，支持半透明 | 不支持动画 |'
+- en: '| JPG | Great for photographic images | Loss of compression, not good for text,
+    screenshots, or any application where the original image must be preserved exactly
+    |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| JPG | 适用于摄影图像 | 压缩损失大，不适合文本、屏幕截图或需要完全保留原始图像的任何应用程序 |'
+- en: For most applications it is sufficient to use one of these standard plugins.
+    They have the advantage of being readily available. The `Image I/O` class provides
+    a way to plug in support for additional formats which can be used, and many such
+    plug-ins exist. If you are interested in what file formats are available to load
+    or save in your system, you may use the `getReaderFormatNames` and `getWriterFormatNames`
+    methods of the `ImageIO` class. These methods return an array of strings listing
+    all of the formats supported in this JRE.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于大多数应用程序来说，使用这些标准插件就足够了。它们的优点是易于获取。`Image I/O`类提供了一种插入对额外格式的支持的方式，可以使用许多这样的插件。如果您想知道系统中可加载或保存的文件格式，可以使用`ImageIO`类的`getReaderFormatNames`和`getWriterFormatNames`方法。这些方法返回一个字符串数组，列出了此JRE支持的所有格式。
+- en: '[PRE2]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The returned array of names will include any additional plug-ins that are installed
+    and any of these names may be used as a format name to select an image writer.
+    The following code example is a simple version of a complete image edit/touch
+    up program which uses a revised version of the [`ImageDrawingApplet.java`](examples/ImageDrawingApplet.java)
+    sample program which can be used as follows :'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 返回的名称数组将包括任何已安装的附加插件，这些名称中的任何一个都可以用作格式名称来选择图像写入器。以下代码示例是一个简单版本的完整图像编辑/修饰程序，使用了修订版本的[`ImageDrawingApplet.java`](examples/ImageDrawingApplet.java)示例程序，可以按以下方式使用：
+- en: An image is first loaded via Image I/O
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 图像首先通过Image I/O加载
+- en: The user selects a filter from the drop down list and a new updated image is
+    drawn
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 用户从下拉列表中选择一个滤镜，然后绘制一个新的更新图像
+- en: The user selects a save format from the drop down list
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 用户从下拉列表中选择保存格式
+- en: Next a file chooser appears and the user selects where to save the image
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 接下来会出现文件选择器，用户选择保存图像的位置
+- en: The modified image can now be viewed by other desktop applications
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 修改后的图像现在可以被其他桌面应用程序查看。
+- en: The complete code of this example is represented in [`SaveImage.java`](examples/SaveImage.java).
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例的完整代码在[`SaveImage.java`](examples/SaveImage.java)中表示。
+- en: In this lesson you have learned just the basics of `Image I/O`, which provides
+    extensive support for writing images, including working directly with an `ImageWriter`
+    plug-in to achieve finer control over the encoding process. ImageIO can write
+    multiple images, image metadata, and determine quality vs. size tradeoffs. For
+    more information see [Java Image I/O API Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/imageio/spec/title.fm.html).
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在本课程中，您仅学习了`Image I/O`的基础知识，该知识提供了广泛的支持，包括直接使用`ImageWriter`插件来实现对编码过程的更精细控制。
+    ImageIO可以写入多个图像、图像元数据，并确定质量与大小之间的权衡。更多信息请参见[Java Image I/O API指南](https://docs.oracle.com/javase/8/docs/technotes/guides/imageio/spec/title.fm.html)。

@@ -1,0 +1,185 @@
+- en: What Is a Path? (And Other File System Facts)
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 什么是路径？（以及其他文件系统事实）
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/path.html](https://docs.oracle.com/javase/tutorial/essential/io/path.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/path.html](https://docs.oracle.com/javase/tutorial/essential/io/path.html)
+- en: A file system stores and organizes files on some form of media, generally one
+    or more hard drives, in such a way that they can be easily retrieved. Most file
+    systems in use today store the files in a tree (or *hierarchical*) structure.
+    At the top of the tree is one (or more) root nodes. Under the root node, there
+    are files and directories (*folders* in Microsoft Windows). Each directory can
+    contain files and subdirectories, which in turn can contain files and subdirectories,
+    and so on, potentially to an almost limitless depth.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件系统在某种介质上存储和组织文件，通常是一个或多个硬盘，以便可以轻松检索文件。今天大多数使用的文件系统将文件存储在树（或*分层*）结构中。树的顶部是一个（或多个）根节点。在根节点下面，有文件和目录（在Microsoft
+    Windows中称为*文件夹*）。每个目录可以包含文件和子目录，子目录又可以包含文件和子目录，依此类推，可能深入到几乎无限的深度。
+- en: 'This section covers the following:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下内容：
+- en: '[What Is a Path?](#path)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[什么是路径？](#path)'
+- en: '[Relative or Absolute?](#relative)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[相对还是绝对？](#relative)'
+- en: '[Symbolic Links](#symlink)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[符号链接](#symlink)'
+- en: What Is a Path?
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 什么是路径？
+- en: The following figure shows a sample directory tree containing a single root
+    node. Microsoft Windows supports multiple root nodes. Each root node maps to a
+    volume, such as `C:\` or `D:\`. The Solaris OS supports a single root node, which
+    is denoted by the slash character, `/`.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图显示了包含单个根节点的示例目录树。Microsoft Windows支持多个根节点。每个根节点映射到一个卷，例如`C:\`或`D:\`。Solaris
+    OS支持单个根节点，用斜杠字符`/`表示。
+- en: '![Sample directory structure](../Images/b97c412825f946c5ba10ec251357ac38.png)Sample
+    Directory Structure'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![示例目录结构](../Images/b97c412825f946c5ba10ec251357ac38.png)示例目录结构'
+- en: 'A file is identified by its path through the file system, beginning from the
+    root node. For example, the `statusReport` file in the previous figure is described
+    by the following notation in the Solaris OS:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件通过其在文件系统中的路径来标识，从根节点开始。例如，在前面的图中，Solaris OS中的`statusReport`文件由以下表示：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'In Microsoft Windows, `statusReport` is described by the following notation:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Microsoft Windows中，`statusReport`由以下表示：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The character used to separate the directory names (also called the *delimiter*)
+    is specific to the file system: The Solaris OS uses the forward slash (`/`), and
+    Microsoft Windows uses the backslash slash (`\`).'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于分隔目录名称的字符（也称为*分隔符*）特定于文件系统：Solaris OS使用正斜杠（`/`），而Microsoft Windows使用反斜杠（`\`）。
+- en: Relative or Absolute?
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 相对还是绝对？
+- en: A path is either *relative* or *absolute*. An absolute path always contains
+    the root element and the complete directory list required to locate the file.
+    For example, `/home/sally/statusReport` is an absolute path. All of the information
+    needed to locate the file is contained in the path string.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 路径可以是*相对*的或*绝对*的。绝对路径始终包含根元素和完整的目录列表，以定位文件。例如，`/home/sally/statusReport`是一个绝对路径。定位文件所需的所有信息都包含在路径字符串中。
+- en: A relative path needs to be combined with another path in order to access a
+    file. For example, `joe/foo` is a relative path. Without more information, a program
+    cannot reliably locate the `joe/foo` directory in the file system.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相对路径需要与另一个路径结合才能访问文件。例如，`joe/foo`是一个相对路径。没有更多信息，程序无法可靠地定位文件系统中的`joe/foo`目录。
+- en: Symbolic Links
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 符号链接
+- en: File system objects are most typically directories or files. Everyone is familiar
+    with these objects. But some file systems also support the notion of symbolic
+    links. A symbolic link is also referred to as a *symlink* or a *soft link*.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 文件系统对象通常是目录或文件。每个人都熟悉这些对象。但是一些文件系统也支持符号链接的概念。符号链接也称为*symlink*或*soft link*。
+- en: A *symbolic link* is a special file that serves as a reference to another file.
+    For the most part, symbolic links are transparent to applications, and operations
+    on symbolic links are automatically redirected to the target of the link. (The
+    file or directory being pointed to is called the *target* of the link.) Exceptions
+    are when a symbolic link is deleted, or renamed in which case the link itself
+    is deleted, or renamed and not the target of the link.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*符号链接*是一个特殊文件，用作指向另一个文件的引用。在大多数情况下，符号链接对应用程序是透明的，对符号链接的操作会自动重定向到链接的目标。（被指向的文件或目录称为链接的*目标*。）例外情况是当符号链接被删除或重命名时，链接本身被删除或重命名，而不是链接的目标。'
+- en: In the following figure, `logFile` appears to be a regular file to the user,
+    but it is actually a symbolic link to `dir/logs/HomeLogFile`. `HomeLogFile` is
+    the target of the link.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在下图中，对用户来说，`logFile`看起来像是一个常规文件，但实际上它是指向`dir/logs/HomeLogFile`的符号链接。`HomeLogFile`是链接的目标。
+- en: '![Sample symbolic link](../Images/7c21521b1b85e28bad8729d6d54af38a.png)Example
+    of a Symbolic Link.'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![示例符号链接](../Images/7c21521b1b85e28bad8729d6d54af38a.png)符号链接示例。'
+- en: A symbolic link is usually transparent to the user. Reading or writing to a
+    symbolic link is the same as reading or writing to any other file or directory.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对用户来说，符号链接通常是透明的。读取或写入符号链接与读取或写入任何其他文件或目录相同。
+- en: The phrase *resolving a link* means to substitute the actual location in the
+    file system for the symbolic link. In the example, resolving `logFile` yields
+    `dir/logs/HomeLogFile`.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*解析链接*这个短语意味着用文件系统中的实际位置替换符号链接。在这个例子中，解析`logFile`会得到`dir/logs/HomeLogFile`。'
+- en: 'In real-world scenarios, most file systems make liberal use of symbolic links.
+    Occasionally, a carelessly created symbolic link can cause a circular reference.
+    A circular reference occurs when the target of a link points back to the original
+    link. The circular reference might be indirect: directory `a` points to directory
+    `b`, which points to directory `c`, which contains a subdirectory pointing back
+    to directory `a`. Circular references can cause havoc when a program is recursively
+    walking a directory structure. However, this scenario has been accounted for and
+    will not cause your program to loop infinitely.'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在现实场景中，大多数文件系统广泛使用符号链接。偶尔，粗心创建的符号链接可能会导致循环引用。循环引用发生在链接的目标指向原始链接的情况下。循环引用可能是间接的：目录`a`指向目录`b`，后者指向目录`c`，后者包含一个子目录指向目录`a`。当程序递归遍历目录结构时，循环引用可能会造成混乱。然而，这种情况已经考虑到，不会导致程序无限循环。
+- en: The next page discusses the heart of file I/O support in the Java programming
+    language, the `Path` class.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一页将讨论Java编程语言中文件I/O支持的核心，即`Path`类。

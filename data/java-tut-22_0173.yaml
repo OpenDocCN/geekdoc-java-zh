@@ -1,0 +1,155 @@
+- en: Data Streams
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 数据流
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/datastreams.html](https://docs.oracle.com/javase/tutorial/essential/io/datastreams.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/datastreams.html](https://docs.oracle.com/javase/tutorial/essential/io/datastreams.html)
+- en: Data streams support binary I/O of primitive data type values (`boolean`, `char`,
+    `byte`, `short`, `int`, `long`, `float`, and `double`) as well as String values.
+    All data streams implement either the [`DataInput`](https://docs.oracle.com/javase/8/docs/api/java/io/DataInput.html)
+    interface or the [`DataOutput`](https://docs.oracle.com/javase/8/docs/api/java/io/DataOutput.html)
+    interface. This section focuses on the most widely-used implementations of these
+    interfaces, [`DataInputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/DataInputStream.html)
+    and [`DataOutputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/DataOutputStream.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 数据流支持原始数据类型值（`boolean`、`char`、`byte`、`short`、`int`、`long`、`float`和`double`）以及`String`值的二进制I/O。所有数据流都实现了[`DataInput`](https://docs.oracle.com/javase/8/docs/api/java/io/DataInput.html)接口或[`DataOutput`](https://docs.oracle.com/javase/8/docs/api/java/io/DataOutput.html)接口。本节重点介绍了这些接口的最常用实现，[`DataInputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/DataInputStream.html)和[`DataOutputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/DataOutputStream.html)。
+- en: 'The [`DataStreams`](examples/DataStreams.java) example demonstrates data streams
+    by writing out a set of data records, and then reading them in again. Each record
+    consists of three values related to an item on an invoice, as shown in the following
+    table:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`DataStreams`](examples/DataStreams.java)示例演示了通过写出一组数据记录，然后再次读取它们来演示数据流。每个记录包含与发票上的项目相关的三个值，如下表所示：'
+- en: '| Order in record | Data type | Data description | Output Method | Input Method
+    | Sample Value |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| 记录中的顺序 | 数据类型 | 数据描述 | 输出方法 | 输入方法 | 示例值 |'
+- en: '| 1 | `double` | Item price | `DataOutputStream.writeDouble` | `DataInputStream.readDouble`
+    | `19.99` |'
+  id: totrans-5
+  prefs: []
+  type: TYPE_TB
+  zh: '| 1 | `double` | 项目价格 | `DataOutputStream.writeDouble` | `DataInputStream.readDouble`
+    | `19.99` |'
+- en: '| 2 | `int` | Unit count | `DataOutputStream.writeInt` | `DataInputStream.readInt`
+    | `12` |'
+  id: totrans-6
+  prefs: []
+  type: TYPE_TB
+  zh: '| 2 | `int` | 单位数量 | `DataOutputStream.writeInt` | `DataInputStream.readInt`
+    | `12` |'
+- en: '| 3 | `String` | Item description | `DataOutputStream.writeUTF` | `DataInputStream.readUTF`
+    | `"Java T-Shirt"` |'
+  id: totrans-7
+  prefs: []
+  type: TYPE_TB
+  zh: '| 3 | `String` | 项目描述 | `DataOutputStream.writeUTF` | `DataInputStream.readUTF`
+    | `"Java T-Shirt"` |'
+- en: 'Let''s examine crucial code in `DataStreams`. First, the program defines some
+    constants containing the name of the data file and the data that will be written
+    to it:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们来看看`DataStreams`中关键的代码。首先，程序定义了一些包含数据文件名称和将写入其中的数据的常量：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Then `DataStreams` opens an output stream. Since a `DataOutputStream` can only
+    be created as a wrapper for an existing byte stream object, `DataStreams` provides
+    a buffered file output byte stream.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后`DataStreams`打开一个输出流。由于`DataOutputStream`只能作为现有字节流对象的包装器创建，`DataStreams`提供了一个带缓冲的文件输出字节流。
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '`DataStreams` writes out the records and closes the output stream.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DataStreams`写出记录并关闭输出流。'
+- en: '[PRE2]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The `writeUTF` method writes out `String` values in a modified form of UTF-8\.
+    This is a variable-width character encoding that only needs a single byte for
+    common Western characters.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`writeUTF`方法以修改后的UTF-8形式写出`String`值。这是一种只需要一个字节来表示常见西方字符的可变宽度字符编码。'
+- en: Now `DataStreams` reads the data back in again. First it must provide an input
+    stream, and variables to hold the input data. Like `DataOutputStream`, `DataInputStream`
+    must be constructed as a wrapper for a byte stream.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在`DataStreams`再次读取数据。首先，它必须提供一个输入流和变量来保存输入数据。与`DataOutputStream`一样，`DataInputStream`必须作为字节流的包装器构建。
+- en: '[PRE3]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Now `DataStreams` can read each record in the stream, reporting on the data
+    it encounters.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在`DataStreams`可以读取流中的每个记录，并报告遇到的数据。
+- en: '[PRE4]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Notice that `DataStreams` detects an end-of-file condition by catching [`EOFException`](https://docs.oracle.com/javase/8/docs/api/java/io/EOFException.html),
+    instead of testing for an invalid return value. All implementations of `DataInput`
+    methods use `EOFException` instead of return values.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`DataStreams`通过捕获[`EOFException`](https://docs.oracle.com/javase/8/docs/api/java/io/EOFException.html)来检测文件结束条件，而不是测试无效的返回值。所有`DataInput`方法的实现都使用`EOFException`而不是返回值。
+- en: 'Also notice that each specialized `write` in `DataStreams` is exactly matched
+    by the corresponding specialized `read`. It is up to the programmer to make sure
+    that output types and input types are matched in this way: The input stream consists
+    of simple binary data, with nothing to indicate the type of individual values,
+    or where they begin in the stream.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 还要注意，`DataStreams` 中的每个专门的 `write` 都与相应的专门的 `read` 完全匹配。程序员需要确保输出类型和输入类型以这种方式匹配：输入流由简单的二进制数据组成，没有任何内容指示个别值的类型，或者它们在流中的位置。
+- en: '`DataStreams` uses one very bad programming technique: it uses floating point
+    numbers to represent monetary values. In general, floating point is bad for precise
+    values. It''s particularly bad for decimal fractions, because common values (such
+    as `0.1`) do not have a binary representation.'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DataStreams` 使用了一种非常糟糕的编程技术：它使用浮点数来表示货币值。一般来说，浮点数对于精确值是不好的。对于十进制小数来说尤其糟糕，因为常见的值（比如`0.1`）没有二进制表示。'
+- en: The correct type to use for currency values is [`java.math.BigDecimal`](https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html).
+    Unfortunately, `BigDecimal` is an object type, so it won't work with data streams.
+    However, `BigDecimal` *will* work with object streams, which are covered in the
+    next section.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于货币值的正确类型是[`java.math.BigDecimal`](https://docs.oracle.com/javase/8/docs/api/java/math/BigDecimal.html)。不幸的是，`BigDecimal`是一个对象类型，所以它不能与数据流一起使用。然而，`BigDecimal`
+    *可以* 与对象流一起使用，这将在下一节中介绍。

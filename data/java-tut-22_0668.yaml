@@ -1,0 +1,80 @@
+- en: Printing the Contents of a User Interface
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 打印用户界面的内容
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/printing/gui.html](https://docs.oracle.com/javase/tutorial/2d/printing/gui.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/printing/gui.html](https://docs.oracle.com/javase/tutorial/2d/printing/gui.html)
+- en: 'Another common printing task is to print the contents of a window or a frame,
+    either in whole, or in part. The window may contain the following components:
+    toolbars, buttons sliders, text labels, scrollable text areas, images, and other
+    graphical content. All of these components are printed using the following methods
+    of the Java 2D printing API:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个常见的打印任务是打印窗口或框架的内容，可以是全部内容，也可以是部分内容。窗口可能包含以下组件：工具栏、按钮、滑块、文本标签、可滚动文本区域、图像和其他图形内容。所有这些组件都是使用Java
+    2D打印API的以下方法打印的：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The following figure represents a simple user interface.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下图表示一个简单的用户界面。
+- en: '![Printing 12 lines in the window ](../Images/15ee995a702d3a2d540080fc298267b8.png)'
+  id: totrans-5
+  prefs: []
+  type: TYPE_IMG
+  zh: '![在窗口中打印12行](../Images/15ee995a702d3a2d540080fc298267b8.png)'
+- en: The code to create this UI is located in the sample program [`PrintUIWindow.java`](examples/PrintUIWindow.java).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建此用户界面的代码位于示例程序[`PrintUIWindow.java`](examples/PrintUIWindow.java)中。
+- en: 'To print this window, modify the code in the earlier examples which printed
+    text or images. The resulting code should appear as follows:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要打印此窗口，请修改之前打印文本或图像的示例中的代码。结果代码应如下所示：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The call to the `printAll` method is the only difference between
+    this example and examples to print text or image. The `print(Graphics g)` method
+    mirrors the `java.awt.Component.paint(Graphics g)` method used for on-screen rendering.
+    Use the `print()` method rather than the `paint()` method as the `Components`
+    class may have overridden the `print()` method to handle the printing case differently.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** `printAll`方法的调用是此示例与打印文本或图像示例之间的唯一区别。`print(Graphics g)`方法反映了用于屏幕渲染的`java.awt.Component.paint(Graphics
+    g)`方法。使用`print()`方法而不是`paint()`方法，因为`Components`类可能已经重写了`print()`方法以不同方式处理打印情况。'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The `printAll(Graphics g)`method prints the component and all its subcomponents.
+    This method is usually used to print object such as a complete window, rather
+    than a single component.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`printAll(Graphics g)`方法打印组件及其所有子组件。通常使用此方法打印对象，例如完整窗口，而不是单个组件。'

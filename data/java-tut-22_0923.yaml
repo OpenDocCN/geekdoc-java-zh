@@ -1,0 +1,282 @@
+- en: Networking Basics
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 网络基础知识
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/overview/networking.html](https://docs.oracle.com/javase/tutorial/networking/overview/networking.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/overview/networking.html](https://docs.oracle.com/javase/tutorial/networking/overview/networking.html)
+- en: 'Computers running on the Internet communicate to each other using either the
+    Transmission Control Protocol (TCP) or the User Datagram Protocol (UDP), as this
+    diagram illustrates:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在互联网上运行的计算机使用传输控制协议（TCP）或用户数据报协议（UDP）相互通信，如此图所示：
+- en: '![Example of network communication.](../Images/bb33da41426cb595596f499bec40d822.png)'
+  id: totrans-3
+  prefs: []
+  type: TYPE_IMG
+  zh: '![网络通信示例。](../Images/bb33da41426cb595596f499bec40d822.png)'
+- en: When you write Java programs that communicate over the network, you are programming
+    at the application layer. Typically, you don't need to concern yourself with the
+    TCP and UDP layers. Instead, you can use the classes in the `java.net` package.
+    These classes provide system-independent network communication. However, to decide
+    which Java classes your programs should use, you do need to understand how TCP
+    and UDP differ.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你编写通过网络进行通信的 Java 程序时，你是在应用层编程。通常情况下，你不需要关心 TCP 和 UDP 层。相反，你可以使用 `java.net`
+    包中的类。这些类提供了系统独立的网络通信。然而，为了决定你的程序应该使用哪些 Java 类，你需要了解 TCP 和 UDP 的区别。
+- en: TCP
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: TCP
+- en: When two applications want to communicate to each other reliably, they establish
+    a connection and send data back and forth over that connection. This is analogous
+    to making a telephone call. If you want to speak to Aunt Beatrice in Kentucky,
+    a connection is established when you dial her phone number and she answers. You
+    send data back and forth over the connection by speaking to one another over the
+    phone lines. Like the phone company, TCP guarantees that data sent from one end
+    of the connection actually gets to the other end and in the same order it was
+    sent. Otherwise, an error is reported.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当两个应用程序想要可靠地相互通信时，它们建立连接并在该连接上来回发送数据。这类似于打电话。如果你想和肯塔基州的比阿特丽斯阿姨通话，当你拨打她的电话号码并她接听时，就建立了连接。你通过电话线互相交流数据。像电话公司一样，TCP
+    保证从连接的一端发送的数据实际上到达另一端，并且按照发送顺序。否则，会报告错误。
+- en: TCP provides a point-to-point channel for applications that require reliable
+    communications. The Hypertext Transfer Protocol (HTTP), File Transfer Protocol
+    (FTP), and Telnet are all examples of applications that require a reliable communication
+    channel. The order in which the data is sent and received over the network is
+    critical to the success of these applications. When HTTP is used to read from
+    a URL, the data must be received in the order in which it was sent. Otherwise,
+    you end up with a jumbled HTML file, a corrupt zip file, or some other invalid
+    information.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: TCP为需要可靠通信的应用程序提供了一对一的通道。超文本传输协议（HTTP）、文件传输协议（FTP）和 Telnet 都是需要可靠通信通道的应用程序的示例。在网络上传输和接收数据的顺序对于这些应用程序的成功至关重要。当使用
+    HTTP 从 URL 读取数据时，数据必须按照发送顺序接收。否则，你会得到一个混乱的 HTML 文件、一个损坏的 zip 文件或其他无效信息。
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Definition:**'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义：**'
+- en: '*TCP* (*Transmission Control Protocol*) is a connection-based protocol that
+    provides a reliable flow of data between two computers.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*TCP*（传输控制协议）是一种基于连接的协议，它在两台计算机之间提供可靠的数据流。'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: UDP
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: UDP
+- en: 'The UDP protocol provides for communication that is not guaranteed between
+    two applications on the network. UDP is not connection-based like TCP. Rather,
+    it sends independent packets of data, called *datagrams*, from one application
+    to another. Sending datagrams is much like sending a letter through the postal
+    service: The order of delivery is not important and is not guaranteed, and each
+    message is independent of any other.'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: UDP 协议提供了两个应用程序之间不保证通信的功能。UDP 不像 TCP 那样基于连接。相反，它从一个应用程序发送独立的数据包（称为数据报）到另一个应用程序。发送数据报就像通过邮政服务发送信件一样：交付顺序不重要，也不保证，每个消息都是独立的。
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Definition:**'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义：**'
+- en: '*UDP* (*User Datagram Protocol*) is a protocol that sends independent packets
+    of data, called datagrams, from one computer to another with no guarantees about
+    arrival. UDP is not connection-based like TCP.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*UDP*（用户数据报协议）是一种协议，它发送独立的数据包（称为数据报）从一台计算机到另一台计算机，不保证到达。UDP 不像 TCP 那样基于连接。'
+- en: '* * *'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: For many applications, the guarantee of reliability is critical to the success
+    of the transfer of information from one end of the connection to the other. However,
+    other forms of communication don't require such strict standards. In fact, they
+    may be slowed down by the extra overhead or the reliable connection may invalidate
+    the service altogether.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于许多应用程序，可靠性的保证对于信息从连接的一端传输到另一端的成功至关重要。然而，其他形式的通信并不需要如此严格的标准。事实上，它们可能会因为额外的开销或可靠连接可能使服务无效而变慢。
+- en: Consider, for example, a clock server that sends the current time to its client
+    when requested to do so. If the client misses a packet, it doesn't really make
+    sense to resend it because the time will be incorrect when the client receives
+    it on the second try. If the client makes two requests and receives packets from
+    the server out of order, it doesn't really matter because the client can figure
+    out that the packets are out of order and make another request. The reliability
+    of TCP is unnecessary in this instance because it causes performance degradation
+    and may hinder the usefulness of the service.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 举个例子，考虑一个时钟服务器，当被请求时向其客户端发送当前时间。如果客户端错过了一个数据包，重新发送它并没有意义，因为当客户端第二次接收到时，时间将不正确。如果客户端发出两个请求并且接收到服务器发送的数据包顺序不对，也没关系，因为客户端可以发现数据包顺序不对并发出另一个请求。在这种情况下，TCP的可靠性是不必要的，因为它会导致性能下降，可能会影响服务的实用性。
+- en: Another example of a service that doesn't need the guarantee of a reliable channel
+    is the ping command. The purpose of the ping command is to test the communication
+    between two programs over the network. In fact, ping needs to know about dropped
+    or out-of-order packets to determine how good or bad the connection is. A reliable
+    channel would invalidate this service altogether.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个不需要可靠通道保证的服务的例子是ping命令。ping命令的目的是测试网络上两个程序之间的通信。事实上，ping需要知道丢失或顺序错乱的数据包，以确定连接的好坏。可靠通道会使这项服务完全无效。
+- en: 'The UDP protocol provides for communication that is not guaranteed between
+    two applications on the network. UDP is not connection-based like TCP. Rather,
+    it sends independent packets of data from one application to another. Sending
+    datagrams is much like sending a letter through the mail service: The order of
+    delivery is not important and is not guaranteed, and each message is independent
+    of any others.'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: UDP协议提供了在网络上两个应用程序之间不保证通信的功能。UDP不像TCP那样基于连接。相反，它从一个应用程序发送独立的数据包到另一个应用程序。发送数据报就像通过邮件服务发送信件一样：交付顺序不重要，也不被保证，每个消息都独立于其他消息。
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: Many firewalls and routers have been configured not to allow UDP packets. If
+    you're having trouble connecting to a service outside your firewall, or if clients
+    are having trouble connecting to your service, ask your system administrator if
+    UDP is permitted.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多防火墙和路由器已经配置为不允许UDP数据包。如果您在防火墙外部连接到服务时遇到问题，或者客户端无法连接到您的服务，请询问系统管理员是否允许UDP。
+- en: '* * *'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Understanding Ports
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 理解端口
+- en: Generally speaking, a computer has a single physical connection to the network.
+    All data destined for a particular computer arrives through that connection. However,
+    the data may be intended for different applications running on the computer. So
+    how does the computer know to which application to forward the data? Through the
+    use of *ports*.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一般来说，计算机与网络之间有一个物理连接。所有发送给特定计算机的数据都通过这个连接到达。然而，这些数据可能是针对计算机上运行的不同应用程序的。那么计算机如何知道将数据转发给哪个应用程序呢？通过*端口*。
+- en: Data transmitted over the Internet is accompanied by addressing information
+    that identifies the computer and the port for which it is destined. The computer
+    is identified by its 32-bit IP address, which IP uses to deliver data to the right
+    computer on the network. Ports are identified by a 16-bit number, which TCP and
+    UDP use to deliver the data to the right application.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过互联网传输的数据附带有标识计算机和目标端口的寻址信息。计算机通过其32位IP地址进行标识，IP使用它将数据传递到网络上的正确计算机。端口由一个16位数字进行标识，TCP和UDP使用它将数据传递给正确的应用程序。
+- en: 'In connection-based communication such as TCP, a server application binds a
+    socket to a specific port number. This has the effect of registering the server
+    with the system to receive all data destined for that port. A client can then
+    rendezvous with the server at the server''s port, as illustrated here:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在基于连接的通信（如TCP）中，服务器应用程序将套接字绑定到特定端口号。这样做的效果是向系统注册服务器以接收所有发送到该端口的数据。然后客户端可以在服务器的端口处与服务器会合，如下图所示：
+- en: '![A client communicating to a server through its port](../Images/6ab25d2b7eafe0cc79f9dc574ccbf326.png)'
+  id: totrans-30
+  prefs: []
+  type: TYPE_IMG
+  zh: '![客户端通过其端口与服务器通信](../Images/6ab25d2b7eafe0cc79f9dc574ccbf326.png)'
+- en: '* * *'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Definition:**'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**定义：**'
+- en: The TCP and UDP protocols use ports to map incoming data to a particular process
+    running on a computer.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: TCP和UDP协议使用端口将传入的数据映射到计算机上运行的特定进程。
+- en: '* * *'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'In datagram-based communication such as UDP, the datagram packet contains the
+    port number of its destination and UDP routes the packet to the appropriate application,
+    as illustrated in this figure:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在基于数据报的通信（如UDP）中，数据报包含其目的地的端口号，UDP将数据包路由到适当的应用程序，如下图所示：
+- en: '![Routing the packet to the appropriate application.](../Images/27acaaa3c3c60dbb566f6d3c0d5f9d2c.png)'
+  id: totrans-36
+  prefs: []
+  type: TYPE_IMG
+  zh: '![将数据包路由到适当的应用程序。](../Images/27acaaa3c3c60dbb566f6d3c0d5f9d2c.png)'
+- en: Port numbers range from 0 to 65,535 because ports are represented by 16-bit
+    numbers. The port numbers ranging from 0 - 1023 are restricted; they are reserved
+    for use by well-known services such as HTTP and FTP and other system services.
+    These ports are called *well-known ports*. Your applications should not attempt
+    to bind to them.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 端口号范围从0到65,535，因为端口由16位数字表示。端口号从0到1023是受限制的；它们保留供HTTP和FTP等众所周知的服务以及其他系统服务使用。这些端口被称为*众所周知的端口*。您的应用程序不应尝试绑定到它们。
+- en: Networking Classes in the JDK
+  id: totrans-38
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: JDK中的网络类
+- en: Through the classes in `java.net`, Java programs can use TCP or UDP to communicate
+    over the Internet. The `URL`, `URLConnection`, `Socket`, and `ServerSocket` classes
+    all use TCP to communicate over the network. The `DatagramPacket`, `DatagramSocket`,
+    and `MulticastSocket` classes are for use with UDP.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过`java.net`中的类，Java程序可以使用TCP或UDP在互联网上进行通信。`URL`、`URLConnection`、`Socket`和`ServerSocket`类都使用TCP在网络上进行通信。`DatagramPacket`、`DatagramSocket`和`MulticastSocket`类用于UDP。

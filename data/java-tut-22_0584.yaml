@@ -1,0 +1,250 @@
+- en: BCP 47 Extensions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: BCP 47扩展
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/extensions.html](https://docs.oracle.com/javase/tutorial/i18n/locale/extensions.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/locale/extensions.html](https://docs.oracle.com/javase/tutorial/i18n/locale/extensions.html)
+- en: 'The Java SE 7 release conforms to the IETF BCP 47 standard, which supports
+    adding extensions to a `Locale`. Any single character can be used to denote an
+    extension, but there are two predefined extension codes: `''u''` specifies a *Unicode
+    locale extension*, and `''x''` specifies a *private use extension*.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java SE 7版本符合IETF BCP 47标准，支持向`Locale`添加扩展。任何单个字符都可以用于表示扩展，但有两个预定义的扩展代码：`'u'`指定*Unicode语言环境扩展*，`'x'`指定*私有使用扩展*。
+- en: Unicode locale extensions are defined by the Unicode [Common Locale Data Repository
+    (CLDR)](http://cldr.unicode.org/) project. They are used to specify information
+    that is non-language-specific such as calendars or currency. A private use extension
+    may be used to specify any other information, such as platform (for example, Windows,
+    UNIX, or Linux), or release information (for example, 6u23 or JDK 7).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Unicode语言环境扩展由Unicode[通用语言环境数据存储库（CLDR）](http://cldr.unicode.org/)项目定义。它们用于指定非语言特定的信息，例如日历或货币。私有使用扩展可用于指定任何其他信息，例如平台（例如Windows、UNIX或Linux）或发布信息（例如6u23或JDK
+    7）。
+- en: 'An extension is specified as a key/value pair, where the key is a single character
+    (typically `''u''` or `''x''`). A well-formed value has the following format:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 扩展被指定为键/值对，其中键是单个字符（通常为`'u'`或`'x'`）。格式良好的值具有以下格式：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'In this format:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这种格式中：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Note that a single-character value is allowed for the private use extension.
+    However, there is a 2-character minimum for values in the Unicode locale extension.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，私有使用扩展允许单个字符值。但是，Unicode语言环境扩展中的值至少需要2个字符。
+- en: Extension strings are case-insensitive, but the `Locale` class maps all keys
+    and values to lowercase.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 扩展字符串不区分大小写，但`Locale`类将所有键和值映射为小写。
+- en: The [`getExtensionKeys()`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getExtensionKeys--)
+    method returns the set of extension keys, if any, for a `Locale`. The [`getExtension(key)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getExtension-char-)
+    method returns the value string for the specified key, if any.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`getExtensionKeys()`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getExtensionKeys--)方法返回`Locale`的（如果有的话）扩展键集。[`getExtension(key)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getExtension-char-)方法返回指定键的值字符串（如果有）。'
+- en: Unicode Locale Extensions
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Unicode语言环境扩展
+- en: 'As previously mentioned, a Unicode locale extension is specified by the `''u''`
+    key code or the `UNICODE_LOCALE_EXTENSION` constant. The value itself is also
+    specified by a key/type pair. Legal values are defined in the [Key/Type Definitions](http://www.unicode.org/reports/tr35/#Key_Type_Definitions)
+    table on the [Unicode](http://www.unicode.org) website. A key code is specified
+    by two alphabetic characters. The following table lists the Unicode locale extension
+    keys:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，Unicode语言环境扩展由`'u'`键代码或`UNICODE_LOCALE_EXTENSION`常量指定。值本身也由键/类型对指定。合法值在[键/类型定义](http://www.unicode.org/reports/tr35/#Key_Type_Definitions)表中在[Unicode](http://www.unicode.org)网站上定义。键代码由两个字母字符指定。以下表列出了Unicode语言环境扩展键：
+- en: '| Key Code | Description |'
+  id: totrans-13
+  prefs: []
+  type: TYPE_TB
+  zh: '| 键代码 | 描述 |'
+- en: '| ca | calendar algorithm |'
+  id: totrans-14
+  prefs: []
+  type: TYPE_TB
+  zh: '| ca | 日历算法 |'
+- en: '| co | collation type |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| co | 排序类型 |'
+- en: '| ka | collation parameters |'
+  id: totrans-16
+  prefs: []
+  type: TYPE_TB
+  zh: '| ka | 排序参数 |'
+- en: '| cu | currency type |'
+  id: totrans-17
+  prefs: []
+  type: TYPE_TB
+  zh: '| cu | 货币类型 |'
+- en: '| nu | number type |'
+  id: totrans-18
+  prefs: []
+  type: TYPE_TB
+  zh: '| nu | 数字类型 |'
+- en: '| va | common variant type |'
+  id: totrans-19
+  prefs: []
+  type: TYPE_TB
+  zh: '| va | 通用变体类型 |'
+- en: '* * *'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: Specifying a Unicode locale extension, such as number format, does not guarantee
+    that the locale services for the underlying platform will honor that request.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 指定Unicode语言环境扩展，例如数字格式，并不保证底层平台的语言环境服务会遵守该请求。
+- en: '* * *'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The following table shows some examples of key/type pairs for a Unicode locale
+    extension.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格显示了Unicode语言环境扩展的一些键/类型对示例。
+- en: '| Key/Type pair | Description |'
+  id: totrans-25
+  prefs: []
+  type: TYPE_TB
+  zh: '| 键/类型对 | 描述 |'
+- en: '| ca-buddhist | Thai Buddhist calendar |'
+  id: totrans-26
+  prefs: []
+  type: TYPE_TB
+  zh: '| ca-buddhist | 泰国佛教日历 |'
+- en: '| co-pinyin | Pinyin ordering for Latin |'
+  id: totrans-27
+  prefs: []
+  type: TYPE_TB
+  zh: '| co-pinyin | 拉丁文拼音排序 |'
+- en: '| cu-usd | U.S. dollars |'
+  id: totrans-28
+  prefs: []
+  type: TYPE_TB
+  zh: '| cu-usd | 美元 |'
+- en: '| nu-jpanfin | Japanese financial numerals |'
+  id: totrans-29
+  prefs: []
+  type: TYPE_TB
+  zh: '| nu-jpanfin | 日本金融数字 |'
+- en: '| tz-aldav | Europe/Andorra |'
+  id: totrans-30
+  prefs: []
+  type: TYPE_TB
+  zh: '| tz-aldav | Europe/Andorra |'
+- en: The following string represents the German language locale for the country of
+    Germany using a phonebook style of ordering for the Linux platform. This example
+    also contains an attribute named `"email"`.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下字符串代表德国语言区域设置，使用Linux平台的电话簿样式排序。此示例还包含一个名为`"email"`的属性。
+- en: '[PRE2]'
+  id: totrans-32
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The following `Locale` methods can be used to access information about the Unicode
+    locale extensions. These methods are described using the previous German locale
+    example.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 可以使用以下`Locale`方法访问有关Unicode区域扩展的信息。这些方法使用前面的德语区域示例进行描述。
+- en: "[`getUnicodeLocaleKeys()`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getUnicodeLocaleKeys--)\
+    \ \x96 Returns the Unicode locale key codes or an empty set if the locale has\
+    \ none. For the German example, this would return a set containing the single\
+    \ string `\"co\"`."
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[`getUnicodeLocaleKeys()`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getUnicodeLocaleKeys--)\
+    \ \x96 返回Unicode区域键代码或空集（如果区域设置没有）。对德语示例，这将返回一个包含单个字符串`\"co\"`的集合。"
+- en: "[`getUnicodeLocaleType(String)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getUnicodeLocaleType-java.lang.String-)\
+    \ \x96 Returns the Unicode locale type associated with the Unicode locale key\
+    \ code. Invoking `getUnicodeLocaleType(\"co\")` for the German example would return\
+    \ the string `\"phonebk\"`."
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[`getUnicodeLocaleType(String)`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getUnicodeLocaleType-java.lang.String-)\
+    \ \x96 返回与Unicode区域键代码关联的Unicode区域类型。对德语示例调用`getUnicodeLocaleType(\"co\")`将返回字符串`\"\
+    phonebk\"`。"
+- en: "[`getUnicodeLocaleAttributes()`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getUnicodeLocaleAttributes--)\
+    \ \x96 Returns the set of Unicode locale attributes associated with this locale,\
+    \ if any. In the German example, this would return a set containing the single\
+    \ string `\"email\"`."
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "[`getUnicodeLocaleAttributes()`](https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#getUnicodeLocaleAttributes--)\
+    \ \x96 返回与此区域设置关联的Unicode区域设置属性集（如果有的话）。在德语示例中，这将返回一个包含单个字符串`\"email\"`的集合。"
+- en: Private Use Extensions
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 私有使用扩展
+- en: The private use extension, specified by the `'x'` key code or the `PRIVATE_USE_EXTENSION`
+    constant, can be anything, as long as the value is well formed.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 私有使用扩展，由`'x'`键代码或`PRIVATE_USE_EXTENSION`常量指定，可以是任何值，只要值格式正确即可。
+- en: 'The following are examples of possible private use extensions:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是可能的私有使用扩展示例：
+- en: '[PRE3]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'

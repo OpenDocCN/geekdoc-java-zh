@@ -1,0 +1,112 @@
+- en: Constructing Complex Shapes from Geometry Primitives
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 从几何原语构建复杂形状
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/advanced/complexshapes.html](https://docs.oracle.com/javase/tutorial/2d/advanced/complexshapes.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/advanced/complexshapes.html](https://docs.oracle.com/javase/tutorial/2d/advanced/complexshapes.html)
+- en: Constructive area geometry (CAG) is the process of creating new geometric shapes
+    by performing boolean operations on existing ones. In the Java 2D API the [`Area`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/Area.html)
+    class implements the [`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)
+    interface and supports the following boolean operations.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 构造区域几何（CAG）是通过对现有几何形状执行布尔运算来创建新几何形状的过程。在Java 2D API中，[`Area`](https://docs.oracle.com/javase/8/docs/api/java/awt/geom/Area.html)
+    类实现了 [`Shape`](https://docs.oracle.com/javase/8/docs/api/java/awt/Shape.html)
+    接口，并支持以下布尔运算。
+- en: '| ![Venn diagram showing Union](../Images/4e75256136509d13f578baa900242e32.png)
+    | Union | ![Venn diagram showing Subtraction](../Images/5ffb2a95b523f30f6da456896a9673be.png)
+    | Subtraction |'
+  id: totrans-3
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![范图显示并集](../Images/4e75256136509d13f578baa900242e32.png) | 并集 | ![范图显示减法](../Images/5ffb2a95b523f30f6da456896a9673be.png)
+    | 减法 |'
+- en: '| ![Venn diagram showing Intersection](../Images/2c237bc5eaa2f2af4a3e028fe18a0424.png)
+    | Intersection | ![Venn diagram showing Exclusive-or operation](../Images/36d24fe543c671024e323c5e599530ca.png)
+    | Exclusive-or (`XOR`) |'
+  id: totrans-4
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![范图显示交集](../Images/2c237bc5eaa2f2af4a3e028fe18a0424.png) | 交集 | ![范图显示异或操作](../Images/36d24fe543c671024e323c5e599530ca.png)
+    | 异或 (`XOR`) |'
+- en: 'Example: Areas'
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 例子：区域
+- en: In this example `Area` objects construct a pear shape from several ellipses.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，`Area`对象从几个椭圆构建了一个梨形。
+- en: <applet code="Pear" archive="examples/lib/PearApplet.jar" width="150" height="200"
+    alt="applet constructs pear shape"><param name="permissions" value="sandbox"></applet>
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="Pear" archive="examples/lib/PearApplet.jar" width="150" height="200"
+    alt="小程序构建梨形"><param name="permissions" value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果你看不到小程序运行，你需要至少安装 [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    版本。'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[``Pear.java``](examples/Pear.java) contains the complete code for this applet.'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[``Pear.java``](examples/Pear.java) 包含了这个小程序的完整代码。'
+- en: The leaves are each created by performing an intersection on two overlapping
+    circles.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每片叶子是通过在两个重叠圆上执行交集操作创建的。
+- en: '[PRE0]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Overlapping circles are also used to construct the stem through a subtraction
+    operation.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 重叠的圆也被用来通过减法操作构建茎。
+- en: '[PRE1]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The body of the pear is constructed by performing a union operation on a circle
+    and an oval.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 梨的主体是通过在一个圆和一个椭圆上执行并集操作构建的。
+- en: '[PRE2]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'

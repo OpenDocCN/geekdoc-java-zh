@@ -1,0 +1,554 @@
+- en: How to Print Text
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何打印文本
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/printtext.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/printtext.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/misc/printtext.html](https://docs.oracle.com/javase/tutorial/uiswing/misc/printtext.html)
+- en: The `JTextComponent` class provides support for printing text documents. The
+    `JTextComponent` API includes methods that allow you to implement both basic and
+    advanced printing tasks. Supported formats include HTML, RTF, and plain text.
+    For common printing tasks such as simply printing a text document, use the `print`
+    method directly. The `print` method has several forms with various argument sets.
+    This method prepares your text document, gets a corresponding `Printable` object,
+    and sends it to a printer.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JTextComponent` 类提供了打印文本文档的支持。`JTextComponent` API 包括允许您实现基本和高级打印任务的方法。支持的格式包括
+    HTML、RTF 和纯文本。对于简单打印文本文档等常见打印任务，直接使用 `print` 方法。`print` 方法有多种形式，带有不同的参数集。该方法准备您的文本文档，获取相应的
+    `Printable` 对象，并将其发送到打印机。'
+- en: If the default implementation of the `Printable` object does not meet your needs,
+    you can customize the printing layout by overriding the `getPrintable` method
+    to wrap the default `Printable` or even replace it altogether.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果默认的 `Printable` 对象实现不符合您的需求，您可以通过重写 `getPrintable` 方法来自定义打印布局，以包装默认的 `Printable`
+    或完全替换它。
+- en: The easiest way to print your text component is to call the `print` method without
+    parameters. See the code example below.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 打印文本组件的最简单方法是不带参数调用 `print` 方法。请参阅下面的代码���例。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: When you call the `print` method with no parameters, a print dialog is displayed,
+    and then your text component is printed interactively without a header or a footer.
+    The code example below shows the `print` method signature with the complete set
+    of arguments.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您不带参数调用 `print` 方法时，将显示一个打印对话框，然后您的文本组件将交互式打印，没有页眉或页脚。下面的代码示例显示了带有完整参数集的 `print`
+    方法签名。
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: When you call the `print` method with all arguments, you explicitly choose printing
+    features such as header and footer text, printing attributes, a destination print
+    service, and also whether to show a print dialog or not, and whether to print
+    interactively or non-interactively. To decide which parameters suit your needs
+    best, see the description of available features below.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您使用所有参数调用 `print` 方法时，您可以显式选择打印功能，如页眉和页脚文本、打印属性、目标打印服务，以及是否显示打印对话框，以及是打印交互式还是非交互式。要决定哪些参数最适合您的需求，请参阅下面可用功能的描述。
+- en: 'The `JTextComponent` printing API provides the following features:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JTextComponent` 打印 API 提供以下功能：'
+- en: '[Printing Interactively or Non-interactively](#interactively)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[交互式或非交互式打印](#interactively)'
+- en: '[Displaying a Print Dialog](#dialog)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[显示打印对话框](#dialog)'
+- en: '[Adding a Header or a Footer (or Both) to a Printing Layout](#header)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[向打印布局添加页眉或页脚（或两者）](#header)'
+- en: '[Automatic Layout and Pagination](#layout)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[自动布局和分页](#layout)'
+- en: Printing Interactively or Non-interactively
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 交互式或非交互式打印
+- en: In interactive mode a progress dialog with an abort option is shown for the
+    duration of printing. Here is a sample of a progress dialog.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在交互模式下，将显示一个带有中止选项的进度对话框，用于打印过程。这里是一个进度对话框的示例。
+- en: '![A screenshot of a printing progress dialog](../Images/28c386f8935bde541a092ce34b15e34c.png)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_IMG
+  zh: '![打印进度对话框的屏幕截图](../Images/28c386f8935bde541a092ce34b15e34c.png)'
+- en: This dialog allows the user to keep track of printing progress. The progress
+    dialog is modal when the `print` method is called on the event dispatch thread
+    and non-modal otherwise. It is important that your document remain unchanged while
+    being printed, otherwise the printing behavior is undefined. The `print` method
+    ensures that your document will not be changed and disables the component for
+    the duration of printing.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该对话框允许用户跟踪打印进度。当在事件分派线程上调用 `print` 方法时，进度对话框是模态的，否则是非模态的。在打印过程中，确保您的文档保持不变很重要，否则打印行为是未定义的。`print`
+    方法确保您的文档不会被更改，并在打印期间禁用组件。
+- en: If you call the `print` method on the event dispatch thread in non-interactive
+    mode, then all events including repaints will be blocked. That is why printing
+    non-interactively on EDT is only recommended for applications with non-visible
+    GUI.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您在事件分派线程上以非交互模式调用 `print` 方法，则所有事件，包括重绘，都将被阻塞。这就是为什么只建议在具有不可见 GUI 的应用程序上在
+    EDT 上非交互地打印。
+- en: Print Dialog
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 打印对话框
+- en: 'You can display a standard print dialog which allows the user to do the following:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以显示一个标准的打印对话框，允许用户执行以下操作：
+- en: Select a printer
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 选择打印机
+- en: Specify number of copies
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 指定打印份数
+- en: Change printing attributes
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 更改打印属性
+- en: Cancel printing before it has been started
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 取消打印之前的启动
+- en: Start printing
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 开始打印
+- en: '![A screenshot of a printing dialog](../Images/0703b9859a695aec96693d04ca4c7133.png)'
+  id: totrans-26
+  prefs: []
+  type: TYPE_IMG
+  zh: '![打印对话框的屏幕截图](../Images/0703b9859a695aec96693d04ca4c7133.png)'
+- en: You may notice that the print dialog does not specify the total number of pages
+    in the printout. This is because the text printing implementation uses the `Printable`
+    API and the total number of pages is not known before printing time.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能会注意到打印对话框没有指定打印输出中的总页数。这是因为文本打印实现使用了`Printable` API，并且在打印时不知道总页数。
+- en: Adding a Header or a Footer (or Both) to a Printing Layout
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 向打印布局添加页眉或页脚（或两者）
+- en: Headers and footers are provided by [`MessageFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html)
+    parameters. These parameters allow the header and footer to be localized. Read
+    the documentation for the [`MessageFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html)
+    class as characters such as single quotes are special and need to be avoided.
+    Both headers and footers are centered. You can insert a page number by using `{0}`.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 头部和页脚由[`MessageFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html)参数提供。这些参数允许对头部和页脚进行本地化。阅读[`MessageFormat`](https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html)类的文档，因为像单引号这样的字符是特殊的，需要避免使用。头部和页脚都居中。您可以使用`{0}`插入页码。
+- en: '`MessageFormat footer = new MessageFormat("Page - {0}");`'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MessageFormat footer = new MessageFormat("第 - {0} 页");`'
+- en: Since the total number of pages in the output is not known before printing time,
+    there is no way to specify a numbering format like "Page 1 of 5".
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于在打印时不知道输出中的总页数，因此无法指定类似“第 1 页 / 共 5 页”这样的编号格式。
+- en: Automatic Layout and Pagination
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 自动布局和分页
+- en: With the use of the `JTextComponent` printing API you do not need to take care
+    of layout and pagination. Both layout and pagination are done automatically. The
+    document content is formatted to fit the page size and spreads across multiple
+    pages. You only need to specify an appropriate footer text format to the `print`
+    method if you want to insert a page number in the footer. As demonstrated earlier,
+    you can specify the page number in your footer by including `"{0}"` in the string
+    given to the `MessageFormat` footer parameter. In the printed output, {0} will
+    be replaced by the current page number.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`JTextComponent`打印API，您无需关心布局和分页。布局和分页都是自动完成的。文档内容会被格式化以适应页面大小，并跨多个页面展开。如果您想在页脚插入页码，只需为`print`方法指定适当的页脚文本格式。正如之前演示的，您可以通过在提供给`MessageFormat`页脚参数的字符串中包含`"{0}"`来指定页脚中的页码。在打印输出中，{0}将被当前页码替换。
+- en: Text Area Printing Example
+  id: totrans-34
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文本区域打印示例
+- en: Let us look at an example called `TextAreaPrintingDemo`. The main feature of
+    this demo is printing a text document either on the event dispatch thread or on
+    a background thread depending on the user's choice. This demo displays a text
+    area, allows to select several printing features, and prints the text area's content
+    according to the selected options. The entire code for this program can be found
+    in [`TextAreaPrintingDemo.java`](../examples/misc/TextAreaPrintingDemoProject/src/misc/TextAreaPrintingDemo.java).
+    This demo's rich GUI is built in the [NetBeans IDE GUI builder](http://netbeans.org/kb/docs/java/quickstart-gui.html).
+    Here is a picture of the `TextAreaPrintingDemo` application.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看一个名为`TextAreaPrintingDemo`的示例。此演示的主要特点是根据用户的选择在事件分发线程或后台线程上打印文本文档。此演示显示一个文本区域，允许选择几个打印功能，并根据所选选项打印文本区域的内容。此程序的完整代码可以在[`TextAreaPrintingDemo.java`](../examples/misc/TextAreaPrintingDemoProject/src/misc/TextAreaPrintingDemo.java)中找到。此演示的丰富GUI是使用[NetBeans
+    IDE GUI构建器](http://netbeans.org/kb/docs/java/quickstart-gui.html)构建的。这是`TextAreaPrintingDemo`应用程序的图片。
+- en: '![A screenshot of TextAreaPrintingDemo](../Images/db36c3bc2eb048e315da4052f7fe44b4.png)'
+  id: totrans-36
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TextAreaPrintingDemo的屏幕截图](../Images/db36c3bc2eb048e315da4052f7fe44b4.png)'
+- en: '* * *'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**尝试这个：**'
+- en: Click the Launch button to run TextAreaPrintingDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/misc/index.html#TextAreaPrintingDemo).[![Launches
+    the TextAreaPrintingDemo Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextAreaPrintingDemoProject/TextAreaPrintingDemo.jnlp)
+  id: totrans-39
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮，使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)来运行TextAreaPrintingDemo（[下载JDK
+    7或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/misc/index.html#TextAreaPrintingDemo)。[![启动TextAreaPrintingDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextAreaPrintingDemoProject/TextAreaPrintingDemo.jnlp)
+- en: Edit the text in the Header or Footer check boxes or both to provide a different
+    header or footer.
+  id: totrans-40
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在“页眉”或“页脚”复选框中编辑文本，以提供不同的页眉或页脚。
+- en: Clear the Show Progress Dialog check box if you want to print without displaying
+    a progress dialog, which means printing non-interactively. Note that you will
+    not be able to cancel printing once it has been started.
+  id: totrans-41
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 清除“显示进度对话框”复选框，如果您想要在不显示进度对话框的情况下打印，这意味着非交互式打印。请注意，一旦开始打印，您将无法取消打印。
+- en: Clear the Print in Background check box to select printing on the event dispatch
+    thread. Note that printing on EDT non-interactively will make your application
+    unresponsive — interaction with your application will be blocked for the duration
+    of the printing process.
+  id: totrans-42
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 清除“后台打印”复选框以选择在事件分发线程上打印。请注意，在EDT上非交互式打印将使您的应用程序无响应 —— 在打印过程中将阻塞与您的应用程序的交互。
+- en: Click the Print button to print the text area's content according to the selected
+    options.
+  id: totrans-43
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“打印”按钮，根据所选选项打印文本区域的内容。
+- en: Whenever a web-launched application tries to print, Java Web Start opens up
+    a security dialog asking the user for permission to print unless this permission
+    has already been granted in the system settings. To proceed with printing the
+    user has to accept the request.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当Web启动的应用程序尝试打印时，Java Web Start会打开一个安全对话框，询问用户是否允许打印，除非在系统设置中已经授予了此权限。要继续打印，用户必须接受请求。
+- en: An action listener is registered for the Print button. As the user clicks the
+    Print button the `actionPerformed` method calls the `print` method, which initiates
+    a printing task. The printing task is a `SwingWorker` object. The code example
+    below shows how the `PrintingTask` class is implemented.
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为“打印”按钮注册了一个动作监听器。当用户点击“打印”按钮时，`actionPerformed`方法调用`print`方法，启动打印任务。打印任务是一个`SwingWorker`对象。下面的代码示例显示了`PrintingTask`类的实现方式。
+- en: '[PRE2]'
+  id: totrans-46
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The code example below shows how the `print` method obtains the set of selected
+    options from the GUI components, then creates an instance of the `PrintingTask`
+    class, and performs printing.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的代码示例显示了`print`方法如何从GUI组件中获取所选选项集，然后创建`PrintingTask`类的实例，并执行打印操作。
+- en: '[PRE3]'
+  id: totrans-48
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The code in bold illustrates how `PrintingTask`'s methods are invoked depending
+    on the `background` parameter's value. Whenever the user prefers to print on a
+    background thread, the `execute` method is called, which schedules the printing
+    task for the execution on a background thread. Otherwise the `run` method performs
+    the printing task on EDT.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 粗体代码说明了根据`background`参数的值调用`PrintingTask`的方法。每当用户喜欢在后台线程上打印时，将调用`execute`方法，该方法安排打印任务在后台线程上执行。否则，`run`方法在EDT上执行打印任务。
+- en: Since printing large documents is a time-consuming task, it is recommended to
+    perform printing on a background thread.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于打印大型文档是一项耗时的任务，建议在后台线程上执行打印操作。
+- en: Text Batch Printing Example
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文本批量打印示例
+- en: The `TextBatchPrintingDemo` example illustrates printing non-visible HTML text
+    documents on background threads. When launched, this demo displays a page with
+    a list of URLs. You can visit an HTML page, add the displayed page to the print
+    list, and once you select all pages that you need, you can print them all at once
+    on background threads. The entire code for this program can be found in [`TextBatchPrintingDemo.java`](../examples/misc/TextBatchPrintingDemoProject/src/misc/TextBatchPrintingDemo.java).
+    Here is a picture of the `TextBatchPrintingDemo` application.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TextBatchPrintingDemo`示例演示了在后台线程上打印不可见的 HTML 文本文档。启动时，此演示显示一个带有 URL 列表的页面。你可以访问一个
+    HTML 页面，将显示的页面添加到打印列表中，一旦选择了所有需要的页面，就可以在后台线程上一次性打印它们。此程序的整个代码可以在[`TextBatchPrintingDemo.java`](../examples/misc/TextBatchPrintingDemoProject/src/misc/TextBatchPrintingDemo.java)中找到。这是`TextBatchPrintingDemo`应用程序的图片。'
+- en: '![A screenshot of TextBatchPrintingDemo](../Images/e409ab57399ec70fb439aa50774558d8.png)'
+  id: totrans-53
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TextBatchPrintingDemo的屏幕截图](../Images/e409ab57399ec70fb439aa50774558d8.png)'
+- en: '* * *'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run TextBatchPrintingDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/misc/index.html#TextBatchPrintingDemo).[![Launches
+    the TextBatchPrintingDemo Application](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextBatchPrintingDemoProject/TextBatchPrintingDemo.jnlp)
+  id: totrans-56
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击启动按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行TextBatchPrintingDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/misc/index.html#TextBatchPrintingDemo)。[![启动TextBatchPrintingDemo应用程序](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TextBatchPrintingDemoProject/TextBatchPrintingDemo.jnlp)
+- en: Click on any link to view the corresponding HTML page.
+  id: totrans-57
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击任何链接查看相应的 HTML 页面。
+- en: Press ALT+A or choose File > Add Page menu item to add the displayed page to
+    a print list shown on the right.
+  id: totrans-58
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 按下ALT+A或选择文件 > 添加页面菜单项将显示的页面添加到右侧的打印列表中。
+- en: Press ALT+H or choose File > Home Page menu item to return to the demo's home
+    page.
+  id: totrans-59
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 按下ALT+H或选择文件 > 主页菜单项返回到演示的主页。
+- en: Add as many pages to the print list as you need.
+  id: totrans-60
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将需要的页面添加到打印列表中。
+- en: Press ALT+C or choose File > Clear Selected menu item if you need to clear the
+    print list and build at again.
+  id: totrans-61
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 按下ALT+C或选择文件 > 清除所选菜单项，如果需要清除打印列表并重新构建。
+- en: Press ALT+P or choose File > Print Selected menu item to print the selected
+    pages.
+  id: totrans-62
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 按下ALT+P或选择文件 > 打印所选菜单项以打印所选页面。
+- en: Press ALT+Q or choose File > Quit menu item to quit the application.
+  id: totrans-63
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 按下ALT+Q或选择文件 > 退出菜单项来退出应用程序。
+- en: You can find the printing code in the `printSelectedPages` method. When called,
+    this method first obtains the amount of pages selected for printing. The code
+    example below shows how the `printSelectedPages` method creates a `Runnable` object
+    for each page and then prints the current page on a separate thread.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在`printSelectedPages`方法中找到打印代码。调用时，此方法首先获取选择打印的页面数量。下面的代码示例显示了`printSelectedPages`方法如何为每个页面创建一个`Runnable`对象，然后在单独的线程上打印当前页面。
+- en: '[PRE4]'
+  id: totrans-65
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Text Printing API
+  id: totrans-66
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 文本打印 API
+- en: This section lists methods defined in the `JTextComponent` class that allow
+    you to print text documents.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此部分列出了`JTextComponent`类中定义的允许打印文本文档的方法。
+- en: '| Method | Purpose |'
+  id: totrans-68
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [boolean print()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#print--)
+    [boolean print(MessageFormat, MessageFormat)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#print-java.text.MessageFormat-java.text.MessageFormat-)'
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [boolean print()](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#print--)
+    [boolean print(MessageFormat, MessageFormat)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#print-java.text.MessageFormat-java.text.MessageFormat-)'
+- en: '[boolean print(MessageFormat, MessageFormat, boolean, PrintRequestAttributeSet,
+    boolean, PrintService)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#print-java.text.MessageFormat-java.text.MessageFormat-boolean-javax.print.PrintService-javax.print.attribute.PrintRequestAttributeSet-boolean-)
+    | When called without arguments, displays a print dialog, and then prints this
+    text component interactively without a header or a footer text. Returns `true`
+    if the user continued printing and `false` if the user cancelled printing. When
+    called with the two `MessageFormat` arguments, displays a print dialog, and then
+    prints this text component interactively with the specified header and footer
+    text.'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[boolean print(MessageFormat, MessageFormat, boolean, PrintRequestAttributeSet,
+    boolean, PrintService)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#print-java.text.MessageFormat-java.text.MessageFormat-boolean-javax.print.PrintService-javax.print.attribute.PrintRequestAttributeSet-boolean-)
+    | 在没有参数的情况下调用时，显示打印对话框，然后交互式打印此文本组件，没有页眉或页脚文本。如果用户继续打印，则返回`true`，如果用户取消打印，则返回`false`。当使用两个`MessageFormat`参数调用时，显示打印对话框，然后交互式打印此文本组件，并显示指定的页眉和页脚文本。'
+- en: When called with a full set of arguments, prints this text component according
+    to the specified arguments. The two `MessageFormat` arguments specify header and
+    footer text. The first boolean argument defines whether to show a print dialog
+    or not. Another boolean argument specifies whether to print interactively or not.
+    With two other arguments you can specify printing attributes and a print service.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用完整参数集调用时，根据指定的参数打印此文本组件。两个`MessageFormat`参数指定页眉和页脚文本。第一个布尔参数定义是否显示打印对话框。另一个布尔参数指定是否交互式打印。使用另外两个参数，您可以指定打印属性和打印服务。
+- en: Whenever a `PrintService` argument is omitted, the default printer will be used.
+    |
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当省略一个`PrintService`参数时，将使用默认打印机。
+- en: '| [Printable getPrintable(MessageFormat, MessageFormat)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getPrintable-java.text.MessageFormat-java.text.MessageFormat-)
+    | Returns a `Printable` object for printing your text component. Override this
+    method to get a customized Printable object. You can wrap one Printable object
+    into another in order to obtain complex reports and documents. |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Printable getPrintable(MessageFormat, MessageFormat)](https://docs.oracle.com/javase/8/docs/api/javax/swing/text/JTextComponent.html#getPrintable-java.text.MessageFormat-java.text.MessageFormat-)
+    | 返回一个`Printable`对象，用于打印您的文本组件。重写此方法以获得自定义的 Printable 对象。您可以将一个 Printable 对象包装到另一个中，以获得复杂的报告和文档。
+    |'
+- en: Examples That Use Text Printing
+  id: totrans-74
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用文本打印的示例
+- en: This table lists examples that use text printing and points to where those examples
+    are described.
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此表列出了使用文本打印的示例，并指向这些示例的描述位置。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-76
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`TextAreaPrintingDemo`](../examples/misc/index.html#TextAreaPrintingDemo)
+    | This page | Demonstrates the basics of text printing and provides a rich GUI.
+    Allows the user to specify header or footer text, turn the print dialog on or
+    off, select printing interactively or non-interactively, and then print according
+    to the selected options. |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextAreaPrintingDemo`](../examples/misc/index.html#TextAreaPrintingDemo)
+    | 本页面 | 演示了文本打印的基础知识，并提供了丰富的 GUI。允许用户指定页眉或页脚文本，打开或关闭打印对话框，交互式或非交互式选择打印，然后根据所选选项打印。
+    |'
+- en: '| [`TextBatchPrintingDemo`](../examples/misc/index.html#TextBatchPrintingDemo)
+    | This page | This demo displays a text component with a list of URLs, allows
+    the user to view HTML pages, add them to the print list, and print all selected
+    pages at once on background threads. |'
+  id: totrans-78
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextBatchPrintingDemo`](../examples/misc/index.html#TextBatchPrintingDemo)
+    | 本页面 | 此演示显示了一个带有 URL 列表的文本组件，允许用户查看 HTML 页面，将它们添加到打印列表，并在后台线程上一次打印所有选定的页面。 |'

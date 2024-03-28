@@ -1,0 +1,609 @@
+- en: How to Use Root Panes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用根窗格
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/rootpane.html](https://docs.oracle.com/javase/tutorial/uiswing/components/rootpane.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/rootpane.html](https://docs.oracle.com/javase/tutorial/uiswing/components/rootpane.html)
+- en: In general, you don't directly create a [`JRootPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JRootPane.html)
+    object. Instead, you get a `JRootPane` (whether you want it or not!) when you
+    instantiate [`JInternalFrame`](internalframe.html) or one of the top-level Swing
+    containers, such as [`JApplet`](applet.html), [`JDialog`](dialog.html), and [`JFrame`](frame.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，你不会直接创建一个[`JRootPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JRootPane.html)对象。相反，当你实例化[`JInternalFrame`](internalframe.html)或其中一个顶级
+    Swing 容器时，例如[`JApplet`](applet.html)、[`JDialog`](dialog.html)和[`JFrame`](frame.html)，你会得到一个`JRootPane`（不管你是否想要！）。
+- en: "[Using Top-Level Containers](toplevel.html) tells you the basics of using root\
+    \ panes \x97 getting the content pane, setting its layout manager, and adding\
+    \ Swing components to it. This section tells you more about root panes, including\
+    \ the components that make up a root pane and how you can use them."
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "[使用顶级容器](toplevel.html)告诉你如何使用根窗格的基础知识 \x97 获取内容窗格，设置其布局管理器，并向其添加 Swing 组件。本节将告诉你更多关于根窗格的内容，包括组成根窗格的组件以及如何使用它们。"
+- en: '![A root pane manages four other panes: a layered pane, a menu bar, a content
+    pane, and a glass pane.](../Images/7605e82a56ab0dc0e29d910e5678e42d.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![根窗格管理其他四个窗格：分层窗格、菜单栏、内容窗格和玻璃窗格。](../Images/7605e82a56ab0dc0e29d910e5678e42d.png)'
+- en: 'As the preceding figure shows, a root pane has four parts:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前图所示，根窗格有四个部分：
+- en: '**The glass pane**'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**玻璃窗格**'
+- en: Hidden, by default. If you make the glass pane visible, then it's like a sheet
+    of glass over all the other parts of the root pane. It's completely transparent
+    unless you implement the glass pane's `paintComponent` method so that it does
+    something, and it can intercept input events for the root pane. In the [next section](#glasspane),
+    you'll see an example of using a glass pane.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下隐藏。如果使玻璃窗格可见，那么它就像是覆盖在根窗格的所有其他部分上的一块玻璃板。除非你实现了玻璃窗格的`paintComponent`方法以执行某些操作，并且它可以拦截根窗格的输入事件，否则它是完全透明的。在[下一节](#glasspane)中，你将看到使用玻璃窗格的示例。
+- en: '**The layered pane**'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**分层窗格**'
+- en: Serves to position its contents, which consist of the content pane and the optional
+    menu bar. Can also hold other components in a specified Z order. For information,
+    see [The Layered Pane](#layeredpane).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用于定位其内容的位置，包括内容窗格和可选菜单栏。还可以按指定的 Z 顺序容纳其他组件。有关详细信息，请参见[分层窗格](#layeredpane)。
+- en: '**The content pane**'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**内容窗格**'
+- en: The container of the root pane's visible components, excluding the menu bar.
+    For information on using the content pane, see [Using Top-Level Containers](toplevel.html).
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根窗格可见组件的容器，不包括菜单栏。有关使用内容窗格的信息，请参见[使用顶级容器](toplevel.html)。
+- en: '**The optional menu bar**'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**可选菜单栏**'
+- en: The home for the root pane's container's menus. If the container has a menu
+    bar, you generally use the container's `setJMenuBar` method to put the menu bar
+    in the appropriate place. For more information on using menus and menu bars, see
+    [How to Use Menus](menu.html).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根窗格容器菜单的所在地。如果容器有一个菜单栏，通常使用容器的`setJMenuBar`方法将菜单栏放在适当的位置。有关使用菜单和菜单栏的更多信息，请参见[如何���用菜单](menu.html)。
+- en: The Glass Pane
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 玻璃窗格
+- en: The glass pane is useful when you want to be able to catch events or paint over
+    an area that already contains one or more components. For example, you can deactivate
+    mouse events for a multi-component region by having the glass pane intercept the
+    events. Or you can display an image over multiple components using the glass pane.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你想要捕获事件或在已包含一个或多个组件的区域上绘制时，玻璃窗格非常有用。例如，你可以通过让玻璃窗格拦截事件来禁用多组件区域的鼠标事件。或者你可以使用玻璃窗格在多个组件上显示图像。
+- en: "Here's a picture of an application that demonstrates glass pane features. It\
+    \ contains a check box that lets you set whether the glass pane is \"visible\"\
+    \ \x97 whether it can get events and paint itself onscreen. When the glass pane\
+    \ is visible, it blocks all input events from reaching the components in the content\
+    \ pane. It also paints a red dot in the place where it last detected a mouse-pressed\
+    \ event."
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "这是一个演示玻璃窗格功能的应用程序的图片。它包含一个复选框，让你设置玻璃窗格是否“可见” \x97 是否可以接收事件并在屏幕上绘制自己。当玻璃窗格可见时，它会阻止所有输入事件到达内容窗格中的组件。它还会在上次检测到鼠标按下事件的位置绘制一个红点。"
+- en: '![A snapshot of GlassPaneDemo](../Images/3fe217fa0db741cfc6ed3bbb4b9a0c3f.png)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_IMG
+  zh: '![GlassPaneDemo的快照](../Images/3fe217fa0db741cfc6ed3bbb4b9a0c3f.png)'
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run GlassPaneDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#GlassPaneDemo).[![Launches
+    the GlassPaneDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/GlassPaneDemoProject/GlassPaneDemo.jnlp)
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行GlassPaneDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#GlassPaneDemo)。[![启动
+    GlassPaneDemo 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/GlassPaneDemoProject/GlassPaneDemo.jnlp)
+- en: Click Button 1.
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击按钮 1。
+- en: The button's appearance changes to show that it's been clicked.
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 按钮的外观会发生变化，显示已被点击。
+- en: Click the check box so that the glass pane becomes "visible," and then click
+    Button 1 again.
+  id: totrans-23
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击复选框，使玻璃窗格“可见”，然后再次点击按钮 1。
+- en: The button does not act clicked because the glass pane intercepts all the mouse
+    events. The glass pane paints a red circle where you release the mouse.
+  id: totrans-24
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 按钮不会被点击，因为玻璃窗格拦截了所有鼠标事件。玻璃窗格在释放鼠标的位置绘制一个红色圆圈。
+- en: Click the check box again so that the glass pane is hidden.
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 再次点击复选框，使玻璃窗格隐藏。
+- en: When the glass pane detects an event over the check box, it forwards it to the
+    check box. Otherwise, the check box would not respond to clicks.
+  id: totrans-26
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 当玻璃窗格检测到在复选框上方发生事件时，它会将其转发给复选框。否则，复选框将不会响应点击。
+- en: '* * *'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The following code from [`GlassPaneDemo.java`](../examples/components/GlassPaneDemoProject/src/components/GlassPaneDemo.java)
+    shows and hides the glass pane. This program happens to create its own glass pane.
+    However, if a glass pane doesn't do any painting, the program might simply attach
+    listeners to the default glass pane, as returned by `getGlassPane`.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下来自[`GlassPaneDemo.java`](../examples/components/GlassPaneDemoProject/src/components/GlassPaneDemo.java)的代码显示和隐藏了玻璃窗格。该程序恰好创建了自己的玻璃窗格。但是，如果玻璃窗格不进行任何绘制，程序可能会简单地将侦听器附加到由`getGlassPane`返回的默认玻璃窗格。
+- en: '[PRE0]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The next code snippet implements the mouse-event handling for the glass pane.
+    If a mouse event occurs over the check box, then the glass pane redispatches the
+    event so that the check box receives it.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下一个代码片段实现了玻璃窗格的鼠标事件处理。如果鼠标事件发生在复选框上方，则玻璃窗格会重新分发事件，以便复选框接收到事件。
+- en: '[PRE1]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Here is the code in `MyGlassPane` that implements the painting.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是在`MyGlassPane`中实现绘制的代码。
+- en: '[PRE2]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The Layered Pane
+  id: totrans-34
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 分层窗格
+- en: A layered pane is a container with depth such that overlapping components can
+    appear one on top of the other. General information about layered panes is in
+    [How to Use Layered Panes](layeredpane.html). This section discusses the particulars
+    of how root panes use layered panes.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分层窗格是一个具有深度的容器，使得重叠的组件可以相互覆盖。有关分层窗格的一般信息，请参阅[如何使用分层窗格](layeredpane.html)。本节讨论了根窗格如何使用分层窗格。
+- en: Each root pane places its menu bar and content pane in an instance of `JLayeredPane`.
+    The Z ordering that the layered pane provides enables behavior such as displaying
+    popup menus above other components.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个根窗格都将其菜单栏和内容窗格放在`JLayeredPane`的一个实例中。分层窗格提供的 Z 排序使得可以在其他组件上方显示弹出菜单等行为。
+- en: 'You can choose to put components in the root pane''s layered pane. If you do,
+    then you should be aware that certain depths are defined to be used for specific
+    functions, and you should use the depths as intended. Otherwise, your components
+    might not play well with the others. Here''s a diagram that shows the functional
+    layers and their relationship:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以选择将组件放在根窗格的分层窗格中。如果这样做，那么您应该意识到某些深度被定义为用于特定功能，并且应该按照预期使用这些深度。否则，您的组件可能无法与其他组件很好地配合。以下是显示功能图层及其关系的图表：
+- en: '![Layers defined by JLayeredPane](../Images/fa9192c7831e7362480c56f93c50bd23.png)'
+  id: totrans-38
+  prefs: []
+  type: TYPE_IMG
+  zh: '![由 JLayeredPane 定义的图层](../Images/fa9192c7831e7362480c56f93c50bd23.png)'
+- en: 'The table below describes the intended use for each layer and lists the `JLayeredPane`
+    constant that corresponds to each layer:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表描述了每个图层的预期用途，并列出了与每个图层对应的`JLayeredPane`常量：
+- en: '| Layer Name | Value | Description |'
+  id: totrans-40
+  prefs: []
+  type: TYPE_TB
+  zh: '| 图层名称 | 值 | 描述 |'
+- en: '| `FRAME_CONTENT_LAYER` | `new Integer(-30000)` | The root pane adds the menu
+    bar and content pane to its layered pane at this depth. |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_TB
+  zh: '| `FRAME_CONTENT_LAYER` | `new Integer(-30000)` | 根窗格将菜单栏和内容窗格添加到此深度的分层窗格中。'
+- en: '| `DEFAULT_LAYER` | `new Integer(0)` | If you don''t specify a component''s
+    depth when adding it to a layered pane, the layered pane puts it at this depth.
+    |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DEFAULT_LAYER` | `new Integer(0)` | 如果在将组件添加到分层窗格时未指定组件的深度，则分层窗格会将其放在此深度处。'
+- en: '| `PALETTE_LAYER` | `new Integer(100)` | This layer is useful for floating
+    tool bars and palettes. |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| `PALETTE_LAYER` | `new Integer(100)` | 此层对于浮动工具栏和调色板非常有用。'
+- en: '| `MODAL_LAYER` | `new Integer(200)` | Modal internal-frame dialogs would belong
+    in this layer. |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| `MODAL_LAYER` | `new Integer(200)` | 模态内部框对话框应属于此层。'
+- en: '| `POPUP_LAYER` | `new Integer(300)` | Popups go in this layer because they
+    need to appear above just about everything. |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| `POPUP_LAYER` | `new Integer(300)` | 弹出窗口应放在此层，因为它们需要出现在几乎所有内容的上方。'
+- en: '| `DRAG_LAYER` | `new Integer(400)` | Intended to be used when a component
+    is being dragged. The component should return to its regular layer when dropped.
+    |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| `DRAG_LAYER` | `new Integer(400)` | 当组件被拖动时应使用。组件应在放下时返回到其常规层。'
+- en: Here is a picture of RootLayeredPaneDemo, which is a version of [LayeredPaneDemo](../examples/components/index.html#LayeredPaneDemo)
+    that uses the root pane's layered pane, rather than creating a new layered pane.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是RootLayeredPaneDemo的图片，这是一个使用根窗格的分层窗格而不是创建新的分层窗格的版本的[LayeredPaneDemo](../examples/components/index.html#LayeredPaneDemo)。
+- en: '![LayeredPaneDemo modified to use the root pane''s layered pane](../Images/597932bd785c34be5d2442127dd7a63d.png)'
+  id: totrans-48
+  prefs: []
+  type: TYPE_IMG
+  zh: '![LayeredPaneDemo 修改为使用根窗格的分层窗格](../Images/597932bd785c34be5d2442127dd7a63d.png)'
+- en: '* * *'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: Click the Launch button to run RootLayeredPaneDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#RootLayeredPaneDemo).[![Launches
+    the RootLayeredPaneDemo](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/RootLayeredPaneDemoProject/RootLayeredPaneDemo.jnlp)
+  id: totrans-51
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行RootLayeredPaneDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#RootLayeredPaneDemo)。[![启动RootLayeredPaneDemo](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/RootLayeredPaneDemoProject/RootLayeredPaneDemo.jnlp)
+- en: Move the cursor around in the window, so that Duke moves on top of other components.
+  id: totrans-52
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在窗口中移动光标，使得杜克出现在其他组件的顶部。
+- en: "Note that when the cursor is on top of non-label components \x97 whether it's\
+    \ in the content pane or in the Java-look-and-feel provided title bar \x97 Duke's\
+    \ movement is temporarily stopped. This is because mouse-motion events go to the\
+    \ component that's deepest in the containment hierarchy and is interested in mouse\
+    \ events. The mouse-motion listener that moves Duke is registered on the layered\
+    \ pane, and most of the components in that pane (with the exception of the labels)\
+    \ happen to have mouse-motion listeners. When the mouse moves over an interested\
+    \ component in the layered pane, the layered pane doesn't get the event and the\
+    \ interested component does."
+  id: totrans-53
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: "请注意，当光标停留在非标签组件上时 \x97 无论是在内容窗格中还是在Java外观提供的标题栏中 \x97 杜克的移动会暂时停止。这是因为鼠标移动事件传递给包含层次结构中最深且对鼠标事件感兴趣的组件。移动杜克的鼠标移动监听器已在分层窗格上注册，并且该窗格中的大多数组件（除了标签）恰好具有鼠标移动监听器。当鼠标移动到分层窗格中的一个感兴趣的组件上时，分层窗格不会收到事件，而感兴趣的组件会收到。"
+- en: Making sure the Top Position in Layer check box is selected, change Duke's layer
+    to Yellow (-30000).
+  id: totrans-54
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 确保选择了“在层中的顶部位置”复选框，将杜克的层更改为黄色（-30000）。
+- en: As before, he appears on top of other components, except for the Magenta (0)
+    and Cyan (301) rectangles.
+  id: totrans-55
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 与以前一样，他会出现在其他组件的顶部，除了品红色（0）和青色（301）的矩形。
+- en: Keeping Duke in the Yellow layer, click the check box to send Duke to the back
+    of layer -30000.
+  id: totrans-56
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 保持杜克在黄色层中，单击复选框将杜克发送到层的后面 -30000。
+- en: Duke disappears because the content pane and all the components in it are now
+    above him.
+  id: totrans-57
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 杜克消失了，因为内容窗格及其中的所有组件现在都在他的上方。
+- en: Change Duke's layer to Cyan (301), move Duke down a bit so he's standing on
+    the top edge of the Yellow rectangle, and then press Space to bring up the combo
+    box's drop-down list.
+  id: totrans-58
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将杜克的层更改为青色（301），将杜克向下移动一点，使其站在黄色矩形的顶边上，然后按空格键打开组合框的下拉列表。
+- en: If the look and feel implements the drop-down list as a lightweight popup, Duke
+    appears on top of the drop-down list.
+  id: totrans-59
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 如果外观实现下拉列表作为轻量级弹出窗口，杜克会出现在下拉列表的顶部。
+- en: '* * *'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The Root Pane API
+  id: totrans-61
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 根窗格 API
+- en: 'The tables that follow list the API for using root panes, glass panes, and
+    content panes. For more information on using content panes, go to [Using Top-Level
+    Containers](toplevel.html). Here are the tables in this section:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来的表格列出了使用根窗格、玻璃窗格和内容窗格的 API。有关使用内容窗格的更多信息，请转到[使用顶层容器](toplevel.html)。本节中的表格如下：
+- en: '[Using a Root Pane](#rootpaneapi)'
+  id: totrans-63
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用根窗格](#rootpaneapi)'
+- en: '[Setting or Getting the Root Pane''s Contents](#contentapi)'
+  id: totrans-64
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置或获取根窗格的内容](#contentapi)'
+- en: 'The API for using other parts of the root pane is described elsewhere:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用根窗格的 API 描述在其他地方：
+- en: '[The Layered Pane API](layeredpane.html#api)'
+  id: totrans-66
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[分层窗格 API](layeredpane.html#api)'
+- en: '[The Menu API](menu.html#api)'
+  id: totrans-67
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[菜单 API](menu.html#api)'
+- en: Using a Root Pane
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用根窗格
+- en: '| Method | Purpose |'
+  id: totrans-69
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [JRootPane getRootPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getRootPane--)
+    *(in `JApplet`, `JDialog`, `JFrame`, `JInternalFrame`, and `JWindow`)* | Get the
+    root pane of the applet, dialog, frame, internal frame, or window. |'
+  id: totrans-70
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JRootPane getRootPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getRootPane--)
+    *(在`JApplet`、`JDialog`、`JFrame`、`JInternalFrame`和`JWindow`中)* | 获取 applet、dialog、frame、internal
+    frame 或 window 的根窗格。 |'
+- en: '| [static JRootPane getRootPane(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingUtilities.html#getRootPane-java.awt.Component-)
+    *(in `SwingUtilities`)* | If the component contains a root pane, return that root
+    pane. Otherwise, return the root pane (if any) that contains the component. |'
+  id: totrans-71
+  prefs: []
+  type: TYPE_TB
+  zh: '| [static JRootPane getRootPane(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingUtilities.html#getRootPane-java.awt.Component-)
+    *(在`SwingUtilities`中)* | 如果组件包含根窗格，则返回该根窗格。否则，返回包含该组件的根窗格（如果有）。 |'
+- en: '| [JRootPane getRootPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getRootPane--)
+    *(in `JComponent`)* | Invoke the `SwingUtilities` `getRootPane` method for the
+    `JComponent`. |'
+  id: totrans-72
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JRootPane getRootPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#getRootPane--)
+    *(在`JComponent`中)* | 为`JComponent`调用`SwingUtilities`的`getRootPane`方法。 |'
+- en: '| [void setDefaultButton(JButton)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JRootPane.html#setDefaultButton-javax.swing.JButton-)
+    [JButton getDefaultButton()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JRootPane.html#getDefaultButton--)
+    | Set or get which button (if any) is the default button in the root pane. A look-and-feel-specific
+    action, such as pressing Enter, causes the button''s action to be performed. |'
+  id: totrans-73
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setDefaultButton(JButton)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JRootPane.html#setDefaultButton-javax.swing.JButton-)
+    [JButton getDefaultButton()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JRootPane.html#getDefaultButton--)
+    | 设置或获取根窗格中的默认按钮（如果有）。特定外观和感觉的操作，如按下 Enter 键，会执行按钮的操作。 |'
+- en: Setting or Getting the Root Pane's Contents
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置或获取根窗格的内容
+- en: '*The following methods are defined in `JApplet`, `JDialog`, `JFrame`, `JInternalFrame`,
+    `JRootPane`, and `JWindow`, unless noted otherwise.*'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*以下方法在`JApplet`、`JDialog`、`JFrame`、`JInternalFrame`、`JRootPane`和`JWindow`中定义，除非另有说明。*'
+- en: '| Method | Purpose |'
+  id: totrans-76
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setGlassPane(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setGlassPane-java.awt.Component-)
+    [Component getGlassPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getGlassPane--)
+    | Set or get the glass pane. |'
+  id: totrans-77
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setGlassPane(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setGlassPane-java.awt.Component-)
+    [Component getGlassPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getGlassPane--)
+    | 设置或获取玻璃窗格。 |'
+- en: '| [void setLayeredPane(JLayeredPane)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setLayeredPane-javax.swing.JLayeredPane-)
+    [Container getLayeredPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getLayeredPane--)
+    | Set or get the layered pane. |'
+  id: totrans-78
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setLayeredPane(JLayeredPane)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setLayeredPane-javax.swing.JLayeredPane-)
+    [Container getLayeredPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getLayeredPane--)
+    | 设置或获取分层窗格。 |'
+- en: '| [void setContentPane(Container)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setContentPane-java.awt.Container-)
+    [Container getContentPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getContentPane--)
+    | Set or get the content pane. |'
+  id: totrans-79
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setContentPane(Container)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setContentPane-java.awt.Container-)
+    [Container getContentPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getContentPane--)
+    | 设置或获取内容面板。 |'
+- en: '| [void setJMenuBar(JMenuBar)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setJMenuBar-javax.swing.JMenuBar-)
+    [JMenuBar getJMenuBar()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getJMenuBar--)'
+  id: totrans-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setJMenuBar(JMenuBar)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#setJMenuBar-javax.swing.JMenuBar-)
+    [JMenuBar getJMenuBar()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html#getJMenuBar--)'
+- en: '*(not defined in `JWindow`)* | Set or get the menu bar. |'
+  id: totrans-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(未在`JWindow`中定义)* | 设置或获取菜单栏。'
+- en: Examples that Use Root Panes
+  id: totrans-82
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用根窗格的示例
+- en: 'Every Swing program has a root pane, but few reference it directly. The examples
+    in the following list illustrate how to use features of `JRootPane` or the glass
+    pane. Also see these lists:'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个Swing程序都有一个根窗格，但很少直接引用它。以下列表中的示例演示了如何使用`JRootPane`或玻璃窗格的功能。还请参阅以下列表：
+- en: '[Examples that Use Layered Panes](layeredpane.html#eg)'
+  id: totrans-84
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用分层窗格的示例](layeredpane.html#eg)'
+- en: '[Examples that Use Menus](menu.html#eg)'
+  id: totrans-85
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用菜单的示例](menu.html#eg)'
+- en: '[Examples that Use Frames](frame.html#eg) (for examples of using content panes)'
+  id: totrans-86
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用框架的示例](frame.html#eg)（用于使用内容窗格的示例）'
+- en: '| Example | Where Described | Notes |'
+  id: totrans-87
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注释 |'
+- en: '| [`GlassPaneDemo`](../examples/components/index.html#GlassPaneDemo) | This
+    section | Uses a glass pane that paints a bit and redispatches events. |'
+  id: totrans-88
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`GlassPaneDemo`](../examples/components/index.html#GlassPaneDemo) | 本节 |
+    使用绘制位和重新分发事件的玻璃窗格。'
+- en: '| [`RootLayeredPaneDemo`](../examples/components/index.html#RootLayeredPaneDemo)
+    | This section | Adapts LayeredPaneDemo to use the root pane''s layered pane.
+    |'
+  id: totrans-89
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`RootLayeredPaneDemo`](../examples/components/index.html#RootLayeredPaneDemo)
+    | 本节 | 调整LayeredPaneDemo以使用根窗格的分层窗格。'
+- en: '| [`ListDialog`](../examples/components/index.html#ListDialog) | [How to Use
+    Lists](list.html) | Sets the default button for a `JDialog`. |'
+  id: totrans-90
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ListDialog`](../examples/components/index.html#ListDialog) | [如何使用列表](list.html)
+    | 设置`JDialog`的默认按钮。'
+- en: '| [`FrameDemo2`](../examples/components/index.html#FrameDemo2) | [How to Make
+    Frames](frame.html) | Sets the default button for a `JFrame`. |'
+  id: totrans-91
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`FrameDemo2`](../examples/components/index.html#FrameDemo2) | [如何制作框架](frame.html)
+    | 为`JFrame`设置默认按钮。'

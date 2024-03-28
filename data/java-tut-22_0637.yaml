@@ -1,0 +1,61 @@
+- en: Coordinates
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 坐标
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/coordinate.html](https://docs.oracle.com/javase/tutorial/2d/overview/coordinate.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/overview/coordinate.html](https://docs.oracle.com/javase/tutorial/2d/overview/coordinate.html)
+- en: 'The Java 2D API maintains two coordinate spaces:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 2D API维护两个坐标空间：
+- en: '*User space* – The space in which graphics primitives are specified'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*用户空间* – 指定图形基元的空间'
+- en: '*Device space* – The coordinate system of an output device such as a screen,
+    window, or a printer'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*设备空间* – 输出设备（如屏幕、窗口或打印机）的坐标系统'
+- en: User space is a device-independent logical coordinate system, the coordinate
+    space that your program uses. All geometries passed into Java 2D rendering routines
+    are specified in user-space coordinates.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户空间是一个设备无关的逻辑坐标系统，即您的程序使用的坐标空间。传递给Java 2D渲染例程的所有几何图形都是使用用户空间坐标指定的。
+- en: When the default transformation from user space to device space is used, the
+    origin of user space is the upper-left corner of the component’s drawing area.
+    The *x* coordinate increases to the right, and the *y* coordinate increases downward,
+    as shown in the following figure. The top-left corner of a window is 0,0\. All
+    coordinates are specified using integers, which is usually sufficient. However,
+    some cases require floating point or even double precision which are also supported.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用从用户空间到设备空间的默认转换时，用户空间的原点是组件绘图区域的左上角。*x*坐标向右增加，*y*坐标向下增加，如下图所示。窗口的左上角是0,0。所有坐标都使用整数指定，通常足够。但是，有些情况需要浮点数甚至双精度，这也是支持的。
+- en: '![This figure represents the space in which](../Images/b7ed6784fd6b7abe42c8aa3a0b0901e9.png)'
+  id: totrans-7
+  prefs: []
+  type: TYPE_IMG
+  zh: '![这个图表示的是空间](../Images/b7ed6784fd6b7abe42c8aa3a0b0901e9.png)'
+- en: Device space is a device-dependent coordinate system that varies according to
+    the target rendering device. Although the coordinate system for a window or screen
+    might be very different from the coordinate system of a printer, these differences
+    are invisible to Java programs. The necessary conversions between user space and
+    device space are performed automatically during rendering.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设备空间是一个依赖设备的坐标系统，根据目标渲染设备而变化。虽然窗口或屏幕的坐标系统可能与打印机的坐标系统非常不同，但这些差异对Java程序是不可见的。在渲染过程中，用户空间和设备空间之间的必要转换是自动执行的。

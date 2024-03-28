@@ -1,0 +1,158 @@
+- en: Using the DTDHandler and EntityResolver
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用DTDHandler和EntityResolver
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/sax/using.html](https://docs.oracle.com/javase/tutorial/jaxp/sax/using.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/sax/using.html](https://docs.oracle.com/javase/tutorial/jaxp/sax/using.html)
+- en: 'This section presents the two remaining SAX event handlers: `DTDHandler` and
+    `EntityResolver`. The `DTDHandler` is invoked when the DTD encounters an unparsed
+    entity or a notation declaration. The `EntityResolver` comes into play when a
+    URN (public ID) must be resolved to a URL (system ID).'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍了另外两个SAX事件处理程序：`DTDHandler`和`EntityResolver`。当DTD遇到未解析的实体或符号声明时，将调用`DTDHandler`。当需要将URN（公共ID）解析为URL（系统ID）时，将使用`EntityResolver`。
+- en: The `DTDHandler` API
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`DTDHandler` API'
+- en: '[Choosing the Parser Implementation](validation.html) showed a method for referencing
+    a file that contains binary data, such as an image file, using MIME data types.
+    That is the simplest, most extensible mechanism. For compatibility with older
+    SGML-style data, though, it is also possible to define an unparsed entity.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[选择解析器实现](validation.html)展示了引用包含二进制数据（如图像文件）的文件的方法，使用MIME数据类型。这是最简单、最可扩展的机制。但是，为了与旧的SGML样式数据兼容，也可以定义未解析的实体。'
+- en: 'The `NDATA` keyword defines an unparsed entity:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`NDATA`关键字定义了一个未解析的实体：'
+- en: '`<!ENTITY myEntity SYSTEM "..URL.." NDATA gif>`'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<!ENTITY myEntity SYSTEM "..URL.." NDATA gif>`'
+- en: The `NDATA` keyword says that the data in this entity is not parseable XML data
+    but instead is data that uses some other notation. In this case, the notation
+    is named `gif`. The DTD must then include a declaration for that notation, which
+    would look something like the following.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`NDATA`关键字表示此实体中的数据不是可解析的XML数据，而是使用其他符号的数据。在本例中，符号被命名为`gif`。然后DTD必须包含该符号的声明，类似于以下内容。'
+- en: '`<!NOTATION gif SYSTEM "..URL..">`'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`<!NOTATION gif SYSTEM "..URL..">`'
+- en: When the parser sees an unparsed entity or a notation declaration, it does nothing
+    with the information except to pass it along to the application using the `DTDHandler`
+    interface. That interface defines two methods.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当解析器看到未解析的实体或符号声明时，除了将其传递给应用程序使用`DTDHandler`接口外，它不会对信息做任何处理。该接口定义了两个方法。
+- en: '`notationDecl(String name, String publicId, String systemId)`'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`notationDecl(String name, String publicId, String systemId)`'
+- en: '`unparsedEntityDecl(String name, String publicId, String systemId, String notationName`'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`unparsedEntityDecl(String name, String publicId, String systemId, String notationName`'
+- en: The `notationDecl` method is passed the name of the notation and either the
+    public or the system identifier, or both, depending on which is declared in the
+    DTD. The `unparsedEntityDecl` method is passed the name of the entity, the appropriate
+    identifiers, and the name of the notation it uses.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`notationDecl`方法传递符号的名称和公共或系统标识符，或两者，取决于DTD中声明了哪个。`unparsedEntityDecl`方法传递实体的名称、适当的标识符和它使用的符号的名称。'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note -** The `DTDHandler` interface is implemented by the `DefaultHandler`
+    class.'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意 -** `DTDHandler`接口由`DefaultHandler`类实现。'
+- en: '* * *'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Notations can also be used in attribute declarations. For example, the following
+    declaration requires notations for the GIF and PNG image-file formats.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 符号也可以用于属性声明。例如，以下声明需要GIF和PNG图像文件格式的符号。
+- en: '[PRE0]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Here, the type is declared as being either gif or png. The default, if neither
+    is specified, is gif.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，类型声明为gif或png。如果没有指定，则默认为gif。
+- en: Whether the notation reference is used to describe an unparsed entity or an
+    attribute, it is up to the application to do the appropriate processing. The parser
+    knows nothing at all about the semantics of the notations. It only passes on the
+    declarations.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 无论符号引用用于描述未解析的实体还是属性，都由应用程序进行适当处理。解析器对符号的语义一无所知。它只传递声明。
+- en: The `EntityResolver` API
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`EntityResolver` API'
+- en: The `EntityResolver` API lets you convert a public ID (URN) into a system ID
+    (URL). Your application may need to do that, for example, to convert something
+    like `href="urn:/someName"` into `"http://someURL"`.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`EntityResolver` API允许您将公共ID（URN）转换为系统ID（URL）。例如，您的应用程序可能需要将类似`href="urn:/someName"`的内容转换为`"http://someURL"`。'
+- en: 'The `EntityResolver` interface defines a single method:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`EntityResolver`接口定义了一个方法：'
+- en: '`resolveEntity(String publicId, String systemId)`'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`resolveEntity(String publicId, String systemId)`'
+- en: This method returns an `InputSource` object, which can be used to access the
+    entity's contents. Converting a URL into an `InputSource` is easy enough. But
+    the URL that is passed as the system ID will be the location of the original document
+    which is, as likely as not, somewhere out on the web. To access a local copy,
+    if there is one, you must maintain a catalog somewhere on the system that maps
+    names (public IDs) into local URLs.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种方法返回一个`InputSource`对象，可以用来访问实体的内容。将URL转换为`InputSource`很容易。但作为系统ID传递的URL很可能是原始文档的位置，而这个位置很可能在网络上的某个地方。要访问本地副本（如果有的话），必须在系统的某处维护一个目录，将名称（公共ID）映射到本地URL。

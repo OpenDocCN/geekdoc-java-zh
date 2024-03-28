@@ -1,0 +1,164 @@
+- en: 'Trail: Deployment'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 路径：部署
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/index.html](https://docs.oracle.com/javase/tutorial/deployment/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/index.html](https://docs.oracle.com/javase/tutorial/deployment/index.html)
+- en: Java rich internet applications (RIA) are applications that have traits similar
+    to desktop applications, but are deployed via the Internet. Java RIAs may be developed
+    and deployed as Java applets or Java Web Start applications.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 富互联网应用程序（RIA）是具有类似桌面应用程序特征的应用程序，但是通过互联网部署。Java RIA 可以作为 Java 小程序或 Java
+    Web Start 应用程序开发和部署。
+- en: Applets - Java applets run in the context of a browser. The Java Plug-in software
+    controls the execution and lifecycle of Java applets.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 小程序 - Java 小程序在浏览器环境中运行。Java 插件软件控制 Java 小程序的执行和生命周期。
+- en: Java Web Start applications - Java Web Start applications are launched via a
+    browser the first time. They may subsequently be launched from a desktop shortcut.
+    Once a Java Web Start application is downloaded and its security certificate has
+    been accepted by the user, it behaves *almost* like a standalone application.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Java Web Start 应用程序 - Java Web Start 应用程序首次通过浏览器启动。随后可以通过桌面快捷方式启动。一旦下载了 Java
+    Web Start 应用程序并且用户接受了其安全证书，它的行为几乎像一个独立的应用程序。
+- en: Component-Based Architecture for RIAs
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 基于组件的架构用于富互联网应用程序
+- en: In the past, the decision of whether to deploy a Java rich internet application
+    inside the browser as an applet, or outside the browser as a Java Web Start application,
+    could significantly impact the design of the application. With the latest Java
+    Plug-in, this decision has been greatly simplified.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在过去，决定将 Java 富互联网应用程序作为小程序在浏览器内部部署，还是作为 Java Web Start 应用程序在浏览器外部部署，可能会显著影响应用程序的设计。有了最新的
+    Java 插件，这个决定变得简单多了。
+- en: Traditionally, applications construct their user interfaces, including the top-level
+    `Frame`, in the `main` method. This programming style prevents easy re-deployment
+    of the application in the browser, because it assumes that the application creates
+    its own `Frame`. When running in the browser as an applet, the applet is the top
+    level container that should hold the user interface for the application. A top-level
+    `Frame` is not needed.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传统上，应用程序在 `main` 方法中构建其用户界面，包括顶级 `Frame`。这种编程风格阻碍了应用程序在浏览器中的重新部署，因为它假定应用程序创建自己的
+    `Frame`。在浏览器中作为小程序运行时，小程序是应该容纳应用程序用户界面的顶级容器。不需要顶级 `Frame`。
+- en: Use *component-based architecture* when designing your Java rich internet application.
+    Try to organize its functionality into one or more components that can be composed
+    together. In this context, the term "component" refers to a GUI element that is
+    a subclass of the AWT `Component` class, the Swing `JComponent` class, or another
+    subclass. For example, you could have a top level `JPanel` which contains other
+    UI components in it (like a combination of more nested JPanels and text fields,
+    combo boxes etc.). With such a design, it becomes relatively easy to deploy the
+    core functionality as an applet or a Java Web Start application.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在设计 Java 富互联网应用程序时，请使用*基于组件的架构*。尝试将其功能组织成一个或多个可以组合在一起的组件。在这种情况下，“组件”一词指的是 AWT
+    `Component` 类的子类、Swing `JComponent` 类或另一个子类的 GUI 元素。例如，您可以有一个顶级 `JPanel`，其中包含其他
+    UI 组件（如更多嵌套的 JPanels 和文本字段、组合框等）。通过这种设计，将核心功能部署为小程序或 Java Web Start 应用程序变得相对容易。
+- en: To deploy as a Java applet, you just need to wrap the core functionality in
+    an `Applet` or `JApplet` and add the browser specific functionality, if necessary.
+    To deploy as a Java Web Start application, wrap the functionality in a `JFrame`.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要部署为 Java 小程序，只需将核心功能封装在 `Applet` 或 `JApplet` 中，并添加必要的浏览器特定功能。要部署为 Java Web
+    Start 应用程序，请将功能封装在 `JFrame` 中。
+- en: Choosing Between Java Applets and Java Web Start Applications
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 选择 Java 小程序和 Java Web Start 应用程序之间
+- en: The [Rich Internet Applications Decision Guide](./_riaDecisionGuide.html) contains
+    detailed information to help you decide whether to deploy your code as a Java
+    applet or Java Web Start application.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[富互联网应用程序决策指南](./_riaDecisionGuide.html)包含详细信息，帮助您决定将代码部署为 Java 小程序还是 Java
+    Web Start 应用程序。'
+- en: The Self-Contained Application Alternative
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 自包含应用程序替代方案
+- en: Self-contained applications provide a deployment option that does not require
+    a browser. Users install your application locally and run it similar to native
+    applications. Self-contained applications include the JRE needed to run the application,
+    so users always have the correct JRE.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 自包含应用程序提供了一种部署选项，不需要浏览器。用户在本地安装您的应用程序，并类似于本机应用程序运行它。自包含应用程序包括运行应用程序所需的JRE，因此用户始终拥有正确的JRE。
+- en: This trail discusses the development and deployment of RIAs and self-contained
+    applications. See [What's New](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/whatsnew_deployment.html)
+    for capabilities introduced in various versions of the client Java Runtime Environment
+    (JRE) software.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本教程讨论了RIA和自包含应用程序的开发和部署。请查看[新功能](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/whatsnew_deployment.html)，了解客户端Java运行时环境（JRE）软件各个版本引入的功能。
+- en: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **Developing
+    and Deploying Java Applets**](applet/index.html)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **开发和部署 Java
+    Applets**](applet/index.html)'
+- en: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **Developing
+    and Deploying Java Web Start Applications**](webstart/index.html)'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **开发和部署 Java
+    Web Start 应用程序**](webstart/index.html)'
+- en: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **Doing More
+    With Java Rich Internet Applications**](doingMoreWithRIA/index.html)'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **使用 Java 富互联网应用程序做更多事情**](doingMoreWithRIA/index.html)'
+- en: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **Deployment
+    In-Depth**](deploymentInDepth/index.html)'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **深入部署**](deploymentInDepth/index.html)'
+- en: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **Deploying
+    Self-Contained Applications**](selfContainedApps/index.html)'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **部署自包含应用程序**](selfContainedApps/index.html)'
+- en: Supporting Tools
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 支持工具
+- en: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **Packaging
+    Programs in JAR Files**](jar/index.html)'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![trail icon](../Images/0689397fa9cc4e369d63fc92b3bb6f38.png) **在 JAR 文件中打包程序**](jar/index.html)'

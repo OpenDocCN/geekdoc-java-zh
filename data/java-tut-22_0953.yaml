@@ -1,0 +1,83 @@
+- en: Generics and Subtyping
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 泛型和子类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/subtype.html](https://docs.oracle.com/javase/tutorial/extra/generics/subtype.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/extra/generics/subtype.html](https://docs.oracle.com/javase/tutorial/extra/generics/subtype.html)
+- en: Let's test your understanding of generics. Is the following code snippet legal?
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们测试一下你对泛型的理解。以下代码片段是否合法？
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Line 1 is certainly legal. The trickier part of the question is line 2\. This
+    boils down to the question: is a `List` of `String` a `List` of `Object`. Most
+    people instinctively answer, "Sure!"'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第1行肯定是合法的。问题的棘手部分在于第2行。这归结为一个问题：`String`的`List`是否是`Object`的`List`。大多数人本能地回答：“当然！”
+- en: 'Well, take a look at the next few lines:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 好吧，看看接下来的几行：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Here we've aliased `ls` and `lo`. Accessing `ls`, a list of `String`, through
+    the alias `lo`, we can insert arbitrary objects into it. As a result `ls` does
+    not hold just `String`s anymore, and when we try and get something out of it,
+    we get a rude surprise.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，我们给`ls`和`lo`取了别名。通过别名`lo`访问`String`的列表`ls`，我们可以向其中插入任意对象。结果`ls`不再只包含`String`，当我们尝试从中取出东西时，会得到一个不愉快的惊喜。
+- en: The Java compiler will prevent this from happening of course. Line 2 will cause
+    a compile time error.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java编译器当然会阻止这种情况发生。第2行将导致编译时错误。
+- en: In general, if `Foo` is a subtype (subclass or subinterface) of `Bar`, and `G`
+    is some generic type declaration, it is **not** the case that `G<Foo>` is a subtype
+    of `G<Bar>`. This is probably the hardest thing you need to learn about generics,
+    because it goes against our deeply held intuitions.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一般来说，如果`Foo`是`Bar`的子类型（子类或子接口），而`G`是某个泛型类型声明，那么`G<Foo>`不是`G<Bar>`的子类型。这可能是你需要了解的关于泛型最困难的事情，因为它违背了我们根深蒂固的直觉。
+- en: We should not assume that collections don't change. Our instinct may lead us
+    to think of these things as immutable.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们不应该假设集合不会改变。我们的直觉可能会让我们认为这些东西是不可变的。
+- en: For example, if the department of motor vehicles supplies a list of drivers
+    to the census bureau, this seems reasonable. We think that a `List<Driver>` is
+    a `List<Person>`, assuming that `Driver` is a subtype of `Person`. In fact, what
+    is being passed is a **copy** of the registry of drivers. Otherwise, the census
+    bureau could add new people who are not drivers into the list, corrupting the
+    DMV's records.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，如果机动车管理部门向人口普查局提供驾驶员名单，这似乎是合理的。我们认为`List<Driver>`是`List<Person>`，假设`Driver`是`Person`的子类型。实际上，传递的是驾驶员注册表的**副本**。否则，人口普查局可能会将不是驾驶员的新人加入列表，从而破坏了机动车管理部门的记录。
+- en: To cope with this sort of situation, it's useful to consider more flexible generic
+    types. The rules we've seen so far are quite restrictive.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了应对这种情况，考虑更灵活的泛型类型是很有用的。到目前为止，我们看到的规则相当严格。

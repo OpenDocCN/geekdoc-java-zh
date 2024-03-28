@@ -1,0 +1,182 @@
+- en: Period and Duration
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Period和Duration
+- en: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/period.html](https://docs.oracle.com/javase/tutorial/datetime/iso/period.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/datetime/iso/period.html](https://docs.oracle.com/javase/tutorial/datetime/iso/period.html)
+- en: 'When you write code to specify an amount of time, use the class or method that
+    best meets your needs: the [`Duration`](https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html)
+    class, [`Period`](https://docs.oracle.com/javase/8/docs/api/java/time/Period.html)
+    class, or the [`ChronoUnit.between`](https://docs.oracle.com/javase/8/docs/api/java/time/temporal/ChronoUnit.html#between-java.time.temporal.Temporal-java.time.temporal.Temporal-)
+    method. A `Duration` measures an amount of time using time-based values (seconds,
+    nanoseconds). A `Period` uses date-based values (years, months, days).'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当编写代码来指定一段时间时，请使用最符合您需求的类或方法：[`Duration`](https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html)类、[`Period`](https://docs.oracle.com/javase/8/docs/api/java/time/Period.html)类或[`ChronoUnit.between`](https://docs.oracle.com/javase/8/docs/api/java/time/temporal/ChronoUnit.html#between-java.time.temporal.Temporal-java.time.temporal.Temporal-)方法。`Duration`使用基于时间的值（秒、纳秒）来衡量一段时间。`Period`使用基于日期的值（年、月、日）。
+- en: '* * *'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** A `Duration` of one day is *exactly* 24 hours long. A `Period` of
+    one day, when added to a `ZonedDateTime`, may vary according to the time zone.
+    For example, if it occurs on the first or last day of daylight saving time.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 一天的`Duration`*确切地*为24小时。将一天的`Period`添加到`ZonedDateTime`中时，根据时区可能会有所变化。例如，如果发生在夏令时的第一天或最后一天。'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Duration
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Duration
+- en: A `Duration` is most suitable in situations that measure machine-based time,
+    such as code that uses an `Instant` object. A `Duration` object is measured in
+    seconds or nanoseconds and does not use date-based constructs such as years, months,
+    and days, though the class provides methods that convert to days, hours, and minutes.
+    A `Duration` can have a negative value, if it is created with an end point that
+    occurs before the start point.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`Duration`在衡量机器时间的情况下最为适用，比如使用`Instant`对象的代码。`Duration`对象以秒或纳秒为单位进行衡量，不使用年、月和日等基于日期的构造，尽管该类提供了将时间转换为天、小时和分钟的方法。`Duration`可以具有负值，如果创建时结束点早于起始点。
+- en: 'The following code calculates, in nanoseconds, the duration between two instants:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码计算两个瞬间之间的持续时间（以纳秒为单位）：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The following code adds 10 seconds to an `Instant`:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码将10秒添加到一个`Instant`中：
+- en: '[PRE1]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: A `Duration` is not connected to the timeline, in that it does not track time
+    zones or daylight saving time. Adding a `Duration` equivalent to 1 day to a `ZonedDateTime`
+    results in exactly 24 hours being added, regardless of daylight saving time or
+    other time differences that might result.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`Duration`与时间线无关，即它不跟踪时区或夏令时。将相当于1天的`Duration`添加到`ZonedDateTime`中，结果将确切地添加24小时，而不考虑夏令时或其他可能导致的时间差异。
+- en: ChronoUnit
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: ChronoUnit
+- en: 'The `ChronoUnit` enum, discussed in the [The Temporal Package](temporal.html),
+    defines the units used to measure time. The `ChronoUnit.between` method is useful
+    when you want to measure an amount of time in a single unit of time only, such
+    as days or seconds. The `between` method works with all temporal-based objects,
+    but it returns the amount in a single unit only. The following code calculates
+    the gap, in milliseconds, between two time-stamps:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 讨论[Temporal Package](temporal.html)中的`ChronoUnit`枚举定义了用于衡量时间的单位。当您想要以单个时间单位（如天或秒）衡量一段时间时，`ChronoUnit.between`方法非常有用。`between`方法适用于所有基于时间的对象，但仅以单个单位返回时间量。以下代码计算两个时间戳之间的间隔，以毫秒为单位：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Period
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Period
+- en: To define an amount of time with date-based values (years, months, days), use
+    the [`Period`](https://docs.oracle.com/javase/8/docs/api/java/time/Period.html)
+    class. The `Period` class provides various `get` methods, such as [`getMonths`](https://docs.oracle.com/javase/8/docs/api/java/time/Period.html#getMonths--),
+    [`getDays`](https://docs.oracle.com/javase/8/docs/api/java/time/Period.html#getDays--),
+    and [`getYears`](https://docs.oracle.com/javase/8/docs/api/java/time/Period.html#getYears--),
+    so that you can extract the amount of time from the period.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要使用基于日期的值（年、月、日）来定义一段时间，请使用[`Period`](https://docs.oracle.com/javase/8/docs/api/java/time/Period.html)类。`Period`类提供了各种`get`方法，比如[`getMonths`](https://docs.oracle.com/javase/8/docs/api/java/time/Period.html#getMonths--)、[`getDays`](https://docs.oracle.com/javase/8/docs/api/java/time/Period.html#getDays--)和[`getYears`](https://docs.oracle.com/javase/8/docs/api/java/time/Period.html#getYears--)，以便您可以从期间中提取时间量。
+- en: 'The total period of time is represented by all three units together: months,
+    days, and years. To present the amount of time measured in a single unit of time,
+    such as days, you can use the `ChronoUnit.between` method.'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有三个单位（月、日和年）一起表示的总时间段。要以单个时间单位（如天）表示测量的时间量，可以使用`ChronoUnit.between`方法。
+- en: 'The following code reports how old you are, assuming that you were born on
+    January 1, 1960\. The `Period` class is used to determine the time in years, months,
+    and days. The same period, in total days, is determined by using the `ChronoUnit.between`
+    method and is displayed in parentheses:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下代码报告了你的年龄，假设你出生于1960年1月1日。使用`Period`类来确定年、月和日的时间。使用`ChronoUnit.between`方法确定相同的时间段，以总天数显示在括号中：
+- en: '[PRE3]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The code produces output similar to the following:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该代码生成类似以下的输出：
+- en: '[PRE4]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: To calculate how long it is until your next birthday, you could use the following
+    code from the [``Birthday``](examples/Birthday.java) example. The `Period` class
+    is used to determine the value in months and days. The `ChronoUnit.between` method
+    returns the value in total days and is displayed in parentheses.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要计算距离你下一个生日还有多长时间，可以使用来自[``Birthday``](examples/Birthday.java)示例的以下代码。使用`Period`类来确定月和日的值。`ChronoUnit.between`方法返回总天数的值，并显示在括号中。
+- en: '[PRE5]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The code produces output similar to the following:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该代码生成类似以下的输出：
+- en: '[PRE6]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: These calculations do not account for time zone differences. If you were, for
+    example, born in Australia, but currently live in Bangalore, this slightly affects
+    the calculation of your exact age. In this situation, use a `Period` in conjunction
+    with the `ZonedDateTime` class. When you add a `Period` to a `ZonedDateTime`,
+    the time differences are observed.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些计算没有考虑时区差异。例如，如果你出生在澳大利亚，但目前居住在班加罗尔，这会稍微影响你确切年龄的计算。在这种情况下，可以结合使用`Period`和`ZonedDateTime`类。当你将`Period`添加到`ZonedDateTime`时，会考虑时差。

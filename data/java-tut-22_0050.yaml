@@ -1,0 +1,53 @@
+- en: Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html](https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html](https://docs.oracle.com/javase/tutorial/java/javaOO/objects.html)
+- en: A typical Java program creates many objects, which as you know, interact by
+    invoking methods. Through these object interactions, a program can carry out various
+    tasks, such as implementing a GUI, running an animation, or sending and receiving
+    information over a network. Once an object has completed the work for which it
+    was created, its resources are recycled for use by other objects.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个典型的Java程序会创建许多对象，正如您所知，这些对象通过调用方法进行交互。通过这些对象之间的交互，程序可以执行各种任务，比如实现GUI、运行动画，或者在网络上传输和接收信息。一旦一个对象完成了它被创建的工作，它的资源就会被回收以供其他对象使用。
+- en: 'Here''s a small program, called [`CreateObjectDemo`](examples/CreateObjectDemo.java),
+    that creates three objects: one [`Point`](examples/Point.java) object and two
+    [`Rectangle`](examples/Rectangle.java) objects. You will need all three source
+    files to compile this program.'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里有一个小程序，名为[`CreateObjectDemo`](examples/CreateObjectDemo.java)，它创建了三个对象：一个[`Point`](examples/Point.java)对象和两个[`Rectangle`](examples/Rectangle.java)对象。您需要这三个源文件来编译这个程序。
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'This program creates, manipulates, and displays information about various objects.
+    Here''s the output:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序创建、操作并显示有关各种对象的信息。以下是输出：
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The following three sections use the above example to describe the life cycle
+    of an object within a program. From them, you will learn how to write code that
+    creates and uses objects in your own programs. You will also learn how the system
+    cleans up after an object when its life has ended.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下三个部分使用上述示例来描述程序中对象的生命周期。通过它们，您将学习如何编写代码来在您自己的程序中创建和使用对象。您还将了解系统在对象的生命周期结束时如何清理。

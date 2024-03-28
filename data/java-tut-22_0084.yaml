@@ -1,0 +1,78 @@
+- en: Evolving Interfaces
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 接口的演变
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/nogrow.html](https://docs.oracle.com/javase/tutorial/java/IandI/nogrow.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/IandI/nogrow.html](https://docs.oracle.com/javase/tutorial/java/IandI/nogrow.html)
+- en: 'Consider an interface that you have developed called `DoIt`:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑您开发的名为`DoIt`的接口：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Suppose that, at a later time, you want to add a third method to `DoIt`, so
+    that the interface now becomes:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设以后，您想要向`DoIt`添加第三个方法，使接口现在变成：
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: If you make this change, then all classes that implement the old `DoIt` interface
+    will break because they no longer implement the old interface. Programmers relying
+    on this interface will protest loudly.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您进行此更改，则所有实现旧`DoIt`接口的类都将中断，因为它们不再实现旧接口。依赖于此接口的程序员将会强烈抗议。
+- en: 'Try to anticipate all uses for your interface and specify it completely from
+    the beginning. If you want to add additional methods to an interface, you have
+    several options. You could create a `DoItPlus` interface that extends `DoIt`:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽量预见接口的所有用途并从一开始完全指定它。如果要向接口添加其他方法，您有几个选项。您可以创建一个扩展`DoIt`的`DoItPlus`接口：
+- en: '[PRE2]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Now users of your code can choose to continue to use the old interface or to
+    upgrade to the new interface.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，您的代码用户可以选择继续使用旧接口或升级到新接口。
+- en: 'Alternatively, you can define your new methods as [default methods](../../java/IandI/defaultmethods.html).
+    The following example defines a default method named `didItWork`:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或者，您可以将新方法定义为[默认方法](../../java/IandI/defaultmethods.html)。以下示例定义了一个名为`didItWork`的默认方法：
+- en: '[PRE3]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: Note that you must provide an implementation for default methods. You could
+    also define new [static methods](../../java/IandI/defaultmethods.html#static)
+    to existing interfaces. Users who have classes that implement interfaces enhanced
+    with new default or static methods do not have to modify or recompile them to
+    accommodate the additional methods.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，您必须为默认方法提供实现。您还可以为现有接口定义新的[静态方法](../../java/IandI/defaultmethods.html#static)。实现增强了新默认或静态方法的接口的类的用户无需修改或重新编译它们以适应额外的方法。

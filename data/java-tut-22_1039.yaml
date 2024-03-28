@@ -1,0 +1,81 @@
+- en: Technical Issues with SDP
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: SDP的技术问题
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/issues.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/issues.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/issues.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/issues.html)
+- en: IPv4 and IPv6 incompatibility
+  id: totrans-2
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: IPv4和IPv6不兼容
+- en: Internet Protocol version 4 (IPv4) has long been the industry standard version
+    of the Internet Protocol (IP) for delivering data over the Internet. Internet
+    Protocol version 6 (IPv6) is the next generation Internet layer protocol. Both
+    versions of IP are in use today.
+  id: totrans-3
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 互联网协议第4版（IPv4）长期以来一直是Internet协议（IP）的行业标准版本，用于在Internet上传输数据。互联网协议第6版（IPv6）是下一代Internet层协议。今天仍在使用这两个版本的IP。
+- en: 'IPv4 addresses are 32-bits long, written in decimal format, and separated by
+    periods. IPv6 addresses are 128-bits long, written in hexadecimal format, and
+    separated by colons. IPv4 addresses cannot be used as is in IPv6, but IPv6 does
+    support a special class of addresses: the IPv4-mapped address. In an IPv4-mapped
+    address, the first 80 bits are set to zero, the next 16 bits are set to 1, and
+    the last 32 bits represent the IPv4 address.'
+  id: totrans-4
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: IPv4地址是32位长，以十进制格式编写，并用句点分隔。IPv6地址是128位长，以十六进制格式编写，并用冒号分隔。IPv4地址不能直接在IPv6中使用，但IPv6支持一种特殊类别的地址：IPv4映射地址。在IPv4映射地址中，前80位设置为零，接下来的16位设置为1，最后32位表示IPv4地址。
+- en: 'For example, here is the same IP address expressed in both formats:'
+  id: totrans-5
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 例如，这里是相同的IP地址以两种格式表示：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'By default, if IPv6 is enabled on any of the IB adaptors, the Java platform
+    uses IPv6\. However, IPv4-mapped addresses are not currently available in the
+    Solaris OS or under Linux. For this reason, if you want to use the IPv4 address
+    format under JDK 7, you must specify the `java.net.preferIPv4Stack` property,
+    as shown in this example:'
+  id: totrans-7
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 默认情况下，如果IB适配器中启用了IPv6，则Java平台将使用IPv6。然而，在Solaris操作系统或Linux下目前不支持IPv4映射地址。因此，如果您想在JDK
+    7下使用IPv4地址格式，必须指定`java.net.preferIPv4Stack`属性，如下例所示：
+- en: '[PRE1]'
+  id: totrans-8
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Bugs
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 错误
+- en: A few bugs were found in the early InfiniBand implementation. These bugs are
+    fixed in the Solaris 10 10/09 release. Make sure that you are using at least this
+    release.
+  id: totrans-10
+  prefs:
+  - PREF_IND
+  type: TYPE_NORMAL
+  zh: 在早期InfiniBand实现中发现了一些错误。这些错误在Solaris 10 10/09版本中已修复。请确保您至少使用此版本。

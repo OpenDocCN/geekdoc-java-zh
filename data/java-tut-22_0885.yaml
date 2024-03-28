@@ -1,0 +1,334 @@
+- en: Setting Privileges for Extensions
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 为扩展设置权限
+- en: 原文：[https://docs.oracle.com/javase/tutorial/ext/security/policy.html](https://docs.oracle.com/javase/tutorial/ext/security/policy.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/ext/security/policy.html](https://docs.oracle.com/javase/tutorial/ext/security/policy.html)
+- en: 'If a [The Security Manager](../../essential/environment/security.html) is in
+    force, the following conditions must be met to enable any software, including
+    extension software, to perform security-sensitive operations:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果有[安全管理器](../../essential/environment/security.html)生效，那么必须满足以下条件，以使任何软件，包括扩展软件，能够执行安全敏感操作：
+- en: The security-sensitive code in the extension must be wrapped in a `PrivilegedAction`
+    object.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 扩展中的安全敏感代码必须包装在`PrivilegedAction`对象中。
+- en: The security policy implemented by the security manager must grant the appropriate
+    permission to the extension. By default, installed extensions are granted all
+    security permissions as if they were part of the core platform API. The permissions
+    granted by the security policy apply only to code wrapped in the `PrivilegedAction`
+    instance.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 安全管理器实施的安全策略必须授予扩展适当的权限。默认情况下，安装的扩展被授予所有安全权限，就好像它们是核心平台 API 的一部分。安全策略授予的权限仅适用于包装在`PrivilegedAction`实例中的代码。
+- en: Let's look at each of these conditions in a little more detail, with some examples.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们更详细地看一下这些条件，附带一些示例。
+- en: Using the PrivilegedAction Class
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用`PrivilegedAction`类
+- en: 'Suppose that you want to modify the `RectangleArea` class in the extension
+    example of the previous lesson to write rectangle areas to a file rather than
+    to stdout. Writing to a file, however, is a security-sensitive operation, so if
+    your software is going to be running under a security manager, you''ll need to
+    mark your code as being privileged. There are two steps you need to take to do
+    so:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想要修改上一课程示例中扩展示例中的`RectangleArea`类，将矩形面积写入文件而不是标准输出。然而，向文件写入是一个涉及安全的操作，因此如果你的软件将在安全管理器下运行，你需要将你的代码标记为特权代码。你需要执行两个步骤来实现这一点：
+- en: You need to place code that performs security-sensitive operations within the
+    `run` method of an object of type `java.security.PrivilegedAction`.
+  id: totrans-8
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 你需要将执行安全敏感操作的代码放在类型为`java.security.PrivilegedAction`的对象的`run`方法中。
+- en: You must use that `PrivilegedAction` object as the argument in a call to the
+    `doPrivileged` method of `java.security.AccessController`.
+  id: totrans-9
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 你必须将该`PrivilegedAction`对象作为参数传递给`java.security.AccessController`的`doPrivileged`方法。
+- en: 'If we apply those guidelines to the `RectangleArea` class, our class definition
+    would look something like this:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们将这些准则应用于`RectangleArea`类，我们的类定义将如下所示：
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The single method in this class, `writeArea`, computes the area of a rectangle,
+    and writes the area to a file called `area.txt` in the `test` directory under
+    the user's home directory.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个类中的唯一方法`writeArea`计算矩形的面积，并将面积写入名为`area.txt`的文件中，该文件位于用户主目录下的`test`目录中。
+- en: The security-sensitive statements dealing with the output file are placed within
+    the `run` method of a new instance of `PrivilegedAction`. (Note that `run` requires
+    that an `Object` instance be returned. The returned object can be `null`.) The
+    new `PrivilegedAction` instance is then passed as an argument in a call to `AccessController.doPrivileged`.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 处理输出文件的安全敏感语句必须放在新的`PrivilegedAction`实例的`run`方法中。（注意，`run`要求返回一个`Object`实例。返回的对象可以是`null`。）然后将新的`PrivilegedAction`实例作为参数传递给`AccessController.doPrivileged`的调用。
+- en: For more information about using `doPrivileged`, see [API for Privileged Blocks](https://docs.oracle.com/javase/8/docs/technotes/guides/security/doprivileged.html)
+    in the JDK™ documentation.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关使用`doPrivileged`的更多信息，请参阅[JDK™文档中的特权块 API](https://docs.oracle.com/javase/8/docs/technotes/guides/security/doprivileged.html)。
+- en: 'Wrapping security-sensitive code in a `PrivilegedAction` object in this manner
+    is the first requirement for enabling an extension to perform security-sensitive
+    operations. The second requirement is: getting the security manager to grant the
+    privileged code the appropriate permissions.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以这种方式将安全敏感代码包装在`PrivilegedAction`对象中是使扩展能够执行安全敏感操作的第一个要求。第二个要求是：让安全管理器授予特权代码适当的权限。
+- en: Specifying Permissions with the Security Policy
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用安全策略指定权限
+- en: The security policy in force at runtime is specified by a *policy file*. The
+    default policy is set by the file `lib/security/java.policy` in the JRE software.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行时生效的安全策略由*策略文件*指定。默认策略由 JRE 软件中的`lib/security/java.policy`文件设置。
+- en: 'The policy file assigns security privileges to software by using *grant* entries.
+    The policy file can contain any number of grant entries. The default policy file
+    has this grant entry for installed extensions:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 策略文件通过*grant*条目为软件分配安全权限。策略文件可以包含任意数量的grant条目。默认策略文件为安装的扩展程序具有以下grant条目：
+- en: '[PRE1]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: This entry specifies that files in the directories specified by `file:${{java.ext.dirs}}/*`
+    are to be granted the permission called `java.security.AllPermission`. (Note that
+    as of Java 6, `java.ext.dirs` refers to a `classpath`-like path of directories,
+    each of which can hold installed extensions.) It's not too hard to guess that
+    `java.security.AllPermission` grants installed extensions all the security privileges
+    that it's possible to grant.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此条目指定由`file:${{java.ext.dirs}}/*`指定的目录中的文件将被授予名为`java.security.AllPermission`的权限。
+    （请注意，从Java 6开始，`java.ext.dirs`指的是类似`classpath`的目录路径，每个目录都可以容纳安装的扩展。）不难猜到`java.security.AllPermission`授予安装的扩展程序可以授予的所有安全权限。
+- en: By default, then, installed extensions have no security restrictions. Extension
+    software can perform security-sensitive operations as if there were no security
+    manager installed, provided that security-sensitive code is contained in an instance
+    of `PrivilegedAction` passed as an argument in a `doPrivileged` call.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，安装的扩展程序没有安全限制。只要安全敏感代码包含在作为`doPrivileged`调用参数传递的`PrivilegedAction`实例中，扩展软件就可以执行安全敏感操作，就好像没有安装安全管理器一样。
+- en: To limit the privileges granted to extensions, you need to modify the policy
+    file. To deny all privileges to all extensions, you could simply remove the above
+    grant entry.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要限制授予扩展程序的权限，您需要修改策略文件。要拒绝所有扩展程序的所有权限，您可以简单地删除上述grant条目。
+- en: 'Not all permissions are as comprehensive as the `java.security.AllPermission`
+    granted by default. After deleting the default grant entry, you can enter a new
+    grant entry for particular permissions, including:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 并非所有权限都像默认授予的`java.security.AllPermission`那样全面。删除默认grant条目后，您可以为特定权限输入新的grant条目，包括：
+- en: '`java.awt.**AWTPermission**`'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.awt.**AWTPermission**`'
+- en: '`java.io.**FilePermission**`'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.io.**FilePermission**`'
+- en: '`java.net.**NetPermission**`'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.net.**NetPermission**`'
+- en: '`java.util.**PropertyPermission**`'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.util.**PropertyPermission**`'
+- en: '`java.lang.reflect.**ReflectPermission**`'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.lang.reflect.**ReflectPermission**`'
+- en: '`java.lang.**RuntimePermission**`'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.lang.**RuntimePermission**`'
+- en: '`java.security.**SecurityPermission**`'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.security.**SecurityPermission**`'
+- en: '`java.io.**SerializablePermission**`'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.io.**SerializablePermission**`'
+- en: '`java.net.**SocketPermission**`'
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.net.**SocketPermission**`'
+- en: The [Permissions in the JDK](https://docs.oracle.com/javase/8/docs/technotes/guides/security/permissions.html)
+    documentation provides details about each of these permissions. Let's look at
+    those needed to use RectangleArea as an extension.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JDK中的权限](https://docs.oracle.com/javase/8/docs/technotes/guides/security/permissions.html)文档提供了关于每个权限的详细信息。让我们看看使用RectangleArea作为扩展所需的权限。'
+- en: 'The `RectangleArea.writeArea` method needs two permissions: one to determine
+    the path to the user''s home directory, and the other to write to a file. Assuming
+    that the `RectangleArea` class is bundled in the file `area.jar`, you could grant
+    write privileges by adding this entry to the policy file:'
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`RectangleArea.writeArea`方法需要两个权限：一个用于确定用户主目录的路径，另一个用于写入文件。假设`RectangleArea`类打包在文件`area.jar`中，您可以通过向策略文件添加以下条目来授予写入权限：'
+- en: '[PRE2]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The `codeBase "file:${java.home}/lib/ext/area.jar"` part of this entry guarantees
+    that any permissions specified by this entry will apply only to the `area.jar`.
+    The `java.io.PropertyPermission` permits access to properties. The first argument,
+    `"user.home"`, names the property, and the second argument, `"read"`, indicates
+    that the property can be read. (The other choice is `"write"`.)
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此条目的`codeBase "file:${java.home}/lib/ext/area.jar"`部分保证此条目指定的权限仅适用于`area.jar`。
+    `java.io.PropertyPermission`允许访问属性。 第一个参数`"user.home"`指定属性的名称，第二个参数`"read"`表示可以读取该属性。（另一个选择是`"write"`。）
+- en: The `java.io.FilePermission` permits access to files. The first argument, `"${user.home}${/}test${/}*"`,
+    indicates that `area.jar` is being granted permission to access all files in the
+    `test` directory that is in the user's home directory. (Note that `${/}` is a
+    platform-independent file separator.) The second argument indicates that the file
+    access being granted is only for writing. (Other choices for the second argument
+    are `"read"`, `"delete"`, and `"execute"`.)
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java.io.FilePermission`允许访问文件。第一个参数`"${user.home}${/}test${/}*"`表示`area.jar`被授予访问用户主目录中`test`目录中所有文件的权限。（请注意`${/}`是一个平台无关的文件分隔符。）第二个参数表示被授予的文件访问权限仅限于写入。（第二个参数的其他选择是`"read"`、`"delete"`和`"execute"`。）'
+- en: Signing Extensions
+  id: totrans-38
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 签署扩展程序
+- en: You can use the policy file to place additional restrictions on the permissions
+    granted to extensions by requiring them to be signed by a trusted entity. (For
+    a review of signing and verifying JAR files, see the [Signing JAR Files](../../deployment/jar/signing.html)
+    lesson in this tutorial.)
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用策略文件对扩展程序授予的权限施加额外限制，要求它们必须由受信任的实体签名。（有关签署和验证 JAR 文件的审查，请参阅本教程中的[签署 JAR
+    文件](../../deployment/jar/signing.html)课程。）
+- en: To allow signature verification of extensions or other software in conjunction
+    with granting permissions, the policy file must contain a *keystore entry*. The
+    keystore entry specifies which keystore is to be used in the verification. Keystore
+    entries have the form
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了允许在授予权限时与扩展程序或其他软件一起进行签名验证，策略文件必须包含一个*keystore条目*。密钥库条目指定用于验证的密钥库。密钥库条目的形式为
+- en: '[PRE3]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The URL *keystore_url* is either an absolute or relative. If it's relative,
+    the URL is relative to the location of the policy file. For example, to use the
+    default keystore used by `keytool`, add this entry to `java.policy`
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: URL *keystore_url*可以是绝对或相对的。如果是相对的，URL 是相对于策略文件的位置。例如，要使用`keytool`使用的默认密钥库，将此条目添加到`java.policy`中
+- en: '[PRE4]'
+  id: totrans-43
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'To indicate that an extension must be signed in order to be granted security
+    privileges, you use the `signedBy` field. For example, the following entry indicates
+    that the extension `area.jar` is to be granted the listed privileges only if it
+    is signed by the users identified in the keystore by the aliases Robert and Rita:'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要指示必须签署扩展程序才能被授予安全权限，您可以使用`signedBy`字段。例如，以下条目指示只有当扩展程序`area.jar`由密钥库中的别名为Robert和Rita的用户签名时，才授予列出的权限：
+- en: '[PRE5]'
+  id: totrans-45
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'If the `codeBase` field is omitted, as in the following "grant", the permissions
+    are granted to *any* software, including installed or download extensions, that
+    are signed by "Robert" or "Rita":'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果`codeBase`字段被省略，如下所示的"grant"，则权限将授予*任何*由"Robert"或"Rita"签名的软件，包括已安装或下载的扩展程序：
+- en: '[PRE6]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: For further details about the policy file format, see section 3.3.1 of the [Security
+    Architecture Specification](https://docs.oracle.com/javase/8/docs/technotes/guides/security/spec/security-spec.doc3.html#20131)
+    in the JDK documentation.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关策略文件格式的更多详细信息，请参阅 JDK 文档中的[安全体系结构规范](https://docs.oracle.com/javase/8/docs/technotes/guides/security/spec/security-spec.doc3.html#20131)第3.3.1节。

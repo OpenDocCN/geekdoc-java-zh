@@ -1,0 +1,177 @@
+- en: I/O from the Command Line
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 命令行 I/O
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/cl.html](https://docs.oracle.com/javase/tutorial/essential/io/cl.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/io/cl.html](https://docs.oracle.com/javase/tutorial/essential/io/cl.html)
+- en: 'A program is often run from the command line and interacts with the user in
+    the command line environment. The Java platform supports this kind of interaction
+    in two ways: through the Standard Streams and through the Console.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 程序通常从命令行运行并在命令行环境中与用户交互。Java 平台通过标准流和控制台两种方式支持这种交互。
+- en: Standard Streams
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 标准流
+- en: Standard Streams are a feature of many operating systems. By default, they read
+    input from the keyboard and write output to the display. They also support I/O
+    on files and between programs, but that feature is controlled by the command line
+    interpreter, not the program.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 标准流是许多操作系统的特性。默认情况下，它们从键盘读取输入并将输出写入显示器。它们还支持文件和程序之间的 I/O，但该功能由命令行解释器控制，而不是程序。
+- en: 'The Java platform supports three Standard Streams: *Standard Input*, accessed
+    through `System.in`; *Standard Output*, accessed through `System.out`; and *Standard
+    Error*, accessed through `System.err`. These objects are defined automatically
+    and do not need to be opened. Standard Output and Standard Error are both for
+    output; having error output separately allows the user to divert regular output
+    to a file and still be able to read error messages. For more information, refer
+    to the documentation for your command line interpreter.'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 平台支持三个标准流：*标准输入*，通过 `System.in` 访问；*标准输出*，通过 `System.out` 访问；以及*标准错误*，通过
+    `System.err` 访问。这些对象会自动定义，无需打开。标准输出和标准错误都用于输出；将错误输出单独处理允许用户将常规输出重定向到文件并仍能读取错误消息。有关更多信息，请参考您的命令行解释器文档。
+- en: You might expect the Standard Streams to be character streams, but, for historical
+    reasons, they are byte streams. `System.out` and `System.err` are defined as [`PrintStream`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintStream.html)
+    objects. Although it is technically a byte stream, `PrintStream` utilizes an internal
+    character stream object to emulate many of the features of character streams.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能期望标准流是字符流，但出于历史原因，它们是字节流。`System.out` 和 `System.err` 被定义为 [`PrintStream`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintStream.html)
+    对象。虽然技术上是字节流，但 `PrintStream` 利用内部字符流对象来模拟许多字符流的特性。
+- en: By contrast, `System.in` is a byte stream with no character stream features.
+    To use Standard Input as a character stream, wrap `System.in` in `InputStreamReader`.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相比之下，`System.in` 是一个没有字符流特性的字节流。要将标准输入作为字符流使用，需要将 `System.in` 包装在 `InputStreamReader`
+    中。
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The Console
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 控制台
+- en: A more advanced alternative to the Standard Streams is the Console. This is
+    a single, predefined object of type [`Console`](https://docs.oracle.com/javase/8/docs/api/java/io/Console.html)
+    that has most of the features provided by the Standard Streams, and others besides.
+    The Console is particularly useful for secure password entry. The Console object
+    also provides input and output streams that are true character streams, through
+    its `reader` and `writer` methods.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 比标准流更高级的替代方案是控制台。这是一种类型为 [`Console`](https://docs.oracle.com/javase/8/docs/api/java/io/Console.html)
+    的单一预定义对象，具有标准流提供的大部分功能，以及其他功能。控制台特别适用于安全密码输入。控制台对象还通过其 `reader` 和 `writer` 方法提供真正的字符流输入和输出流。
+- en: Before a program can use the Console, it must attempt to retrieve the Console
+    object by invoking `System.console()`. If the Console object is available, this
+    method returns it. If `System.console` returns `NULL`, then Console operations
+    are not permitted, either because the OS doesn't support them or because the program
+    was launched in a noninteractive environment.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在程序可以使用控制台之前，必须通过调用 `System.console()` 尝试检索控制台对象。如果控制台对象可用，则此方法将返回它。如果 `System.console`
+    返回 `NULL`，则不允许控制台操作，可能是因为操作系统不支持它们或者因为程序在非交互环境中启动。
+- en: The Console object supports secure password entry through its `readPassword`
+    method. This method helps secure password entry in two ways. First, it suppresses
+    echoing, so the password is not visible on the user's screen. Second, `readPassword`
+    returns a character array, not a `String`, so the password can be overwritten,
+    removing it from memory as soon as it is no longer needed.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 控制台对象通过其`readPassword`方法支持安全密码输入。该方法通过两种方式帮助安全密码输入。首先，它抑制回显，因此密码不会在用户屏幕上可见。其次，`readPassword`返回一个字符数组，而不是一个`String`，因此密码可以被覆盖，一旦不再需要，即从内存中删除。
+- en: The [`Password`](examples/Password.java) example is a prototype program for
+    changing a user's password. It demonstrates several `Console` methods.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Password`](examples/Password.java)示例是一个用于更改用户密码的原型程序。它演示了几种`Console`方法。'
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The `Password` class follows these steps:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Password`类遵循以下步骤：'
+- en: Attempt to retrieve the Console object. If the object is not available, abort.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 尝试检索控制台对象。如果对象不可用，则中止。
+- en: Invoke `Console.readLine` to prompt for and read the user's login name.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调用`Console.readLine`提示并读取用户的登录名。
+- en: Invoke `Console.readPassword` to prompt for and read the user's existing password.
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调用`Console.readPassword`提示并读取用户的现有密码。
+- en: Invoke `verify` to confirm that the user is authorized to change the password.
+    (In this example, `verify` is a dummy method that always returns `true`.)
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调用`verify`确认用户有权限更改密码。（在这个例子中，`verify`是一个始终返回`true`的虚拟方法。）
+- en: 'Repeat the following steps until the user enters the same password twice:'
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 重复以下步骤，直到用户两次输入相同的密码：
+- en: Invoke `Console.readPassword` twice to prompt for and read a new password.
+  id: totrans-21
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 两次调用`Console.readPassword`提示并读取新密码。
+- en: If the user entered the same password both times, invoke `change` to change
+    it. (Again, `change` is a dummy method.)
+  id: totrans-22
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果用户两次输入相同的密码，调用`change`进行更改。（同样，`change`是一个虚拟方法。）
+- en: Overwrite both passwords with blanks.
+  id: totrans-23
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 用空格覆盖两个密码。
+- en: Overwrite the old password with blanks.
+  id: totrans-24
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 用空格覆盖旧密码。

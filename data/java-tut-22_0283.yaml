@@ -1,0 +1,132 @@
+- en: 'Lesson: Java Web Start'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：Java Web Start
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/webstart/index.html](https://docs.oracle.com/javase/tutorial/deployment/webstart/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/webstart/index.html](https://docs.oracle.com/javase/tutorial/deployment/webstart/index.html)
+- en: Java Web Start software provides the power to launch full-featured applications
+    with a single click. Users can download and launch applications, such as a complete
+    spreadsheet program or an Internet chat client, without going through lengthy
+    installation procedures.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Web Start 软件提供了一键启动功能，可以启动功能齐全的应用程序。用户可以下载和启动应用程序，例如完整的电子表格程序或互联网聊天客户端，而无需经历冗长的安装过程。
+- en: With Java Web Start software, users can launch a Java application by clicking
+    a link in a web page. The link points to a Java Network Launch Protocol (JNLP)
+    file, which instructs Java Web Start software to download, cache, and run the
+    application.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 Java Web Start 软件，用户可以通过在网页中点击链接来启动 Java 应用程序。该链接指向一个 Java 网络启动协议（JNLP）文件，该文件指示
+    Java Web Start 软件下载、缓存和运行应用程序。
+- en: 'Java Web Start software provides Java developers and users with many deployment
+    advantages:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Web Start 软件为 Java 开发人员和用户提供了许多部署优势：
+- en: With Java Web Start software, you can place a single Java application on a web
+    server for deployment to a wide variety of platforms, including Windows, Linux,
+    and Solaris.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用 Java Web Start 软件，您可以将单个 Java 应用程序放在 Web 服务器上，以便在各种平台上部署，包括 Windows、Linux
+    和 Solaris。
+- en: Java Web Start software supports multiple, simultaneous versions of the Java
+    platform. An application can request a specific version of the Java Runtime Environment
+    (JRE) software without conflicting with the needs of other applications.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Java Web Start 软件支持多个同时运行的 Java 平台版本。应用程序可以请求特定版本的 Java 运行时环境（JRE）软件，而不会与其他应用程序的需求发生冲突。
+- en: Users can create a desktop shortcut to launch a Java Web Start application outside
+    a browser.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 用户可以创建桌面快捷方式以在浏览器外启动 Java Web Start 应用程序。
+- en: Java Web Start software takes advantage of the inherent security of the Java
+    platform. By default, applications have restricted access to local disk and network
+    resources.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Java Web Start 软件利用了 Java 平台固有的安全性。默认情况下，应用程序对本地磁盘和网络资源的访问受到限制。
+- en: Applications launched with Java Web Start software are cached locally for improved
+    performance.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用 Java Web Start 软件启动的应用程序会在本地缓存以提高性能。
+- en: Updates to a Java Web Start application are automatically downloaded when the
+    application is run standalone from the user's desktop.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Java Web Start 应用程序的更新会在用户从桌面独立运行应用程序时自动下载。
+- en: Java Web Start software is installed as part of the JRE software. Users do not
+    have to install Java Web Start software separately or perform additional tasks
+    to use Java Web Start applications.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Web Start 软件作为 JRE 软件的一部分安装。用户无需单独安装 Java Web Start 软件或执行其他任务即可使用 Java
+    Web Start 应用程序。
+- en: Additional References
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 其他参考资料
+- en: 'This lesson is intended to get you started with Java Web Start technology and
+    does not include all available documentation. For more information about Java
+    Web Start technology, see the following:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程旨在帮助您开始使用 Java Web Start 技术，并不包括所有可用文档。有关 Java Web Start 技术的更多信息，请参阅以下内容：
+- en: '[Java Web Start Guide](https://docs.oracle.com/javase/8/docs/technotes/guides/javaws/developersguide/contents.html)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Java Web Start 指南](https://docs.oracle.com/javase/8/docs/technotes/guides/javaws/developersguide/contents.html)'
+- en: '[Java Web Start FAQ](https://docs.oracle.com/javase/8/docs/technotes/guides/javaws/developersguide/faq.html)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Java Web Start 常见问题解答](https://docs.oracle.com/javase/8/docs/technotes/guides/javaws/developersguide/faq.html)'
+- en: '[JNLP Specification](http://jcp.org/en/jsr/detail?id=56)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[JNLP 规范](http://jcp.org/en/jsr/detail?id=56)'
+- en: '[`javax.jnlp` API Documentation](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/index.html)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.jnlp` API 文档](https://docs.oracle.com/javase/8/docs/jre/api/javaws/jnlp/index.html)'
+- en: '[Java Web Start Developers Site](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Java Web Start 开发者站点](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)'

@@ -1,0 +1,343 @@
+- en: Introduction to Sequencers
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 介绍Sequencers
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-intro.html](https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-intro.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-intro.html](https://docs.oracle.com/javase/tutorial/sound/MIDI-seq-intro.html)
+- en: In the world of MIDI, a *sequencer* is any hardware or software device that
+    can precisely play or record a *sequence* of time-stamped MIDI messages. Similarly,
+    in the Java Sound API, the [`Sequencer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Sequencer.html)
+    abstract interface defines the properties of an object that can play and record
+    sequences of [`MidiEvent`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiEvent.html)
+    objects. A `Sequencer` typically loads these `MidiEvent` sequences from a standard
+    MIDI file or saves them to such a file. Sequences can also be edited. The following
+    pages explain how to use `Sequencer` objects, along with related classes and interfaces,
+    to accomplish such tasks.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在MIDI世界中，*sequencer*是任何能精确播放或记录一系列时间戳MIDI消息的硬件或软件设备。同样，在Java Sound API中，[`Sequencer`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/Sequencer.html)抽象接口定义了可以播放和记录[`MidiEvent`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiEvent.html)对象序列的对象的属性。`Sequencer`通常从标准MIDI文件加载这些`MidiEvent`序列或将它们保存到这样的文件中。序列也可以进行编辑。以下页面解释了如何使用`Sequencer`对象以及相关的类和接口来完成这些任务。
+- en: To develop an intuitive understanding of what a `Sequencer` is, think of it
+    by analogy with a tape recorder, which a sequencer resembles in many respects.
+    Whereas a tape recorder plays audio, a sequencer plays MIDI data. A sequence is
+    a multi-track, linear, time-ordered recording of MIDI musical data, which a sequencer
+    can play at various speeds, rewind, shuttle to particular points, record into,
+    or copy to a file for storage.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要对`Sequencer`是什么有直观的理解，可以将其类比为磁带录音机，在许多方面`Sequencer`与磁带录音机相似。磁带录音机播放音频，而`Sequencer`播放MIDI数据。一个序列是多轨、线性、按时间顺序记录的MIDI音乐数据，`Sequencer`可以以不同速度播放，倒带，定位到特定点，录制或复制到文件进行存储。
+- en: '[Transmitting and Receiving MIDI Messages](MIDI-messages.html) explained that
+    devices typically have `Receiver` objects, `Transmitter` objects, or both. To
+    *play* music, a device generally receives `MidiMessages` through a `Receiver`,
+    which in turn has usually received them from a `Transmitter` that belongs to a
+    `Sequencer`. The device that owns this `Receiver` might be a `Synthesizer`, which
+    will generate audio directly, or it might be a MIDI output port, which transmits
+    MIDI data through a physical cable to some external piece of equipment. Similarly,
+    to *record* music, a series of time-stamped `MidiMessages` are generally sent
+    to a `Receiver` owned by a `Sequencer`, which places them in a `Sequence` object.
+    Typically the object sending the messages is a `Transmitter` associated with a
+    hardware input port, and the port relays MIDI data that it gets from an external
+    instrument. However, the device responsible for sending the messages might instead
+    be some other `Sequencer`, or any other device that has a `Transmitter`. Furthermore,
+    as previously described, a program can send messages without using any `Transmitter`
+    at all.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[传输和接收MIDI消息](MIDI-messages.html)解释了设备通常具有`Receiver`对象、`Transmitter`对象或两者。为了*播放*音乐，设备通常通过`Receiver`接收`MidiMessages`，而`Receiver`通常是从属于`Sequencer`的`Transmitter`接收这些消息。拥有这个`Receiver`的设备可能是一个`Synthesizer`，它将直接生成音频，或者可能是一个MIDI输出端口，通过物理电缆将MIDI数据传输到外部设备。类似地，为了*录制*音乐，一系列带有时间戳的`MidiMessages`通常被发送到`Sequencer`拥有的`Receiver`中，然后将它们放入`Sequence`对象中。通常发送消息的对象是与硬件输入端口相关联的`Transmitter`，端口通过物理电缆中继从外部设备获取的MIDI数据。然而，负责发送消息的设备可能是其他`Sequencer`，或者任何具有`Transmitter`的设备。此外，如前所述，程序可以在完全不使用任何`Transmitter`的情况下发送消息。'
+- en: A `Sequencer` itself has both `Receivers` and `Transmitters`. When it's recording,
+    it actually obtains `MidiMessages` via its `Receivers`. During playback, it uses
+    its `Transmitters` to send `MidiMessages` that are stored in the `Sequence` that
+    it has recorded (or loaded from a file).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`Sequencer`本身既有`Receivers`又有`Transmitters`。在录制时，它实际上通过其`Receivers`获取`MidiMessages`。在播放时，它使用其`Transmitters`发送存储在其记录的`Sequence`中的`MidiMessages`（或从文件中加载）。
+- en: One way to think of the role of a `Sequencer` in the Java Sound API is as an
+    aggregator and "de-aggregator" of `MidiMessages`. A series of separate `MidiMessages`,
+    each of which is independent, is sent to the `Sequencer` along with its own time
+    stamp that marks the timing of a musical event. These `MidiMessages` are encapsulated
+    in `MidiEvent` objects and collected in `Sequence` objects through the action
+    of the `Sequencer.record` method. A `Sequence` is a data structure containing
+    aggregates of `MidiEvents`, and it usually represents a series of musical notes,
+    often an entire song or composition. On playback, the `Sequencer` again extracts
+    the `MidiMessages` from the `MidiEvent` objects in the `Sequence` and then transmits
+    them to one or more devices that will either render them into sound, save them,
+    modify them, or pass them on to some other device.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java Sound API中，将`Sequencer`的角色视为`MidiMessages`的聚合器和“解聚器”的一种方式。一系列独立的`MidiMessages`被发送到`Sequencer`，每个`MidiMessages`都有自己的时间戳，标记了音乐事件的时间。这些`MidiMessages`被封装在`MidiEvent`对象中，并通过`Sequencer.record`方法在`Sequence`对象中收集。`Sequence`是一个包含`MidiEvents`聚合的数据结构，通常代表一系列音符，通常是整首歌曲或作品。在播放时，`Sequencer`再次从`Sequence`中的`MidiEvent`对象中提取`MidiMessages`，然后将它们传输到一个或多个设备，这些设备将把它们渲染成声音，保存它们，修改它们，或将它们传递给其他设备。
+- en: Some sequencers might have neither transmitters nor receivers. For example,
+    they might create `MidiEvents` from scratch as a result of keyboard or mouse events,
+    instead of receiving `MidiMessages` through `Receivers`. Similarly, they might
+    play music by communicating directly with an internal synthesizer (which could
+    actually be the same object as the sequencer) instead of sending `MidiMessages`
+    to a `Receiver` associated with a separate object. However, the rest of this discussion
+    assumes the normal case of a sequencer that uses `Receivers` and `Transmitters`.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些音序器可能既没有发射器也没有接收器。例如，它们可能会根据键盘或鼠标事件从头开始创建`MidiEvents`，而不是通过`Receivers`接收`MidiMessages`。同样，它们可能通过直接与内部合成器（实际上可能是与音序器相同的对象）通信来演奏音乐，而不是将`MidiMessages`发送到与另一个对象关联的`Receiver`。
+- en: When to Use a Sequencer
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 何时使用音序器
+- en: It's possible for an application program to send MIDI messages directly to a
+    device, without using a sequencer, as was described in [Transmitting and Receiving
+    MIDI Messages](MIDI-messages.html    ). The program simply invokes the `Receiver.send`
+    method each time it wants to send a message. This is a straightforward approach
+    that's useful when the program itself creates the messages in real time. For example,
+    consider a program that lets the user play notes by clicking on an onscreen piano
+    keyboard. When the program gets a mouse-down event, it immediately sends the appropriate
+    Note On message to the synthesizer.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序可以直接向设备发送MIDI消息，而不使用音序器，就像在[传输和接收MIDI消息](MIDI-messages.html)中描述的那样。程序只需在想要发送消息时调用`Receiver.send`方法。这是一种直接的方法，当程序本身实时创建消息时非常有用。例如，考虑一个程序，让用户通过点击屏幕上的钢琴键盘来演奏音符。当程序接收到鼠标按下事件时，立即向合成器发送适当的Note
+    On消息。
+- en: As previously mentioned, the program can include a time stamp with each MIDI
+    message it sends to the device's receiver. However, such time stamps are used
+    only for fine-tuning the timing, to correct for processing latency. The caller
+    can't generally set arbitrary time stamps; the time value passed to `Receiver.send`
+    must be close to the present time, or the receiving device might not be able to
+    schedule the message correctly. This means that if an application program wanted
+    to create a queue of MIDI messages for an entire piece of music ahead of time
+    (instead of creating each message in response to a real-time event), it would
+    have to be very careful to schedule each invocation of `Receiver.send` for nearly
+    the right time.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，程序可以在发送到设备的接收器的每个MIDI消息中包含时间戳。然而，这些时间戳仅用于微调时间，以纠正处理延迟。调用者通常不能设置任意时间戳；传递给`Receiver.send`的时间值必须接近当前时间，否则接收设备可能无法正确安排消息。这意味着，如果应用程序想要提前为整首音乐创建一个MIDI消息队列（而不是对实时事件做出响应时创建每个消息），它必须非常小心地安排每次调用`Receiver.send`几乎正确的时间。
+- en: Fortunately, most application programs don't have to be concerned with such
+    scheduling. Instead of invoking `Receiver.send` itself, a program can use a `Sequencer`
+    object to manage the queue of MIDI messages for it. The sequencer takes care of
+    scheduling and sending the messages—in other words, playing the music with the
+    correct timing. Generally, it's advantageous to use a sequencer whenever you need
+    to convert a non-real-time series of MIDI messages to a real-time series (as in
+    playback), or vice versa (as in recording). Sequencers are most commonly used
+    for playing data from MIDI files and for recording data from a MIDI input port.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 幸运的是，大多数应用程序不必担心这种调度问题。程序可以使用`Sequencer`对象来管理MIDI消息队列，而不是自己调用`Receiver.send`。`Sequencer`负责调度和发送消息，换句话说，以正确的时间播放音乐。通常，在需要将非实时MIDI消息序列转换为实时序列（如播放）或反之（如录制）时，使用`Sequencer`是有利的。`Sequencer`最常用于播放来自MIDI文件的数据和从MIDI输入端口录制数据。
+- en: Understanding Sequence Data
+  id: totrans-12
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 理解序列数据
+- en: Before examining the `Sequencer` API, it helps to understand the kind of data
+    that's stored in a sequence.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在查看`Sequencer`API之前，了解存储在序列中的数据类型是有帮助的。
+- en: Sequences and Tracks
+  id: totrans-14
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 序列和轨道
+- en: 'In the Java Sound API, sequencers closely follow the Standard MIDI Files specification
+    in the way that they organize recorded MIDI data. As mentioned above, a `Sequence`
+    is an aggregation of `MidiEvents`, organized in time. But there is more structure
+    to a `Sequence` than just a linear series of `MidiEvents`: a `Sequence` actually
+    contains global timing information plus a collection of `Tracks`, and it is the
+    `Tracks` themselves that hold the `MidiEvent` data. So the data played by a sequencer
+    consists of a three-level hierarchy of objects: `Sequencer`, `Track`, and `MidiEvent`.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java Sound API中，`Sequencer`在组织记录的MIDI数据方面紧密遵循标准MIDI文件规范。如上所述，`Sequence`是按时间组织的`MidiEvents`的聚合。但`Sequence`比仅仅是线性`MidiEvents`序列更具结构：`Sequence`实际上包含全局时间信息以及一组`Tracks`，而`Tracks`本身保存`MidiEvent`数据。因此，由`Sequencer`播放的数据由三级对象层次结构组成：`Sequencer`，`Track`和`MidiEvent`。
+- en: In the conventional use of these objects, the `Sequence` represents a complete
+    musical composition or section of a composition, with each `Track` corresponding
+    to a voice or player in the ensemble. In this model, all the data on a particular
+    `Track` would also therefore be encoded into a particular MIDI channel reserved
+    for that voice or player.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这些对象的常规使用中，`Sequence`代表完整的音乐作品或作品的一部分，每个`Track`对应于合奏中的一个声音或演奏者。在这个模型中，特定`Track`上的所有数据也因此被编码到为该声音或演奏者保留的特定MIDI通道中。
+- en: This way of organizing data is convenient for purposes of editing sequences,
+    but note that this is just a conventional way to use `Tracks`. There is nothing
+    in the definition of the `Track` class that keeps it from containing a mix of
+    `MidiEvents` on different MIDI channels. For example, an entire multi-channel
+    MIDI composition can be mixed and recorded onto one `Track`. Also, standard MIDI
+    files of Type 0 (as opposed to Type 1 and Type 2) contain by definition only one
+    track; so a `Sequence` that's read from such a file will necessarily have a single
+    `Track` object.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种数据组织方式便于编辑序列，但请注意，这只是一种使用`Tracks`的常规方式。`Track`类的定义中没有任何限制它只能包含不同MIDI通道上的`MidiEvents`的内容。例如，整个多通道MIDI作品可以混合录制到一个`Track`上。此外，Type
+    0标准MIDI文件（与Type 1和Type 2相对）根据定义只包含一个轨道；因此，从这样的文件中读取的`Sequence`必然只有一个`Track`对象。
+- en: MidiEvents and Ticks
+  id: totrans-18
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: MidiEvents和Ticks
+- en: As discussed in [Overview of the MIDI Package](overview-MIDI.html), the Java
+    Sound API includes `MidiMessage` objects that correspond to the raw two- or three-byte
+    sequences that make up most standard MIDI messages. A `MidiEvent` is simply a
+    packaging of a `MidiMessage` along with an accompanying timing value that specifies
+    when the event occurs. (We might then say that a sequence really consists of a
+    four- or five-level hierarchy of data, rather than three-level, because the ostensible
+    lowest level, `MidiEvent`, actually contains a lower-level `MidiMessage`, and
+    likewise the `MidiMessage` object contains an array of bytes that comprises a
+    standard MIDI message.)
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[Java Sound API概述](overview-MIDI.html)中所讨论的，Java Sound API包括与组成大多数标准MIDI消息的原始两个或三字节序列对应的`MidiMessage`对象。`MidiEvent`只是一个`MidiMessage`的打包，以及指定事件发生时间的伴随时间值。（我们可能会说序列实际上包含四或五级数据层次，而不是三级，因为表面上最低级别的`MidiEvent`实际上包含一个更低级别的`MidiMessage`，同样`MidiMessage`对象包含一个组成标准MIDI消息的字节数组。）
+- en: In the Java Sound API, there are two different ways in which `MidiMessages`
+    can be associated with timing values. One is the way mentioned above under "When
+    to Use a Sequencer." This technique was described in detail under [Sending a Message
+    to a Receiver without Using a Transmitter](MIDI-messages.html#sending) and [Understanding
+    Time Stamps](MIDI-messages.html#understanding_time). There, we saw that the `send`
+    method of `Receiver` takes a `MidiMessage` argument and a time-stamp argument.
+    That kind of time stamp can only be expressed in microseconds.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java Sound API中，`MidiMessages`可以与定时值关联的另一种方式有两种。 其中一种是上面提到的“何时使用Sequencer”。
+    这种技术在[不使用Transmitter向接收器发送消息](MIDI-messages.html#sending)和[理解时间戳](MIDI-messages.html#understanding_time)下有详细描述。
+    在那里，我们看到`Receiver`的`send`方法接受一个`MidiMessage`参数和一个时间戳参数。 那种时间戳只能用微秒表示。
+- en: The other way in which a `MidiMessage` can have its timing specified is by being
+    encapsulated in a `MidiEvent`. In this case, the timing is expressed in slightly
+    more abstract units called *ticks*.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MidiMessage`可以指定其定时的另一种方式是通过封装在`MidiEvent`中。 在这种情况下，定时以稍微更抽象的单位称为*ticks*来表示。'
+- en: 'What is the duration of a tick? It can vary between sequences (but not within
+    a sequence), and its value is stored in the header of a standard MIDI file. The
+    size of a tick is given in one of two types of units:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个tick的持续时间是多少？ 它可以在序列之间变化（但不会在序列内部变化），其值存储在标准MIDI文件的头部中。 一个tick的大小以两种类型的单位给出：
+- en: Pulses (ticks) per quarter note, abbreviated as PPQ
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 每四分音符的脉冲（ticks），缩写为PPQ
+- en: Ticks per frame, also known as SMPTE time code (a standard adopted by the Society
+    of Motion Picture and Television Engineers)
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 每帧的ticks，也称为SMPTE时间码（由电影和电视工程师协会采用的标准）
+- en: If the unit is PPQ, the size of a tick is expressed as a fraction of a quarter
+    note, which is a relative, not absolute, time value. A quarter note is a musical
+    duration value that often corresponds to one beat of the music (a quarter of a
+    measure in 4/4 time). The duration of a quarter note is dependent on the tempo,
+    which can vary during the course of the music if the sequence contains tempo-change
+    events. So if the sequence's timing increments (ticks) occur, say 96 times per
+    quarter note, each event's timing value measures that event's position in musical
+    terms, not as an absolute time value.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果单位是PPQ，一个tick的大小被表示为四分音符的一部分，这是一个相对的，而不是绝对的时间值。 四分音符是一个音乐持续时间值，通常对应于音乐中的一个节拍（4/4拍子中的四分之一）。
+    四分音符的持续时间取决于速度，如果序列包含速度变化事件，则音乐中的四分音符的持续时间可能会在音乐过程中变化。 因此，如果序列的定时增量（ticks）发生，比如每四分音符发生96次，那么每个事件的定时值都以音乐术语来衡量该事件的位置，而不是绝对时间值。
+- en: On the other hand, in the case of SMPTE, the units measure absolute time, and
+    the notion of tempo is inapplicable. There are actually four different SMPTE conventions
+    available, which refer to the number of motion-picture frames per second. The
+    number of frames per second can be 24, 25, 29.97, or 30\. With SMPTE time code,
+    the size of a tick is expressed as a fraction of a frame.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，在SMPTE的情况下，单位度量绝对时间，而速度的概念不适用。 实际上有四种不同的SMPTE约定可用，它们指的是每秒的电影帧数。 每秒的帧数可以是24、25、29.97或30。
+    使用SMPTE时间码，一个tick的大小被表示为帧的一部分。
+- en: 'In the Java Sound API, you can invoke `Sequence.getDivisionType` to learn which
+    type of unit—namely, PPQ or one of the SMPTE units—is used in a particular sequence.
+    You can then calculate the size of a tick after invoking `Sequence.getResolution`.
+    The latter method returns the number of ticks per quarter note if the division
+    type is PPQ, or per SMPTE frame if the division type is one of the SMPTE conventions.
+    You can get the size of a tick using this formula in the case of PPQ:'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Java Sound API中，您可以调用`Sequence.getDivisionType`来了解特定序列中使用的单位类型，即PPQ或SMPTE单位之一。
+    然后在调用`Sequence.getResolution`之后可以计算一个tick的大小。 如果分割类型是PPQ，则后一种方法返回每四分音符的ticks数，或者如果分割类型是SMPTE约定之一，则返回每个SMPTE帧的ticks数。
+    在PPQ的情况下，可以使用以下公式来获取一个tick的大小：
+- en: '[PRE0]'
+  id: totrans-28
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'and this formula in the case of SMPTE:'
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以及在SMPTE的情况下的这个公式：
+- en: '[PRE1]'
+  id: totrans-30
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The Java Sound API's definition of timing in a sequence mirrors that of the
+    Standard MIDI Files specification. However, there's one important difference.
+    The tick values contained in `MidiEvents` measure *cumulative* time, rather than
+    *delta* time. In a standard MIDI file, each event's timing information measures
+    the amount of time elapsed since the onset of the previous event in the sequence.
+    This is called delta time. But in the Java Sound API, the ticks aren't delta values;
+    they're the previous event's time value *plus* the delta value. In other words,
+    in the Java Sound API the timing value for each event is always greater than that
+    of the previous event in the sequence (or equal, if the events are supposed to
+    be simultaneous). Each event's timing value measures the time elapsed since the
+    beginning of the sequence.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Sound API中对序列中时间的定义与标准MIDI文件规范相似。然而，有一个重要的区别。`MidiEvents`中包含的tick值衡量的是*累积*时间，而不是*增量*时间。在标准MIDI文件中，每个事件的时间信息衡量的是自上一个事件开始以来经过的时间。这被称为增量时间。但在Java
+    Sound API中，ticks不是增量值；它们是前一个事件的时间值*加上*增量值。换句话说，在Java Sound API中，每个事件的时间值始终大于序列中前一个事件的时间值（或者相等，如果事件应该同时发生）。每个事件的时间值衡量的是自序列开始以来经过的时间。
+- en: To summarize, the Java Sound API expresses timing information in either MIDI
+    ticks or microseconds. `MidiEvents` store timing information in terms of MIDI
+    ticks. The duration of a tick can be calculated from the `Sequence's` global timing
+    information and, if the sequence uses tempo-based timing, the current musical
+    tempo. The time stamp associated with a `MidiMessage` sent to a `Receiver`, on
+    the other hand, is always expressed in microseconds.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 总结一下，Java Sound API以MIDI ticks或微秒表示时间信息。`MidiEvents`以MIDI ticks形式存储时间信息。一个tick的持续时间可以从`Sequence`的全局时间信息以及（如果序列使用基于速度的时间）当前的音乐速度计算出来。另一方面，发送给`Receiver`的`MidiMessage`的时间戳总是以微秒表示。
+- en: One goal of this design is to avoid conflicting notions of time. It's the job
+    of a `Sequencer` to interpret the time units in its `MidiEvents`, which might
+    have PPQ units, and translate these into absolute time in microseconds, taking
+    the current tempo into account. The sequencer must also express the microseconds
+    relative to the time when the device receiving the message was opened. Note that
+    a sequencer can have multiple transmitters, each delivering messages to a different
+    receiver that might be associated with a completely different device. You can
+    see, then, that the sequencer has to be able to perform multiple translations
+    at the same time, making sure that each device receives time stamps appropriate
+    for its notion of time.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种设计的一个目标是避免时间概念的冲突。`Sequencer`的工作是解释其`MidiEvents`中的时间单位，这些单位可能是PPQ单位，并将其转换为以微秒为单位的绝对时间，考虑到当前的速度。序列器还必须相对于接收消息的设备打开时的时间表达微秒。请注意，一个序列器可以有多个发射器，每个发射器将消息传递给一个可能与完全不同设备关联的不同接收器。因此，您可以看到，序列器必须能够同时执行多个转换，确保每个设备接收适合其时间概念的时间戳。
+- en: To make matters more complicated, different devices might update their notions
+    of time based on different sources (such as the operating system's clock, or a
+    clock maintained by a sound card). This means that their timings can drift relative
+    to the sequencer's. To keep in synchronization with the sequencer, some devices
+    permit themselves to be "slaves" to the sequencer's notion of time. Setting masters
+    and slaves is discussed later under [`MidiEvent`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiEvent.html).
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更复杂的是，不同设备可能基于不同来源（如操作系统的时钟或声卡维护的时钟）更新其时间概念。这意味着它们的时间可能相对于序列器的时间会有偏移。为了与序列器保持同步，一些设备允许自己成为序列器时间概念的“从属”。设置主从关系将在稍后的[`MidiEvent`](https://docs.oracle.com/javase/8/docs/api/javax/sound/midi/MidiEvent.html)中讨论。

@@ -1,0 +1,105 @@
+- en: 'Questions and Exercises: Performing Custom Painting'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 问题和练习：执行自定义绘图
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch6.html](https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch6.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch6.html](https://docs.oracle.com/javase/tutorial/uiswing/QandE/questions-ch6.html)
+- en: Questions
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 问题
+- en: 1\. What method defined by `JComponent` paints the inside of a component?
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. `JComponent` 定义的哪个方法绘制组件的内部？
+- en: 2\. Which of the following code snippets paint a rectangle (filled or not) that
+    is 100x100 pixels?
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. 以下哪个代码片段绘制了一个大小为100x100像素的矩形（填充或不填充）？
+- en: a. `g.fillRect(x, y, 100, 100)`
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: a. `g.fillRect(x, y, 100, 100)`
+- en: b. `g.fillRect(x, y, 99, 99)`
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: b. `g.fillRect(x, y, 99, 99)`
+- en: c. `g.drawRect(x, y, 100, 100)`
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: c. `g.drawRect(x, y, 100, 100)`
+- en: d. b and c
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: d. b 和 c
+- en: e. a and c
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: e. a 和 c
+- en: 3\. What code would you use to make a component perform the next painting operation
+    using the background color at 50% transparency?
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 3\. 你会使用什么代码使组件使用背景颜色的50%透明度执行下一个绘图操作？
+- en: Exercises
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 练习
+- en: 1\. Using a standard border and custom component painting, implement a component
+    that has a preferred size of 250x100, is opaque by default, has a 5-pixel black
+    border, and paints an “X” (using 5-pixel-thick lines) in the foreground color,
+    as shown in the following figure.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 1\. 使用标准边框和自定义组件绘制，实现一个首选大小为250x100的组件，默认情况下是不透明的，有一个5像素的黑色边框，并在前景色中绘制一个“X”（使用5像素粗线），如下图所示。
+- en: '![ComponentDisplayer-1.png](../Images/428f9b06a5abb962555697104c098a01.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ComponentDisplayer-1.png](../Images/428f9b06a5abb962555697104c098a01.png)'
+- en: 2\. Implement an icon that’s 10x10 pixels and paints a solid rectangle that
+    fills the 10x10 area. If the icon’s component is enabled, the rectangle should
+    be red; if disabled, gray. Make a copy of `ButtonDemo.java` that uses your custom
+    `Icon` for the middle button, instead of displaying `middle.gif`. The following
+    pictures show what the icon should look like.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 2\. 实现一个图标，大小为10x10像素，绘制填充整个10x10区域的实心矩形。如果图标的组件启用，则矩形应为红色；如果禁用，则为灰色。制作一个使用你自定义的`Icon`替换中间按钮显示`middle.gif`的`ButtonDemo.java`的副本。以下图片展示了图标应该是什么样子。
+- en: '| ![SquareIcon-1.png](../Images/0c67ad405a09f0a7472b62b8d36b65fa.png) | ![SquareIcon-2.png](../Images/15ece75824b4f3284405c1e669ab070b.png)
+    |'
+  id: totrans-15
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![SquareIcon-1.png](../Images/0c67ad405a09f0a7472b62b8d36b65fa.png) | ![SquareIcon-2.png](../Images/15ece75824b4f3284405c1e669ab070b.png)
+    |'
+- en: 3\. Implement a border that paints a red 15-pixel-tall stripe all the way across
+    the top of its component. Test this border by substituting it for the border on
+    the component you created in exercise 1\. The result should look like the following
+    figure. ![ComponentDisplayer-2.png](../Images/b65ddc5dd9f3af850c515da5b027e985.png)
+    [Check your answers.](answers-ch6.html)
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 3\. 实现一个边框，它在其组件顶部整个宽度处绘制一个红色的15像素高条纹。通过将此边框替换为练习1中创建的组件上的边框来测试此边框。结果应如下图所示。
+    ![ComponentDisplayer-2.png](../Images/b65ddc5dd9f3af850c515da5b027e985.png) [检查你的答案。](answers-ch6.html)

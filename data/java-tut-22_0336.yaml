@@ -1,0 +1,134 @@
+- en: Modifying a Manifest File
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 修改清单文件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/modman.html](https://docs.oracle.com/javase/tutorial/deployment/jar/modman.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/modman.html](https://docs.oracle.com/javase/tutorial/deployment/jar/modman.html)
+- en: You use the `m` command-line option to add custom information to the manifest
+    during creation of a JAR file. This section describes the `m` option.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以使用 `m` 命令行选项在创建 JAR 文件时向清单中添加自定义信息。本节描述了 `m` 选项。
+- en: The Jar tool automatically puts a [default manifest](defman.html) with the pathname
+    `META-INF/MANIFEST.MF` into any JAR file you create. You can enable special JAR
+    file functionality, such as [package sealing](sealman.html), by modifying the
+    default manifest. Typically, modifying the default manifest involves adding special-purpose
+    *headers* to the manifest that allow the JAR file to perform a particular desired
+    function.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Jar 工具会自动将一个[默认清单](defman.html)放入你创建的任何 JAR 文件中，路径名为 `META-INF/MANIFEST.MF`。你可以通过修改默认清单来启用特殊的
+    JAR 文件功能，比如[包封装](sealman.html)。通常，修改默认清单涉及向清单中添加特定用途的*头部*，使得 JAR 文件能够执行特定的功能。
+- en: To modify the manifest, you must first prepare a text file containing the information
+    you wish to add to the manifest. You then use the Jar tool's `m` option to add
+    the information in your file to the manifest.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要修改清单，你必须首先准备一个包含你希望添加到清单中的信息的文本文件。然后，你可以使用 Jar 工具的 `m` 选项将文件中的信息添加到清单中。
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Warning:** The text file from which you are creating the manifest must end
+    with a new line or carriage return. The last line will not be parsed properly
+    if it does not end with a new line or carriage return.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**警告：** 用于创建清单的文本文件必须以新行或回车符结束。如果最后一行没有以新行或回车符结束，最后一行将无法正确解析。'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The basic command has this format:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 基本命令格式如下：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Let''s look at the options and arguments used in this command:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看看这个命令中使用的选项和参数：
+- en: The `c` option indicates that you want to *create* a JAR file.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`c` 选项表示你想要*创建*一个 JAR 文件。'
+- en: The `m` option indicates that you want to merge information from an existing
+    file into the manifest file of the JAR file you're creating.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`m` 选项表示你想要将现有文件中的信息合并到你正在创建的 JAR 文件的清单文件中。'
+- en: The `f` option indicates that you want the output to go to a *file* (the JAR
+    file you're creating) rather than to standard output.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`f` 选项表示你希望输出到一个*文件*（即你正在创建的 JAR 文件），而不是标准输出。'
+- en: '*`manifest-addition`* is the name (or path and name) of the existing text file
+    whose contents you want to add to the contents of JAR file''s manifest.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*`manifest-addition`* 是现有文本文件的名称（或路径和名称），其内容你希望添加到 JAR 文件清单的内容中。'
+- en: '*`jar-file`* is the name that you want the resulting JAR file to have.'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*`jar-file`* 是你希望生成的 JAR 文件的名称。'
+- en: The *`input-file(s)`* argument is a space-separated list of one or more files
+    that you want to be placed in your JAR file.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*`input-file(s)`* 参数是一个用空格分隔的一个或多个文件列表，你希望将这些文件放入你的 JAR 文件中。'
+- en: The `m` and `f` options must be in the same order as the corresponding arguments.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`m` 和 `f` 选项必须按照相应参数的顺序排列。'
+- en: '* * *'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The contents of the manifest must be encoded in UTF-8.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 清单的内容必须使用 UTF-8 编码。'
+- en: '* * *'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The remaining sections of this lesson demonstrate specific modifications you
+    may want to make to the manifest file.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程的其余部分演示了你可能想要对清单文件进行的具体修改。

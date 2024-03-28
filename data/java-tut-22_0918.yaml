@@ -1,0 +1,47 @@
+- en: Getting and Setting Fields with Enum Types
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用枚举类型获取和设置字段
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/special/enumSetGet.html](https://docs.oracle.com/javase/tutorial/reflect/special/enumSetGet.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/special/enumSetGet.html](https://docs.oracle.com/javase/tutorial/reflect/special/enumSetGet.html)
+- en: Fields which store enums are set and retrieved as any other reference type,
+    using [`Field.set()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#set-java.lang.Object-java.lang.Object-)
+    and [`Field.get()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#get-java.lang.Object-).
+    For more information on accessing fields, see the [Fields](../member/field.html)
+    section of this trail.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 存储枚举的字段与任何其他引用类型一样设置和检索，使用[`Field.set()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#set-java.lang.Object-java.lang.Object-)和[`Field.get()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html#get-java.lang.Object-)。有关访问字段的更多信息，请参阅本教程的[Fields](../member/field.html)部分。
+- en: Consider application which needs to dynamically modify the trace level in a
+    server application which normally does not allow this change during runtime. Assume
+    the instance of the server object is available. The [``SetTrace``](example/SetTrace.java)
+    example shows how code can translate the [`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+    representation of an enum into an enum type and retrieve and set the value of
+    a field storing an enum.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 考虑一个需要在服务器应用程序中动态修改跟踪级别的应用程序，通常在运行时不允许此更改。假设服务器对象的实例可用。[``SetTrace``](example/SetTrace.java)示例展示了代码如何将枚举的[`String`](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)表示转换为枚举类型，并检索和设置存储枚举的字段的值。
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Since the enum constants are singletons, the `==` and `!=` operators may be
+    used to compare enum constants of the same type.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于枚举常量是单例，可以使用`==`和`!=`运算符来比较相同类型的枚举常量。
+- en: '[PRE1]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'

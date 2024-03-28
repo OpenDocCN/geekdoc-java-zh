@@ -1,0 +1,130 @@
+- en: Deploying With the Applet Tag
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用 Applet 标签部署
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/html.html](https://docs.oracle.com/javase/tutorial/deployment/applet/html.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/html.html](https://docs.oracle.com/javase/tutorial/deployment/applet/html.html)
+- en: If you are not sure whether your end users' browsers will have the JavaScript
+    interpreter enabled, you can deploy your Java applet by manually coding the `<applet>`
+    HTML tag, instead of using the Deployment Toolkit functions. Depending on the
+    browsers you need to support, you may need to deploy your Java applet using the
+    `<object>` or `<embed>` HTML tag. Check the [W3C HTML Specification](http://www.w3.org/TR/1999/REC-html401-19991224/)
+    for details on the usage of these tags.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您不确定最终用户的浏览器是否启用了 JavaScript 解释器，您可以通过手动编码 `<applet>` HTML 标签来部署您的 Java applet，而不是使用
+    Deployment Toolkit 函数。根据您需要支持的浏览器，您可能需要使用 `<object>` 或 `<embed>` HTML 标签来部署您的
+    Java applet。查看[W3C HTML 规范](http://www.w3.org/TR/1999/REC-html401-19991224/)以获取有关这些标签的使用详情。
+- en: You can launch your applet using Java Network Launch Protocol (JNLP) or specify
+    the launch attributes directly in the `<applet>` tag.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用 Java 网络启动协议（JNLP）启动您的 applet，或者直接在 `<applet>` 标签中指定启动属性。
+- en: Preparing for Deployment
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 部署准备
+- en: Follow the steps described in the [Deploying An Applet](deployingApplet.html)
+    topic to compile your source code, create and sign the JAR file, and create the
+    JNLP file if necessary. The overall steps for deployment are still relevant. Only
+    the contents of your HTML page containing the applet will change.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 按照[部署 applet](deployingApplet.html)主题中描述的步骤编译您的源代码，创建并签名 JAR 文件，如有必要创建 JNLP
+    文件。部署的整体步骤仍然相关。只有包含 applet 的 HTML 页面的内容会发生变化。
+- en: Manually Coding Applet Tag, Launching Using JNLP
+  id: totrans-6
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 手动编码 Applet 标签，使用 JNLP 启动
+- en: The [`AppletPage_WithAppletTag.html`](examples/dist/applet_ComponentArch_DynamicTreeDemo/AppletPage_WithAppletTagUsingJNLP.html)
+    page deploys the Dynamic Tree Demo applet with an `<applet>` tag that has been
+    manually coded (meaning, the applet is not deployed using the Deployment Toolkit
+    which automatically generates the required HTML). The applet is still launched
+    using JNLP. The JNLP file is specified in the `jnlp_href` attribute.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`AppletPage_WithAppletTag.html`](examples/dist/applet_ComponentArch_DynamicTreeDemo/AppletPage_WithAppletTagUsingJNLP.html)
+    页面使用手动编码的 `<applet>` 标签部署了 Dynamic Tree Demo applet（意味着该 applet 不是使用自动生成所需 HTML
+    的 Deployment Toolkit 部署的）。该 applet 仍然使用 JNLP 启动。JNLP 文件在 `jnlp_href` 属性中指定。'
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Manually Coding Applet Tag, Launching Without JNLP
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 手动编码 Applet 标签，无需使用 JNLP 启动
+- en: Using JNLP is the preferred way to deploy an applet, however, you can also deploy
+    your applet without a JNLP file.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 JNLP 是部署 applet 的首选方式，但您也可以在没有 JNLP 文件的情况下部署您的 applet。
+- en: The [`AppletPage_WithAppletTagNoJNLP.html`](examples/dist/applet_ComponentArch_DynamicTreeDemo/AppletPage_WithAppletTagNoJNLP.html)
+    deploys the Dynamic Tree Demo applet as shown in the following code snippet.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`AppletPage_WithAppletTagNoJNLP.html`](examples/dist/applet_ComponentArch_DynamicTreeDemo/AppletPage_WithAppletTagNoJNLP.html)
+    部署了 Dynamic Tree Demo applet，如下面的代码片段所示。'
+- en: '[PRE1]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: where
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中
+- en: '`code` is the name of the applet class.'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`code` 是 applet 类的名称。'
+- en: '`archive` is the name of jar file containing the applet and its resources.'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`archive` 是包含 applet 及其资源的 jar 文件的名称。'
+- en: '`width` is the width of the applet.'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`width` 是 applet 的宽度。'
+- en: '`height` is the height of the applet.'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`height` 是 applet 的高度。'
+- en: '`permissions` indicates if the applet runs in the security sandbox. Specify
+    "sandbox" for the value to run in the sandbox. Specify "all-permissions" to run
+    outside the sandbox. If the `permissions` parameter is not present, signed applets
+    default to "all-permissions" and unsigned applets default to "sandbox".'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`permissions` 表示 applet 是否在安全沙箱中运行。将值指定为"sandbox"以在沙箱中运行。将值指定为"all-permissions"以在沙箱外运行。如果未提供
+    `permissions` 参数，则签名的 applet 默认为"all-permissions"，未签名的 applet 默认为"sandbox"。'

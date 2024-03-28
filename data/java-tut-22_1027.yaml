@@ -1,0 +1,144 @@
+- en: Paged Results Control
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 分页结果控件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/paged-results.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/paged-results.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/newstuff/paged-results.html](https://docs.oracle.com/javase/tutorial/jndi/newstuff/paged-results.html)
+- en: BasicControl
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: BasicControl
+- en: The [`javax.naming.ldap.BasicControl`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/BasicControl.html)
+    which implements the `javax.naming.ldap.Control` serves as a base implementation
+    for extending other controls.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.ldap.BasicControl`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/BasicControl.html)
+    实现了 `javax.naming.ldap.Control`，作为扩展其他控件的基本实现。'
+- en: Paged Results Control
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 分页结果控件
+- en: The paged results control is useful for LDAP clients which want to receive search
+    results in a controlled manner limited by the page size. The page size can be
+    configured by the client as per the availability of its resources, like bandwidth
+    and the processing capability.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 分页结果控件对于希望以受控方式接收搜索结果的 LDAP 客户端非常有用，受页面大小限制。页面大小可以由客户端根据其资源的可用性（如带宽和处理能力）进行配置。
+- en: The server uses a cookie (similar to the HTTP session cookie mechanism) to maintain
+    the state of the search requests in order to track the results being sent to the
+    client. The paged results control is specified in [RFC 2696](http://www.ietf.org/rfc/rfc2696.txt)
+    . The classes below provide the functionality required to support paged results
+    control.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 服务器使用 cookie（类似于 HTTP 会话 cookie 机制）来维护搜索请求的状态，以跟踪发送给客户端的结果。分页结果控件在 [RFC 2696](http://www.ietf.org/rfc/rfc2696.txt)
+    中指定。下面的类提供了支持分页结果控件所需的功能。
+- en: '[`javax.naming.ldap.PagedResultsControl`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/PagedResultsControl.html)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.ldap.PagedResultsControl`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/PagedResultsControl.html)'
+- en: '[`javax.naming.ldap.PagedResultsResponseControl`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/PagedResultsResponseControl.html)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`javax.naming.ldap.PagedResultsResponseControl`](https://docs.oracle.com/javase/8/docs/api/javax/naming/ldap/PagedResultsResponseControl.html)'
+- en: How to use Paged Results Control?
+  id: totrans-9
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 如何使用分页结果控件？
+- en: The example below illustrates the client-server interaction between a client
+    doing a search requesting a page size limit of 5\. The entire result set returned
+    by the server contains 21 entries.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的示例说明了客户端执行搜索并请求页面大小限制为 5 的客户端-服务器交互。服务器返回的整个结果集包含 21 个条目。
+- en: Client sends a search request asking for paged results with a page size of 5.
+  id: totrans-11
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 客户端发送搜索请求，请求页面大小为 5 的分页结果。
+- en: '[PRE0]'
+  id: totrans-12
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The server responds with entries plus an indication of 21 total entries in the
+    search result and an opaque cookie to be used by the client when retrieving subsequent
+    pages.
+  id: totrans-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 服务器响应包含条目以及搜索结果中总共 21 个条目的指示，还有一个不透明的 cookie，客户端在检索后续页面时要使用该 cookie。
+- en: '[PRE1]'
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Client sends an identical search request, returning the opaque cookie, asking
+    for the next page.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 客户端发送相同的搜索请求，返回不透明的 cookie，并请求下一页。
+- en: '[PRE2]'
+  id: totrans-16
+  prefs:
+  - PREF_IND
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Server responds with five entries plus an indication that there are more entries
+    The client repeats the search performed in step 4 until a null cookie is returned
+    by the server, which indicates no more entries to be sent by the server.
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 服务器响应包含五个条目，并指示还有更多条目。客户端重复执行第 4 步中执行的搜索，直到服务器返回空 cookie，表示服务器不再发送更多条目。
+- en: The complete JNDI example can be found [`here`](examples/PagedSearch.java).
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 完整的 JNDI 示例可以在 [`这里`](examples/PagedSearch.java) 找到。
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** The Paged Search Control is supported by the Windows Active Directory
+    Server. It''s not supported by the Oracle Directory Server version 5.2'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 分页搜索控件受 Windows Active Directory 服务器支持。Oracle Directory Server 版本 5.2
+    不支持。'
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

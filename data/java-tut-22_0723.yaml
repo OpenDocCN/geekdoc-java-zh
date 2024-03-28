@@ -1,0 +1,377 @@
+- en: Using RowSet Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用RowSet对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/rowset.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/rowset.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/rowset.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/rowset.html)
+- en: A JDBC `RowSet` object holds tabular data in a way that makes it more flexible
+    and easier to use than a result set.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JDBC `RowSet`对象以一种使其比结果集更灵活且更易于使用的方式保存表格数据。
+- en: Oracle has defined five `RowSet` interfaces for some of the more popular uses
+    of a `RowSet`, and standard reference are available for these `RowSet` interfaces.
+    In this tutorial you will learn how to use these reference implementations.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Oracle为`RowSet`的一些更受欢迎的用途定义了五个接口，并为这些`RowSet`接口提供了标准参考。在本教程中，您将学习如何使用这些参考实现。
+- en: These versions of the `RowSet` interface and their implementations have been
+    provided as a convenience for programmers. Programmers are free to write their
+    own versions of the `javax.sql.RowSet` interface, to extend the implementations
+    of the five `RowSet` interfaces, or to write their own implementations. However,
+    many programmers will probably find that the standard reference implementations
+    already fit their needs and will use them as is.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些版本的`RowSet`接口及其实现是为程序员提供方便的。程序员可以自由编写自己的`javax.sql.RowSet`接口版本，扩展这五个`RowSet`接口的实现，或编写自己的实现。然而，许多程序员可能会发现标准参考实现已经符合他们的需求，并将直接使用它们。
+- en: 'This section introduces you to the `RowSet` interface and the following interfaces
+    that extend this interface:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节介绍了`RowSet`接口以及扩展此接口的以下接口：
+- en: '`JdbcRowSet`'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JdbcRowSet`'
+- en: '`CachedRowSet`'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`CachedRowSet`'
+- en: '`WebRowSet`'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`WebRowSet`'
+- en: '`JoinRowSet`'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JoinRowSet`'
+- en: '`FilteredRowSet`'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`FilteredRowSet`'
+- en: 'The following topics are covered:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的主题包括：
+- en: '[What Can RowSet Objects Do?](#what_can_rowset_objects_do)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[RowSet对象能做什么？](#what_can_rowset_objects_do)'
+- en: '[Kinds of RowSet Objects](#kinds_of_rowset_objects)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[RowSet对象的种类](#kinds_of_rowset_objects)'
+- en: What Can RowSet Objects Do?
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: RowSet对象能做什么？
+- en: 'All `RowSet` objects are derived from the `ResultSet` interface and therefore
+    share its capabilities. What makes JDBC `RowSet` objects special is that they
+    add these new capabilities:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有`RowSet`对象都源自`ResultSet`接口，因此共享其功能。JDBC `RowSet`对象的特殊之处在于它们添加了以下新功能：
+- en: '[Function as JavaBeans Component](#javabeans)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[作为JavaBeans组件](#javabeans)'
+- en: '[Add Scrollability or Updatability](#scrollability)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[添加滚动或可更新性](#scrollability)'
+- en: Function as JavaBeans Component
+  id: totrans-18
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 作为JavaBeans组件
+- en: 'All `RowSet` objects are JavaBeans components. This means that they have the
+    following:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有`RowSet`对象都是JavaBeans组件。这意味着它们具有以下特性：
+- en: Properties
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 属性
+- en: JavaBeans Notification Mechanism
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: JavaBeans通知机制
+- en: Properties
+  id: totrans-22
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+  zh: 属性
+- en: All `RowSet` objects have properties. A property is a field that has corresponding
+    getter and setter methods. Properties are exposed to builder tools (such as those
+    that come with the IDEs JDveloper and Eclipse) that enable you to visually manipulate
+    beans. For more information, see the [Properties](../../javabeans/writing/properties.html)
+    lesson in the [JavaBeans](../../javabeans/) trail.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有`RowSet`对象都有属性。属性是具有对应的getter和setter方法的字段。属性暴露给构建工具（例如随IDE一起提供的JDveloper和Eclipse），使您可以直观地操作bean。有关更多信息，请参阅[JavaBeans](../../javabeans/)教程中的[属性](../../javabeans/writing/properties.html)课程。
+- en: JavaBeans Notification Mechanism
+  id: totrans-24
+  prefs:
+  - PREF_H4
+  type: TYPE_NORMAL
+  zh: JavaBeans通知机制
+- en: '`RowSet` objects use the JavaBeans event model, in which registered components
+    are notified when certain events occur. For all `RowSet` objects, three events
+    trigger notifications:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`RowSet`对象使用JavaBeans事件模型，其中注册的组件在发生某些事件时会收到通知。对于所有`RowSet`对象，三个事件会触发通知：'
+- en: A cursor movement
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 光标移动
+- en: The update, insertion, or deletion of a row
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 行的更新、插入或删除
+- en: A change to the entire `RowSet` contents
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 整个`RowSet`内容的更改
+- en: The notification of an event goes to all *listeners*, components that have implemented
+    the `RowSetListener` interface and have had themselves added to the `RowSet` object's
+    list of components to be notified when any of the three events occurs.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事件的通知发送给所有*监听器*，即已实现`RowSetListener`接口并已将自己添加到`RowSet`对象的组件列表中以在发生任何三个事件时收到通知的组件。
+- en: A listener could be a GUI component such as a bar graph. If the bar graph is
+    tracking data in a `RowSet` object, the listener would want to know the new data
+    values whenever the data changed. The listener would therefore implement the `RowSetListener`
+    methods to define what it will do when a particular event occurs. Then the listener
+    also must be added to the `RowSet` object's list of listeners. The following line
+    of code registers the bar graph component `bg` with the `RowSet` object `rs`.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个监听器可以是一个 GUI 组件，比如一个条形图。如果条形图正在跟踪一个`RowSet`对象中的数据，那么每当数据发生变化时，监听器都希望知道新的数据值。因此，监听器将实现`RowSetListener`方法来定义在特定事件发生时将执行什么操作。然后，监听器还必须添加到`RowSet`对象的监听器列表中。下面的代码行将条形图组件`bg`注册到`RowSet`对象`rs`。
+- en: '[PRE0]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Now `bg` will be notified each time the cursor moves, a row is changed, or all
+    of `rs` gets new data.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，每当光标移动、行发生变化或`rs`中的所有数据都更新时，`bg`都会收到通知。
+- en: Add Scrollability or Updatability
+  id: totrans-33
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 添加滚动性或可更新性
+- en: Some DBMSs do not support result sets that can be scrolled (scrollable), and
+    some do not support result sets that can be updated (updatable). If a driver for
+    that DBMS does not add the ability to scroll or update result sets, you can use
+    a `RowSet` object to do it. A `RowSet` object is scrollable and updatable by default,
+    so by populating a `RowSet` object with the contents of a result set, you can
+    effectively make the result set scrollable and updatable.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些数据库管理系统不支持可以滚动（可滚动）的结果集，有些不支持可以更新（可更新）的结果集。如果该数据库管理系统的驱动程序没有添加滚动或更新结果集的功能，您可以使用`RowSet`对象来实现。`RowSet`对象默认是可滚动和可更新的，因此通过将结果集的内容填充到`RowSet`对象中，您可以有效地使结果集可滚动和可更新。
+- en: Kinds of RowSet Objects
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: RowSet 对象的种类
+- en: A `RowSet` object is considered either connected or disconnected. A *connected*
+    `RowSet` object uses a JDBC driver to make a connection to a relational database
+    and maintains that connection throughout its life span. A *disconnected* `RowSet`
+    object makes a connection to a data source only to read in data from a `ResultSet`
+    object or to write data back to the data source. After reading data from or writing
+    data to its data source, the `RowSet` object disconnects from it, thus becoming
+    "disconnected." During much of its life span, a disconnected `RowSet` object has
+    no connection to its data source and operates independently. The next two sections
+    tell you what being connected or disconnected means in terms of what a `RowSet`
+    object can do.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`RowSet`对象被认为是连接的或断开连接的。*连接的*`RowSet`对象使用 JDBC 驱动程序与关系数据库建立连接，并在其生命周期内保持该连接。*断开连接的*`RowSet`对象仅在从`ResultSet`对象中读取数据或将数据写回数据源时才与数据源建立连接。在从数据源读取数据或向数据源写入数据后，`RowSet`对象会断开与数据源的连接，从而变为“断开连接”。在其大部分生命周期中，断开连接的`RowSet`对象不与数据源建立连接，并且独立运行。接下来的两节将告诉您在连接或断开连接方面，`RowSet`对象可以做什么。'
+- en: Connected RowSet Objects
+  id: totrans-37
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 连接的 RowSet 对象
+- en: 'Only one of the standard `RowSet` implementations is a connected `RowSet` object:
+    `JdbcRowSet`. Always being connected to a database, a `JdbcRowSet` object is most
+    similar to a `ResultSet` object and is often used as a wrapper to make an otherwise
+    non-scrollable and read-only `ResultSet` object scrollable and updatable.'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 标准`RowSet`实现中只有一个连接的`RowSet`对象：`JdbcRowSet`。作为与数据库始终连接的对象，`JdbcRowSet`对象最类似于`ResultSet`对象，并且通常被用作包装器，使本来不可滚动和只读的`ResultSet`对象变得可滚动和可更新。
+- en: As a JavaBeans component, a `JdbcRowSet` object can be used, for example, in
+    a GUI tool to select a JDBC driver. A `JdbcRowSet` object can be used this way
+    because it is effectively a wrapper for the driver that obtained its connection
+    to the database.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为 JavaBeans 组件，例如，`JdbcRowSet`对象可以在 GUI 工具中用于选择 JDBC 驱动程序。`JdbcRowSet`对象可以这样使用，因为它实际上是驱动程序的包装器，该驱动程序获取了与数据库的连接。
+- en: Disconnected RowSet Objects
+  id: totrans-40
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 断开连接的 RowSet 对象
+- en: The other four implementations are disconnected `RowSet` implementations. Disconnected
+    `RowSet` objects have all the capabilities of connected `RowSet` objects plus
+    they have the additional capabilities available only to disconnected `RowSet`
+    objects. For example, not having to maintain a connection to a data source makes
+    disconnected `RowSet` objects far more lightweight than a `JdbcRowSet` object
+    or a `ResultSet` object. Disconnected `RowSet` objects are also serializable,
+    and the combination of being both serializable and lightweight makes them ideal
+    for sending data over a network. They can even be used for sending data to thin
+    clients such as PDAs and mobile phones.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另外四个实现是断开连接的`RowSet`实现。断开连接的`RowSet`对象具有连接的`RowSet`对象的所有功能，还具有仅适用于断开连接的`RowSet`对象的附加功能。例如，不必维护与数据源的连接使得断开连接的`RowSet`对象比`JdbcRowSet`对象或`ResultSet`对象更轻量级。断开连接的`RowSet`对象也是可序列化的，而且既可序列化又轻量级的组合使它们非常适合通过网络发送数据。它们甚至可以用于向PDA和手机等轻客户端发送数据。
+- en: 'The `CachedRowSet` interface defines the basic capabilities available to all
+    disconnected `RowSet` objects. The other three are extensions of the `CachedRowSet`
+    interface, which provide more specialized capabilities. The following information
+    shows how they are related:'
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`CachedRowSet`接口定义了所有断开连接的`RowSet`对象可用的基本功能。其他三个是`CachedRowSet`接口的扩展，提供更专业的功能。以下信息显示了它们之间的关系：'
+- en: 'A `CachedRowSet` object has all the capabilities of a `JdbcRowSet` object plus
+    it can also do the following:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`CachedRowSet`对象具有`JdbcRowSet`对象的所有功能，还可以执行以下操作：
+- en: Obtain a connection to a data source and execute a query
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 获取到数据源的连接并执行查询
+- en: Read the data from the resulting `ResultSet` object and populate itself with
+    that data
+  id: totrans-45
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 从生成的`ResultSet`对象中读取数据并用该数据填充自身
+- en: Manipulate data and make changes to data while it is disconnected
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在断开连接时操作数据并对数据进行更改
+- en: Reconnect to the data source to write changes back to it
+  id: totrans-47
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 重新连接到数据源以将更改写回
+- en: Check for conflicts with the data source and resolve those conflicts
+  id: totrans-48
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 检查与数据源的冲突并解决这些冲突
+- en: 'A `WebRowSet` object has all the capabilities of a `CachedRowSet` object plus
+    it can also do the following:'
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`WebRowSet`对象具有`CachedRowSet`对象的所有功能，还可以执行以下操作：
+- en: Write itself as an XML document
+  id: totrans-50
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将自身写为XML文档
+- en: Read an XML document that describes a `WebRowSet` object
+  id: totrans-51
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 读取描述`WebRowSet`对象的XML文档
+- en: 'A `JoinRowSet` object has all the capabilities of a `WebRowSet` object (and
+    therefore also those of a `CachedRowSet` object) plus it can also do the following:'
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`JoinRowSet`对象具有`WebRowSet`对象（因此也具有`CachedRowSet`对象）的所有功能，还可以执行以下操作：
+- en: Form the equivalent of a `SQL JOIN` without having to connect to a data source
+  id: totrans-53
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 形成等效于`SQL JOIN`的操作而无需连接到数据源
+- en: 'A `FilteredRowSet` object likewise has all the capabilities of a `WebRowSet`
+    object (and therefore also a `CachedRowSet` object) plus it can also do the following:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`FilteredRowSet`对象同样具有`WebRowSet`对象（因此也具有`CachedRowSet`对象）的所有功能，还可以执行以下操作：
+- en: Apply filtering criteria so that only selected data is visible. This is equivalent
+    to executing a query on a `RowSet` object without having to use a query language
+    or connect to a data source.
+  id: totrans-55
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 应用过滤条件，以便只有选定的数据可见。这相当于在`RowSet`对象上执行查询，而无需使用查询语言或连接到数据源。

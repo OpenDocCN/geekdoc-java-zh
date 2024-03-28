@@ -1,0 +1,44 @@
+- en: Immutable Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 不可变对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/immutable.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/immutable.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/immutable.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/immutable.html)
+- en: An object is considered *immutable* if its state cannot change after it is constructed.
+    Maximum reliance on immutable objects is widely accepted as a sound strategy for
+    creating simple, reliable code.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个对象在构造后其状态不能改变，则被认为是*不可变*的。广泛接受的一种创建简单可靠代码的策略是最大程度地依赖不可变对象。
+- en: Immutable objects are particularly useful in concurrent applications. Since
+    they cannot change state, they cannot be corrupted by thread interference or observed
+    in an inconsistent state.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不可变对象在并发应用程序中特别有用。由于它们不能改变状态，因此它们不会受到线程干扰的破坏，也不会以不一致的状态被观察到。
+- en: Programmers are often reluctant to employ immutable objects, because they worry
+    about the cost of creating a new object as opposed to updating an object in place.
+    The impact of object creation is often overestimated, and can be offset by some
+    of the efficiencies associated with immutable objects. These include decreased
+    overhead due to garbage collection, and the elimination of code needed to protect
+    mutable objects from corruption.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 程序员通常不愿使用不可变对象，因为他们担心创建一个新对象的成本，而不是就地更新对象。对象创建的影响经常被高估，可以通过一些与不可变对象相关的效率来抵消。这些效率包括由于垃圾回收而减少的开销，以及消除了为了保护可变对象免受破坏而需要的代码。
+- en: The following subsections take a class whose instances are mutable and derives
+    a class with immutable instances from it. In so doing, they give general rules
+    for this kind of conversion and demonstrate some of the advantages of immutable
+    objects.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下小节以一个实例是可变的类为例，并从中派生出一个实例是不可变的类。这样做，它们给出了这种转换的一般规则，并展示了不可变对象的一些优势。

@@ -1,0 +1,80 @@
+- en: 'Lesson: Java Objects in the Directory'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 课程：目录中的Java对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/objects/index.html](https://docs.oracle.com/javase/tutorial/jndi/objects/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/objects/index.html](https://docs.oracle.com/javase/tutorial/jndi/objects/index.html)
+- en: Traditionally, directories have been used to store data. Users and programmers
+    think of the directory as a hierarchy of directory entries, each containing a
+    set of attributes. You look up an entry from the directory and extract the attribute(s)
+    of interest.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传统上，目录被用来存储数据。用户和程序员将目录视为包含一组属性的目录条目的层次结构。您可以从目录中查找条目并提取感兴趣的属性。
+- en: For applications written in the Java programming language, Java objects may
+    sometimes be shared across applications. For such applications, it makes sense
+    to be able to use the directory as a repository for Java objects. The directory
+    provides a centrally administered, and possibly replicated, service for use by
+    Java applications distributed across the network. For example, an application
+    server might use the directory for registering objects that represent the services
+    that it manages so that a client can later search the directory to locate those
+    services as needed. An example of JNDI used as a directory of services is Apache
+    DS. More information about this can be found at [Apache Directory](http://directory.apache.org/).
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于用Java编程语言编写的应用程序，Java对象有时可能会在应用程序之间共享。对于这样的应用程序，能够将目录用作Java对象的存储库是有意义的。目录为分布在网络上的Java应用程序提供了一个集中管理的、可能是复制的服务。例如，应用程序服务器可能使用目录来注册代表其管理的服务的对象，以便客户端稍后可以搜索目录以定位所需的服务。JNDI用作服务目录的示例是Apache
+    DS。有关更多信息，请访问[Apache Directory](http://directory.apache.org/)。
+- en: The JNDI provides an object-oriented view of the directory, thereby allowing
+    Java objects to be added to and retrieved from the directory without requiring
+    the client to manage data representation issues. This lesson discusses the use
+    of the directory for storing and retrieving Java objects at a basic level. The
+    JNDI provides what are known as object and state factories for creating and storing
+    the objects accessed from the directory.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JNDI提供了目录的面向对象视图，从而允许将Java对象添加到目录中并从中检索，而无需客户端管理数据表示问题。本课程讨论了在基本水平上使用目录存储和检索Java对象。JNDI提供了用于创建和存储从目录访问的对象的对象和状态工厂。
+- en: Object Factory
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 对象工厂
+- en: An object factory is a producer of objects. It accepts some information about
+    how to create an object, such as a reference, and then returns an instance of
+    that object. For details about Object Factories and the format in which objects
+    are stored in the directory please refer to the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/objects/factory/index.html).
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对象工厂是对象的生产者。它接受有关如何创建对象的一些信息，例如引用，然后返回该对象的实例。有关对象工厂和对象在目录中存储的格式的详细信息，请参阅[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/objects/factory/index.html)。
+- en: State Factory
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 状态工厂
+- en: A state factory transforms an object into another object. The input is the object
+    and optional attributes, supplied to Context.bind() and the output is another
+    object and optional attributes, to be stored in the underlying naming service
+    or directory. For details about State Factories and on how to write your own state
+    factory please refer to the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/objects/state/index.html).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 状态工厂将一个对象转换为另一个对象。输入是对象和可选属性，提供给Context.bind()，输出是另一个对象和可选属性，将存储在底层命名服务或目录中。有关状态工厂以及如何编写自己的状态工厂的详细信息，请参阅[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/objects/state/index.html)。
+- en: The next part of the lesson discusses how to access Objects in the Directory
+    It describes how serializable objects can be stored and read in the directory.
+    For other types of objects please check out the [JNDI Tutorial](https://docs.oracle.com/javase/jndi/tutorial/objects/index.html).
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 课程的下一部分讨论了如何访问目录中的对象。它描述了可序列化对象如何存储和读取在目录中。有关其他类型的对象，请查看[JNDI教程](https://docs.oracle.com/javase/jndi/tutorial/objects/index.html)。

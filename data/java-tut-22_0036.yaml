@@ -1,0 +1,111 @@
+- en: The if-then and if-then-else Statements
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: '`if-then` 和 `if-then-else` 语句'
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/if.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/if.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/if.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/if.html)
+- en: The `if-then` Statement
+  id: totrans-2
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`if-then` 语句'
+- en: 'The `if-then` statement is the most basic of all the control flow statements.
+    It tells your program to execute a certain section of code *only if* a particular
+    test evaluates to `true`. For example, the `Bicycle` class could allow the brakes
+    to decrease the bicycle''s speed *only if* the bicycle is already in motion. One
+    possible implementation of the `applyBrakes` method could be as follows:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`if-then` 语句是所有控制流语句中最基本的。它告诉你的程序仅当特定测试评估为 `true` 时才执行某个代码段。例如，`Bicycle` 类可以允许刹车减少自行车的速度，仅当自行车已经在运动中时。`applyBrakes`
+    方法的一个可能的实现如下：'
+- en: '[PRE0]'
+  id: totrans-4
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: If this test evaluates to `false` (meaning that the bicycle is not in motion),
+    control jumps to the end of the `if-then` statement.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果这个测试评估为 `false`（意味着自行车没有在运动中），控制跳转到 `if-then` 语句的末尾。
+- en: 'In addition, the opening and closing braces are optional, provided that the
+    "then" clause contains only one statement:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，如果“then”子句只包含一个语句，则开头和结尾的大括号是可选的：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Deciding when to omit the braces is a matter of personal taste. Omitting them
+    can make the code more brittle. If a second statement is later added to the "then"
+    clause, a common mistake would be forgetting to add the newly required braces.
+    The compiler cannot catch this sort of error; you'll just get the wrong results.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 决定何时省略大括号是个人品味的问题。省略它们可能会使代码更脆弱。如果稍后向“then”子句添加第二个语句，一个常见的错误是忘记添加新需要的大括号。编译器无法捕捉到这种错误；你只会得到错误的结果。
+- en: The `if-then-else` Statement
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`if-then-else` 语句'
+- en: The `if-then-else` statement provides a secondary path of execution when an
+    "if" clause evaluates to `false`. You could use an `if-then-else` statement in
+    the `applyBrakes` method to take some action if the brakes are applied when the
+    bicycle is not in motion. In this case, the action is to simply print an error
+    message stating that the bicycle has already stopped.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`if-then-else` 语句在“if”子句评估为 `false` 时提供了执行的第二路径。你可以在 `applyBrakes` 方法中使用 `if-then-else`
+    语句，如果自行车在静止状态下刹车，就采取一些行动。在这种情况下，行动就是简单地打印一个错误消息，说明自行车已经停止了。'
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The following program, [`IfElseDemo`](examples/IfElseDemo.java), assigns a
+    grade based on the value of a test score: an A for a score of 90% or above, a
+    B for a score of 80% or above, and so on.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序，[`IfElseDemo`](examples/IfElseDemo.java)，根据测试分数的值分配等级：90% 或以上为 A，80% 或以上为
+    B，依此类推。
+- en: '[PRE3]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The output from the program is:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 程序的输出是：
+- en: '[PRE4]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'You may have noticed that the value of `testscore` can satisfy more than one
+    expression in the compound statement: `76 >= 70` and `76 >= 60`. However, once
+    a condition is satisfied, the appropriate statements are executed `(grade = ''C'';)`
+    and the remaining conditions are not evaluated.'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能已经注意到 `testscore` 的值可以满足复合语句中的多个表达式：`76 >= 70` 和 `76 >= 60`。然而，一旦条件满足，适当的语句就会被执行（`grade
+    = 'C';`），剩余的条件就不会被评估。

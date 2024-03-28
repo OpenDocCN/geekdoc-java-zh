@@ -1,0 +1,180 @@
+- en: 'Lesson: Working with Images'
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 教程：处理图像
+- en: 原文：[https://docs.oracle.com/javase/tutorial/2d/images/index.html](https://docs.oracle.com/javase/tutorial/2d/images/index.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/2d/images/index.html](https://docs.oracle.com/javase/tutorial/2d/images/index.html)
+- en: As you have already learned from the [Images](../overview/images.html) lesson,
+    `Image`s are described by a width and a height, measured in pixels, and have a
+    coordinate system that is independent of the drawing surface.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如您已经从 [图像](../overview/images.html) 教程中了解的那样，`Image` 由以像素为���位的宽度和高度描���，并且具有与绘图表面无关的坐标系。
+- en: There are a number of common tasks when working with images.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 处理图像时有许多常见任务。
+- en: Loading an external GIF, PNG JPEG image format file into the internal image
+    representation used by Java 2D.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将外部 GIF、PNG JPEG 图像格式文件加载到 Java 2D 使用的内部图像表示中。
+- en: Directly creating a Java 2D image and rendering to it.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 直接创建 Java 2D 图像并对其进行渲染。
+- en: Drawing the contents of a Java 2D image on to a drawing surface.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将 Java 2D 图像的内容绘制到绘图表面上。
+- en: Saving the contents of a Java 2D image to an external GIF, PNG, or JPEG image
+    file.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将 Java 2D 图像的内容保存到外部 GIF、PNG 或 JPEG 图像文件中。
+- en: This lesson teaches you the basics of loading, displaying, and saving images.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程教授如何加载、显示和保存图像的基础知识。
+- en: 'The are two main classes that you must learn about to work with images:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您必须了解的两个主要类来处理图像：
+- en: The [`java.awt.Image`](https://docs.oracle.com/javase/8/docs/api/java/awt/Image.html)
+    class is the superclass that represents graphical images as rectangular arrays
+    of pixels.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`java.awt.Image`](https://docs.oracle.com/javase/8/docs/api/java/awt/Image.html)
+    类是表示图形图像的像素矩形数组的超类。'
+- en: The [`java.awt.image.BufferedImage`](https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html)
+    class, which extends the `Image` class to allow the application to operate directly
+    with image data (for example, retrieving or setting up the pixel color). Applications
+    can directly construct instances of this class.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`java.awt.image.BufferedImage`](https://docs.oracle.com/javase/8/docs/api/java/awt/image/BufferedImage.html)
+    类扩展了 `Image` 类，允许应用程序直接操作图像数据（例如，检索或设置像素颜色）。应用程序可以直接构造此类的实例。'
+- en: The `BufferedImage` class is a cornerstone of the Java 2D immediate-mode imaging
+    API. It manages the image in memory and provides methods for storing, interpreting,
+    and obtaining pixel data. Since `BufferedImage` is a subclass of `Image` it can
+    be rendered by the `Graphics` and `Graphics2D` methods that accept an `Image`
+    parameter.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`BufferedImage` 类是 Java 2D 立即模式成像 API 的基石。它管理内存中的图像，并提供存储、解释和获取像素数据的方法。由于 `BufferedImage`
+    是 `Image` 的子类，因此可以通过接受 `Image` 参数的 `Graphics` 和 `Graphics2D` 方法来呈现它。'
+- en: A `BufferedImage` is essentially an `Image` with an accessible data buffer.
+    It is therefore more efficient to work directly with `BufferedImage`. A `BufferedImage`
+    has a *ColorModel* and a *Raster* of image data. The ColorModel provides a color
+    interpretation of the image's pixel data.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`BufferedImage` 本质上是具有可访问数据缓冲区的 `Image`。因此，直接使用 `BufferedImage` 更有效。`BufferedImage`
+    具有 *ColorModel* 和图像数据的 *Raster*。ColorModel 提供图像像素数据的颜色解释。'
+- en: 'The Raster performs the following functions:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Raster 执行以下功能：
+- en: Represents the rectangular coordinates of the image
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 表示图像的矩形坐标
+- en: Maintains image data in memory
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在内存中维护图像数据
+- en: Provides a mechanism for creating multiple subimages from a single image data
+    buffer
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 提供从单个图像数据缓冲区创建多个子图像的机制
+- en: Provides methods for accessing specific pixels within the image
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 提供访问图像内特定像素的方法
+- en: 'The basic operations with images are represented in the following sections:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 图像的基本操作在以下部分中表示：
+- en: '[Reading/Loading an image](loadimage.html)'
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[读取/加载图像](loadimage.html)'
+- en: This section explains how to load an image from an external image format into
+    a Java application using the Image I/O API
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节解释了如何使用 Image I/O API 将外部图像格式的图像加载到 Java 应用程序中。
+- en: '[Drawing an image](drawimage.html)'
+  id: totrans-22
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[绘制图像](drawimage.html)'
+- en: This section teaches how to display images using the `drawImage` method of the
+    `Graphics` and `Graphics2D` classes.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节教授如何使用 `Graphics` 和 `Graphics2D` 类的 `drawImage` 方法显示图像。
+- en: '[Creating and drawing To an image](drawonimage.html)'
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[创建和绘制到图像](drawonimage.html)'
+- en: This section describes how to create an image and how to use the image itself
+    as a drawing surface.
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节描述了如何创建图像以及如何将图像本身用作绘图表面。
+- en: '[Writing/saving an image](saveimage.html)'
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[写入/保存图像](saveimage.html)'
+- en: This section explains how to save created images in an appropriate format.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节解释了如何以适当的格式保存创建的图像。

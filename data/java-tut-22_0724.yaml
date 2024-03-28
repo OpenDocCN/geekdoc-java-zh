@@ -1,0 +1,527 @@
+- en: Using JdbcRowSet Objects
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用 JdbcRowSet 对象
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/jdbcrowset.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/jdbcrowset.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/jdbcrowset.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/jdbcrowset.html)
+- en: A `JdbcRowSet` object is an enhanced `ResultSet` object. It maintains a connection
+    to its data source, just as a `ResultSet` object does. The big difference is that
+    it has a set of properties and a listener notification mechanism that make it
+    a JavaBeans component.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JdbcRowSet` 对象是一个增强的 `ResultSet` 对象。它与数据源保持连接，就像 `ResultSet` 对象一样。最大的区别在于它具有一组属性和监听器通知机制，使其成为一个
+    JavaBeans 组件。'
+- en: One of the main uses of a `JdbcRowSet` object is to make a `ResultSet` object
+    scrollable and updatable when it does not otherwise have those capabilities.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JdbcRowSet` 对象的主要用途之一是使一个 `ResultSet` 对象在没有这些功能的情况下可滚动和可更新。'
+- en: 'This section covers the following topics:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下主题：
+- en: '[Creating JdbcRowSet Objects](#creating-jdbcrowset-object)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建 JdbcRowSet 对象](#creating-jdbcrowset-object)'
+- en: '[Default JdbcRowSet Objects](#default-jdbcrowset-objects)'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[默认 JdbcRowSet 对象](#default-jdbcrowset-objects)'
+- en: '[Setting Properties](#setting-properties)'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置属性](#setting-properties)'
+- en: '[Using JdbcRowSet Objects](#using-jdbcrowset-object)'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用 JdbcRowSet 对象](#using-jdbcrowset-object)'
+- en: '[Code Sample](#code-sample)'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[代码示例](#code-sample)'
+- en: Creating JdbcRowSet Objects
+  id: totrans-10
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 创建 JdbcRowSet 对象
+- en: 'Create a `JdbcRowSet` object by using an instance of `RowSetFactory`, which
+    is created from the class `RowSetProvider`. The following example is from [`JdbcRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JdbcRowSetSample.java):'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过使用 `RowSetProvider` 类创建的 `RowSetFactory` 实例来创建 `JdbcRowSet` 对象。以下示例来自 [`JdbcRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JdbcRowSetSample.java)：
+- en: '[PRE0]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The `RowSetFactory` interface contains methods to create the different types
+    of `RowSet` implementations:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`RowSetFactory` 接口包含创建不同类型 `RowSet` 实现的方法：'
+- en: '`createCachedRowSet`'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`createCachedRowSet`'
+- en: '`createFilteredRowSet`'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`createFilteredRowSet`'
+- en: '`createJdbcRowSet`'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`createJdbcRowSet`'
+- en: '`createJoinRowSet`'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`createJoinRowSet`'
+- en: '`createWebRowSet`'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`createWebRowSet`'
+- en: Default JdbcRowSet Objects
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 默认 JdbcRowSet 对象
+- en: 'When you create a `JdbcRowSet` object with an instance of `RowSetFactory`,
+    the new `JdbcRowSet` object will have the following properties:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 `RowSetFactory` 实例创建 `JdbcRowSet` 对象时，新的 `JdbcRowSet` 对象将具有以下属性：
+- en: '`type`: `ResultSet.TYPE_SCROLL_INSENSITIVE` (has a scrollable cursor)'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`type`: `ResultSet.TYPE_SCROLL_INSENSITIVE`（具有可滚动游标）'
+- en: '`concurrency`: `ResultSet.CONCUR_UPDATABLE` (can be updated)'
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`concurrency`: `ResultSet.CONCUR_UPDATABLE`（可更新）'
+- en: '`escapeProcessing`: `true` (the driver will do escape processing; when escape
+    processing is enabled, the driver will scan for any escape syntax and translate
+    it into code that the particular database understands)'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`escapeProcessing`: `true`（驱动程序将执行转义处理；启用转义处理时，驱动程序将扫描任何转义语法并将其转换为特定数据库理解的代码）'
+- en: '`maxRows`: `0` (no limit on the number of rows)'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`maxRows`: `0`（行数没有限制）'
+- en: '`maxFieldSize`: `0` (no limit on the number of bytes for a column value; applies
+    only to columns that store `BINARY`, `VARBINARY`, `LONGVARBINARY`, `CHAR`, `VARCHAR`,
+    and `LONGVARCHAR` values)'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`maxFieldSize`: `0`（列值的字节数没有限制；仅适用于存储 `BINARY`、`VARBINARY`、`LONGVARBINARY`、`CHAR`、`VARCHAR`
+    和 `LONGVARCHAR` 值的列）'
+- en: '`queryTimeout`: `0` (has no time limit for how long it takes to execute a query)'
+  id: totrans-26
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`queryTimeout`: `0`（执行查询的时间没有限制）'
+- en: '`showDeleted`: `false` (deleted rows are not visible)'
+  id: totrans-27
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`showDeleted`: `false`（已删除的行不可见）'
+- en: '`transactionIsolation`: `Connection.TRANSACTION_READ_COMMITTED` (reads only
+    data that has been committed)'
+  id: totrans-28
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`transactionIsolation`: `Connection.TRANSACTION_READ_COMMITTED`（仅读取已提交的数据）'
+- en: '`typeMap`: `null` (the type map associated with a `Connection` object used
+    by this `RowSet` object is `null`)'
+  id: totrans-29
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`typeMap`: `null`（与此 `RowSet` 对象一起使用的 `Connection` 对象关联的类型映射为 `null`）'
+- en: The main thing you must remember from this list is that a `JdbcRowSet` and all
+    other `RowSet` objects are scrollable and updatable unless you set different values
+    for those properties.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你必须记住的主要事项是，`JdbcRowSet` 和所有其他 `RowSet` 对象都是可滚动和可更新的，除非你为这些属性设置了不同的值。
+- en: Setting Properties
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置属性
+- en: The section [Default JdbcRowSet Objects](#default-jdbcrowset-objects) lists
+    the properties that are set by default when a new `JdbcRowSet` object is created.
+    If you use the default constructor, you must set some additional properties before
+    you can populate your new `JdbcRowSet` object with data.
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 章节 [默认 JdbcRowSet 对象](#default-jdbcrowset-objects) 列出了创建新 `JdbcRowSet` 对象时默认设置的属性。如果使用默认构造函数，必须在填充新的
+    `JdbcRowSet` 对象数据之前设置一些额外的属性。
+- en: In order to get its data, a `JdbcRowSet` object first needs to connect to a
+    database. The following four properties hold information used in obtaining a connection
+    to a database.
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要获取其数据，`JdbcRowSet`对象首先需要连接到数据库。以下四个属性保存用于获取数据库连接的信息。
+- en: '`username`: the name a user supplies to a database as part of gaining access'
+  id: totrans-34
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`username`：用户作为访问权限的一部分向数据库提供的名称'
+- en: '`password`: the user''s database password'
+  id: totrans-35
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`password`：用户的数据库密码'
+- en: '`url`: the JDBC URL for the database to which the user wants to connect'
+  id: totrans-36
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`url`：用户想要连接的数据库的 JDBC URL'
+- en: '`datasourceName`: the name used to retrieve a `DataSource` object that has
+    been registered with a JNDI naming service'
+  id: totrans-37
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`datasourceName`：用于检索已在 JNDI 命名服务中注册的`DataSource`对象的名称'
+- en: Which of these properties you set depends on how you are going to make a connection.
+    The preferred way is to use a `DataSource` object, but it may not be practical
+    for you to register a `DataSource` object with a JNDI naming service, which is
+    generally done by a system administrator. Therefore, the code examples all use
+    the `DriverManager` mechanism to obtain a connection, for which you use the `url`
+    property and not the `datasourceName` property.
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你设置哪些属性取决于你如何进行连接。首选的方式是使用`DataSource`对象，但你可能无法将`DataSource`对象注册到 JNDI 命名服务中，这通常由系统管理员完成。因此，代码示例都使用`DriverManager`机制来获取连接，你需要使用`url`属性而不是`datasourceName`属性。
+- en: 'Another property that you must set is the `command` property. This property
+    is the query that determines what data the `JdbcRowSet` object will hold. For
+    example, the following line of code sets the `command` property with a query that
+    produces a `ResultSet` object containing all the data in the table `COFFEES`:'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个你必须设置的属性是`command`属性。该属性是确定`JdbcRowSet`对象将保存什么数据的查询。例如，以下代码行使用查询设置了`command`属性，该查询生成一个包含表`COFFEES`中所有数据的`ResultSet`对象：
+- en: '[PRE1]'
+  id: totrans-40
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: After you have set the `command` property and the properties necessary for making
+    a connection, you are ready to populate the `jdbcRs` object with data by calling
+    the `execute` method.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在设置了`command`属性和连接所需的属性之后，通过调用`execute`方法，你就可以准备好通过数据填充`jdbcRs`对象。
+- en: '[PRE2]'
+  id: totrans-42
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The `execute` method does many things for you in the background:'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`execute`方法在后台为你执行许多操作：'
+- en: It makes a connection to the database using the values you assigned to the `url`,
+    `username`, and `password` properties.
+  id: totrans-44
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它使用你分配给`url`、`username`和`password`属性的值连接到数据库。
+- en: It executes the query you set in the `command` property.
+  id: totrans-45
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它执行你在`command`属性中设置的查询。
+- en: It reads the data from the resulting `ResultSet` object into the `jdbcRs` object.
+  id: totrans-46
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 它将结果的数据从`ResultSet`对象读取到`jdbcRs`对象中。
+- en: Using JdbcRowSet Objects
+  id: totrans-47
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用 JdbcRowSet 对象
+- en: You update, insert, and delete a row in a `JdbcRowSet` object the same way you
+    update, insert, and delete a row in an updatable `ResultSet` object. Similarly,
+    you navigate a `JdbcRowSet` object the same way you navigate a scrollable `ResultSet`
+    object.
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你在`JdbcRowSet`对象中更新、插入和删除行的方式与在可更新的`ResultSet`对象中更新、插入和删除行的方式相同。同样，你在`JdbcRowSet`对象中导航的方式与在可滚动的`ResultSet`对象中导航的方式相同。
+- en: The Coffee Break chain of coffee houses acquired another chain of coffee houses
+    and now has a legacy database that does not support scrolling or updating of a
+    result set. In other words, any `ResultSet` object produced by this legacy database
+    does not have a scrollable cursor, and the data in it cannot be modified. However,
+    by creating a `JdbcRowSet` object populated with the data from a `ResultSet` object,
+    you can, in effect, make the `ResultSet` object scrollable and updatable.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Coffee Break 咖啡连锁店收购了另一家咖啡连锁店，现在拥有一个不支持结果集滚动或更新的传统数据库。换句话说，由这个传统数据库产生的任何`ResultSet`对象都没有可滚动的游标，其中的数据也无法修改。然而，通过创建一个从`ResultSet`对象中获取数据的`JdbcRowSet`对象，实际上可以使`ResultSet`对象可滚动和可更新。
+- en: As mentioned previously, a `JdbcRowSet` object is by default scrollable and
+    updatable. Because its contents are identical to those in a `ResultSet` object,
+    operating on the `JdbcRowSet` object is equivalent to operating on the `ResultSet`
+    object itself. And because a `JdbcRowSet` object has an ongoing connection to
+    the database, changes it makes to its own data are also made to the data in the
+    database.
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，`JdbcRowSet`对象默认是可滚动和可更新的。因为其内容与`ResultSet`对象中的内容相同，对`JdbcRowSet`对象的操作等同于对`ResultSet`对象本身的操作。而且因为`JdbcRowSet`对象与数据库有持续连接，它对自己数据所做的更改也会应用到数据库中的数据。
+- en: 'This section covers the following topics:'
+  id: totrans-51
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节涵盖以下主题：
+- en: '[Navigating JdbcRowSet Objects](#navigating-jdbcrowset-object)'
+  id: totrans-52
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[导航JdbcRowSet对象](#navigating-jdbcrowset-object)'
+- en: '[Updating Column Values](#updating-column-value)'
+  id: totrans-53
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[更新列值](#updating-column-value)'
+- en: '[Inserting Rows](#inserting-row)'
+  id: totrans-54
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[插入行](#inserting-row)'
+- en: '[Deleting Rows](#deleting-row)'
+  id: totrans-55
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[删除行](#deleting-row)'
+- en: Navigating JdbcRowSet Objects
+  id: totrans-56
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 导航JdbcRowSet对象
+- en: A `ResultSet` object that is not scrollable can use only the `next` method to
+    move its cursor forward, and it can move the cursor only forward from the first
+    row to the last row. A default `JdbcRowSet` object, however, can use all of the
+    cursor movement methods defined in the `ResultSet` interface.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个不可滚动的`ResultSet`对象只能使用`next`方法将其光标向前移动，并且只能从第一行向最后一行向前移动。然而，默认的`JdbcRowSet`对象可以使用`ResultSet`接口中定义的所有光标移动方法。
+- en: 'A `JdbcRowSet` object can call the method `next`, and it can also call any
+    of the other `ResultSet` cursor movement methods. For example, the following lines
+    of code move the cursor to the fourth row in the `jdbcRs` object and then back
+    to the third row:'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个`JdbcRowSet`对象可以调用方法`next`，也可以调用任何其他`ResultSet`光标移动方法。例如，以下代码行将光标移动到`jdbcRs`对象的第四行，然后再移回第三行：
+- en: '[PRE3]'
+  id: totrans-59
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: The method `previous` is analogous to the method `next` in that it can be used
+    in a `while` loop to traverse all of the rows in order. The difference is that
+    you must move the cursor to a position after the last row, and `previous` moves
+    the cursor toward the beginning.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 方法`previous`类似于方法`next`，可以在`while`循环中用于按顺序遍历所有行。不同之处在于你必须将光标移动到最后一行之后的位置，而`previous`将光标向前移动。
+- en: Updating Column Values
+  id: totrans-61
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 更新列值
+- en: You update data in a `JdbcRowSet` object the same way you update data in a `ResultSet`
+    object.
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以像更新`ResultSet`对象中的数据一样更新`JdbcRowSet`对象中的数据。
+- en: 'Assume that the Coffee Break owner wants to raise the price for a pound of
+    Espresso coffee. If the owner knows that Espresso is in the third row of the `jdbcRs`
+    object, the code for doing this might look like the following:'
+  id: totrans-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设Coffee Break的老板想要提高一磅Espresso咖啡的价格。如果老板知道Espresso在`jdbcRs`对象的第三行，那么执行此操作的代码可能如下所示：
+- en: '[PRE4]'
+  id: totrans-64
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The code moves the cursor to the third row and changes the value for the column
+    `PRICE` to 10.99, and then updates the database with the new price.
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该代码将光标移动到第三行，并将`PRICE`列的值更改为10.99，然后使用新价格更新数据库。
+- en: Calling the method `updateRow` updates the database because `jdbcRs` has maintained
+    its connection to the database. For disconnected `RowSet` objects, the situation
+    is different.
+  id: totrans-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 调用方法`updateRow`会更新数据库，因为`jdbcRs`已经保持了与数据库的连接。对于断开连接的`RowSet`对象，情况是不同的。
+- en: Inserting Rows
+  id: totrans-67
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 插入行
+- en: 'If the owner of the Coffee Break chain wants to add one or more coffees to
+    what he offers, the owner will need to add one row to the `COFFEES` table for
+    each new coffee, as is done in the following code fragment from `JdbcRowSetSample.java`.
+    Notice that because the `jdbcRs` object is always connected to the database, inserting
+    a row into a `JdbcRowSet` object is the same as inserting a row into a `ResultSet`
+    object: You move to the cursor to the insert row, use the appropriate updater
+    method to set a value for each column, and call the method `insertRow`:'
+  id: totrans-68
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果Coffee Break连锁店的老板想要添加一种或多种咖啡到他所提供的咖啡中，那么老板需要为每种新咖啡在`COFFEES`表中添加一行，就像在`JdbcRowSetSample.java`中的以下代码片段中所做的那样。请注意，由于`jdbcRs`对象始终连接到数据库，向`JdbcRowSet`对象插入一行与向`ResultSet`对象插入一行相同：你移动光标到插入行，使用适当的更新方法为每列设置一个值，然后调用方法`insertRow`：
+- en: '[PRE5]'
+  id: totrans-69
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: When you call the method `insertRow`, the new row is inserted into the `jdbcRs`
+    object and is also inserted into the database. The preceding code fragment goes
+    through this process twice, so two new rows are inserted into the `jdbcRs` object
+    and the database.
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你调用方法`insertRow`时，新行将被插入`jdbcRs`对象并同时插入数据库。上述代码片段经历了这个过程两次，所以两行新行被插入`jdbcRs`对象和数据库。
+- en: Deleting Rows
+  id: totrans-71
+  prefs:
+  - PREF_H3
+  type: TYPE_NORMAL
+  zh: 删除行
+- en: 'As is true with updating data and inserting a new row, deleting a row is just
+    the same for a `JdbcRowSet` object as for a `ResultSet` object. The owner wants
+    to discontinue selling French Roast decaffeinated coffee, which is the last row
+    in the `jdbcRs` object. In the following lines of code, the first line moves the
+    cursor to the last row, and the second line deletes the last row from the `jdbcRs`
+    object and from the database:'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与更新数据和插入新行一样，删除行对于`JdbcRowSet`对象和`ResultSet`对象来说是一样的。老板想要停止销售最后一行在`jdbcRs`对象中的French
+    Roast无咖啡因咖啡。在以下代码行中，第一行将光标移动到最后一行，第二行删除了`jdbcRs`对象和数据库中的最后一行：
+- en: '[PRE6]'
+  id: totrans-73
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Code Sample
+  id: totrans-74
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 代码示例
+- en: 'The sample [`JdbcRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JdbcRowSetSample.java)
+    does the following:'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例[`JdbcRowSetSample.java`](examples/JDBCTutorial/src/com/oracle/tutorial/jdbc/JdbcRowSetSample.java)执行以下操作：
+- en: Creates a new `JdbcRowSet` object initialized with the `ResultSet` object that
+    was produced by the execution of a query that retrieves all the rows in the `COFFEES`
+    table
+  id: totrans-76
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 创建一个使用执行检索`COFFEES`表中所有行的查询产生的`ResultSet`对象初始化的新`JdbcRowSet`对象
+- en: Moves the cursor to the third row of the `COFFEES` table and updates the `PRICE`
+    column in that row
+  id: totrans-77
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将光标移动到`COFFEES`表的第三行，并更新该行的`PRICE`列
+- en: Inserts two new rows, one for `HouseBlend` and one for `HouseDecaf`
+  id: totrans-78
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 插入两行新行，一个是`HouseBlend`，另一个是`HouseDecaf`
+- en: Moves the cursor to the last row and deletes it
+  id: totrans-79
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将光标移动到最后一行并将其删除

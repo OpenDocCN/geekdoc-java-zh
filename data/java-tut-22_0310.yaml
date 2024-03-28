@@ -1,0 +1,81 @@
+- en: Checking the Client JRE Software Version
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 检查客户端JRE软件版本
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jreVersionCheck.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jreVersionCheck.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jreVersionCheck.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jreVersionCheck.html)
+- en: There are many reasons to check if a particular version of the Java Runtime
+    Environment (JRE) software is available on a client machine. For example, you
+    might want to launch a different version of your rich Internet application (RIA)
+    or redirect the user to a different page depending on the client's JRE software
+    version.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有许多原因要检查客户端计算机上是否安装了特定版本的Java运行时环境（JRE）软件。例如，您可能希望根据客户端的JRE软件版本启动不同版本的富互联网应用程序（RIA），或者根据客户端的JRE软件版本将用户重定向到不同的页面。
+- en: Use the Deployment Toolkit script's `versionCheck` function to check if a particular
+    version or range of JRE versions is installed on the client.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用部署工具包脚本的`versionCheck`函数来检查客户端是否安装了特定版本或一系列JRE版本。
+- en: '**Function signature:** `versionCheck: function(versionPattern)`'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**函数签名：** `versionCheck: function(versionPattern)`'
+- en: 'Parameters:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参数：
+- en: '`versionPattern` – String specifying the version or range of versions to check
+    for, such as such as "1.4", "1.5.0*" (1.5.x family), and "1.6.0_02+" (any version
+    greater than or equal to 1.6.0_02).'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`versionPattern` – 字符串，指定要检查的版本或版本范围，例如"1.4"，"1.5.0*"（1.5.x系列），以及"1.6.0_02+"（大于或等于1.6.0_02的任何版本）。'
+- en: '**Usage:** Creating a different user experience depending on the client''s
+    JRE software version'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**用法：** 根据客户端的JRE软件版本创建不同的用户体验'
+- en: In this example, a Launch button is created for the Notepad application only
+    if the version of JRE software on the client is greater than or equal to 1.6\.
+    If not, the browser is redirected to `oracle.com`.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，仅当客户端上的JRE软件版本大于或等于1.6时，才会为记事本应用程序创建一个启动按钮。如果不是，则浏览器将重定向到`oracle.com`。
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Depending on the client''s operating system and version of the Java
+    platform, you might be able to verify version information for JRE software at
+    the major version level (for example, 1.6) or at a finer update level (for example,
+    1.6.0_10).'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 根据客户端操作系统和Java平台的版本，您可能可以在JRE软件的主要版本级别（例如1.6）或更精细的更新级别（例如1.6.0_10）上验证版本信息。'
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

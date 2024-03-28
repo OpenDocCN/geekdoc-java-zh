@@ -1,0 +1,111 @@
+- en: Simple Background Tasks
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 简单的后台任务
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/concurrency/simple.html](https://docs.oracle.com/javase/tutorial/uiswing/concurrency/simple.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/concurrency/simple.html](https://docs.oracle.com/javase/tutorial/uiswing/concurrency/simple.html)
+- en: Let's start with a task that is very simple, but potentially time-consuming.
+    The [``TumbleItem``](../examples/components/TumbleItemProject/src/components/TumbleItem.java)
+    applet loads a set of graphic files used in an animation. If the graphic files
+    are loaded from an initial thread, there may be a delay before the GUI appears.
+    If the graphic files are loaded from the event dispatch thread, the GUI may be
+    temporarily unresponsive.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们从一个非常简单但潜在耗时的任务开始。[`TumbleItem`](../examples/components/TumbleItemProject/src/components/TumbleItem.java)
+    applet加载一组用于动画的图形文件。如果图形文件是从初始线程加载的，GUI出现之前可能会有延迟。如果图形文件是从事件分派线程加载的，GUI可能会暂时无响应。
+- en: To avoid these problems, `TumbleItem` creates and executes an instance of `SwingWorker`
+    from its initial threads. The object's `doInBackground` method, executing in a
+    worker thread, loads the images into an `ImageIcon` array, and returns a reference
+    to it. Then the `done` method, executing in the event dispatch thread, invokes
+    `get` to retrieve this reference, which it assigns to an applet class field named
+    `imgs`. This allows `TumbleItem` to construct the GUI immediately, without waiting
+    for the images to finish loading.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了避免这些问题，`TumbleItem`从其初始线程创建并执行`SwingWorker`的一个实例。对象的`doInBackground`方法在工作线程中执行，将图像加载到`ImageIcon`数组中，并返回对其的引用。然后，在事件分派线程中执行的`done`方法调用`get`来检索此引用，并将其分配给名为`imgs`的applet类字段。这允许`TumbleItem`立即构造GUI，而不必等待图像加载完成。
+- en: Here is the code that defines and executes the `SwingWorker` object.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是定义和执行`SwingWorker`对象的代码。
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: All concrete subclasses of `SwingWorker` implement `doInBackground`; implementation
+    of `done` is optional.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有`SwingWorker`的具体子类都实现`doInBackground`；`done`的实现是可选的。
+- en: Notice that `SwingWorker` is a generic class, with two type parameters. The
+    first type parameter specifies a return type for `doInBackground`, and also for
+    the `get` method, which is invoked by other threads to retrieve the object returned
+    by `doInBackground`. `SwingWorker`'s second type parameter specifies a type for
+    interim results returned while the background task is still active. Since this
+    example doesn't return interim results, [`Void`](https://docs.oracle.com/javase/8/docs/api/java/lang/Void.html)
+    is used as a placeholder.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`SwingWorker`是一个泛型类，有两个类型参数。第一个类型参数指定`doInBackground`的返回类型，也指定由其他线程调用以检索`doInBackground`返回的对象的`get`方法的返回类型。`SwingWorker`的第二个类型参数指定在后台任务仍处于活动状态时返回的中间结果的类型。由于此示例不返回中间结果，使用[`Void`](https://docs.oracle.com/javase/8/docs/api/java/lang/Void.html)作为占位符。
+- en: You may wonder if the code that sets `imgs` is unnecessarily complicated. Why
+    make `doInBackground` return an object and use `done` to retrieve it? Why not
+    just have `doInBackground` set `imgs` directly? The problem is that the object
+    `imgs` refers to is created in the worker thread and used in the event dispatch
+    thread. When objects are shared between threads in this way, you must make sure
+    that changes made in one thread are visible to the other. Using `get` guarantees
+    this, because using `get` creates a *happens before* relationship between the
+    code that creates `imgs` and the code that uses it. For more on the happens before
+    relationship, refer to [Memory Consistency Errors](../../essential/concurrency/memconsist.html)
+    in the [Concurrency](../../essential/concurrency/index.html) lesson.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能会想知道设置`imgs`的代码是否过于复杂。为什么让`doInBackground`返回一个对象并使用`done`来检索它？为什么不直接让`doInBackground`直接设置`imgs`？问题在于`imgs`引用的对象是在工作线程中创建并在事件分派线程中使用的。当对象在这种方式在线程之间共享时，您必须确保在一个线程中进行的更改对另一个线程可见。使用`get`可以保证这一点，因为使用`get`会在创建`imgs`的代码和使用它的代码之间创建一个*happens
+    before*关系。有关*happens before*关系的更多信息，请参考[内存一致性错误](../../essential/concurrency/memconsist.html)中的[并发性](../../essential/concurrency/index.html)课程。
+- en: There are actually two ways to retrieve the object returned by `doInBackground`.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际上有两种方法可以检索`doInBackground`返回的对象。
+- en: Invoke [`SwingWorker.get` with no arguments](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html#get--).
+    If the background task is not finished, `get` blocks until it is.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用没有参数的[`SwingWorker.get`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html#get--)。如果后台任务尚未完成，`get`会阻塞直到完成。
+- en: Invoke [`SwingWorker.get` with arguments indicating a timeout](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html#get-long-java.util.concurrent.TimeUnit-).
+    If the background task is not finished, `get` blocks until it is — unless the
+    timeout expires first, in which case `get` throws `java.util.concurrent.TimeoutException`.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 调用带有指示超时的参数的[`SwingWorker.get`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html#get-long-java.util.concurrent.TimeUnit-)。如果后台任务尚未完成，`get`会阻塞直到完成
+    — 除非超时先到，此时`get`会抛出`java.util.concurrent.TimeoutException`。
+- en: Be careful when invoking either overload of `get` from the event dispatch thread;
+    until `get` returns, no GUI events are being processed, and the GUI is "frozen".
+    Don't invoke `get` without arguments unless you are confident that the background
+    task is complete or close to completion.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在事件分发线程中调用`get`的任一重载时要小心；在`get`返回之前，不会处理任何GUI事件，GUI会"冻结"。除非你确信后台任务已经完成或接近完成，否则不要调用不带参数的`get`。
+- en: For more on the `TumbleItem` example, refer to [How to Use Swing Timers](../misc/timer.html)
+    in the lesson [Using Other Swing Features](../misc/index.html).
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要了解更多关于`TumbleItem`示例的内容，请参考[如何使用Swing定时器](../misc/timer.html)中的课程[使用其他Swing功能](../misc/index.html)。

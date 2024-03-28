@@ -1,0 +1,129 @@
+- en: Add, Replace or Remove a Binding
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 添加、替换或移除绑定
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/bind.html](https://docs.oracle.com/javase/tutorial/jndi/ops/bind.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jndi/ops/bind.html](https://docs.oracle.com/javase/tutorial/jndi/ops/bind.html)
+- en: The `Context` interface contains methods for [adding](#BIND), [replacing](#REBIND),
+    and [removing](#UNBIND) a binding in a context.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Context` 接口包含用于在上下文中[添加](#BIND)、[替换](#REBIND)和[移除](#UNBIND)绑定的方法。'
+- en: Adding a Binding
+  id: totrans-3
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 添加绑定
+- en: '[`Context.bind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#bind-javax.naming.Name-java.lang.Object-)
+    is used to add a binding to a context. It accepts as arguments the name of the
+    object and the object to be bound.'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`Context.bind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#bind-javax.naming.Name-java.lang.Object-)
+    用于向上下文添加绑定。它接受对象的名称和要绑定的对象作为参数。'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Before you go on:** The examples in this lesson require that you make additions
+    to the schema. You must either turn off schema-checking in the LDAP server or
+    add [`the schema`](../software/config/java.schema) that accompanies this tutorial
+    to the server. Both of these tasks are typically performed by the directory server''s
+    administrator. See the [LDAP Setup](../software/content.html)lesson.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**在继续之前：** 本课程中的示例需要您对模式进行添加。您必须在 LDAP 服务器中关闭模式检查，或者将伴随本教程的[`模式`](../software/config/java.schema)添加到服务器中。这两项任务通常由目录服务器的管理员执行。请参阅[LDAP
+    设置](../software/content.html)课程。'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '[PRE0]'
+  id: totrans-8
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '[`This example`](examples/Bind.java) creates an object of class [``Fruit``](examples/Fruit.java)
+    and binds it to the name `"cn=Favorite Fruit"` in the context `ctx`. If you subsequently
+    looked up the name `"cn=Favorite Fruit"` in `ctx`, then you would get the `fruit`
+    object. Note that to compile the `Fruit` class, you need the [``FruitFactory``](examples/FruitFactory.java)
+    class.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`这个例子`](examples/Bind.java) 创建一个 `Fruit` 类的对象，并将其绑定到上下文 `ctx` 中的名称 `"cn=Favorite
+    Fruit"`。如果随后在 `ctx` 中查找名称 `"cn=Favorite Fruit"`，则会得到 `fruit` 对象。请注意，要编译 `Fruit`
+    类，您需要 [``FruitFactory``](examples/FruitFactory.java) 类。'
+- en: If you were to run this example twice, then the second attempt would fail with
+    a [`NameAlreadyBoundException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameAlreadyBoundException.html).
+    This is because the name `"cn=Favorite Fruit"` is already bound. For the second
+    attempt to succeed, you would have to use [`rebind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#rebind-javax.naming.Name-java.lang.Object-).
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您运行此示例两次，则第二次尝试将失败，并显示 [`NameAlreadyBoundException`](https://docs.oracle.com/javase/8/docs/api/javax/naming/NameAlreadyBoundException.html)。这是因为名称
+    `"cn=Favorite Fruit"` 已经绑定。要使第二次尝试成功，您必须使用 [`rebind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#rebind-javax.naming.Name-java.lang.Object-)。
+- en: Adding or Replacing a Binding
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 添加或替换绑定
+- en: '`rebind()` is used to add or replace a binding. It accepts the same arguments
+    as `bind()`, but the semantics are such that if the name is already bound, then
+    it will be unbound and the newly given object will be bound.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`rebind()` 用于添加或替换绑定。它接受与 `bind()` 相同的参数，但语义是如果名称已经绑定，则将解绑并绑定新给定的对象。'
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: When you run [`this example`](examples/Rebind.java), it will replace the binding
+    created by the [``bind()``](examples/Bind.java) example.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当你运行[`这个例子`](examples/Rebind.java)时，它将替换由[``bind()``](examples/Bind.java)例子创建的绑定。
+- en: '![The binding to lemon is being replaced by a bind to orange.](../Images/eefa848fa1d4d177ea98c5dced7600a3.png)'
+  id: totrans-15
+  prefs: []
+  type: TYPE_IMG
+  zh: '![将柠檬的绑定替换为橙子的绑定。](../Images/eefa848fa1d4d177ea98c5dced7600a3.png)'
+- en: Removing a Binding
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 移除绑定
+- en: To remove a binding, you use [`unbind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#unbind-javax.naming.Name-).
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要移除绑定，您可以使用[`unbind()`](https://docs.oracle.com/javase/8/docs/api/javax/naming/Context.html#unbind-javax.naming.Name-)。
+- en: '[PRE2]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '[`This example`](examples/Unbind.java), when run, removes the binding that
+    was created by the [``bind()``](examples/Bind.java) or [``rebind()``](examples/Rebind.java)
+    example.'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 运行时，[`这个例子`](examples/Unbind.java)将移除由[``bind()``](examples/Bind.java)或[``rebind()``](examples/Rebind.java)例子创建的绑定。

@@ -1,0 +1,1177 @@
+- en: How to Use Scroll Panes
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用滚动窗格
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/scrollpane.html](https://docs.oracle.com/javase/tutorial/uiswing/components/scrollpane.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/scrollpane.html](https://docs.oracle.com/javase/tutorial/uiswing/components/scrollpane.html)
+- en: A [`JScrollPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html)
+    provides a scrollable view of a component. When screen real estate is limited,
+    use a scroll pane to display a component that is large or one whose size can change
+    dynamically. Other containers used to save screen space include [split panes](splitpane.html)
+    and [tabbed panes](tabbedpane.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`JScrollPane`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html)提供了一个组件的可滚动视图。当屏幕空间有限时，使用滚动窗格来显示一个大的组件或一个大小可以动态改变的组件。用于节省屏幕空间的其他容器包括[分割窗格](splitpane.html)和[选项卡窗格](tabbedpane.html)。'
+- en: 'The code to create a scroll pane can be minimal. For example, here''s a picture
+    of a demo program that puts a text area in a scroll pane because the text area''s
+    size grows dynamically as text is appended to it:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建滚动窗格的代码可以很简洁。例如，这里有一个演示程序的图片，将一个文本区域放入滚动窗格中，因为随着文本的追加，文本区域的大小会动态增长：
+- en: '![A snapshot of ToolBarDemo](../Images/ecd42f77db0e717a8187ff0858df12a5.png)'
+  id: totrans-4
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ToolBarDemo的快照](../Images/ecd42f77db0e717a8187ff0858df12a5.png)'
+- en: 'Here''s the code that creates the text area, makes it the scroll pane''s client,
+    and adds the scroll pane to a container:'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是创建文本区域、将其设置为滚动窗格的客户端并将滚动窗格添加到容器的代码：
+- en: '[PRE0]'
+  id: totrans-6
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The boldface line of code creates the `JScrollPane`, specifying the text area
+    as the scroll pane''s client. The program doesn''t invoke any methods on the `JScrollPane`
+    object, since the scroll pane handles everything automatically: creating the scroll
+    bars when necessary, redrawing the client when the user moves the scroll knobs,
+    and so on.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 粗体代码行创建了`JScrollPane`，指定文本区域为滚动窗格的客户端。程序不会在`JScrollPane`对象上调用任何方法，因为滚动窗格会自动处理一切：在必要时创建滚动条，当用户移动滚动条时重新绘制客户端等。
+- en: You might have noticed that the preceding code sets the preferred size of the
+    scroll pane's container. In the Java look and feel, this preferred size happens
+    to be a bit less tall than required for the text area to display the 5 rows that
+    we requested when creating it, so the scroll bar initially displays a vertical
+    scroll bar. If we didn't restrict the size of the scroll pane's container, the
+    scroll pane would be big enough for the text area to display the full 5 rows and
+    30 columns specified with the `JTextArea` constructor. Refer to [Sizing a Scroll
+    Pane](#sizing) for information about techniques for making a scroll pane the size
+    you want.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能已经注意到前面的代码设置了滚动窗格容器的首选大小。在Java外观中，这个首选大小恰好比我们在创建时请求的5行文本区域显示所需的高度要低一点，因此滚动条最初会显示一个垂直滚动条。如果我们不限制滚动窗格容器的大小，滚动窗格将足够大，以便文本区域显示使用`JTextArea`构造函数指定的完整5行和30列。有关使滚动窗格达到所需大小的技术信息，请参考[Sizing
+    a Scroll Pane](#sizing)。
+- en: 'The rest of this section discusses the following topics:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节的其余部分讨论以下主题：
+- en: '[How a Scroll Pane Works](#operation)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[滚动窗格的工作原理](#operation)'
+- en: '[Setting the Scroll Bar Policy](#scrollbars)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置滚动条策略](#scrollbars)'
+- en: '[Providing Custom Decorations](#decorations)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[提供自定义装饰](#decorations)'
+- en: '[Implementing a Scrolling-Savvy Client](#scrollable)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[实现具有滚动功能的客户端](#scrollable)'
+- en: '[Sizing a Scroll Pane](#sizing)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[调整滚动窗格大小](#sizing)'
+- en: '[Dynamically Changing the Client''s Size](#update)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[动态更改客户端大小](#update)'
+- en: '[The Scroll Pane API](#api)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[滚动窗格API](#api)'
+- en: '[Examples that Use Scroll Panes](#eg)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[使用滚动窗格的示例](#eg)'
+- en: How a Scroll Pane Works
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 滚动窗格的工作原理
+- en: 'Here is a snapshot of an application that uses a customized scroll pane to
+    view a photograph:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个应用程序的快照，使用定制的滚动窗格查看照片：
+- en: '![A snapshot of ScrollDemo](../Images/ba1b073de5841c9e2ca73d8534c9ef2d.png)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ScrollDemo的快照](../Images/ba1b073de5841c9e2ca73d8534c9ef2d.png)'
+- en: The scroll pane in this application looks very different from the one in the
+    previous demo program. Rather than displaying text, this scroll pane contains
+    a image. The scroll pane also has two scroll bars, a row header, a column header,
+    and four corners, three of which have been customized.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此应用程序中的滚动窗格与先前的演示程序中的滚动窗格非常不同。这个滚动窗格不是显示文本，而是包含一个图像。滚动窗格还有两个滚动条，一个行标题，一个列标题和四个角，其中三个已经定制。
+- en: '* * *'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this::**'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run ScrollDemo using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/components/index.html#ScrollDemo).[![Launches
+    the ScrollDemo example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ScrollDemoProject/ScrollDemo.jnlp)
+  id: totrans-24
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行ScrollDemo（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/components/index.html#ScrollDemo)。[![启动ScrollDemo示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ScrollDemoProject/ScrollDemo.jnlp)
+- en: Move the knobs on the scroll bars. Watch the image scroll and the horizontal
+    and vertical rulers scroll along.
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 移动滚动条上的旋钮。观察图像滚动以及水平和垂直标尺的滚动。
+- en: If you have a mouse with a wheel (which is generally between the mouse buttons)
+    use the mouse wheel to scroll the image vertically.
+  id: totrans-26
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果您的鼠标带有滚轮（通常位于鼠标按钮之间），请使用鼠标滚轮垂直滚动图像。
+- en: Click the **cm** toggle in the upper left corner of the scroll pane. The units
+    on the row and column headers change to inches (or back to centimeters).
+  id: totrans-27
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击滚动窗格左上角的**cm**切换按钮。行和列标题上的单位将更改为英寸（或切换回厘米）。
+- en: Click the arrow buttons on the scroll bars. Also, try clicking on the track
+    above or below the knob on the vertical scroll bar, or to the left or right of
+    the horizontal one.
+  id: totrans-28
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击滚动条上的箭头按钮。还可以尝试点击垂直滚动条旋钮上方或下方的轨道，或水平滚动条左侧或右侧。
+- en: Move the cursor over the image and press the cursor. Continuing to press the
+    cursor, drag to a point outside the image and pause. The visible area of the image
+    moves toward the cursor. This scroll-by-dragging functionality is enabled by the
+    scroll pane, and with the `JComponent` API, but it is implemented by the custom
+    component that displays the image.
+  id: totrans-29
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将光标移动到图像上并按下光标。继续按住光标，拖动到图像外部的某个点并暂停。图像的可见区域朝光标移动。这种通过拖动进行滚动的功能由滚动窗格和`JComponent`
+    API启用，但由显示图像的自定义组件实现。
+- en: Resize the window. Notice that the scroll bars disappear when the scroll pane
+    is large enough to display the entire image and reappear again when the scroll
+    pane is too small to show the entire image.
+  id: totrans-30
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 调整窗口大小。注意当滚动窗格足够大以显示整个图像时，滚动条会消失，并在滚动窗格太小以显示整个图像时重新出现。
+- en: '* * *'
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'The ScrollDemo program establishes the scroll pane''s client when creating
+    the scroll pane:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在创建滚动窗格时，ScrollDemo程序会建立滚动窗格的客户端：
+- en: '[PRE1]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The scroll pane's client is also known as the *view* or *viewport view*. You
+    can change the client dynamically by calling the `setViewportView` method. Note
+    that `JScrollPane` has no corresponding `getViewportView` method. If you need
+    to refer to the client object again, you can either cache it in a variable or
+    invoke `getViewport().getViewportView()` on the scroll pane.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 滚动窗格的客户端也被称为*视图*或*视口视图*。您可以通过调用`setViewportView`方法动态更改客户端。请注意，`JScrollPane`没有对应的`getViewportView`方法。如果您需要再次引用客户端对象，可以将其缓存在变量中，或在滚动窗格上调用`getViewport().getViewportView()`。
+- en: 'When the user manipulates the scroll bars in a scroll pane, the area of the
+    client that is visible changes accordingly. This picture shows the relationship
+    between the scroll pane and its client and indicates the classes that the scroll
+    pane commissions to help:'
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户操作滚动窗格中的滚动条时，客户端可见区域相应地发生变化。这张图片展示了滚动窗格与其客户端之间的关系，并指示了滚动窗格委托的类来帮助：
+- en: '![The architecture of a scroll pane](../Images/378022f448c8a97f3b6866ff78b0db5b.png)'
+  id: totrans-36
+  prefs: []
+  type: TYPE_IMG
+  zh: '![滚动窗格的架构](../Images/378022f448c8a97f3b6866ff78b0db5b.png)'
+- en: A scroll pane uses a [`JViewport`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JViewport.html)
+    instance to manage the visible area of the client. The viewport is responsible
+    for positioning and sizing the client, based on the positions of the scroll bars,
+    and displaying it.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 滚动窗格使用[`JViewport`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JViewport.html)实例来管理客户端的可见区域。视口负责根据滚动条的位置来定位和调整客户端的大小，并显示它。
+- en: 'A scroll pane may use two separate instances of [`JScrollBar`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollBar.html)
+    for the scroll bars. The scroll bars provide the interface for the user to manipulate
+    the visible area. The following figure shows the three areas of a scroll bar:
+    the knob (sometimes called the *thumb*), the (arrow) buttons, and the track.'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 滚动窗格可能使用两个单独的[`JScrollBar`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollBar.html)实例作为滚动条。滚动条为用户提供操作可见区域的接口。下图显示了滚动条的三个区域：滑块（有时称为*拇指*）、（箭头）按钮和轨道。
+- en: '![The parts of a scroll bar](../Images/dddfff56eee3fd3aae3c4246b9221e12.png)'
+  id: totrans-39
+  prefs: []
+  type: TYPE_IMG
+  zh: '![滚动条的各部分](../Images/dddfff56eee3fd3aae3c4246b9221e12.png)'
+- en: When the user moves the knob on the vertical scroll bar up and down, the visible
+    area of the client moves up and down. Similarly, when the user moves the knob
+    on the horizontal scroll bar to the right and left, the visible area of the client
+    moves back and forth accordingly. The position of the knob relative to its track
+    is proportionally equal to the position of the visible area relative to the client.
+    In the Java look and feel and some others, the size of the knob gives a visual
+    clue as to how much of the client is visible.
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户上下移动垂直滚动条上的滑块时，客户端的可见区域上下移动。类似地，当用户左右移动水平滚动条上的滑块时，客户端的可见区域相应地左右移动。滑块相对于其轨道的位置与可见区域相对于客户端的位置成比例。在Java外观和其他一些外观中，滑块的大小给出了客户端可见部分的视觉线索。
+- en: By clicking an arrow button, the user can scroll by a *unit increment*. By clicking
+    within the track, the user can scroll by a *block increment*. If the user has
+    a mouse with a wheel, then the user can scroll vertically using the mouse wheel.
+    The amount that the mouse wheel scrolls is platform dependent. For example, by
+    default on Windows XP, the mouse wheel scrolls three unit increments; the Mouse
+    control panel allows you to specify a different number of unit increments or to
+    use a block increment instead. More information about unit and block increments
+    is in [Implementing a Scrolling-Savvy Client](#scrollable).
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过单击箭头按钮，用户可以按*单位增量*滚动。通过在轨道内部单击，用户可以按*块增量*滚动。如果用户使用带有滚轮的鼠标，则用户可以使用鼠标滚轮垂直滚动。鼠标滚轮滚动的量取决于平台。例如，在Windows
+    XP上，默认情况下，鼠标滚轮每次滚动三个单位增量；鼠标控制面板允许您指定不同数量的单位增量或使用块增量。有关单位和块增量的更多信息，请参阅[实现滚动智能客户端](#scrollable)。
+- en: Typical programs don't directly instantiate or call methods on a viewport or
+    scroll bar. Instead, programs achieve their scrolling behavior using the `JScrollPane`
+    API and the API discussed in [Implementing a Scrolling-Savvy Client](#scrollable).
+    Some scrolling-savvy components such as `JList`, `JTable`, and `JTree` also provide
+    [additional API](#otherAPI) to help you affect their scrolling behavior.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 典型的程序不会直接实例化或调用视口或滚动条的方法。相反，程序使用`JScrollPane` API和[实现滚动智能客户端](#scrollable)中讨论的API来实现滚动行为。一些具有滚动智能的组件，如`JList`、`JTable`和`JTree`，还提供[其他API](#otherAPI)来帮助您影响它们的滚动行为。
+- en: Setting the Scroll Bar Policy
+  id: totrans-43
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置滚动条策略
+- en: 'On startup, the scroll pane in the `ScrollDemo` application has two scroll
+    bars. If you make the window large, both scroll bars disappear because they are
+    no longer needed. If you then shrink the height of the window without changing
+    its width, the vertical scroll bar reappears. Further experimentation will show
+    that in this application both scroll bars disappear and reappear as needed. This
+    behavior is controlled by the scroll pane''s *scroll bar policy*, Actually, it''s
+    two policies: each scroll bar has its own.'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`ScrollDemo`应用程序启动时，滚动窗格有两个滚动条。如果将窗口放大，两个滚动条都会消失，因为它们不再需要。然后，如果只缩小窗口的高度而不改变宽度，则垂直滚动条会重新出现。进一步的实验将显示，在此应用程序中，根据需要，两个滚动条都会消失和重新出现。此行为由滚动窗格的*滚动条策略*控制，实际上，有两种策略：每个滚动条都有自己的策略。
+- en: "`ScrollDemo` doesn't explicitly set the scroll pane's scroll bar policies \x97\
+    \ it uses the default. You can set the policies when you create the scroll pane\
+    \ or change them dynamically."
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "`ScrollDemo`没有明确设置滚动窗格的滚动条策略 \x97 它使用默认值。您可以在创建滚动窗格时设置策略，或在运行时动态更改它们。"
+- en: 'Of the constructors provided by `JScrollPane`, these two let you set the scroll
+    bar policies when you create the scroll pane:'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`JScrollPane`提供的构造函数中，这两个构造函数允许您在创建滚动窗格时设置滚动条策略：
+- en: '[PRE2]'
+  id: totrans-47
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'The first `int` specifies the policy for the vertical scroll bar; the second
+    specifies the policy for the horizontal scroll bar. You can also set the policies
+    dynamically with the `setHorizontalScrollBarPolicy` and `setVerticalScrollBarPolicy`
+    methods. With both the constructors and the methods, use one of the following
+    constants defined in the [`ScrollPaneConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/ScrollPaneConstants.html)
+    interface (which is implemented by `JScrollPane`):'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个`int`指定垂直滚动条的策略；第二个指定水平滚动条的策略。您还可以使用`setHorizontalScrollBarPolicy`和`setVerticalScrollBarPolicy`方法动态设置策略。在构造函数和方法中，使用[`ScrollPaneConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/ScrollPaneConstants.html)接口中定义的以下常量之一（该接口由`JScrollPane`实现）：
+- en: '| Policy | Description |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: 策略 | 描述 |
+- en: '| `VERTICAL_SCROLLBAR_AS_NEEDED` `HORIZONTAL_SCROLLBAR_AS_NEEDED` | The default.
+    The scroll bar appears when the viewport is smaller than the client and disappears
+    when the viewport is larger than the client. |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| `VERTICAL_SCROLLBAR_AS_NEEDED` `HORIZONTAL_SCROLLBAR_AS_NEEDED` | 默认选项。当视口小于客户端时，滚动条出现；当视口大于客户端时，滚动条消失。
+    |'
+- en: '| `VERTICAL_SCROLLBAR_ALWAYS` `HORIZONTAL_SCROLLBAR_ALWAYS` | Always display
+    the scroll bar. The knob disappears if the viewport is large enough to show the
+    whole client. |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| `VERTICAL_SCROLLBAR_ALWAYS` `HORIZONTAL_SCROLLBAR_ALWAYS` | 总是显示滚动条。如果视口足够大以显示整个客户端，则滑块会消失。
+    |'
+- en: '| `VERTICAL_SCROLLBAR_NEVER` `HORIZONTAL_SCROLLBAR_NEVER` | Never display the
+    scroll bar. Use this option if you don''t want the user to directly control what
+    part of the client is shown, or if you want them to use only non-scroll-bar techniques
+    (such as dragging). |'
+  id: totrans-52
+  prefs: []
+  type: TYPE_TB
+  zh: '| `VERTICAL_SCROLLBAR_NEVER` `HORIZONTAL_SCROLLBAR_NEVER` | 从不显示滚动条。如果您不希望用户直接控制客户端显示的部分，或者希望他们仅使用非滚动条技术（如拖动），请使用此选项。
+    |'
+- en: Providing Custom Decorations
+  id: totrans-53
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 提供自定义装饰
+- en: 'The area drawn by a scroll pane consists of up to nine parts: the center, four
+    sides, and four corners. The center is the only component that is always present
+    in all scroll panes. Besides scroll bars, the sides can contain column and row
+    headers. A corner component is visible only if both sides that intersect at that
+    corner contain visible components.'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 滚动窗格绘制的区域由最多九个部分组成：中心、四边和四个角。中心是所有滚动窗格中始终存在的唯一组件。除了滚动条，边可以包含列和行标题。只有当相交于该角的两边包含可见组件时，角组件才可见。
+- en: '![Decorations on a scroll pane](../Images/4c8a1ca59611fd051d77cd3c44ae7ba8.png)'
+  id: totrans-55
+  prefs: []
+  type: TYPE_IMG
+  zh: '![滚动窗格上的装饰](../Images/4c8a1ca59611fd051d77cd3c44ae7ba8.png)'
+- en: "As shown in the figure, the scroll pane in `ScrollDemo` has custom row and\
+    \ column headers. Additionally, because all four sides are populated, all four\
+    \ corners are present. The program customizes three of the corners \x97 two just\
+    \ fill their area with the same color as the `Rule`s, and the other contains a\
+    \ toggle button. The fourth corner, the lower right corner, is the default provided\
+    \ by the scroll pane. Notice that because the row and column headers are always\
+    \ present in this example, the toggle button is also always present."
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如图所示，在`ScrollDemo`中的滚动窗格具有自定义的行和列标题。此外，因为所有四边都被填充，所有四个角都存在。程序自定义了三个角——两个只是用与`Rule`相同颜色填充其区域，另一个包含一个切换按钮。第四个角，右下角，是滚动窗格提供的默认角。请注意，因为在此示例中行和列标题始终存在，切换按钮也始终存在。
+- en: If a corner contains a control that the user needs access to all the time, make
+    sure the sides that intersect at the corner are always present. For example, if
+    this application placed the toggle in the lower right corner where the scroll
+    bars intersect, then the toggle would disappear if the user resized the window
+    and even one of the scroll bars disappeared.
+  id: totrans-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个角落包含用户始终需要访问的控件，请确保相交于该角落的边始终存在。例如，如果该应用程序将切换放置在下右角，与滚动条相交的地方，那么如果用户调整窗口大小，甚至一个滚动条消失，切换也会消失。
+- en: 'The scroll pane''s row and column headers are provided by a custom `JComponent`
+    subclass, [`Rule`](../examples/components/ScrollDemoProject/src/components/Rule.java),
+    that draws a ruler in centimeters or inches. Here''s the code that creates and
+    sets the scroll pane''s row and column headers:'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 滚动窗格的行和列标题由自定义的`JComponent`子类[`Rule`](../examples/components/ScrollDemoProject/src/components/Rule.java)提供，该子类以厘米或英寸绘制标尺。以下是创建并设置滚动窗格的行和列标题的代码：
+- en: '[PRE3]'
+  id: totrans-59
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: You can use any component for a scroll pane's row and column headers. The scroll
+    pane puts the row and column headers in `JViewPort`s of their own. Thus, when
+    scrolling horizontally, the column header follows along, and when scrolling vertically,
+    the row header follows along. Make sure the row and column have the same width
+    and height as the view, because JScrollPane does not enforce these values to have
+    the same size. If one differs from the other, you are likely to not get the desired
+    behavior.
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以为滚动窗格的行和列标题使用任何组件。滚动窗格将行和列标题放在它们自己的`JViewPort`中。因此，水平滚动时，列标题会跟随移动，垂直滚动时，行标题会跟随移动。确保行和列与视图具有相同的宽度和高度，因为`JScrollPane`不强制执行这些值具有相同的大小。如果一个与另一个不同，您可能无法获得所需的行为。
+- en: As a `JComponent` subclass, our custom `Rule` class puts its rendering code
+    in its `paintComponent` method. The `Rule` rendering code takes care to draw only
+    within the current clipping bounds, to ensure speedy scrolling. Your custom row
+    and column headers should do the same.
+  id: totrans-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为`JComponent`子类，我们的自定义`Rule`类将其渲染代码放在其`paintComponent`方法中。`Rule`渲染代码确保仅在当前裁剪边界内绘制，以确保快速滚动。您的自定义行和列标题应该做同样的事情。
+- en: 'You can also use any component for the corners of a scroll pane. `ScrollDemo`
+    illustrates this by putting a toggle button in the upper left corner, and custom
+    [`Corner`](../examples/components/ScrollDemoProject/src/components/Corner.java)
+    objects in the upper right and lower left corners. Here''s the code that creates
+    the `Corner` objects and calls `setCorner` to place them:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您还可以为滚动窗格的角使用任何组件。`ScrollDemo`通过在左上角放置一个切换按钮，并在右上角和左下角放置自定义[`Corner`](../examples/components/ScrollDemoProject/src/components/Corner.java)对象来说明这一点。以下是创建`Corner`对象并调用`setCorner`将它们放置的代码：
+- en: '[PRE4]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Remember that the size of each corner is determined by the size of the sides
+    intersecting there. For some components you must take care that the specific instance
+    of the component fits in its corner. For example, the program sets the font and
+    margins on the toggle button so that it fits within the space established by the
+    headers. It's not an issue with the `Corner` class because that class colors its
+    entire bounds, whatever they happen to be, with a solid color.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记住，每个角的大小由相交的边的大小确定。对于某些组件，您必须确保组件的特定实例适合其角落。例如，程序设置了切换按钮的字体和边距，以使其适应标题所确定的空间。这不是`Corner`类的问题，因为该类用单一颜色填充其整个边界，无论它们是什么颜色。
+- en: 'As you can see from the code, constants indicate the corner positions. This
+    figure shows the constant for each position:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从代码中可以看出，常量指示角的位置。此图显示了每个位置的常量：
+- en: '![Corner constants](../Images/1725ca0a752b8b6defb36dbe3e3a07ca.png)'
+  id: totrans-66
+  prefs: []
+  type: TYPE_IMG
+  zh: '![角常量](../Images/1725ca0a752b8b6defb36dbe3e3a07ca.png)'
+- en: The constants are defined in the [`ScrollPaneConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/ScrollPaneConstants.html)
+    interface, which `JScrollPane` implements.
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些常量在[`ScrollPaneConstants`](https://docs.oracle.com/javase/8/docs/api/javax/swing/ScrollPaneConstants.html)接口中定义，`JScrollPane`实现了该接口。
+- en: Implementing a Scrolling-Savvy Client
+  id: totrans-68
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 实现滚动智能客户端
+- en: To customize the way that a client component interacts with its scroll pane,
+    you can make the component implement the [`Scrollable`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html)
+    interface. By implementing `Scrollable`, a client can specify both the size of
+    the viewport used to view it and the amount to scroll for clicks on the different
+    controls on a scroll bar. You can also specify if the view should track the size
+    of the viewport. This is typically used when the viewport is bigger than the view,
+    but the view should fill the available space.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要自定义客户端组件与其滚动窗格的交互方式，您可以使组件实现[`Scrollable`](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html)接口。通过实现`Scrollable`，客户端可以指定用于查看它的视口的大小以及单击滚动条上不同控件时滚动的量。您还可以指定视图是否应跟踪视口的大小。当视口大于视图时，但视图应填充可用空间时，通常会使用此选项。
+- en: '* * *'
+  id: totrans-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** If you can''t or don''t want to implement a scrollable client, you
+    can specify the unit and block increments using the `setUnitIncrement` and `setBlockIncrement`
+    methods of [`JScrollBar`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollBar.html).
+    For example, the following code sets the unit increment for vertical scrolling
+    to 10 pixels:'
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**如果您无法或不想实现可滚动的客户端，可以使用`setUnitIncrement`和`setBlockIncrement`方法来指定单位和块增量[`JScrollBar`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollBar.html)。例如，以下代码将垂直滚动的单位增量设置为10像素：'
+- en: '[PRE5]'
+  id: totrans-72
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: '* * *'
+  id: totrans-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Here again are the three control areas of a scroll bar: the knob, the buttons,
+    and the track.'
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里再次介绍滚动条的三个控制区域：旋钮、按钮和轨道。
+- en: '![The parts of a scroll bar](../Images/dddfff56eee3fd3aae3c4246b9221e12.png)'
+  id: totrans-75
+  prefs: []
+  type: TYPE_IMG
+  zh: '![滚动条的各部分](../Images/dddfff56eee3fd3aae3c4246b9221e12.png)'
+- en: You might have noticed when manipulating the scroll bars in `ScrollDemo` that
+    clicking the buttons scrolls the image to a tick boundary. You might also have
+    noticed that clicking in the track scrolls the picture by a "screenful". More
+    generally, the button scrolls the visible area by a unit increment and the track
+    scrolls the visible area by a block increment. The behavior you see in the example
+    is not the scroll pane's default behavior, but is specified by the client in its
+    implementation of the `Scrollable` interface.
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可能已经注意到，在`ScrollDemo`中操作滚动条时，单击按钮会将图像滚动到刻度边界。您可能还注意到，在轨道上单击会将图片滚动一个“屏幕”。更一般地，按钮按单位增量滚动可见区域，轨道按块增量滚动可见区域。您在示例中看到的行为不是滚动窗格的默认行为，而是由客户端在其实现`Scrollable`接口时指定的。
+- en: 'The client for the `ScrollDemo` program is [`ScrollablePicture`](../examples/components/ScrollDemoProject/src/components/ScrollablePicture.java).
+    `ScrollablePicture` is a subclass of `JLabel` that provides implementations of
+    all five `Scrollable` methods:'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ScrollDemo`程序的客户端是[`ScrollablePicture`](../examples/components/ScrollDemoProject/src/components/ScrollablePicture.java)。`ScrollablePicture`是`JLabel`的子类，提供了所有五个`Scrollable`方法的实现：'
+- en: '`getScrollableBlockIncrement`'
+  id: totrans-78
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getScrollableBlockIncrement`'
+- en: '`getScrollableUnitIncrement`'
+  id: totrans-79
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getScrollableUnitIncrement`'
+- en: '`getPreferredScrollableViewportSize`'
+  id: totrans-80
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getPreferredScrollableViewportSize`'
+- en: '`getScrollableTracksViewportHeight`'
+  id: totrans-81
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getScrollableTracksViewportHeight`'
+- en: '`getScrollableTracksViewportWidth`'
+  id: totrans-82
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`getScrollableTracksViewportWidth`'
+- en: '`ScrollablePicture` implements the `Scrollable` interface primarily to affect
+    the unit and block increments. However, it must provide implementations for all
+    five methods. Thus, it provides reasonable defaults for the other three methods
+    that you might want to copy for your scrolling-savvy classes.'
+  id: totrans-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ScrollablePicture`主要实现`Scrollable`接口以影响单位和块增量。但是，它必须为所有五个方法提供实现。因此，它为其他三个方法提供了合理的默认值，您可能希望为您的滚动类复制这些默认值。'
+- en: 'The scroll pane calls the client''s `getScrollableUnitIncrement` method whenever
+    the user clicks one of the buttons on the scroll bar. This is true as long as
+    the client implements Scrollable. This method returns the number of pixels to
+    scroll. An obvious implementation of this method returns the number of pixels
+    between tick marks on the header rulers. `ScrollablePicture`, however, does something
+    different: It returns the value required to position the image on a tick mark
+    boundary. Here''s the implementation:'
+  id: totrans-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每当用户单击滚动条上的按钮时，滚动窗格都会调用客户端的`getScrollableUnitIncrement`方法。只要客户端实现了Scrollable接口，这就是真的。此方法返回要滚动的像素数。该方法的一个明显实现是返回标头标尺上刻度标记之间的像素数。然而，`ScrollablePicture`做了不同的事情：它返回将图像定位在刻度标记边界上所需的值。以下是实现：
+- en: '[PRE6]'
+  id: totrans-85
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: If the image is already on a tick mark boundary, this method returns the number
+    of pixels between ticks. Otherwise, it returns the number of pixels from the current
+    location to the nearest tick.
+  id: totrans-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果图像已经在刻度标记边界上，此方法返回刻度之间的像素数。否则，它返回从当前位置到最近刻度的像素数。
+- en: 'Likewise, the scroll pane calls the client''s `getScrollableBlockIncrement`
+    method each time the user clicks on the track, but only if the client implements
+    Scrollable. Here''s `ScrollablePicture`''s implementation of this method:'
+  id: totrans-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，滚动窗格在用户点击轨道时调用客户端的`getScrollableBlockIncrement`方法，但仅当客户端实现了Scrollable接口时才调用。这是`ScrollablePicture`对该方法的实现：
+- en: '[PRE7]'
+  id: totrans-88
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: This method returns the height of the visible rectangle minus a tick mark. This
+    behavior is typical, but true if scrolling vertically, otherwise, it's the width.A
+    block increment should be slightly smaller than the viewport to leave a little
+    of the previous visible area for context. For example, a text area might leave
+    one or two lines of text for context and a table might leave a row or column (depending
+    on the scroll direction).
+  id: totrans-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此方法返回可见矩形的高度减去一个刻度标记。这种行为在垂直滚动时很典型，否则，它是宽度。块增量应略小于视口，以留下一点之前可见区域的上下文。例如，文本区域可能留下一两行文本作为上下文，表格可能留下一行或一列（取决于滚动方向）。
+- en: '`ScrollablePicture.java` has one more bit of code that''s not required by the
+    `Scrollable` interface, but is common in scrollable components: a mouse motion
+    listener that lets the user scroll the picture by dragging from it. The boldface
+    code in the following snippet implements scrolling by dragging:'
+  id: totrans-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ScrollablePicture.java`还有一段代码，这段代码不是`Scrollable`接口所必需的，但在可滚动组件中很常见：一个鼠标移动监听器，让用户通过从图片上拖动来滚动图片。以下代码中的粗体代码实现了通过拖动来滚动：'
+- en: '[PRE8]'
+  id: totrans-91
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: "This snippet scrolls the picture whenever the user drags from the picture to\
+    \ a location outside the picture and pauses. The `setAutoscrolls` method is defined\
+    \ by `JComponent` for the purpose of assisting \x97 but not implementing \x97\
+    \ scrolling by dragging. Setting the autoscrolls property to `true` makes the\
+    \ component fire synthetic mouse-dragged events even when the mouse isn't moving\
+    \ (because it stopped, mid-drag, outside the component). It's up to the component's\
+    \ mouse motion listener to listen for these events and react accordingly."
+  id: totrans-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当用户从图片拖动到图片外部位置并暂停时，此代码片段会滚动图片。`setAutoscrolls`方法由`JComponent`定义，用于辅助滚动而不是实现拖动滚动。将autoscrolls属性设置为`true`会使组件即使鼠标没有移动（因为它在组件外部停止拖动），也会触发合成鼠标拖动事件。组件的鼠标移动监听器应该监听这些事件并做出相应反应。
+- en: Sizing a Scroll Pane
+  id: totrans-93
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 调整滚动窗格大小
+- en: Unless you explicitly set a scroll pane's preferred size, the scroll pane computes
+    it based on the preferred size of its nine components (the viewport, and, if present,
+    the two scroll bars, the row and column headers, and the four corners). The largest
+    factor, and the one most programmers care about, is the size of the viewport used
+    to display the client.
+  id: totrans-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除非你明确设置了滚动窗格的首选大小，否则滚动窗格会根据其九个组件的首选大小来计算它的首选大小（视口以及如果存在的话，两个滚动条，行和列标题以及四个角）。最大的因素，也是大多数程序员关心的因素，是用于显示客户端的视口的大小。
+- en: If the client is not scrolling-savvy, then the scroll pane sizes itself so that
+    the client displays at its preferred size. For typical unsavvy clients, this makes
+    the scroll pane redundant. That is, the scroll pane has no scroll bars because
+    the client's preferred size is big enough to display the entire client. In this
+    case, if the client doesn't change size dynamically, you should probably limit
+    the size of the scroll pane by setting its preferred size or the preferred size
+    of its container.
+  id: totrans-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果客户端不懂滚动，那么滚动窗格会自动调整大小，以便客户端以其首选大小显示。对于典型的不懂滚动的客户端，这使得滚动窗格变得多余。也就是说，滚动窗格没有滚动条，因为客户端的首选大小足够显示整个客户端。在这种情况下，如果客户端不会动态改变大小，你应该通过设置其首选大小或其容器的首选大小来限制滚动窗格的大小。
+- en: If the client is scrolling-savvy, then the scroll pane uses the value returned
+    by the client's `getPreferredScrollableViewportSize` method to compute the size
+    of its viewport. Implementations of this method generally report a preferred size
+    for scrolling that's smaller than the component's standard preferred size. For
+    example, by default, the value returned by `JList`'s implementation of `getPreferredScrollableViewportSize`
+    is just big enough to display eight rows.
+  id: totrans-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果客户端懂滚动，那么滚动窗格会使用客户端的`getPreferredScrollableViewportSize`方法返回的值来计算其视口的大小。该方法的实现通常报告一个比组件的标准首选大小小的滚动的首选大小。例如，默认情况下，`JList`的`getPreferredScrollableViewportSize`实现返回的值刚好足够显示八行。
+- en: Scrolling-savvy classes, like [lists](list.html), [tables](table.html), [text
+    components](text.html), and [trees](tree.html), often provide one or more methods
+    that let programmers affect the size returned from `getPreferredScrollableViewportSize`.
+    For example, you can set the number of visible rows in a list or a tree by calling
+    the `setVisibleRowCount` method. The list or tree takes care of figuring out the
+    size needed to display that number of rows.
+  id: totrans-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 像[列表](list.html)、[表格](table.html)、[文本组件](text.html)和[树形结构](tree.html)这样的懂滚动的类通常提供一个或多个方法，让程序员影响`getPreferredScrollableViewportSize`返回的大小。例如，你可以通过调用`setVisibleRowCount`方法来设置列表或树中可见行的数量。列表或树会负责计算显示该行数所需的大小。
+- en: "Refer to [Methods in Other Classes Related to Scrolling](#otherAPI) for information\
+    \ about scrolling-related methods provided by classes other than `JScrollPane`.\
+    \ And remember \x97 if you don't like the value that `getPreferredScrollableViewportSize`\
+    \ returns, you can always set the preferred size of the scroll pane or its container."
+  id: totrans-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参考[与滚动相关的其他类中的方法](#otherAPI)以获取除`JScrollPane`之外的类提供的与滚动相关的方法的信息。记住，如果你不喜欢`getPreferredScrollableViewportSize`返回的值，你总是可以设置滚动窗格或其容器的首选大小。
+- en: Dynamically Changing the Client's Size
+  id: totrans-99
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 动态更改客户端的大小
+- en: Changing the size of a scroll pane's client is a two-step process. First, set
+    the client's preferred size. Then, call `revalidate` on the client to let the
+    scroll pane know that it should update itself and its scroll bars. Let's look
+    at an example.
+  id: totrans-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更改滚动窗格客户端的大小是一个两步过程。首先，设置客户端的首选大小。然后，在客户端上调用`revalidate`，让滚动窗格知道它应该更新自身和其滚动条。让我们看一个例子。
+- en: 'Here''s a picture of an application that changes the client''s size whenever
+    the user places a circle whose bounds fall outside of the client''s current bounds.
+    The program also changes the client''s size when the user clears the drawing area:'
+  id: totrans-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个应用程序的图片，当用户放置一个边界超出当前边界的圆圈时，客户端的大小会发生变化。当用户清除绘图区域时，程序也会更改客户端的大小：
+- en: '![A snapshot of ScrollDemo2](../Images/243a4cc55fd579c49c017782b4cd89da.png)'
+  id: totrans-102
+  prefs: []
+  type: TYPE_IMG
+  zh: '![ScrollDemo2的快照](../Images/243a4cc55fd579c49c017782b4cd89da.png)'
+- en: You can find the full source code for this example in [`ScrollDemo2.java`](../examples/components/ScrollDemo2Project/src/components/ScrollDemo2.java),
+    which is based on an example provided by tutorial reader John Vella. You can [run
+    ScrollDemo2](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ScrollDemo2Project/ScrollDemo2.jnlp)
+    ( [download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+  id: totrans-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在[`ScrollDemo2.java`](../examples/components/ScrollDemo2Project/src/components/ScrollDemo2.java)中找到此示例的完整源代码，该示例基于教程读者约翰·维拉提供的示例。你可以[运行ScrollDemo2](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/ScrollDemo2Project/ScrollDemo2.jnlp)（[下载
+    JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。
+- en: 'Here''s the code that changes the drawing area''s size when necessary:'
+  id: totrans-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是在必要时更改绘图区域大小的代码：
+- en: '[PRE9]'
+  id: totrans-105
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: Note that when the client changes size, the scroll bars adjust. The scroll pane
+    doesn't resize, nor does the viewport.
+  id: totrans-106
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，当客户端更改大小时，滚动条会调整。滚动窗格不会调整大小，视口也不会调整大小。
+- en: Refer to [`SplitPaneDemo`](../examples/components/index.html#SplitPaneDemo)
+    for another example in which the client object changes size.
+  id: totrans-107
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 参考[`SplitPaneDemo`](../examples/components/index.html#SplitPaneDemo)以查看另一个客户端对象大小变化的示例。
+- en: The Scroll Pane API
+  id: totrans-108
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 滚动窗格 API
+- en: The following tables list the commonly used scroll-related constructors and
+    methods. Other methods you are most likely to invoke on a `JScrollPane` object
+    are those such as `setPreferredSize` that its superclasses provide. See [The JComponent
+    API](jcomponent.html#api) for tables of commonly used inherited methods.
+  id: totrans-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下表格列出了常用的与滚动相关的构造函数和方法。您最有可能在`JScrollPane`对象上调用的其他方法是其超类提供的`setPreferredSize`等方法。请参阅[The
+    JComponent API](jcomponent.html#api)以查看常用继承方法的表格。
+- en: 'The API for using scroll panes falls into these categories:'
+  id: totrans-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用滚动窗格的 API 分为以下几类：
+- en: '[Setting Up the Scroll Pane](#setup)'
+  id: totrans-111
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置滚动窗格](#setup)'
+- en: '[Decorating the Scroll Pane](#decorationsAPI)'
+  id: totrans-112
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[装饰滚动窗格](#decorationsAPI)'
+- en: '[Implementing a Scrolling-Savvy Client](#scrollableAPI)'
+  id: totrans-113
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[实现滚动智能客户端](#scrollableAPI)'
+- en: '[Methods in Other Classes Related to Scrolling](#otherAPI)'
+  id: totrans-114
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[与滚动相关的其他类中的方法](#otherAPI)'
+- en: Setting Up the Scroll Pane
+  id: totrans-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置滚动窗格
+- en: (`JScrollPane` constructors and methods)
+  id: totrans-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: （`JScrollPane`构造函数和方法）
+- en: '| Method or Constructor | Purpose |'
+  id: totrans-117
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法或构造函数 | 目的 |'
+- en: '| [JScrollPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#JScrollPane--)
+    [JScrollPane(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#JScrollPane-java.awt.Component-)'
+  id: totrans-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [JScrollPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#JScrollPane--)
+    [JScrollPane(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#JScrollPane-java.awt.Component-)'
+- en: '[JScrollPane(int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#JScrollPane-int-int-)'
+  id: totrans-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JScrollPane(int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#JScrollPane-int-int-)'
+- en: '[JScrollPane(Component, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#JScrollPane-java.awt.Component-int-int-)
+    | Create a scroll pane. The `Component` parameter, when present, sets the scroll
+    pane''s client. The two `int` parameters, when present, set the vertical and horizontal
+    scroll bar policies (respectively). |'
+  id: totrans-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[JScrollPane(Component, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#JScrollPane-java.awt.Component-int-int-)
+    | 创建一个滚动窗格。`Component`参数在存在时设置滚动窗格的客户端。两个`int`参数在存在时分别设置垂直和水平滚动条策略。|'
+- en: '| [`void setViewportView(Component)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setViewportView-java.awt.Component-)
+    | Set the scroll pane''s client. |'
+  id: totrans-121
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`void setViewportView(Component)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setViewportView-java.awt.Component-)
+    | 设置滚动窗格的客户端。|'
+- en: '| [`void setVerticalScrollBarPolicy(int)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setVerticalScrollBarPolicy-int-)
+    [`int getVerticalScrollBarPolicy()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#getVerticalScrollBarPolicy--)
+    | Set or get the vertical scroll policy. `ScrollPaneConstants` defines three values
+    for specifying this policy: `VERTICAL_SCROLLBAR_AS_NEEDED` (the default), `VERTICAL_SCROLLBAR_ALWAYS`,
+    and `VERTICAL_SCROLLBAR_NEVER`. |'
+  id: totrans-122
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`void setVerticalScrollBarPolicy(int)`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setVerticalScrollBarPolicy-int-)
+    [`int getVerticalScrollBarPolicy()`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#getVerticalScrollBarPolicy--)
+    | 设置或获取垂直滚动策略。`ScrollPaneConstants`定义了三个值来指定此策略：`VERTICAL_SCROLLBAR_AS_NEEDED`（默认值）、`VERTICAL_SCROLLBAR_ALWAYS`和`VERTICAL_SCROLLBAR_NEVER`。
+    |'
+- en: '| [void setHorizontalScrollBarPolicy(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setHorizontalScrollBarPolicy-int-)
+    [int getHorizontalScrollBarPolicy()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#getHorizontalScrollBarPolicy--)
+    | Set or get the horizontal scroll policy. `ScrollPaneConstants` defines three
+    values for specifying this policy: `HORIZONTAL_SCROLLBAR_AS_NEEDED` (the default),
+    `HORIZONTAL_SCROLLBAR_ALWAYS`, and `HORIZONTAL_SCROLLBAR_NEVER`. |'
+  id: totrans-123
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setHorizontalScrollBarPolicy(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setHorizontalScrollBarPolicy-int-)
+    [int getHorizontalScrollBarPolicy()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#getHorizontalScrollBarPolicy--)
+    | 设置或获取水平滚动策略。`ScrollPaneConstants`定义了三个值来指定此策略：`HORIZONTAL_SCROLLBAR_AS_NEEDED`（默认值）、`HORIZONTAL_SCROLLBAR_ALWAYS`和`HORIZONTAL_SCROLLBAR_NEVER`。
+    |'
+- en: '| [void setViewportBorder(Border)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setViewportBorder-javax.swing.border.Border-)
+    [Border getViewportBorder()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#getViewportBorder--)
+    | Set or get the border around the viewport.This is preferred over setting the
+    border on the component. |'
+  id: totrans-124
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setViewportBorder(Border)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setViewportBorder-javax.swing.border.Border-)
+    [Border getViewportBorder()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#getViewportBorder--)
+    | 设置或获取视口周围的边框。这比在组件上设置边框更可取。 |'
+- en: '| [boolean isWheelScrollingEnabled()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#isWheelScrollingEnabled--)
+    | Set or get whether scrolling occurs in response to the mouse wheel. Mouse-wheel
+    scrolling is enabled by default. |'
+  id: totrans-125
+  prefs: []
+  type: TYPE_TB
+  zh: '| [boolean isWheelScrollingEnabled()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#isWheelScrollingEnabled--)
+    | 设置或获取是否响应鼠标滚轮进行滚动。默认情况下启用鼠标滚轮滚动。 |'
+- en: Decorating the Scroll Pane
+  id: totrans-126
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 装饰滚动窗格
+- en: (`JScrollPane` methods)
+  id: totrans-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: (`JScrollPane` 方法)
+- en: '| Method | Purpose |'
+  id: totrans-128
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setColumnHeaderView(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setColumnHeaderView-java.awt.Component-)
+    [void setRowHeaderView(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setRowHeaderView-java.awt.Component-)
+    | Set the column or row header for the scroll pane. |'
+  id: totrans-129
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setColumnHeaderView(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setColumnHeaderView-java.awt.Component-)
+    [void setRowHeaderView(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setRowHeaderView-java.awt.Component-)
+    | 设置滚动窗格的列或行标题。 |'
+- en: '| [void setCorner(String, Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setCorner-java.lang.String-java.awt.Component-)
+    [Component getCorner(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#getCorner-java.lang.String-)
+    | Set or get the corner specified. The `int` parameter specifies which corner
+    and must be one of the following constants defined in `ScrollPaneConstants`: `UPPER_LEFT_CORNER`,
+    `UPPER_RIGHT_CORNER`, `LOWER_LEFT_CORNER`, `LOWER_RIGHT_CORNER`, `LOWER_LEADING_CORNER`,
+    `LOWER_TRAILING_CORNER`, `UPPER_LEADING_CORNER`, and `UPPER_TRAILING_CORNER`.
+    |'
+  id: totrans-130
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setCorner(String, Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#setCorner-java.lang.String-java.awt.Component-)
+    [Component getCorner(String)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html#getCorner-java.lang.String-)
+    | 设置或获取指定的角落。`int` 参数指定哪个角落，并且必须是`ScrollPaneConstants`中定义的以下常量之一：`UPPER_LEFT_CORNER`、`UPPER_RIGHT_CORNER`、`LOWER_LEFT_CORNER`、`LOWER_RIGHT_CORNER`、`LOWER_LEADING_CORNER`、`LOWER_TRAILING_CORNER`、`UPPER_LEADING_CORNER`和`UPPER_TRAILING_CORNER`。
+    |'
+- en: Implementing a Scrolling-Savvy Client
+  id: totrans-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实现滚动智能客户端
+- en: '| Method | Purpose |'
+  id: totrans-132
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [int getScrollableUnitIncrement(Rectangle, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html#getScrollableUnitIncrement-java.awt.Rectangle-int-int-)
+    [int getScrollableBlockIncrement(Rectangle, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html#getScrollableBlockIncrement-java.awt.Rectangle-int-int-)'
+  id: totrans-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [int getScrollableUnitIncrement(Rectangle, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html#getScrollableUnitIncrement-java.awt.Rectangle-int-int-)
+    [int getScrollableBlockIncrement(Rectangle, int, int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html#getScrollableBlockIncrement-java.awt.Rectangle-int-int-)'
+- en: '*(required by the `Scrollable` interface)* | Get the unit or block increment
+    in pixels. The `Rectangle` parameter is the bounds of the currently visible rectangle.
+    The first `int` parameter is either `SwingConstants.HORIZONTAL` or `SwingConstants.VERTICAL`
+    depending on what scroll bar the user clicked on. The second `int` parameter indicates
+    which direction to scroll. A value less than 0 indicates up or left. A value greater
+    than 0 indicates down or right. |'
+  id: totrans-134
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(`Scrollable` 接口所需)* | 获取以像素为单位的单位或块增量。`Rectangle` 参数是当前可见矩形的边界。第一个 `int`
+    参数是根据用户单击的滚动条是 `SwingConstants.HORIZONTAL` 还是 `SwingConstants.VERTICAL`。第二个 `int`
+    参数指示要滚动的方向。小于 0 的值表示向上或向左。大于 0 的值表示向下或向右。'
+- en: '| [Dimension getPreferredScrollableViewportSize()](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html#getPreferredScrollableViewportSize--)
+    *(required by the `Scrollable` interface)* | Get the preferred size of the viewport.
+    This allows the client to influence the size of the viewport in which it is displayed.
+    If the viewport size is unimportant, implement this method to return `getPreferredSize`.
+    |'
+  id: totrans-135
+  prefs: []
+  type: TYPE_TB
+  zh: '| [Dimension getPreferredScrollableViewportSize()](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html#getPreferredScrollableViewportSize--)
+    *(`Scrollable` 接口所需)* | 获取视口的首选大小。这允许客户端影响其显示的视口的大小。如果视口大小不重要，实现此方法以返回 `getPreferredSize`。'
+- en: '| [boolean getScrollableTracksViewportWidth()](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html#getScrollableTracksViewportWidth--)
+    [boolean getScrollableTracksViewportHeight()](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html#getScrollableTracksViewportHeight--)'
+  id: totrans-136
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [boolean getScrollableTracksViewportWidth()](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html#getScrollableTracksViewportWidth--)
+    [boolean getScrollableTracksViewportHeight()](https://docs.oracle.com/javase/8/docs/api/javax/swing/Scrollable.html#getScrollableTracksViewportHeight--)'
+- en: '*(required by the `Scrollable` interface)* | Get whether the scroll pane should
+    force the client to be the same width or height as the viewport. A return value
+    of `true` from either of these methods effectively disallows horizontal or vertical
+    scrolling (respectively). |'
+  id: totrans-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(`Scrollable` 接口所需)* | 获取滚动窗格是否应强制客户端与视口的宽度或高度相同。这两种方法中的任何一个返回 `true` 效果上都禁止水平或垂直滚动。'
+- en: '| [void setAutoscrolls(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#setAutoscrolls-boolean-)
+    *(in `JComponent`)* | Set whether synthetic mouse dragged events should be generated
+    when the user drags the mouse outside of the component and stops; these events
+    are necessary for scrolling by dragging. By default, the value is `false`, but
+    many scrollable components such as `JTable` and custom components set the value
+    to `true`. |'
+  id: totrans-138
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setAutoscrolls(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#setAutoscrolls-boolean-)
+    *(在 `JComponent` 中)* | 设置当用户将鼠标拖动到组件外部并停止时是否生成合成的鼠标拖动事件；这些事件对于通过拖动进行滚动是必要的。默认情况下，该值为
+    `false`，但许多可滚动的组件如 `JTable` 和自定义组件会将该值设置为 `true`。'
+- en: Methods in Other Classes Related to Scrolling
+  id: totrans-139
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与滚动相关的其他类中的方法
+- en: '| Method | Purpose |'
+  id: totrans-140
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void scrollRectToVisible(Rectangle)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#scrollRectToVisible-java.awt.Rectangle-)
+    *(in `JComponent`)* | If the component is in a container that supports scrolling,
+    such as a scroll pane, then calling this method scrolls the scroll pane such that
+    the specified rectangle is visible. |'
+  id: totrans-141
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void scrollRectToVisible(Rectangle)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html#scrollRectToVisible-java.awt.Rectangle-)
+    *(在 `JComponent` 中)* | 如果组件位于支持滚动的容器中，如滚动窗格，则调用此方法会滚动滚动窗格，使指定的矩形可见。'
+- en: '| [void setVisibleRowCount(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.html#setVisibleRowCount-int-)
+    [int getVisibleRowCount()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.html#getVisibleRowCount--)'
+  id: totrans-142
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setVisibleRowCount(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.html#setVisibleRowCount-int-)
+    [int getVisibleRowCount()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.html#getVisibleRowCount--)'
+- en: '*(in `JList`)* | Set or get how many rows of the list are visible. The `getPreferredScrollableViewportSize`
+    method uses the visible row count to compute its return value. |'
+  id: totrans-143
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`JList`中)* | 设置或获取列表中有多少行是可见的。`getPreferredScrollableViewportSize`方法使用可见行数来计算其返回值。'
+- en: '| [void ensureIndexIsVisible(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.html#ensureIndexIsVisible-int-)
+    *(in `JList`)* | Scroll so that the row at the specified index is visible. This
+    method calls `scrollRectToVisible` and works only if the list is in a container,
+    such as a scroll pane, that supports scrolling. |'
+  id: totrans-144
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void ensureIndexIsVisible(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JList.html#ensureIndexIsVisible-int-)
+    *(在`JList`中)* | 滚动以使指定索引处的行可见。此方法调用`scrollRectToVisible`，仅在列表位于支持滚动的容器中（如滚动窗格）时有效。'
+- en: '| [void setVisibleRowCount(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setVisibleRowCount-int-)
+    [int getVisibleRowCount()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getVisibleRowCount--)'
+  id: totrans-145
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setVisibleRowCount(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setVisibleRowCount-int-)
+    [int getVisibleRowCount()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getVisibleRowCount--)'
+- en: '*(in `JTree`)* | Set or get how many rows of the tree are visible. The `getPreferredScrollableViewportSize`
+    method uses the visible row count to compute its return value. |'
+  id: totrans-146
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`JTree`中)* | 设置或获取树中有多少行是可见的。`getPreferredScrollableViewportSize`方法使用可见行数来计算其返回值。'
+- en: '| [void scrollPathToVisible(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#scrollPathToVisible-javax.swing.tree.TreePath-)
+    [void scrollRowToVisible(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#scrollRowToVisible-int-)'
+  id: totrans-147
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void scrollPathToVisible(TreePath)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#scrollPathToVisible-javax.swing.tree.TreePath-)
+    [void scrollRowToVisible(int)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#scrollRowToVisible-int-)'
+- en: '*(in `JTree`)* | Scroll so that the specified tree path or row at the specified
+    index is visible. These methods call `scrollRectToVisible` and work only if the
+    tree is in a container, such as a scroll pane, that supports scrolling. |'
+  id: totrans-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`JTree`中)* | 滚动以使指定的树路径或指定索引处的行可见。这些方法调用`scrollRectToVisible`，仅在树位于支持滚动的容器中（如滚动窗格）时有效。'
+- en: '| [void setScrollsOnExpand(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setScrollsOnExpand-boolean-)
+    [boolean getScrollsOnExpand()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getScrollsOnExpand--)'
+  id: totrans-149
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void setScrollsOnExpand(boolean)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#setScrollsOnExpand-boolean-)
+    [boolean getScrollsOnExpand()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTree.html#getScrollsOnExpand--)'
+- en: '*(in `JTree`)* | Set or get whether scrolling occurs automatically when the
+    user expands a node. True by default. This feature works only when the tree is
+    in a container, such as a scroll pane, that supports scrolling. |'
+  id: totrans-150
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*(在`JTree`中)* | 设置或获取用户展开节点时是否自动滚动。默认为True。此功能仅在树位于支持滚动的容器中（如滚动窗格）时有效。'
+- en: '| [void setPreferredScrollableViewportSize(Dimension)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setPreferredScrollableViewportSize-java.awt.Dimension-)
+    *(in `JTable`)* | Set the value to be returned by `getPreferredScrollableViewportSize`.
+    |'
+  id: totrans-151
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setPreferredScrollableViewportSize(Dimension)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JTable.html#setPreferredScrollableViewportSize-java.awt.Dimension-)
+    *(在`JTable`中)* | 设置`getPreferredScrollableViewportSize`返回的值。'
+- en: Examples that Use Scroll Panes
+  id: totrans-152
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用滚动窗格的示例
+- en: This table shows the examples that use `JScrollPane` and where those examples
+    are described.
+  id: totrans-153
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此表显示了使用`JScrollPane`的示例以及这些示例的描述位置。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-154
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`ToolBarDemo`](../examples/components/index.html#ToolBarDemo) | This section,
+    [How to Use Tool Bars](toolbar.html) | Shows a simple, yet typical, use of a scroll
+    pane. |'
+  id: totrans-155
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ToolBarDemo`](../examples/components/index.html#ToolBarDemo) | 这一部分，[如何使用工具栏](toolbar.html)
+    | 展示了滚动窗格的简单而典型的用法。'
+- en: '| [`ScrollDemo`](../examples/components/index.html#ScrollDemo) | This section
+    | Uses many of scroll pane''s bells and whistles. |'
+  id: totrans-156
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ScrollDemo`](../examples/components/index.html#ScrollDemo) | 这一部分 | 使用了滚动窗格的许多功能。'
+- en: '| [`ScrollDemo2`](../examples/components/index.html#ScrollDemo2) | This section
+    | Shows how to change the client''s size. |'
+  id: totrans-157
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ScrollDemo2`](../examples/components/index.html#ScrollDemo2) | 这一部分 | 展示了如何更改客户端的大小。'
+- en: '| [`SplitPaneDemo`](../examples/components/index.html#SplitPaneDemo) | [How
+    to Use Split Panes](splitpane.html), [How to Use Lists](list.html) | Puts a list
+    and a label in a scroll pane. Also, shows how to handle the case when a scroll
+    pane''s client changes size. |'
+  id: totrans-158
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`SplitPaneDemo`](../examples/components/index.html#SplitPaneDemo) | [如何使用分割窗格](splitpane.html),
+    [如何使用列表](list.html) | 将列表和标签放入滚动窗格中。同时，展示了处理滚动窗格客户端大小变化的情况。 |'
+- en: '| [`TableDemo`](../examples/components/index.html#TableDemo) | [How to Use
+    Tables](table.html) | Puts a table in a scroll pane. |'
+  id: totrans-159
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TableDemo`](../examples/components/index.html#TableDemo) | [如何使用表格](table.html)
+    | 将表格放入滚动窗格中。 |'
+- en: '| [`TextSamplerDemo`](../examples/components/index.html#TextSamplerDemo) |
+    [Using Text Components](text.html) | Puts a text area, an editor pane, and a text
+    pane each in a scroll pane. |'
+  id: totrans-160
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TextSamplerDemo`](../examples/components/index.html#TextSamplerDemo) |
+    [使用文本组件](text.html) | 将文本区域、编辑器窗格和文本窗格放入滚动窗格中。 |'
+- en: '| [`TreeDemo`](../examples/components/index.html#TreeDemo) | [How to Use Trees](tree.html)
+    | Puts a tree in a scroll pane. |'
+  id: totrans-161
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TreeDemo`](../examples/components/index.html#TreeDemo) | [如何使用树](tree.html)
+    | 将树放入滚动窗格中。 |'
+- en: If you are programming in JavaFX, see [Scroll Pane](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/scrollpane.htm).
+  id: totrans-162
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您正在使用JavaFX进行编程，请参阅[滚动窗格](https://docs.oracle.com/javase/8/javafx/user-interface-tutorial/scrollpane.htm)。

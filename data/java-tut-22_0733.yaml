@@ -1,0 +1,82 @@
+- en: Using DISTINCT Data Type
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用 DISTINCT 数据类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/distinct.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/distinct.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jdbc/basics/distinct.html](https://docs.oracle.com/javase/tutorial/jdbc/basics/distinct.html)
+- en: '**Note**: MySQL and Java DB currently do not support the `DISTINCT` SQL data
+    type. Consequently, no JDBC tutorial example is available to demonstrate the features
+    described in this section.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意**：MySQL 和 Java DB 目前不支持`DISTINCT` SQL 数据类型。因此，在本节描述的功能没有 JDBC 教程示例可用来演示。'
+- en: The `DISTINCT` data type behaves differently from the other advanced SQL data
+    types. Being a user-defined type that is based on one of the already existing
+    built-in types, it has no interface as its mapping in the Java programming language.
+    Instead, the standard mapping for a `DISTINCT` data type is the Java type to which
+    its underlying SQL data type maps.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`DISTINCT` 数据类型与其他高级 SQL 数据类型的行为不同。作为一个基于已有内置类型之一的用户定义类型，它没有接口作为其在 Java 编程语言中的映射。相反，`DISTINCT`
+    数据类型的标准映射是其底层 SQL 数据类型映射到的 Java 类型。'
+- en: 'To illustrate, create a `DISTINCT` data type and then see how to retrieve,
+    set, or update it. Suppose you always use a two-letter abbreviation for a state
+    and want to create a `DISTINCT` data type to be used for these abbreviations.
+    You could define your new `DISTINCT` data type with the following SQL statement:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了说明，创建一个`DISTINCT`数据类型，然后看看如何检索、设置或更新它。假设你总是使用两个字母的缩写表示一个州，并且想要创建一个用于这些缩写的`DISTINCT`数据类型。你可以使用以下
+    SQL 语句定义你的新`DISTINCT`数据类型：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'Some databases use an alternate syntax for creating a `DISTINCT` data type,
+    which is shown in the following line of code:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些数据库使用另一种语法来创建`DISTINCT`数据类型，如下面的代码行所示：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: If one syntax does not work, you can try the other. Alternatively, you can check
+    the documentation for your driver to see the exact syntax it expects.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果一个语法不起作用，你可以尝试另一个。或者，你可以查看你的驱动程序文档，以查看它期望的确切语法。
+- en: 'These statements create a new data type, `STATE`, which can be used as a column
+    value or as the value for an attribute of a SQL structured type. Because a value
+    of type `STATE` is in reality a value that is two `CHAR` types, you use the same
+    method to retrieve it that you would use to retrieve a `CHAR` value, that is,
+    `getString`. For example, assuming that the fourth column of `ResultSet *rs*`
+    stores values of type `STATE`, the following line of code retrieves its value:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些语句创建了一个新的数据类型`STATE`，它可以作为列值或作为 SQL 结构化类型的属性值使用。因为`STATE`类型的值实际上是两个`CHAR`类型的值，所以你使用与检索`CHAR`值相同的方法来检索它，即`getString`。例如，假设`ResultSet
+    *rs*`的第四列存储了`STATE`类型的值，下面的代码行检索了它的值：
+- en: '[PRE2]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Similarly, you would use the method `setString` to store a `STATE` value in
+    the database and the method `updateString` to modify its value.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同样，你会使用`setString`方法将`STATE`值存储在数据库中，使用`updateString`方法修改其值。

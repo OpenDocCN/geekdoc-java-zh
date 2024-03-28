@@ -1,0 +1,404 @@
+- en: How to Use Panels
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何使用面板
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/panel.html](https://docs.oracle.com/javase/tutorial/uiswing/components/panel.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/panel.html](https://docs.oracle.com/javase/tutorial/uiswing/components/panel.html)
+- en: The [`JPanel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPanel.html)
+    class provides general-purpose containers for lightweight components. By default,
+    panels do not add colors to anything except their own background; however, you
+    can easily add borders to them and otherwise customize their painting. Details
+    can be found in [Performing Custom Painting](../painting/index.html).
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`JPanel`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPanel.html)类提供了用于轻量级组件的通用容器。默认情况下，面板除了自己的背景之外不会添加颜色；但是，您可以轻松地向其添加边框并自定义其绘制。详细信息请参见[执行自定义绘制](../painting/index.html)。'
+- en: In many types of look and feel, panels are opaque by default. Opaque panels
+    work well as content panes and can help with painting efficiently, as described
+    in [Using Top-Level Containers](toplevel.html). You can change a panel's transparency
+    by invoking the `setOpaque` method. A transparent panel draws no background, so
+    that any components underneath show through.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在许多外观类型中，面板默认是不透明的。不透明的面板作为内容窗格效果很好，并且可以帮助高效绘制，如[使用顶级容器](toplevel.html)中所述。您可以通过调用`setOpaque`方法来改变面板的透明度。透明面板不绘制背景，因此底部的任何组件都会透过显示出来。
+- en: An Example
+  id: totrans-4
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个例子
+- en: The following picture shows a colored version of the `Converter` application,
+    which is discussed in more detail in [Using Models](model.html).
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下图展示了一个有颜色的`Converter`应用程序版本，更详细地讨论在[使用模型](model.html)中。
+- en: '![Colorful Converter](../Images/d6c173d821021cf9f82b416f983ab5bc.png)'
+  id: totrans-6
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Colorful Converter](../Images/d6c173d821021cf9f82b416f983ab5bc.png)'
+- en: 'The `Converter` example uses panels in several ways:'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Converter`示例以多种方式使用面板：'
+- en: "One `JPanel` instance \x97 colored red in the preceding snapshot \x97 serves\
+    \ as a content pane for the application's frame. This content pane uses a top-to-bottom\
+    \ [`BoxLayout`](../layout/box.html) to lay out its contents, and an empty border\
+    \ to put 5 pixels of space around them. See [Using Top-Level Containers](toplevel.html)\
+    \ for information about content panes."
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在前面的快照中，一个被涂成红色的`JPanel`实例作为应用程序框架的内容窗格。这个内容窗格使用自上而下的[`BoxLayout`](../layout/box.html)来布局其内容，并使用一个空边框在它们周围留出5像素的空间。有关内容窗格的信息，请参见[使用顶级容器](toplevel.html)。
+- en: "Two instances of a custom `JPanel` subclass named `ConversionPanel` \x97 colored\
+    \ cyan \x97 are used to contain components and coordinate communication between\
+    \ components. These `ConversionPanel` panels also have titled borders, which describe\
+    \ their contents and enclose the contents with a line. Each `ConversionPanel`\
+    \ panel uses a left-to-right `BoxLayout` object to lay out its contents."
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 两个自定义`JPanel`子类的实例，命名为`ConversionPanel`，被用来包含组件并协调组件之间的通信，这些`ConversionPanel`面板也有标题边框，描述其内容并用一条线围住内容。每个`ConversionPanel`面板使用从左到右的`BoxLayout`对象来布局其内容。
+- en: "In each `ConversionPanel`, a `JPanel` instance \x97 colored magenta \x97 is\
+    \ used to ensure the proper size and position of the combo box. Each of these\
+    \ `JPanel` instances uses a top-to-bottom `BoxLayout` object (helped by an invisible\
+    \ space-filling component) to lay out the combo box."
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在每个`ConversionPanel`中，一个被涂成品红色的`JPanel`实例用于确保组合框的正确大小和位置。每个这样的`JPanel`实例使用自上而下的`BoxLayout`对象（通过一个不可见的填充组件的帮助）来布局组合框。
+- en: "In each `ConversionPanel`, an instance of an unnamed `JPanel` subclass \x97\
+    \ colored blue \x97 groups two components (a text field and a slider) and restricts\
+    \ their size. Each of these `JPanel` instances uses a top-to-bottom `BoxLayout`\
+    \ object to lay out its contents."
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在每个`ConversionPanel`中，一个未命名的`JPanel`子类的实例，被涂成蓝色，将两个组件（文本字段和滑块）分组并限制它们的大小。每个这样的`JPanel`实例使用自上而下的`BoxLayout`对象来布局其内容。
+- en: Here is what the `Converter` application normally looks like.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这就是`Converter`应用程序的正常外观。
+- en: '![Normal Converter](../Images/94f6458d5ed6bedaf2e380fdf4430b56.png)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_IMG
+  zh: '![Normal Converter](../Images/94f6458d5ed6bedaf2e380fdf4430b56.png)'
+- en: As the `Converter` example demonstrates, panels are useful for grouping components,
+    simplifying component layout, and putting borders around groups of components.
+    The rest of this section gives hints on grouping and laying out components. For
+    information about using borders, see [How to Use Borders](../components/border.html).
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如`Converter`示例所展示的，面板对于组合组件、简化组件布局以及在组件组周围放置边框非常有用。本节的其余部分提供了有关组合和布局组件的提示。有关使用边框的信息，请参见[如何使用边框](../components/border.html)。
+- en: Setting the Layout Manager
+  id: totrans-15
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 设置布局管理器
+- en: Like other containers, a panel uses a layout manager to position and size its
+    components. By default, a panel's layout manager is an instance of [`FlowLayout`](../layout/flow.html),
+    which places the panel's contents in a row. You can easily make a panel use any
+    other layout manager by invoking the `setLayout` method or by specifying a layout
+    manager when creating the panel. The latter approach is preferable for performance
+    reasons, since it avoids the unnecessary creation of a `FlowLayout` object.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 与其他容器一样，面板使用布局管理器来定位和调整其组件的大小。默认情况下，面板的布局管理器是[`FlowLayout`](../layout/flow.html)的一个实例，它将面板的内容放在一行中。您可以通过调用`setLayout`方法或在创建面板时指定布局管理器来轻松使面板使用任何其他布局管理器。由于避免了不必要创建`FlowLayout`对象，因此后一种方法在性能方面更可取。
+- en: Here is an example of how to set the layout manager when creating the panel.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是在创建面板时设置布局管理器的示例。
+- en: '[PRE0]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This approach does not work with `BoxLayout`, since the `BoxLayout` constructor
+    requires a pre-existing container. Here is an example that uses `BoxLayout`.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这种方法不适用于`BoxLayout`，因为`BoxLayout`构造函数需要一个现有的容器。这是一个使用`BoxLayout`的示例。
+- en: '[PRE1]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Adding Components
+  id: totrans-21
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 添加组件
+- en: 'When you add components to a panel, you use the `add` method. Exactly which
+    arguments you specify to the `add` method depend on which layout manager the panel
+    uses. When the layout manager is `FlowLayout`, `BoxLayout`, `GridLayout`, or `SpringLayout`,
+    you will typically use the one-argument `add` method, like this:'
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您向面板添加组件时，您使用`add`方法。您指定给`add`方法的参数取决于面板使用的布局管理器。当布局管理器为`FlowLayout`、`BoxLayout`、`GridLayout`或`SpringLayout`时，您通常会使用单参数的`add`方法，如下所示：
+- en: '[PRE2]'
+  id: totrans-23
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'When the layout manager is `BorderLayout`, you need to provide an argument
+    specifying the added component''s position within the panel. For example:'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当布局管理器为`BorderLayout`时，您需要提供一个参数，指定添加的组件在面板内的位置。例如：
+- en: '[PRE3]'
+  id: totrans-25
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: With `GridBagLayout` you can use either `add` method, but you must somehow specify
+    [grid bag constraints](../layout/gridbag.html#gridbagConstraints) for each component.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`GridBagLayout`，您可以使用`add`方法，但必须以某种方式为每个组件指定[网格包约束](../layout/gridbag.html#gridbagConstraints)。
+- en: For information about choosing and using the standard layout managers, see [Using
+    Layout Managers](../layout/using.html).
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关选择和使用标准布局管理器的信息，请参阅[使用布局管理器](../layout/using.html)。
+- en: The Panel API
+  id: totrans-28
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 面板API
+- en: "The API in the `JPanel` class itself is minimal. The methods you are most likely\
+    \ to invoke on a `JPanel` object are those it inherits from its superclasses \x97\
+    \ [`JComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html),\
+    \ [`Container`](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html),\
+    \ and [`Component`](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html).\
+    \ The following tables list the API you are most likely to use, with the exception\
+    \ of methods related to [borders](../components/border.html) and [layout hints](jcomponent.html#layoutapi).\
+    \ For more information about the API that all `JComponent` objects can use, see\
+    \ [The JComponent Class](jcomponent.html)."
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "`JPanel`类本身的API很少。您最有可能在`JPanel`对象上调用的方法是它从其超类继承的方法 \x97 [`JComponent`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JComponent.html)、[`Container`](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html)和[`Component`](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html)。以下表列出了您最有可能使用的API，除了与[边框](../components/border.html)和[布局提示](jcomponent.html#layoutapi)相关的方法。有关所有`JComponent`对象都可以使用的API的更多信息，请参阅[JComponent类](jcomponent.html)。"
+- en: '[Creating a `JPanel`](#creating)'
+  id: totrans-30
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[创建一个`JPanel`](#creating)'
+- en: '[Managing a Container''s Components](#contents)'
+  id: totrans-31
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[管理容器的组件](#contents)'
+- en: '[Setting or Getting the Layout Manager](#layoutapi)'
+  id: totrans-32
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[设置或获取布局管理器](#layoutapi)'
+- en: Creating a `JPanel`
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建一个`JPanel`
+- en: '| Constructor | Purpose |'
+  id: totrans-34
+  prefs: []
+  type: TYPE_TB
+  zh: '| 构造函数 | 目的 |'
+- en: '| [JPanel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPanel.html#JPanel--)
+    [JPanel(LayoutManager)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPanel.html#JPanel-java.awt.LayoutManager-)
+    | Creates a panel. The `LayoutManager` parameter provides a layout manager for
+    the new panel. By default, a panel uses a `FlowLayout` to lay out its components.
+    |'
+  id: totrans-35
+  prefs: []
+  type: TYPE_TB
+  zh: '| [JPanel()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPanel.html#JPanel--)
+    [JPanel(LayoutManager)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JPanel.html#JPanel-java.awt.LayoutManager-)
+    | 创建一个面板。`LayoutManager`参数为新面板提供布局管理器。默认情况下，面板使用`FlowLayout`来布置其组件。'
+- en: Managing a Container's Components
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 管理容器的组件
+- en: '| Method | Purpose |'
+  id: totrans-37
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void add(Component)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-)
+    [void add(Component, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-int-)'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void add(Component)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-)
+    [void add(Component, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-int-)'
+- en: '[void add(Component, Object)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-java.lang.Object-)'
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[void add(Component, Object)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-java.lang.Object-)'
+- en: '[void add(Component, Object, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-java.lang.Object-int-)'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[void add(Component, Object, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.awt.Component-java.lang.Object-int-)'
+- en: '[void add(String, Component)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.lang.String-java.awt.Component-)
+    | Adds the specified component to the panel. When present, the `int` parameter
+    is the index of the component within the container. By default, the first component
+    added is at index 0, the second is at index 1, and so on. The `Object` parameter
+    is layout manager dependent and typically provides information to the layout manager
+    regarding positioning and other layout constraints for the added component. The
+    `String` parameter is similar to the `Object` parameter. |'
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[void add(String, Component)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#add-java.lang.String-java.awt.Component-)
+    | 将指定的组件添加到面板中。当存在时，`int`参数是容器中组件的索引。默认情况下，第一个添加的组件位于索引0，第二个位于索引1，依此类推。`Object`参数取决于布局管理器，通常为布局管理器提供有关添加组件的定位和其他布局约束的信息。`String`参数类似于`Object`参数。
+    |'
+- en: '| [int getComponentCount()](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getComponentCount--)
+    | Gets the number of components in this panel. |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| [int getComponentCount()](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getComponentCount--)
+    | 获取此面板中的组件数。 |'
+- en: '| [Component getComponent(int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getComponent-int-)
+    [Component getComponentAt(int, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getComponentAt-int-int-)'
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [Component getComponent(int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getComponent-int-)
+    [Component getComponentAt(int, int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getComponentAt-int-int-)'
+- en: '[Component getComponentAt(Point)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getComponentAt-java.awt.Point-)'
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Component getComponentAt(Point)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getComponentAt-java.awt.Point-)'
+- en: '[Component[] getComponents()](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getComponents--)
+    | Gets the specified component or components. You can get a component based on
+    its index or *x, y* position. |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[Component[] getComponents()](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getComponents--)
+    | 获取指定的组件或组件。您可以根据索引或*x, y*位置获取组件。 |'
+- en: '| [void remove(Component)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#remove-java.awt.Component-)
+    [void remove(int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#remove-int-)'
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '| [void remove(Component)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#remove-java.awt.Component-)
+    [void remove(int)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#remove-int-)'
+- en: '[void removeAll()](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#removeAll--)
+    | Removes the specified component(s). |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[void removeAll()](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#removeAll--)
+    | 移除指定的组件。 |'
+- en: Setting or Getting the Layout Manager
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 设置或获取布局管理器
+- en: '| Method | Purpose |'
+  id: totrans-49
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setLayout(LayoutManager)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#setLayout-java.awt.LayoutManager-)
+    [LayoutManager getLayout()](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getLayout--)
+    | Sets or gets the layout manager for this panel. The layout manager is responsible
+    for positioning the panel''s components within the panel''s bounds according to
+    some philosophy. |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setLayout(LayoutManager)](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#setLayout-java.awt.LayoutManager-)
+    [LayoutManager getLayout()](https://docs.oracle.com/javase/8/docs/api/java/awt/Container.html#getLayout--)
+    | 设置或获取此面板的布局管理器。布局管理器负责根据某种理念在面板的边界内定位面板的组件。 |'
+- en: Examples That Use Panels
+  id: totrans-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用面板的示例
+- en: Many examples contained in this lesson use `JPanel` objects. The following table
+    lists a few.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此课程中的许多示例使用`JPanel`对象。以下表格列出了一些。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-53
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 注意事项 |'
+- en: '| [`Converter`](../examples/components/index.html#Converter) | This section
+    | Uses five panels, four of which use `BoxLayout` and one of which uses `GridLayout`.
+    The panels use borders and, as necessary, size and alignment hints to affect layout.
+    |'
+  id: totrans-54
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`Converter`](../examples/components/index.html#Converter) | 这一部分 | 使用五个面板，其中四个使用`BoxLayout`，一个使用`GridLayout`。这些面板使用边框，并根据需要使用大小和对齐提示来影响布局。'
+- en: '| [`ListDemo`](../examples/components/index.html#ListDemo) | [How to Use Lists](list.html)
+    | Uses a panel, with its default `FlowLayout` manager, to center three components
+    in a row. |'
+  id: totrans-55
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ListDemo`](../examples/components/index.html#ListDemo) | [如何使用列表](list.html)
+    | 使用一个面板，默认使用`FlowLayout`管理器，将三个组件居中排列在一行。'
+- en: '| [`ToolBarDemo`](../examples/components/index.html#ToolBarDemo) | [How to
+    Use Tool Bars](toolbar.html) | Uses a panel as a content pane. The panel contains
+    three components, laid out by `BorderLayout`. |'
+  id: totrans-56
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`ToolBarDemo`](../examples/components/index.html#ToolBarDemo) | [如何使用工具栏](toolbar.html)
+    | 使用一个面板作为内容窗格。该面板包含三个组件，由`BorderLayout`布局。'
+- en: '| [`BorderDemo`](../examples/components/index.html#BorderDemo) | [How to Use
+    Borders](border.html) | Contains many panels that have various kinds of borders.
+    Several panels use `BoxLayout`. |'
+  id: totrans-57
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`BorderDemo`](../examples/components/index.html#BorderDemo) | [如何使用边框](border.html)
+    | 包含许多具有各种边框的面板。几个面板使用`BoxLayout`。'
+- en: '| [`BoxLayoutDemo`](../examples/layout/index.html#BoxLayoutDemo) | [How to
+    Use BoxLayout](../layout/box.html) | Illustrates the use of a panel with Swing''s
+    `BoxLayout` manager. |'
+  id: totrans-58
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`BoxLayoutDemo`](../examples/layout/index.html#BoxLayoutDemo) | [如何使用BoxLayout](../layout/box.html)
+    | 演示了一个使用Swing的`BoxLayout`管理器的面板。'

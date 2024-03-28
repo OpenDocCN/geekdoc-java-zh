@@ -1,0 +1,46 @@
+- en: Scope and Order
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 范围和顺序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/limits/scope.html](https://docs.oracle.com/javase/tutorial/jaxp/limits/scope.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/jaxp/limits/scope.html](https://docs.oracle.com/javase/tutorial/jaxp/limits/scope.html)
+- en: The `javax.xml.XMLConstants#FEATURE_SECURE_PROCESSING` (FSP) feature is required
+    for XML processors including DOM, SAX, Schema Validation, XSLT, and XPath. The
+    proposed default limits are enforced when FSP is set to `true`. Setting FSP to
+    `false` does not change the limits.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`javax.xml.XMLConstants#FEATURE_SECURE_PROCESSING`（FSP）功能对包括DOM、SAX、模式验证、XSLT和XPath在内的XML处理器是必需的。当FSP设置为`true`时，建议的默认限制将被强制执行。将FSP设置为`false`不会改变这些限制。'
+- en: When the Java Security Manager is present, FSP is set to true and can not be
+    turned off. The proposed default limits are therefore enforced.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当Java安全管理器存在时，FSP被设置为true且无法关闭。因此，建议的默认限制将被强制执行。
+- en: Properties specified in the `jaxp.properties` file affect all invocations of
+    the JDK and JRE, and will override their default values, or those that may have
+    been set by FSP.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在`jaxp.properties`文件中指定的属性会影响JDK和JRE的所有调用，并将覆盖它们的默认值，或者可能已被FSP设置的值。
+- en: System properties, when set, affect the invocation of the JDK and JRE, and override
+    the default settings or that set in `jaxp.properties`, or those that may have
+    been set by FSP.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 系统属性在设置时会影响JDK和JRE的调用，并覆盖默认设置或者在`jaxp.properties`中设置的值，或者可能已被FSP设置的值。
+- en: JAXP properties specified through JAXP factories or `SAXParser` take preference
+    over system properties, the `jaxp.properties` file, as well as `FEATURE_SECURE_PROCESSING`.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过JAXP工厂或`SAXParser`指定的JAXP属性优先于系统属性，`jaxp.properties`文件以及`FEATURE_SECURE_PROCESSING`。

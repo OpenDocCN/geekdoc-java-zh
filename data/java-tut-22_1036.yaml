@@ -1,0 +1,122 @@
+- en: Creating an SDP Configuration File
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建一个SDP配置文件
+- en: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/file.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/file.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/sdp/sockets/file.html](https://docs.oracle.com/javase/tutorial/sdp/sockets/file.html)
+- en: An SDP configuration file is a text file, and you decide where on the file system
+    this file will reside. Every line in the configuration file is either a comment
+    or a rule. A comment is indicated by the hash character (#) at the beginning of
+    the line, and everything following the hash character will be ignored.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个SDP配置文件是一个文本文件，您可以决定这个文件将存放在文件系统的哪个位置。配置文件中的每一行都是一个注释或一个规则。注释以井号字符(#)开头，井号字符后的所有内容将被忽略。
+- en: 'There are two types of rules, as follows:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有两种类型的规则，如下：
+- en: A "bind" rule indicates that the SDP protocol transport should be used when
+    a TCP socket binds to an address and port that match the rule.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '"bind"规则表示当TCP套接字绑定到与规则匹配的地址和端口时，应使用SDP协议传输。'
+- en: A "connect" rule indicates that the SDP protocol transport should be used when
+    an unbound TCP socket attempts to connect to an address and port that match the
+    rule.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '"connect"规则表示当未绑定的TCP套接字尝试连接到与规则匹配的地址和端口时，应使用SDP协议传输。'
+- en: 'A rule has the following form:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个规则的形式如下：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Decoding the notation:**'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**解码符号：**'
+- en: '*1*LWSP-char* means that any number of linear whitespace characters (tabs or
+    spaces) can separate the tokens. The square brackets indicate optional text. The
+    notation (*xxx* | *yyy*) indicates that the token will include either *xxx* or
+    *yyy*, but not both. Quoted characters indicate literal text.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*1*LWSP-char*表示任意数量的线性空白字符（制表符或空格）可以分隔标记。方括号表示可选文本。符号(*xxx* | *yyy*)表示标记将包括*xxx*或*yyy*中的一个，但不会同时包括两者。引号中的字符表示文字。'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The first keyword indicates whether the rule is a **bind** or a **connect**
+    rule. The next token specifies either a host name or a literal IP address. When
+    you specify a literal IP address, you can also specify a prefix, which indicates
+    an IP address range. The third and final token is a port number or a range of
+    port numbers.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第一个关键字指示规则是**bind**还是**connect**规则。下一个标记指定主机名或文字IP地址。当指定文字IP地址时，您还可以指定前缀，表示IP地址范围。第三个也是最后一个标记是端口号或端口号范围。
+- en: 'Consider the following notation in this sample configuration file:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个示例配置文件中考虑以下符号：
+- en: '[PRE1]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: The first rule in the sample file specifies that SDP is used for any port (*)
+    on the local IP address `192.0.2.1`. You would add a bind rule for each local
+    address assigned to an InfiniBand adaptor. (An *InfiniBand adaptor* is the equivalent
+    of a network interface card (NIC) for InfiniBand.) If you had several IB adaptors,
+    you would use a bind rule for each address that is assigned to those adaptors.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例文件中的第一条规则指定SDP用于本地IP地址`192.0.2.1`上的任何端口(*)。对于每个分配给InfiniBand适配器的本地地址，您将添加一个绑定规则。（*InfiniBand适配器*相当于InfiniBand的网络接口卡（NIC）。）如果您有多个IB适配器，您将为分配给这些适配器的每个地址使用一个绑定规则。
+- en: The second rule in the sample file specifies that whenever connecting to `192.0.2.*`
+    and the target port is 1024 or greater, SDP is used. The prefix on the IP address
+    `/24` indicates that the first 24 bits of the 32-bit IP address should match the
+    specified address. Each portion of the IP address uses 8 bits, so 24 bits indicates
+    that the IP address should match `192.0.2` and the final byte can be any value.
+    The `-*` notation on the port token specifies "and above." A range of ports, such
+    as 1024—2056, would also be valid and would include the end points of the specified
+    range.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例文件中的第二条规则指定每当连接到`192.0.2.*`并且目标端口大于或等于1024时，将使用SDP。IP地址前缀`/24`表示32位IP地址的前24位应与指定地址匹配。IP地址的每个部分使用8位，因此24位表示IP地址应匹配`192.0.2`，最后一个字节可以是任何值。端口标记上的`-*`符号指定“及以上”。端口范围，例如1024—2056，也是有效的，并且将包括指定范围的端点。
+- en: The final rules in the sample file specify a host name (`examplecluster`), first
+    with the port assigned to an http server (80) and then with the port assigned
+    to a database (3306). Unlike a literal IP address, a host name can translate into
+    multiple addresses. When you specify a host name, it matches all addresses that
+    the host name is registered to in the name service.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 示例文件中的最后规则指定一个主机名（`examplecluster`），首先分配给http服务器的端口（80），然后分配给数据库的端口（3306）。与文字IP地址不同，主机名可以转换为多个地址。当指定主机名时，它匹配主机名在名称服务中注册的所有地址。

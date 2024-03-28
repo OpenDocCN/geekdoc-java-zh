@@ -1,0 +1,189 @@
+- en: Demo - BasicDnD
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 演示 - BasicDnD
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/basicdemo.html)
+- en: Now we will look at a simple demo, called `BasicDnD`, that shows you what you
+    get for free. As you see from the screen shot, BasicDnD contains a table, a list,
+    a tree, a color chooser, a text area, and a text field.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在我们将看一个简单的演示，名为`BasicDnD`，向您展示免费提供的内容。正如您从屏幕截图中看到的那样，BasicDnD 包含一个表格、一个列表、一个树、一个颜色选择器、一个文本区域和一个文本字段。
+- en: All of these components are standard out-of-the-box components *except* for
+    the list. This list has been customized to bring up a dialog showing where the
+    drop would occur, if it accepted drops.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有这些组件都是标准的开箱即用组件，*除了*列表。这个列表已经定制，以显示拖放将发生的位置对话框，如果它接受拖放。
+- en: 'The following areas accept drops:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下区域接受拖放：
+- en: Text field
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 文本字段
+- en: Text area
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 文本区域
+- en: The color chooser accepts drops of type color, but in order to try this, you
+    need to run two copies of the demo (or another demo that contains a color chooser)
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 颜色选择器接受颜色类型的拖放，但为了尝试这一点，您需要运行两个演示副本（或包含颜色选择器的另一个演示）
+- en: By default, none of the objects has default drag and drop enabled. At startup,
+    you can check the "Turn on Drag and Drop" check box to see what drag and drop
+    behavior you get for free.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 默认情况下，没有任何对象启用默认的拖放功能。在启动时，您可以选中“启用拖放”复选框，看看您可以免费获得什么拖放行为。
+- en: '[![Basic Drag and Drop behavior](../Images/29db0e1f94d1634663d7a4ff455597b8.png)](../../figures/uiswing/../../figures/uiswing/dnd/BasicDND.png)'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[![基本拖放行为](../Images/29db0e1f94d1634663d7a4ff455597b8.png)](../../figures/uiswing/../../figures/uiswing/dnd/BasicDND.png)'
+- en: '*This figure has been reduced to fit on the page.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*此图已缩小以适应页面。'
+- en: Click the image to view it at its natural size.*
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单击图像以查看其自然大小。*
+- en: '* * *'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try this:**'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试试这个：**'
+- en: Click the Launch button to run BasicDnD using [Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)
+    ([download JDK 7 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)).
+    Alternatively, to compile and run the example yourself, consult the [example index](../examples/dnd/index.html#BasicDnD).[![Launches
+    the BasicDnD example](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BasicDnDProject/BasicDnD.jnlp)
+  id: totrans-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 单击“启动”按钮以使用[Java™ Web Start](http://www.oracle.com/technetwork/java/javase/javawebstart/index.html)运行
+    BasicDnD（[下载 JDK 7 或更高版本](http://www.oracle.com/technetwork/java/javase/downloads/index.html)）。或者，要自行编译和运行示例，请参考[示例索引](../examples/dnd/index.html#BasicDnD)。[![启动
+    BasicDnD 示例](../Images/4707a69a17729d71c56b2bdbbb4cc61c.png)](https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/BasicDnDProject/BasicDnD.jnlp)
+- en: Select an item in the list and, while holding down the mouse button, begin to
+    drag. Nothing happens because the drag has not yet been enabled on the list.
+  id: totrans-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在列表中选择一个项目，同时按住鼠标按钮开始拖动。什么也不会发生，因为列表上的拖动尚未启用。
+- en: Select the "Turn on Drag and Drop" check box.
+  id: totrans-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 选择“启用拖放”复选框。
+- en: Press the selected item in the list and begin to drag. Drop the text back onto
+    the list. A dialog shows where the text would appear if the list actually accepted
+    drops. (The default behavior for a list would be to show a "does not accept data"
+    cursor.)
+  id: totrans-17
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 按住列表中的选定项目并开始拖动。将文本放回列表。如果列表实际上接受拖放，对话框将显示文本将出现的位置。（列表的默认行为是显示“不接受数据”光标。）
+- en: Drag the selected text over a text area. The insertion point for the text is
+    indicated by a blinking caret. Also, the cursor changes to indicate that the text
+    area will accept the text as a copy.
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 将选定的文本拖动到文本区域上。文本的插入点由闪烁的插入符号指示。此外，光标会更改以指示文本区域将接受文本作为副本。
+- en: Release the mouse and watch the text appear in the text area.
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 释放鼠标并观察文本出现在文本区域中。
+- en: Select some text in one of the text areas.
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在其中一个文本区域中选择一些文本。
+- en: Press the mouse button while the cursor is over the selected text and begin
+    to drag.
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在选定文本上方的光标上按下鼠标按钮并开始拖动。
+- en: Note that this time, the cursor for a drag action appears. Successfully dropping
+    this text into another component will cause the text to be removed from the original
+    component.
+  id: totrans-22
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 请注意，这次拖动操作的光标出现了。成功将此文本放入另一个组件中将导致文本从原始组件中删除。
+- en: Hold the Control key down and press again on the selected text. Begin dragging
+    and the copy cursor now appears. Move the cursor over the text area and drop.
+    The text appears in the new location but is not removed from the original location.
+    The Control key can be used to change any Move to a Copy.
+  id: totrans-23
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 按住Control键并再次点击所选文本。开始拖动，现在会出现复制光标。将光标移动到文本区域并释放。文本将出现在新位置，但不会从原位置移除。Control键可用于将任何移动操作更改为复制操作。
+- en: Select a color from the color chooser. The selected color appears in the Preview
+    panel. Press and hold the mouse button over the color in the Preview panel and
+    drag it over the other components. Note that none of these components accepts
+    color.
+  id: totrans-24
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从颜色选择器中选择一种颜色。所选颜色将显示在预览面板中。按住鼠标按钮在预览面板上的颜色上拖动到其他组件上。请注意，这些组件都不接受颜色。
+- en: Try dropping text, color, and even files, onto the list. A dialog will report
+    the attempted action. The actual drop can be implemented with an additional six
+    lines of code that have been commented out in the [`BasicDnD.java`](../examples/dnd/BasicDnDProject/src/dnd/BasicDnD.java
+    ) source file.
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 尝试将文本、颜色甚至文件拖放到列表上。一个对话框将报告尝试的操作。实际的拖放可以通过在[`BasicDnD.java`](../examples/dnd/BasicDnDProject/src/dnd/BasicDnD.java
+    )源文件中已注释掉的额外六行代码来实现。
+- en: '* * *'
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Next we will look at the `TransferHandler` class, the workhorse of the drag
+    and drop mechanism.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来我们将看一下`TransferHandler`类，这是拖放机制的核心。

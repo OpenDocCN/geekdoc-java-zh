@@ -1,0 +1,537 @@
+- en: Writing the Server Side of a Socket
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 编写套接字的服务器端
+- en: 原文：[https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html](https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html](https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html)
+- en: 'This section shows you how to write a server and the client that goes with
+    it. The server in the client/server pair serves up Knock Knock jokes. Knock Knock
+    jokes are favored by children and are usually vehicles for bad puns. They go like
+    this:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本部分向您展示如何编写一个服务器和与之配套的客户端。客户端/服务器对中的服务器提供叩叩笑话。叩叩笑话深受儿童喜爱，通常是糟糕双关语的载体。它们的形式如下：
+- en: '**Server**: "Knock knock!"'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**服务器**："叩叩！"'
+- en: '**Client**: "Who''s there?"'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**客户端**："谁在那里？"'
+- en: '**Server**: "Dexter."'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**服务器**："迪克斯特尔。"'
+- en: '**Client**: "Dexter who?"'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**客户端**："迪克斯特尔是谁？"'
+- en: '**Server**: "Dexter halls with boughs of holly."'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**服务器**："迪克斯特尔大厅挂满冬青树枝。"'
+- en: '**Client**: "Groan."'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**客户端**："呻吟。"'
+- en: 'The example consists of two independently running Java programs: the client
+    program and the server program. The client program is implemented by a single
+    class, [`KnockKnockClient`](examples/KnockKnockClient.java), and is very similar
+    to the [`EchoClient`](examples/EchoClient.java) example from the previous section.
+    The server program is implemented by two classes: [`KnockKnockServer`](examples/KnockKnockServer.java)
+    and [`KnockKnockProtocol`](examples/KnockKnockProtocol.java). `KnockKnockServer`,
+    which is similar to [`EchoServer`](examples/EchoServer.java), contains the `main`
+    method for the server program and performs the work of listening to the port,
+    establishing connections, and reading from and writing to the socket. The class
+    [`KnockKnockProtocol`](examples/KnockKnockProtocol.java) serves up the jokes.
+    It keeps track of the current joke, the current state (sent knock knock, sent
+    clue, and so on), and returns the various text pieces of the joke depending on
+    the current state. This object implements the protocol—the language that the client
+    and server have agreed to use to communicate.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该示例由两个独立运行的Java程序组成：客户端程序和服务器程序。客户端程序由一个类[`KnockKnockClient`](examples/KnockKnockClient.java)实现，与前一部分的[`EchoClient`](examples/EchoClient.java)示例非常相似。服务器程序由两个类实现：[`KnockKnockServer`](examples/KnockKnockServer.java)和[`KnockKnockProtocol`](examples/KnockKnockProtocol.java)。`KnockKnockServer`类似于[`EchoServer`](examples/EchoServer.java)，包含服务器程序的`main`方法，并负责监听端口、建立连接以及读取和写入套接字。类[`KnockKnockProtocol`](examples/KnockKnockProtocol.java)提供笑话。它跟踪当前笑话、当前状态（发送叩叩、发送提示等），并根据当前状态返回笑话的各个文本部分。该对象实现了协议——客户端和服务器约定用于通信的语言。
+- en: The following section looks in detail at each class in both the client and the
+    server and then shows you how to run them.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下部分详细介绍了客户端和服务器中每个类的代码，然后演示如何运行它们。
+- en: The Knock Knock Server
+  id: totrans-11
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 叩叩笑话服务器
+- en: This section walks through the code that implements the Knock Knock server program,
+    [`KnockKnockServer`](examples/KnockKnockServer.java).
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本部分将介绍实现叩叩笑话服务器程序[`KnockKnockServer`](examples/KnockKnockServer.java)的代码。
+- en: 'The server program begins by creating a new [`ServerSocket`](https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html)
+    object to listen on a specific port (see the statement in bold in the following
+    code segment). When running this server, choose a port that is not already dedicated
+    to some other service. For example, this command starts the server program `KnockKnockServer`
+    so that it listens on port 4444:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 服务器程序首先通过创建一个新的[`ServerSocket`](https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html)对象来监听特定端口（请参见以下代码段中的粗体语句）。运行此服务器时，请选择一个尚未用于其他服务的端口。例如，以下命令启动服务器程序`KnockKnockServer`，使其监听端口4444：
+- en: '[PRE0]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'The server program creates the `ServerSocket` object in a `try`-with-resources
+    statement:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 服务器程序在`try`-with-resources语句中创建`ServerSocket`对象：
+- en: '[PRE1]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '`ServerSocket` is a [`java.net`](https://docs.oracle.com/javase/8/docs/api/java/net/package-frame.html)
+    class that provides a system-independent implementation of the server side of
+    a client/server socket connection. The constructor for `ServerSocket` throws an
+    exception if it can''t listen on the specified port (for example, the port is
+    already being used). In this case, the `KnockKnockServer` has no choice but to
+    exit.'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`ServerSocket`是[`java.net`](https://docs.oracle.com/javase/8/docs/api/java/net/package-frame.html)类，提供了客户端/服务器套接字连接的服务器端的系统独立实现。如果`ServerSocket`的构造函数无法监听指定端口（例如，端口已被使用），则会抛出异常。在这种情况下，`KnockKnockServer`别无选择，只能退出。'
+- en: 'If the server successfully binds to its port, then the `ServerSocket` object
+    is successfully created and the server continues to the next step—accepting a
+    connection from a client (the next statement in the `try`-with-resources statement):'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果服务器成功绑定到其端口，则`ServerSocket`对象成功创建，服务器继续下一步——接受来自客户端的连接（`try`-with-resources语句中的下一条语句）：
+- en: '[PRE2]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The [`accept`](https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html#accept--)
+    method waits until a client starts up and requests a connection on the host and
+    port of this server. (Let's assume that you ran the server program `KnockKnockServer`
+    on the computer named `knockknockserver.example.com`.) In this example, the server
+    is running on the port number specified by the first command-line argument. When
+    a connection is requested and successfully established, the accept method returns
+    a new [`Socket`](https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html)
+    object which is bound to the same local port and has its remote address and remote
+    port set to that of the client. The server can communicate with the client over
+    this new `Socket` and continue to listen for client connection requests on the
+    original `ServerSocket` This particular version of the program doesn't listen
+    for more client connection requests. However, a modified version of the program
+    is provided in [Supporting Multiple Clients](#later).
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`accept`](https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html#accept--)方法会等待，直到客户端在此服务器的主机和端口上启动并请求连接。（假设您在名为`knockknockserver.example.com`的计算机上运行了服务器程序`KnockKnockServer`。）在这个例子中，服务器正在运行在第一个命令行参数指定的端口号上。当请求连接并成功建立连接时，accept方法会返回一个新的[`Socket`](https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html)对象，该对象绑定到相同的本地端口，并将其远程地址和远程端口设置为客户端的地址和端口。服务器可以通过这个新的`Socket`与客户端通信，并继续监听原始`ServerSocket`上的客户端连接请求。这个程序的特定版本不会监听更多的客户端连接请求。然而，在[支持多个客户端](#later)中提供了程序的修改版本。'
+- en: 'After the server successfully establishes a connection with a client, it communicates
+    with the client using this code:'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在服务器成功与客户端建立连接后，使用此代码与客户端通信：
+- en: '[PRE3]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'This code does the following:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该代码执行以下操作：
+- en: Gets the socket's input and output stream and opens readers and writers on them.
+  id: totrans-24
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 获取套接字的输入和输出流，并在其上打开读取器和写入器。
+- en: Initiates communication with the client by writing to the socket (shown in bold).
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 通过向套接字写入来与客户端启动通信（以粗体显示）。
+- en: Communicates with the client by reading from and writing to the socket (the
+    `while` loop).
+  id: totrans-26
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 通过读取和写入套接字（`while`循环）与客户端通信。
+- en: Step 1 is already familiar. Step 2 is shown in bold and is worth a few comments.
+    The bold statements in the code segment above initiate the conversation with the
+    client. The code creates a `KnockKnockProtocol` object—the object that keeps track
+    of the current joke, the current state within the joke, and so on.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第1步已经很熟悉。第2步以粗体显示，并值得一些评论。上面代码段中的粗体语句启动了与客户端的对话。代码创建了一个`KnockKnockProtocol`对象，该对象跟踪当前笑话，笑话中的当前状态等。
+- en: After the `KnockKnockProtocol` is created, the code calls `KnockKnockProtocol`'s
+    `processInput` method to get the first message that the server sends to the client.
+    For this example, the first thing that the server says is "Knock! Knock!" Next,
+    the server writes the information to the [`PrintWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintWriter.html)
+    connected to the client socket, thereby sending the message to the client.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建`KnockKnockProtocol`后，代码调用`KnockKnockProtocol`的`processInput`方法，以获取服务器发送给客户端的第一条消息。在这个例子中，服务器首先说的是“敲门！”。接下来，服务器将信息写入连接到客户端套接字的[`PrintWriter`](https://docs.oracle.com/javase/8/docs/api/java/io/PrintWriter.html)，从而将消息发送给客户端。
+- en: Step 3 is encoded in the `while` loop. As long as the client and server still
+    have something to say to each other, the server reads from and writes to the socket,
+    sending messages back and forth between the client and the server.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 第3步在`while`循环中编码。只要客户端和服务器仍有话要说，服务器就会从套接字中读取并写入，来回发送消息。
+- en: The server initiated the conversation with a "Knock! Knock!" so afterwards the
+    server must wait for the client to say "Who's there?" As a result, the `while`
+    loop iterates on a read from the input stream. The `readLine` method waits until
+    the client responds by writing something to its output stream (the server's input
+    stream). When the client responds, the server passes the client's response to
+    the `KnockKnockProtocol` object and asks the `KnockKnockProtocol` object for a
+    suitable reply. The server immediately sends the reply to the client via the output
+    stream connected to the socket, using a call to println. If the server's response
+    generated from the `KnockKnockServer` object is "Bye." this indicates that the
+    client doesn't want any more jokes and the loop quits.
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 服务器通过一个"敲门！敲门！"的方式开始对话，因此服务器必须等待客户端说"谁在那里？"。因此，`while`循环在从输入流读取时进行迭代。`readLine`方法会等待客户端通过写入内容到其输出流（服务器的输入流）来做出响应。当客户端做出响应时，服务器将客户端的响应传递给`KnockKnockProtocol`对象，并要求`KnockKnockProtocol`对象提供合适的回复。服务器立即通过连接到套接字的输出流将回复发送给客户端，使用`println`方法。如果从`KnockKnockServer`对象生成的服务器响应是"再见。"，这表示客户端不想再听笑话了，循环结束。
+- en: The Java runtime automatically closes the input and output streams, the client
+    socket, and the server socket because they have been created in the `try`-with-resources
+    statement.
+  id: totrans-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java运行时会自动关闭输入和输出流、客户端套接字和服务器套接字，因为它们是在`try`-with-resources语句中创建的。
+- en: The Knock Knock Protocol
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 敲门协议
+- en: The [`KnockKnockProtocol`](examples/KnockKnockProtocol.java) class implements
+    the protocol that the client and server use to communicate. This class keeps track
+    of where the client and the server are in their conversation and serves up the
+    server's response to the client's statements. The `KnockKnockProtocol` object
+    contains the text of all the jokes and makes sure that the client gives the proper
+    response to the server's statements. It wouldn't do to have the client say "Dexter
+    who?" when the server says "Knock! Knock!"
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`KnockKnockProtocol`](examples/KnockKnockProtocol.java)类实现了客户端和服务器用于通信的协议。该类跟踪客户端和服务器在对话中的位置，并为客户端的陈述提供服务器的响应。`KnockKnockProtocol`对象包含所有笑话的文本，并确保客户端对服务器的陈述给出正确的回应。当服务器说"敲门！敲门！"时，客户端说"谁在那里？"才是正确的回应。'
+- en: All client/server pairs must have some protocol by which they speak to each
+    other; otherwise, the data that passes back and forth would be meaningless. The
+    protocol that your own clients and servers use depends entirely on the communication
+    required by them to accomplish the task.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 所有的客户端/服务器对都必须有一些协议来进行通信；否则，来回传递的数据将毫无意义。你自己的客户端和服务器使用的协议完全取决于它们完成任务所需的通信。
+- en: The Knock Knock Client
+  id: totrans-35
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 敲门客户端
+- en: The [`KnockKnockClient`](examples/KnockKnockClient.java) class implements the
+    client program that speaks to the `KnockKnockServer`. `KnockKnockClient` is based
+    on the `EchoClient` program in the previous section, [Reading from and Writing
+    to a Socket](readingWriting.html) and should be somewhat familiar to you. But
+    we'll go over the program anyway and look at what's happening in the client in
+    the context of what's going on in the server.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`KnockKnockClient`](examples/KnockKnockClient.java)类实现了与`KnockKnockServer`通信的客户端程序。`KnockKnockClient`基于前一节中的`EchoClient`程序[从套接字读取和写入](readingWriting.html)，应该对您来说有些熟悉。但我们仍然会查看程序并了解客户端中发生的事情，以及与服务器中发生的情况相比较。'
+- en: 'When you start the client program, the server should already be running and
+    listening to the port, waiting for a client to request a connection. So, the first
+    thing the client program does is to open a socket that is connected to the server
+    running on the specified host name and port:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当您启动客户端程序时，服务器应该已经在运行并监听端口，等待客户端请求连接。因此，客户端程序的第一步是打开一个连接到指定主机名和端口上运行的服务器的套接字：
+- en: '[PRE4]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: When creating its socket, the `KnockKnockClient` example uses the host name
+    of the first command-line argument, the name of the computer on your network that
+    is running the server program `KnockKnockServer`.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在创建套接字时，`KnockKnockClient`示例使用第一个命令行参数的主机名，即运行服务器程序`KnockKnockServer`的网络计算机的名称。
+- en: 'The `KnockKnockClient` example uses the second command-line argument as the
+    port number when creating its socket. This is a *remote port number*—the number
+    of a port on the server computer—and is the port to which `KnockKnockServer` is
+    listening. For example, the following command runs the `KnockKnockClient` example
+    with `knockknockserver.example.com` as the name of the computer that is running
+    the server program `KnockKnockServer` and 4444 as the remote port number:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`KnockKnockClient`示例在创建套接字时使用第二个命令行参数作为端口号。这是一个*远程端口号*——服务器计算机上的端口号——是`KnockKnockServer`正在监听的端口。例如，以下命令在运行`KnockKnockServer`程序的计算机上以`knockknockserver.example.com`作为服务器程序`KnockKnockServer`的计算机名称，4444作为远程端口号运行`KnockKnockClient`示例：'
+- en: '[PRE5]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The client's socket is bound to any available *local port*—a port on the client
+    computer. Remember that the server gets a new socket as well. If you run the `KnockKnockClient`
+    example with the command-line arguments in the previous example, then this socket
+    is bound to local port number 4444 on the computer from which you ran the `KnockKnockClient`
+    example. The server's socket and the client's socket are connected.
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 客户端的套接字绑定到任何可用的*本地端口*——客户端计算机上的端口。请记住，服务器也会获得一个新的套接字。如果你使用前面示例中的命令行参数运行`KnockKnockClient`示例，那么这个套接字将绑定到你运行`KnockKnockClient`示例的计算机上的本地端口号4444。服务器的套接字和客户端的套接字已连接。
+- en: Next comes the `while` loop that implements the communication between the client
+    and the server. The server speaks first, so the client must listen first. The
+    client does this by reading from the input stream attached to the socket. If the
+    server does speak, it says "Bye." and the client exits the loop. Otherwise, the
+    client displays the text to the standard output and then reads the response from
+    the user, who types into the standard input. After the user types a carriage return,
+    the client sends the text to the server through the output stream attached to
+    the socket.
+  id: totrans-43
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来是实现客户端和服务器之间通信的`while`循环。服务器先发言，所以客户端必须先听。客户端通过从连接到套接字的输入流中读取来实现这一点。如果服务器发言，它会说“再见”，然后客户端退出循环。否则，客户端将文本显示到标准输出，然后从用户那里读取响应，用户通过标准输入键入。用户键入回车后，客户端通过连接到套接字的输出流将文本发送到服务器。
+- en: '[PRE6]'
+  id: totrans-44
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: The communication ends when the server asks if the client wishes to hear another
+    joke, the client says no, and the server says "Bye."
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当服务器询问客户端是否想听另一个笑话时，通信结束，客户端说不想听，服务器说“再见”。
+- en: The client automatically closes its input and output streams and the socket
+    because they were created in the `try`-with-resources statement.
+  id: totrans-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 客户端会自动关闭其输入和输出流以及套接字，因为它们是在`try`-with-resources语句中创建的。
+- en: Running the Programs
+  id: totrans-47
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 运行程序
+- en: 'You must start the server program first. To do this, run the server program
+    using the Java interpreter, just as you would any other Java application. Specify
+    as a command-line argument the port number on which the server program listens:'
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你必须先启动服务器程序。为此，请使用Java解释器运行服务器程序，就像运行任何其他Java应用程序一样。指定服务器程序监听的端口号作为命令行参数：
+- en: '[PRE7]'
+  id: totrans-49
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: 'Next, run the client program. Note that you can run the client on any computer
+    on your network; it does not have to run on the same computer as the server. Specify
+    as command-line arguments the host name and the port number of the computer running
+    the `KnockKnockServer` server program:'
+  id: totrans-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，运行客户端程序。请注意，你可以在网络上的任何计算机上运行客户端；它不必在与服务器相同的计算机上运行。指定运行`KnockKnockServer`服务器程序的计算机的主机名和端口号作为命令行参数：
+- en: '[PRE8]'
+  id: totrans-51
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: If you are too quick, you might start the client before the server has a chance
+    to initialize itself and begin listening on the port. If this happens, you will
+    see a stack trace from the client. If this happens, just restart the client.
+  id: totrans-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你太快了，可能会在服务器有机会初始化并开始监听端口之前启动客户端。如果发生这种情况，你将会看到客户端的堆栈跟踪。如果发生这种情况，只需重新启动客户端。
+- en: If you try to start a second client while the first client is connected to the
+    server, the second client just hangs. The next section, [Supporting Multiple Clients](#later),
+    talks about supporting multiple clients.
+  id: totrans-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在第一个客户端连接到服务器时尝试启动第二个客户端，第二个客户端将会挂起。下一节，[支持多个客户端](#later)，讨论了支持多个客户端的问题。
+- en: 'When you successfully get a connection between the client and server, you will
+    see the following text displayed on your screen:'
+  id: totrans-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当客户端和服务器成功建立连接时，你将在屏幕上看到以下文本显示：
+- en: '[PRE9]'
+  id: totrans-55
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE9]'
+- en: 'Now, you must respond with:'
+  id: totrans-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，你必须回复：
+- en: '[PRE10]'
+  id: totrans-57
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE10]'
+- en: 'The client echoes what you type and sends the text to the server. The server
+    responds with the first line of one of the many Knock Knock jokes in its repertoire.
+    Now your screen should contain this (the text you typed is in bold):'
+  id: totrans-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 客户端会回显你输入的内容并将文本发送到服务器。服务器会回复其中一个众多“敲敲”笑话的第一行。现在你的屏幕应该显示如下内容（你输入的文本用粗体表示）：
+- en: '[PRE11]'
+  id: totrans-59
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE11]'
+- en: 'Now, you respond with:'
+  id: totrans-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在，你回复：
+- en: '[PRE12]'
+  id: totrans-61
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE12]'
+- en: 'Again, the client echoes what you type and sends the text to the server. The
+    server responds with the punch line. Now your screen should contain this:'
+  id: totrans-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次，客户端会回显你输入的内容并将文本发送到服务器。服务器会回复一个笑话的结尾。现在你的屏幕应该显示如下内容：
+- en: '[PRE13]'
+  id: totrans-63
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE13]'
+- en: If you want to hear another joke, type **y**; if not, type **n**. If you type
+    **y**, the server begins again with "Knock! Knock!" If you type **n**, the server
+    says "Bye." thus causing both the client and the server to exit.
+  id: totrans-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你想听另一个笑话，输入**y**；如果不想，输入**n**。如果输入**y**，服务器会重新开始“敲敲”；如果输入**n**，服务器会说“再见”，导致客户端和服务器都退出。
+- en: 'If at any point you make a typing mistake, the `KnockKnockServer` object catches
+    it and the server responds with a message similar to this:'
+  id: totrans-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果在任何时候你打错字，`KnockKnockServer`对象会捕捉到并回复类似于这样的消息：
+- en: '[PRE14]'
+  id: totrans-66
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE14]'
+- en: 'The server then starts the joke over again:'
+  id: totrans-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后服务器会重新开始讲笑话：
+- en: '[PRE15]'
+  id: totrans-68
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE15]'
+- en: Note that the `KnockKnockProtocol` object is particular about spelling and punctuation
+    but not about capitalization.
+  id: totrans-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，`KnockKnockProtocol`对象对拼写和标点符号很在意，但对大小写不在意。
+- en: Supporting Multiple Clients
+  id: totrans-70
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 支持多个客户端
+- en: To keep the `KnockKnockServer` example simple, we designed it to listen for
+    and handle a single connection request. However, multiple client requests can
+    come into the same port and, consequently, into the same `ServerSocket`. Client
+    connection requests are queued at the port, so the server must accept the connections
+    sequentially. However, the server can service them simultaneously through the
+    use of threads—one thread per each client connection.
+  id: totrans-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了保持`KnockKnockServer`示例简单，我们设计它来监听并处理单个连接请求。然而，多个客户端请求可以进入同一端口，因此也进入同一个`ServerSocket`。客户端连接请求在端口处排队，因此服务器必须按顺序接受连接。然而，服务器可以通过使用线程同时为它们提供服务——每个客户端连接一个线程。
+- en: 'The basic flow of logic in such a server is this:'
+  id: totrans-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这样一个服务器的基本逻辑流程是这样的：
+- en: '[PRE16]'
+  id: totrans-73
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE16]'
+- en: The thread reads from and writes to the client connection as necessary.
+  id: totrans-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 线程根据需要从客户端连接读取和写入。
+- en: '* * *'
+  id: totrans-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Try This:**'
+  id: totrans-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**试一试：**'
+- en: 'Modify the `KnockKnockServer` so that it can service multiple clients at the
+    same time. Two classes compose our solution: [`KKMultiServer`](examples/KKMultiServer.java)
+    and [`KKMultiServerThread`](examples/KKMultiServerThread.java). `KKMultiServer`
+    loops forever, listening for client connection requests on a `ServerSocket`. When
+    a request comes in, `KKMultiServer` accepts the connection, creates a new `KKMultiServerThread`
+    object to process it, hands it the socket returned from accept, and starts the
+    thread. Then the server goes back to listening for connection requests. The `KKMultiServerThread`
+    object communicates to the client by reading from and writing to the socket. Run
+    the new Knock Knock server `KKMultiServer` and then run several clients in succession.'
+  id: totrans-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 修改`KnockKnockServer`以便能够同时为多个客户端提供服务。我们的解决方案由两个类组成：[`KKMultiServer`](examples/KKMultiServer.java)
+    和 [`KKMultiServerThread`](examples/KKMultiServerThread.java)。`KKMultiServer`永远循环，监听`ServerSocket`上的客户端连接请求。当有请求进来时，`KKMultiServer`接受连接，创建一个新的`KKMultiServerThread`对象来处理它，将从accept返回的套接字传递给它，并启动线程。然后服务器继续监听连接请求。`KKMultiServerThread`对象通过读取和写入套接字与客户端通信。运行新的“敲敲”服务器`KKMultiServer`，然后依次运行几个客户端。
+- en: '* * *'
+  id: totrans-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

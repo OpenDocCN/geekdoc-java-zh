@@ -1,0 +1,135 @@
+- en: The for Statement
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: for语句
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html](https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html)
+- en: 'The `for` statement provides a compact way to iterate over a range of values.
+    Programmers often refer to it as the "for loop" because of the way in which it
+    repeatedly loops until a particular condition is satisfied. The general form of
+    the `for` statement can be expressed as follows:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`for`语句提供了一种紧凑的方式来遍历一系列值。程序员通常将其称为"for循环"，因为它会重复循环，直到满足特定条件为止。`for`语句的一般形式可以表示如下：'
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'When using this version of the `for` statement, keep in mind that:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用这个版本的`for`语句时，请记住：
+- en: The *initialization* expression initializes the loop; it's executed once, as
+    the loop begins.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*初始化*表达式初始化循环；它在循环开始时执行一次。'
+- en: When the *termination* expression evaluates to `false`, the loop terminates.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当*终止*表达式评估为`false`时，循环终止。
+- en: The *increment* expression is invoked after each iteration through the loop;
+    it is perfectly acceptable for this expression to increment *or* decrement a value.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*增量*表达式在每次循环迭代之后被调用；这个表达式完全可以递增或递减一个值。'
+- en: 'The following program, [`ForDemo`](examples/ForDemo.java), uses the general
+    form of the `for` statement to print the numbers 1 through 10 to standard output:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序[`ForDemo`](examples/ForDemo.java)使用`for`语句的一般形式将数字1到10打印到标准输出：
+- en: '[PRE1]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'The output of this program is:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 该程序的输出是：
+- en: '[PRE2]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Notice how the code declares a variable within the initialization expression.
+    The scope of this variable extends from its declaration to the end of the block
+    governed by the `for` statement, so it can be used in the termination and increment
+    expressions as well. If the variable that controls a `for` statement is not needed
+    outside of the loop, it's best to declare the variable in the initialization expression.
+    The names `i`, `j`, and `k` are often used to control `for` loops; declaring them
+    within the initialization expression limits their life span and reduces errors.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意代码如何在初始化表达式中声明一个变量。该变量的作用域从其声明延伸到由`for`语句控制的块的末尾，因此它也可以在终止和增量表达式中使用。如果控制`for`语句的变量在循环外不需要，则最好在初始化表达式中声明该变量。通常使用`i`、`j`和`k`这些名称来控制`for`循环；在初始化表达式中声明它们会限制它们的生命周期并减少错误。
+- en: 'The three expressions of the `for` loop are optional; an infinite loop can
+    be created as follows:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`for`循环的三个表达式是可选的；可以创建一个无限循环，如下所示：'
+- en: '[PRE3]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The `for` statement also has another form designed for iteration through [Collections](../../collections/index.html)
+    and [arrays](arrays.html) This form is sometimes referred to as the *enhanced
+    for* statement, and can be used to make your loops more compact and easy to read.
+    To demonstrate, consider the following array, which holds the numbers 1 through
+    10:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`for`语句还有另一种形式，专为遍历[集合](../../collections/index.html)和[数组](arrays.html)设计。这种形式有时被称为*增强型for*语句，可使您的循环更加简洁和易读。为了演示，考虑以下数组，其中包含1到10的数字：'
+- en: '[PRE4]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'The following program, [`EnhancedForDemo`](examples/EnhancedForDemo.java),
+    uses the enhanced `for` to loop through the array:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下程序[`EnhancedForDemo`](examples/EnhancedForDemo.java)使用增强型`for`循环遍历数组：
+- en: '[PRE5]'
+  id: totrans-18
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'In this example, the variable `item` holds the current value from the numbers
+    array. The output from this program is the same as before:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个例子中，变量`item`保存来自数字数组的当前值。该程序的输出与之前相同：
+- en: '[PRE6]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: We recommend using this form of the `for` statement instead of the general form
+    whenever possible.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们建议尽可能使用这种形式的`for`语句，而不是一般形式。

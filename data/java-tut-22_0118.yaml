@@ -1,0 +1,151 @@
+- en: Raw Types
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 原始类型
+- en: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/rawTypes.html](https://docs.oracle.com/javase/tutorial/java/generics/rawTypes.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/java/generics/rawTypes.html](https://docs.oracle.com/javase/tutorial/java/generics/rawTypes.html)
+- en: 'A *raw type* is the name of a generic class or interface without any type arguments.
+    For example, given the generic `Box` class:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*原始类型*是没有任何类型参数的泛型类或接口的名称。例如，给定泛型`Box`类：'
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'To create a parameterized type of `Box<T>`, you supply an actual type argument
+    for the formal type parameter `T`:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要创建`Box<T>`的参数化类型，您需要为形式类型参数`T`提供实际类型参数：
+- en: '[PRE1]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'If the actual type argument is omitted, you create a raw type of `Box<T>`:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果省略实际类型参数，则创建`Box<T>`的原始类型：
+- en: '[PRE2]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: Therefore, `Box` is the raw type of the generic type `Box<T>`. However, a non-generic
+    class or interface type is *not* a raw type.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，`Box`是泛型类型`Box<T>`的原始类型。但是，非泛型类或接口类型*不*是原始类型。
+- en: 'Raw types show up in legacy code because lots of API classes (such as the `Collections`
+    classes) were not generic prior to JDK 5.0\. When using raw types, you essentially
+    get pre-generics behavior — a `Box` gives you `Object`s. For backward compatibility,
+    assigning a parameterized type to its raw type is allowed:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在旧代码中会出现原始类型，因为在 JDK 5.0 之前，许多 API 类（如`Collections`类）都不是泛型的。使用原始类型时，实际上获得的是泛型之前的行为
+    —— `Box`会给您`Object`。为了向后兼容，允许将参数化类型分配给其原始类型：
+- en: '[PRE3]'
+  id: totrans-10
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'But if you assign a raw type to a parameterized type, you get a warning:'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，如果将原始类型赋给参数化类型，则会收到警告：
+- en: '[PRE4]'
+  id: totrans-12
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: 'You also get a warning if you use a raw type to invoke generic methods defined
+    in the corresponding generic type:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果使用原始类型调用相应泛型类型中定义的泛型方法，也会收到警告：
+- en: '[PRE5]'
+  id: totrans-14
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: The warning shows that raw types bypass generic type checks, deferring the catch
+    of unsafe code to runtime. Therefore, you should avoid using raw types.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此警告显示原始类型绕过了泛型类型检查，将不安全代码的捕获推迟到运行时。因此，应避免使用原始类型。
+- en: The [Type Erasure](erasure.html) section has more information on how the Java
+    compiler uses raw types.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[类型擦除](erasure.html)部分提供了有关 Java 编译器如何使用原始类型的更多信息。'
+- en: Unchecked Error Messages
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 未经检查的错误消息
+- en: 'As mentioned previously, when mixing legacy code with generic code, you may
+    encounter warning messages similar to the following:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如前所述，在将旧代码与泛型代码混合使用时，可能会遇到类似以下的警告消息：
+- en: '[PRE6]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: 'This can happen when using an older API that operates on raw types, as shown
+    in the following example:'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当使用在原始类型上操作的旧 API 时，可能会出现以下示例中所示的情况：
+- en: '[PRE7]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: The term "unchecked" means that the compiler does not have enough type information
+    to perform all type checks necessary to ensure type safety. The "unchecked" warning
+    is disabled, by default, though the compiler gives a hint. To see all "unchecked"
+    warnings, recompile with `-Xlint:unchecked`.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: “未经检查”一词表示编译器没有足够的类型信息来执行确保类型安全所需的所有类型检查。默认情况下，“未经检查”警告是禁用的，尽管编译器会给出提示。要查看所有“未经检查”警告，请使用`-Xlint:unchecked`重新编译。
+- en: 'Recompiling the previous example with `-Xlint:unchecked` reveals the following
+    additional information:'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用`-Xlint:unchecked`重新编译前面的示例，会显示以下额外信息：
+- en: '[PRE8]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE8]'
+- en: To completely disable unchecked warnings, use the `-Xlint:-unchecked` flag.
+    The `@SuppressWarnings("unchecked")` annotation suppresses unchecked warnings.
+    If you are unfamiliar with the `@SuppressWarnings` syntax, see [Annotations](../../java/annotations/index.html).
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要完全禁用未经检查的警告，请使用`-Xlint:-unchecked`标志。`@SuppressWarnings("unchecked")`注解可以抑制未经检查的警告。如果您不熟悉`@SuppressWarnings`语法，请参阅[注解](../../java/annotations/index.html)。

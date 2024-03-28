@@ -1,0 +1,276 @@
+- en: Developing Draggable Applets
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 开发可拖动的小程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/draggableApplet.html](https://docs.oracle.com/javase/tutorial/deployment/applet/draggableApplet.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/applet/draggableApplet.html](https://docs.oracle.com/javase/tutorial/deployment/applet/draggableApplet.html)
+- en: A Java applet that is deployed by specifying the `draggable` parameter can be
+    dragged outside of the browser and dynamically transformed into a Java Web Start
+    application. The Java applet can be dragged by pressing the Alt key and the left
+    mouse button and dragging the mouse. When the drag operation begins, the applet
+    is removed from its parent container (`Applet` or `JApplet`) and placed in a new
+    undecorated top-level window (`Frame` or `JFrame`). A small floating Close button
+    is displayed next to the dragged applet. When the floating Close button is clicked,
+    the applet is placed back in the browser. Java applets that can be dragged out
+    of the browser shall henceforth be referred to as *draggable applets*.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通过指定`draggable`参数部署的 Java 小程序可以在浏览器之外拖动，并动态转换为 Java Web Start 应用程序。可以通过按下 Alt
+    键和左鼠标按钮并拖动鼠标来拖动 Java 小程序。拖动操作开始时，小程序将从其父容器（`Applet`或`JApplet`）中移除，并放置在一个新的无装饰顶级窗口（`Frame`或`JFrame`）中。拖动的小程序旁边会显示一个小浮动关闭按钮。单击浮动关闭按钮后，小程序将放回浏览器中。可以拖出浏览器的
+    Java 小程序将从此被称为*可拖动小程序*。
+- en: 'You can customize the behavior of a draggable applet in the following ways:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过以下方式自定义可拖动小程序的行为：
+- en: You can change the keystroke and mouse button sequence that is used to drag
+    the applet outside of the browser.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以更改用于将小程序拖出浏览器的按键和鼠标按钮序列。
+- en: You can add a desktop shortcut that can be used to launch your application outside
+    of the browser.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以添加一个桌面快捷方式，用于在浏览器之外启动应用程序。
+- en: You can define how the applet should be closed after it has been dragged outside
+    of the browser.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以定义小程序在拖出浏览器后应如何关闭。
+- en: The following sections describe how to implement and customize a draggable applet.
+    The [`MenuChooserApplet`](examples/applet_Draggable/src/MenuChooserApplet.java)
+    class is used to demonstrate the development and deployment of draggable applets.
+    Open [``AppletPage.html``](examples/dist/applet_Draggable/AppletPage.html) in
+    a browser to view the Menu Chooser applet on a new page.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下部分描述了如何实现和自定义可拖动小程序。[`MenuChooserApplet`](examples/applet_Draggable/src/MenuChooserApplet.java)
+    类用于演示可拖动小程序的开发和部署。在浏览器中打开[`AppletPage.html`](examples/dist/applet_Draggable/AppletPage.html)以在新页面上查看菜单选择器小程序。
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到小程序运行，请至少安装[Java SE Development Kit (JDK) 6 update 10](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the example running, you might need to enable
+    the JavaScript interpreter in your browser so that the Deployment Toolkit script
+    can function properly.'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到示例运行，请确保在浏览器中启用 JavaScript 解释器，以便部署工具包脚本能够正常运行。'
+- en: '* * *'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Enabling the Capability to Drag an Applet
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 启用拖动小程序的功能
+- en: 'You can enable the capability to drag an applet by setting the `draggable`
+    parameter to `true` when deploying the applet, as shown in the following code
+    snippet:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过在部署小程序时将`draggable`参数设置为`true`来启用拖动小程序的功能，如下面的代码片段所示：
+- en: '[PRE0]'
+  id: totrans-16
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Changing the Keystroke and Mouse Button Sequence That Is Used to Drag an Applet
+  id: totrans-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 更改用于拖动小程序的按键和鼠标按钮序列
+- en: 'You can change the keystroke and mouse button sequence that is used to drag
+    an applet by implementing the `isAppletDragStart` method. In the following code
+    snippet, the applet can be dragged by pressing the left mouse button and dragging
+    the mouse:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过实现`isAppletDragStart`方法来更改用于拖动小程序的按键和鼠标按钮序列。在以下代码片段中，可以通过按下左鼠标按钮并拖动鼠标来拖动小程序：
+- en: '[PRE1]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Enabling the Addition of a Desktop Shortcut When the Applet Is Disconnected
+    From the Browser
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 当小程序与浏览器断开连接时，可以添加桌面快捷方式
+- en: If the user closes the browser window or navigates away from the page after
+    dragging an applet outside of the page, the applet is said to be *disconnected*
+    from the browser. You can create a desktop shortcut for the applet when the applet
+    is disconnected from the browser. The desktop shortcut can be used to launch the
+    application outside of the browser. To enable the creation of a desktop shortcut,
+    add the `offline-allowed` and `shortcut` tags to the applet's Java Network Launch
+    Protocol (JNLP) file.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果用户在将 applet 拖出页面后关闭浏览器窗口或离开页面，就说 applet 与浏览器*断开连接*。当 applet 与浏览器断开连接时，您可以为
+    applet 创建桌面快捷方式。桌面快捷方式可用于在浏览器之外启动应用程序。要启用桌面快捷方式的创建，请将 `offline-allowed` 和 `shortcut`
+    标签添加到 applet 的 Java 网络启动协议（JNLP）文件中。
+- en: '[PRE2]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: '* * *'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Depending on the setting for Shortcut Creation in the user''s Java
+    Control Panel, the user might be prompted for confirmation before the shortcut
+    is created.'
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 根据用户 Java 控制面板中的快捷方式创建设置，用户可能会在创建快捷方式之前收到确认提示。'
+- en: '* * *'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Defining How the Applet Should Be Closed
+  id: totrans-26
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 定义 Applet 如何关闭
+- en: You can define how your applet can be closed. For example, your Swing applet
+    could have a `JButton` to close the applet instead of relying on the default floating
+    Close button.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以定义您的 applet 如何关闭。例如，您的 Swing applet 可以有一个 `JButton` 来关闭 applet，而不是依赖默认的浮动
+    Close 按钮。
+- en: The Java Plug-in software gives the applet an instance of the `ActionListener`
+    class. This instance of the `ActionListener` class, also referred to as the *close
+    listener*, can be used to modify the default close behavior of the applet.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java 插件软件为 applet 提供了 `ActionListener` 类的实例。这个 `ActionListener` 类的实例，也称为*关闭监听器*，可用于修改
+    applet 的默认关闭行为。
+- en: To define how the applet should be closed, implement the `setAppletCloseListener`
+    and `appletRestored` methods in your applet.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要定义 applet 如何关闭，请在您的 applet 中实现 `setAppletCloseListener` 和 `appletRestored`
+    方法。
+- en: 'In the following code snippet, the [`MenuChooserApplet`](examples/applet_Draggable/src/MenuChooserApplet.java)
+    class receives the close listener and passes it on to the instance of the [`MenuItemChooser`](examples/applet_Draggable/src/MenuItemChooser.java)
+    class:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在以下代码片段中，[`MenuChooserApplet`](examples/applet_Draggable/src/MenuChooserApplet.java)
+    类接收关闭监听器并将其传递给 [`MenuItemChooser`](examples/applet_Draggable/src/MenuItemChooser.java)
+    类的实例：
+- en: '[PRE3]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'The `MenuItemChooser` class is responsible for controlling the applet''s user
+    interface. The `MenuItemChooser` class defines a `JButton` labeled "Close." The
+    following code is executed when the user clicks this Close button:'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`MenuItemChooser` 类负责控制 applet 的用户界面。`MenuItemChooser` 类定义了一个标记为“Close”的 `JButton`。当用户点击此
+    Close 按钮时，将执行以下代码：'
+- en: '[PRE4]'
+  id: totrans-33
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: Requesting and Customizing Applet Decoration
+  id: totrans-34
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 请求和自定义 Applet 装饰
+- en: Beginning in the Java SE 7 release, when deploying an applet, you can specify
+    that the window of dragged applet should be decorated with the default or customized
+    window title.
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从 Java SE 7 发行版开始，在部署 applet 时，您可以指定拖动 applet 窗口应该使用默认或自定义窗口标题进行装饰。
+- en: To enable window decoration of a dragged applet, specify the `java_decorated_frame`
+    parameter with a value of `"true"`. To enable a customized window title, specify
+    the `java_applet_title` parameter also. The value of this parameter should be
+    the text of the window title.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要启用拖动 applet 的窗口装饰，请使用值为`"true"`的 `java_decorated_frame` 参数。还要指定 `java_applet_title`
+    参数以启用自定义窗口标题。此参数的值应为窗口标题的文本。
+- en: '[PRE5]'
+  id: totrans-37
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: 'The `java_decorated_frame` and `java_applet_title` parameters can also be specified
+    in the applet''s JNLP file as shown in the following code snippet:'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`java_decorated_frame` 和 `java_applet_title` 参数也可以在 applet 的 JNLP 文件中指定，如下面的代码片段所示：'
+- en: '[PRE6]'
+  id: totrans-39
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: '[Download source code](examplesIndex.html#DraggableApplet) for the *Draggable
+    Applet* example to experiment further.'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[下载源代码](examplesIndex.html#DraggableApplet)以进一步实验*可拖动 Applet*示例。'

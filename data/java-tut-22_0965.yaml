@@ -1,0 +1,146 @@
+- en: Passive vs. Active Rendering
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 被动渲染 vs. 主动渲染
+- en: 原文：[https://docs.oracle.com/javase/tutorial/extra/fullscreen/rendering.html](https://docs.oracle.com/javase/tutorial/extra/fullscreen/rendering.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/extra/fullscreen/rendering.html](https://docs.oracle.com/javase/tutorial/extra/fullscreen/rendering.html)
+- en: 'As mentioned before, most full-screen applications usually function better
+    if they are at the helm during drawing. In traditional windowed GUI applications,
+    the question of when to paint is usually handled by the operating system. When
+    operating in a windowed environment, this makes perfect sense. A windowed application
+    does not know when the user is going to move, resize, expose, or cover an application
+    by another window until it actually happens. In a Java GUI application, the operating
+    system delivers a *paint event* to the AWT, which figures out what needs to be
+    painted, creates a `java.awt.Graphics` object with the appropriate clipping region,
+    then calls the `paint` method with that `Graphics` object:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如之前提到的，大多数全屏应用程序通常在绘制时更好地处于控制状态。在传统的窗口化GUI应用程序中，绘制的时间通常由操作系统处理。在窗口化环境中，这是完全合理的。窗口化应用程序不知道用户何时会移动、调整大小、暴露或被另一个窗口覆盖，直到实际发生。在Java
+    GUI应用程序中，操作系统向AWT传递一个*绘画事件*，AWT找出需要绘制的内容，创建一个带有适当裁剪区域的`java.awt.Graphics`对象，然后使用该`Graphics`对象调用`paint`方法：
+- en: '[PRE0]'
+  id: totrans-3
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: This is sometimes referred to as *passive rendering*. As you can imagine, such
+    a system incurs a lot of overhead, much to the annoyance of many performance-sensitive
+    AWT and Swing programmers.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这有时被称为*被动渲染*。可以想象，这样的系统会产生很多开销，让许多性能敏感的AWT和Swing程序员感到恼火。
+- en: When in full-screen exclusive mode, you don't have to worry anymore about the
+    window being resized, moved, exposed, or occluded (unless you've ignored my suggestion
+    to turn off resizing). Instead, the application window is drawn directly to the
+    screen (*active rendering*). This simplifies painting quite a bit, since you don't
+    ever need to worry about paint events. In fact, paint events delivered by the
+    operating system may even be delivered at inappropriate or unpredictable times
+    when in full-screen exclusive mode.
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在全屏独占模式下，您不再需要担心窗口被调整大小、移动、暴露或遮挡（除非您忽略了我关于关闭调整大小的建议）。相反，应用程序窗口直接绘制到屏幕上（*主动渲染*）。这样做可以简化绘制过程，因为您永远不需要担心绘画事件。事实上，在全屏独占模式下，由操作系统传递的绘画事件甚至可能在不适当或不可预测的时间传递。
+- en: 'Instead of relying on the `paint` method in full-screen exclusive mode, drawing
+    code is usually more appropriately done in a *rendering loop*:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在全屏独占模式下，不要依赖`paint`方法，绘制代码通常更适合在*渲染循环*中完成：
+- en: '[PRE1]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: Such a rendering loop can done from any thread, either its own helper thread
+    or as part of the main application thread.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这样的渲染循环可以在任何线程中完成，可以是自己的辅助线程，也可以作为主应用程序线程的一部分。
+- en: Programming Tips
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 编程提示
+- en: 'Some tips about using active rendering:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一些关于使用主动渲染的提示：
+- en: Don't put drawing code in the `paint` routine. You may never know when that
+    routine may get called! Instead, use another method name, such as `render(Graphics
+    g)`, which can be called from the `paint` method when operating in windowed mode,
+    or alternately called with its own graphics from the rendering loop.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 不要将绘制代码放在`paint`方法中。您永远不知道该方法何时会被调用！相反，使用另一个方法名，比如`render(Graphics g)`，在窗口模式下可以从`paint`方法中调用，或者在渲染循环中使用自己的图形调用。
+- en: Use the `setIgnoreRepaint` method on your application window and components
+    to turn off all paint events dispatched from the operating system completely,
+    since these may be called during inappropriate times, or worse, end up calling
+    `paint`, which can lead to race conditions between the AWT event thread and your
+    rendering loop.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 使用`setIgnoreRepaint`方法在应用程序窗口和组件上关闭所有从操作系统完全分派的绘画事件，因为这些事件可能在不适当的时间调用，或者更糟糕的是，调用`paint`，这可能导致AWT事件线程和您的渲染循环之间的竞争条件。
+- en: Separate your drawing code from your rendering loop, so that you can operate
+    fully under both full-screen exclusive and windowed modes.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 将绘制代码与渲染循环分开，以便在全屏独占和窗口模式下都能完全运行。
+- en: Optimize your rendering so that you aren't drawing everything on the screen
+    at all times (unless you are using page-flipping or double-buffering, both discussed
+    below).
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 优化您的渲染，以便您不会始终在屏幕上绘制所有内容（除非您使用翻页或双缓冲，下面将讨论）。
+- en: Do not rely on the `update` or `repaint` methods for delivering paint events.
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 不要依赖`update`或`repaint`方法来传递绘画事件。
+- en: Do not use heavyweight components, since these will still incur the overhead
+    of involving the AWT and the platform's windowing system.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 不要使用重量级组件，因为这些组件仍会产生涉及 AWT 和平台窗口系统的开销。
+- en: If you use lightweight components, such as Swing components, you may have to
+    fiddle with them a bit so that they draw using your `Graphics`, and not directly
+    as a result of calling the `paint` method. Feel free to call Swing methods such
+    as `paintComponents`, `paintComponent`, `paintBorder`, and `paintChildren` directly
+    from your rendering loop.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果您使用轻量级组件，比如 Swing 组件，您可能需要稍微调整它们，以便它们使用您的`Graphics`进行绘制，而不是直接调用`paint`方法。请随意从您的渲染循环直接调用
+    Swing 方法，如`paintComponents`、`paintComponent`、`paintBorder`和`paintChildren`。
+- en: Feel free to use passive rendering if you just want a simple full-screen Swing
+    or AWT application, but remember that paint events may be somewhat unreliable
+    or unnecessary while in full-screen exclusive mode. Additionally, if you use passive
+    rendering, you will not be able to use more advanced techniques such as page-flipping.
+    Finally, be very careful to avoid deadlocks if you decide to use both active and
+    passive rendering simultaneously—this approach is not recommended.
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果您只想要一个简单的全屏 Swing 或 AWT 应用程序，可以随意使用被动渲染，但请记住，在全屏独占模式下，绘制事件可能有些不可靠或不必要。此外，如果您使用被动渲染，您将无法使用更高级的技术，如翻页。最后，请务必小心避免死锁，如果您决定同时使用主动和被动渲染—这种方法并不推荐。

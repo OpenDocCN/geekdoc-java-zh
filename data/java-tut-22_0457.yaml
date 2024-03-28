@@ -1,0 +1,189 @@
+- en: Default DnD Support
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 默认的拖放支持
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/defaultsupport.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/defaultsupport.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/dnd/defaultsupport.html](https://docs.oracle.com/javase/tutorial/uiswing/dnd/defaultsupport.html)
+- en: Technically speaking, the framework for drag and drop supports all Swing components
+    — the data transfer mechanism is built into every `JComponent`. If you wanted,
+    you could implement drop support for a `JSlider` so that it could fully participate
+    in data transfer. While `JSlider` does not support drop by default, the components
+    you would want (and expect) to support drag and drop do provide specialized built-in
+    support.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从技术上讲，拖放框架支持所有Swing组件 —— 数据传输机制内置在每个`JComponent`中。如果您愿意，您可以为`JSlider`实现拖放支持，以便它可以完全参与数据传输。虽然`JSlider`默认不支持拖放，但您希望（并期望）支持拖放的组件提供了专门的内置支持。
+- en: 'The following components recognize the drag gesture once the `setDragEnabled(true)`
+    method is invoked on the component. For example, once you invoke `myColorChooser.setDragEnabled(true)`
+    you can drag colors from your color chooser:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一旦在组件上调用了`setDragEnabled(true)`方法，以下组件就会识别拖动手势。例如，一旦您调用了`myColorChooser.setDragEnabled(true)`，您就可以从颜色选择器中拖动颜色：
+- en: '`JColorChooser`'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JColorChooser`'
+- en: '`JEditorPane`'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JEditorPane`'
+- en: '`JFileChooser`'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JFileChooser`'
+- en: '`JFormattedTextField`'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JFormattedTextField`'
+- en: '`JList`'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JList`'
+- en: '`JTable`'
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTable`'
+- en: '`JTextArea`'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTextArea`'
+- en: '`JTextField`'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTextField`'
+- en: '`JTextPane`'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTextPane`'
+- en: '`JTree`'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTree`'
+- en: The following components support drop out of the box. If you are using one of
+    these components, your work is done.
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下组件支持开箱即用的拖放。如果您正在使用这些组件之一，您的工作已经完成。
+- en: '`JEditorPane`'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JEditorPane`'
+- en: '`JFormattedTextField`'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JFormattedTextField`'
+- en: '`JPasswordField`'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JPasswordField`'
+- en: '`JTextArea`'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTextArea`'
+- en: '`JTextField`'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTextField`'
+- en: '`JTextPane`'
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTextPane`'
+- en: '`JColorChooser`'
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JColorChooser`'
+- en: The framework for drop is in place for the following components, but you need
+    to plug in a small amount of code to customize the support for your needs.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下面的组件已经具备拖放的框架，但您需要插入少量代码来定制支持您需求的功能。
+- en: '`JList`'
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JList`'
+- en: '`JTable`'
+  id: totrans-24
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTable`'
+- en: '`JTree`'
+  id: totrans-25
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`JTree`'
+- en: For these critical components, Swing performs the drop location calculations
+    and rendering; it allows you to specify a drop mode; and it handles component
+    specific details, such as tree expansions. Your work is fairly minimal.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于这些关键组件，Swing执行拖放位置的计算和渲染；它允许您指定一个拖放模式；并处理组件特定的细节，比如树的展开。您的工作量相对较小。
+- en: '* * *'
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: You can also install drop support on top-level containers, such as `JFrame`
+    and `JDialog`. You can learn more about this in [Top-Level Drop](toplevel.html).
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您也可以在顶层容器上安装拖放支持，例如`JFrame`和`JDialog`。您可以在[顶层拖放](toplevel.html)中了解更多信息。
+- en: '* * *'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

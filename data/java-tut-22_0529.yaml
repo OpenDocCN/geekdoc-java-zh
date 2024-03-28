@@ -1,0 +1,290 @@
+- en: The SortedSet Interface
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: SortedSet 接口
+- en: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/sorted-set.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/sorted-set.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/collections/interfaces/sorted-set.html](https://docs.oracle.com/javase/tutorial/collections/interfaces/sorted-set.html)
+- en: 'A [`SortedSet`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedSet.html)
+    is a [`Set`](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html) that
+    maintains its elements in ascending order, sorted according to the elements''
+    natural ordering or according to a `Comparator` provided at `SortedSet` creation
+    time. In addition to the normal `Set` operations, the `SortedSet` interface provides
+    operations for the following:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '[`SortedSet`](https://docs.oracle.com/javase/8/docs/api/java/util/SortedSet.html)
+    是一个按升序维护其元素的集合，根据元素的自然顺序或在 `SortedSet` 创建时提供的 `Comparator` 进行排序。除了正常的 `Set` 操作外，`SortedSet`
+    接口还提供以下操作：'
+- en: "`Range view` \x97 allows arbitrary range operations on the sorted set"
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Range view` \x97 允许对排序集合进行任意范围操作"
+- en: "`Endpoints` \x97 returns the first or last element in the sorted set"
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Endpoints` \x97 返回排序集合中的第一个或最后一个元素"
+- en: "`Comparator access` \x97 returns the `Comparator`, if any, used to sort the\
+    \ set"
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: "`Comparator access` \x97 返回用于对集合进行排序的 `Comparator`（如果有的话）"
+- en: The code for the `SortedSet` interface follows.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SortedSet` 接口的代码如下。'
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Set Operations
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 集合操作
+- en: 'The operations that `SortedSet` inherits from `Set` behave identically on sorted
+    sets and normal sets with two exceptions:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SortedSet` 从 `Set` 继承的操作在排序集合和普通集合上的行为完全相同，但有两个例外：'
+- en: The `Iterator` returned by the `iterator` operation traverses the sorted set
+    in order.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`iterator` 操作返回的 `Iterator` 按顺序遍历排序集合。'
+- en: The array returned by `toArray` contains the sorted set's elements in order.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`toArray` 返回的数组按顺序包含了排序后的集合元素。'
+- en: Although the interface doesn't guarantee it, the `toString` method of the Java
+    platform's `SortedSet` implementations returns a string containing all the elements
+    of the sorted set, in order.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管接口不保证，但 Java 平台的 `SortedSet` 实现的 `toString` 方法返回一个包含排序集合所有元素的字符串，按顺序排列。
+- en: Standard Constructors
+  id: totrans-13
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 标准构造函数
+- en: By convention, all general-purpose `Collection` implementations provide a standard
+    conversion constructor that takes a `Collection`; `SortedSet` implementations
+    are no exception. In `TreeSet`, this constructor creates an instance that sorts
+    its elements according to their natural ordering. This was probably a mistake.
+    It would have been better to check dynamically to see whether the specified collection
+    was a `SortedSet` instance and, if so, to sort the new `TreeSet` according to
+    the same criterion (comparator or natural ordering). Because `TreeSet` took the
+    approach that it did, it also provides a constructor that takes a `SortedSet`
+    and returns a new `TreeSet` containing the same elements sorted according to the
+    same criterion. Note that it is the compile-time type of the argument, not its
+    runtime type, that determines which of these two constructors is invoked (and
+    whether the sorting criterion is preserved).
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 按照惯例，所有通用的 `Collection` 实现都提供一个标准的转换构造函数，接受一个 `Collection`；`SortedSet` 实现也不例外。在
+    `TreeSet` 中，这个构造函数创建一个根据元素的自然顺序排序的实例。这可能是一个错误。最好动态检查指定的集合是否是 `SortedSet` 实例，如果是，则根据相同的标准（比较器或自然顺序）对新的
+    `TreeSet` 进行排序。因为 `TreeSet` 采取了它的方法，它还提供一个接受 `SortedSet` 的构造函数，并返回一个包含相同元素并根据相同标准排序的新
+    `TreeSet`。请注意，参数的编译时类型，而不是运行时类型，决定调用这两个构造函数中的哪一个（以及是否保留排序标准）。
+- en: '`SortedSet` implementations also provide, by convention, a constructor that
+    takes a `Comparator` and returns an empty set sorted according to the specified
+    `Comparator`. If `null` is passed to this constructor, it returns a set that sorts
+    its elements according to their natural ordering.'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SortedSet` 实现通常还提供一个构造函数，接受一个 `Comparator` 并返回一个根据指定 `Comparator` 排序的空集合。如果传递
+    `null` 给这个构造函数，它将返回一个根据元素的自然顺序排序的集合。'
+- en: Range-view Operations
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 范围视图操作
+- en: The `range-view` operations are somewhat analogous to those provided by the
+    `List` interface, but there is one big difference. Range views of a sorted set
+    remain valid even if the backing sorted set is modified directly. This is feasible
+    because the endpoints of a range view of a sorted set are absolute points in the
+    element space rather than specific elements in the backing collection, as is the
+    case for lists. A `range-view` of a sorted set is really just a window onto whatever
+    portion of the set lies in the designated part of the element space. Changes to
+    the `range-view` write back to the backing sorted set and vice versa. Thus, it's
+    okay to use `range-view`s on sorted sets for long periods of time, unlike `range-view`s
+    on lists.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`range-view`操作在某种程度上类似于`List`接口提供的操作，但有一个重大区别。排序集的范围视图即使在直接修改支持的排序集的情况下仍然有效。这是因为排序集的范围视图的端点是元素空间中的绝对点，而不是备份集合中的特定元素，这对于列表是成立的。排序集的`range-view`实际上只是窗口，显示在元素空间的指定部分中集合的任何部分。对排序集的`range-view`的更改会写回到支持的排序集中，反之亦然。因此，长时间使用排序集上的`range-view`是可以的，不像列表上的`range-view`那样。'
+- en: Sorted sets provide three `range-view` operations. The first, `subSet`, takes
+    two endpoints, like `subList`. Rather than indices, the endpoints are objects
+    and must be comparable to the elements in the sorted set, using the `Set`'s `Comparator`
+    or the natural ordering of its elements, whichever the `Set` uses to order itself.
+    Like `subList`, the range is half open, including its low endpoint but excluding
+    the high one.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 排序集提供三种`range-view`操作。第一种是`subSet`，类似于`subList`，需要两个端点。端点不是索引，而是对象，并且必须与排序集中的元素可比，使用`Set`的`Comparator`或其元素的自然排序，取决于`Set`用于对自身排序的方式。与`subList`类似，范围是半开的，包括其低端点但不包括高端点。
+- en: 'Thus, the following line of code tells you how many words between `"doorbell"`
+    and `"pickle"`, including `"doorbell"` but excluding `"pickle"`, are contained
+    in a `SortedSet` of strings called `dictionary`:'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，下面这行代码告诉你在名为`dictionary`的字符串`SortedSet`中包含多少个介于`"doorbell"`和`"pickle"`之间的单词，包括`"doorbell"`但不包括`"pickle"`。
+- en: '[PRE1]'
+  id: totrans-20
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: In like manner, the following one-liner removes all the elements beginning with
+    the letter `f`.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以类似的方式，以下一行代码可以删除所有以字母`f`开头的元素。
+- en: '[PRE2]'
+  id: totrans-22
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: A similar trick can be used to print a table telling you how many words begin
+    with each letter.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似的技巧可以用来打印一个表格，告诉你每个字母开头的单词有多少个。
+- en: '[PRE3]'
+  id: totrans-24
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: "Suppose you want to view a *closed interval*, which contains both of its endpoints,\
+    \ instead of an open interval. If the element type allows for the calculation\
+    \ of the successor of a given value in the element space, merely request the `subSet`\
+    \ from `lowEndpoint` to `successor(highEndpoint)`. Although it isn't entirely\
+    \ obvious, the successor of a string `s` in `String`'s natural ordering is `s\
+    \ + \"\\0\"` \x97 that is, `s` with a `null` character appended."
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 假设你想查看一个*闭区间*，其中包含两个端点，而不是一个开区间。如果元素类型允许计算元素空间中给定值的后继，只需请求从`lowEndpoint`到`successor(highEndpoint)`的`subSet`。虽然这并不是完全明显的，但在`String`的自然排序中，字符串`s`的后继是`s
+    + "\0"`，也就是在`s`后附加一个`null`字符。
+- en: Thus, the following one-liner tells you how many words between `"doorbell"`
+    and `"pickle"`, including doorbell *and* pickle, are contained in the dictionary.
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，以下一行代码告诉你在字典中包含多少个介于`"doorbell"`和`"pickle"`之间的单词，包括`doorbell` *和* `pickle`。
+- en: '[PRE4]'
+  id: totrans-27
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: A similar technique can be used to view an *open interval*, which contains neither
+    endpoint. The open-interval view from `lowEndpoint` to `highEndpoint` is the half-open
+    interval from `successor(lowEndpoint)` to `highEndpoint`. Use the following to
+    calculate the number of words between `"doorbell"` and `"pickle"`, excluding both.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 类似的技巧可以用来查看一个*开区间*，其中不包含任何端点。从`lowEndpoint`到`highEndpoint`的开区间视图是从`successor(lowEndpoint)`到`highEndpoint`的半开区间。使用以下代码计算介于`"doorbell"`和`"pickle"`之间的单词数量，不包括两者。
+- en: '[PRE5]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
+- en: "The `SortedSet` interface contains two more `range-view` operations \x97 `headSet`\
+    \ and `tailSet`, both of which take a single `Object` argument. The former returns\
+    \ a view of the initial portion of the backing `SortedSet`, up to but not including\
+    \ the specified object. The latter returns a view of the final portion of the\
+    \ backing `SortedSet`, beginning with the specified object and continuing to the\
+    \ end of the backing `SortedSet`. Thus, the following code allows you to view\
+    \ the dictionary as two disjoint `volumes` (`a-m` and `n-z`)."
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "`SortedSet` 接口包含两个更多的 `range-view` 操作 \x97 `headSet` 和 `tailSet`，两者都接受一个 `Object`\
+    \ 参数。前者返回一个视图，显示了支持 `SortedSet` 的初始部分，直到但不包括指定的对象。后者返回一个视图，显示了支持 `SortedSet` 的最终部分，从指定的对象开始，一直到支持\
+    \ `SortedSet` 的末尾。因此，以下代码允许您将字典视为两个不相交的 `卷`（`a-m` 和 `n-z`）。"
+- en: '[PRE6]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE6]'
+- en: Endpoint Operations
+  id: totrans-32
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 端点操作
+- en: 'The `SortedSet` interface contains operations to return the first and last
+    elements in the sorted set, not surprisingly called `first` and `last`. In addition
+    to their obvious uses, `last` allows a workaround for a deficiency in the `SortedSet`
+    interface. One thing you''d like to do with a `SortedSet` is to go into the interior
+    of the `Set` and iterate forward or backward. It''s easy enough to go forward
+    from the interior: Just get a `tailSet` and iterate over it. Unfortunately, there''s
+    no easy way to go backward.'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SortedSet` 接口包含返回排序集合中第一个和最后一个元素的操作，分别称为 `first` 和 `last`。除了它们的明显用途外，`last`
+    还允许解决 `SortedSet` 接口中的一个缺陷。您希望对 `SortedSet` 进行的一件事是进入 `Set` 的内部并向前或向后迭代。从内部向前迭代很容易：只需获取一个
+    `tailSet` 并对其进行迭代。不幸的是，向后迭代没有简单的方法。'
+- en: The following idiom obtains the first element that is less than a specified
+    object `o` in the element space.
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下习语获取了元素空间中小于指定对象 `o` 的第一个元素。
+- en: '[PRE7]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE7]'
+- en: This is a fine way to go one element backward from a point in the interior of
+    a sorted set. It could be applied repeatedly to iterate backward, but this is
+    very inefficient, requiring a lookup for each element returned.
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是从排序集合内部的某一点向后移动一个元素的好方法。可以重复应用它来向后迭代，但这非常低效，每返回一个元素都需要查找。
+- en: Comparator Accessor
+  id: totrans-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 比较器访问器
+- en: The `SortedSet` interface contains an accessor method called `comparator` that
+    returns the `Comparator` used to sort the set, or `null` if the set is sorted
+    according to the *natural ordering* of its elements. This method is provided so
+    that sorted sets can be copied into new sorted sets with the same ordering. It
+    is used by the `SortedSet` constructor described [previously](#constructor).
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SortedSet` 接口包含一个名为 `comparator` 的访问器方法，返回用于对集合进行排序的 `Comparator`，如果集合根据其元素的
+    *自然顺序* 进行排序，则返回 `null`。提供此方法是为了可以将排序集合复制到具有相同顺序的新排序集合中。它被描述为 `SortedSet` 构造函数使用的
+    [先前](#constructor)。'

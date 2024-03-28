@@ -1,0 +1,136 @@
+- en: Using JAR-related APIs
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用与JAR相关的API
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/apiindex.html](https://docs.oracle.com/javase/tutorial/deployment/jar/apiindex.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/jar/apiindex.html](https://docs.oracle.com/javase/tutorial/deployment/jar/apiindex.html)
+- en: 'The Java platform contains several classes for use with JAR files. Some of
+    these APIs are:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台包含几个用于处理JAR文件的类。其中一些API包括：
+- en: '[The `**java.util.jar**` package](https://docs.oracle.com/javase/8/docs/api/java/util/jar/package-summary.html)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[**java.util.jar**包](https://docs.oracle.com/javase/8/docs/api/java/util/jar/package-summary.html)'
+- en: '[The `**java.net.JarURLConnection**` class](https://docs.oracle.com/javase/8/docs/api/java/net/JarURLConnection.html)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[**java.net.JarURLConnection**类](https://docs.oracle.com/javase/8/docs/api/java/net/JarURLConnection.html)'
+- en: '[The `**java.net.URLClassLoader**` class](https://docs.oracle.com/javase/8/docs/api/java/net/URLClassLoader.html)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[**java.net.URLClassLoader**类](https://docs.oracle.com/javase/8/docs/api/java/net/URLClassLoader.html)'
+- en: To give you an idea of the possibilities that are opened up by these new APIs,
+    this lesson guides you through the inner workings of a sample application called
+    JarRunner.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了让您了解这些新API所打开的可能性，本课程将引导您了解一个名为JarRunner的示例应用程序的内部工作原理。
+- en: An Example - The JarRunner Application
+  id: totrans-7
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一个示例 - JarRunner应用程序
+- en: 'JarRunner enables you to run an application that''s bundled in a JAR file by
+    specifying the JAR file''s URL on the command line. For example, if an application
+    called `TargetApp` were bundled in a JAR file at `http://www.example.com/TargetApp.jar`,
+    you could run the application using this command:'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JarRunner允许您通过在命令行上指定JAR文件的URL来运行打包在JAR文件中的应用程序。例如，如果一个名为`TargetApp`的应用程序被打包在`http://www.example.com/TargetApp.jar`的JAR文件中，您可以使用以下命令运行该应用程序：
+- en: '[PRE0]'
+  id: totrans-9
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: 'In order for JarRunner to work, it must be able to perform the following tasks,
+    all of which are accomplished by using the new APIs:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了使`JarRunner`正常工作，它必须能够执行以下任务，所有这些任务都是通过使用新的API完成的：
+- en: Access the remote JAR file and establish a communications link with it.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 访问远程JAR文件并与其建立通信链接。
+- en: Inspect the JAR file's manifest to see which of the classes in the archive is
+    the main class.
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 检查JAR文件的清单，查看存档中哪个类是主类。
+- en: Load the classes in the JAR file.
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 加载JAR文件中的类。
+- en: 'The JarRunner application consists of two classes, `JarRunner` and `JarClassLoader`.
+    `JarRunner` delegates most of the JAR-handling tasks to the `JarClassLoader` class.
+    `JarClassLoader` extends the `java.net.URLClassLoader` class. You can browse the
+    source code for the `JarRunner` and `JarClassLoader` classes before proceeding
+    with the lesson:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`JarRunner`应用程序由两个类组成，`JarRunner`和`JarClassLoader`。`JarRunner`将大部分JAR处理任务委托给`JarClassLoader`类。`JarClassLoader`扩展了`java.net.URLClassLoader`类。在继续本课程之前，您可以查看`JarRunner`和`JarClassLoader`类的源代码：'
+- en: '[`JarRunner.java`](examples/JarRunner.java)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`JarRunner.java`](examples/JarRunner.java)'
+- en: '[`JarClassLoader.java`](examples/JarClassLoader.java)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`JarClassLoader.java`](examples/JarClassLoader.java)'
+- en: 'This lesson has two parts:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本课程分为两部分：
+- en: '[The JarClassLoader Class](jarclassloader.html)'
+  id: totrans-18
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[JarClassLoader类](jarclassloader.html)'
+- en: This section shows you how `JarClassLoader` uses some of the new APIs to perform
+    tasks required for the JarRunner application to work.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节展示了`JarClassLoader`如何使用一些新的API来执行JarRunner应用程序所需的任务。
+- en: '[The JarRunner Class](jarrunner.html)'
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '[JarRunner类](jarrunner.html)'
+- en: This section summarizes the `JarRunner` class that comprises the JarRunner application.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节总结了包含`JarRunner`应用程序的`JarRunner`类。

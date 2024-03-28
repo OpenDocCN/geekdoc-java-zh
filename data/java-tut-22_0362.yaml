@@ -1,0 +1,326 @@
+- en: Using Top-Level Containers
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用顶级容器
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/toplevel.html](https://docs.oracle.com/javase/tutorial/uiswing/components/toplevel.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/toplevel.html](https://docs.oracle.com/javase/tutorial/uiswing/components/toplevel.html)
+- en: 'As we mentioned before, Swing provides three generally useful top-level container
+    classes: [`JFrame`](frame.html), [`JDialog`](dialog.html), and [`JApplet`](applet.html).
+    When using these classes, you should keep these facts in mind:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如我们之前提到的，Swing 提供了三个通常有用的顶级容器类：[`JFrame`](frame.html)、[`JDialog`](dialog.html)和[`JApplet`](applet.html)。在使用这些类时，您应该记住以下事实：
+- en: To appear onscreen, every GUI component must be part of a *containment hierarchy*.
+    A containment hierarchy is a tree of components that has a top-level container
+    as its root. We'll show you one in a bit.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 要在屏幕上显示，每个 GUI 组件必须是*包含层次结构*的一部分。包含层次结构是一个组件树，其根是一个顶级容器。我们稍后会展示给你。
+- en: Each GUI component can be contained only once. If a component is already in
+    a container and you try to add it to another container, the component will be
+    removed from the first container and then added to the second.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 每个 GUI 组件只能被包含一次。如果一个组件已经在一个容器中，并且您尝试将其添加到另一个容器中，该组件将从第一个容器中移除，然后添加到第二个容器中。
+- en: Each top-level container has a content pane that, generally speaking, contains
+    (directly or indirectly) the visible components in that top-level container's
+    GUI.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 每个顶级容器都有一个内容窗格，一般来说，内容窗格包含（直接或间接地）该顶级容器 GUI 中可见的组件。
+- en: You can optionally add a menu bar to a top-level container. The menu bar is
+    by convention positioned within the top-level container, but outside the content
+    pane. Some look and feels, such as the Mac OS look and feel, give you the option
+    of placing the menu bar in another place more appropriate for the look and feel,
+    such as at the top of the screen.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您可以选择向顶级容器添加一个菜单栏。按照惯例，菜单栏位于顶级容器内部，但在内容窗格之外。一些外观和感觉，如 Mac OS 外观和感觉，可以让您选择将菜单栏放在更适合外观和感觉的其他位置，例如屏幕顶部。
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** Although [`JInternalFrame`](internalframe.html) mimics `JFrame`,
+    internal frames aren''t actually top-level containers.'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**虽然[`JInternalFrame`](internalframe.html)模仿`JFrame`，但内部框架实际上不是顶级容器。'
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Here's a picture of a frame created by an application. The frame contains a
+    green menu bar (with no menus) and, in the frame's content pane, a large blank,
+    yellow label.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是一个应用程序创建的框架的图片。框架包含一个绿色的菜单栏（没有菜单），在框架的内容窗格中有一个大的空白黄色标签。
+- en: '| ![A simple application with a frame that contains a menu bar and a content
+    pane.](../Images/9027bf6c251e5585f58f479dee64b36d.png) | ![A diagram of the frame''s
+    major parts](../Images/2f1684ebaf6a3a32a96240af3756984f.png) |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| ![包含一个包含菜单栏和内容窗格的框架的简单应用程序。](../Images/9027bf6c251e5585f58f479dee64b36d.png)
+    | ![框架主要部分的图表](../Images/2f1684ebaf6a3a32a96240af3756984f.png) |'
+- en: You can find the entire source for this example in [`TopLevelDemo.java`](../examples/components/TopLevelDemoProject/src/components/TopLevelDemo.java).
+    Although the example uses a `JFrame` in a standalone application, the same concepts
+    apply to `JApplet`s and `JDialog`s.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在[`TopLevelDemo.java`](../examples/components/TopLevelDemoProject/src/components/TopLevelDemo.java)中找到此示例的完整源代码。虽然示例在独立应用程序中使用了`JFrame`，但相同的概念也适用于`JApplet`和`JDialog`。
+- en: 'Here''s the containment hierarchy for this example''s GUI:'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这是此示例 GUI 的包含层次结构：
+- en: '![Containment hierarchy for the TopLeveDemo example''s GUI.](../Images/d68c9efbcf5d0c42063ffa6d76b928c6.png)'
+  id: totrans-14
+  prefs: []
+  type: TYPE_IMG
+  zh: '![TopLeveDemo 示例 GUI 的包含层次结构。](../Images/d68c9efbcf5d0c42063ffa6d76b928c6.png)'
+- en: 'As the ellipses imply, we left some details out of this diagram. We reveal
+    the missing details a bit later. Here are the topics this section discusses:'
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如椭圆形所示，我们在这个图表中略去了一些细节。我们稍后会透露这些缺失的细节。这部分讨论以下主题：
+- en: '[Top-Level Containers and Containment Hierarchies](#general)'
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[顶级容器和包含层次结构](#general)'
+- en: '[Adding Components to the Content Pane](#contentpane)'
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[向内容窗格添加组件](#contentpane)'
+- en: '[Adding a Menu Bar](#menubar)'
+  id: totrans-18
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[添加菜单栏](#menubar)'
+- en: '[The Root Pane (a.k.a. The Missing Details)](#rootpane)'
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[根窗格（又名缺失的细节）](#rootpane)'
+- en: Top-Level Containers and Containment Hierarchies
+  id: totrans-20
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 顶级容器和包含层次结构
+- en: "Each program that uses Swing components has at least one top-level container.\
+    \ This top-level container is the root of a containment hierarchy \x97 the hierarchy\
+    \ that contains all of the Swing components that appear inside the top-level container."
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 使用 Swing 组件的每个程序至少有一个顶级容器。这个顶级容器是包含层次结构的根 - 包含所有出现在顶级容器内部的 Swing 组件的层次结构。
+- en: As a rule, a standalone application with a Swing-based GUI has at least one
+    containment hierarchy with a `JFrame` as its root. For example, if an application
+    has one main window and two dialogs, then the application has three containment
+    hierarchies, and thus three top-level containers. One containment hierarchy has
+    a `JFrame` as its root, and each of the other two has a `JDialog` object as its
+    root.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常情况下，具有基于 Swing 的 GUI 的独立应用程序至少有一个以 `JFrame` 为根的包含层次结构。例如，如果一个应用程序有一个主窗口和两个对话框，则该应用程序有三个包含层次结构，因此有三个顶级容器。一个包含层次结构以
+    `JFrame` 为根，另外两个分别以 `JDialog` 对象为根。
+- en: A Swing-based applet has at least one containment hierarchy, exactly one of
+    which is rooted by a `JApplet` object. For example, an applet that brings up a
+    dialog has two containment hierarchies. The components in the browser window are
+    in a containment hierarchy rooted by a `JApplet` object. The dialog has a containment
+    hierarchy rooted by a `JDialog` object.
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一个基于 Swing 的小程序至少有一个包含层次结构，其中有一个由 `JApplet` 对象作为根。例如，弹出对话框的小程序有两个包含层次结构。浏览器窗口中的组件位于由
+    `JApplet` 对象作为根的包含层次结构中。对话框有一个由 `JDialog` 对象作为根的包含层次结构。
+- en: Adding Components to the Content Pane
+  id: totrans-24
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 向内容窗格添加组件
+- en: 'Here''s the code that the preceding example uses to get a frame''s content
+    pane and add the yellow label to it:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是前面示例中使用的代码，用于获取框架的内容窗格并将黄色标签添加到其中：
+- en: '[PRE0]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: As the code shows, you find the content pane of a top-level container by calling
+    the `getContentPane` method. The default content pane is a simple intermediate
+    container that inherits from `JComponent`, and that uses a `BorderLayout` as its
+    layout manager.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如代码所示，您可以通过调用 `getContentPane` 方法找到顶级容器的内容窗格。默认内容窗格是一个简单的中间容器，继承自 `JComponent`，并使用
+    `BorderLayout` 作为其布局管理器。
+- en: "It's easy to customize the content pane \x97 setting the layout manager or\
+    \ adding a border, for example. However, there is one tiny gotcha. The `getContentPane`\
+    \ method returns a `Container` object, not a `JComponent` object. This means that\
+    \ if you want to take advantage of the content pane's `JComponent` features, you\
+    \ need to either typecast the return value or create your own component to be\
+    \ the content pane. Our examples generally take the second approach, since it's\
+    \ a little cleaner. Another approach we sometimes take is to simply add a customized\
+    \ component to the content pane, covering the content pane completely."
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "定制内容窗格很容易\x97例如设置布局管理器或添加边框。但是，有一个小问题。`getContentPane` 方法返回的是一个 `Container`\
+    \ 对象，而不是 `JComponent` 对象。这意味着如果您想利用内容窗格的 `JComponent` 功能，您需要要么对返回值进行类型转换，要么创建自己的组件作为内容窗格。我们的示例通常采用第二种方法，因为这样更清晰。我们有时采用的另一种方法是简单地向内容窗格添加一个定制组件，完全覆盖内容窗格。"
+- en: Note that the default layout manager for `JPanel` is `FlowLayout`; you'll probably
+    want to change it.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，`JPanel` 的默认布局管理器是 `FlowLayout`；您可能需要更改它。
+- en: 'To make a component the content pane, use the top-level container''s `setContentPane`
+    method. For example:'
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将组件设置为内容窗格，请使用顶级容器的 `setContentPane` 方法。例如：
+- en: '[PRE1]'
+  id: totrans-31
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: '* * *'
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: As a convenience, the `add` method and its variants, `remove` and `setLayout`
+    have been overridden to forward to the `contentPane` as necessary. This means
+    you can write
+  id: totrans-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为方便起见，`add` 方法及其变体，`remove` 和 `setLayout` 已被重写以根据需要转发到 `contentPane`。这意味着您可以编写
+- en: '[PRE2]'
+  id: totrans-35
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: and the child will be added to the `contentPane.`
+  id: totrans-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 并且子组件将被添加到 `contentPane`。
+- en: Note that only these three methods do this. This means that `getLayout()` will
+    not return the layout set with `setLayout()`.
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 请注意，只有这三种方法可以实现这一点。这意味着 `getLayout()` 不会返回使用 `setLayout()` 设置的布局。
+- en: '* * *'
+  id: totrans-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Adding a Menu Bar
+  id: totrans-39
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 添加菜单栏
+- en: 'In theory, all top-level containers can hold a menu bar. In practice, however,
+    menu bars usually appear only in frames and applets. To add a menu bar to a top-level
+    container, create a `JMenuBar` object, populate it with menus, and then call `setJMenuBar`.
+    The `TopLevelDemo` adds a menu bar to its frame with this code:'
+  id: totrans-40
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 理论上，所有顶级容器都可以容纳菜单栏。然而，在实践中，菜单栏通常只出现在框架和小程序中。要向顶级容器添加菜单栏，请创建一个 `JMenuBar` 对象，填充它的菜单，然后调用
+    `setJMenuBar`。`TopLevelDemo` 使用以下代码向其框架���加菜单栏：
+- en: '[PRE3]'
+  id: totrans-41
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: For more information about implementing menus and menu bars, see [How to Use
+    Menus](menu.html).
+  id: totrans-42
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 欲了解更多关于实现菜单和菜单栏的信息，请参阅[如何使用菜单](menu.html)。
+- en: The Root Pane
+  id: totrans-43
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 根窗格
+- en: Each top-level container relies on a reclusive intermediate container called
+    the *root pane*. The root pane manages the content pane and the menu bar, along
+    with a couple of other containers. You generally don't need to know about root
+    panes to use Swing components. However, if you ever need to intercept mouse clicks
+    or paint over multiple components, you should get acquainted with root panes.
+  id: totrans-44
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每个顶层容器依赖于一个名为*根窗格*的隐秘中间容器。根窗格管理内容窗格和菜单栏，以及其他几个容器。通常情况下，你不需要了解根窗格来使用 Swing 组件。然而，如果你需要拦截鼠标点击或在多个组件上绘制，你应该熟悉根窗格。
+- en: 'Here''s a list of the components that a root pane provides to a frame (and
+    to every other top-level container):'
+  id: totrans-45
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是根窗格为框架（以及每个其他顶层容器）提供的组件列表：
+- en: '![A root pane manages four other panes: a layered pane, a menu bar, a content
+    pane, and a glass pane.](../Images/c25cf03bc153ab3649f78907e3cd5198.png)'
+  id: totrans-46
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个根窗格管理四个其他窗格：分层窗格、菜单栏、内容窗格和玻璃窗格。](../Images/c25cf03bc153ab3649f78907e3cd5198.png)'
+- en: We've already told you about the content pane and the optional menu bar. The
+    two other components that a root pane adds are a layered pane and a glass pane.
+    The layered pane contains the menu bar and content pane, and enables Z-ordering
+    of other components. The glass pane is often used to intercept input events occuring
+    over the top-level container, and can also be used to paint over multiple components.
+  id: totrans-47
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们已经告诉过你关于内容窗格和可选菜单栏。根窗格添加的另外两个组件是分层窗格和玻璃窗格。分层窗格包含菜单栏和内容窗格，并且可以对其他组件进行 Z 轴排序。玻璃窗格通常用于拦截发生在顶层容器上的输入事件，并且还可以用于在多个组件上绘制。
+- en: For more details, see [How to Use Root Panes](rootpane.html).
+  id: totrans-48
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 更多详情，请参见[如何使用根窗格](rootpane.html)。

@@ -1,0 +1,129 @@
+- en: User Acceptance of RIAs
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 用户接受RIA
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/userAcceptance.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/userAcceptance.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/userAcceptance.html](https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/userAcceptance.html)
+- en: 'For security, users are prompted for permission to run an RIA before launching
+    for the first time, even if the application is signed or doesn''t require access
+    outside of the security sandbox. The prompt includes the following information,
+    depending on the RIA being run:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了安全起见，在首次启动RIA之前，用户会被提示是否允许运行RIA，即使应用程序已签名或不需要超出安全沙箱的访问权限。提示包括以下信息，取决于正在运行的RIA：
+- en: Name of the RIA, or notification that the application is unsigned.
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: RIA的名称，或者通知应用程序未签名。
+- en: Information about the publisher, if the app is signed with a certificate from
+    a trusted authority. If the certificate is expired, a warning is included. If
+    the application is self-signed, the publisher is shown as UNKNOWN.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果应用程序使用来自受信任机构颁发的证书进行签名，则会显示有关发布者的信息。如果证书已过期，则会包含警告。如果应用程序是自签名的，则发布者显示为UNKNOWN。
+- en: Warnings if the certificate is expired, revoked, or the revocation status cannot
+    be checked.
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果证书已过期、被吊销或无法检查吊销状态，则会收到警告。
+- en: Location from which the application is accessed.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 应用程序访问的位置。
+- en: Level of access required by the application. Limited access restricts the application
+    to the security sandbox, unrestricted access provides the application with access
+    to resources on the user's system.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 应用程序所需的访问级别。有限访问将应用程序限制在安全沙箱中，无限制访问将使应用程序能够访问用户系统上的资源。
+- en: Warning about missing JAR file manifest attributes if recommended attributes
+    are not present.
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果建议的属性不存在，则会警告缺少JAR文件清单属性。
+- en: For unsigned or self-signed applications, a check box that the user must select
+    to accept the application.
+  id: totrans-9
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 对于未签名或自签名的应用程序，用户必须选择接受应用程序的复选框。
+- en: In some cases, the option to not show the prompt again.
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在某些情况下，有选择不再显示提示的选项。
+- en: For a description of the prompts, see [What should I do when I see a security
+    prompt from Java?](http://java.com/faq-securityprompts)
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关提示的描述，请参阅[当我看到Java的安全提示时应该怎么做？](http://java.com/faq-securityprompts)
+- en: Users are also warned if they are running an out-of-date JRE and are given the
+    opportunity to update to the latest version before running an application. Users
+    can also choose to run with the JRE on their system, or to block the application
+    from running.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果用户运行的JRE版本过时，他们也会收到警告，并有机会在运行应用程序之前更新到最新版本。用户还可以选择使用系统上的JRE运行，或者阻止应用程序运行。
+- en: The security level setting in the Java Control Panel determines if users are
+    given the opportunity to run RIAs. The default setting of High prompts users for
+    permission to run applications that are signed with a valid certificate and include
+    the Permissions attribute in the manifest for the main JAR file. If the revocation
+    status of an application cannot be checked, the application is also allowed to
+    run with the user's permission.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java控制面板中的安全级别设置确定用户是否有机会运行RIA。默认设置为高，会提示用户是否允许运行使用有效证书签名并在主JAR文件的清单中包含Permissions属性的应用程序。如果无法检查应用程序的吊销状态，则用户还可以在用户的许可下运行应用程序。
+- en: 'Signing your RIA provides the user with a level of trust. Consider the following
+    when preparing your application for deployment:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对RIA进行签名为用户提供了一定程度的信任。在准备应用程序部署时，请考虑以下事项：
+- en: The best user experience is provided by an application that is signed with a
+    certificate issued by a recognized certificate authority.
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 最佳用户体验是由使用受认可证书颁发机构颁发的证书签名的应用程序提供的。
+- en: Self-signed and unsigned applications are not allowed to be run unless an exception
+    site list or deployment rule set has been created to explicitly allow the application
+    to run.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 除非已创建例外站点列表或部署规则集以明确允许应用程序运行，否则不允许运行自签名和未签名的应用程序。
+- en: Signed applications can be either privileged applications or sandbox applications.
+    Privileged applications are provided unrestricted access to resources on the user's
+    system. Sandbox applications are restricted to the Java security sandbox. Unsigned
+    applications are restricted to the sandbox.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 签名应用程序可以是特权应用程序或沙箱应用程序。特权应用程序可以无限制地访问用户系统上的资源。沙箱应用程序受限于Java安全沙箱。未签名应用程序受限于沙箱。

@@ -1,0 +1,184 @@
+- en: Using a Third-Party Bean
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 使用第三方Bean
+- en: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/quick/addbean.html](https://docs.oracle.com/javase/tutorial/javabeans/quick/addbean.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/javabeans/quick/addbean.html](https://docs.oracle.com/javase/tutorial/javabeans/quick/addbean.html)
+- en: Almost any code can be packaged as a bean. The beans you have seen so far are
+    all visual beans, but beans can provide functionality without having a visible
+    component.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 几乎任何代码都可以打包为bean。到目前为止，您看到的bean都是可视化bean，但bean可以提供功能而不必具有可见组件。
+- en: The power of JavaBeans is that you can use software components without having
+    to write them or understand their implementation.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JavaBeans的强大之处在于您可以使用软件组件，而无需编写它们或了解其实现。
+- en: This page describes how you can add a JavaBean to your application and take
+    advantage of its functionality.
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本页描述了如何将JavaBean添加到您的应用程序中，并利用其功能。
+- en: Adding a Bean to the NetBeans Palette
+  id: totrans-5
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 添加一个Bean到NetBeans调色板
+- en: Download [`an example JavaBean component, `BumperSticker``](BumperSticker.jar).
+    Beans are distributed as JAR files. Save the file somewhere on your computer.
+    `BumperSticker` is graphic component and exposes one method, `go()`, that kicks
+    off an animation.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下载[`一个示例JavaBean组件，`BumperSticker``](BumperSticker.jar)。Beans以JAR文件的形式分发。将文件保存在计算机的某个位置。`BumperSticker`是一个图形组件，公开一个名为`go()`的方法，用于启动动画。
+- en: To add `BumperSticker` to the NetBeans palette, choose **Tools > Palette > Swing/AWT
+    Components** from the NetBeans menu.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要将`BumperSticker`添加到NetBeans调色板中，请从NetBeans菜单中选择**工具 > 调色板 > Swing/AWT组件**。
+- en: '![The NetBeans Palette Manager](../Images/c1fc3bfd7aba3d43661589350271b0ae.png)'
+  id: totrans-8
+  prefs: []
+  type: TYPE_IMG
+  zh: '![NetBeans调色板管理器](../Images/c1fc3bfd7aba3d43661589350271b0ae.png)'
+- en: Click on the **Add from JAR...** button. NetBeans asks you to locate the JAR
+    file that contains the beans you wish to add to the palette. Locate the file you
+    just downloaded and click **Next**.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击**从JAR添加...**按钮。NetBeans会要求您定位包含您希望添加到调色板中的bean的JAR文件。找到您刚下载的文件，然后点击**下一步**。
+- en: '![Locating the JAR file](../Images/7c46d7685c3fdfcbe383cd4df2f84e16.png)'
+  id: totrans-10
+  prefs: []
+  type: TYPE_IMG
+  zh: '![定位JAR文件](../Images/7c46d7685c3fdfcbe383cd4df2f84e16.png)'
+- en: NetBeans shows a list of the classes in the JAR file. Choose the ones you wish
+    you add to the palette. In this case, select **BumperSticker** and click **Next**.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: NetBeans显示了JAR文件中的类列表。选择您希望添加到调色板中的类。在这种情况下，选择**BumperSticker**并点击**下一步**。
+- en: '![Choose beans to add to the palette](../Images/246925a3c1a1d15798ae31eb1ebadd5a.png)'
+  id: totrans-12
+  prefs: []
+  type: TYPE_IMG
+  zh: '![选择要添加到调色板的bean](../Images/246925a3c1a1d15798ae31eb1ebadd5a.png)'
+- en: Finally, NetBeans needs to know which section of the palette will receive the
+    new beans. Choose **Beans** and click **Finish**.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最��，NetBeans需要知道调色板的哪个部分将接收新的bean。选择**Beans**，然后点击**完成**。
+- en: '![Choose a palette section](../Images/5f41d7e8119b0a3a22440d72f7d41522.png)'
+  id: totrans-14
+  prefs: []
+  type: TYPE_IMG
+  zh: '![选择调色板部分](../Images/5f41d7e8119b0a3a22440d72f7d41522.png)'
+- en: Click **Close** to make the **Palette Manager** window go away. Now take a look
+    in the palette. `BumperSticker` is there in the **Beans** section.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 点击**关闭**使**调色板管理器**窗口消失。现在看看调色板。`BumperSticker`在**Beans**部分中。
+- en: Using Your New JavaBean
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 使用您的新JavaBean
+- en: Go ahead and drag `BumperSticker` out of the palette and into your form.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将`BumperSticker`从调色板拖到您的表单中。
+- en: '![We all love the Java Tutorial](../Images/bb92d3426aaac7acde0d97869ea8fce4.png)'
+  id: totrans-18
+  prefs: []
+  type: TYPE_IMG
+  zh: '![我们都喜欢Java教程](../Images/bb92d3426aaac7acde0d97869ea8fce4.png)'
+- en: You can work with the `BumperSticker` instance just as you would work with any
+    other bean. To see this in action, drag another button out into the form. This
+    button will kick off the `BumperSticker`'s animation.
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以像处理其他bean一样处理`BumperSticker`实例。要看到这一点，将另一个按钮拖到表单中。这个按钮将启动`BumperSticker`的动画。
+- en: '![Add another button to the form](../Images/7406a8c94dbfca5f11f7c6a1761ffdbd.png)'
+  id: totrans-20
+  prefs: []
+  type: TYPE_IMG
+  zh: '![将另一个按钮添加到表单中](../Images/7406a8c94dbfca5f11f7c6a1761ffdbd.png)'
+- en: Wire the button to the `BumperSticker` bean, just as you already wired the first
+    button to the text field.
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 将按钮连接到`BumperSticker` bean，就像您已经将第一个按钮连接到文本字段一样。
+- en: Begin by clicking on the **Connection Mode** button.
+  id: totrans-22
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 首先，点击**连接模式**按钮。
+- en: Click on the second button. NetBeans gives it a red outline.
+  id: totrans-23
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击第二个按钮。NetBeans会给它一个红色轮廓。
+- en: Click on the `BumperSticker` component. The **Connection Wizard** pops up.
+  id: totrans-24
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击`BumperSticker`组件。**连接向导**弹出。
+- en: Click on the **+** next to **action** and select **actionPerformed**. Click
+    **Next >**.
+  id: totrans-25
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击**+**旁边的**action**，然后选择**actionPerformed**。点击**下一步 >**。
+- en: Select **Method Call**, then select **go()** from the list. Click **Finish**.
+  id: totrans-26
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 选择**方法调用**，然后从列表中选择**go()**。点击**完成**。
+- en: If you're unsure of any of the steps, review [Wiring the Application](wiring.html).
+    The process here is very similar.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您对任何步骤感到不确定，请查看[连接应用程序](wiring.html)。这里的过程非常相似。
+- en: Run the application again. When you click on the second button, the `BumperSticker`
+    component animates the color of the heart.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次运行该应用程序。当你点击第二个按钮时，`BumperSticker` 组件会动画显示心形的颜色。
+- en: Again, notice how you have produced a functioning application without writing
+    any code.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次注意，你已经制作出一个功能完善的应用程序，而没有编写任何代码。
+- en: '![A snap-together application](../Images/cbf626710d94fb00be8fee1656d1b182.png)'
+  id: totrans-30
+  prefs: []
+  type: TYPE_IMG
+  zh: '![一个可拼接的应用程序](../Images/cbf626710d94fb00be8fee1656d1b182.png)'

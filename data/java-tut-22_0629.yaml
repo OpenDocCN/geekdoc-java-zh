@@ -1,0 +1,150 @@
+- en: Normalizing Text
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 规范化文本
+- en: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/normalizerapi.html](https://docs.oracle.com/javase/tutorial/i18n/text/normalizerapi.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/i18n/text/normalizerapi.html](https://docs.oracle.com/javase/tutorial/i18n/text/normalizerapi.html)
+- en: '*Normalization* is the process by which you can perform certain transformations
+    of text to make it reconcilable in a way which it may not have been before. Let''s
+    say, you would like searching or sorting text, in this case you need to normalize
+    that text to account for code points that should be represented as the same text.'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*规范化*是一种过程，通过该过程您可以对文本执行某些转换，使其在以前可能无法协调的方式中协调。比如说，您想要搜索或排序文本，在这种情况下，您需要将该文本规范化以考虑应表示为相同文本的代码点。'
+- en: What can be normalized? The normalization is applicable when you need to convert
+    characters with diacritical marks, change all letters case, decompose ligatures,
+    or convert half-width katakana characters to full-width characters and so on.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 什么可以被规范化？当您需要转换带有变音符号的字符，更改所有字母大小写，分解连字，或将半角片假名字符转换为全角字符等时，规范化是适用的。
+- en: 'In accordance with the [Unicode Standard Annex #15](http://www.unicode.org/reports/tr15/)
+    the Normalizer''s API supports all of the following four Unicode text normalization
+    forms that are defined in the [`java.text.Normalizer.Form`](https://docs.oracle.com/javase/8/docs/api/java/text/Normalizer.Form.html):'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据[Unicode标准附录＃15](http://www.unicode.org/reports/tr15/)，规范化器的API支持[`java.text.Normalizer.Form`](https://docs.oracle.com/javase/8/docs/api/java/text/Normalizer.Form.html)中定义的以下四种Unicode文本规范化形式：
+- en: 'Normalization Form D (NFD): Canonical Decomposition'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 规范化形式D（NFD）：规范分解
+- en: 'Normalization Form C (NFC): Canonical Decomposition, followed by Canonical
+    Composition'
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 规范化形式C（NFC）：规范分解，然后规范组合
+- en: 'Normalization Form KD (NFKD): Compatibility Decomposition'
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 规范化形式KD（NFKD）：兼容性分解
+- en: 'Normalization Form KC (NFKC): Compatibility Decomposition, followed by Canonical
+    Composition'
+  id: totrans-8
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 规范化形式KC（NFKC）：兼容性分解，然后规范组合
+- en: 'Let''s examine how the latin small letter "o" with diaeresis can be normalized
+    by using these normalization forms:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 让我们看看拉丁小写字母"o"带分音符号如何通过使用这些规范化形式进行规范化：
+- en: '| Original word | NFC | NFD | NFKC | NFKD |'
+  id: totrans-10
+  prefs: []
+  type: TYPE_TB
+  zh: '| 原始单词 | NFC | NFD | NFKC | NFKD |'
+- en: '| "schön" | "schön" | "scho\u0308n" | "schön" | "scho\u0308n" |'
+  id: totrans-11
+  prefs: []
+  type: TYPE_TB
+  zh: '| "schön" | "schön" | "scho\u0308n" | "schön" | "scho\u0308n" |'
+- en: You can notice that an original word is left unchanged in NFC and NFKC. This
+    is because with NFD and NFKD, composite characters are mapped to their canonical
+    decompositions. But with NFC and NFKC, combining character sequences are mapped
+    to composites, if possible. There is no composite for diaeresis, so it is left
+    decomposed in NFC and NFKC.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以注意到在NFC和NFKC中原始单词保持不变。这是因为在NFD和NFKD中，复合字符被映射到它们的规范分解形式。但是在NFC和NFKC中，如果可能的话，组合字符序列被映射到复合字符。对于分音符号，没有复合字符，因此在NFC和NFKC中保持分解状态。
+- en: In the code example, [`NormSample.java`](examples/NormSample.java), which is
+    represented later, you can also notice another normalization feature. The half-width
+    and full-width katakana characters will have the same compatibility decomposition
+    and are thus compatibility equivalents. However, they are not canonical equivalents.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在稍后表示的代码示例[`NormSample.java`](examples/NormSample.java)中，您还可以注意到另一个规范化特性。半角和全角片假名字符将具有相同的兼容性分解，因此它们是兼容性等效的。但是，它们不是规范等效的。
+- en: 'To be sure that you really need to normalize the text you may use the `isNormalized`
+    method to determine if the given sequence of char values is normalized. If this
+    method returns false, it means that you have to normalize this sequence and you
+    should use the `normalize` method which normalizes a `char` values according to
+    the specified normalization form. For example, to transform text into the canonical
+    decomposed form you will have to use the following `normalize` method:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要确保您确实需要规范化文本，您可以使用`isNormalized`方法来确定给定的字符序列是否已规范化。如果此方法返回false，则意味着您需要规范化此序列，并且应使用`normalize`方法，该方法根据指定的规范化形式规范化`char`值。例如，要将文本转换为规范分解形式，您将需要使用以下`normalize`方法：
+- en: '[PRE0]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Also, the normalize method rearranges accents into the proper canonical order,
+    so that you do not have to worry about accent rearrangement on your own.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，规范化方法会将重音符号重新排列为正确的规范顺序，因此您无需担心自行重新排列重音符号。
+- en: 'The following example represents an application that enables you to select
+    a normalization form and a template to normalize:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下示例表示一个应用程序，使您能够选择规范化形式和模板进行规范化：
+- en: <applet code="NormSample" archive="examples/lib/NormSample.jar" width="550"
+    height="230" alt="NormSample applet"><param name="permissions" value="sandbox"></applet>
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <applet code="NormSample" archive="examples/lib/NormSample.jar" width="550"
+    height="230" alt="NormSample applet"><param name="permissions" value="sandbox"></applet>
+- en: '* * *'
+  id: totrans-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果您看不到 applet 运行，请安装至少 [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    版本。'
+- en: '* * *'
+  id: totrans-21
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: The complete code for this applet is in [`NormSample.java`](examples/NormSample.java)
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个 applet 的完整代码在 [`NormSample.java`](examples/NormSample.java) 中。

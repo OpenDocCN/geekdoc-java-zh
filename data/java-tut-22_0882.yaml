@@ -1,0 +1,178 @@
+- en: Understanding Extension Class Loading
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 理解扩展类加载
+- en: 原文：[https://docs.oracle.com/javase/tutorial/ext/basics/load.html](https://docs.oracle.com/javase/tutorial/ext/basics/load.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 译文：[https://docs.oracle.com/javase/tutorial/ext/basics/load.html](https://docs.oracle.com/javase/tutorial/ext/basics/load.html)
+- en: 'The extension framework makes use of the class-loading delegation mechanism.
+    When the runtime environment needs to load a new class for an application, it
+    looks for the class in the following locations, in order:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 扩展框架利用了类加载委托机制。当运行时环境需要为应用程序加载新类时，它按照以下顺序在以下位置查找类：
+- en: '**Bootstrap classes**: the runtime classes in `rt.jar`, internationalization
+    classes in `i18n.jar`, and others.'
+  id: totrans-3
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**引导类**：`rt.jar`中的运行时类，`i18n.jar`中的国际化类等。'
+- en: '**Installed extensions**: classes in JAR files in the `lib/ext` directory of
+    the JRE, and in the system-wide, platform-specific extension directory (such as
+    `/usr/jdk/packages/lib/ext` on the Solaris™ Operating System, but note that use
+    of this directory applies only to Java™ 6 and later).'
+  id: totrans-4
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**已安装扩展**：JRE的`lib/ext`目录中的JAR文件中的类，以及系统范围内的特定于平台的扩展目录（例如在Solaris™操作系统上的`/usr/jdk/packages/lib/ext`，但请注意，此目录仅适用于Java™
+    6及更高版本）。'
+- en: '**The class path**: classes, including classes in JAR files, on paths specified
+    by the system property `java.class.path`. If a JAR file on the class path has
+    a manifest with the `Class-Path` attribute, JAR files specified by the `Class-Path`
+    attribute will be searched also. By default, the `java.class.path` property''s
+    value is `.`, the current directory. You can change the value by using the `-classpath`
+    or `-cp` command-line options, or setting the `CLASSPATH` environment variable.
+    The command-line options override the setting of the `CLASSPATH` environment variable.'
+  id: totrans-5
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**类路径**：包括系统属性`java.class.path`指定路径上的类，包括JAR文件中的类。如果类路径上的JAR文件具有带有`Class-Path`属性的清单，则还将搜索`Class-Path`属性指定的JAR文件。默认情况下，`java.class.path`属性的值为`.`，即当前目录。您可以通过使用`-classpath`或`-cp`命令行选项或设置`CLASSPATH`环境变量来更改该值。命令行选项会覆盖`CLASSPATH`环境变量的设置。'
+- en: The precedence list tells you, for example, that the class path is searched
+    only if a class to be loaded hasn't been found among the classes in `rt.jar`,
+    `i18n.jar` or the installed extensions.
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 优先级列表告诉您，例如，只有在要加载的类在`rt.jar`、`i18n.jar`或已安装扩展中的类中未找到时，才会搜索类路径。
+- en: Unless your software instantiates its own class loaders for special purposes,
+    you don't really need to know much more than to keep this precedence list in mind.
+    In particular, you should be aware of any class name conflicts that might be present.
+    For example, if you list a class on the class path, you'll get unexpected results
+    if the runtime environment instead loads another class of the same name that it
+    found in an installed extension.
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除非您的软件为特殊目的实例化自己的类加载器，否则您实际上不需要了解比记住这个优先级列表更多的内容。特别是，您应该注意可能存在的任何类名冲突。例如，如果您在类路径上列出一个类，如果运行时环境代替加载了安装的扩展中找到的同名另一个类，您将得到意外的结果。
+- en: The Java Class Loading Mechanism
+  id: totrans-8
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Java类加载机制
+- en: The Java platform uses a delegation model for loading classes. The basic idea
+    is that every class loader has a "parent" class loader. When loading a class,
+    a class loader first "delegates" the search for the class to its parent class
+    loader before attempting to find the class itself.
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台使用委托模型来加载类。基本思想是每个类加载器都有一个“父”类加载器。在加载类时，类加载器首先将类的搜索委托给其父类加载器，然后再尝试找到类本身。
+- en: 'Here are some highlights of the class-loading API:'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以下是类加载API的一些亮点：
+- en: Constructors in `java.lang.ClassLoader` and its subclasses allow you to specify
+    a parent when you instantiate a new class loader. If you don't explicitly specify
+    a parent, the virtual machine's system class loader will be assigned as the default
+    parent.
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`java.lang.ClassLoader`及其子类中的构造函数允许您在实例化新类加载器时指定一个父类加载器。如果您没有明确指定父类加载器，则虚拟机的系统类加载器将被分配为默认父类加载器。'
+- en: 'The `loadClass` method in `ClassLoader` performs these tasks, in order, when
+    called to load a class:'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 当调用`ClassLoader`中的`loadClass`方法加载类时，它按顺序执行以下任务：
+- en: If a class has already been loaded, it returns it.
+  id: totrans-13
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果类已经被加载，它会返回该类。
+- en: Otherwise, it delegates the search for the new class to the parent class loader.
+  id: totrans-14
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 否则，它将搜索新类的任务委托给父类加载器。
+- en: If the parent class loader does not find the class, `loadClass` calls the method
+    `findClass` to find and load the class.
+  id: totrans-15
+  prefs:
+  - PREF_IND
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果父类加载器未找到类，`loadClass`调用`findClass`方法来查找和加载类。
+- en: The `findClass` method of `ClassLoader` searches for the class in the current
+    class loader if the class wasn't found by the parent class loader. You will probably
+    want to override this method when you instantiate a class loader subclass in your
+    application.
+  id: totrans-16
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 如果父类加载器未找到类，则`ClassLoader`的`findClass`方法将在当前类加载器中搜索该类。当您在应用程序中实例化类加载器子类时，可能需要重写此方法。
+- en: The class `java.net.URLClassLoader` serves as the basic class loader for extensions
+    and other JAR files, overriding the `findClass` method of `java.lang.ClassLoader`
+    to search one or more specified URLs for classes and resources.
+  id: totrans-17
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 类`java.net.URLClassLoader`用作扩展和其他JAR文件的基本类加载器，覆盖了`java.lang.ClassLoader`的`findClass`方法，以在一个或多个指定的URL中搜索类和资源。
+- en: To see a sample application that uses some of the API as it relates to JAR files,
+    see the [Using JAR-related APIs](../../deployment/jar/apiindex.html) lesson in
+    this tutorial.
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要查看一个使用与JAR文件相关的API的示例应用程序，请参阅本教程中的[使用与JAR相关的API](../../deployment/jar/apiindex.html)课程。
+- en: Class Loading and the `java` Command
+  id: totrans-19
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 类加载和`java`命令
+- en: The Java platform's class-loading mechanism is reflected in the `java` command.
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java平台的类加载机制体现在`java`命令中。
+- en: In the `java` tool, the `-classpath` option is a shorthand way to set the `java.class.path`
+    property.
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 在`java`工具中，`-classpath`选项是设置`java.class.path`属性的简便方式。
+- en: The `-cp` and `-classpath` options are equivalent.
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`-cp`和`-classpath`选项是等效的。'
+- en: The `-jar` option runs applications that are packaged in JAR files. For a description
+    and examples of this option, see the [Running JAR-Packaged Software](../../deployment/jar/run.html)
+    lesson in this tutorial.
+  id: totrans-23
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`-jar`选项用于运行打包在JAR文件中的应用程序。有关此选项的描述和示例，请参阅本教程中的[运行JAR打包软件](../../deployment/jar/run.html)课程。'

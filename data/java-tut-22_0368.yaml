@@ -1,0 +1,379 @@
+- en: How to Make Applets
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 如何制作 Applets
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/applet.html](https://docs.oracle.com/javase/tutorial/uiswing/components/applet.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/components/applet.html](https://docs.oracle.com/javase/tutorial/uiswing/components/applet.html)
+- en: "This section covers `JApplet` \x97 a class that enables applets to use Swing\
+    \ components. `JApplet` is a subclass of [`java.applet.Applet`](https://docs.oracle.com/javase/8/docs/api/java/applet/Applet.html),\
+    \ which is covered in the [Java Applets](../../deployment/applet/index.html) trail.\
+    \ If you've never written a regular applet before, we urge you to read that trail\
+    \ before proceeding with this section. The information provided in that trail\
+    \ applies to Swing applets, with a few exceptions that this section explains."
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "本节涵盖了`JApplet` \x97 一个使 applets 能够使用 Swing 组件的类。`JApplet`是[`java.applet.Applet`](https://docs.oracle.com/javase/8/docs/api/java/applet/Applet.html)的子类，该类在[Java\
+    \ Applets](../../deployment/applet/index.html)教程中有介绍。如果你以前从未编写过常规 applet，我们建议你在继续本节之前阅读该教程。该教程中提供的信息也适用于\
+    \ Swing applets，但本节会解释一些例外情况。"
+- en: "Any applet that contains Swing components must be implemented with a subclass\
+    \ of [`JApplet`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html).\
+    \ Here's a Swing version of one of the applets that helped make Java famous \x97\
+    \ an animation applet that (in its most well known configuration) shows our mascot\
+    \ Duke doing cartwheels:"
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: "任何包含 Swing 组件的 applet 必须使用[`JApplet`](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html)的子类来实现。这里是一个帮助\
+    \ Java 走红的 applet 的 Swing 版本 \x97 一个动画 applet（在其最著名的配置中）展示了我们的吉祥物 Duke 在做空翻："
+- en: '//&lt;![CDATA[ var attributes = { archive: ''https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TumbleItemProject/TumbleItem.jar'',
+    codebase: ''https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TumbleItemProject'',
+    code:''components.TumbleItem'', width:''600'', height:''95'' }; var parameters
+    = { permissions:''sandbox'', nimgs:''17'', offset:''-57'', img: ''images/tumble'',
+    maxwidth:''120'' }; deployJava.runApplet(attributes, parameters, ''1.7''); //]]&gt;'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '//&lt;![CDATA[ var attributes = { archive: ''https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TumbleItemProject/TumbleItem.jar'',
+    codebase: ''https://docs.oracle.com/javase/tutorialJWS/samples/uiswing/TumbleItemProject'',
+    code:''components.TumbleItem'', width:''600'', height:''95'' }; var parameters
+    = { permissions:''sandbox'', nimgs:''17'', offset:''-57'', img: ''images/tumble'',
+    maxwidth:''120'' }; deployJava.runApplet(attributes, parameters, ''1.7''); //]]&gt;'
+- en: '* * *'
+  id: totrans-5
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**  If you don''t see the applet running, you need to install at least
+    the [Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+    release.'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 如果你看不到 applet 运行，你需要安装至少[Java SE Development Kit (JDK) 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)版本。'
+- en: '* * *'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: You can find the main source code for this applet in [`TumbleItem.java`](../examples/components/TumbleItemProject/src/components/TumbleItem.java).
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可以在[`TumbleItem.java`](../examples/components/TumbleItemProject/src/components/TumbleItem.java)中找到这个
+    applet 的主要源代码。
+- en: 'This section discusses the following topics:'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 本节讨论以下主题：
+- en: '[Features Provided by JApplet](#features)'
+  id: totrans-10
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[JApplet 提供的功能](#features)'
+- en: '[Threads in Applets](#thread)'
+  id: totrans-11
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Applets 中的线程](#thread)'
+- en: '[Using Images in a Swing Applet](#images)'
+  id: totrans-12
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在 Swing Applet 中使用图像](#images)'
+- en: '[Embedding an Applet in an HTML Page](#plugin)'
+  id: totrans-13
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[在 HTML 页面中嵌入 Applet](#plugin)'
+- en: '[The JApplet API](#api)'
+  id: totrans-14
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[JApplet API](#api)'
+- en: '[Applet Examples](#eg)'
+  id: totrans-15
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[Applet 示例](#eg)'
+- en: Features Provided by JApplet
+  id: totrans-16
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: '`JApplet` 提供的功能'
+- en: Because `JApplet` is a top-level Swing container, each Swing applet has a root
+    pane. The most noticeable effects of the root pane's presence are support for
+    adding a [menu bar](menu.html) and the need to use a content pane.
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为`JApplet`是一个顶层的 Swing 容器，每个 Swing applet 都有一个根窗格。根窗格存在的最明显效果是支持添加[菜单栏](menu.html)和需要使用内容窗格。
+- en: 'As described in [Using Top-Level Containers](toplevel.html), each top-level
+    container such as a `JApplet` has a single content pane. The content pane makes
+    Swing applets different from regular applets in the following ways:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如[使用顶层容器](toplevel.html)中所述，每个顶层容器（如`JApplet`）都有一个内容窗格。内容窗格使得 Swing applets
+    与常规 applets 有以下不同之处：
+- en: You add components to a Swing applet's content pane, not directly to the applet.
+    [Adding Components to the Content Pane](toplevel.html#contentpane) shows you how.
+  id: totrans-19
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你将组件添加到 Swing applet 的内容窗格，而不是直接添加到 applet。[向内容窗格添加组件](toplevel.html#contentpane)展示了如何操作。
+- en: You set the layout manager on a Swing applet's content pane, not directly on
+    the applet.
+  id: totrans-20
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 你在 Swing applet 的内容窗格上设置布局管理器，而不是直接在 applet 上设置。
+- en: The default layout manager for a Swing applet's content pane is `BorderLayout`.
+    This differs from the default layout manager for `Applet`, which is `FlowLayout`.
+  id: totrans-21
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: Swing applet 的内容窗格的默认布局管理器是`BorderLayout`。这与`Applet`的默认布局管理器`FlowLayout`不同。
+- en: You should not put painting code directly in a `JApplet` object. See [Performing
+    Custom Painting](../painting/index.html) for examples of how to perform custom
+    painting in applets.
+  id: totrans-22
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 您不应该直接在`JApplet`对象中放置绘图代码。请参考[执行自定义绘图](../painting/index.html)了解如何在小程序中执行自定义绘图的示例。
+- en: Threads in Applets
+  id: totrans-23
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 小程序中的线程
+- en: "Swing components should be created, queried, and manipulated on the event-dispatching\
+    \ thread, but browsers don't invoke applet \"milestone\" methods from that thread.\
+    \ For this reason, the milestone methods \x97 `init`, `start`, `stop`, and `destroy`\
+    \ \x97 should use the `SwingUtilities` method `invokeAndWait` (or, if appropriate,\
+    \ `invokeLater`) so that code that refers to the Swing components is executed\
+    \ on the event-dispatching thread. More information about these methods and the\
+    \ event-dispatching thread is in [Concurrency in Swing](../concurrency/index.html)."
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Swing组件应该在事件分派线程上创建、查询和操作，但浏览器不会从该线程调用小程序的“里程碑”方法。因此，“里程碑”方法——`init`、`start`、`stop`和`destroy`应该使用`SwingUtilities`方法`invokeAndWait`（或者如果适用，`invokeLater`），以便引用Swing组件的代码在事件分派线程上执行。有关这些方法和事件分派线程的更多信息，请参考[Swing中的并发](../concurrency/index.html)。
+- en: 'Here is an example of an `init` method:'
+  id: totrans-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这里是一个`init`方法的示例：
+- en: '[PRE0]'
+  id: totrans-26
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: The `invokeLater` method is not appropriate for this implementation because
+    it allows `init` to return before initialization is complete, which can cause
+    applet problems that are difficult to debug.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`invokeLater`方法不适用于这个实现，因为它允许`init`在初始化完成之前返回，这可能会导致难以调试的小程序问题。'
+- en: The `init` method in `TumbleItem` is more complex, as the following code shows.
+    Like the first example, this `init` method implementation uses `SwingUtilities.invokeAndWait`
+    to execute the GUI creation code on the event-dispatching thread. This `init`
+    method sets up a [Swing timer](../misc/timer.html) to fire action events the update
+    the animation. Also, `init` uses [`javax.swing.SwingWorker`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html)
+    to create a background task that loads the animation image files, letting the
+    applet present a GUI right away, without waiting for all resources to be loaded.
+  id: totrans-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`TumbleItem`中的`init`方法更复杂，如下面的代码所示。与第一个示例一样，这个`init`方法的实现使用`SwingUtilities.invokeAndWait`在事件分派线程上执行GUI创建代码。这个`init`方法设置了一个[Swing定时器](../misc/timer.html)来触发动画更新的动作事件。此外，`init`使用[`javax.swing.SwingWorker`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html)创建一个后台任务，加载动画图像文件，让小程序立即呈现GUI，而不必等待所有资源加载完毕。'
+- en: '[PRE1]'
+  id: totrans-29
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: You can find the applet's source code in [`TumbleItem.java`](../examples/components/TumbleItemProject/src/components/TumbleItem.java).
+    To find all the files required for the applet, see the [example index](../examples/components/index.html#TumbleItem).
+  id: totrans-30
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以在[`TumbleItem.java`](../examples/components/TumbleItemProject/src/components/TumbleItem.java)中找到小程序的源代码。要找到小程序所需的所有文件，请参阅[示例索引](../examples/components/index.html#TumbleItem)。
+- en: Using Images in a Swing Applet
+  id: totrans-31
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在Swing小程序中使用图像
+- en: "The `Applet` class provides the `getImage` method for loading images into an\
+    \ applet. The `getImage` method creates and returns an `Image` object that represents\
+    \ the loaded image. Because Swing components use `Icon`s rather than `Image`s\
+    \ to refer to pictures, Swing applets tend not to use `getImage`. Instead Swing\
+    \ applets create instances of `ImageIcon` \x97 an icon loaded from an image file.\
+    \ `ImageIcon` comes with a code-saving benefit: it handles image tracking automatically.\
+    \ Refer to [How to Use Icons](../components/icon.html) for more information."
+  id: totrans-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`Applet`类提供了`getImage`方法来将图片加载到小程序中。`getImage`方法创建并返回一个代表加载图片的`Image`对象。因为Swing组件使用`Icon`而不是`Image`来引用图片，所以Swing小程序往往不使用`getImage`。相反，Swing小程序创建`ImageIcon`的实例，从图像文件加载图标。`ImageIcon`具有一个节省代码的好处：它自动处理图像跟踪。更多信息请参考[如何使用图标](../components/icon.html)。'
+- en: 'The animation of Duke doing cartwheels requires 17 different pictures. The
+    applet uses one `ImageIcon` per picture and loads them in its `init` method. Because
+    images can take a long time to load, the icons are loaded in a separate thread
+    implemented by a `SwingWorker` object. Here''s the code:'
+  id: totrans-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Duke做空翻的动画需要17张不同的图片。该小程序使用每张图片一个`ImageIcon`，并在其`init`方法中加载这些图片。由于图片加载可能需要很长时间，这些图标是在一个`SwingWorker`对象实现的单独线程中加载的。以下是代码：
+- en: '[PRE2]'
+  id: totrans-34
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: The `loadImage` method loads the image for the specified frame of animation.
+    It uses the `getResourceAsStream` method rather than the usual `getResource` method
+    to get the images. The resulting code isn't pretty, but `getResourceAsStream`
+    is more efficient than `getResource` for loading images from JAR files into applets
+    that are executed using Java Plug-in™ software. For further details, see [Loading
+    Images Into Applets](../components/icon.html#applet).
+  id: totrans-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`loadImage` 方法为指定的动画帧加载图像。它使用 `getResourceAsStream` 方法而不是通常的 `getResource`
+    方法来获取图像。生成的代码不太美观，但是对于从 JAR 文件加载图像到使用 Java Plug-in™ 软件执行的小程序来说，`getResourceAsStream`
+    比 `getResource` 更有效。有关更多详细信息，请参见[将图像加载到小程序中](../components/icon.html#applet)。'
+- en: Embedding an Applet in an HTML Page
+  id: totrans-36
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 在 HTML 页面中嵌入小程序
+- en: 'You can deploy a simple applet by using the `applet` tag. Or, you can use the
+    Deployment Toolkit. Here is the code for the cartwheeling Duke applet:'
+  id: totrans-37
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以使用 `applet` 标签部署一个简单的小程序。或者，您可以使用部署工具包。以下是翻筋斗的杜克小程序的代码：
+- en: '[PRE3]'
+  id: totrans-38
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: For more information, see [Deploying an Applet](../../deployment/applet/deployingApplet.html)
+    in the [Java Applets](../../deployment/applet/index.html) lesson.
+  id: totrans-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有关更多信息，请参见[部署小程序](../../deployment/applet/deployingApplet.html)中的[Java 小程序](../../deployment/applet/index.html)课程。
+- en: The JApplet API
+  id: totrans-40
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 小程序 JApplet API
+- en: The next table lists the interesting methods that `JApplet` adds to the applet
+    API. They give you access to features provided by the root pane. Other methods
+    you might use are defined by the [`Component`](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html)
+    and [`Applet`](https://docs.oracle.com/javase/8/docs/api/java/applet/Applet.html)
+    classes. See [Component Methods](jcomponent.html#complookapi) for a list of commonly
+    used `Component` methods, and [Java Applets](../../deployment/applet/index.html)
+    for help in using `Applet` methods.
+  id: totrans-41
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 下表列出了 `JApplet` 添加到小程序 API 中的有趣方法。它们让您访问根窗格提供的功能。您可能使用的其他方法由 [`Component`](https://docs.oracle.com/javase/8/docs/api/java/awt/Component.html)
+    和 [`Applet`](https://docs.oracle.com/javase/8/docs/api/java/applet/Applet.html)
+    类定义。请参见[组件方法](jcomponent.html#complookapi)以获取常用的 `Component` 方法列表，并参见[Java 小程序](../../deployment/applet/index.html)以获取有关使用
+    `Applet` 方法的帮助。
+- en: '| Method | Purpose |'
+  id: totrans-42
+  prefs: []
+  type: TYPE_TB
+  zh: '| 方法 | 目的 |'
+- en: '| [void setContentPane(Container)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#setContentPane-java.awt.Container-)
+    [Container getContentPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getContentPane--)
+    | Set or get the applet''s content pane. The content pane contains the applet''s
+    visible GUI components and should be opaque. |'
+  id: totrans-43
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setContentPane(Container)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#setContentPane-java.awt.Container-)
+    [Container getContentPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getContentPane--)
+    | 设置或获取小程序的内容窗格。内容窗格包含小程序的可见 GUI 组件，应该是不透明的。 |'
+- en: '| [void setRootPane(JRootPane)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#setRootPane-javax.swing.JRootPane-)
+    [JRootPane getRootPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getRootPane--)
+    | Create, set, or get the applet''s root pane. The root pane manages the interior
+    of the applet including the content pane, the glass pane, and so on. |'
+  id: totrans-44
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setRootPane(JRootPane)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#setRootPane-javax.swing.JRootPane-)
+    [JRootPane getRootPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getRootPane--)
+    | 创建、设置或获取小程序的根窗格。根窗格管理小程序的内部，包括内容窗格、玻璃窗格等。 |'
+- en: '| [void setJMenuBar(JMenuBar)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#setJMenuBar-javax.swing.JMenuBar-)
+    [JMenuBar getJMenuBar()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getJMenuBar--)
+    | Set or get the applet''s menu bar to manage a set of menus for the applet. |'
+  id: totrans-45
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setJMenuBar(JMenuBar)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#setJMenuBar-javax.swing.JMenuBar-)
+    [JMenuBar getJMenuBar()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getJMenuBar--)
+    | 设置或获取小程序的菜单栏以管理小程序的一组菜单。 |'
+- en: '| [void setGlassPane(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#setGlassPane-java.awt.Component-)
+    [Component getGlassPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getGlassPane--)
+    | Set or get the applet''s glass pane. You can use the glass pane to intercept
+    mouse events. |'
+  id: totrans-46
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setGlassPane(Component)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#setGlassPane-java.awt.Component-)
+    [Component getGlassPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getGlassPane--)
+    | 设置或获取小程序的玻璃窗格。您可以使用玻璃窗格拦截鼠标事件。 |'
+- en: '| [void setLayeredPane(JLayeredPane)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#setLayeredPane-javax.swing.JLayeredPane-)
+    [JLayeredPane getLayeredPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getLayeredPane--)
+    | Set or get the applet''s layered pane. You can use the applet''s layered pane
+    to put components on top of or behind other components. |'
+  id: totrans-47
+  prefs: []
+  type: TYPE_TB
+  zh: '| [void setLayeredPane(JLayeredPane)](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#setLayeredPane-javax.swing.JLayeredPane-)
+    [JLayeredPane getLayeredPane()](https://docs.oracle.com/javase/8/docs/api/javax/swing/JApplet.html#getLayeredPane--)
+    | 设置或获取 applet 的分层窗格。您可以使用 applet 的分层窗格将组件放在其他组件的前面或后面。 |'
+- en: Applet Example
+  id: totrans-48
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: Applet 示例
+- en: This table shows examples of Swing applets and where those examples are described.
+  id: totrans-49
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个表格展示了 Swing applet 的示例以及这些示例在哪里描述。
+- en: '| Example | Where Described | Notes |'
+  id: totrans-50
+  prefs: []
+  type: TYPE_TB
+  zh: '| 示例 | 描述位置 | 备注 |'
+- en: '| [`TumbleItem`](../examples/components/index.html#TumbleItem) | This page
+    | An animation applet |'
+  id: totrans-51
+  prefs: []
+  type: TYPE_TB
+  zh: '| [`TumbleItem`](../examples/components/index.html#TumbleItem) | 本页 | 一个动画
+    applet |'

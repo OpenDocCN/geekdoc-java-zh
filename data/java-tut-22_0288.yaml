@@ -1,0 +1,177 @@
+- en: Running a Java Web Start Application
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 运行Java Web Start应用程序
+- en: 原文：[https://docs.oracle.com/javase/tutorial/deployment/webstart/running.html](https://docs.oracle.com/javase/tutorial/deployment/webstart/running.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/deployment/webstart/running.html](https://docs.oracle.com/javase/tutorial/deployment/webstart/running.html)
+- en: 'Users can run Java Web Start applications in the following ways:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 用户可以通过以下方式运行Java Web Start应用程序：
+- en: '[Running a Java Web Start Application From a Browser](#web)'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[从浏览器中运行Java Web Start应用程序](#web)'
+- en: '[Running a Java Web Start Application From the Java Cache Viewer](#cache)'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[从Java缓存查看器中运行Java Web Start应用程序](#cache)'
+- en: '[Running a Java Web Start Application From the Desktop](#desktop)'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[从桌面中运行Java Web Start应用程序](#desktop)'
+- en: '* * *'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:** To run applications deployed with Java Web Start technology, you
+    must have a compatible version of the Java Runtime Environment (JRE) software.
+    The complete Java Java Development Kit (JDK) is not required.'
+  id: totrans-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：** 要运行使用Java Web Start技术部署的应用程序，您必须具有兼容版本的Java运行时环境（JRE）软件。不需要完整的Java开发工具包（JDK）。'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: Running a Java Web Start Application From a Browser
+  id: totrans-9
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 从浏览器中运行Java Web Start应用程序
+- en: You can run a Java Web Start application from a browser by clicking a link to
+    the application's JNLP file. The following text is an example of a link to a JNLP
+    file.
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以通过点击应用程序的JNLP文件的链接来从浏览器中运行Java Web Start应用程序。以下文本是指向JNLP文件的链接的示例。
+- en: '[PRE0]'
+  id: totrans-11
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: Java Web Start software loads and runs the application based on instructions
+    in the JNLP file.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Java Web Start软件根据JNLP文件中的指令加载和运行应用程序。
+- en: 'Try it now: [Run Notepad](https://docs.oracle.com/javase/tutorialJWS/samples/deployment/NotepadJWSProject/Notepad.jnlp)'
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 立即尝试：[运行记事本](https://docs.oracle.com/javase/tutorialJWS/samples/deployment/NotepadJWSProject/Notepad.jnlp)
+- en: Running a Java Web Start Application From the Java Cache Viewer
+  id: totrans-14
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 从Java缓存查看器中运行Java Web Start应用程序
+- en: If you are using at least Java Platform, Standard Edition 6 or later, you can
+    run a Java Web Start application through the Java Cache Viewer.
+  id: totrans-15
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果您至少使用的是Java平台标准版6或更高版本，则可以通过Java缓存查看器运行Java Web Start应用程序。
+- en: When Java Web Start software first loads an application, information from the
+    application's JNLP file is stored in the local Java Cache Viewer. To launch the
+    application again, you do not need to return to the web page where you first launched
+    it; you can launch it from the Java Cache Viewer.
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当Java Web Start软件首次加载应用程序时，应用程序的JNLP文件中的信息将存储在本地Java缓存查看器中。要再次启动应用程序，您无需返回首次启动它的网页；您可以从Java缓存查看器中启动它。
+- en: 'To open the Java Cache Viewer:'
+  id: totrans-17
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要打开Java缓存查看器：
+- en: Open the Control Panel.
+  id: totrans-18
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 打开控制面板。
+- en: Double click on the Java icon. The Java Control Panel opens.
+  id: totrans-19
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 双击Java图标。Java控制面板将打开。
+- en: Select the General tab.
+  id: totrans-20
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 选择“常规”选项卡。
+- en: Click View. The Java Cache Viewer opens.
+  id: totrans-21
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 点击“查看”。Java缓存查看器将打开。
+- en: The application is listed on the Java Cache Viewer screen.
+  id: totrans-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 应用程序将列在Java缓存查看器屏幕上。
+- en: '![A screen shot of the Java Cache Viewer application](../Images/e98cc6d9db23df1fc6b4d1d76146bb08.png)**Java
+    Cache Viewer application**'
+  id: totrans-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '![Java缓存查看器应用程序的屏幕截图](../Images/e98cc6d9db23df1fc6b4d1d76146bb08.png)**Java缓存查看器应用程序**'
+- en: To run the application, select it and click the Run button, ![The Run button](../Images/188a622272ff2e880730fc3177480146.png),
+    or double click the application. The application starts just as it did from the
+    web page.
+  id: totrans-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要运行应用程序，请选择它并单击“运行”按钮，![运行按钮](../Images/188a622272ff2e880730fc3177480146.png)，或双击应用程序。应用程序将像从网页中启动一样启动。
+- en: Running a Java Web Start Application From the Desktop
+  id: totrans-25
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 从桌面中运行Java Web Start应用程序
+- en: You can add a desktop shortcut to a Java Web Start application. Select the application
+    in the Java Cache Viewer. Right-click and select Install Shortcuts or click the
+    Install button, ![The Install button](../Images/3228ba88df031ec25ac55c1338c70aff.png).
+  id: totrans-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 您可以为Java Web Start应用程序添加桌面快捷方式。在Java缓存查看器中选择应用程序。右键单击并选择“安装快捷方式”或单击“安装”按钮，![安装按钮](../Images/3228ba88df031ec25ac55c1338c70aff.png)。
+- en: A shortcut is added to the desktop.
+  id: totrans-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 桌面上添加了一个快捷方式。
+- en: '![](../Images/a8151bcce4f3de157ddfd893b3c871aa.png)'
+  id: totrans-28
+  prefs: []
+  type: TYPE_IMG
+  zh: '![](../Images/a8151bcce4f3de157ddfd893b3c871aa.png)'
+- en: You can then launch the Java Web Start application just as you would launch
+    any native application.
+  id: totrans-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，您可以像启动任何本地应用程序一样启动Java Web Start应用程序。

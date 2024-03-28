@@ -1,0 +1,36 @@
+- en: Concurrent Random Numbers
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 并发随机数
+- en: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/threadlocalrandom.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/threadlocalrandom.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/essential/concurrency/threadlocalrandom.html](https://docs.oracle.com/javase/tutorial/essential/concurrency/threadlocalrandom.html)
+- en: In JDK 7, [`java.util.concurrent`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html)
+    includes a convenience class, [`ThreadLocalRandom`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html),
+    for applications that expect to use random numbers from multiple threads or `ForkJoinTask`s.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在JDK 7中，[`java.util.concurrent`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html)包含一个方便的类，[`ThreadLocalRandom`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html)，适用于期望从多个线程或`ForkJoinTask`中使用随机数的应用程序。
+- en: For concurrent access, using `ThreadLocalRandom` instead of `Math.random()`
+    results in less contention and, ultimately, better performance.
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于并发访问，使用`ThreadLocalRandom`而不是`Math.random()`会减少争用，最终提高性能。
+- en: 'All you need to do is call `ThreadLocalRandom.current()`, then call one of
+    its methods to retrieve a random number. Here is one example:'
+  id: totrans-4
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你只需调用`ThreadLocalRandom.current()`，然后调用其中的方法来获取一个随机数。以下是一个示例：
+- en: '[PRE0]'
+  id: totrans-5
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'

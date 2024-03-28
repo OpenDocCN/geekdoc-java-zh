@@ -1,0 +1,105 @@
+- en: Worker Threads and SwingWorker
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Worker Threads 和 SwingWorker
+- en: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/concurrency/worker.html](https://docs.oracle.com/javase/tutorial/uiswing/concurrency/worker.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/uiswing/concurrency/worker.html](https://docs.oracle.com/javase/tutorial/uiswing/concurrency/worker.html)
+- en: When a Swing program needs to execute a long-running task, it usually uses one
+    of the *worker threads*, also known as the *background threads*. Each task running
+    on a worker thread is represented by an instance of [`javax.swing.SwingWorker`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html).
+    `SwingWorker` itself is an abstract class; you must define a subclass in order
+    to create a `SwingWorker` object; anonymous inner classes are often useful for
+    creating very simple `SwingWorker` objects.
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当 Swing 程序需要执行长时间运行的任务时，通常会使用其中一个 *worker 线程*，也称为 *后台线程*。在 worker 线程上运行的每个任务都由一个
+    [`javax.swing.SwingWorker`](https://docs.oracle.com/javase/8/docs/api/javax/swing/SwingWorker.html)
+    实例表示。`SwingWorker` 本身是一个抽象类；您必须定义一个子类才能创建一个 `SwingWorker` 对象；匿名内部类通常用于创建非常简单的
+    `SwingWorker` 对象。
+- en: '`SwingWorker` provides a number of communication and control features:'
+  id: totrans-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`SwingWorker` 提供了许多通信和控制功能：'
+- en: The `SwingWorker` subclass can define a method, `done`, which is automatically
+    invoked on the event dispatch thread when the background task is finished.
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SwingWorker` 子类可以定义一个方法 `done`，当后台任务完成时，该方法会自动在事件分发线程上调用。'
+- en: '`SwingWorker` implements [`java.util.concurrent.Future`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Future.html).
+    This interface allows the background task to provide a return value to the other
+    thread. Other methods in this interface allow cancellation of the background task
+    and discovering whether the background task has finished or been cancelled.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '`SwingWorker` 实现了 [`java.util.concurrent.Future`](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Future.html)。这个接口允许后台任务向其他线程提供返回值。此接口中的其他方法允许取消后台任务，并发现后台任务是否已完成或已取消。'
+- en: The background task can provide intermediate results by invoking `SwingWorker.publish`,
+    causing `SwingWorker.process` to be invoked from the event dispatch thread.
+  id: totrans-6
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 后台任务可以通过调用 `SwingWorker.publish` 提供中间结果，导致从事件分发线程调用 `SwingWorker.process`。
+- en: The background task can define bound properties. Changes to these properties
+    trigger events, causing event-handling methods to be invoked on the event dispatch
+    thread.
+  id: totrans-7
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 后台任务可以定义绑定属性。对这些属性的更改会触发事件，导致事件处理方法在事件分发线程上被调用。
+- en: These features are discussed in the following subsections.
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些功能将在以下小节中讨论。
+- en: '* * *'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: The `javax.swing.SwingWorker` class was added to the Java platform in Java SE
+    6\. Prior to this, another class, also called `SwingWorker`, was widely used for
+    some of the same purposes. The old `SwingWorker` was not part of the Java platform
+    specification, and was not provided as part of the JDK.
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`javax.swing.SwingWorker` 类是在 Java SE 6 中添加到 Java 平台的。在此之前，另一个类，也称为 `SwingWorker`，被广泛用于一些相同的目的。旧的
+    `SwingWorker` 不是 Java 平台规范的一部分，也不作为 JDK 的一部分提供。'
+- en: The new `javax.swing.SwingWorker` is a completely new class. Its functionality
+    is not a strict superset of the old `SwingWorker`. Methods in the two classes
+    that have the same function do not have the same names. Also, instances of the
+    old `SwingWorker` class were reusable, while a new instance of `javax.swing.SwingWorker`
+    is needed for each new background task.
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 新的 `javax.swing.SwingWorker` 是一个全新的类。其功能不是旧的 `SwingWorker` 的严格超集。这两个类中具有相同功能的方法没有相同的名称。此外，旧的
+    `SwingWorker` 类的实例是可重用的，而每个新的后台任务都需要一个新的 `javax.swing.SwingWorker` 实例。
+- en: Throughout the Java Tutorials, any mention of `SwingWorker` now refers to `javax.swing.SwingWorker`.
+  id: totrans-13
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 Java 教程中，任何提到 `SwingWorker` 现在都指的是 `javax.swing.SwingWorker`。
+- en: '* * *'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'

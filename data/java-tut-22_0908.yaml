@@ -1,0 +1,148 @@
+- en: Creating New Class Instances
+  id: totrans-0
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 创建新的类实例
+- en: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/ctorInstance.html](https://docs.oracle.com/javase/tutorial/reflect/member/ctorInstance.html)
+  id: totrans-1
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 原文：[https://docs.oracle.com/javase/tutorial/reflect/member/ctorInstance.html](https://docs.oracle.com/javase/tutorial/reflect/member/ctorInstance.html)
+- en: 'There are two reflective methods for creating instances of classes: [`java.lang.reflect.Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    and [`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--).
+    The former is preferred and is thus used in these examples because:'
+  id: totrans-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 创建类实例的两种反射方法：[`java.lang.reflect.Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    和 [`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)。前者更受青睐，因此在这些示例中使用，原因如下：
+- en: '[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)
+    can only invoke the zero-argument constructor, while [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    may invoke any constructor, regardless of the number of parameters.'
+  id: totrans-3
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)只能调用零参数构造函数，而[`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)可以调用任何构造函数，无论参数个数如何。'
+- en: '[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)
+    throws any exception thrown by the constructor, regardless of whether it is checked
+    or unchecked. [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    always wraps the thrown exception with an [`InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html).'
+  id: totrans-4
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: 无论构造函数抛出的是已检查异常还是未检查异常，[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)都会抛出该异常。[`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)总是用[`InvocationTargetException`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/InvocationTargetException.html)包装抛出的异常。
+- en: '[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)
+    requires that the constructor be visible; [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    may invoke `private` constructors under certain circumstances.'
+  id: totrans-5
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)要求构造函数可见；[`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)在某些情况下可以调用`private`构造函数。'
+- en: 'Sometimes it may be desirable to retrieve internal state from an object which
+    is only set after construction. Consider a scenario where it is necessary to obtain
+    the internal character set used by [`java.io.Console`](https://docs.oracle.com/javase/8/docs/api/java/io/Console.html).
+    (The `Console` character set is stored in a private field and is not necessarily
+    the same as the Java virtual machine default character set returned by [`java.nio.charset.Charset.defaultCharset()`](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/Charset.html#defaultCharset--)).
+    The [``ConsoleCharset``](example/ConsoleCharset.java) example shows how this might
+    be achieved:'
+  id: totrans-6
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有时可能希望从仅在构造后设置的对象中检索内部状态。考虑一个场景，需要获取[`java.io.Console`](https://docs.oracle.com/javase/8/docs/api/java/io/Console.html)使用的内部字符集。（`Console`字符集存储在私有字段中，并且不一定与[`java.nio.charset.Charset.defaultCharset()`](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/Charset.html#defaultCharset--)返回的Java虚拟机默认字符集相同）。[``ConsoleCharset``](example/ConsoleCharset.java)示例展示了如何实现这一点：
+- en: '[PRE0]'
+  id: totrans-7
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: '* * *'
+  id: totrans-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: '**Note:**'
+  id: totrans-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '**注意：**'
+- en: '[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)
+    will only succeed if the constructor is has zero arguments and is already accessible.
+    Otherwise, it is necessary to use [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    as in the above example.'
+  id: totrans-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果构造函数没有参数且已经可访问，则[`Class.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#newInstance--)才会成功。否则，需要像上面的示例一样使用[`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)。
+- en: '* * *'
+  id: totrans-11
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '* * *'
+- en: 'Example output for a UNIX system:'
+  id: totrans-12
+  prefs: []
+  type: TYPE_NORMAL
+  zh: UNIX系统的示例输出：
+- en: '[PRE1]'
+  id: totrans-13
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE1]'
+- en: 'Example output for a Windows system:'
+  id: totrans-14
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Windows系统的示例输出：
+- en: '[PRE2]'
+  id: totrans-15
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE2]'
+- en: 'Another common application of [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    is to invoke constructors which take arguments. The [``RestoreAliases``](example/RestoreAliases.java)
+    example finds a specific single-argument constructor and invokes it:'
+  id: totrans-16
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一个常见的 [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    应用是调用需要参数的构造函数。[``RestoreAliases``](example/RestoreAliases.java) 示例找到一个特定的单参数构造函数并调用它：
+- en: '[PRE3]'
+  id: totrans-17
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE3]'
+- en: 'This example uses [`Class.getDeclaredConstructor()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredConstructor-java.lang.Class...-)
+    to find the constructor with a single argument of type [`java.util.HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html).
+    Note that it is sufficient to pass `HashMap.class` since the parameter to any
+    `get*Constructor()` method requires a class only for type purposes. Due to [type
+    erasure](https://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.6),
+    the following expression evaluates to `true`:'
+  id: totrans-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这个示例使用 [`Class.getDeclaredConstructor()`](https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html#getDeclaredConstructor-java.lang.Class...-)
+    来找到一个参数类型为 [`java.util.HashMap`](https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html)
+    的构造函数。请注意，只需传递 `HashMap.class` 就足够了，因为任何 `get*Constructor()` 方法的参数只需要类来确定类型。由于
+    [类型擦除](https://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.6)，以下表达式求值为
+    `true`：
+- en: '[PRE4]'
+  id: totrans-19
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE4]'
+- en: The example then creates a new instance of the class using this constructor
+    with [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-).
+  id: totrans-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，示例使用这个构造函数使用 [`Constructor.newInstance()`](https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html#newInstance-java.lang.Object...-)
+    创建类的新实例。
+- en: '[PRE5]'
+  id: totrans-21
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE5]'
