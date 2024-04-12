@@ -14,4 +14,4 @@
 
 本教程详细讨论了仅与 JAXB 相关的代码。
 
-![Trail Icon JAXB 简介](img/index.html) 简要描述了 JAXB 技术，包括其目的和主要特点。
+简要描述了 JAXB 技术，包括其目的和主要特点。

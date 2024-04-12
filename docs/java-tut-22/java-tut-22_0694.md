@@ -8,8 +8,8 @@ JavaBeans™使得重用软件组件变得容易。开发人员可以使用其�
 
 本教程描述了 JavaBeans 的使用方法，包括以下课程：
 
-![Trail icon **快速入门**](img/index.html) 通过展示如何使用 NetBeans 构建应用程序，快速介绍了 JavaBeans。
+通过展示如何使用 NetBeans 构建应用程序，快速介绍了 JavaBeans。
 
-![Trail icon **编写 JavaBeans 组件**](img/index.html) 描述了用于 bean 属性、方法和事件的编码模式。它还概述了使用`BeanInfo`来定制开发体验在构建工具中的使用。
+描述了用于 bean 属性、方法和事件的编码模式。它还概述了使用`BeanInfo`来定制开发体验在构建工具中的使用。
 
-![Trail icon **高级 JavaBeans 主题**](img/index.html) 包括 bean 持久性、长期持久性和定制。
+包括 bean 持久性、长期持久性和定制。

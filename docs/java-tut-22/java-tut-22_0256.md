@@ -28,16 +28,16 @@ Java 富互联网应用程序（RIA）是具有类似桌面应用程序特征的
 
 本教程讨论了 RIA 和自包含应用程序的开发和部署。请查看[新功能](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/whatsnew_deployment.html)，了解客户端 Java 运行时环境（JRE）软件各个版本引入的功能。
 
-![trail icon **开发和部署 Java Applets**](img/index.html)
 
-![trail icon **开发和部署 Java Web Start 应用程序**](img/index.html)
 
-![trail icon **使用 Java 富互联网应用程序做更多事情**](img/index.html)
 
-![trail icon **深入部署**](img/index.html)
 
-![trail icon **部署自包含应用程序**](img/index.html)
+
+
+
+
+
 
 支持工具
 
-![trail icon **在 JAR 文件中打包程序**](img/index.html)
+
