@@ -2,5 +2,6 @@
 +   [Java 中文官方教程 2022 版](docs/java-tut-22/README.md)
 +   [JavaBeginnersTutorial 中文系列教程](docs/javabegintut/README.md)
 +   [JavaTutorialNetwork 中文系列教程](docs/javatutnet/README.md)
++   [Mkyong 中文博客翻译](docs/mkyong-blog/README.md)
 +   [Java 8 简明教程](docs/modern-java/README.md)
 +   [Thinking in Java (Java 编程思想)](docs/thinking-in-java/README.md)
