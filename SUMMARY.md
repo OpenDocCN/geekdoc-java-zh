@@ -19,6 +19,7 @@
 +   [Jersey 2.x 用户指南](docs/jrsy-2x-usrgd/README.md)
 +   [用 Jersey 构建 RESTful 服务](docs/jrsy-bd-rest-svc/README.md)
 +   [JSSE 参考指南](docs/jsse-ref-gd/README.md)
++   [从零开始的 Kotlin 指南](docs/kt-scr/README.md)
 +   [Apache MINA 2 用户指南](docs/mina2-usrgd/README.md)
 +   [Mkyong 中文博客翻译](docs/mkyong-blog/README.md)
 +   [Java 8 简明教程](docs/modern-java/README.md)
