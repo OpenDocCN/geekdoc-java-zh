@@ -15,6 +15,7 @@
 +   [Java8 新特性探究](docs/java8-new-feat/README.md)
 +   [Java 8 教程汇总](docs/java8-tuts/README.md)
 +   [JavaBeginnersTutorial 中文系列教程](docs/javabegintut/README.md)
++   [JavaRevisited 博客中文翻译](docs/javarevisited-blog/README.md)
 +   [JavaTutorialNetwork 中文系列教程](docs/javatutnet/README.md)
 +   [Jersey 2.x 用户指南](docs/jrsy-2x-usrgd/README.md)
 +   [用 Jersey 构建 RESTful 服务](docs/jrsy-bd-rest-svc/README.md)
